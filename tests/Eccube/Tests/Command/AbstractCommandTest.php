@@ -50,6 +50,12 @@ abstract class AbstractCommandTest extends WebTestCase
      */
     protected $loopCheckSum = 0;
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        Application::clearInstance();
+    }
+
     /**
      * $PluginCommand
      * @param Command $PluginCommand
@@ -152,7 +158,7 @@ abstract class AbstractCommandTest extends WebTestCase
 
         // Migration
         $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
-            'db.migrations.path' => __DIR__ . '/../src/Eccube/Resource/doctrine/migration',
+            'db.migrations.path' => __DIR__ . '/../../../../src/Eccube/Resource/doctrine/migration',
         ));
 
         $app->boot();

@@ -25,6 +25,9 @@ namespace Eccube\Tests\Plugin\Web;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
 

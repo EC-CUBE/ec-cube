@@ -6,6 +6,7 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Eccube\Application;
 use Eccube\Entity\Customer;
+use Eccube\Util\Cache;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client;
 use Silex\WebTestCase;
@@ -45,13 +46,17 @@ abstract class EccubeTestCase extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
+
         if (!$this->isSqliteInMemory()) {
             $this->app['orm.em']->getConnection()->rollback();
             $this->app['orm.em']->getConnection()->close();
         }
 
-        $this->cleanUpProperties();
-        $this->app = null;
+        // XXX PHP5.5/5.6でSegmentation Faultが発生するため
+        //$this->cleanUpProperties();
+        //$this->app = null;
+
+        \Eccube\Application::clearInstance();
     }
 
     /**

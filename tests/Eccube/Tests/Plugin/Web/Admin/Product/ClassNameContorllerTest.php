@@ -28,6 +28,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Entity\ClassName;
 
+/**
+ * @group plugin
+ */
 class ClassNameControllerTest extends AbstractAdminWebTestCase
 {
     public function setUp()

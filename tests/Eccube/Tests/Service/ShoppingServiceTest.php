@@ -19,7 +19,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->app['security']->setToken(
+        $this->app['security.token_storage']->setToken(
             new UsernamePasswordToken(
                 $this->Customer, null, 'Customer', $this->Customer->getRoles()
             )
@@ -72,7 +72,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
 
         $NonMember = $this->createNonMember();
-        $this->app['security']->setToken(
+        $this->app['security.token_storage']->setToken(
             new UsernamePasswordToken(
                 $NonMember, null, 'Customer', array('IS_AUTHENTICATED_ANONYMOUSLY')
             )

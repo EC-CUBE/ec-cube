@@ -116,4 +116,22 @@ trait ApplicationTrait
         $response = $this->forward($path, $requestParameters);
         return $this;
     }
+
+    /**
+     * コンテナに登録済のサービスを上書きする.
+     * Pimple標準では再登録を行うと, `RuntimeException: Cannot override frozen service`が投げられるため,一度unsetしてから再登録を行う.
+     * config系の変更程度に利用はとどめること
+     *
+     * @param $key
+     * @param $service
+     * @throws \InvalidArgumentException keyが存在しない場合.
+     */
+    public function overwrite($key, $service)
+    {
+        if (!$this->offsetExists($key)) {
+            throw new \InvalidArgumentException();
+        }
+        $this->offsetUnset($key);
+        $this[$key] = $service;
+    }
 }

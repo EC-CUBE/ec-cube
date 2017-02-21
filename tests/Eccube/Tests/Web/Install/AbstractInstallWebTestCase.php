@@ -69,6 +69,7 @@ abstract class AbstractInstallWebTestCase extends WebTestCase
         unset($app['exception_handler']);
 
         $app->boot();
+        $app->flush();
 
         return $app;
     }

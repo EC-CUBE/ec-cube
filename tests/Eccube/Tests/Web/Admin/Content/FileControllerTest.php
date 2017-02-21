@@ -20,7 +20,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             mkdir($config['template_default_realdir'].'/user_data', 0777 , true);
         }
         $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
     }
 
     public static function tearDownAfterClass()

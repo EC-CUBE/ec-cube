@@ -127,8 +127,8 @@ class InstallController
         if (empty($protectedDirs)) {
             $finder = Finder::create()
                 ->in($this->cache_path)
-                ->directories()
-                ->depth(0);
+                ->notName('.gitkeep')
+                ->files();
             $fs = new Filesystem();
             $fs->remove($finder);
         }

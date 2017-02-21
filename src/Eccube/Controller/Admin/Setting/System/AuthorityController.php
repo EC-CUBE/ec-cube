@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\AuthorityRoleType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorityController extends AbstractController
@@ -39,8 +41,8 @@ class AuthorityController extends AbstractController
 
         $builder = $app['form.factory']->createBuilder();
         $builder
-            ->add('AuthorityRoles', 'collection', array(
-                'type' => 'admin_authority_role',
+            ->add('AuthorityRoles', CollectionType::class, array(
+                'entry_type' => AuthorityRoleType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -60,7 +62,7 @@ class AuthorityController extends AbstractController
 
         if (count($AuthorityRoles) == 0) {
             // 1件もない場合、空行を追加
-            $form->get('AuthorityRoles')->add(uniqid(), 'admin_authority_role');
+            $form->get('AuthorityRoles')->add(uniqid(), AuthorityRoleType::class);
         }
 
 

@@ -27,6 +27,9 @@ namespace Eccube\Tests\Plugin\Web\Admin\Setting\System;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class AuthorityiControllerTest extends AbstractAdminWebTestCase
 {
 

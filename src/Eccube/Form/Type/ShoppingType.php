@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,7 +45,7 @@ class ShoppingType extends AbstractType
         $message = $options['message'];
 
         $builder
-            ->add('payment', 'entity', array(
+            ->add('payment', EntityType::class, array(
                 'class' => 'Eccube\Entity\Payment',
                 'choice_label' => 'method',
                 'choices' => $payments,

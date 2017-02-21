@@ -95,7 +95,7 @@ class ChangeController extends AbstractController
             return $app->redirect($app->url('mypage_change_complete'));
         }
 
-        $app['security']->getToken()->setUser($LoginCustomer);
+        $app['security.token_storage']->getToken()->setUser($LoginCustomer);
 
         return $app->render('Mypage/change.twig', array(
             'form' => $form->createView(),

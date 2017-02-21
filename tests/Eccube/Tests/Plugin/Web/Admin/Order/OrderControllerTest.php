@@ -6,6 +6,9 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
 

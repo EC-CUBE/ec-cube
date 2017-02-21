@@ -26,6 +26,7 @@ namespace Eccube\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
+use Eccube\Plugin\ConfigManager;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -68,7 +69,7 @@ class PluginService
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
             $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
-            $this->app->writePluginConfigCache();
+            ConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -271,13 +272,13 @@ class PluginService
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
-        $this->app->removePluginConfigCache();
+        ConfigManager::removePluginConfigCache();
         Cache::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
-        $this->app->writePluginConfigCache();
+        ConfigManager::writePluginConfigCache();
         return true;
     }
 

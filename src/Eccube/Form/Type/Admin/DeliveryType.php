@@ -24,6 +24,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\PriceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -68,13 +71,13 @@ class DeliveryType extends AbstractType
                     new Assert\Url(),
                 ),
             ))
-            ->add('product_type', 'product_type', array(
+            ->add('product_type', ProductTypeType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             // todo type paymentに変更
-            ->add('payments', 'entity', array(
+            ->add('payments', EntityType::class, array(
                 'label' => '支払方法',
                 'class' => 'Eccube\Entity\Payment',
                 'choice_label' => 'method',
@@ -90,12 +93,12 @@ class DeliveryType extends AbstractType
             ->add('delivery_times', CollectionType::class, array(
                 'label' => 'お届け時間',
                 'required' => false,
-                'type' => 'delivery_time',
+                'entry_type' => DeliveryTimeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('free_all', 'price', array(
+            ->add('free_all', PriceType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
                 'scale' => 0,
@@ -105,7 +108,7 @@ class DeliveryType extends AbstractType
             ->add('delivery_fees', CollectionType::class, array(
                 'label' => '都道府県別設定',
                 'required' => true,
-                'type' => 'delivery_fee',
+                'entry_type' => DeliveryFeeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

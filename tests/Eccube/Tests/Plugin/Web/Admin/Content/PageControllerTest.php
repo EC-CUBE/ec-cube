@@ -29,6 +29,9 @@ use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class PageControllerTest extends AbstractAdminWebTestCase
 {
 

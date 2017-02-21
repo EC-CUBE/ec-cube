@@ -29,6 +29,9 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class BlockControllerTest extends AbstractAdminWebTestCase
 {
 
