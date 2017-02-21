@@ -49,7 +49,7 @@ class MasterdataEditType extends AbstractType
     {
         $builder
             ->add('data', CollectionType::class, array(
-                // FIXME 'type' => 'admin_system_masterdata_data',
+                'entry_type' => MasterdataDataType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
