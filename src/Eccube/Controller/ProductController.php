@@ -167,7 +167,7 @@ class ProductController
         $dispNumberForm->handleRequest($request);
 
         // ソート順
-        $builder = $app['form.factory']->createNamedBuilder('orderby', ProductListMaxType::class, null, array(
+        $builder = $app['form.factory']->createNamedBuilder('orderby', ProductListOrderByType::class, null, array(
             'required' => false,
             'label' => '表示順',
             'allow_extra_fields' => true,
