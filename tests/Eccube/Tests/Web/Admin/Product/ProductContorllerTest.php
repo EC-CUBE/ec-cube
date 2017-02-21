@@ -311,7 +311,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testExportWithFilterNoStock()
     {
         $this->expectOutputRegex('/Product with stock 01/');
-        $testProduct = $this->createProduct('Product with stock 01', 0);
+        $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
         /** @var $ProductClass ProductClass*/
         $ProductClass = $testProduct->getProductClasses()->first();

@@ -31,6 +31,7 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Service\CsvExportService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -736,6 +737,16 @@ class ProductController extends AbstractController
             $qb = $app['eccube.service.csv.export']
                 ->getProductQueryBuilder($request);
 
+            // Get stock status
+            $stockStatus = 0;
+            $session = $request->getSession();
+            if ($session->has('eccube.admin.product.search')) {
+                $searchData = $session->get('eccube.admin.product.search', array());
+                if (isset($searchData['stock_status']) && $searchData['stock_status'] === 0) {
+                    $stockStatus = 1;
+                }
+            }
+
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
             // distinctのmysqlとpgsqlの挙動をあわせる.
@@ -748,17 +759,24 @@ class ProductController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
 
+            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($stockStatus) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
                 $Product = $entity;
 
-                /** @var $Product \Eccube\Entity\ProductClass[] */
+                /** @var $ProductClassess \Eccube\Entity\ProductClass[] */
                 $ProductClassess = $Product->getProductClasses();
 
                 foreach ($ProductClassess as $ProductClass) {
+                    // check stock status
+                    if ($stockStatus) {
+                        // if unlimited or has stock then ignore it
+                        if ($ProductClass->getStockUnlimited() === 1 || $ProductClass->getStock() != 0) {
+                            continue;
+                        }
+                    }
                     $row = array();
 
                     // CSV出力項目と合致するデータを取得.
