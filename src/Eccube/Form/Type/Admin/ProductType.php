@@ -32,6 +32,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -133,6 +134,7 @@ class ProductType extends AbstractType
 
             // タグ
             ->add('tags', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
@@ -140,18 +142,21 @@ class ProductType extends AbstractType
             ))
             // 画像
             ->add('images', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
             ->add('add_images', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
             ->add('delete_images', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
