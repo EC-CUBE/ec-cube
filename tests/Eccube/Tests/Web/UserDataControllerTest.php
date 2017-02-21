@@ -16,17 +16,16 @@ class UserDataControllerTest extends AbstractWebTestCase
         parent::setUp();
         $root = vfsStream::setup('rootDir');
         vfsStream::newDirectory('user_data');
-        // 404ページ表示のためにerror.twigを用意します、内容はダッミーです。
+        // 404ページ表示のためにerror.twigを用意します、内容はダミーです。
         vfsStream::newFile('error.twig')->at($root)->setContent('Error 404');
 
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->app['config'];
-        $this->app->offsetUnset('config'); // XXX config を変更するため freeze を解除
         $config['template_default_realdir'] = vfsStream::url('rootDir');
         $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';
         mkdir($config['user_data_realdir']);
 
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         $this->DeviceType = $this->app['orm.em']
             ->getRepository('Eccube\Entity\Master\DeviceType')

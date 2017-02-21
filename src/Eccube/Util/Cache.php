@@ -49,29 +49,30 @@ class Cache
         $cacheDir = $app['config']['root_dir'].'/app/cache';
 
         $filesystem = new Filesystem();
+        $finder = Finder::create()->notName('.gitkeep')->files();
         if ($isAll) {
-            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+            $finder = $finder->in($cacheDir);
             $filesystem->remove($finder);
         } elseif ($isTwig) {
             if (is_dir($cacheDir.'/twig')) {
-                $finder = Finder::create()->in($cacheDir.'/twig');
+                $finder = $finder->in($cacheDir.'/twig');
                 $filesystem->remove($finder);
             }
         } else {
             if (is_dir($cacheDir.'/doctrine')) {
-                $finder = Finder::create()->in($cacheDir.'/doctrine');
+                $finder = $finder->in($cacheDir.'/doctrine');
                 $filesystem->remove($finder);
             }
             if (is_dir($cacheDir.'/profiler')) {
-                $finder = Finder::create()->in($cacheDir.'/profiler');
+                $finder = $finder->in($cacheDir.'/profiler');
                 $filesystem->remove($finder);
             }
             if (is_dir($cacheDir.'/twig')) {
-                $finder = Finder::create()->in($cacheDir.'/twig');
+                $finder = $finder->in($cacheDir.'/twig');
                 $filesystem->remove($finder);
             }
             if (is_dir($cacheDir.'/translator')) {
-                $finder = Finder::create()->in($cacheDir.'/translator');
+                $finder = $finder->in($cacheDir.'/translator');
                 $filesystem->remove($finder);
             }
         }

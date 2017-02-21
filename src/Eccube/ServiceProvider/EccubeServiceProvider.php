@@ -351,7 +351,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
 
             $types[] = new \Eccube\Form\Type\CustomerType($app); // 削除予定
 
-            if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
+            if (isset($app['security.token_storage']) && isset($app['eccube.repository.customer_favorite_product'])) {
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['eccube.repository.customer_favorite_product']);
             }
             $types[] = new \Eccube\Form\Type\SearchProductType($app);

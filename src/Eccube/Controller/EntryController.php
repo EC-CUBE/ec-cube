@@ -171,7 +171,7 @@ class EntryController extends AbstractController
      */
     public function activate(Application $app, Request $request, $secret_key)
     {
-        $errors = $app['validator']->validateValue($secret_key, array(
+        $errors = $app['validator']->validate($secret_key, array(
                 new Assert\NotBlank(),
                 new Assert\Regex(array(
                     'pattern' => '/^[a-zA-Z0-9]+$/',

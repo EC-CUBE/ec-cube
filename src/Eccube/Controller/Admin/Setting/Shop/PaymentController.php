@@ -80,8 +80,8 @@ class PaymentController extends AbstractController
         $form->setData($Payment);
 
         // 登録ボタン押下
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $PaymentData = $form->getData();

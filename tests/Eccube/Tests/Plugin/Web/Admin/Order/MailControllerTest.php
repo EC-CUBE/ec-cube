@@ -8,6 +8,9 @@ use Eccube\Entity\MailTemplate;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
     protected $Customer;

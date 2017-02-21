@@ -26,6 +26,9 @@ namespace Eccube\Tests\Plugin\Web\Admin\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class EditControllerTest extends AbstractAdminWebTestCase
 {
     protected $Customer;

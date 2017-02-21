@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\ForgotType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,7 +44,7 @@ class ForgotController extends AbstractController
     {
 
         $builder = $app['form.factory']
-            ->createNamedBuilder('', 'forgot');
+            ->createNamedBuilder('', ForgotType::class);
 
         $event = new EventArgs(
             array(
@@ -123,7 +124,7 @@ class ForgotController extends AbstractController
      */
     public function reset(Application $app, Request $request, $reset_key)
     {
-        $errors = $app['validator']->validateValue($reset_key, array(
+        $errors = $app['validator']->validate($reset_key, array(
             new Assert\NotBlank(),
             new Assert\Regex(array(
                 'pattern' => '/^[a-zA-Z0-9]+$/',

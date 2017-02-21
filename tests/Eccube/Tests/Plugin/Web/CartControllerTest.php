@@ -28,6 +28,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * @group plugin
+ */
 class CartControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()

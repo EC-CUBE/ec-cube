@@ -131,8 +131,8 @@ class DeliveryController extends AbstractController
         $form['payments']->setData($Payments);
 
         // 登録ボタン押下
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $DeliveryData = $form->getData();

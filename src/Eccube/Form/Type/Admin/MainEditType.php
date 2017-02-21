@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -129,7 +130,7 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('DeviceType', 'entity', array(
+            ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
                 'choice_label' => 'id',
             ))

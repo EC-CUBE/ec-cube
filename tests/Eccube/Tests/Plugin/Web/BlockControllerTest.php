@@ -4,6 +4,9 @@ namespace Eccube\Tests\Plugin\Web;
 
 use Eccube\Event\EccubeEvents;
 
+/**
+ * @group plugin
+ */
 class BlockControllerTest extends AbstractWebTestCase
 {
     public function testIndex()

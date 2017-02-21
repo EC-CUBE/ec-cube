@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\Type\Master\MailTemplateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,7 +40,7 @@ class OrderMailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('template', 'mail_template', array(
+            ->add('template', MailTemplateType::class, array(
                 'label' => 'テンプレート',
                 'required' => true,
                 'mapped' => false,

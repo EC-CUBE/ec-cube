@@ -27,6 +27,7 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\Constant;
 use Eccube\Util\Str;
 use Silex\Application;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class EccubeExtension extends \Twig_Extension
@@ -45,7 +46,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
 
         return array(
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
@@ -193,7 +194,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
         try {
             return $RoutingExtension->getPath($name, $parameters, $relative);
         } catch (RouteNotFoundException $e) {
@@ -216,7 +217,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
         try {
             return $RoutingExtension->getUrl($name, $parameters, $schemeRelative);
         } catch (RouteNotFoundException $e) {

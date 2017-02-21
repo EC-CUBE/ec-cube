@@ -26,21 +26,13 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Symfony\Component\HttpFoundation\Request;
 
 class SystemController
 {
-
-    private $maintitle;
-
-    private $subtitle;
-
-    public function __construct()
+    public function index(Application $app, Request $request)
     {
-    }
-
-    public function index(Application $app)
-    {
-        switch ($app['request']->get('mode')) {
+        switch ($request->get('mode')) {
             case 'info':
                 ob_start();
                 phpinfo();
@@ -54,28 +46,27 @@ class SystemController
                 break;
         }
 
-        $this->arrSystemInfo = $this->getSystemInfo($app);
+        $this->arrSystemInfo = $this->getSystemInfo($app, $request);
 
         return $app->render('Setting/System/system.twig', array(
             'arrSystemInfo' => $this->arrSystemInfo,
         ));
     }
 
-     public function getSystemInfo(Application $app)
+     public function getSystemInfo(Application $app, Request $request)
      {
         $system = $app['eccube.service.system'];
-        $server = $app['request'];
 
         $arrSystemInfo = array(
             array('title' => 'EC-CUBE',     'value' => Constant::VERSION),
             array('title' => 'サーバーOS',    'value' => php_uname()),
             array('title' => 'DBサーバー',    'value' => $system->getDbversion()),
-            array('title' => 'WEBサーバー',   'value' => $server->server->get("SERVER_SOFTWARE")),
+            array('title' => 'WEBサーバー',   'value' => $request->server->get("SERVER_SOFTWARE")),
         );
 
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
         $arrSystemInfo[] = array('title' => 'PHP', 'value' => $value);
-        $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $server->headers->get('User-Agent'));
+        $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $request->headers->get('User-Agent'));
 
         return $arrSystemInfo;
      }

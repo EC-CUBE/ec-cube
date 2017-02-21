@@ -28,6 +28,9 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 
+/**
+ * @group plugin
+ */
 class EntryControllerTest extends AbstractWebTestCase
 {
     public function setUp()
