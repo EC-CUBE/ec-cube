@@ -6,7 +6,7 @@ interface PaymentMethod
 {
     public function checkout();
 
-    public function apply($request);
+    public function apply();
 
     public function setFormType($form);
 

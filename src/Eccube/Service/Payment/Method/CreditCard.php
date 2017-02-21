@@ -8,7 +8,7 @@ abstract class CreditCard implements PaymentMethod
 {
     abstract public function checkout();
 
-    abstract public function apply($request);
+    abstract public function apply();
 
     abstract public function setFormType($form);
 }

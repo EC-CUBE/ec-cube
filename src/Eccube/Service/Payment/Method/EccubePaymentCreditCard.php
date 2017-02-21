@@ -18,7 +18,7 @@ class EccubePaymentCreditCard extends CreditCard
         return new PaymentResult();
     }
 
-    public function apply($request)
+    public function apply()
     {
         // 他のコントローラに移譲等の処理をする
         // $subRequest = Request::create(

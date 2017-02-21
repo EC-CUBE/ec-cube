@@ -15,7 +15,7 @@ class Cash implements PaymentMethod
         return new PaymentResult();
     }
 
-    public function apply($request)
+    public function apply()
     {
         return false;
     }
