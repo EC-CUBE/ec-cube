@@ -482,7 +482,7 @@ class InstallController
             $salt = \Eccube\Util\Str::random(32);
 
             $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-            $sth = $this->PDO->prepare('INSERT INTO dtb_base_info (
+            $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
                 id,
                 shop_name,
                 email01,
@@ -490,7 +490,8 @@ class InstallController
                 email03,
                 email04,
                 update_date,
-                option_product_tax_rule
+                option_product_tax_rule,
+                discriminator_type
             ) VALUES (
                 1,
                 :shop_name,
@@ -499,13 +500,14 @@ class InstallController
                 :admin_mail,
                 :admin_mail,
                 current_timestamp,
-                0);');
+                0,
+                'baseinfo');");
             $sth->execute(array(
                 ':shop_name' => $this->session_data['shop_name'],
                 ':admin_mail' => $this->session_data['email']
             ));
 
-            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department, discriminator_type) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
             $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
             $this->PDO->commit();
@@ -553,7 +555,7 @@ class InstallController
                 $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+                $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
                 $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
             }
 
