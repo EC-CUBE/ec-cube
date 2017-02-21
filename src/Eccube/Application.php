@@ -197,7 +197,6 @@ class Application extends \Silex\Application
         $this->initSecurity();
 
         $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider(), [
-            'routing.resource' => __DIR__.'/Controller',
             'routing.cache_dir' => __DIR__.'/../../app/cache/routing'
         ]);
         $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
@@ -225,6 +224,10 @@ class Application extends \Silex\Application
 
         $this->extend('routes', function (\Symfony\Component\Routing\RouteCollection $routes, \Silex\Application $app) {
             $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
+
+            // コントローラのルーティングをロード
+            $collection = $loader->import(__DIR__.'/Controller', 'annotation');
+            $routes->addCollection($collection);
 
             // プラグイン用のルーティングをロード
             $collection = $loader->import($this['config']['root_dir'].'/app/Plugin', 'annotation');
