@@ -85,7 +85,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setCode('test code')
             ->setStock(100)
             ->setStockUnlimited(Constant::DISABLED)
-            ->setSaleLimit($this->faker->randomNumber(2))
+            ->setSaleLimit($this->faker->randomNumber(2) + 1)
             ->setPrice01($this->faker->randomNumber(4))
             ->setPrice02($this->faker->randomNumber(4))
             ->setDeliveryFee($this->faker->randomNumber(4))
