@@ -20,14 +20,20 @@ class EccubePaymentCreditCard extends CreditCard
 
     public function apply($request)
     {
+        // 他のコントローラに移譲等の処理をする
+        // $subRequest = Request::create(
+        //     $this->app->path('shopping/examplePayment'),
+        //     $this->app['request_stack']->getCurrentRequest()->getMethod(),
+        //     [],
+        //     $this->request->cookies->all(),
+        //     [],
+        //     $this->request->server->all()
+        // );
+        // if ($this->request->getSession()) {
+        //     $subRequest->setSession($this->request->getSession());
+        // }
+        // return $this->app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
         return false;
-        
-        // XXX forward すると, ヘッダ・フッタがでない. 画面表示を伴わない処理なら OK
-        $subRequest = Request::create('/shopping/shipping_multiple', 'GET', array(), $this->request->cookies->all(), array(), $this->request->server->all());
-        if ($this->request->getSession()) {
-            $subRequest->setSession($this->request->getSession());
-        }
-        return $this->app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
     }
     public function setFormType($form)
     {
