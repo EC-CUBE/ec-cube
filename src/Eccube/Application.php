@@ -506,6 +506,15 @@ class Application extends ApplicationTrait
 
     public function initSecurity()
     {
+
+        // ロードバランサー、プロキシサーバの設定を行う
+        // 設定 config.yml --> trusted_proxies:
+        // リクエストヘッダーに[ X_Forwarded_Proto ]が必要です。
+        if (isset($this['config']['trusted_proxies']) && is_array($this['config']['trusted_proxies']) && !empty($this['config']['trusted_proxies'])) {
+            var_dump($this['config']['trusted_proxies']);
+            Request::setTrustedProxies($this['config']['trusted_proxies']);
+        }
+
         $this->register(new \Silex\Provider\SecurityServiceProvider());
         $this->register(new \Silex\Provider\RememberMeServiceProvider());
 
