@@ -1333,7 +1333,7 @@ class ShoppingController extends AbstractController
                 // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof Response
-                    && ($response->isRedirection() || $response->getContent())) { // $paymentMethod->apply() が Response を返した場合は画面遷移
+                    && ($dispatcher->isRedirection() || $dispatcher->getContent())) { // $paymentMethod->apply() が Response を返した場合は画面遷移
                     return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
                 }
                 $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行

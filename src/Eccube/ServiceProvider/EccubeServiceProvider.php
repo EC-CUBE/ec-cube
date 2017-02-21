@@ -78,15 +78,16 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
         });
 
         $app['eccube.service.payment'] = $app->protect(function ($clazz) use ($app) {
-                return new $clazz;
+                $Service = new $clazz;
+                $Service->setApplication($app);
+                return $Service;
         });
 
         $app['eccube.calculate.strategies'] = $app->protect(function ($Order) use ($app) {
+            $Strategies = new \Doctrine\Common\Collections\ArrayCollection(); // TODO 暫定的に ArrayCollection とする. 専用クラスにしたい
             // デフォルトのストラテジーをセットしておく
-            $Strategies = [     // ArrayIterator にしたい
-                $app['eccube.calculate.strategy.shipping']($Order),
-                $app['eccube.calculate.strategy.tax']($Order)
-            ];
+            $Strategies->add($app['eccube.calculate.strategy.shipping']($Order));
+            $Strategies->add($app['eccube.calculate.strategy.tax']($Order));
             return $Strategies;
         });
         $app['eccube.calculate.strategy.shipping'] = $app->protect(function ($Order) use ($app) {

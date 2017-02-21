@@ -2,7 +2,7 @@
 namespace Eccube\Service;
 
 use Eccube\Service\Calculator\CalculateContext;
-use Eccube\Service\Calculator\Strategy\CalculateStrategy;
+use Eccube\Service\Calculator\Strategy\CalculateStrategyInterface;
 
 class CalculateService
 {
@@ -19,9 +19,11 @@ class CalculateService
         $this->Order = $Order;
         $this->Customer = $Customer;
     }
-    public function addCalculator(CalculateStrategy $strategy)
+    public function addCalculator(CalculateStrategyInterface $strategy)
     {
-        $this->CalculateContext->CalculateStrategy[] = $strategy;
+        $Strategies = $this->CalculateContext->getCalculateStrategies();
+        $Strategies->add($strategy);
+        $this->CalculateContext->setCalculateStrategies($Strategies);
     }
 
     /**

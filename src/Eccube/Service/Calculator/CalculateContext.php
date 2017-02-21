@@ -10,7 +10,7 @@ class CalculateContext
     protected $OrderDetails = []; // Collection になってる？
 
     // $app['eccube.calculate.strategies'] に DI する
-    protected $CalculateStrategies = [];
+    protected $CalculateStrategies;
 
     public function executeCalculator()
     {
@@ -43,9 +43,14 @@ class CalculateContext
         return $Order;
     }
 
-    public function setCalculateStrategies(array $strategies)
+    public function setCalculateStrategies(\Doctrine\Common\Collections\ArrayCollection $strategies)
     {
         $this->CalculateStrategies = $strategies;
+    }
+
+    public function getCalculateStrategies()
+    {
+        return $this->CalculateStrategies;
     }
 
     public function setOrder(Order $Order)

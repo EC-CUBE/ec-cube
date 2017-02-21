@@ -224,6 +224,10 @@ class Application extends \Silex\Application
             $collection = $loader->load(__DIR__.'/Controller');
             $routes->addCollection($collection);
 
+            // プラグイン用のルーティングをロード
+            $collection = $loader->load($this['config']['root_dir'].'/app/Plugin');
+            $routes->addCollection($collection);
+
             // 拡張用のルーティングをロード
             $collection = $loader->load($this['config']['root_dir'].'/app/Eccube');
             $routes->addCollection($collection);

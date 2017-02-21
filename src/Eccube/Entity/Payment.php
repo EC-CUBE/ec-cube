@@ -436,12 +436,17 @@ class Payment extends \Eccube\Entity\AbstractEntity
 
     public function getMethodClass()
     {
-        // TODO
-        return '\Eccube\Service\Payment\Method\EccubePaymentCreditCard';
+        // TODO 動的に取得する
+        if ($this->getMethod() == 'サンプルクレジットカード') {
+            return '\Plugin\ExamplePlugin\Payment\Method\ExamplePaymentCreditCard';
+        } else {
+            return '\Eccube\Service\Payment\Method\Cash';
+        }
+
     }
     public function getServiceClass()
     {
-        // TODO
+        // TODO 動的に取得する
         return '\Eccube\Service\PaymentService';
     }
 }
