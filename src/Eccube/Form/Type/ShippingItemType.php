@@ -90,7 +90,7 @@ class ShippingItemType extends AbstractType
                         ),
                     ))
                     ->add('shippingDeliveryDate', ChoiceType::class, array(
-                        'choices' => $deliveryDates,
+                        'choices' => array_flip($deliveryDates),
                         'required' => false,
                         'placeholder' => '指定なし',
                         'mapped' => false,

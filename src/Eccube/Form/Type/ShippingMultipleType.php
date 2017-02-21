@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\Type\ShippingMultipleItemType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -62,7 +63,7 @@ class ShippingMultipleType extends AbstractType
 
                 $form
                     ->add('shipping', CollectionType::class, array(
-                        'type' => 'shipping_multiple_item',
+                        'entry_type' => ShippingMultipleItemType::class,
                         'data' => $shippings,
                         'allow_add' => true,
                         'allow_delete' => true,

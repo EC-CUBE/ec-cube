@@ -27,9 +27,9 @@ namespace Eccube\Service;
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
-use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 

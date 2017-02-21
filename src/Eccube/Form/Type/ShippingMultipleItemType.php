@@ -99,7 +99,7 @@ class ShippingMultipleItemType extends AbstractType
                             $i++;
                         }
                         $form->add('customer_address', ChoiceType::class, array(
-                            'choices' => $addresses,
+                            'choices' => array_flip($addresses),
                             'constraints' => array(
                                 new Assert\NotBlank(),
                             ),

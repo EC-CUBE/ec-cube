@@ -47,7 +47,7 @@ class AbstractController
         $form = $app['form.factory']
             ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
             ->getForm();
-        $form->handleRequest($app['request']);
+        $form->handleRequest($app['request_stack']->getCurrentRequest());
 
         return $form;
     }

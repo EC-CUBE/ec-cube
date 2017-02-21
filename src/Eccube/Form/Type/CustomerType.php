@@ -24,6 +24,13 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\Master\CustomerStatusType;
+use Eccube\Form\Type\Master\JobType;
+use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -53,7 +60,7 @@ class CustomerType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'options' => array(
                     'attr' => array(
                         'maxlength' => $app['config']['stext_len'],
@@ -64,7 +71,7 @@ class CustomerType extends AbstractType
                     ),
                 ),
             ))
-            ->add('kana', 'name', array(
+            ->add('kana', NameType::class, array(
                 'options' => array(
                     'attr' => array(
                         'maxlength' => $app['config']['stext_len'],
@@ -86,17 +93,17 @@ class CustomerType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => false,
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'help' => 'form.contact.address.help',
                 'required' => false,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => false,
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelType::class, array(
                 'required' => false,
             ))
             ->add('email', EmailType::class, array(
@@ -105,10 +112,10 @@ class CustomerType extends AbstractType
                     new Assert\Email(array('strict' => true)),
                 )
             ))
-            ->add('sex', 'sex', array(
+            ->add('sex', SexType::class, array(
                 'required' => false,
             ))
-            ->add('job', 'job', array(
+            ->add('job', JobType::class, array(
                 'required' => false,
             ))
             ->add('birth', BirthdayType::class, array(
@@ -126,7 +133,7 @@ class CustomerType extends AbstractType
                 ),
             ))
             ->add('password', RepeatedType::class)
-            ->add('status', 'customer_status', array(
+            ->add('status', CustomerStatusType::class, array(
                 'required' => false,
             ))
             ->add('note', TextareaType::class, array(

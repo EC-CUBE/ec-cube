@@ -39,7 +39,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Eccube\Form\Type\ShippingItemType;
 use Eccube\Util\Str;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 class ShoppingService
@@ -1012,8 +1014,8 @@ class ShoppingService
         ));
 
         $builder
-            ->add('shippings', 'collection', array(
-                'type' => 'shipping_item',
+            ->add('shippings', CollectionType::class, array(
+                'entry_type' => ShippingItemType::class,
                 'data' => $Order->getShippings(),
             ));
 
@@ -1047,8 +1049,8 @@ class ShoppingService
         ));
 
         $builder
-            ->add('shippings', 'collection', array(
-                'type' => 'shipping_item',
+            ->add('shippings', CollectionType::class, array(
+                'entry_type' => ShippingItemType::class,
                 'data' => $Order->getShippings(),
             ));
 

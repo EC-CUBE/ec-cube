@@ -24,6 +24,10 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\Type\Master\OrderStatusType;
+use Eccube\Form\Type\Master\PaymentType;
+use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\TelType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -70,7 +74,7 @@ class OrderSearchType extends AbstractType
                     )),
                 ),
             ))
-            ->add('status', 'order_status', array(
+            ->add('status', OrderStatusType::class, array(
                 'label' => '対応状況',
             ))
             ->add('name', TextType::class, array(
@@ -82,7 +86,7 @@ class OrderSearchType extends AbstractType
             ->add('email', EmailType::class, array(
                 'required' => false,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => false,
             ))
             ->add('birth_start', BirthdayType::class, array(
@@ -101,13 +105,13 @@ class OrderSearchType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('sex', 'sex', array(
+            ->add('sex', SexType::class, array(
                 'label' => '性別',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
-            ->add('payment', 'payment', array(
+            ->add('payment', PaymentType::class, array(
                 'label' => '支払方法',
                 'required' => false,
                 'expanded' => true,

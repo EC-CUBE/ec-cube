@@ -70,7 +70,7 @@ class MasterdataType extends AbstractType
 
         $builder
             ->add('masterdata', ChoiceType::class, array(
-                'choices' => $masterdata,
+                'choices' => array_flip($masterdata),
                 'expanded' => false,
                 'multiple' => false,
                 'constraints' => array(

@@ -36,18 +36,19 @@ use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\NonMemberType;
+use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/shopping")
@@ -369,7 +370,7 @@ class ShoppingController extends AbstractController
             $CustomerAddress->setFromShipping($Shipping);
         }
 
-        $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);
+        $builder = $app['form.factory']->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(
@@ -909,7 +910,7 @@ class ShoppingController extends AbstractController
         $CustomerAddress->setCustomer($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 
-        $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);
+        $builder = $app['form.factory']->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(

@@ -12,6 +12,7 @@
 namespace Plugin\[code]\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,7 +23,7 @@ class [code]ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => '項目A',
                 'required' => true,
                 'constraints' => array(

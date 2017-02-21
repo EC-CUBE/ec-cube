@@ -118,8 +118,8 @@ class FileController extends AbstractController
     {
 
         $form = $app['form.factory']->createBuilder(FormType::class)
-            ->add('file', 'file')
-            ->add('create_file', 'text')
+            ->add('file', FileType::class)
+            ->add('create_file', TextType::class)
             ->getForm();
 
         $form->handleRequest($request);
@@ -198,8 +198,8 @@ class FileController extends AbstractController
     public function upload(Application $app, Request $request)
     {
         $form = $app['form.factory']->createBuilder(FormType::class)
-            ->add('file', 'file')
-            ->add('create_file', 'text')
+            ->add('file', FileType::class)
+            ->add('create_file', TextType::class)
             ->getForm();
 
         $form->handleRequest($request);

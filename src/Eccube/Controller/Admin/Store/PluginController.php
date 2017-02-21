@@ -33,6 +33,7 @@ use Eccube\Util\Str;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -622,7 +623,7 @@ class PluginController extends AbstractController
 
         // 認証キーの取得
         $form->add(
-            'authentication_key', 'text', array(
+            'authentication_key', TextType::class, array(
             'label' => '認証キー',
             'constraints' => array(
                 new Assert\Regex(array(

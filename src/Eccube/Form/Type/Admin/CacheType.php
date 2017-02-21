@@ -59,7 +59,7 @@ class CacheType extends AbstractType
         $builder
             ->add('cache', ChoiceType::class, array(
                 'label' => 'キャッシュディレクトリ',
-                'choices' => $cacheDirs,
+                'choices' => array_flip($cacheDirs),
                 'expanded' => true,
                 'multiple' => true,
                 'required' => true,
