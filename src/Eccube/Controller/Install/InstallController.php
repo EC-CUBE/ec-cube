@@ -435,6 +435,14 @@ class InstallController
                                 __DIR__ . '/../../Resource/doctrine/master',
                             ),
                         ),
+                        array(  // TODO 暫定
+                            'type' => 'annotation',
+                            'namespace' => 'Eccube2\Entity',
+                            'path' => array(
+                                __DIR__.'/../../../../app/Eccube/Entity',
+                            ),
+                            'use_simple_annotation_reader' => false,
+                        )
                     ),
                 )
             ));
