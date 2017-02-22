@@ -206,10 +206,10 @@ class SearchCustomerType extends AbstractType
             ->add('customer_status', ChoiceType::class, array(
                 'label' => '会員ステータス',
                 'required' => false,
-                'choices' => array(
+                'choices' => array_flip(array(
                     '1' => '仮会員',
                     '2' => '本会員',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => true,
                 'placeholder' => false,

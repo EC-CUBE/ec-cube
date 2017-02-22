@@ -58,7 +58,7 @@ class LogType extends AbstractType
         $builder
             ->add('files', ChoiceType::class, array(
                 'label' => 'ログファイル',
-                'choices' => $files,
+                'choices' => array_flip($files),
                 'data' => 'site_'.date('Y-m-d').'.log',
                 'expanded' => false,
                 'multiple' => false,

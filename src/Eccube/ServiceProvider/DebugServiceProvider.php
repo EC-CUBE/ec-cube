@@ -26,8 +26,10 @@ namespace Eccube\ServiceProvider;
 
 use Eccube\Common\Constant;
 use Eccube\DataCollector\EccubeDataCollector;
-use Silex\Application;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
+use Silex\Application;
 use Symfony\Bridge\Twig\Extension\DumpExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
@@ -35,8 +37,6 @@ use Symfony\Component\HttpKernel\EventListener\DumpListener;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 
 
 /**

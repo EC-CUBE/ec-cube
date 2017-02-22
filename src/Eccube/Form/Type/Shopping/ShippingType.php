@@ -156,7 +156,7 @@ class ShippingType extends AbstractType
                         'shipping_delivery_date',
                         ChoiceType::class,
                         array(
-                            'choices' => $deliveryDates,
+                            'choices' => array_flip($deliveryDates),
                             'required' => false,
                             'placeholder' => '指定なし',
                             'mapped' => false,

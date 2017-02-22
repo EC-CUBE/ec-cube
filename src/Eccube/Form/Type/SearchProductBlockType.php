@@ -60,7 +60,7 @@ class SearchProductBlockType extends AbstractType
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
-            'placeholder' => 'すべての商品',
+            'placeholder' => '全ての商品',
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
         ));

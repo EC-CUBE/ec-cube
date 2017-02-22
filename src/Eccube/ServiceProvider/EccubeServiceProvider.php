@@ -27,9 +27,9 @@ namespace Eccube\ServiceProvider;
 use Eccube\Service\OrderHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class EccubeServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {

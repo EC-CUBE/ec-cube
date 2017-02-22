@@ -185,19 +185,19 @@ class ShopMasterType extends AbstractType
             ))
             ->add('option_product_delivery_fee', ChoiceType::class, array(
                 'label' => '商品ごとの送料設定を有効にする',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))
             ->add('option_multiple_shipping', ChoiceType::class, array(
                 'label' => '複数配送を有効にする',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))
@@ -205,37 +205,37 @@ class ShopMasterType extends AbstractType
             // 会員設定
             ->add('option_customer_activate', ChoiceType::class, array(
                 'label' => '仮会員を有効にする',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))
             ->add('option_mypage_order_status_display', ChoiceType::class, array(
                 'label' => 'マイページに注文状況を表示する',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))
             ->add('option_remember_me', ChoiceType::class, array(
                 'label' => '自動ログイン機能を有効にする',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))
             ->add('option_favorite_product', ChoiceType::class, array(
                 'label' => 'お気に入り商品機能を利用する',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))
@@ -243,10 +243,10 @@ class ShopMasterType extends AbstractType
             // 商品設定
             ->add('nostock_hidden', ChoiceType::class, array(
                 'label' => '在庫切れ商品を非表示にする',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '0' => '無効',
                     '1' => '有効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
             ))

@@ -38,7 +38,6 @@ class ProductListMaxType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // FIXME $options['choice_list']->getValues() が動作しない
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $options = $event->getForm()->getConfig()->getOptions();
             if (!$event->getData()) {

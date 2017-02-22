@@ -44,10 +44,10 @@ class TaxRuleType extends AbstractType
         $builder
             ->add('option_product_tax_rule', ChoiceType::class, array(
                 'label' => '商品別税率機能',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '1' => '有効',
                     '0' => '無効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
                 'mapped' => false,

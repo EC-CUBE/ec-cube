@@ -102,13 +102,13 @@ class AddCartType extends AbstractType
                 if (!is_null($Product->getClassName1())) {
                     $builder->add('classcategory_id1', ChoiceType::class, array(
                         'label' => $Product->getClassName1(),
-                        'choices'   => array('選択してください' => '__unselected') + $Product->getClassCategories1AsFlip(),
+                        'choices'   => array_flip(array('選択してください' => '__unselected')) + $Product->getClassCategories1AsFlip(),
                     ));
                 }
                 if (!is_null($Product->getClassName2())) {
                     $builder->add('classcategory_id2', ChoiceType::class, array(
                         'label' => $Product->getClassName2(),
-                        'choices' => array('選択してください' => '__unselected'),
+                        'choices' => array_flip(array('選択してください' => '__unselected')),
                     ));
                 }
             }
@@ -120,7 +120,7 @@ class AddCartType extends AbstractType
                     if ($data['classcategory_id1']) {
                         $form->add('classcategory_id2', ChoiceType::class, array(
                             'label' => $Product->getClassName2(),
-                            'choices' => array('__unselected' => '選択してください') + $Product->getClassCategories2AsFlip($data['classcategory_id1']),
+                            'choices' => array_flip(array('__unselected' => '選択してください')) + $Product->getClassCategories2AsFlip($data['classcategory_id1']),
                         ));
                     }
                 }

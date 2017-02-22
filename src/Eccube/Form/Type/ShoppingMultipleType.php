@@ -52,7 +52,7 @@ class ShoppingMultipleType extends AbstractType
                 'data' => $delivery,
             ))
             ->add('deliveryDate', ChoiceType::class, array(
-                'choices' => $deliveryDates,
+                'choices' => array_flip($deliveryDates),
                 'required' => false,
                 'placeholder' => '指定なし',
             ))
