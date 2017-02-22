@@ -46,6 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
+    {% if search_form.category_id.vars.errors|length == 0 %}
     <form name="form1" id="form1" method="get" action="?">
         {{ form_widget(search_form) }}
     </form>
@@ -141,5 +142,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- ▲item_list▲ -->
     {% if pagination.totalItemCount > 0 %}
         {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
+    {% endif %}
+    {% else %}
+        <p class="errormsg text-danger">ご指定のカテゴリは存在しません。</p>
     {% endif %}
 {% endblock %}
