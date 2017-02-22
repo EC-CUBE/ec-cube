@@ -794,8 +794,8 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(1, 1, 1, 'fork-1.jpg', 1, CURRENT_TIMESTAMP, 'productimage');");
         $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(2, 1, 1, 'fork-2.jpg', 2, CURRENT_TIMESTAMP, 'productimage');");
         $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(3, 1, 1, 'fork-3.jpg', 3, CURRENT_TIMESTAMP, 'productimage');");
-        $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(4, 2, 1, 'cafe-1.jpg', 3, CURRENT_TIMESTAMP, 'productimage');");
-        $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(5, 2, 1, 'cafe-2.jpg', 3, CURRENT_TIMESTAMP, 'productimage');");
+        $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(4, 2, 1, 'cafe-1.jpg', 1, CURRENT_TIMESTAMP, 'productimage');");
+        $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(5, 2, 1, 'cafe-2.jpg', 2, CURRENT_TIMESTAMP, 'productimage');");
         $this->addSql("INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date, discriminator_type) VALUES(6, 2, 1, 'cafe-3.jpg', 3, CURRENT_TIMESTAMP, 'productimage');");
 
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (1, 'default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
