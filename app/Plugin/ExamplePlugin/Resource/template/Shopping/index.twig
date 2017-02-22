@@ -224,7 +224,7 @@
                             {% endif %}
                             <div id="summary_box__result" class="total_amount">
                                 <p id="summary_box__total_amount" class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
-                                {% if usePayPal %}
+                                {% if Order.Payment.usePayPal is defined and Order.Payment.usePayPal %}
                                    <div id="paypal-button" style="width: 226px; margin-left: auto; margin-right: auto"></div>
                                 {% else %}
                                     <p id="summary_box__confirm_button"><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">注文する</button></p>
@@ -238,6 +238,7 @@
 {% endblock %}
 
 {% block javascript %}
+    <!-- PayPal決済ボタンの設定 -->
     <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
     <script>
         paypal.Button.render({
@@ -257,7 +258,8 @@
                 return paypal.rest.payment.create(env, client, {
                     transactions: [
                         {
-                            amount: { total: '{{ Order.payment_total }}', currency: 'JPY' }
+                            amount: { total: '{{ Order.payment_total }}', currency: 'JPY' },
+                            invoice_number: '{{ Order.id }}',
                         }
                     ]
                 });

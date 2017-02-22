@@ -225,6 +225,15 @@ class Application extends \Silex\Application
         $this->extend('routes', function (\Symfony\Component\Routing\RouteCollection $routes, \Silex\Application $app) {
             $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
 
+            // XXX プラグインにマイグレーション用のクラスが含まれているとアノテーションのロードに失敗してしまう
+            $finder = Finder::create()
+                ->in(PluginConfigManager::getPluginRealDir())
+                ->files()
+                ->name('/^Version[0-9]+\.php$/');
+            foreach ($finder as $file) {
+                require $file->getRealPath();
+            }
+
             // コントローラのルーティングをロード
             $collection = $loader->import(__DIR__.'/Controller', 'annotation');
             $routes->addCollection($collection);

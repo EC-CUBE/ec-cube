@@ -7,6 +7,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Shopping\OrderType;
 use Plugin\ExamplePlugin\Service\Calculator\Strategy\ExamplePaymentStrategy;
+use Plugin\ExamplePlugin\Entity\ExamplePayment;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,17 +71,9 @@ class ExampleController
         $Order = $app['request_scope']->get('Order');
         $form = $app['request_scope']->get(OrderType::class);
 
-        // TODO Eccube\Service\Payment\PaymentMethod に記述できるようにした方がよさそう
-        $usePayPal = false;
-        if ($Payment = $form['Payment']->getData()) {
-            if ($Payment instanceof Payment && $Payment->getMethod() == 'サンプルクレジットカード') {
-                $usePayPal = true;
-            }
-        }
         return [
             'form' => $form->createView(),
-            'Order' => $Order,
-            'usePayPal' => $usePayPal
+            'Order' => $Order
         ];
     }
 
@@ -100,6 +93,14 @@ class ExampleController
         // 決済サーバーと通信する等, 独自の処理を記述する
         // 空のレスポンスを返すことで処理を続行する
         // リダイレクトレスポンス等を返して、別のページへ遷移させることも可能
+
+        $Order = $app['request_scope']->get('Order');
+        $Payment = $Order->getPayment();
+        if ($Payment instanceof ExamplePayment && $Payment->usePayPal) {
+            $Order->setNote('PayPal を使用します');
+            $app['orm.em']->flush($Order);
+        }
+
         return new Response();
     }
 }

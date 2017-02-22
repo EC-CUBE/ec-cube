@@ -3,9 +3,9 @@
 namespace Plugin\ExamplePlugin;
 
 use Eccube\Common\Constant;
-use Eccube\Entity\Payment;
 use Eccube\Plugin\AbstractPluginManager;
 use Symfony\Component\Filesystem\Filesystem;
+use Plugin\ExamplePlugin\Entity\ExamplePayment;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -22,6 +22,7 @@ class PluginManager extends AbstractPluginManager
      */
     public function install($config, $app)
     {
+        $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migrations', $config['code']);
     }
 
     /**
@@ -43,7 +44,7 @@ class PluginManager extends AbstractPluginManager
      */
     public function enable($config, $app)
     {
-        $Payment = new Payment();
+        $Payment = new ExamplePayment();
 
         $Member = $app['eccube.repository.member']->find(2);
         $rank = $app['eccube.repository.payment']->findOneBy([], ['rank' => 'DESC'])
@@ -57,6 +58,7 @@ class PluginManager extends AbstractPluginManager
         $Payment->setRank($rank);
         $Payment->setDelFlg(Constant::DISABLED);
         $Payment->setCreator($Member);
+        $Payment->usePayPal = 1;
 
         $app['orm.em']->persist($Payment);
         $app['orm.em']->flush($Payment);
@@ -85,18 +87,19 @@ class PluginManager extends AbstractPluginManager
     {
 
         $Payment = $app['eccube.repository.payment']->findOneBy(['method' => 'サンプルクレジットカード']);
-        $PaymentOption = $app['eccube.repository.payment_option']->findOneBy(array('payment_id' => $Payment->getId()));
         if ($Payment) {
+            $PaymentOption = $app['eccube.repository.payment_option']->findOneBy(array('payment_id' => $Payment->getId()));
             $app['orm.em']->remove($Payment);
             $app['orm.em']->flush($Payment);
-        }
-        if ($PaymentOption) {
-            $app['orm.em']->remove($PaymentOption);
-            $app['orm.em']->flush($PaymentOption);
+            if ($PaymentOption) {
+                $app['orm.em']->remove($PaymentOption);
+                $app['orm.em']->flush($PaymentOption);
+            }
         }
     }
 
     public function update($config, $app)
     {
+        $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migrations', $config['code'], 0);
     }
 }
