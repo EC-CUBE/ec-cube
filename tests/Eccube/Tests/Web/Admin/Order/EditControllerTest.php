@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of EC-CUBE
  *
@@ -28,7 +27,6 @@ use Eccube\Entity\Order;
 
 class EditControllerTest extends AbstractEditControllerTestCase
 {
-
     protected $Customer;
     protected $Order;
     protected $Product;
@@ -53,9 +51,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testRoutingAdminOrderNewPost()
     {
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order_new'), array(
-            'order' => $this->createFormData($this->Customer, $this->Product),
-            'mode' => 'register'
+            'POST',
+            $this->app->url('admin_order_new'),
+            array(
+                'order' => $this->createFormData($this->Customer, $this->Product),
+                'mode' => 'register'
             )
         );
 
@@ -77,9 +77,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
-            'order' => $formData,
-            'mode' => 'register'
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
@@ -93,16 +95,20 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomer()
     {
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order_search_customer'), array(
-            'search_word' => $this->Customer->getId()
-            ), array(), array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
         $Result = json_decode($this->client->getResponse()->getContent(), true);
 
-        $this->expected = $this->Customer->getName01() . $this->Customer->getName02() . '(' . $this->Customer->getKana01() . $this->Customer->getKana02() . ')';
+        $this->expected = $this->Customer->getName01().$this->Customer->getName02().'('.$this->Customer->getKana01().$this->Customer->getKana02().')';
         $this->actual = $Result[0]['name'];
         $this->verify();
     }
@@ -110,11 +116,15 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomerHtml()
     {
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order_search_customer'), array(
-            'search_word' => $this->Customer->getId()
-            ), array(), array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
 
@@ -124,11 +134,15 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomerById()
     {
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order_search_customer_by_id'), array(
-            'id' => $this->Customer->getId()
-            ), array(), array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+            'POST',
+            $this->app->url('admin_order_search_customer_by_id'),
+            array(
+                'id' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
         $Result = json_decode($this->client->getResponse()->getContent(), true);
@@ -141,11 +155,15 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchProduct()
     {
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order_search_product'), array(
-            'id' => $this->Product->getId()
-            ), array(), array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+            'POST',
+            $this->app->url('admin_order_search_product'),
+            array(
+                'id' => $this->Product->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
 
@@ -165,9 +183,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
-            'order' => $formData,
-            'mode' => 'register'
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
@@ -218,7 +238,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         );
 
         $client->request(
-            'POST', $this->app->path('shopping_nonmember'), array('nonmember' => $clientFormData)
+            'POST',
+            $this->app->path('shopping_nonmember'),
+            array('nonmember' => $clientFormData)
         );
         $this->app['eccube.service.cart']->lock();
 
@@ -263,9 +285,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
-
-        $crawler = $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
 
         $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
 
@@ -285,6 +305,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
             'mode' => 'register'
             )
         );
+        
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
 
@@ -301,12 +322,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testOrderProcessingWithCustomer()
     {
         $crawler = $this->client->request(
-        'POST',
-        $this->app->url('admin_order_new'),
-        array(
-        'order' => $this->createFormData($this->Customer, $this->Product),
-        'mode' => 'register'
-        )
+            'POST',
+            $this->app->url('admin_order_new'),
+            array(
+                'order' => $this->createFormData($this->Customer, $this->Product),
+                'mode' => 'register'
+            )
         );
 
         $url = $crawler->filter('a')->text();
