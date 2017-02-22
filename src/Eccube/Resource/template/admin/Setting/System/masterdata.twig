@@ -22,6 +22,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% extends 'default_frame.twig' %}
 
+{% block stylesheet %}
+    <style type="text/css">
+        .attention {
+            color: #f00;
+        }
+    </style>
+{% endblock %}
+
 {% set menus = ['setting', 'system', 'masterdata'] %}
 
 {% block title %}システム設定{% endblock %}
@@ -93,11 +101,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% for data in form2.data %}
                         <tr id="result_list__item--{{ data.vars.name }}">
                             <td id="result_list__id--{{ data.vars.name }}">
-                                {{form_widget(data.id)}}
+                                {{form_widget(data.id)}} <br/>
                                 {{form_errors(data.id)}}
                             </td>
                             <td id="result_list__name--{{ data.vars.name }}">
-                                {{form_widget(data.name)}}
+                                {{form_widget(data.name)}} <br/>
                                 {{form_errors(data.name)}}
                             </td>
                             {#

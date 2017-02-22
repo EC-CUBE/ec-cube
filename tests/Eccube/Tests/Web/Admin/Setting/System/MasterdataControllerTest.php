@@ -106,7 +106,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             )
         );
         $html = $crawler->html();
-        $this->assertContains('登録できませんでした。', $html);
         $this->assertContains('※ 入力されていません。', $html);
 
         // Cannot save
@@ -137,7 +136,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             )
         );
         $html = $crawler->html();
-        $this->assertContains('登録できませんでした。', $html);
         $this->assertContains('※ 入力されていません。', $html);
 
         // Cannot save
@@ -168,7 +166,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             )
         );
         $html = $crawler->html();
-        $this->assertContains('登録できませんでした。', $html);
         $this->assertContains('※ 入力されていません。', $html);
 
         // Cannot save
@@ -198,7 +195,6 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             )
         );
         $html = $crawler->html();
-        $this->assertContains('登録できませんでした。', $html);
         $this->assertContains('※ 入力されていません。', $html);
 
         $entityName = str_replace('-', '\\', $formData['masterdata']);
