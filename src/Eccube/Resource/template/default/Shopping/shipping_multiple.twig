@@ -150,8 +150,8 @@ $(function() {
                                 </div>
                             {% endfor %}
                         </div>
-                        <p id="multiple_list__add_button">
-                            <button id="button__add" type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
+                        <p id="multiple_list__add_button{{ idx }}">
+                            <button id="button__add{{ idx }}" type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
                         </p>
                     {% endfor %}
                     <div class="extra-form">
