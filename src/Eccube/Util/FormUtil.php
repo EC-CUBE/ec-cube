@@ -44,6 +44,13 @@ class FormUtil
         return $viewData;
     }
 
+    /**
+     * formオブジェクトにviewdataをsubmitし, マッピングした結果を返す.
+     *
+     * @param FormInterface $form
+     * @param $viewData
+     * @return mixed
+     */
     public static function submitAndGetData(FormInterface $form, $viewData)
     {
         $form->submit($viewData);
