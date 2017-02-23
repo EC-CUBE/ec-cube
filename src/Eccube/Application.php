@@ -260,8 +260,8 @@ class Application extends \Silex\Application
             $routers = [];
             foreach ($dirs as $dir) {
                 $realPath = $dir->getRealPath();
-                $plugiCode = basename(dirname($realPath));
-                $routers[] = $app['eccube.router']($realPath, 'Plugin'.$plugiCode);
+                $pluginCode = basename(dirname($realPath));
+                $routers[] = $app['eccube.router']($realPath, 'Plugin'.$pluginCode);
             }
 
             return $routers;
