@@ -225,6 +225,8 @@ class Application extends \Silex\Application
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
+        // ルーティングの設定
+        // TODO EccubeRoutingServiceProviderに移植する.
         $app = $this;
         $this['eccube.router'] = $this->protect(function($resoure, $cachePrefix) use ($app) {
             $options = [
@@ -252,6 +254,7 @@ class Application extends \Silex\Application
         };
 
         $this['eccube.routers.plugin'] = function ($app) {
+            // TODO 有効なプラグインを対象とする必要がある.
             $dirs = Finder::create()
                 ->in($app['config']['root_dir'].'/app/Plugin')
                 ->name('Controller')
