@@ -219,9 +219,11 @@ $(function () {
         $('body').append($form); // Firefox requires form to be on the page to allow submission
         $form.submit();
     });
+});
 
-    // Scroll to error message if have
-    $(window).load(function() {
+// Scroll to error message if have
+$(window).load(function() {
+    $(function () {
         var el = $(".errormsg");
         if (el.length) {
             // Open panel when has error
@@ -235,16 +237,16 @@ $(function () {
                 $('html, body').scrollTop(errorOffset - errorMargin);
             }, 400);
         }
-    });
 
-    function openPanel(el) {
-        var accordion = el.parents('div.accordion');
-        if (accordion) {
-            var toggle = accordion.find('div.toggle');
-            if (!toggle.hasClass('active')) {
-                toggle.addClass('active');
-                accordion.find('div.accpanel').toggle('fast');
+        function openPanel(el) {
+            var accordion = el.parents('div.accordion');
+            if (accordion) {
+                var toggle = accordion.find('div.toggle');
+                if (!toggle.hasClass('active')) {
+                    toggle.addClass('active');
+                    accordion.find('div.accpanel').toggle('fast');
+                }
             }
         }
-    }
+    });
 });
