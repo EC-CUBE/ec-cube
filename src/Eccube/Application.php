@@ -33,6 +33,8 @@ use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
 use Sergiors\Silex\Provider\RoutingServiceProvider;
 use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
 use Sergiors\Silex\Provider\TemplatingServiceProvider;
+use Sergiors\Silex\Routing\ChainUrlGenerator;
+use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -197,14 +199,15 @@ class Application extends \Silex\Application
         $this->initSecurity();
 
         $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider(), [
-            'routing.cache_dir' => __DIR__.'/../../app/cache/routing'
+            'routing.cache_dir' => $this['debug'] ? null : __DIR__.'/../../app/cache/routing'
         ]);
         $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
         $this->register(new \Sergiors\Silex\Provider\TemplatingServiceProvider());
         $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider(), [
+            'annotations.debug' => $this['debug'],
             'annotations.options' => [
-                'cache_driver' => 'filesystem',
-                'cache_dir' => __DIR__.'/../../app/cache/annotation'
+                'cache_driver' => $this['debug'] ? 'array' : 'filesystem',
+                'cache_dir' => $this['debug'] ? null : __DIR__.'/../../app/cache/annotation'
             ]
         ]);
         $this->register(new \Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider(), [
@@ -222,31 +225,77 @@ class Application extends \Silex\Application
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
-        $this->extend('routes', function (\Symfony\Component\Routing\RouteCollection $routes, \Silex\Application $app) {
-            $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
+        $app = $this;
+        $this['eccube.router'] = $this->protect(function($resoure, $cachePrefix) use ($app) {
+            $options = [
+                'debug' => $app['debug'],
+                'cache_dir' => $app['routing.cache_dir'],
+                'matcher_base_class' => $app['request_matcher_class'],
+                'matcher_class' => $app['request_matcher_class'],
+                'matcher_cache_class' => $cachePrefix.'UrlMatcher',
+                'generator_cache_class' => $cachePrefix.'UrlGenerator'
+            ];
+            return new \Symfony\Component\Routing\Router(
+                $app['routing.loader'],
+                $resoure,
+                $options,
+                $app['request_context'],
+                $app['logger']
+            );
+        });
 
-            // コントローラのルーティングをロード
-            $collection = $loader->import(__DIR__.'/Controller', 'annotation');
-            $routes->addCollection($collection);
+        $this['eccube.router.origin'] = function ($app) {
+            $resource = __DIR__.'/Controller';
+            $cachePrefix = 'Origin';
 
-            // プラグイン用のルーティングをロード
-            // XXX 有効なプラグインのみ対象としたい
+            return $app['eccube.router']($resource, $cachePrefix);
+        };
+
+        $this['eccube.routers.plugin'] = function ($app) {
             $dirs = Finder::create()
-                ->in($this['config']['root_dir'].'/app/Plugin')
+                ->in($app['config']['root_dir'].'/app/Plugin')
                 ->name('Controller')
                 ->directories();
 
+            $routers = [];
             foreach ($dirs as $dir) {
-                // プラグイン用のルーティングをロード
-                $collection = $loader->import($dir->getRealPath(), 'annotation');
-                $routes->addCollection($collection);
+                $realPath = $dir->getRealPath();
+                $plugiCode = basename(dirname($realPath));
+                $routers[] = $app['eccube.router']($realPath, 'Plugin'.$plugiCode);
             }
 
-            // 拡張用のルーティングをロード
-            $collection = $loader->import($this['config']['root_dir'].'/app/Eccube/Controller', 'annotation');
-            $routes->addCollection($collection);
+            return $routers;
+        };
 
-            return $routes;
+        $this['eccube.router.extend'] = function ($app) {
+            $resource = $app['config']['root_dir'].'/app/Eccube/Controller';
+            $cachePrefix = 'Extend';
+
+            return $app['eccube.router']($resource, $cachePrefix);
+        };
+
+        $this->extend('request_matcher', function ($matcher, $app) {
+            $matchers = [];
+            $matchers[] = $app['eccube.router.extend'];
+            foreach ($app['eccube.routers.plugin'] as $router) {
+                $matchers[] = $router;
+            };
+            $matchers[] = $app['eccube.router.origin'];
+            $matchers[] = $matcher;
+
+            return new ChainUrlMatcher($matchers, $app['request_context']);
+        });
+
+        $this->extend('url_generator', function ($generator, $app) {
+            $generators = [];
+            $generators[] = $app['eccube.router.extend'];
+            foreach ($app['eccube.routers.plugin'] as $router) {
+                $generators[] = $router;
+            };
+            $generators[] = $app['eccube.router.origin'];
+            $generators[] = $generator;
+
+            return new ChainUrlGenerator($generators, $app['request_context']);
         });
 
         // init http cache
