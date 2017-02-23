@@ -100,16 +100,16 @@ class AddCartType extends AbstractType
             ;
             if ($Product && $Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
-                    $builder->add('classcategory_id1', ChoiceType::class, array(
+                    $builder->add('classcategory_id1', ChoiceType::class, [
                         'label' => $Product->getClassName1(),
-                        'choices'   => array_flip(array('選択してください' => '__unselected')) + $Product->getClassCategories1AsFlip(),
-                    ));
+                        'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories1AsFlip(),
+                    ]);
                 }
                 if (!is_null($Product->getClassName2())) {
-                    $builder->add('classcategory_id2', ChoiceType::class, array(
+                    $builder->add('classcategory_id2', ChoiceType::class, [
                         'label' => $Product->getClassName2(),
-                        'choices' => array_flip(array('選択してください' => '__unselected')),
-                    ));
+                        'choices' => ['選択してください' => '__unselected'],
+                    ]);
                 }
             }
 
@@ -118,10 +118,10 @@ class AddCartType extends AbstractType
                 $form = $event->getForm();
                 if (!is_null($Product->getClassName2())) {
                     if ($data['classcategory_id1']) {
-                        $form->add('classcategory_id2', ChoiceType::class, array(
+                        $form->add('classcategory_id2', ChoiceType::class, [
                             'label' => $Product->getClassName2(),
-                            'choices' => array_flip(array('__unselected' => '選択してください')) + $Product->getClassCategories2AsFlip($data['classcategory_id1']),
-                        ));
+                            'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories2AsFlip($data['classcategory_id1']),
+                        ]);
                     }
                 }
             });
