@@ -155,7 +155,6 @@ class Application extends \Silex\Application
             'http_cache.cache_dir' => __DIR__.'/../../app/cache/http/',
         ));
         $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
-        $this->register(new \Silex\Provider\RoutingServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
