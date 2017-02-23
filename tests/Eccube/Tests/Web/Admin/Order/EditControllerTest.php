@@ -285,8 +285,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
-        $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
-
         $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
 
         //税金計算
@@ -296,6 +294,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
             $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
             $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+        }
+        
+        // Multi用項目を削除
+        foreach($formDataForEdit['Shippings'] as $key => $node){
+            if(isset($node['ShipmentItems'])){
+                unset($formDataForEdit['Shippings'][$key]['ShipmentItems']);
+            }
         }
 
         // 管理画面で受注編集する
