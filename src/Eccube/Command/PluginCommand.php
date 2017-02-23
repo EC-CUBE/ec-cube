@@ -24,16 +24,16 @@
 
 namespace Eccube\Command;
 
+use Eccube\Command\GeneratorCommand\EntityFromDbGenerator;
+use Eccube\Command\GeneratorCommand\EntityFromYamlGenerator;
+use Eccube\Command\GeneratorCommand\PluginGenerator;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Command\PluginCommand\PluginGenerator;
-use Eccube\Command\PluginCommand\EntityFromDbGenerator;
-use Eccube\Command\PluginCommand\EntityFromYamlGenerator;
-use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginCommand extends \Knp\Command\Command
 {
@@ -43,32 +43,46 @@ class PluginCommand extends \Knp\Command\Command
 
     protected function configure()
     {
-        $modeDescription = 'mode(install/uninstall/enable/disable/update/reload/generate/entity)';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'install [/path_to_tar]  - install plugin from tar or zip';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'uninstall [plugin_code] - uninstall plugin ';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'enable [plugin_code]  --- enable plugin';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'disable [plugin_code] --- disableplugin';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'reload [plugin_code] ---- reload plugin';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'generate   -------------- create plugin skeleton ';
-        $modeDescription .= PHP_EOL;
-        $modeDescription .= 'entity   ---------------- create Entity,Rpository,Migration';
         $this
             ->setName('plugin:develop')
-            ->addArgument('mode', InputArgument::REQUIRED, $modeDescription, null)
+            ->addArgument('mode', InputArgument::REQUIRED, 'install/uninstall/enable/disable/update/generate/entity', null)
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
             ->setDescription('plugin commandline installer.')
             ->setHelp(<<<EOF
-The <info>%command.name%</info> plugin installer runner for developer;
+The <info>%command.name%</info> plugin installer runner for developer,
+
+  <info>php %command.full_name% [install/uninstall/enable/disable/update/generate/entity]</info>
+
+Usage:
+
+ex1) The command install plugin from tar or zip.
+  <info>php %command.full_name% install --path[=PATH]</info>
+
+ex2) The command uninstall plugin.
+  <info>php %command.full_name% uninstall --code[=CODE] --uninstall-force[=UNINSTALL-FORCE]</info>
+  if [--uninstall-force] set true, remove directory.
+
+ex3) The command enable plugin.
+  <info>php %command.full_name% enable --code[=CODE]</info>
+
+ex4) The command disable plugin.
+  <info>php %command.full_name% disable --code[=CODE]</info>
+
+ex5) The command update plugin.
+  <info>php %command.full_name% update --code[=CODE]</info>
+
+ex6) The command generate plugin.
+  <info>php %command.full_name% generate</info>
+  create plugin skeleton.
+
+ex7) The command entity plugin.
+  <info>php %command.full_name% entity</info>
+  create Entity, Repository, Migration.
+
 EOF
-        );
+            );
     }
 
     protected function getPluginFromCode($pluginCode)
@@ -84,17 +98,18 @@ EOF
 
         $mode = $input->getArgument('mode');
 
-        //プラグイン作成
+        // プラグイン作成
         if ($mode == 'generate') {
             $PluginGenerator = new PluginGenerator($this->app);
             $PluginGenerator->init($this->getHelper('question'), $input, $output);
             $PluginGenerator->run();
+
             return;
         }
-        //プラグインEntity用作成
+        // プラグインEntity用作成
         if ($mode == 'entity') {
             $output->writeln('');
-            $Question = new Question('<comment>[entity]How to generate entities from db schema or yaml? [d => db, y => yaml] : </comment>', '');
+            $Question = new Question('<comment>[entity]How to generate entities from db schema or yml? [d => db, y => yml] : </comment>', '');
             $QuestionHelper = $this->getHelper('question');
             $value = $QuestionHelper->ask($input, $output, $Question);
             $value = substr(strtolower(trim($value)), 0, 1);
@@ -103,13 +118,12 @@ EOF
                 $PluginEntityGenerator->init($QuestionHelper, $input, $output);
                 $PluginEntityGenerator->run();
             } elseif ($value == 'y') {
-                //TODO
                 $PluginEntityGenerator = new EntityFromYamlGenerator($this->app);
                 $PluginEntityGenerator->init($QuestionHelper, $input, $output);
                 $PluginEntityGenerator->run();
             } else {
-                //入力値正しくない
-                $output->writeln('Input value is incorrect, please choose [d] for database schema or [y] for yaml file.');
+                // 入力値正しくない
+                $output->writeln('Input value is incorrect, please choose [d] for database schema or [y] for yml file.');
             }
 
             return;
@@ -132,8 +146,8 @@ EOF
             if ($code) {
                 $pluginDir = $service->calcPluginDir($code);
                 $service->checkPluginArchiveContent($pluginDir);
-                $config = $service->readYml($pluginDir . '/config.yml');
-                $event = $service->readYml($pluginDir . '/event.yml');
+                $config = $service->readYml($pluginDir.'/config.yml');
+                $event = $service->readYml($pluginDir.'/event.yml');
                 $service->checkSamePlugin($config['code']);
                 $service->registerPlugin($config, $event);
 
@@ -149,15 +163,18 @@ EOF
         if ($mode == 'update') {
             if (empty($code)) {
                 $output->writeln('code is required.');
+
                 return;
             }
             if (empty($path)) {
                 $output->writeln('path is required.');
+
                 return;
             }
             $plugin = $this->getPluginFromCode($code);
             if ($service->update($plugin, $path)) {
                 $output->writeln('success');
+
                 return;
             }
         }
@@ -165,6 +182,7 @@ EOF
         if ($mode == 'uninstall') {
             if (empty($code)) {
                 $output->writeln('code is required.');
+
                 return;
             }
 
@@ -174,6 +192,7 @@ EOF
             if ($uninstallForce) {
                 if ($service->uninstall($plugin)) {
                     $output->writeln('success');
+
                     return;
                 }
 
@@ -182,24 +201,27 @@ EOF
 
             // ディレクトリは残し, プラグインを削除.
             $pluginDir = $service->calcPluginDir($code);
-            $config = $service->readYml($pluginDir . '/config.yml');
+            $config = $service->readYml($pluginDir.'/config.yml');
             $service->callPluginManagerMethod($config, 'disable');
             $service->callPluginManagerMethod($config, 'uninstall');
             $service->unregisterPlugin($plugin);
 
             $output->writeln('success');
+
             return;
         }
 
         if (in_array($mode, array('enable', 'disable'), true)) {
             if (empty($code)) {
                 $output->writeln('code is required.');
+
                 return;
             }
 
             $plugin = $this->getPluginFromCode($code);
             if ($service->$mode($plugin)) {
                 $output->writeln('success');
+
                 return;
             }
         }
@@ -207,5 +229,5 @@ EOF
         $output->writeln(' mode is not correct, try help for more options');
         $output->writeln(' plugin:develop --help  ');
     }
-    
+
 }
