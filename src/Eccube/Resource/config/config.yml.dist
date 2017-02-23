@@ -10,3 +10,5 @@ cookie_name: eccube
 locale: ja
 timezone: Asia/Tokyo
 pageinrange: false
+trusted_proxies_connection_only: ${TRUSTED_PROXIES_CONNECTION_ONLY}
+trusted_proxies:
