@@ -18,7 +18,7 @@ class Version20170222080706 extends AbstractMigration
         $Table = $schema->getTable('dtb_payment');
         if (!$Table->hasColumn('use_paypal')) {
             $Table->addColumn('use_paypal','smallint', [
-                'notnul' => false,
+                'notnull' => false,
                 'default' => 0
             ]);
         }
