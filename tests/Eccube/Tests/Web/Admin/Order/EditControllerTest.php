@@ -296,6 +296,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
             $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
         }
+        
+        // Multi用項目を削除
+        foreach($formDataForEdit['Shippings'] as $key => $node){
+            if(isset($node['ShipmentItems'])){
+                unset($formDataForEdit['Shippings'][$key]['ShipmentItems']);
+            }
+        }
 
         // 管理画面で受注編集する
         $this->client->request(
@@ -305,6 +312,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
             )
         );
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
 
         //確認する「トータル税金」
         $this->expected = $totalTax;
@@ -331,6 +339,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
         $SavedOrder = $this->app['eccube.repository.order']->find($savedOderId);
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
 
         $this->expected = $this->Customer->getSex();
         $this->actual = $SavedOrder->getSex();
