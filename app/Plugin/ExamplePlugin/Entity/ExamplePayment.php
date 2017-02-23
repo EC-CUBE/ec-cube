@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\Table;
 class ExamplePayment extends \Eccube\Entity\Payment
 {
     /**
-     * @Column(name="use_paypal", type="smallint")
+     * @Column(name="use_paypal", type="smallint", nullable=true, options="default":0})
      */
     public $usePayPal = 0;
 }
