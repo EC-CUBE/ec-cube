@@ -225,25 +225,25 @@ class Application extends \Silex\Application
         $this->extend('routes', function (\Symfony\Component\Routing\RouteCollection $routes, \Silex\Application $app) {
             $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
 
-            // XXX プラグインにマイグレーション用のクラスが含まれているとアノテーションのロードに失敗してしまう
-            $finder = Finder::create()
-                ->in(PluginConfigManager::getPluginRealDir())
-                ->files()
-                ->name('/^Version[0-9]+\.php$/');
-            foreach ($finder as $file) {
-                require $file->getRealPath();
-            }
-
             // コントローラのルーティングをロード
             $collection = $loader->import(__DIR__.'/Controller', 'annotation');
             $routes->addCollection($collection);
 
             // プラグイン用のルーティングをロード
-            $collection = $loader->import($this['config']['root_dir'].'/app/Plugin', 'annotation');
-            $routes->addCollection($collection);
+            // XXX 有効なプラグインのみ対象としたい
+            $dirs = Finder::create()
+                ->in($this['config']['root_dir'].'/app/Plugin')
+                ->name('Controller')
+                ->directories();
+
+            foreach ($dirs as $dir) {
+                // プラグイン用のルーティングをロード
+                $collection = $loader->import($dir->getRealPath(), 'annotation');
+                $routes->addCollection($collection);
+            }
 
             // 拡張用のルーティングをロード
-            $collection = $loader->import($this['config']['root_dir'].'/app/Eccube', 'annotation');
+            $collection = $loader->import($this['config']['root_dir'].'/app/Eccube/Controller', 'annotation');
             $routes->addCollection($collection);
 
             return $routes;
