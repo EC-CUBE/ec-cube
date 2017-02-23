@@ -20,55 +20,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
 namespace Eccube\Tests\Web;
-
-use Symfony\Component\BrowserKit\Client;
 
 class TopControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingIndex()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    /**
-     * testTopContent
-     */
-    public function testTopContent()
-    {
-        /** @var $client Client*/
-        $client = $this->client;
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
-        $html = $crawler->html();
-        //test product list
-        $this->assertContains('商品一覧へ', $html);
-
-        //test dummy link
-        $href = $crawler->filter('.img_right a')->attr('href');
-        $this->expected = '#';
-        $this->actual = $href;
-        $this->verify();
-
-        //test delivery free display
-        /* @var $BaseInfo \Eccube\Entity\BaseInfo */
-        $BaseInfo = $this->app['eccube.repository.base_info']->find(1);
-        $BaseInfo->setDeliveryFreeAmount(100);
-        $this->app['orm.em']->persist($BaseInfo);
-        $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
-        $html = $crawler->html();
-        $this->assertContains('100円以上の購入', $html);
-
-        //if null set 0円
-        $BaseInfo->setDeliveryFreeAmount(0);
-        $this->app['orm.em']->persist($BaseInfo);
-        $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
-        $html = $crawler->html();
-        $this->assertContains('0円以上の購入', $html);
     }
 }
