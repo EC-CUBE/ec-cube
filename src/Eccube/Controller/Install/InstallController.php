@@ -174,7 +174,7 @@ class InstallController
 
                 // ロードバランサー、プロキシサーバ設定
                 $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
-                $trustedProxies = $config['admin_allow_host'];
+                $trustedProxies = $config['trusted_proxies'];
                 if (count($trustedProxies) > 0) {
                     $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n", $trustedProxies));
                 }
