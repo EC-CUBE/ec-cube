@@ -753,14 +753,19 @@ class ProductController extends AbstractController
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select')
                 ->resetDQLPart('orderBy')
-                ->select('p')
-                ->orderBy('p.update_date', 'DESC')
-                ->distinct();
+                ->orderBy('p.update_date', 'DESC');
 
+            if ($isOutOfStock) {
+                $qb->select('p, pc')
+                    ->distinct();
+            } else {
+                $qb->select('p')
+                    ->distinct();
+            }
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
 
-            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($app, $request, $isOutOfStock) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($app, $request) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
@@ -770,14 +775,6 @@ class ProductController extends AbstractController
                 $ProductClassess = $Product->getProductClasses();
 
                 foreach ($ProductClassess as $ProductClass) {
-                    // check stock status
-                    if ($isOutOfStock) {
-                        // if unlimited or has stock then ignore it
-                        if ($ProductClass->getStockUnlimited() === 1 || $ProductClass->getStock() != 0) {
-                            continue;
-                        }
-                    }
-
                     $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
@@ -803,7 +800,7 @@ class ProductController extends AbstractController
                         $ExportCsvRow->pushData();
                     }
 
-                    //$row[] = number_format(memory_get_usage(true));
+                    // $row[] = number_format(memory_get_usage(true));
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
