@@ -3,12 +3,10 @@ password_hash_algos: sha256
 shop_name: ${SHOP_NAME}
 force_ssl: ${FORCE_SSL}
 admin_allow_host:
-trusted_proxies_connection_only: ${TRUSTED_PROXIES_CONNECTION_ONLY}
-trusted_proxies:
 cookie_lifetime: 0
 cookie_name: eccube
 locale: ja
 timezone: Asia/Tokyo
 pageinrange: false
-trusted_proxies_connection_only: ${TRUSTED_PROXIES_CONNECTION_ONLY}
-trusted_proxies:
+trusted_proxies_connection_only: false
+trusted_proxies: {  }
