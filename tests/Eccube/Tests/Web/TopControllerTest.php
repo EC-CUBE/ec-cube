@@ -20,13 +20,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+
 namespace Eccube\Tests\Web;
 
 class TopControllerTest extends AbstractWebTestCase
 {
+
     public function testRoutingIndex()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
 }
