@@ -28,6 +28,7 @@ use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
+use Eccube\Routing\EccubeRouter;
 use Sergiors\Silex\Provider\AnnotationsServiceProvider;
 use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
 use Sergiors\Silex\Provider\RoutingServiceProvider;
@@ -236,13 +237,19 @@ class Application extends \Silex\Application
                 'matcher_cache_class' => $cachePrefix.'UrlMatcher',
                 'generator_cache_class' => $cachePrefix.'UrlGenerator'
             ];
-            return new \Symfony\Component\Routing\Router(
+            $router = new EccubeRouter(
                 $app['routing.loader'],
                 $resoure,
                 $options,
                 $app['request_context'],
                 $app['logger']
             );
+
+            $router->setAdminPrefix($app['config']['admin_route']);
+            $router->setUserDataPrefix($app['config']['user_data_route']);
+            $router->setRequireHttps($app['config']['force_ssl']);
+
+            return $router;
         });
 
         $this['eccube.router.origin'] = function ($app) {
@@ -273,7 +280,9 @@ class Application extends \Silex\Application
             $resource = $app['config']['root_dir'].'/app/Eccube/Controller';
             $cachePrefix = 'Extend';
 
-            return $app['eccube.router']($resource, $cachePrefix);
+            $router = $app['eccube.router']($resource, $cachePrefix);
+
+            return $router;
         };
 
         $this->extend('request_matcher', function ($matcher, $app) {
