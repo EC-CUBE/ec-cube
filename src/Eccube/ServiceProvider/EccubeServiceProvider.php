@@ -24,14 +24,15 @@
 
 namespace Eccube\ServiceProvider;
 
+use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Api\BootableProviderInterface;
-use Silex\Application;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class EccubeServiceProvider implements ServiceProviderInterface, BootableProviderInterface
+class EccubeServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -424,17 +425,8 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
         });
     }
 
-    /**
-     * Bootstraps the application.
-     *
-     * This method is called after all services are registered
-     * and should be used for "dynamic" configuration (whenever
-     * a service must be requested).
-     */
-    public function boot(Application $app)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        // add transaction listener
-        // FIXME TransactionListener::onKernelTerminate が動作しないため暫定的に無効
-        // $app['dispatcher']->addSubscriber(new \Eccube\EventListener\TransactionListener($app));
+        $dispatcher->addSubscriber(new TransactionListener($app));
     }
 }
