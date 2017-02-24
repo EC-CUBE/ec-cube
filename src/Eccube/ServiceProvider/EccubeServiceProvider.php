@@ -427,6 +427,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $dispatcher->addSubscriber(new TransactionListener($app));
+        // FIXME TransactionListener::onKernelTerminate が動作しないため暫定的に無効
+        // $dispatcher->addSubscriber(new TransactionListener($app));
     }
 }
