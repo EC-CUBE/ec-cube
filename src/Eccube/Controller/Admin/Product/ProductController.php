@@ -738,12 +738,12 @@ class ProductController extends AbstractController
                 ->getProductQueryBuilder($request);
 
             // Get stock status
-            $stockStatus = 0;
+            $isOutOfStock = 0;
             $session = $request->getSession();
             if ($session->has('eccube.admin.product.search')) {
                 $searchData = $session->get('eccube.admin.product.search', array());
                 if (isset($searchData['stock_status']) && $searchData['stock_status'] === 0) {
-                    $stockStatus = 1;
+                    $isOutOfStock = 1;
                 }
             }
 
@@ -760,7 +760,7 @@ class ProductController extends AbstractController
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
 
-            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($app, $request, $stockStatus) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($app, $request, $isOutOfStock) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
@@ -770,14 +770,15 @@ class ProductController extends AbstractController
                 $ProductClassess = $Product->getProductClasses();
 
                 foreach ($ProductClassess as $ProductClass) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
                     // check stock status
-                    if ($stockStatus) {
+                    if ($isOutOfStock) {
                         // if unlimited or has stock then ignore it
                         if ($ProductClass->getStockUnlimited() === 1 || $ProductClass->getStock() != 0) {
                             continue;
                         }
                     }
+
+                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
