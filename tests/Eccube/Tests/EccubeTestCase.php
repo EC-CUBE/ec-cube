@@ -53,7 +53,7 @@ abstract class EccubeTestCase extends WebTestCase
         }
 
         // XXX PHP5.5/5.6でSegmentation Faultが発生するため
-        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->cleanUpProperties();
             $this->app = null;
         }
