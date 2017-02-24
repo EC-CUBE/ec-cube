@@ -4,13 +4,15 @@ namespace Eccube2\Controller;
 
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class RoutingTestController
 {
     /**
      * // シングルコーテーションは読めないので注意.
      *
-     * @Route("/{_admin}/test")
+     * @Route("/{_admin}/test", name="admin_test")
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\Response
