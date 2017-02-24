@@ -276,36 +276,19 @@ class TemplateController extends AbstractController
                     ));
                 }
 
+                $fs = new Filesystem();
+
                 // appディレクトリの存在チェック.
                 if (!file_exists($appDir)) {
-                    $form['file']->addError(new FormError('appディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs->mkdir($appDir);
                 }
 
                 // htmlディレクトリの存在チェック.
                 if (!file_exists($htmlDir)) {
-                    $form['file']->addError(new FormError('htmlディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs->mkdir($htmlDir);
                 }
 
                 // 一時ディレクトリから該当テンプレートのディレクトリへコピーする.
-                $fs = new Filesystem();
                 $fs->mirror($appDir, $targetRealDir);
                 $fs->mirror($htmlDir, $targetHtmlRealDir);
 

@@ -29,13 +29,13 @@ class ConfigController
 
         $form = $app['form.factory']->createBuilder('[code_name]_config')->getForm();
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
+            $data = $form->getData();
 
-                // add code...
-            }
+            // add code...
+        }
 
         return $app->render('[code]/Resource/template/admin/config.twig', array(
             'form' => $form->createView(),

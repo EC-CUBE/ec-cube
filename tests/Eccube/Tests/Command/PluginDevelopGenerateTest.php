@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Command;
 
-use Guzzle\Http\Client;
 use Eccube\Application;
 use Eccube\Command\PluginCommand;
 use Symfony\Component\Console\Question\Question;
@@ -16,6 +15,10 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
     public function setUp()
     {
         parent::setUp();
+        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
         $this->initCommand(new PluginCommand());
     }
 
@@ -46,12 +49,12 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                     'output' => 'Value cannot be empty',
                 ),
                 array(
-                    'input' => 'Plugin Name',
-                    'output' => 'only pascal case letters numbers are allowed',
+                    'input' => 'Plugin Code',
+                    'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
                 ),
                 array(
                     'input' => strtolower($code),
-                    'output' => 'only pascal case letters numbers are allowed',
+                    'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.',
                 ),
                 array(
                     'input' => $code,
@@ -171,6 +174,21 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                     'input' => '',
                 ),
             ),
+            //orm.path
+            8 => array(
+                array(
+                    'input' => '',
+                    'output' => 'Value cannot be empty',
+                ),
+                array(
+                    'input' => 'a',
+                    'output' => 'No results have been found',
+                ),
+                array(
+                    'input' => 'y',
+                    'output' => 'Use orm.path:',
+                ),
+            ),
             //確認
             'confirm' => array(
                 array(
@@ -184,6 +202,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                         'eccube.event.render.product_list.before',
                         'front.entry.index.initialize',
                         'admin.admin.change_password.complete',
+                        'Yes',
                     ),
                 ),
                 array(

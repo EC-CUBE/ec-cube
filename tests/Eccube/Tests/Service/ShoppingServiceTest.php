@@ -6,6 +6,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
+use Eccube\Exception\ShoppingException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
@@ -276,11 +277,16 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->expected = false;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
+        try {
+            $this->app['eccube.service.shopping']->isOrderProduct(
+                $this->app['orm.em'],
+                $Order
+            );
+        } catch (ShoppingException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = 'cart.product.not.status';
+        }
+
         $this->verify();
     }
 
@@ -300,11 +306,16 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->expected = false;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
+        try {
+            $this->app['eccube.service.shopping']->isOrderProduct(
+                $this->app['orm.em'],
+                $Order
+            );
+        } catch (ShoppingException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = 'cart.over.sale_limit';
+        }
+
         $this->verify();
     }
 
@@ -328,11 +339,16 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->expected = false;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
+        try {
+            $this->app['eccube.service.shopping']->isOrderProduct(
+                $this->app['orm.em'],
+                $Order
+            );
+        } catch (ShoppingException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = 'cart.over.stock';
+        }
+
         $this->verify();
     }
 
