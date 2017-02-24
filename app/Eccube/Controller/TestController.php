@@ -5,6 +5,7 @@ use Eccube\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -72,7 +73,7 @@ class TestController
     public function postAction(Application $app, Request $request)
     {
         dump('post');
-        $app->forward('/test/initialize/5', $request);
+        $app->forward('/test/initialize/5');
         return ['id' => $app['request_scope']->get('csv')->getDispName()];
     }
 }
