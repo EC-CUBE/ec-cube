@@ -58,6 +58,8 @@ class PluginManager extends AbstractPluginManager
         $Payment->setRank($rank);
         $Payment->setDelFlg(Constant::DISABLED);
         $Payment->setCreator($Member);
+        $Payment->setMethodClass('\Plugin\ExamplePlugin\Payment\Method\ExamplePaymentCreditCard');
+        $Payment->setServiceClass('\Eccube\Service\PaymentService');
         $Payment->usePayPal = 1;
 
         $app['orm.em']->persist($Payment);

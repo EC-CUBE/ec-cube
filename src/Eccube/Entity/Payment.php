@@ -103,6 +103,16 @@ class Payment extends \Eccube\Entity\AbstractEntity
     private $charge_flg;
 
     /**
+     * @var string
+     */
+    private $method_class;
+
+    /**
+     * @var string
+     */
+    private $service_class;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $PaymentOptions;
@@ -434,19 +444,51 @@ class Payment extends \Eccube\Entity\AbstractEntity
         return $this->PaymentOptions;
     }
 
+    /**
+     * Set methodClass
+     *
+     * @param string $methodClass
+     *
+     * @return Payment
+     */
+    public function setMethodClass($methodClass)
+    {
+        $this->method_class = $methodClass;
+
+        return $this;
+    }
+
+    /**
+     * Set serviceClass
+     *
+     * @param string $serviceClass
+     *
+     * @return Payment
+     */
+    public function setServiceClass($serviceClass)
+    {
+        $this->service_class = $serviceClass;
+
+        return $this;
+    }
+
+    /**
+     * Get methodClass
+     *
+     * @return string
+     */
     public function getMethodClass()
     {
-        // TODO 動的に取得する
-        if ($this->getMethod() == 'サンプルクレジットカード') {
-            return '\Plugin\ExamplePlugin\Payment\Method\ExamplePaymentCreditCard';
-        } else {
-            return '\Eccube\Service\Payment\Method\Cash';
-        }
-
+        return $this->method_class;
     }
+
+    /**
+     * Get serviceClass
+     *
+     * @return string
+     */
     public function getServiceClass()
     {
-        // TODO 動的に取得する
-        return '\Eccube\Service\PaymentService';
+        return $this->service_class;
     }
 }

@@ -66,6 +66,14 @@ Eccube\Entity\Payment:
             nullable: true
             precision: 10
             scale: 0
+        method_class:
+            type: string
+            length: 255
+            nullable: true
+        service_class:
+            type: string
+            length: 255
+            nullable: true
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
