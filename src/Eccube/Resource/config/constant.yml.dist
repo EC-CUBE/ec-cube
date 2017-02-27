@@ -127,6 +127,7 @@ module_dir: downloads/module/
 module_realdir: /PATH/TO/WEB_ROOT/data/downloads/module/
 mtext_len: 200
 multiple_urlpath: /shopping/multiple.php
+mutext_len: 300
 mypage_delivaddr_urlpath: /mypage/delivery.php
 mypage_order_status_disp_flag: true
 navi_pmax: 4

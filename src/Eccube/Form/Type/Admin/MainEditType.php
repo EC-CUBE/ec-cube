@@ -125,6 +125,20 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     ))
                 )
+            ))->add('meta_tags', 'textarea', array(
+                'label' => 'フリーエリア',
+                'attr' => array(
+                    'placeholder' => '複数のメタタグを記述することが可能です                           
+(例)                                                                                    
+<meta name="copyright" content="著作権を入力してください" />                                          
+<meta name="classification" content="webページのジャンルを入力してください" />',
+                ),
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['mutext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
