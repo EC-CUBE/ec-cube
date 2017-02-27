@@ -128,7 +128,7 @@ class MainEditType extends AbstractType
             ))->add('meta_tags', 'textarea', array(
                 'label' => '追加metaタグ',
                 'attr' => array(
-                    'placeholder' => '(例)：<meta name="copyright" content="著作権を入力してください" /><meta name="classification" content="webページのジャンルを入力してください" />',
+                    'placeholder' => '複数のmetaタグを入力可能',
                 ),
                 'required' => false
             ))
