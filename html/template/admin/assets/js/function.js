@@ -223,30 +223,25 @@ $(function () {
 
 // Scroll to error message if have
 $(window).load(function() {
-    $(function () {
-        var el = $(".errormsg");
-        if (el.length) {
-            // Open panel when has error
-            openPanel(el.first());
-            // Waiting for other js and css completed before scroll to error message.
-            setTimeout(function () {
-                var errorOffset = el.first().offset().top;
-                var screenHeight = $(window).height();
-                var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
+    var el = $(".errormsg");
+    if (el.length) {
+        // Open panel when has error
+        openPanel(el.first());
+        var errorOffset = el.first().offset().top;
+        var screenHeight = $(window).height();
+        var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
 
-                $('html, body').scrollTop(errorOffset - errorMargin);
-            }, 400);
-        }
+        $('html, body').scrollTop(errorOffset - errorMargin);
+    }
 
-        function openPanel(el) {
-            var accordion = el.parents('div.accordion');
-            if (accordion) {
-                var toggle = accordion.find('div.toggle');
-                if (!toggle.hasClass('active')) {
-                    toggle.addClass('active');
-                    accordion.find('div.accpanel').toggle('fast');
-                }
+    function openPanel(el) {
+        var accordion = el.parents('div.accordion');
+        if (accordion) {
+            var toggle = accordion.find('div.toggle');
+            if (!toggle.hasClass('active')) {
+                toggle.addClass('active');
+                accordion.find('div.accpanel').toggle('fast');
             }
         }
-    });
+    }
 });
