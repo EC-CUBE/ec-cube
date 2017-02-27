@@ -440,7 +440,7 @@ class CartService
                     // 制限数チェック(在庫不足の場合は、処理の中でカート内商品を削除している)
                     $quantity = $this->setProductLimit($ProductClass, $productName, $CartItem->getQuantity());
 
-					// 個数が異なれば、新しい数量でカート内商品を更新する
+                    /// 個数が異なれば、新しい数量でカート内商品を更新する
                     if ((0 < $quantity) && ($CartItem->getQuantity() != $quantity)) {
                         // 個数が異なれば更新
                         $CartItem->setQuantity($quantity);
