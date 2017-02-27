@@ -222,7 +222,7 @@ class CartService
      */
     public function getProductQuantity($productClassId)
     {
-        $CartItem = $this->cart->getCartItemByIdentifier('Eccube\Entity\ProductClass', (string) $productClassId);
+        $CartItem = $this->cart->getCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
         if ($CartItem) {
             return $CartItem->getQuantity();
         } else {
@@ -246,18 +246,12 @@ class CartService
                 throw new CartException('cart.product.delete');
             }
         }
-        if ($ProductClass->getProduct()->getStatus()->getId() !== Disp::DISPLAY_SHOW) {
-            $this->removeProduct($ProductClass->getId());
+
+        if (!$this->isProductDisplay($ProductClass)) {
             throw new CartException('cart.product.not.status');
         }
 
-        $productName = $ProductClass->getProduct()->getName();
-        if ($ProductClass->hasClassCategory1()) {
-            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
-        }
-        if ($ProductClass->hasClassCategory2()) {
-            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
-        }
+        $productName = $this->getProductName($ProductClass);
 
         // 商品種別に紐づく配送業者を取得
         $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($ProductClass->getProductType());
@@ -281,7 +275,6 @@ class CartService
             if (!$this->canAddProductPayment($ProductClass->getProductType())) {
                 throw new CartException('cart.product.payment.kind');
             }
-
         }
 
         $tmp_subtotal = 0;
@@ -289,7 +282,7 @@ class CartService
         foreach ($this->getCart()->getCartItems() as $cartitem) {
             $pc = $cartitem->getObject();
             if ($pc->getId() != $ProductClass->getId()) {
-                // まず、追加された商品以外のtotal priceをセット
+                // 追加された商品以外のtotal priceをセット
                 $tmp_subtotal += $cartitem->getTotalPrice();
             }
         }
@@ -301,35 +294,18 @@ class CartService
             }
             $tmp_quantity++;
         }
-        $quantity = $tmp_quantity;
+        if ($tmp_quantity == 0) {
+            // 数量が0の場合、エラー
+            throw new CartException('cart.over.price_limit');
+        }
 
-        $tmp_quantity = 0;
-
-        /*
-         * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
-         * ここでは ProductClass::stock で在庫のチェックをする
-         */
-        if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
-            if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
-                $tmp_quantity = $ProductClass->getSaleLimit();
-                $this->addError('cart.over.sale_limit', $productName);
-            } else {
-                $tmp_quantity = $ProductClass->getStock();
-                $this->addError('cart.over.stock', $productName);
-            }
-        }
-        if ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
-            $tmp_quantity = $ProductClass->getSaleLimit();
-            $this->addError('cart.over.sale_limit', $productName);
-        }
-        if ($tmp_quantity) {
-            $quantity = $tmp_quantity;
-        }
+        // 制限数チェック
+        $quantity = $this->setProductLimit($ProductClass, $productName, $tmp_quantity);
 
         $CartItem = new CartItem();
         $CartItem
             ->setClassName('Eccube\Entity\ProductClass')
-            ->setClassId((string) $ProductClass->getId())
+            ->setClassId((string)$ProductClass->getId())
             ->setPrice($ProductClass->getPrice02IncTax())
             ->setQuantity($quantity);
 
@@ -375,6 +351,7 @@ class CartService
         if ($this->getCart()->getTotalPrice() < 1) {
             // カートになければ支払方法を全て設定
             $this->getCart()->setPayments($payments);
+
             return true;
         }
 
@@ -391,11 +368,43 @@ class CartService
 
         if (count($arr) > 0) {
             $this->getCart()->setPayments($arr);
+
             return true;
         }
 
         // 支払条件に一致しない
         return false;
+
+    }
+
+    /**
+     * カートブロックに表示するカートを取得します。
+     * ブロックに表示するカートはチェックを行わず、セットされているカートを返します。
+     *
+     * @return \Eccube\Entity\Cart
+     */
+    public function getCartObj()
+    {
+
+        foreach ($this->cart->getCartItems() as $CartItem) {
+
+            /** @var \Eccube\Entity\ProductClass $ProductClass */
+            $ProductClass = $CartItem->getObject();
+            if (!$ProductClass) {
+                $this->loadProductClassFromCartItem($CartItem);
+
+                $ProductClass = $CartItem->getObject();
+            }
+
+            if ($ProductClass->getDelFlg()) {
+                // 商品情報が削除されていたらエラー
+                $this->setError('cart.product.delete');
+                // カートから削除
+                $this->removeProduct($ProductClass->getId());
+            }
+        }
+
+        return $this->cart;
 
     }
 
@@ -407,6 +416,8 @@ class CartService
     public function getCart()
     {
         foreach ($this->cart->getCartItems() as $CartItem) {
+
+            /** @var \Eccube\Entity\ProductClass $ProductClass */
             $ProductClass = $CartItem->getObject();
             if (!$ProductClass) {
                 $this->loadProductClassFromCartItem($CartItem);
@@ -416,22 +427,23 @@ class CartService
 
             if ($ProductClass->getDelFlg() == Constant::DISABLED) {
                 // 商品情報が有効
-                $stockUnlimited = $ProductClass->getStockUnlimited();
-                if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < 1) {
-                    // 在庫がなければカートから削除
-                    $this->setError('cart.zero.stock');
-                    $this->removeProduct($ProductClass->getId());
+
+                if (!$this->isProductDisplay($ProductClass)) {
+                    $this->setError('cart.product.not.status');
                 } else {
-                    $quantity = $CartItem->getQuantity();
-                    $saleLimit = $ProductClass->getSaleLimit();
-                    if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < $quantity) {
-                        // 購入数が在庫数を超えている場合、メッセージを表示
-                        $this->setError('cart.over.stock');
-                    } elseif (!is_null($saleLimit) && $saleLimit < $quantity) {
-                        // 購入数が販売制限数を超えている場合、メッセージを表示
-                        $this->setError('cart.over.sale_limit');
+
+                    $productName = $this->getProductName($ProductClass);
+
+                    // 制限数チェック
+                    $quantity = $this->setProductLimit($ProductClass, $productName, $CartItem->getQuantity());
+
+                    if ($CartItem->getQuantity() != $quantity) {
+                        // 個数が異なれば更新
+                        $CartItem->setQuantity($quantity);
+                        $this->cart->setCartItem($CartItem);
                     }
                 }
+
             } else {
                 // 商品情報が削除されていたらエラー
                 $this->setError('cart.product.delete');
@@ -449,7 +461,7 @@ class CartService
      */
     public function removeProduct($productClassId)
     {
-        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string) $productClassId);
+        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
 
         // 支払方法の再設定
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
@@ -486,6 +498,7 @@ class CartService
         if (!is_null($productName)) {
             $this->session->getFlashBag()->add('eccube.front.request.product', $productName);
         }
+
         return $this;
     }
 
@@ -508,11 +521,8 @@ class CartService
     public function downProductQuantity($productClassId)
     {
         $quantity = $this->getProductQuantity($productClassId) - 1;
-
         if ($quantity > 0) {
             $this->setProductQuantity($productClassId, $quantity);
-        } else {
-            $this->removeProduct($productClassId);
         }
 
         return $this;
@@ -530,6 +540,7 @@ class CartService
             $ProductClass = $item->getObject();
             $productTypes[] = $ProductClass->getProductType();
         }
+
         return array_unique($productTypes);
 
     }
@@ -577,7 +588,127 @@ class CartService
     {
         $this->error = $error;
         $this->session->getFlashBag()->set('eccube.front.request.error', $error);
+
         return $this;
+    }
+
+    /**
+     * 商品名を取得
+     *
+     * @param ProductClass $ProductClass
+     * @return string
+     */
+    private function getProductName(ProductClass $ProductClass)
+    {
+
+        $productName = $ProductClass->getProduct()->getName();
+
+        if ($ProductClass->hasClassCategory1()) {
+            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+        }
+
+        if ($ProductClass->hasClassCategory2()) {
+            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+        }
+
+        return $productName;
+    }
+
+
+    /**
+     * 非公開商品の場合、カートから削除
+     *
+     * @param ProductClass $ProductClass
+     * @return bool
+     */
+    private function isProductDisplay(ProductClass $ProductClass)
+    {
+
+        if ($ProductClass->getProduct()->getStatus()->getId() !== Disp::DISPLAY_SHOW) {
+            // 非公開の商品はカートから削除
+            $this->removeProduct($ProductClass->getId());
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * 在庫数と販売制限数のチェック
+     * 在庫数または販売制限数以上の個数が設定されていれば、それぞれの個数にセットし、
+     * 在庫数と販売制限数ともに個数が超えていれば、少ない方を適用させてメッセージを表示する
+     *
+     * @param ProductClass $ProductClass
+     * @param $productName
+     * @param $quantity
+     * @return int|string
+     */
+    private function setProductLimit(ProductClass $ProductClass, $productName, $quantity)
+    {
+
+        /**
+         * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
+         * ここでは ProductClass::stock で在庫のチェックをする
+         */
+
+        $tmp_quantity = 0;
+
+        // 在庫数(在庫無制限の場合、null)
+        $stock = $ProductClass->getStock();
+        // 在庫無制限(在庫無制限の場合、1)
+        $stockUnlimited = $ProductClass->getStockUnlimited();
+
+        // 販売制限数(設定されていなければnull)
+        $saleLimit = $ProductClass->getSaleLimit();
+
+        if ($stockUnlimited) {
+            // 在庫無制限
+
+            if ($saleLimit && $saleLimit < $quantity) {
+                // 販売制限数を超えていれば販売制限数をセット
+                $tmp_quantity = $saleLimit;
+                $this->addError('cart.over.sale_limit', $productName);
+            }
+        } else {
+            // 在庫制限あり
+
+            if ($stock < 1) {
+                // 在庫がなければカートから削除
+                $this->addError('cart.zero.stock', $productName);
+                $this->removeProduct($ProductClass->getId());
+            } else {
+                // 在庫数チェックと販売制限数チェックどちらを適用するか設定
+                $message = 'cart.over.stock';
+                if ($saleLimit) {
+                    if ($stock > $saleLimit) {
+                        // 販売制限数チェック
+                        $limit = $saleLimit;
+                        $message = 'cart.over.sale_limit';
+                    } else {
+                        // 在庫数チェック
+                        $limit = $stock;
+                    }
+                } else {
+                    // 在庫数チェック
+                    $limit = $stock;
+                }
+
+                if ($limit < $quantity) {
+                    // 在庫数、販売制限数を超えていれば購入可能数までをセット
+                    $tmp_quantity = $limit;
+                    $this->addError($message, $productName);
+                }
+            }
+        }
+
+        if ($tmp_quantity) {
+            $quantity = $tmp_quantity;
+        }
+
+        return $quantity;
+
     }
 
 }

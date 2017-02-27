@@ -13,6 +13,11 @@ namespace Plugin\[code];
 
 use Eccube\Application;
 use Eccube\Event\EventArgs;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 class [code]Event
 {
@@ -20,6 +25,11 @@ class [code]Event
     /** @var  \Eccube\Application $app */
     private $app;
 
+    /**
+     * [code]Event constructor.
+     *
+     * @param Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;

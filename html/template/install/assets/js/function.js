@@ -8,9 +8,9 @@ jQuery(document).ready(function($){
  * Brake point Check
  */
 
-	
+
 	$(window).on('load , resize', function(){
-		if(window.innerWidth < 768){		
+		if(window.innerWidth < 768){
 			$('body').addClass('sp_view');
 			$('body').removeClass('md_view');
 			$('body').removeClass('pc_view');
@@ -29,7 +29,7 @@ jQuery(document).ready(function($){
 		}
 		return false;
 	});
-		
+
 
 
 /////////// accordion
@@ -84,4 +84,17 @@ jQuery(document).ready(function($){
 			showParameters();
 		}
 	});
+
+/////////// 特定の条件下でのみ入力を許可する
+    // ロードバランサー、プロキシ設定
+    $("[name*='[trusted_proxies_connection_only]']").change(function() {
+        if ($(this).prop("checked")) {
+            $("[name*='[trusted_proxies]']").prop("readonly", "readonly");
+        } else {
+            $("[name*='[trusted_proxies]']").prop("readonly", null);
+        }
+    });
+
+
+
 });

@@ -2,14 +2,13 @@
 
 namespace Eccube\Tests\Command;
 
-use Silex\WebTestCase;
-use Guzzle\Http\Client;
 use Eccube\Application;
+use Eccube\Command\GeneratorCommand\AbstractPluginGenerator;
+use Eccube\Tests\EccubeTestCase;
 use Knp\Command\Command;
-use Eccube\Command\PluginCommand\AbstractPluginGenerator;
 use Symfony\Component\Console\Tester\CommandTester;
 
-abstract class AbstractCommandTest extends WebTestCase
+abstract class AbstractCommandTest extends EccubeTestCase
 {
 
     const LOOP_MAX_LIMIT = 5;
@@ -139,6 +138,7 @@ abstract class AbstractCommandTest extends WebTestCase
     public function createApplication()
     {
         $app = Application::getInstance();
+        $app['debug'] = true;
         $app->initialize();
 
         // Console

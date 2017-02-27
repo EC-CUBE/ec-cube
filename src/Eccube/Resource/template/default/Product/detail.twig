@@ -228,24 +228,35 @@ $(function(){
                                     <ul id="detail_cart_box__insert_button" class="row">
                                         <li class="col-xs-12 col-sm-8"><button type="submit" id="add-cart" class="btn btn-primary btn-block prevention-btn prevention-mask">カートに入れる</button></li>
                                     </ul>
+                                    {#Favorite product button#}
                                     {% if BaseInfo.option_favorite_product == 1 %}
-                                    <ul id="detail_cart_box__favorite_button" class="row">
-                                        {% if is_favorite == false %}
-                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block prevention-btn prevention-mask">お気に入りに追加</button></li>
-                                        {% else %}
-                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block" disabled="disabled">お気に入りに追加済みです</button></li>
-                                        {% endif %}
-                                    </ul>
+                                        <ul id="detail_cart_box__favorite_button" class="row">
+                                            {% if is_favorite == false %}
+                                                <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block prevention-btn prevention-mask">お気に入りに追加</button></li>
+                                            {% else %}
+                                                <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block" disabled="disabled">お気に入りに追加済みです</button></li>
+                                            {% endif %}
+                                        </ul>
                                     {% endif %}
-                                </div>
+                                </div> {#End div#detail_cart_box__button_area #}
                             {% else %}
-                                {# 在庫がない場合は品切れボタンのみ表示 #}
+                                {# 在庫がない場合は品切れボタンを表示 #}
                                 <div id="detail_cart_box__button_area" class="btn_area">
                                     <ul class="row">
                                         <li class="col-xs-12 col-sm-8"><button type="button" class="btn btn-default btn-block" disabled="disabled">ただいま品切れ中です</button></li>
                                     </ul>
-                                </div>
-                            {% endif %}
+                                    {#Favorite product button#}
+                                    {% if BaseInfo.option_favorite_product == 1 %}
+                                        <ul id="detail_cart_box__favorite_button" class="row">
+                                            {% if is_favorite == false %}
+                                                <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block prevention-btn prevention-mask">お気に入りに追加</button></li>
+                                            {% else %}
+                                                <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block" disabled="disabled">お気に入りに追加済みです</button></li>
+                                            {% endif %}
+                                        </ul>
+                                    {% endif %}
+                                </div> {#End div#detail_cart_box__button_area #}
+                            {% endif %} {#End stock find#}
                         </div>
                         <!--▲買い物かご-->
                         {{ form_rest(form) }}
