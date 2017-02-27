@@ -255,4 +255,38 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $this->assertContains($customer->getName01(), $crawler->filter('div#result_list_main__body')->html());
     }
+
+    /**
+     * 受注削除時に在庫が正しく更新されるかのテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testDeleteOrderStock()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+
+        $OrderDetail = $Order->getOrderDetails();
+
+        $ProductClass = $OrderDetail[0]->getProductClass();
+
+        $quantity = $OrderDetail[0]->getQuantity();
+        $stock = $ProductClass->getProductStock()->getStock();
+
+        $crawler = $this->client->request(
+            'DELETE',
+            $this->app->path('admin_order_delete', array('id' => $Order->getId()))
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->app->url(
+                'admin_order_page', array('page_no' => 1)
+            ).'?resume=1'
+        ));
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClass->getProductStock()->getId());
+
+        $this->expected = $ProductStock->getStock();
+        $this->actual = $stock + $quantity;
+
+        $this->verify();
+    }
 }

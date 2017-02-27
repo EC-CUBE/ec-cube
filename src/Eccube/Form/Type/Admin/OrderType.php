@@ -311,7 +311,7 @@ class OrderType extends AbstractType
             $orderDetails = $form['OrderDetails']->getData();
             if (empty($orderDetails) || count($orderDetails) < 1) {
                 // 画面下部にエラーメッセージを表示させる
-                $form['charge']->addError(new FormError('商品が追加されていません。'));
+                $form->addError(new FormError('商品が追加されていません。'));
             }
         });
     }

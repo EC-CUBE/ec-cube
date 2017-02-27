@@ -151,6 +151,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.order'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Order');
         });
+        $app['eccube.repository.order_detail'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\OrderDetail');
+        });
         $app['eccube.repository.product'] = $app->share(function () use ($app) {
             $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
             $productRepository->setApplication($app);

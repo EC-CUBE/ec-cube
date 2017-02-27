@@ -24,6 +24,7 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\LockMode;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -62,6 +63,7 @@ class EditController extends AbstractController
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
         $OriginalOrderDetails = new ArrayCollection();
+        $tempOriginalOrderDetails = new ArrayCollection();
         // 編集前のお届け先情報を保持
         $OriginalShippings = new ArrayCollection();
         // 編集前のお届け先のアイテム情報を保持
@@ -69,6 +71,10 @@ class EditController extends AbstractController
 
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
+        }
+
+        foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+            $tempOriginalOrderDetails->add(clone $OrderDetail);
         }
 
         // 編集前の情報を保持
@@ -120,10 +126,55 @@ class EditController extends AbstractController
 
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
+                    // 在庫チェック時の数量を取得
+                    $stockQuantity = function ($orderDetail) use ($app, $tempOriginalOrderDetails) {
+                        // 在庫チェック
+                        // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
+                        if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
+
+                            $quantity = $orderDetail->getQuantity();
+
+                            // 在庫チェックあり
+                            // 在庫に対してロック(select ... for update)を実行
+                            $productStock = $app['eccube.repository.product_stock']->find(
+                                $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
+                            );
+
+                            foreach ($tempOriginalOrderDetails as $o) {
+                                if ($orderDetail->getId() == $o->getId()) {
+                                    $quantity = $quantity - $o->getQuantity();
+                                    break;
+                                }
+                            }
+
+                            return array(
+                                'quantity' => $quantity,
+                                'productStock' => $productStock,
+                            );
+                        }
+
+                        return null;
+                    };
+
+                    // 在庫チェック
+                    foreach ($TargetOrder->getOrderDetails() as $key => $orderDetail) {
+
+                        $stock = $stockQuantity($orderDetail);
+
+                        if ($stock) {
+                            // 購入数量と在庫数をチェックして在庫がなければエラー
+                            if ($stock['quantity'] > $stock['productStock']->getStock()) {
+                                $form['OrderDetails'][$key]['quantity']->addError(new FormError($orderDetail->getProduct()->getName().'の在庫がありません。'));
+                            }
+                        }
+                    }
+
                     if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
                         log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
                         $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
-                    } elseif ($form->isValid()) {
+                    }
+
+                    if ($form->isValid()) {
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
@@ -146,8 +197,12 @@ class EditController extends AbstractController
                         $this->updateDate($app, $TargetOrder, $OriginOrder);
 
                         // 受注明細で削除されているものをremove
-                        foreach ($OriginalOrderDetails as $OrderDetail) {
+                        $removeOrderDetail = new ArrayCollection();
+                        foreach ($OriginalOrderDetails as $key => $OrderDetail) {
                             if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
+                                $removeOrderDetail->add(clone $OrderDetail);
+                                $OriginalOrderDetails->remove($key);
+                                $tempOriginalOrderDetails->remove($key);
                                 $app['orm.em']->remove($OrderDetail);
                             }
                         }
@@ -228,6 +283,38 @@ class EditController extends AbstractController
                             $TargetOrder->setSex($Customer->getSex());
                             $TargetOrder->setJob($Customer->getJob());
                             $TargetOrder->setBirth($Customer->getBirth());
+                        }
+
+                        // 在庫情報更新
+                        foreach ($TargetOrder->getOrderDetails() as $orderDetail) {
+
+                            $stock = $stockQuantity($orderDetail);
+
+                            if ($stock) {
+                                // 在庫情報の在庫数を更新
+                                $quantity = $stock['productStock']->getStock() - $stock['quantity'];
+                                $stock['productStock']->setStock($quantity);
+
+                                // 商品規格情報の在庫数を更新
+                                $orderDetail->getProductClass()->setStock($quantity);
+                            }
+
+                        }
+
+                        // 削除された受注明細の在庫情報更新
+                        foreach ($removeOrderDetail as $orderDetail) {
+
+                            $stock = $stockQuantity($orderDetail);
+
+                            if ($stock) {
+                                // 在庫情報の在庫数を更新
+                                $quantity = $stock['productStock']->getStock() + $stock['quantity'];
+                                $stock['productStock']->setStock($quantity);
+
+                                // 商品規格情報の在庫数を更新
+                                $orderDetail->getProductClass()->setStock($quantity);
+                            }
+
                         }
 
                         $app['orm.em']->persist($TargetOrder);

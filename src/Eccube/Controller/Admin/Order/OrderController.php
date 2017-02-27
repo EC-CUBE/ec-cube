@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Doctrine\DBAL\LockMode;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -196,12 +197,35 @@ class OrderController extends AbstractController
 
         if (!$Order) {
             $app->deleteMessage();
+
             return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
         log_info('受注削除開始', array($Order->getId()));
 
         $Order->setDelFlg(Constant::ENABLED);
+
+        // 削除された受注明細の在庫情報更新
+        foreach ($Order->getOrderDetails() as $orderDetail) {
+
+            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
+
+                $quantity = $orderDetail->getQuantity();
+
+                // 在庫チェックあり
+                // 在庫に対してロック(select ... for update)を実行
+                $productStock = $app['eccube.repository.product_stock']->find(
+                    $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
+                );
+
+                // 在庫情報の在庫数を更新
+                $quantity = $productStock->getStock() + $quantity;
+                $productStock->setStock($quantity);
+
+                // 商品規格情報の在庫数を更新
+                $orderDetail->getProductClass()->setStock($quantity);
+            }
+        }
 
         $app['orm.em']->persist($Order);
         $app['orm.em']->flush();
@@ -302,9 +326,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'order_' . $now->format('YmdHis') . '.csv';
+        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('受注CSV出力ファイル名', array($filename));
@@ -393,9 +417,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'shipping_' . $now->format('YmdHis') . '.csv';
+        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('配送CSV出力ファイル名', array($filename));

@@ -21,9 +21,10 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      *
      * @param Customer $Customer
      * @param Product $Product
+     * @param $unlimited
      * @return array
      */
-    public function createFormData(Customer $Customer, Product $Product = null)
+    public function createFormData(Customer $Customer, Product $Product = null, $unlimited = 0)
     {
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
@@ -34,11 +35,13 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $OrderDetails = array();
         if (is_object($Product)) {
             $ProductClasses = $Product->getProductClasses();
+            $ProductClasses[0]->setStockUnlimited($unlimited);
             $OrderDetails[] = array(
                 'Product' => $Product->getId(),
                 'ProductClass' => $ProductClasses[0]->getId(),
                 'price' => $ProductClasses[0]->getPrice02(),
-                'quantity' => $faker->numberBetween(1, 999),
+                // 'quantity' => $faker->numberBetween(1, 999),
+                'quantity' => 1,
                 'tax_rate' => 8, // XXX ハードコーディング
                 'tax_rule' => 1,
                 'product_name' => $Product->getName(),

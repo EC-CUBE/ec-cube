@@ -23,8 +23,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Entity\Order;
-
 class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
@@ -35,7 +33,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->Product = $this->createProduct();
+     //   $this->Product = $this->createProduct();
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         // 複数配送を無効に
         $BaseInfo->setOptionMultipleShipping(0);
@@ -50,11 +48,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNewPost()
     {
+        $Product = $this->createProduct();
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_new'),
             array(
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $this->createFormData($this->Customer, $Product, 1),
                 'mode' => 'register'
             )
         );
@@ -74,8 +73,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testRoutingAdminOrderEditPost()
     {
         $Customer = $this->createCustomer();
+        $Product = $this->createProduct();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormData($Customer, $Product, 1);
         $this->client->request(
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
@@ -154,11 +154,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testSearchProduct()
     {
+        $Product = $this->createProduct();
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_product'),
             array(
-                'id' => $this->Product->getId()
+                'id' => $Product->getId()
             ),
             array(),
             array(
@@ -178,8 +179,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testOrderProcessingToFrontConfirm()
     {
         $Customer = $this->createCustomer();
+        $Product = $this->createProduct();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormData($Customer, $Product, 1);
         $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
@@ -273,13 +275,14 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
 
         $Customer = $this->createCustomer();
+        $Product = $this->createProduct();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormData($Customer, $Product, 1);
         // 管理画面から受注登録
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
-            'order' => $formData,
-            'mode' => 'register'
+                'order' => $formData,
+                'mode' => 'register'
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
@@ -293,15 +296,15 @@ class EditControllerTest extends AbstractEditControllerTestCase
         foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
             //商品数変更3個追加
             $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
-            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
+            $tax = (int)$this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
         }
 
         // 管理画面で受注編集する
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
-            'order' => $formDataForEdit,
-            'mode' => 'register'
+                'order' => $formDataForEdit,
+                'mode' => 'register'
             )
         );
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
@@ -314,15 +317,17 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     /**
      * 受注登録時に会員情報が正しく保存されているかどうかのテスト
+     *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1682
      */
     public function testOrderProcessingWithCustomer()
     {
+        $Product = $this->createProduct();
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_new'),
             array(
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $this->createFormData($this->Customer, $Product, 1),
                 'mode' => 'register'
             )
         );
@@ -343,5 +348,258 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->expected = $this->Customer->getBirth();
         $this->actual = $SavedOrder->getBirth();
         $this->verify('会員の誕生日が保存されている');
+    }
+
+    /**
+     * 受注登録時に在庫が正しく更新されるかのテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testNewOrderStock()
+    {
+
+        $Product = $this->createProduct('在庫', 1);
+
+        $ProductClass = $Product->getProductClasses();
+
+        $stock = $ProductClass[0]->getProductStock()->getStock();
+
+        $formData = $this->createFormData($this->Customer, $Product);
+
+        $quantity = 20;
+
+        $formData['OrderDetails']['0']['quantity'] = $quantity;
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_new'),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClass[0]->getProductStock()->getId());
+
+        $this->expected = $ProductStock->getStock();
+        $this->actual = $stock - $quantity;
+
+        $this->verify();
+
+    }
+
+
+    /**
+     * 受注編集時に在庫が正しく更新されるかのテスト(数量変更なし)
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testUpdateOrderStock()
+    {
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $Product = $this->createProduct('在庫', 1);
+        $ProductClass = $Product->getProductClasses();
+        $stock = $ProductClass[0]->getProductStock()->getStock();
+        $formData = $this->createFormData($Customer, $Product);
+
+        $OrderDetail = $Order->getOrderDetails();
+
+        $quantity = $OrderDetail[0]->getQuantity();
+
+        $formData['OrderDetails']['0']['quantity'] = $quantity;
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClass[0]->getProductStock()->getId());
+
+        $this->expected = $ProductStock->getStock();
+        $this->actual = $stock;
+
+        $this->verify();
+
+    }
+
+    /**
+     * 受注編集時に在庫が正しく更新されるかのテスト(数量変更あり)
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testUpdateOrderStockAdd()
+    {
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $Product = $this->createProduct('在庫', 1);
+        $ProductClass = $Product->getProductClasses();
+        $stock = $ProductClass[0]->getProductStock()->getStock();
+        $formData = $this->createFormData($Customer, $Product);
+
+        $OrderDetail = $Order->getOrderDetails();
+
+        $quantity = $OrderDetail[0]->getQuantity();
+
+        $quantity = $quantity + 5;
+
+        $formData['OrderDetails']['0']['quantity'] = $quantity;
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClass[0]->getProductStock()->getId());
+
+        $this->expected = $ProductStock->getStock();
+        $this->actual = $stock - 5;
+
+        $this->verify();
+
+    }
+
+    /**
+     * 受注編集時に在庫が正しく更新されるかのテスト(数量変更あり)
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testUpdateOrderStockRemove()
+    {
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $Product = $this->createProduct('在庫', 1);
+        $ProductClass = $Product->getProductClasses();
+        $stock = $ProductClass[0]->getProductStock()->getStock();
+        $formData = $this->createFormData($Customer, $Product);
+
+        $OrderDetail = $Order->getOrderDetails();
+
+        $quantity = $OrderDetail[0]->getQuantity();
+
+        $quantity = $quantity - 3;
+
+        $formData['OrderDetails']['0']['quantity'] = $quantity;
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClass[0]->getProductStock()->getId());
+
+        $this->expected = $ProductStock->getStock();
+        $this->actual = $stock + 3;
+
+        $this->verify();
+
+    }
+
+    /**
+     * 受注編集時に商品追加後、在庫が正しく更新されるかのテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testUpdateOrderStockOrderAdd()
+    {
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $Product = $this->createProduct('在庫', 2);
+        $ProductClasses = $Product->getProductClasses();
+        $stock = $ProductClasses[1]->getProductStock()->getStock();
+        $formData = $this->createFormData($Customer, $Product);
+
+        $quantity = 10;
+
+        $OrderDetails = array(
+            'Product' => $Product->getId(),
+            'ProductClass' => $ProductClasses[1]->getId(),
+            'price' => $ProductClasses[1]->getPrice02(),
+            'quantity' => $quantity,
+            'tax_rate' => 8,
+            'tax_rule' => 1,
+            'product_name' => $Product->getName(),
+            'product_code' => $ProductClasses[1]->getCode(),
+        );
+        $formData['OrderDetails'][] = $OrderDetails;
+
+        $OrderDetail = $Order->getOrderDetails();
+        $formData['OrderDetails']['0']['quantity'] = $OrderDetail[0]->getQuantity();
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClasses[1]->getProductStock()->getId());
+
+        $this->expected = $ProductStock->getStock();
+        $this->actual = $stock - $quantity;
+
+        $this->verify();
+
+    }
+
+
+    /**
+     * 受注編集時の商品追加時に、在庫がなければ追加できないテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2084
+     */
+    public function testSearchProductStock()
+    {
+
+        $Product = $this->createProduct('在庫', 1);
+
+        $ProductClasses = $Product->getProductClasses();
+
+        $ProductStock = $this->app['eccube.repository.product_stock']->find($ProductClasses[0]->getProductStock()->getId());
+
+        $ProductClasses[0]->setStock(0);
+        $ProductStock->setStock(0);
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_product'),
+            array(
+                'id' => $Product->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $this->expected = $crawler->filter('button')->getNode(0)->firstChild->data;
+
+        $this->actual = 'ただいま品切れ中です';
+
+        $this->verify();
+
     }
 }

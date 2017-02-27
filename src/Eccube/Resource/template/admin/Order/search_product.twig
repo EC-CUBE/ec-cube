@@ -31,7 +31,47 @@
                 }
             }
         }
+
+        fnCheckStock(select, product_id, null, null);
     }
+
+    function fnCheckStock(select, product_id, classcat_id, classcat_id2) {
+
+        var classcat2 = null;
+        if (classcat_id == null) {
+            var $sele = $(select);
+
+            classcat_id = $sele.val() ? $sele.val() : '';
+            classcat2 = productsClassCategories[product_id][classcat_id];
+            classcat2 = classcat2['#'];
+        } else {
+            classcat2 = productsClassCategories[product_id][classcat_id]['#' + classcat_id2];
+        }
+
+        // 在庫(品切れ)
+        var $addbtn = $('#btn-' + product_id);
+        if (typeof classcat2 !== 'undefined') {
+            if (classcat2.stock_find === false) {
+                $addbtn.prop('disabled', true);
+                $addbtn.text('ただいま品切れ中です');
+            } else {
+                $addbtn.prop('disabled', false);
+                $addbtn.text('決定');
+            }
+        } else {
+            $addbtn.prop('disabled', false);
+            $addbtn.text('決定');
+        }
+    }
+
+    // 規格2選択時
+    function fnSetClassCategory(select, product_id) {
+        var $this = $(select);
+        var $sele1 = $('.category1-' + product_id);
+        var $sele2 = $this.val() ? $this.val() : '';
+        fnCheckStock(null, product_id, $sele1.val(), $sele2);
+    }
+
     // 受注明細行を追加する.
     // 受注明細行のレコード数カウンタ(order_details_count)は, edit.twig側で定義している.
     function fnAddOrderDetail($row, product_id) {
@@ -191,7 +231,6 @@
         {% for Product in pagination %}
             <form name="product_form{{ Product.id }}">
                 {% set form = forms[Product.id] %}
-
                 <tr>
                     <td>
                         {{ Product.id }}
@@ -206,25 +245,31 @@
                     </td>
                     <td>
                         {% if form.classcategory_id1 is defined %}
-                            {{ form_label(form.classcategory_id1) }}：{{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
+                            {{ form_label(form.classcategory_id1) }}：{{ form_widget(form.classcategory_id1, { attr : { 'class': 'category1-' ~ Product.id, 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
                             {% if form.classcategory_id2 is defined %}
-                                <br/>{{ form_label(form.classcategory_id2) }}：{{ form_widget(form.classcategory_id2, {'id': ''}) }}
+                                <br/>{{ form_label(form.classcategory_id2) }}：{{ form_widget(form.classcategory_id2, {'id': '', attr : {'onchange' : "fnSetClassCategory(this," ~ Product.id ~ ")"  }}) }}
                             {% endif %}
                         {% endif %}
                     </td>
-                    <div class="extra-form">
-                        {% for f in form.getIterator %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_label(f) }}
-                                {{ form_widget(f) }}
-                                {{ form_errors(f) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    <td>
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_label(f)}}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </td>
                     <td class="text-right">
-                        <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ Product.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                        {% if Product.stock_find %}
+                        <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ Product.id }})" type="button" id="btn-{{ Product.id }}" class="btn btn-default btn-sm" name="mode" value="modal">
                             決定
                         </button>
+                        {% else %}
+                            <button type="button" class="btn btn-default btn-sm" name="mode" value="modal" disabled="disabled">ただいま品切れ中です</button>
+                        {% endif %}
                     </td>
                 </tr>
             </form>

@@ -23,9 +23,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Entity\Order;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Product;
 
 /**
  * 複数配送設定用 EditController のテストケース.
@@ -42,7 +40,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->Product = $this->createProduct();
+        // $this->Product = $this->createProduct();
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         // 複数配送を有効に
@@ -58,9 +56,10 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNewPost()
     {
+        $Product = $this->createProduct();
         $Shippings = array();
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_new'),
@@ -86,8 +85,9 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testRoutingAdminOrderEditPost()
     {
         $Shippings = array();
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Product = $this->createProduct();
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
@@ -170,11 +170,12 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testSearchProduct()
     {
+        $Product = $this->createProduct();
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_product'),
             array(
-                'id' => $this->Product->getId()
+                'id' => $Product->getId()
             ),
             array(),
             array(
@@ -194,11 +195,12 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testOrderProcessingToFrontConfirm()
     {
         $Customer = $this->createCustomer();
+        $Product = $this->createProduct();
         $Order = $this->createOrder($Customer);
 
         $Shippings = array();
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
 
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
@@ -292,14 +294,19 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      */
     public function testOrderProcessingWithTax()
     {
+        $Product = $this->createProduct();
 
         $Shippings = array();
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
+
+        $OrderDetail = $Order->getOrderDetails();
+        $formData['OrderDetails']['0']['quantity'] = $OrderDetail[0]->getQuantity();
+
         // 管理画面から受注登録
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
@@ -346,13 +353,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testOrderEditWithShippingItemDelete()
     {
+        $Product = $this->createProduct();
         $Shippings = array();
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
-        $Shippings = $Order->getShippings();
 
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
@@ -404,13 +411,17 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
     public function testOrderEditWithShippingDelete()
     {
+        $Product = $this->createProduct();
         $Shippings = array();
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
-        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         $Shippings = $Order->getShippings();
+
+        $OrderDetail = $Order->getOrderDetails();
+        $formData['OrderDetails']['0']['quantity'] = $OrderDetail[0]->getQuantity();
 
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(

@@ -38,6 +38,8 @@ $(function() {
         AjaxZip3.zip2addr('order[zip][zip01]', 'order[zip][zip02]', 'order[address][pref]', 'order[address][addr01]');
     });
 
+
+
     // 注文者情報をコピー
     $('.copyCustomerToShippingButton').on('click', function() {
         var data = $(this).data();
@@ -94,14 +96,14 @@ $(function() {
 
         var data = $(this).data();
         shipment_idx = data.idx;
-        
+
         shipmentItem_idx = 0;
-        for(i = 0; i < shipping_details_count.length; i++) { 
+        for(i = 0; i < shipping_details_count.length; i++) {
             if (shipping_details_count[i].idx == shipment_idx) {
                 shipmentItem_idx = shipping_details_count[i].cnt;
             }
         }
-        
+
         $.ajax({
             type: 'POST',
             dataType: 'html',
@@ -129,7 +131,7 @@ $(function() {
         {% set maxIndex = max(form.OrderDetails|keys) + 1 %}
     {% endif %}
     order_details_count = '{{ maxIndex }}';
-    
+
     var shipping_details_count = [];
     {% if BaseInfo.optionMultipleShipping %}
         {% for shippingKey, shippingForm in form.Shippings %}
@@ -155,14 +157,14 @@ $(function() {
 
         onChangeOrderDetailCount(order_details_count);
     });
-    
+
     $(".delete_delivery").on("click", function(){
        var data = $(this).data();
        $("#shipping_info_box--" + data.idx ).remove();
        document.form1.modal.value = "calc";
        document.form1.submit();
     });
-    
+
     $(".delete_shipping_product").on("click", function(){
        var data = $(this).data();
        var idKey = "order_Shippings_"+ data.idx.replace("--","_ShipmentItems_") +"_quantity";
@@ -369,6 +371,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 <div id="product_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="product_info_list" class="order_list">
                         <div class="btn_area">
+                            {{ form_errors(form) }}
                             <ul id="product_info_list__search_menu">
                                 {% if BaseInfo.optionMultipleShipping != 1 %}
                                 <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
