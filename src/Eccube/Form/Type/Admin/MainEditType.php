@@ -126,16 +126,11 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))->add('meta_tags', 'textarea', array(
-                'label' => 'フリーエリア',
+                'label' => '追加metaタグ',
                 'attr' => array(
                     'placeholder' => '(例)：<meta name="copyright" content="著作権を入力してください" /><meta name="classification" content="webページのジャンルを入力してください" />',
                 ),
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $app['config']['mutext_len'],
-                    ))
-                )
+                'required' => false
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
