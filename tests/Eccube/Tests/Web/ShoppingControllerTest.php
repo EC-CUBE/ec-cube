@@ -436,7 +436,5 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // Title
         $this->assertContains('お届け先の追加', $crawler->html());
-        // Header
-        $this->assertContains('お届け先の追加', $crawler->filter('title')->html());
     }
 }
