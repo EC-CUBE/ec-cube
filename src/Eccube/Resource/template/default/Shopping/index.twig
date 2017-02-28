@@ -331,16 +331,16 @@ $(function() {
                             <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                         </dl>
                         <dl id="summary_box__quantity_price">
-                            <dt>手数料</dt>
+                            <dt>内手数料</dt>
                             <dd>{{ Order.charge|price }}</dd>
                         </dl>
                         <dl id="summary_box__shipping_price">
-                            <dt>送料</dt>
+                            <dt>内送料</dt>
                             <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                         </dl>
                         {% if Order.discount > 0 %}
                         <dl id="summary_box__discount_price">
-                            <dt>値引き</dt>
+                            <dt>内値引き</dt>
                             <dd>{{ (0 - Order.discount)|price}}</dd>
                         </dl>
                         {% endif %}
