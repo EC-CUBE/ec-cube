@@ -174,7 +174,7 @@ class InstallController
 
                 // ロードバランサー、プロキシサーバ設定
                 $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
-                $trustedProxies = $config['admin_allow_host'];
+                $trustedProxies = $config['trusted_proxies'];
                 if (count($trustedProxies) > 0) {
                     $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n", $trustedProxies));
                 }
@@ -691,8 +691,8 @@ class InstallController
             $adminTrustedProxies = array('127.0.0.1/8', '::1');
         }
 
-        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}', '${TRUSTED_PROXIES_CONNECTION_ONLY}');
-        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl'], $data['trusted_proxies_connection_only']);
+        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
+        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -702,6 +702,7 @@ class InstallController
 
         $config = Yaml::parse(file_get_contents($config_file));
         $config['admin_allow_host'] = $adminAllowHosts;
+        $config['trusted_proxies_connection_only'] = $data['trusted_proxies_connection_only'];
         $config['trusted_proxies'] = $adminTrustedProxies;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);

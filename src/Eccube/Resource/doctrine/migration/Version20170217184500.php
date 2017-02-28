@@ -26,7 +26,7 @@ class Version20170217184500 extends AbstractMigration
 
         // キーが未定義の場合は初期値を設定する
         if (!array_key_exists('trusted_proxies_connection_only', $config)) {
-            $appendConfig['trusted_proxies_connection_only'] = 0;
+            $appendConfig['trusted_proxies_connection_only'] = false;
         }
         if (!array_key_exists('trusted_proxies', $config)) {
             $appendConfig['trusted_proxies'] = array();
