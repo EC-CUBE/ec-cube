@@ -65,9 +65,10 @@ script: # PHP7 + precise のテストは実行されない
 after_script:
   - if [[ $PHP_SAPI = 'phpdbg' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
   - if [[ $PHP_SAPI = 'phpdbg' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
-
-after_success:
   - if [[ $PHP_SAPI = 'phpdbg' ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
+
+#after_success:
+#  - if [[ $PHP_SAPI = 'phpdbg' ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
 
   # after_failure:
 #   - 'cat app/log/site_`date +"%Y-%m-%d"`.log'
