@@ -25,7 +25,7 @@ class Version20170224102513 extends AbstractMigration
 
         if ($Table->hasColumn('service_class')) {
             $this->addSql(
-                "UPDATE dtb_payment SET method_class = :method",
+                "UPDATE dtb_payment SET service_class = :method",
                 ['method' => '\Eccube\Service\PaymentService']
             );
         }

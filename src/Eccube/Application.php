@@ -277,7 +277,8 @@ class Application extends \Silex\Application
         };
 
         $this['eccube.router.extend'] = function ($app) {
-            $resource = $app['config']['root_dir'].'/app/Eccube/Controller';
+            // TODO ディレクトリ名は暫定
+            $resource = $app['config']['root_dir'].'/app/Acme/Controller';
             $cachePrefix = 'Extend';
 
             $router = $app['eccube.router']($resource, $cachePrefix);
