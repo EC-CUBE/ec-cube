@@ -24,7 +24,7 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Common\Constant;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
@@ -248,9 +248,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $crawler = $client->request('GET', $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $this->expected = 'お届け先の追加';
+        $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
+        $this->assertContains($this->expected, $this->actual);
     }
 
     /**
@@ -312,5 +312,34 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
             'second' => $email
         );
         return $form;
+    }
+
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1280
+     */
+    public function testShippingEditTitle()
+    {
+        $client = $this->createClient();
+        $this->scenarioCartIn($client);
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+
+        /** @var $crawler Crawler*/
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $shippingCrawler = $crawler->filter('#shipping_confirm_box--0');
+        $url = $shippingCrawler->selectLink('変更')->link()->getUri();
+        $url = str_replace('shipping_edit_change', 'shipping_edit', $url);
+
+        // Get shipping edit
+        $crawler = $client->request('GET', $url);
+        // Title
+        $this->assertContains('お届け先の変更', $crawler->html());
+        // Header
+        $this->assertContains('お届け先の変更', $crawler->filter('title')->html());
     }
 }
