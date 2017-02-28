@@ -17,6 +17,10 @@ DirectoryIndex index.php index.html .ht
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
+    # さくらのレンタルサーバでサイトへのアクセスをSSL経由に制限する場合の対応
+    # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
+    # RewriteRule ^(.*) - [E=HTTPS:on]
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
