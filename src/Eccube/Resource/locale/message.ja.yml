@@ -200,3 +200,7 @@ normal_price_title: 通常価格    # 未使用
 sale_price_title: 販売価格
 form.address1.help: '市区町村名 (例：千代田区神田神保町)'
 form.address2.help: '番地・ビル名 (例：1-3-5)'
+
+mypage.delivery.add.complete: 登録を完了しました。
+mypage.address.delete.complete: 削除しました。
+mypage.address.delete.failed: 削除できません。
