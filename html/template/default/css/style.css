@@ -2364,6 +2364,26 @@ margin-top: 5px;
     font-size: 2.4rem;
 }
 
+/* Shopping
+------------------------------------------- */
+#customer_detail_box .form-group.customer-input_name input {
+    width: 42% !important;
+    margin-bottom: 8px !important;
+}
+
+#customer_detail_box .form-group .customer-addr01 input,
+#customer_detail_box .form-group .customer-addr02 input,
+#customer_detail_box .form-group.customer-email input,
+#customer_detail_box .form-group.customer-company_name input,
+#customer_detail_box .column .form-inline input,
+#customer_detail_box .column .form-inline select {
+    margin-bottom: 8px !important;
+}
+
+#customer_detail_box .form-group.input_zip input,
+#customer_detail_box .form-group.input_tel input {
+    vertical-align: baseline !important;
+}
 
 
 /* MyPage
@@ -3251,8 +3271,11 @@ fieldset[disabled] .btn-link:focus {
         transform: translateX(0);
     }
 
-
-
+    /* Shopping
+    ------------------------------------------- */
+    #customer_detail_box .form-group.customer-input_name input {
+        width: 38% !important;
+    }
 
 }
 @media only screen and (min-width: 768px) {
@@ -4414,10 +4437,8 @@ fieldset[disabled] .btn-link:focus {
         margin-bottom: 16px;
     }
 
-	/* Error Page */
-
-	.error_page .footer_logo_area {
-		margin-top: 0;
-
-	}
+    /* Error Page */
+    .error_page .footer_logo_area {
+        margin-top: 0;
+    }
 }
