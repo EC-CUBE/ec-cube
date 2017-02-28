@@ -24,16 +24,22 @@ class TranslationTraitTest extends EccubeTestCase
 {
     public function testTrans()
     {
+        $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')->disableOriginalConstructor()->getMock();
+
         $app = $this->app;
-        $app['translator'] = $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')->disableOriginalConstructor()->getMock();
+        $app->overwrite('translator', $translator);
+
         $translator->expects($this->once())->method('trans');
         $app->trans('foo');
     }
 
     public function testTransChoice()
     {
-        $app = $this->app;
         $app['translator'] = $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')->disableOriginalConstructor()->getMock();
+
+        $app = $this->app;
+        $app->overwrite('translator', $translator);
+
         $translator->expects($this->once())->method('transChoice');
         $app->transChoice('foo', 2);
     }

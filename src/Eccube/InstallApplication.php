@@ -26,20 +26,38 @@ namespace Eccube;
 use Eccube\Application\ApplicationTrait;
 use Symfony\Component\Yaml\Yaml;
 
-class InstallApplication extends ApplicationTrait
+class InstallApplication extends \Silex\Application
 {
+    use \Silex\Application\FormTrait;
+    use \Silex\Application\UrlGeneratorTrait;
+    use \Silex\Application\MonologTrait;
+    use \Silex\Application\SwiftmailerTrait;
+    use \Silex\Application\SecurityTrait;
+    use \Eccube\Application\ApplicationTrait;
+    use \Eccube\Application\SecurityTrait;
+    use \Eccube\Application\TwigTrait;
+
     public function __construct(array $values = array())
     {
         $app = $this;
 
         parent::__construct($values);
 
-        $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__.'/../../app/log/install.log',
-        ));
+        $logDir = realpath(__DIR__.'/../../app/log');
+        $installLog = $logDir.'/install.log';
+
+        if (is_writable($logDir)) {
+            if (file_exists($installLog) && !is_writable($installLog)) {
+                die($installLog . ' の書込権限を変更して下さい。');
+            }
+            // install step2 でログディレクトリに書き込み権限が付与されればログ出力を開始する.
+            $app->register(new \Silex\Provider\MonologServiceProvider(), array(
+                'monolog.logfile' => $installLog,
+            ));
+        }
 
         // load config
-        $app['config'] = $app->share(function() {
+        $app['config'] = function() {
             $distPath = __DIR__.'/../../src/Eccube/Resource/config';
 
             $configConstant = array();
@@ -57,7 +75,7 @@ class InstallApplication extends ApplicationTrait
             $config = array_replace_recursive($configConstant, $configLog);
 
             return $config;
-        });
+        };
 
         $distPath = __DIR__.'/../../src/Eccube/Resource/config';
         $config_dist = Yaml::parse(file_get_contents($distPath.'/config.yml.dist'));
@@ -66,23 +84,21 @@ class InstallApplication extends ApplicationTrait
         }
 
         $app->register(new \Silex\Provider\SessionServiceProvider());
-
         $app->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.path' => array(__DIR__.'/Resource/template/install'),
             'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
         ));
 
-        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
-        $app['translator'] = $app->share($app->extend('translator', function($translator, \Silex\Application $app) {
+        $app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
-            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+            $r = new \ReflectionClass('Symfony\Component\Validator\Validation');
             $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
             if (file_exists($file)) {
                 $translator->addResource('xliff', $file, $app['locale'], 'validators');
@@ -96,10 +112,11 @@ class InstallApplication extends ApplicationTrait
             $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', $app['locale']);
 
             return $translator;
-        }));
+        });
 
         $app->mount('', new ControllerProvider\InstallControllerProvider());
         $app->register(new ServiceProvider\InstallServiceProvider());
+        $app->register(new \Silex\Provider\CsrfServiceProvider());
 
         $app->error(function(\Exception $e, $code) use ($app) {
             if ($code === 404) {

@@ -2,6 +2,10 @@ Eccube\Entity\Master\Work:
     type: entity
     table: mtb_work
     repositoryClass: Eccube\Repository\Master\WorkRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

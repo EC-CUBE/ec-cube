@@ -24,11 +24,15 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MainEditType extends AbstractType
@@ -48,7 +52,7 @@ class MainEditType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => '名称',
                 'required' => true,
                 'constraints' => array(
@@ -58,7 +62,7 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('url', 'text', array(
+            ->add('url', TextType::class, array(
                 'label' => 'URL',
                 'required' => true,
                 'constraints' => array(
@@ -71,7 +75,7 @@ class MainEditType extends AbstractType
                     )),
                 )
             ))
-            ->add('file_name', 'text', array(
+            ->add('file_name', TextType::class, array(
                 'label' => 'ファイル名',
                 'required' => true,
                 'constraints' => array(
@@ -84,13 +88,13 @@ class MainEditType extends AbstractType
                     )),
                 )
             ))
-            ->add('tpl_data', 'textarea', array(
+            ->add('tpl_data', TextareaType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
                 'constraints' => array()
             ))
-            ->add('author', 'text', array(
+            ->add('author', TextType::class, array(
                 'label' => 'author',
                 'required' => false,
                 'constraints' => array(
@@ -99,7 +103,7 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('description', 'text', array(
+            ->add('description', TextType::class, array(
                 'label' => 'description',
                 'required' => false,
                 'constraints' => array(
@@ -108,7 +112,7 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('keyword', 'text', array(
+            ->add('keyword', TextType::class, array(
                 'label' => 'keyword',
                 'required' => false,
                 'constraints' => array(
@@ -117,7 +121,7 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('meta_robots', 'text', array(
+            ->add('meta_robots', TextType::class, array(
                 'label' => 'robots',
                 'required' => false,
                 'constraints' => array(
@@ -126,11 +130,11 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('DeviceType', 'entity', array(
+            ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
-                'property' => 'id',
+                'choice_label' => 'id',
             ))
-            ->add('id', 'hidden')
+            ->add('id', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $url = $form['url']->getData();
@@ -166,7 +170,7 @@ class MainEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\PageLayout',
@@ -176,7 +180,7 @@ class MainEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'main_edit';
     }

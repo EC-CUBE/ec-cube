@@ -2,6 +2,10 @@ Eccube\Entity\Payment:
     type: entity
     table: dtb_payment
     repositoryClass: Eccube\Repository\PaymentRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer
@@ -62,6 +66,14 @@ Eccube\Entity\Payment:
             nullable: true
             precision: 10
             scale: 0
+        method_class:
+            type: string
+            length: 255
+            nullable: true
+        service_class:
+            type: string
+            length: 255
+            nullable: true
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member

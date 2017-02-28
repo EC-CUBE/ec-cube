@@ -26,6 +26,7 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -56,7 +57,7 @@ class PriceType extends AbstractType
 
         $resolver->setDefaults(array(
             'currency' => 'JPY',
-            'precision' => 0,
+            'scale' => 0,
             'constraints' => $constraints,
             'invalid_message' => 'form.type.numeric.invalid'
         ));
@@ -67,13 +68,13 @@ class PriceType extends AbstractType
      */
     public function getParent()
     {
-        return 'money';
+        return MoneyType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'price';
     }

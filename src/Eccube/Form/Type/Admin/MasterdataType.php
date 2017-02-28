@@ -25,6 +25,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -68,8 +69,8 @@ class MasterdataType extends AbstractType
         }
 
         $builder
-            ->add('masterdata', 'choice', array(
-                'choices' => $masterdata,
+            ->add('masterdata', ChoiceType::class, array(
+                'choices' => array_flip($masterdata),
                 'expanded' => false,
                 'multiple' => false,
                 'constraints' => array(
@@ -83,7 +84,7 @@ class MasterdataType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_system_masterdata';
     }

@@ -27,6 +27,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
@@ -37,7 +38,7 @@ class SecurityController extends AbstractController
     public function index(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_security');
+        $builder = $app['form.factory']->createBuilder(SecurityType::class);
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {

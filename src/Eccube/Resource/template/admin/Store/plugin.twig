@@ -32,26 +32,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     function changeActionSubmit(action, form_name) {
         document.forms[form_name].action = action;
         document.forms[form_name].submit();
+        return false;
     }
     $(function(){
-        $('[data-readme]').on('click', function() {
-            var url = '{{ url('admin_store_plugin_readme', {'id': '999999'}) }}';
-            $.ajax({
-                type: 'GET',
-                url: url.replace('999999', $(this).data('readme')),
-                dataType: "json",
-                success: function(data) {
-                    $(".prevention-masked").remove();
-                    $('#readmeModalLabel').text(data.name);
-                    $('#readmeContent').html(data.readme);
-                    $('#readmeModal').modal('show');
-                },
-                error: function() {
-                    $(".prevention-masked").remove();
-                    alert('Failed to read README.');
-                }
-            });
-            return false;
+        $('#readmeModal').on('show.bs.modal', function(event) {
+            var target = $(event.relatedTarget);
+            var modal = $(this)
+            modal.find('#readmeModalLabel').text(target.data('name'));
+            modal.find('#readmeContent').html(target.data('readme'));
         });
     });
 </script>
@@ -93,7 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
 {% endblock %}
 {% block modal %}
-<div class="modal" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
+<div class="modal fade" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -2,6 +2,10 @@ Eccube\Entity\CustomerAddress:
     type: entity
     table: dtb_customer_address
     repositoryClass: Eccube\Repository\CustomerAddressRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

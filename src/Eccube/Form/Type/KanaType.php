@@ -85,13 +85,13 @@ class KanaType extends AbstractType
      */
     public function getParent()
     {
-        return 'name';
+        return NameType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'kana';
     }

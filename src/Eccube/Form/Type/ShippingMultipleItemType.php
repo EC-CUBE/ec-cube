@@ -25,7 +25,10 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -50,7 +53,7 @@ class ShippingMultipleItemType extends AbstractType
 
 
         $builder
-            ->add('quantity', 'integer', array(
+            ->add('quantity', IntegerType::class, array(
                 'attr' => array(
                     'min' => 1,
                     'maxlength' => $this->app['config']['int_len'],
@@ -69,9 +72,9 @@ class ShippingMultipleItemType extends AbstractType
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     // 会員の場合、CustomerAddressを設定
                     $Customer = $app->user();
-                    $form->add('customer_address', 'entity', array(
+                    $form->add('customer_address', EntityType::class, array(
                         'class' => 'Eccube\Entity\CustomerAddress',
-                        'property' => 'shippingMultipleDefaultName',
+                        'choice_label' => 'shippingMultipleDefaultName',
                         'query_builder' => function (EntityRepository $er) use ($Customer) {
                             return $er->createQueryBuilder('ca')
                                 ->where('ca.Customer = :Customer')
@@ -95,8 +98,8 @@ class ShippingMultipleItemType extends AbstractType
                             $addresses[$i] = $CustomerAddress->getShippingMultipleDefaultName();
                             $i++;
                         }
-                        $form->add('customer_address', 'choice', array(
-                            'choices' => $addresses,
+                        $form->add('customer_address', ChoiceType::class, array(
+                            'choices' => array_flip($addresses),
                             'constraints' => array(
                                 new Assert\NotBlank(),
                             ),
@@ -133,7 +136,7 @@ class ShippingMultipleItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'shipping_multiple_item';
     }

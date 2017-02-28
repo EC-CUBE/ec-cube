@@ -26,8 +26,10 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -48,13 +50,13 @@ class PluginManagementType extends AbstractType
         $plugin_id = $options['plugin_id'];
 
         $builder
-            ->add('plugin_id', 'hidden', array(
+            ->add('plugin_id', HiddenType::class, array(
                 'data' => $plugin_id,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('plugin_archive', 'file', array(
+            ->add('plugin_archive', FileType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
@@ -71,7 +73,7 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'plugin_management';
     }
@@ -79,7 +81,7 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('plugin_id'));
     }

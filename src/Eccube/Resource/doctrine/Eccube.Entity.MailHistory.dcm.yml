@@ -2,6 +2,10 @@ Eccube\Entity\MailHistory:
     type: entity
     table: dtb_mail_history
     repositoryClass: Eccube\Repository\MailHistoryRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

@@ -24,15 +24,21 @@
 
 namespace Eccube\ServiceProvider;
 
+use Eccube\Common\Constant;
+use Eccube\DataCollector\EccubeDataCollector;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Symfony\Bridge\Twig\Extension\DumpExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
 use Symfony\Component\HttpKernel\EventListener\DumpListener;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\VarDumper;
+
 
 /**
  * Debug Dump
@@ -62,11 +68,11 @@ use Symfony\Component\VarDumper\VarDumper;
  * @see https://github.com/jeromemacias/Silex-Debug/tree/1.0
  *
  */
-class DebugServiceProvider implements ServiceProviderInterface
+class DebugServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['var_dumper.cloner'] = $app->share(function ($app) {
+        $app['var_dumper.cloner'] = function ($app) {
             $cloner = new VarCloner();
 
             if (isset($app['debug.max_items'])) {
@@ -78,37 +84,52 @@ class DebugServiceProvider implements ServiceProviderInterface
             }
 
             return $cloner;
-        });
+        };
 
-        $app['data_collector.templates'] = $app->share($app->extend('data_collector.templates', function ($templates) {
+        $app->extend('data_collector.templates', function ($templates) {
             return array_merge($templates, array(array('dump', '@Debug/Profiler/dump.html.twig')));
-        }));
-
-        $app['data_collector.dump'] = $app->share(function ($app) {
-            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);
         });
 
-        $app['data_collectors'] = $app->share($app->extend('data_collectors', function ($collectors, $app) {
-            $collectors['dump'] = $app->share(function ($app) {
+        $app['data_collector.dump'] = function ($app) {
+            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format'], null, null, new HtmlDumper());
+        };
+
+        $app->extend('data_collectors', function ($collectors, $app) {
+            $collectors['dump'] = function ($app) {
                 return $app['data_collector.dump'];
-            });
+            };
 
+            $collectors['eccube'] = function ($app) {
+                return new EccubeDataCollector($app);
+            };
             return $collectors;
-        }));
+        });
 
-        $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+        $app->extend('data_collector.templates', function ($templates, $app) {
+                array_unshift($templates, ['eccube', '@EccubeProfiler/eccube.html.twig']);
+                return $templates;
+            }
+        );
+
+        $app->extend('twig.loader.filesystem', function ($filesystem, $app) {
+                return $filesystem;
+            }
+        );
+
+        $app->extend('twig', function ($twig, $app) {
             if (class_exists('\Symfony\Bridge\Twig\Extension\DumpExtension')) {
                 $twig->addExtension(new DumpExtension($app['var_dumper.cloner']));
             }
 
             return $twig;
-        }));
+        });
 
-        $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem', function ($loader, $app) {
+        $app->extend('twig.loader.filesystem', function ($loader, $app) {
             $loader->addPath($app['debug.templates_path'], 'Debug');
+            $loader->addPath(__DIR__.'/../Resource/template/toolbar', 'EccubeProfiler');
 
             return $loader;
-        }));
+        });
 
         $app['debug.templates_path'] = function () {
             $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
@@ -123,8 +144,15 @@ class DebugServiceProvider implements ServiceProviderInterface
         // configuration for CLI mode is overridden in HTTP mode on
         // 'kernel.request' event
         VarDumper::setHandler(function ($var) use ($app) {
-            $dumper = new CliDumper();
-            $dumper->dump($app['var_dumper.cloner']->cloneVar($var));
+            $dumper = $app['data_collector.dump'];
+            $cloner = $app['var_dumper.cloner'];
+
+            $handler = function ($var) use ($dumper, $cloner) {
+                $dumper->dump($cloner->cloneVar($var));
+            };
+
+            VarDumper::setHandler($handler);
+            $handler($var);
         });
 
         $app['dispatcher']->addSubscriber(new DumpListener($app['var_dumper.cloner'], $app['data_collector.dump']));

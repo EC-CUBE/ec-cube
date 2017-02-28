@@ -28,6 +28,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @group plugin
+ */
 class DeliveryControllerTest extends AbstractWebTestCase
 {
 

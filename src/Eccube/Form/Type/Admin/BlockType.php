@@ -24,11 +24,15 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class BlockType extends AbstractType
@@ -48,7 +52,7 @@ class BlockType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'ブロック名',
                 'required' => true,
                 'constraints' => array(
@@ -58,7 +62,7 @@ class BlockType extends AbstractType
                     ))
                 )
             ))
-            ->add('file_name', 'text', array(
+            ->add('file_name', TextType::class, array(
                 'label' => 'ファイル名',
                 'required' => true,
                 'constraints' => array(
@@ -71,17 +75,17 @@ class BlockType extends AbstractType
                     )),
                 )
             ))
-            ->add('block_html', 'textarea', array(
+            ->add('block_html', TextareaType::class, array(
                 'label' => 'ブロックデータ',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => array()
             ))
-            ->add('DeviceType', 'entity', array(
+            ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
-                'property' => 'id',
+                'choice_label' => 'id',
             ))
-            ->add('id', 'hidden')
+            ->add('id', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
@@ -113,7 +117,7 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Block',
@@ -123,7 +127,7 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'block';
     }

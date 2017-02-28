@@ -22,6 +22,7 @@
  */
 namespace Eccube\Form\Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -53,6 +54,7 @@ class TelType extends AbstractType
                 new Assert\NotBlank(array()),
             ), $options['options']['constraints']);
         }
+
         if (!isset($options['options']['error_bubbling'])) {
             $options['options']['error_bubbling'] = $options['error_bubbling'];
         }
@@ -69,15 +71,15 @@ class TelType extends AbstractType
         // 全角英数を事前に半角にする
         $builder->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener());
         $builder
-            ->add($options['tel01_name'], 'text', array_merge_recursive($options['options'], $options['tel01_options']))
-            ->add($options['tel02_name'], 'text', array_merge_recursive($options['options'], $options['tel02_options']))
-            ->add($options['tel03_name'], 'text', array_merge_recursive($options['options'], $options['tel03_options']))
+            ->add($options['tel01_name'], TextType::class, array_merge_recursive($options['options'], $options['tel01_options']))
+            ->add($options['tel02_name'], TextType::class, array_merge_recursive($options['options'], $options['tel02_options']))
+            ->add($options['tel03_name'], TextType::class, array_merge_recursive($options['options'], $options['tel03_options']))
         ;
         $builder->setAttribute('tel01_name', $options['tel01_name']);
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
         // todo 変
-        $builder->addEventListener(FormEvents::POST_BIND, function ($event) use ($builder) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($builder) {
             $form = $event->getForm();
             $count = 0;
             if ($form[$builder->getName().'01']->getData() != '') {
@@ -138,10 +140,11 @@ class TelType extends AbstractType
             'trim' => true,
         ));
     }
+
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'tel';
     }

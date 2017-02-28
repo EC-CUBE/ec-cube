@@ -29,6 +29,9 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Common\Constant;
 use Eccube\Entity\Category;
 
+/**
+ * @group plugin
+ */
 class CategoryControllerTest extends AbstractAdminWebTestCase
 {
     public function setUp()

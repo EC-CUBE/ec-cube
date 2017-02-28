@@ -2,8 +2,8 @@
 
 namespace Eccube\Plugin;
 
-use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\DBAL\Migrations\Migration;
 
 class AbstractPluginManager {
 

@@ -26,7 +26,15 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
+use Eccube\Form\Type\Master\DispType;
+use Eccube\Form\Type\Master\TagType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -63,32 +71,32 @@ class ProductType extends AbstractType
 
         $builder
             // 商品規格情報
-            ->add('class', 'admin_product_class', array(
+            ->add('class', ProductClassType::class, array(
                 'mapped' => false,
             ))
             // 基本情報
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => '商品名',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('product_image', 'file', array(
+            ->add('product_image', FileType::class, array(
                 'label' => '商品画像',
                 'multiple' => true,
                 'required' => false,
                 'mapped' => false,
             ))
-            ->add('description_detail', 'textarea', array(
+            ->add('description_detail', TextareaType::class, array(
                 'label' => '商品説明',
             ))
-            ->add('description_list', 'textarea', array(
+            ->add('description_list', TextareaType::class, array(
                 'label' => '商品説明(一覧)',
                 'required' => false,
             ))
-            ->add('Category', 'entity', array(
+            ->add('Category', EntityType::class, array(
                 'class' => 'Eccube\Entity\Category',
-                'property' => 'NameWithLevel',
+                'choice_label' => 'NameWithLevel',
                 'label' => '商品カテゴリ',
                 'multiple' => true,
                 'mapped' => false,
@@ -97,58 +105,58 @@ class ProductType extends AbstractType
             ))
 
             // 詳細な説明
-            ->add('Tag', 'tag', array(
+            ->add('Tag', TagType::class, array(
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'mapped' => false,
             ))
-            ->add('search_word', 'textarea', array(
+            ->add('search_word', TextareaType::class, array(
                 'label' => "検索ワード",
                 'required' => false,
             ))
             // サブ情報
-            ->add('free_area', 'textarea', array(
+            ->add('free_area', TextareaType::class, array(
                 'label' => 'サブ情報',
                 'required' => false,
             ))
 
             // 右ブロック
-            ->add('Status', 'disp', array(
+            ->add('Status', DispType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('note', 'textarea', array(
+            ->add('note', TextareaType::class, array(
                 'label' => 'ショップ用メモ帳',
                 'required' => false,
             ))
 
             // タグ
-            ->add('tags', 'collection', array(
-                'type' => 'hidden',
+            ->add('tags', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
             // 画像
-            ->add('images', 'collection', array(
-                'type' => 'hidden',
+            ->add('images', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
-            ->add('add_images', 'collection', array(
-                'type' => 'hidden',
+            ->add('add_images', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
-            ->add('delete_images', 'collection', array(
-                'type' => 'hidden',
+            ->add('delete_images', CollectionType::class, array(
+                'entry_type' => HiddenType::class,
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
@@ -167,7 +175,7 @@ class ProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_product';
     }

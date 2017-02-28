@@ -71,7 +71,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {%- block form_widget -%}
     {{- parent() -}}
-    {%- if freeze == false -%}
+    {%- if freeze is defined and freeze == false -%}
         {%- if help is defined and help is not empty -%}
             <p class="mini"><span class="attention">{{ help|trans({}, translation_domain) }}</span></p>
         {%- endif -%}
@@ -79,7 +79,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock form_widget -%}
 
 {%- block form_widget_simple -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         {%- set type = 'hidden' -%}
         {%- if freeze_display_text -%}
             {{- value|default('')|nl2br -}}
@@ -100,8 +100,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {%- set attr = {'style': style} -%}
         {%- endif -%}
     {%- endif -%}
-    id="{{ id }}" name="{{ full_name }}"{%- if read_only -%} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif -%}
-    {%- if freeze == false -%}
+    id="{{ id }}" name="{{ full_name }}"{% if required %} required="required"{% endif %}
+    {%- if freeze is defined and freeze == false -%}
         {%- for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}" {% endfor -%}
     {%- endif -%}
 {%- endblock widget_attributes -%}
@@ -119,7 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock hidden_row -%}
 
 {%- block textarea_widget -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         {{- block('form_widget_simple') -}}
     {%- else -%}
         {{- parent() -}}
@@ -130,18 +130,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock textarea_widget -%}
 
 {%- block choice_widget_collapsed -%}
-    {% if freeze %}
+    {% if freeze is defined and freeze %}
         {% set flag = false %}
         {% for choice in choices %}
             {% if choice is selectedchoice(value) %}
                 {%- if freeze_display_text -%}
                     {{ choice.label|trans({}, translation_domain) }}
                 {% endif %}
-                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }}>
+                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }} />
                 {% set flag = true %}
             {% endif %}
         {% endfor %}
-        {% if flag == false %}<input type="hidden" value="" {{ block('widget_attributes') }}>{% endif %}
+        {% if flag == false %}<input type="hidden" value="" {{ block('widget_attributes') }} />{% endif %}
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
@@ -149,11 +149,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {%- block choice_widget_expanded -%}
-    {% if freeze %}
+    {% if freeze is defined and freeze %}
         {%- if freeze_display_text -%}
             {{ form.vars.data.name|default(form.vars.data) }}
         {%- endif -%}
-        <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }}>
+        <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }} />
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
@@ -161,7 +161,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {%- block checkbox_widget -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         {%- if checked -%}
             {%- if freeze_display_text -%}
                 {{ block('form_label') }}
@@ -174,7 +174,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock checkbox_widget -%}
 
 {%- block radio_widget -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         {%- if checked -%}
             {%- if freeze_display_text -%}
                 {{ block('form_label') }}
@@ -188,7 +188,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {%- block password_widget -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         <input type="hidden" {{ block('widget_attributes') }} value="{{ form.vars.data }}" />
     {%- else -%}
         {{- parent() -}}
@@ -202,7 +202,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- for child in form %}
         {{- form_errors(child) -}}
     {% endfor -%}
-        {%- if freeze -%}
+        {%- if freeze is defined and freeze -%}
             {{- form_widget(form[form.vars.name01]) -}}
             {{- form_widget(form[form.vars.name02]) -}}
         {%- else -%}
@@ -237,7 +237,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- for child in form %}
         {{- form_errors(child) -}}
     {% endfor -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
     {%- else -%}
         〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'attr': {'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
@@ -250,7 +250,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- for child in form %}
         {{- form_errors(child) -}}
     {% endfor -%}
-    {%- if freeze -%}
+    {%- if freeze is defined and freeze -%}
         {{- form_widget(form[form.vars.pref_name]) -}}
         {{- form_widget(form[form.vars.addr01_name]) -}}
         {{- form_widget(form[form.vars.addr02_name]) -}}

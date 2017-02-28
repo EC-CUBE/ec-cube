@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,10 +38,10 @@ class PageLayoutType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('layout', 'entity', array(
+            ->add('layout', EntityType::class, array(
                 'label' => false,
                 'class' => 'Eccube\Entity\PageLayout',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er
                         ->createQueryBuilder('l')
@@ -53,7 +54,7 @@ class PageLayoutType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_page_layout';
     }

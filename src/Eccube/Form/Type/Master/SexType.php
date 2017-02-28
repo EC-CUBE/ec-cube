@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -44,16 +45,16 @@ class SexType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\Sex',
             'expanded' => true,
-            'empty_value' => false,
+            'placeholder' => null
         ));
     }
 
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'sex';
     }

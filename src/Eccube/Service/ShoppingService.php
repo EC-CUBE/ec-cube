@@ -39,7 +39,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Eccube\Form\Type\ShippingItemType;
 use Eccube\Util\Str;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 class ShoppingService
@@ -721,6 +723,10 @@ class ShoppingService
         $orderDetails = $Order->getOrderDetails();
 
         foreach ($orderDetails as $orderDetail) {
+            if (is_null($orderDetail->getProduct())) {
+                // FIXME 配送明細を考慮する必要がある
+                continue;
+            }
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
                 return false;
@@ -737,6 +743,10 @@ class ShoppingService
 
         // 在庫チェック
         foreach ($orderDetails as $orderDetail) {
+            if (is_null($orderDetail->getProductClass())) {
+                // FIXME 配送明細を考慮する必要がある
+                continue;
+            }
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
                 // 在庫チェックあり
@@ -805,7 +815,7 @@ class ShoppingService
     public function setOrderUpdateData(Order $Order)
     {
         // 受注情報を更新
-        $Order->setOrderDate(new \DateTime());
+        $Order->setOrderDate(new \DateTime()); // XXX 後続の setOrderStatus でも時刻を更新している
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
         $this->setOrderStatus($Order, $OrderStatus);
 
@@ -825,6 +835,10 @@ class ShoppingService
 
         // 在庫情報更新
         foreach ($orderDetails as $orderDetail) {
+            if (is_null($orderDetail->getProductClass())) {
+                // FIXME 配送明細を考慮する必要がある
+                continue;
+            }
             // 在庫が無制限かチェックし、制限ありなら在庫数を更新
             if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
 
@@ -1000,8 +1014,8 @@ class ShoppingService
         ));
 
         $builder
-            ->add('shippings', 'collection', array(
-                'type' => 'shipping_item',
+            ->add('shippings', CollectionType::class, array(
+                'entry_type' => ShippingItemType::class,
                 'data' => $Order->getShippings(),
             ));
 
@@ -1016,6 +1030,8 @@ class ShoppingService
      *
      * @param Order $Order
      * @return \Symfony\Component\Form\FormBuilderInterface
+     *
+     * @deprecated 利用している箇所なし
      */
     public function getShippingFormBuilder(Order $Order)
     {
@@ -1033,8 +1049,8 @@ class ShoppingService
         ));
 
         $builder
-            ->add('shippings', 'collection', array(
-                'type' => 'shipping_item',
+            ->add('shippings', CollectionType::class, array(
+                'entry_type' => ShippingItemType::class,
                 'data' => $Order->getShippings(),
             ));
 
@@ -1048,6 +1064,8 @@ class ShoppingService
      *
      * @param Order $Order
      * @param array $data
+     *
+     * @deprecated
      */
     public function setFormData(Order $Order, array $data)
     {

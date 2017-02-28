@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Eccube\Form\Type\Admin\TaxRuleType;
+
 class TaxRuleTypeTest extends AbstractTypeTestCase
 {
 
@@ -43,7 +45,7 @@ class TaxRuleTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('tax_rule', null, array(
+            ->createBuilder(TaxRuleType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

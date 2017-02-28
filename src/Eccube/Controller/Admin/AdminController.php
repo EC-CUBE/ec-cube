@@ -31,6 +31,11 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ChangePasswordType;
+use Eccube\Form\Type\Admin\LoginType;
+use Eccube\Form\Type\Admin\SearchCustomerType;
+use Eccube\Form\Type\Admin\SearchOrderType;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
@@ -43,7 +48,7 @@ class AdminController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $builder = $app['form.factory']
-            ->createNamedBuilder('', 'admin_login');
+            ->createNamedBuilder('', LoginType::class);
 
         $event = new EventArgs(
             array(
@@ -79,13 +84,13 @@ class AdminController extends AbstractController
 
         // 受注マスター検索用フォーム
         $searchOrderBuilder = $app['form.factory']
-            ->createBuilder('admin_search_order');
+            ->createBuilder(SearchOrderType::class);
         // 商品マスター検索用フォーム
         $searchProductBuilder = $app['form.factory']
-            ->createBuilder('admin_search_product');
+            ->createBuilder(SearchProductType::class);
         // 会員マスター検索用フォーム
         $searchCustomerBuilder = $app['form.factory']
-            ->createBuilder('admin_search_customer');
+            ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(
@@ -197,7 +202,7 @@ class AdminController extends AbstractController
     public function changePassword(Application $app, Request $request)
     {
         $builder = $app['form.factory']
-            ->createBuilder('admin_change_password');
+            ->createBuilder(ChangePasswordType::class);
 
         $event = new EventArgs(
             array(
@@ -263,7 +268,7 @@ class AdminController extends AbstractController
     {
         // 商品マスター検索用フォーム
         $form = $app['form.factory']
-            ->createBuilder('admin_search_product')
+            ->createBuilder(SearchProductType::class)
             ->getForm();
 
         if ('POST' === $request->getMethod()) {

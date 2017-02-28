@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\TradelawType;
 use Symfony\Component\HttpFoundation\Request;
 
 class TradelawController extends AbstractController
@@ -43,7 +44,7 @@ class TradelawController extends AbstractController
         $Help = $app['eccube.repository.help']->get();
 
         $builder = $app['form.factory']
-            ->createBuilder('tradelaw', $Help);
+            ->createBuilder(TradelawType::class, $Help);
 
         $event = new EventArgs(
             array(
@@ -56,8 +57,8 @@ class TradelawController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $app['orm.em']->persist($Help);

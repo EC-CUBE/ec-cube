@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Form\Type\Admin\LogType;
+
 class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -43,7 +45,7 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('admin_system_log', null, array(
+            ->createBuilder(LogType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

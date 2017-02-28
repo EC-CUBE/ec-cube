@@ -2,6 +2,10 @@ Eccube\Entity\Master\PageMax:
     type: entity
     table: mtb_page_max
     repositoryClass: Eccube\Repository\Master\PageMaxRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

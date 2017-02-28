@@ -437,4 +437,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
         return $this->PaymentOptions;
     }
 
+    public function __toString() {
+        return $this->name;
+    }
 }

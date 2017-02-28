@@ -32,14 +32,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% if pageinrange and pages.firstPageInRange != 1 %}
             {# 最初へリンクを表示 #}
             <li class="pagenation__item-first">
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.first})) }}"
+                <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.first})) }}"
                    aria-label="First"><span aria-hidden="true">最初へ</span></a>
             </li>
         {% endif %}
 
         {% if pages.previous is defined %}
             <li class="pagenation__item-previous">
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
+                <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.previous})) }}"
                    aria-label="Previous"><span aria-hidden="true">前へ</span></a>
             </li>
         {% endif %}
@@ -51,9 +51,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         {% for page in pages.pagesInRange %}
             {% if page == pages.current %}
-                <li class="pagenation__item active"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+                <li class="pagenation__item active"><a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% else %}
-                <li class="pagenation__item"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+                <li class="pagenation__item"><a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% endif %}
         {% endfor %}
 
@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         {% if pages.next is defined %}
             <li class="pagenation__item-next">
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
+                <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.next})) }}"
                    aria-label="Next"><span aria-hidden="true">次へ</span></a>
             </li>
         {% endif %}
@@ -72,7 +72,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% if pageinrange and pages.last != pages.lastPageInRange %}
             {# 最後へリンクを表示 #}
             <li class="pagenation__item-last">
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.last})) }}"
+                <a href="{{ path(app.request_stack.currentrequest.attributes.get('_route'), app.request_stack.currentrequest.query.all|merge({'pageno': pages.last})) }}"
                    aria-label="Last"><span aria-hidden="true">最後へ</span></a>
             </li>
         {% endif %}

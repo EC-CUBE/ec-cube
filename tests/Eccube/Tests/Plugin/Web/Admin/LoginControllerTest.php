@@ -26,6 +26,9 @@ namespace Eccube\Tests\Plugin\Web\Admin;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 
+/**
+ * @group plugin
+ */
 class LoginControllerTest extends AbstractWebTestCase
 {
 
@@ -56,7 +59,7 @@ class LoginControllerTest extends AbstractWebTestCase
             )
         );
 
-        $this->assertNotNull($this->app['security']->getToken(), 'ログインしているかどうか');
+        $this->assertNotNull($this->app['security.token_storage']->getToken(), 'ログインしているかどうか');
 
         $hookpoins = array(
             EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE,

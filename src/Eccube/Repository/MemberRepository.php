@@ -27,12 +27,11 @@ namespace Eccube\Repository;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Member;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * MemberRepository
@@ -275,9 +274,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
      */
     public function createSalt($byte)
     {
-        $generator = new SecureRandom();
-
-        return bin2hex($generator->nextBytes($byte));
+        return bin2hex(openssl_random_pseudo_bytes($byte));
     }
 
     /**

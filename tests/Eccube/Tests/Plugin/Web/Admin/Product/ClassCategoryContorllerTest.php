@@ -27,6 +27,9 @@ namespace Eccube\Tests\Plugin\Web\Admin\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminProductClassCategory()

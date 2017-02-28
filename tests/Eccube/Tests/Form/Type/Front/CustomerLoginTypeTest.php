@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+use Eccube\Form\Type\Front\CustomerLoginType;
+
 class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -43,7 +45,7 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('customer_login', null, array(
+            ->createBuilder(CustomerLoginType::class, null, array(
             ))
             ->getForm();
     }

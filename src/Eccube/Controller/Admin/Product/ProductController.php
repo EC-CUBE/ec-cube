@@ -31,6 +31,8 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ProductType;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +49,7 @@ class ProductController extends AbstractController
         $session = $app['session'];
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_product');
+            ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
             array(
@@ -259,7 +261,7 @@ class ProductController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_product', $Product);
+            ->createBuilder(ProductType::class, $Product);
 
         // 規格あり商品の場合、規格関連情報をFormから除外
         if ($has_class) {
@@ -362,18 +364,26 @@ class ProductController extends AbstractController
 
                 $count = 1;
                 $Categories = $form->get('Category')->getData();
+                $categoriesIdList = array();
                 foreach ($Categories as $Category) {
-                    $ProductCategory = new \Eccube\Entity\ProductCategory();
-                    $ProductCategory
-                        ->setProduct($Product)
-                        ->setProductId($Product->getId())
-                        ->setCategory($Category)
-                        ->setCategoryId($Category->getId())
-                        ->setRank($count);
-                    $app['orm.em']->persist($ProductCategory);
-                    $count++;
-                    /* @var $Product \Eccube\Entity\Product */
-                    $Product->addProductCategory($ProductCategory);
+                    foreach($Category->getPath() as $ParentCategory){
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
+                            $app['orm.em']->persist($ProductCategory);
+                            $count++;
+                            /* @var $Product \Eccube\Entity\Product */
+                            $Product->addProductCategory($ProductCategory);
+                            $categoriesIdList[$ParentCategory->getId()] = true;
+                        }
+                    }
+                    if (!isset($categoriesIdList[$Category->getId()])){
+                        $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                        $app['orm.em']->persist($ProductCategory);
+                        $count++;
+                        /* @var $Product \Eccube\Entity\Product */
+                        $Product->addProductCategory($ProductCategory);
+                        $categoriesIdList[$Category->getId()] = true;
+                    }
                 }
 
                 // 画像の登録
@@ -471,7 +481,7 @@ class ProductController extends AbstractController
 
         // 検索結果の保持
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_product');
+            ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
             array(
@@ -778,5 +788,23 @@ class ProductController extends AbstractController
         log_info('商品CSV出力ファイル名', array($filename));
 
         return $response;
+    }
+    
+    /**
+     * ProductCategory作成
+     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\Category $Category
+     * @return \Eccube\Entity\ProductCategory
+     */
+    private function createProductCategory($Product, $Category, $count)
+    {
+        $ProductCategory = new \Eccube\Entity\ProductCategory();
+        $ProductCategory->setProduct($Product);
+        $ProductCategory->setProductId($Product->getId());
+        $ProductCategory->setCategory($Category);
+        $ProductCategory->setCategoryId($Category->getId());
+        $ProductCategory->setRank($count);
+        
+        return $ProductCategory;
     }
 }

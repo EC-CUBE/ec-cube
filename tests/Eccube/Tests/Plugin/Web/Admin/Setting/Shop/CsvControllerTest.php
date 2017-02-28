@@ -28,6 +28,9 @@ use Eccube\Common\Constant;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class CsvControllerTest extends AbstractAdminWebTestCase
 {
     public function setUp()

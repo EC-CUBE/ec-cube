@@ -24,10 +24,12 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,14 +49,14 @@ class ChangePasswordType extends AbstractType
     {
         $app = $this->app;
         $builder
-            ->add('current_password', 'password', array(
+            ->add('current_password', PasswordType::class, array(
                 'label' => '現在のパスワード',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new UserPassword(),
                 ),
             ))
-            ->add('change_password', 'repeated', array(
+            ->add('change_password', RepeatedType::class, array(
                 'first_options'  => array(
                     'label' => '新しいパスワード',
                 ),
@@ -80,14 +82,14 @@ class ChangePasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_change_password';
     }

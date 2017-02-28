@@ -27,6 +27,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\CustomerAgreementType;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerAgreementController extends AbstractController
@@ -42,7 +43,7 @@ class CustomerAgreementController extends AbstractController
         $Help = $app['eccube.repository.help']->get();
 
         $builder = $app['form.factory']
-            ->createBuilder('customer_agreement', $Help);
+            ->createBuilder(CustomerAgreementType::class, $Help);
 
         $event = new EventArgs(
             array(
@@ -55,8 +56,8 @@ class CustomerAgreementController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $app['orm.em']->persist($Help);

@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+use Eccube\Form\Type\Front\ContactType;
+
 class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -65,7 +67,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('contact', null, array(
+            ->createBuilder(ContactType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

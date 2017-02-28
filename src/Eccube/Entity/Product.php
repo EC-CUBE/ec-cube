@@ -24,8 +24,8 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Common\Constant;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Common\Constant;
 /**
  * Product
  */
@@ -157,6 +157,10 @@ class Product extends \Eccube\Entity\AbstractEntity
 
         return $this->classCategories1;
     }
+    public function getClassCategories1AsFlip()
+    {
+        return array_flip($this->getClassCategories1());
+    }
 
     /**
      * Get getClassCategories2
@@ -168,6 +172,10 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : array();
+    }
+    public function getClassCategories2AsFlip($class_category1)
+    {
+        return array_flip($this->getClassCategories2($class_category1));
     }
 
     /**

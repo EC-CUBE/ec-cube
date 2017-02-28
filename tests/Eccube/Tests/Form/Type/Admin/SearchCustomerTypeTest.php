@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Form\Type\Admin\SearchCustomerType;
+
 class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -38,7 +40,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('admin_search_customer', null, array(
+            ->createBuilder(SearchCustomerType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

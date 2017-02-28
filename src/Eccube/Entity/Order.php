@@ -145,8 +145,8 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getTotalPrice() {
 
-        return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
-
+        // return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
+        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
     }
 
 

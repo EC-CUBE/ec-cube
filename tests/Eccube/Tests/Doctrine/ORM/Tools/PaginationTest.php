@@ -72,10 +72,12 @@ class PaginationTest extends EccubeTestCase
     {
         /** @var EntityManager $em */
         $em = $this->app['orm.em'];
-        $conn = $em->getConnection();
-        $conn->rollback();
-        $this->dropTable($conn->getWrappedConnection());
-        $conn->beginTransaction();
+        if ($em) {
+            $conn = $em->getConnection();
+            $conn->rollback();
+            $this->dropTable($conn->getWrappedConnection());
+            $conn->beginTransaction();
+        }
 
         parent::tearDown();
     }

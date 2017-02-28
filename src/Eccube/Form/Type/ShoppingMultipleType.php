@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,24 +45,23 @@ class ShoppingMultipleType extends AbstractType
         $deliveryDates = $options['deliveryDates'];
 
         $builder
-            ->add('delivery', 'entity', array(
+            ->add('delivery', EntityType::class, array(
                 'class' => 'Eccube\Entity\Delivery',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'choices' => $deliveries,
                 'data' => $delivery,
             ))
-            ->add('deliveryDate', 'choice', array(
-                'choices' => $deliveryDates,
+            ->add('deliveryDate', ChoiceType::class, array(
+                'choices' => array_flip($deliveryDates),
                 'required' => false,
-                'empty_value' => '指定なし',
+                'placeholder' => '指定なし',
             ))
-            ->add('deliveryTime', 'entity', array(
+            ->add('deliveryTime', EntityType::class, array(
                 'class' => 'Eccube\Entity\DeliveryTime',
-                'property' => 'deliveryTime',
+                'choice_label' => 'deliveryTime',
                 'choices' => $delivery->getDeliveryTimes(),
                 'required' => false,
-                'empty_value' => '指定なし',
-                'empty_data' => null,
+                'placeholder' => '指定なし',
             ));
 
     }
@@ -78,7 +79,7 @@ class ShoppingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'shopping_multiple';
     }

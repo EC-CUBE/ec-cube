@@ -24,12 +24,18 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\PriceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DeliveryType extends AbstractType
@@ -40,41 +46,41 @@ class DeliveryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => '配送業者名',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank,
                 ),
             ))
-            ->add('service_name', 'text', array(
+            ->add('service_name', TextType::class, array(
                 'label' => '名称',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('description', 'textarea', array(
+            ->add('description', TextareaType::class, array(
                 'label' => 'ショップ用メモ欄',
                 'required' => false,
             ))
-            ->add('confirm_url', 'text', array(
+            ->add('confirm_url', TextType::class, array(
                 'label' => '伝票No.URL',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
                 ),
             ))
-            ->add('product_type', 'product_type', array(
+            ->add('product_type', ProductTypeType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             // todo type paymentに変更
-            ->add('payments', 'entity', array(
+            ->add('payments', EntityType::class, array(
                 'label' => '支払方法',
                 'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
+                'choice_label' => 'method',
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
@@ -84,25 +90,25 @@ class DeliveryType extends AbstractType
                 },
                 'mapped' => false,
             ))
-            ->add('delivery_times', 'collection', array(
+            ->add('delivery_times', CollectionType::class, array(
                 'label' => 'お届け時間',
                 'required' => false,
-                'type' => 'delivery_time',
+                'entry_type' => DeliveryTimeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('free_all', 'price', array(
+            ->add('free_all', PriceType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'required' => false,
                 'mapped' => false
             ))
-            ->add('delivery_fees', 'collection', array(
+            ->add('delivery_fees', CollectionType::class, array(
                 'label' => '都道府県別設定',
                 'required' => true,
-                'type' => 'delivery_fee',
+                'entry_type' => DeliveryFeeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -121,7 +127,7 @@ class DeliveryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Delivery',
@@ -131,7 +137,7 @@ class DeliveryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'delivery';
     }

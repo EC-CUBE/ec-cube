@@ -25,12 +25,15 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
@@ -43,12 +46,10 @@ class AddCartType extends AbstractType
     public $Product = null;
 
     public function __construct(
-        $config,
-        \Symfony\Component\Security\Core\SecurityContext $security,
-        \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository
+        $config = null,
+        \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository = null
     ) {
         $this->config = $config;
-        $this->security = $security;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
     }
 
@@ -63,17 +64,17 @@ class AddCartType extends AbstractType
         $ProductClasses = $Product->getProductClasses();
 
         $builder
-            ->add('mode', 'hidden', array(
+            ->add('mode', HiddenType::class, array(
                 'data' => 'add_cart',
             ))
-            ->add('product_id', 'hidden', array(
+            ->add('product_id', HiddenType::class, array(
                 'data' => $Product->getId(),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
             ))
-            ->add('product_class_id', 'hidden', array(
+            ->add('product_class_id', HiddenType::class, array(
                 'data' => count($ProductClasses) === 1 ? $ProductClasses[0]->getId() : '',
                 'constraints' => array(
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
@@ -82,7 +83,7 @@ class AddCartType extends AbstractType
 
         if ($Product->getStockFind()) {
             $builder
-                ->add('quantity', 'integer', array(
+                ->add('quantity', IntegerType::class, array(
                     'data' => 1,
                     'attr' => array(
                         'min' => 1,
@@ -99,16 +100,16 @@ class AddCartType extends AbstractType
             ;
             if ($Product && $Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
-                    $builder->add('classcategory_id1', 'choice', array(
+                    $builder->add('classcategory_id1', ChoiceType::class, [
                         'label' => $Product->getClassName1(),
-                        'choices'   => array('__unselected' => '選択してください') + $Product->getClassCategories1(),
-                    ));
+                        'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories1AsFlip(),
+                    ]);
                 }
                 if (!is_null($Product->getClassName2())) {
-                    $builder->add('classcategory_id2', 'choice', array(
+                    $builder->add('classcategory_id2', ChoiceType::class, [
                         'label' => $Product->getClassName2(),
-                        'choices' => array('__unselected' => '選択してください'),
-                    ));
+                        'choices' => ['選択してください' => '__unselected'],
+                    ]);
                 }
             }
 
@@ -117,10 +118,10 @@ class AddCartType extends AbstractType
                 $form = $event->getForm();
                 if (!is_null($Product->getClassName2())) {
                     if ($data['classcategory_id1']) {
-                        $form->add('classcategory_id2', 'choice', array(
+                        $form->add('classcategory_id2', ChoiceType::class, [
                             'label' => $Product->getClassName2(),
-                            'choices' => array('__unselected' => '選択してください') + $Product->getClassCategories2($data['classcategory_id1']),
-                        ));
+                            'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories2AsFlip($data['classcategory_id1']),
+                        ]);
                     }
                 }
             });
@@ -130,13 +131,13 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('product');
         $resolver->setDefaults(array(
             'id_add_product_id' => true,
             'constraints' => array(
-                new Assert\Callback(array($this, 'validate')),
+                // FIXME new Assert\Callback(array($this, 'validate')),
             ),
         ));
     }
@@ -160,7 +161,7 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'add_cart';
     }
@@ -174,7 +175,7 @@ class AddCartType extends AbstractType
     public function validate($data, ExecutionContext $context)
     {
         if ($data['mode'] !== 'add_favorite') {
-            $context->validateValue($data['product_class_id'], array(
+            $context->getValidator()->validate($data['product_class_id'], array(
                 new Assert\NotBlank(),
             ), '[product_class_id]');
             if ($this->Product->getClassName1()) {
@@ -188,7 +189,7 @@ class AddCartType extends AbstractType
             }
             //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
             if ($this->Product->getClassName2()) {
-                $context->validateValue($data['classcategory_id2'], array(
+                $context->getValidator()->validate($data['classcategory_id2'], array(
                     new Assert\NotBlank(),
                     new Assert\NotEqualTo(array(
                         'value' => '__unselected',

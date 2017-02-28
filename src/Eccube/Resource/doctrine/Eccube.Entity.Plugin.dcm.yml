@@ -2,6 +2,10 @@ Eccube\Entity\Plugin:
     type: entity
     table: dtb_plugin
     repositoryClass: Eccube\Repository\PluginRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
 
     id:
         id:

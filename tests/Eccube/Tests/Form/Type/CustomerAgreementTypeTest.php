@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Eccube\Form\Type\Admin\CustomerAgreementType;
+
 class CustomerAgreementTypeTest extends AbstractTypeTestCase
 {
 
@@ -43,7 +45,7 @@ class CustomerAgreementTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('customer_agreement', null, array(
+            ->createBuilder(CustomerAgreementType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

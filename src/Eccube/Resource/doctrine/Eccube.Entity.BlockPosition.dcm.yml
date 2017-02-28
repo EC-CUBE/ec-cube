@@ -2,6 +2,10 @@ Eccube\Entity\BlockPosition:
     type: entity
     table: dtb_block_position
     repositoryClass: Eccube\Repository\BlockPositionRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         page_id:
             type: integer

@@ -2,6 +2,10 @@ Eccube\Entity\PaymentOption:
     type: entity
     table: dtb_payment_option
     repositoryClass: Eccube\Repository\PaymentOptionRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         delivery_id:
             type: integer

@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Install;
 
+use Eccube\Form\Type\Install\Step3Type;
+
 class Step3TypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -54,18 +56,16 @@ class Step3TypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('install_step3', null, array(
-                'csrf_protection' => false,
-            ))
+            ->createBuilder(Step3Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 
     public function testValidData()
     {
         $this->form->submit($this->formData);
+        $this->form->isValid();
         $this->assertTrue($this->form->isValid());
-
-        $this->assertEquals('', $this->form->getErrorsAsString());
+        $this->assertEquals('', (string) $this->form->getErrors(true, false));
     }
 
     public function testInvalid_ShopName_Blank()

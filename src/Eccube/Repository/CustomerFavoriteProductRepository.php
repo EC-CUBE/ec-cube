@@ -48,6 +48,8 @@ class CustomerFavoriteProductRepository extends EntityRepository
             $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($Customer);
             $CustomerFavoriteProduct->setProduct($Product);
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime());
+            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
             $CustomerFavoriteProduct->setDelFlg(Constant::DISABLED);
 
             $em = $this->getEntityManager();

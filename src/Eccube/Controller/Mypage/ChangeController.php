@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\EntryType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ChangeController extends AbstractController
@@ -49,7 +50,7 @@ class ChangeController extends AbstractController
         $Customer->setPassword($app['config']['default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('entry', $Customer);
+        $builder = $app['form.factory']->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
             array(
@@ -94,7 +95,7 @@ class ChangeController extends AbstractController
             return $app->redirect($app->url('mypage_change_complete'));
         }
 
-        $app['security']->getToken()->setUser($LoginCustomer);
+        $app['security.token_storage']->getToken()->setUser($LoginCustomer);
 
         return $app->render('Mypage/change.twig', array(
             'form' => $form->createView(),

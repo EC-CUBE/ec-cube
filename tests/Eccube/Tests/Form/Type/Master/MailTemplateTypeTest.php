@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Eccube\Form\Type\Master\MailTemplateType;
 
 class MailTemplateTypeTest extends AbstractTypeTestCase
 {
@@ -41,7 +42,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('mail_template', null, array(
+            ->createBuilder(MailTemplateType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

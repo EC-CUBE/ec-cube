@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -78,28 +80,27 @@ class ShippingItemType extends AbstractType
                 }
 
                 $form
-                    ->add('delivery', 'entity', array(
+                    ->add('delivery', EntityType::class, array(
                         'class' => 'Eccube\Entity\Delivery',
-                        'property' => 'name',
+                        'choice_label' => 'name',
                         'choices' => $deliveries,
                         'data' => $delivery,
                         'constraints' => array(
                             new Assert\NotBlank(),
                         ),
                     ))
-                    ->add('shippingDeliveryDate', 'choice', array(
-                        'choices' => $deliveryDates,
+                    ->add('shippingDeliveryDate', ChoiceType::class, array(
+                        'choices' => array_flip($deliveryDates),
                         'required' => false,
-                        'empty_value' => '指定なし',
+                        'placeholder' => '指定なし',
                         'mapped' => false,
                     ))
-                    ->add('deliveryTime', 'entity', array(
+                    ->add('deliveryTime', EntityType::class, array(
                         'class' => 'Eccube\Entity\DeliveryTime',
-                        'property' => 'deliveryTime',
+                        'choice_label' => 'deliveryTime',
                         'choices' => $deliveryTimes,
                         'required' => false,
-                        'empty_value' => '指定なし',
-                        'empty_data' => null,
+                        'placeholder' => '指定なし',
                     ));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
@@ -142,7 +143,7 @@ class ShippingItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'shipping_item';
     }

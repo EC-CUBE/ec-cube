@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Form\Type\Admin\CustomerType;
+
 class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -85,7 +87,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('admin_customer', null, array(
+            ->createBuilder(CustomerType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

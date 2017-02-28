@@ -25,11 +25,15 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PaymentRegisterType extends AbstractType
@@ -49,17 +53,17 @@ class PaymentRegisterType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('method', 'text', array(
+            ->add('method', TextType::class, array(
                 'label' => '支払方法',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('rule_min', 'money', array(
+            ->add('rule_min', MoneyType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $app['config']['int_len'],
@@ -70,10 +74,10 @@ class PaymentRegisterType extends AbstractType
                     )),
                 ),
             ))
-            ->add('rule_max', 'money', array(
+            ->add('rule_max', MoneyType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -85,17 +89,17 @@ class PaymentRegisterType extends AbstractType
                     )),
                 ),
             ))
-            ->add('payment_image_file', 'file', array(
+            ->add('payment_image_file', FileType::class, array(
                 'label' => 'ロゴ画像',
                 'mapped' => false,
                 'required' => false,
             ))
-            ->add('payment_image', 'hidden', array(
+            ->add('payment_image', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('charge_flg', 'hidden')
-            ->add('fix_flg', 'hidden')
-            ->addEventListener(FormEvents::POST_BIND, function($event) {
+            ->add('charge_flg', HiddenType::class)
+            ->add('fix_flg', HiddenType::class)
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) {
                 $form = $event->getForm();
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
@@ -108,10 +112,10 @@ class PaymentRegisterType extends AbstractType
                 /** @var \Eccube\Entity\Payment $Payment */
                 $Payment = $event->getData();
                 if (is_null($Payment) || $Payment->getChargeFlg() == 1) {
-                    $form->add('charge', 'money', array(
+                    $form->add('charge', MoneyType::class, array(
                         'label' => '手数料',
                         'currency' => 'JPY',
-                        'precision' => 0,
+                        'scale' => 0,
                         'constraints' => array(
                             new Assert\NotBlank(),
                             new Assert\Length(array(
@@ -124,7 +128,7 @@ class PaymentRegisterType extends AbstractType
                         ),
                     ));
                 } else {
-                    $form->add('charge', 'hidden');
+                    $form->add('charge', HiddenType::class);
                 }
             })
         ;
@@ -133,7 +137,7 @@ class PaymentRegisterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Payment',
@@ -143,7 +147,7 @@ class PaymentRegisterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'payment_register';
     }

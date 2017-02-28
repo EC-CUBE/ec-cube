@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Install;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
@@ -30,7 +30,12 @@ use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Common\Constant;
+use Eccube\Form\Type\Install\Step1Type;
+use Eccube\Form\Type\Install\Step3Type;
+use Eccube\Form\Type\Install\Step4Type;
+use Eccube\Form\Type\Install\Step5Type;
 use Eccube\InstallApplication;
+use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -40,21 +45,17 @@ use Symfony\Component\Yaml\Yaml;
 
 class InstallController
 {
+
+    const MCRYPT = 'mcrypt';
+
     private $app;
-
     private $PDO;
-
     private $config_path;
-
     private $dist_path;
-
     private $cache_path;
-
     private $session_data;
-
     private $required_modules = array('pdo', 'phar', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
-
-    private $recommended_module = array('hash', 'mcrypt');
+    private $recommended_module = array('hash', self::MCRYPT);
 
     const SESSION_KEY = 'eccube.session.install';
 
@@ -99,7 +100,7 @@ class InstallController
     public function step1(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('install_step1')
+            ->createBuilder(Step1Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
@@ -111,8 +112,8 @@ class InstallController
         $this->checkModules($app);
 
         return $app['twig']->render('step1.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -127,15 +128,15 @@ class InstallController
         if (empty($protectedDirs)) {
             $finder = Finder::create()
                 ->in($this->cache_path)
-                ->directories()
-                ->depth(0);
+                ->notName('.gitkeep')
+                ->files();
             $fs = new Filesystem();
             $fs->remove($finder);
         }
 
         return $app['twig']->render('step2.twig', array(
-            'protectedDirs' => $protectedDirs,
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'protectedDirs' => $protectedDirs,
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -143,7 +144,7 @@ class InstallController
     public function step3(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('install_step3')
+            ->createBuilder(Step3Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
 
@@ -174,7 +175,7 @@ class InstallController
                 if (count($allowHost) > 0) {
                     $sessionData['admin_allow_hosts'] = Str::convertLineFeed(implode("\n", $allowHost));
                 }
-                $sessionData['admin_force_ssl'] = (bool)$config['force_ssl'];
+                $sessionData['admin_force_ssl'] = (bool) $config['force_ssl'];
 
                 // メール設定
                 $config_file = $this->config_path . '/mail.yml';
@@ -199,8 +200,8 @@ class InstallController
         }
 
         return $app['twig']->render('step3.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -208,19 +209,18 @@ class InstallController
     public function step4(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('install_step4')
+            ->createBuilder(Step4Type::class)
             ->getForm();
 
         $sessionData = $this->getSessionData($request);
 
         if (empty($sessionData['database'])) {
 
-            $config_file = $this->config_path.'/database.yml';
+            $config_file = $this->config_path . '/database.yml';
             $fs = new Filesystem();
 
             if ($fs->exists($config_file)) {
                 // すでに登録されていた場合、登録データを表示
-
                 // データベース設定
                 $config = Yaml::parse(file_get_contents($config_file));
                 $database = $config['database'];
@@ -243,8 +243,8 @@ class InstallController
         }
 
         return $app['twig']->render('step4.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -254,7 +254,7 @@ class InstallController
         set_time_limit(0);
         $this->app = $app;
         $form = $app['form.factory']
-            ->createBuilder('install_step5')
+            ->createBuilder(Step5Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
@@ -283,7 +283,6 @@ class InstallController
                 $this
                     ->setPDO()
                     ->update();
-
             }
 
 
@@ -305,8 +304,8 @@ class InstallController
         }
 
         return $app['twig']->render('step5.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -322,8 +321,8 @@ class InstallController
         $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
 
         return $app['twig']->render('complete.twig', array(
-            'admin_url' => $adminUrl,
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'admin_url' => $adminUrl,
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -334,7 +333,6 @@ class InstallController
         ob_flush();
         flush();
     }
-
 
     private function checkModules($app)
     {
@@ -350,6 +348,11 @@ class InstallController
 
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
+                if ($module == self::MCRYPT && PHP_VERSION_ID >= 70100) {
+                    //The mcrypt extension has been deprecated in PHP 7.1.x 
+                    //http://php.net/manual/en/migration71.deprecated.php
+                    continue;
+                }
                 $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
             }
         }
@@ -385,7 +388,6 @@ class InstallController
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
             $this->PDO->connect();
-
         } catch (\Exception $e) {
             $this->PDO->close();
             throw $e;
@@ -414,29 +416,59 @@ class InstallController
      */
     private function getEntityManager()
     {
-        $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse(file_get_contents($config_file));
+        if (!isset($this->app['orm.em'])) {
+            $config_file = $this->config_path . '/database.yml';
+            $database = Yaml::parse(file_get_contents($config_file));
 
-        $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => $database['database']
-        ));
+            $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+                'db.options' => $database['database']
+            ));
 
-        $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/../../Resource/doctrine',
-                            __DIR__ . '/../../Resource/doctrine/master',
-                        ),
+            $ormMappings = array(
+                array(
+                    'type' => 'yml',
+                    'namespace' => 'Eccube\Entity',
+                    'path' => array(
+                        __DIR__ . '/../../Resource/doctrine',
+                        __DIR__ . '/../../Resource/doctrine/master',
                     ),
-
                 ),
-            )
-        ));
+                array(  // TODO 暫定
+                    'type' => 'annotation',
+                    'namespace' => 'Acme\Entity',
+                    'path' => array(
+                        __DIR__.'/../../../../app/Acme/Entity',
+                    ),
+                    'use_simple_annotation_reader' => false,
+                )
+            );
+
+            // XXX 同梱したプラグインがエラーになるため暫定
+            $pluginConfigs = PluginConfigManager::getPluginConfigAll();
+            foreach ($pluginConfigs as $code) {
+                $config = $code['config'];
+                // Doctrine Extend
+                if (isset($config['orm.path']) && is_array($config['orm.path'])) {
+                    $paths = array();
+                    foreach ($config['orm.path'] as $path) {
+                        $paths[] = __DIR__.'/../../../../app/Plugin/'.$config['code'].$path;
+                    }
+                    $ormMappings[] = array(
+                        'type' => 'annotation',
+                        'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                        'path' => $paths,
+                        'use_simple_annotation_reader' => false,
+                    );
+                }
+            }
+            $this->app->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+                'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
+                'orm.em.options' => array(
+                    'mappings' => $ormMappings
+                )
+            ));
+
+        }
 
         return $em = $this->app['orm.em'];
     }
@@ -479,7 +511,7 @@ class InstallController
             $salt = \Eccube\Util\Str::random(32);
 
             $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-            $sth = $this->PDO->prepare('INSERT INTO dtb_base_info (
+            $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
                 id,
                 shop_name,
                 email01,
@@ -487,7 +519,8 @@ class InstallController
                 email03,
                 email04,
                 update_date,
-                option_product_tax_rule
+                option_product_tax_rule,
+                discriminator_type
             ) VALUES (
                 1,
                 :shop_name,
@@ -496,13 +529,14 @@ class InstallController
                 :admin_mail,
                 :admin_mail,
                 current_timestamp,
-                0);');
+                0,
+                'baseinfo');");
             $sth->execute(array(
                 ':shop_name' => $this->session_data['shop_name'],
                 ':admin_mail' => $this->session_data['email']
             ));
 
-            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department, discriminator_type) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
             $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
             $this->PDO->commit();
@@ -548,10 +582,9 @@ class InstallController
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $this->PDO->prepare("UPDATE dtb_member set password = :admin_pass, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
                 $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
-
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+                $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
                 $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
             }
 
@@ -576,7 +609,6 @@ class InstallController
 
         return $this;
     }
-
 
     private function getMigration()
     {
@@ -610,6 +642,7 @@ class InstallController
             // nullを渡すと最新バージョンまでマイグレートする
             $migration->migrate(null, false);
         } catch (MigrationException $e) {
+            
         }
 
         return $this;
@@ -671,9 +704,7 @@ class InstallController
 
         $fs = new Filesystem();
         $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/config.yml.dist')
+            $target, $replace, file_get_contents($this->dist_path . '/config.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -705,7 +736,8 @@ class InstallController
         }
 
         if ($data['database'] != 'pdo_sqlite') {
-            switch ($data['database']) {
+            switch ($data['database'])
+            {
                 case 'pdo_pgsql':
                     if (empty($data['db_port'])) {
                         $data['db_port'] = '5432';
@@ -731,19 +763,16 @@ class InstallController
 
             $fs = new Filesystem();
             $content = str_replace(
-                $target,
-                $replace,
-                file_get_contents($this->dist_path . '/database.yml.dist')
+                $target, $replace, file_get_contents($this->dist_path . '/database.yml.dist')
             );
-
         } else {
             $content = Yaml::dump(
-                array(
-                    'database' => array(
-                        'driver' => 'pdo_sqlite',
-                        'path' => realpath($this->config_path.'/eccube.db')
+                    array(
+                        'database' => array(
+                            'driver' => 'pdo_sqlite',
+                            'path' => realpath($this->config_path . '/eccube.db')
+                        )
                     )
-                )
             );
         }
         $fs->dumpFile($config_file, $content);
@@ -769,9 +798,7 @@ class InstallController
 
         $fs = new Filesystem();
         $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/mail.yml.dist')
+            $target, $replace, file_get_contents($this->dist_path . '/mail.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -798,9 +825,7 @@ class InstallController
 
         $fs = new Filesystem();
         $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/path.yml.dist')
+            $target, $replace, file_get_contents($this->dist_path . '/path.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -855,7 +880,6 @@ class InstallController
         return $this;
     }
 
-
     /**
      * マイグレーション画面を表示する.
      *
@@ -867,7 +891,7 @@ class InstallController
     public function migration(InstallApplication $app, Request $request)
     {
         return $app['twig']->render('migration.twig', array(
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -894,9 +918,9 @@ class InstallController
             return $app->redirect($app->url('migration_end'));
         } else {
             return $app['twig']->render('migration_plugin.twig', array(
-                'Plugins' => $Plugins,
-                'version' => Constant::VERSION,
-                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                    'Plugins' => $Plugins,
+                    'version' => Constant::VERSION,
+                    'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
             ));
         }
     }
@@ -919,7 +943,7 @@ class InstallController
         \Eccube\Util\Cache::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig', array(
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 }

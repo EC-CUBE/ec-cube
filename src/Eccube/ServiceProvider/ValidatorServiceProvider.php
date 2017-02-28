@@ -11,26 +11,28 @@
 
 namespace Eccube\ServiceProvider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Silex\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
+use Symfony\Component\Validator\Validator;
 
 /**
  * Symfony Validator component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * @deprecated since 3.0.0, to be removed in 3.1
  */
-class ValidatorServiceProvider implements ServiceProviderInterface
+class ValidatorServiceProvider implements BootableProviderInterface, ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['validator'] = $app->share(function ($app) {
+        $app['validator'] = function ($app) {
 
             return new Validator(
                 $app['validator.mapping.class_metadata_factory'],
@@ -39,21 +41,21 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 'validators',
                 $app['validator.object_initializers']
             );
-        });
+        };
 
-        $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
+        $app['validator.mapping.class_metadata_factory'] = function ($app) {
             return new ClassMetadataFactory(new StaticMethodLoader());
-        });
+        };
 
-        $app['validator.validator_factory'] = $app->share(function () use ($app) {
+        $app['validator.validator_factory'] = function () use ($app) {
             $validators = isset($app['validator.validator_service_ids']) ? $app['validator.validator_service_ids'] : array();
 
             return new ConstraintValidatorFactory($app, $validators);
-        });
+        };
 
-        $app['validator.object_initializers'] = $app->share(function ($app) {
+        $app['validator.object_initializers'] = function ($app) {
             return array();
-        });
+        };
     }
 
     public function boot(Application $app)

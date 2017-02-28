@@ -24,10 +24,22 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\Master\JobType;
+use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\RepeatedEmailType;
+use Eccube\Form\Type\RepeatedPasswordType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryType extends AbstractType
@@ -45,13 +57,13 @@ class EntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => true,
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -59,23 +71,23 @@ class EntryType extends AbstractType
                     )),
                 ),
             ))
-            ->add('zip', 'zip')
-            ->add('address', 'address')
-            ->add('tel', 'tel', array(
+            ->add('zip', ZipType::class)
+            ->add('address', AddressType::class)
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelType::class, array(
                 'required' => false,
             ))
-            ->add('email', 'repeated_email')
-            ->add('password', 'repeated_password')
-            ->add('birth', 'birthday', array(
+            ->add('email', RepeatedEmailType::class)
+            ->add('password', RepeatedPasswordType::class)
+            ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
                 'constraints' => array(
                     new Assert\LessThanOrEqual(array(
                         'value' => date('Y-m-d'),
@@ -83,19 +95,19 @@ class EntryType extends AbstractType
                     )),
                 ),
             ))
-            ->add('sex', 'sex', array(
+            ->add('sex', SexType::class, array(
                 'required' => false,
             ))
-            ->add('job', 'job', array(
+            ->add('job', JobType::class, array(
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', SubmitType::class, array('label' => 'この内容で登録する'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Customer',
@@ -105,7 +117,7 @@ class EntryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         // todo entry,mypageで共有されているので名前を変更する
         return 'entry';

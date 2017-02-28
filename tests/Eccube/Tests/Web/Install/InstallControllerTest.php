@@ -38,19 +38,19 @@ class InstallControllerTest extends AbstractInstallWebTestCase
     }
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('install'));
+        $this->client->request('GET', $this->app->url('install'));
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingStep1()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('install_step1'));
+        $this->client->request('GET', $this->app->url('install_step1'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingStep2()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('install_step2'));
+        $this->client->request('GET', $this->app->url('install_step2'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -60,7 +60,8 @@ class InstallControllerTest extends AbstractInstallWebTestCase
             $this->markTestSkipped('Can not support for sqlite3');
         }
 
-        $crawler = $this->client->request('GET', $this->app['url_generator']->generate('install_step3'));
+        $this->app->flush();
+        $crawler = $this->client->request('GET', $this->app->url('install_step3'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -70,19 +71,20 @@ class InstallControllerTest extends AbstractInstallWebTestCase
             $this->markTestSkipped('Can not support for sqlite3');
         }
 
-        $this->client->request('GET', $this->app['url_generator']->generate('install_step4'));
+        $this->client->request('GET', $this->app->url('install_step4'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingStep5()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('install_step5'));
+        $this->client->request('GET', $this->app->url('install_step5'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingComplete()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('install_complete'));
+        $this->app->flush();
+        $this->client->request('GET', $this->app->url('install_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

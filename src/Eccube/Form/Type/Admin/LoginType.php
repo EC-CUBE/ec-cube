@@ -25,9 +25,11 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class LoginType extends AbstractType
@@ -44,7 +46,7 @@ class LoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_id', 'text', array(
+        $builder->add('login_id', TextType::class, array(
             'attr' => array(
                 'max_length' => 50,
             ),
@@ -53,7 +55,7 @@ class LoginType extends AbstractType
             ),
             'data' => $this->session->get('_security.last_username'),
         ));
-        $builder->add('password', 'password', array(
+        $builder->add('password', PasswordType::class, array(
             'attr' => array(
                 'max_length' => 50,
             ),
@@ -66,7 +68,7 @@ class LoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
@@ -76,7 +78,7 @@ class LoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_login';
     }

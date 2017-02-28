@@ -23,10 +23,23 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\Master\CustomerStatusType;
+use Eccube\Form\Type\Master\JobType;
+use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\RepeatedPasswordType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerType extends AbstractType
@@ -46,13 +59,13 @@ class CustomerType extends AbstractType
         $config = $this->config;
 
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => true,
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -60,19 +73,19 @@ class CustomerType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => true,
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'required' => true,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelType::class, array(
                 'required' => false,
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -84,19 +97,19 @@ class CustomerType extends AbstractType
                     )),
                 ),
             ))
-            ->add('sex', 'sex', array(
+            ->add('sex', SexType::class, array(
                 'required' => false,
             ))
-            ->add('job', 'job', array(
+            ->add('job', JobType::class, array(
                 'required' => false,
             ))
-            ->add('birth', 'birthday', array(
+            ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
                 'constraints' => array(
                     new Assert\LessThanOrEqual(array(
                         'value' => date('Y-m-d'),
@@ -104,7 +117,7 @@ class CustomerType extends AbstractType
                     )),
                 ),
             ))
-            ->add('password', 'repeated_password', array(
+            ->add('password', RepeatedPasswordType::class, array(
                 // 'type' => 'password',
                 'first_options'  => array(
                     'label' => 'パスワード',
@@ -113,13 +126,13 @@ class CustomerType extends AbstractType
                     'label' => 'パスワード(確認)',
                 ),
             ))
-            ->add('status', 'customer_status', array(
+            ->add('status', CustomerStatusType::class, array(
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('note', 'textarea', array(
+            ->add('note', TextareaType::class, array(
                 'label' => 'SHOP用メモ',
                 'required' => false,
                 'constraints' => array(
@@ -133,7 +146,7 @@ class CustomerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Customer',
@@ -143,7 +156,7 @@ class CustomerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_customer';
     }

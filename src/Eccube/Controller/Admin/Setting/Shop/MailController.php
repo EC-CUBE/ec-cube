@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\MailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -47,7 +48,7 @@ class MailController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('mail', $Mail);
+            ->createBuilder(MailType::class, $Mail);
 
         $event = new EventArgs(
             array(

@@ -24,10 +24,11 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Doctrine\ORM\EntityRepository;
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\EntityRepository;
 
 class CategoryType extends AbstractType
 {
@@ -38,7 +39,7 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Category',
-            'property' => 'NameWithLevel',
+            'choice_label' => 'NameWithLevel',
             // なぜかDESC
             'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('c')
@@ -49,10 +50,10 @@ class CategoryType extends AbstractType
 
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'category';
     }

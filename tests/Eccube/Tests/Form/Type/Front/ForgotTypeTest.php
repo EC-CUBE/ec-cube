@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+use Eccube\Form\Type\Front\ForgotType;
+
 class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -74,7 +76,7 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('forgot', null, array(
+            ->createBuilder(ForgotType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

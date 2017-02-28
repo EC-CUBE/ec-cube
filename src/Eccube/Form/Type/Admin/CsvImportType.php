@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,7 +47,7 @@ class CsvImportType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('import_file', 'file', array(
+            ->add('import_file', FileType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
@@ -63,7 +64,7 @@ class CsvImportType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_csv_import';
     }

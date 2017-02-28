@@ -2,6 +2,10 @@ Eccube\Entity\ProductTag:
     type: entity
     table: dtb_product_tag
     repositoryClass: Eccube\Repository\ProductTagRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

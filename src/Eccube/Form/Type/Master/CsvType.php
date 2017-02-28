@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,15 +40,15 @@ class CsvType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\CsvType',
             // todo toStringがない？
-            'property' => 'name',
-            'empty_value' => false,
+            'choice_label' => 'name',
+            'placeholder' => false,
         ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'csv_type';
     }
@@ -57,6 +58,6 @@ class CsvType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

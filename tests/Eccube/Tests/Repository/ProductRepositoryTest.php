@@ -25,6 +25,10 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Product = $this->app['eccube.repository.product']->findOneBy(
             array('name' => '商品-1')
         );
+        $this->assertTrue($Product instanceof \Eccube\Entity\Product);
+
+        $Db = $Product->Db;
+        $this->assertEquals('PostgreSQL', $Db->name);
         $product_id = $Product->getId();
         $Result = $this->app['eccube.repository.product']->get($product_id);
 

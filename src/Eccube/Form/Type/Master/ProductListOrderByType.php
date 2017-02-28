@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -37,21 +38,21 @@ class ProductListOrderByType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $options = $event->getForm()->getConfig()->getOptions();
-            if (!$event->getData()) {
-                $data = current(array_keys($options['choice_list']->getValues()));
-                $event->setData($data);
-            }
-        });
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $options = $event->getForm()->getConfig()->getOptions();
-            $values = $options['choice_list']->getValues();
-            if (!in_array($event->getData(), $values)) {
-                $data = current($values);
-                $event->setData($data);
-            }
-        });
+         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+             $options = $event->getForm()->getConfig()->getOptions();
+             if (!$event->getData()) {
+                 $data = current(array_keys($options['choice_loader']->loadChoiceList()->getValues()));
+                 $event->setData($data);
+             }
+         });
+         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+             $options = $event->getForm()->getConfig()->getOptions();
+             $values = $options['choice_loader']->loadChoiceList()->getValues();
+             if (!in_array($event->getData(), $values)) {
+                 $data = current($values);
+                 $event->setData($data);
+             }
+         });
     }
 
     /**
@@ -61,14 +62,13 @@ class ProductListOrderByType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductListOrderBy',
-            'empty_data' => null,
         ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'product_list_order_by';
     }
@@ -78,6 +78,6 @@ class ProductListOrderByType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

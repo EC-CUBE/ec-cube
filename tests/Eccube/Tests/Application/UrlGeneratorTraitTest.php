@@ -12,6 +12,7 @@
 namespace Eccube\Tests\Application;
 
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * UrlGeneratorTrait test cases.
@@ -24,17 +25,23 @@ class UrlGeneratorTraitTest extends EccubeTestCase
 {
     public function testUrl()
     {
+        $generator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+
         $app = $this->app;
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), true);
+        $app->overwrite('url_generator', $generator);
+
+        $generator->expects($this->once())->method('generate')->with('foo', array(), UrlGeneratorInterface::ABSOLUTE_URL);
         $app->url('foo');
     }
 
     public function testPath()
     {
+        $generator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+
         $app = $this->app;
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), false);
+        $app->overwrite('url_generator', $generator);
+
+        $generator->expects($this->once())->method('generate')->with('foo', array(), UrlGeneratorInterface::ABSOLUTE_PATH);
         $app->path('foo');
     }
 }

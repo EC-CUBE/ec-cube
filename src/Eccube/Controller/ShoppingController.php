@@ -34,11 +34,25 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Eccube\Form\Type\Front\CustomerLoginType;
+use Eccube\Form\Type\Front\NonMemberType;
+use Eccube\Form\Type\Front\ShoppingShippingType;
+use Eccube\Form\Type\ShippingMultipleType;
+use Eccube\Form\Type\Shopping\OrderType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Route("/shopping")
+ */
 class ShoppingController extends AbstractController
 {
 
@@ -65,93 +79,85 @@ class ShoppingController extends AbstractController
     /**
      * 購入画面表示
      *
+     * @Route("/", name="shopping")
+     * @Template("Shopping/index.twig")
+     *
      * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return array
      */
     public function index(Application $app, Request $request)
     {
-        $cartService = $app['eccube.service.cart'];
-
         // カートチェック
-        if (!$cartService->isLocked()) {
-            log_info('カートが存在しません');
-            // カートが存在しない、カートがロックされていない時はエラー
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
-        // カートチェック
-        if (count($cartService->getCart()->getCartItems()) <= 0) {
-            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
-            // カートが存在しない時はエラー
-            return $app->redirect($app->url('cart'));
+        // 受注情報を初期化
+        $response = $app->forward($app->path("shopping/initializeOrder"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
-        // 登録済みの受注情報を取得
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        // 単価集計し, フォームを生成する
+        $app->forwardChain($app->path("shopping/calculateOrder"))
+            ->forwardChain($app->path("shopping/createForm"));
 
-        // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
-        if (is_null($Order)) {
-            // 未ログインの場合, ログイン画面へリダイレクト.
-            if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
-                // 非会員でも一度会員登録されていればショッピング画面へ遷移
-                $Customer = $app['eccube.service.shopping']->getNonMember($this->sessionKey);
-
-                if (is_null($Customer)) {
-                    log_info('未ログインのためログイン画面にリダイレクト');
-                    return $app->redirect($app->url('shopping_login'));
-                }
-            } else {
-                $Customer = $app->user();
-            }
-
-            try {
-                // 受注情報を作成
-                $Order = $app['eccube.service.shopping']->createOrder($Customer);
-            } catch (CartException $e) {
-                log_error('初回受注情報作成エラー', array($e->getMessage()));
-                $app->addRequestError($e->getMessage());
-                return $app->redirect($app->url('cart'));
-            }
-
-            // セッション情報を削除
-            $app['session']->remove($this->sessionOrderKey);
-            $app['session']->remove($this->sessionMultipleKey);
-        }
-
-        // 受注関連情報を最新状態に更新
-        $app['orm.em']->refresh($Order);
-
-        // form作成
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        if ($Order->getTotalPrice() < 0) {
-            // 合計金額がマイナスの場合、エラー
-            log_info('受注金額マイナスエラー', array($Order->getId()));
-            $message = $app->trans('shopping.total.price', array('totalPrice' => number_format($Order->getTotalPrice())));
-            $app->addError($message);
-
-            return $app->redirect($app->url('shopping_error'));
+        // 受注のマイナスチェック
+        $response = $app->forward($app->path("shopping/checkToMinusPrice"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
-        if (!$app['session']->has($this->sessionMultipleKey)) {
-            if (count($Order->getShippings()) > 1) {
-                $app->addRequestError('shopping.multiple.delivery');
-            }
-            $app['session']->set($this->sessionMultipleKey, 'multiple');
+        $app->forward($app->path("shopping/handleMultipleErrors"));
+
+        $Order = $app['request_scope']->get('Order');
+        $form = $app['request_scope']->get(OrderType::class);
+
+        return [
+            'form' => $form->createView(),
+            'Order' => $Order
+        ];
+    }
+
+    /**
+     * 購入確認画面から, 他の画面へのリダイレクト.
+     * 配送業者や支払方法、お問い合わせ情報をDBに保持してから遷移する.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function redirectTo(Application $app, Request $request)
+    {
+        // カートチェック
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
+
+        // 受注の存在チェック
+        $response = $app->forward($app->path("shopping/existsOrder"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
+
+        // フォームの生成
+        $app->forward($app->path("shopping/createForm"));
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
+
+        $form->handleRequest($request);
+
+        // 各種変更ページへリダイレクトする
+        $response = $app->forward($app->path("shopping/redirectToChange"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -161,127 +167,37 @@ class ShoppingController extends AbstractController
 
     /**
      * 購入処理
+     *
+     * @Method("POST")
+     * @Route("/shopping/confirm", name="shopping/confirm")
      */
     public function confirm(Application $app, Request $request)
     {
-        $cartService = $app['eccube.service.cart'];
-
         // カートチェック
-        if (!$cartService->isLocked()) {
-            // カートが存在しない、カートがロックされていない時はエラー
-            log_info('カートが存在しません');
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            log_info('購入処理中の受注情報がないため購入エラー');
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('cart'));
+        // 受注の存在チェック
+        $response = $app->forward($app->path("shopping/existsOrder"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         // form作成
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+        // FIXME イベントハンドラを外から渡したい
+        $app->forward($app->path("shopping/createForm"));
 
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE, $event);
-
-        $form = $builder->getForm();
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            log_info('購入処理開始', array($Order->getId()));
-
-            // トランザクション制御
-            $em = $app['orm.em'];
-            $em->getConnection()->beginTransaction();
-            try {
-
-                // お問い合わせ、配送時間などのフォーム項目をセット
-                $app['eccube.service.shopping']->setFormData($Order, $data);
-                // 購入処理
-                $app['eccube.service.shopping']->processPurchase($Order);
-
-                $em->flush();
-                $em->getConnection()->commit();
-
-                log_info('購入処理完了', array($Order->getId()));
-
-            } catch (ShoppingException $e) {
-
-                log_error('購入エラー', array($e->getMessage()));
-
-                $em->getConnection()->rollback();
-
-                $app->log($e);
-                $app->addError($e->getMessage());
-
-                return $app->redirect($app->url('shopping_error'));
-            } catch (\Exception $e) {
-
-                log_error('予期しないエラー', array($e->getMessage()));
-
-                $em->getConnection()->rollback();
-
-                $app->log($e);
-
-                $app->addError('front.shopping.system.error');
-                return $app->redirect($app->url('shopping_error'));
-            }
-
-            // カート削除
-            $app['eccube.service.cart']->clear()->save();
-
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Order' => $Order,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING, $event);
-
-            if ($event->getResponse() !== null) {
-                log_info('イベントレスポンス返却', array($Order->getId()));
-                return $event->getResponse();
-            }
-
-            // 受注IDをセッションにセット
-            $app['session']->set($this->sessionOrderKey, $Order->getId());
-
-            // メール送信
-            $MailHistory = $app['eccube.service.shopping']->sendOrderMail($Order);
-
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Order' => $Order,
-                    'MailHistory' => $MailHistory,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE, $event);
-
-            if ($event->getResponse() !== null) {
-                log_info('イベントレスポンス返却', array($Order->getId()));
-                return $event->getResponse();
-            }
-
-            // 完了画面表示
-            return $app->redirect($app->url('shopping_complete'));
+        // 受注処理
+        $response = $app->forward($app->path("shopping/completeOrder"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         log_info('購入チェックエラー', array($Order->getId()));
@@ -323,240 +239,15 @@ class ShoppingController extends AbstractController
         ));
     }
 
-
-    /**
-     * 配送業者選択処理
-     */
-    public function delivery(Application $app, Request $request)
-    {
-        // カートチェック
-        if (!$app['eccube.service.cart']->isLocked()) {
-            // カートが存在しない、カートがロックされていない時はエラー
-            log_info('カートが存在しません');
-            return $app->redirect($app->url('cart'));
-        }
-
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            log_info('購入処理中の受注情報がないため購入エラー');
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('shopping'));
-        }
-
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            log_info('配送業者変更処理開始', array($Order->getId()));
-
-            $data = $form->getData();
-
-            $shippings = $data['shippings'];
-
-            $productDeliveryFeeTotal = 0;
-            $BaseInfo = $app['eccube.repository.base_info']->get();
-
-            foreach ($shippings as $Shipping) {
-                $Delivery = $Shipping->getDelivery();
-
-                if ($Delivery) {
-                    $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
-                        'Delivery' => $Delivery,
-                        'Pref' => $Shipping->getPref()
-                    ));
-
-                    // 商品ごとの配送料合計
-                    if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
-                        $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
-                    }
-
-                    $Shipping->setDeliveryFee($deliveryFee);
-                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
-                    $Shipping->setShippingDeliveryName($Delivery->getName());
-                }
-            }
-
-            // 支払い情報をセット
-            $payment = $data['payment'];
-            $message = $data['message'];
-
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setMessage($message);
-            $Order->setCharge($payment->getCharge());
-
-            $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
-
-            // 合計金額の再計算
-            $Order = $app['eccube.service.shopping']->getAmount($Order);
-
-            // 受注関連情報を最新状態に更新
-            $app['orm.em']->flush();
-
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Order' => $Order,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE, $event);
-
-            log_info('配送業者変更処理完了', array($Order->getId()));
-            return $app->redirect($app->url('shopping'));
-        }
-
-        log_info('配送業者変更入力チェックエラー', array($Order->getId()));
-        return $app->render('Shopping/index.twig', array(
-            'form' => $form->createView(),
-            'Order' => $Order,
-        ));
-    }
-
-    /**
-     * 支払い方法選択処理
-     */
-    public function payment(Application $app, Request $request)
-    {
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            log_info('購入処理中の受注情報がないため購入エラー');
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('shopping'));
-        }
-
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            log_info('支払い方法変更処理開始', array("id" => $Order->getId()));
-
-            $data = $form->getData();
-            $payment = $data['payment'];
-            $message = $data['message'];
-
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setMessage($message);
-            $Order->setCharge($payment->getCharge());
-
-            // 合計金額の再計算
-            $Order = $app['eccube.service.shopping']->getAmount($Order);
-
-            // 受注関連情報を最新状態に更新
-            $app['orm.em']->flush();
-
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Order' => $Order,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE, $event);
-
-            log_info('支払い方法変更処理完了', array("id" => $Order->getId(), "payment" => $payment->getId()));
-
-            return $app->redirect($app->url('shopping'));
-        }
-
-        log_info('支払い方法変更入力チェックエラー', array("id" => $Order->getId()));
-        return $app->render('Shopping/index.twig', array(
-            'form' => $form->createView(),
-            'Order' => $Order,
-        ));
-    }
-
-    /**
-     * お届け先変更がクリックされた場合の処理
-     */
-    public function shippingChange(Application $app, Request $request, $id)
-    {
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('shopping'));
-        }
-
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $message = $data['message'];
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $app['orm.em']->flush();
-
-            // お届け先設定一覧へリダイレクト
-            return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
-        }
-
-        return $app->render('Shopping/index.twig', array(
-            'form' => $form->createView(),
-            'Order' => $Order,
-        ));
-    }
-
     /**
      * お届け先の設定一覧からの選択
      */
     public function shipping(Application $app, Request $request, $id)
     {
         // カートチェック
-        if (!$app['eccube.service.cart']->isLocked()) {
-            // カートが存在しない、カートがロックされていない時はエラー
-            log_info('カートが存在しません');
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         if ('POST' === $request->getMethod()) {
@@ -636,53 +327,6 @@ class ShoppingController extends AbstractController
     }
 
     /**
-     * お届け先の設定（非会員）がクリックされた場合の処理
-     */
-    public function shippingEditChange(Application $app, Request $request, $id)
-    {
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('shopping'));
-        }
-
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $message = $data['message'];
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $app['orm.em']->flush();
-
-            // お届け先設定一覧へリダイレクト
-            return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
-        }
-
-        return $app->render('Shopping/index.twig', array(
-            'form' => $form->createView(),
-            'Order' => $Order,
-        ));
-    }
-
-    /**
      * お届け先の設定(非会員でも使用する)
      */
     public function shippingEdit(Application $app, Request $request, $id)
@@ -698,18 +342,18 @@ class ShoppingController extends AbstractController
         }
 
         // カートチェック
-        if (!$app['eccube.service.cart']->isLocked()) {
-            // カートが存在しない、カートがロックされていない時はエラー
-            log_info('カートが存在しません');
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            log_info('購入処理中の受注情報がないため購入エラー');
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
+        // 受注の存在チェック
+        $response = $app->forward($app->path("shopping/existsOrder"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
+
+        $Order = $app['request_scope']->get('Order');
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
@@ -726,7 +370,7 @@ class ShoppingController extends AbstractController
             $CustomerAddress->setFromShipping($Shipping);
         }
 
-        $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);
+        $builder = $app['form.factory']->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(
@@ -764,7 +408,7 @@ class ShoppingController extends AbstractController
             // 合計金額の再計算
             $app['eccube.service.shopping']->getAmount($Order);
 
-            // 配送先を更新 
+            // 配送先を更新
             $app['orm.em']->flush();
 
             $event = new EventArgs(
@@ -885,7 +529,7 @@ class ShoppingController extends AbstractController
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', 'customer_login');
+        $builder = $app['form.factory']->createNamedBuilder('', CustomerLoginType::class);
 
         if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $app->user();
@@ -918,10 +562,9 @@ class ShoppingController extends AbstractController
         $cartService = $app['eccube.service.cart'];
 
         // カートチェック
-        if (!$cartService->isLocked()) {
-            // カートが存在しない、カートがロックされていない時はエラー
-            log_info('カートが存在しません');
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         // ログイン済みの場合は, 購入画面へリダイレクト.
@@ -936,7 +579,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $builder = $app['form.factory']->createBuilder('nonmember');
+        $builder = $app['form.factory']->createBuilder(NonMemberType::class);
 
         $event = new EventArgs(
             array(
@@ -1043,72 +686,14 @@ class ShoppingController extends AbstractController
     }
 
     /**
-     * 複数配送処理がクリックされた場合の処理
-     */
-    public function shippingMultipleChange(Application $app, Request $request)
-    {
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-        if (!$Order) {
-            $app->addError('front.shopping.order.error');
-            return $app->redirect($app->url('shopping_error'));
-        }
-
-        if ('POST' !== $request->getMethod()) {
-            return $app->redirect($app->url('shopping'));
-        }
-
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
-
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_CHANGE_INITIALIZE, $event);
-
-        $form = $builder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $message = $data['message'];
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $app['orm.em']->flush();
-
-            // 複数配送設定へリダイレクト
-            return $app->redirect($app->url('shopping_shipping_multiple'));
-        }
-
-        return $app->render('Shopping/index.twig', array(
-            'form' => $form->createView(),
-            'Order' => $Order,
-        ));
-    }
-
-
-    /**
      * 複数配送処理
      */
     public function shippingMultiple(Application $app, Request $request)
     {
-        $cartService = $app['eccube.service.cart'];
-
         // カートチェック
-        if (!$cartService->isLocked()) {
-            // カートが存在しない、カートがロックされていない時はエラー
-            log_info('カートが存在しません');
-            return $app->redirect($app->url('cart'));
-        }
-
-        // カートチェック
-        if (count($cartService->getCart()->getCartItems()) <= 0) {
-            // カートが存在しない時はエラー
-            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         /** @var \Eccube\Entity\Order $Order */
@@ -1147,8 +732,8 @@ class ShoppingController extends AbstractController
 
         $builder = $app->form();
         $builder
-            ->add('shipping_multiple', 'collection', array(
-                'type' => 'shipping_multiple',
+            ->add('shipping_multiple', CollectionType::class, array(
+                'entry_type' => ShippingMultipleType::class,
                 'data' => $shipmentItems,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -1314,10 +899,9 @@ class ShoppingController extends AbstractController
     public function shippingMultipleEdit(Application $app, Request $request)
     {
         // カートチェック
-        if (!$app['eccube.service.cart']->isLocked()) {
-            log_info('カートが存在しません');
-            // カートが存在しない、カートがロックされていない時はエラー
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping/checkToCart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         // 非会員用Customerを取得
@@ -1326,7 +910,7 @@ class ShoppingController extends AbstractController
         $CustomerAddress->setCustomer($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 
-        $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);
+        $builder = $app['form.factory']->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(
@@ -1396,72 +980,456 @@ class ShoppingController extends AbstractController
      * @param array $data リクエストパラメータ
      * @return array
      */
-    private function customerValidation(Application $app, array $data)
+    protected function customerValidation(Application $app, array $data)
     {
         // 入力チェック
         $errors = array();
 
-        $errors[] = $app['validator']->validateValue($data['customer_name01'], array(
+        $errors[] = $app['validator']->validate($data['customer_name01'], array(
             new Assert\NotBlank(),
             new Assert\Length(array('max' => $app['config']['name_len'],)),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_name02'], array(
+        $errors[] = $app['validator']->validate($data['customer_name02'], array(
             new Assert\NotBlank(),
             new Assert\Length(array('max' => $app['config']['name_len'],)),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_company_name'], array(
+        $errors[] = $app['validator']->validate($data['customer_company_name'], array(
             new Assert\Length(array('max' => $app['config']['stext_len'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_tel01'], array(
+        $errors[] = $app['validator']->validate($data['customer_tel01'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
             new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_tel02'], array(
+        $errors[] = $app['validator']->validate($data['customer_tel02'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
             new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_tel03'], array(
+        $errors[] = $app['validator']->validate($data['customer_tel03'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
             new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_zip01'], array(
+        $errors[] = $app['validator']->validate($data['customer_zip01'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
             new Assert\Length(array('min' => $app['config']['zip01_len'], 'max' => $app['config']['zip01_len'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_zip02'], array(
+        $errors[] = $app['validator']->validate($data['customer_zip02'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
             new Assert\Length(array('min' => $app['config']['zip02_len'], 'max' => $app['config']['zip02_len'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_addr01'], array(
+        $errors[] = $app['validator']->validate($data['customer_addr01'], array(
             new Assert\NotBlank(),
             new Assert\Length(array('max' => $app['config']['address1_len'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_addr02'], array(
+        $errors[] = $app['validator']->validate($data['customer_addr02'], array(
             new Assert\NotBlank(),
             new Assert\Length(array('max' => $app['config']['address2_len'])),
         ));
 
-        $errors[] = $app['validator']->validateValue($data['customer_email'], array(
+        $errors[] = $app['validator']->validate($data['customer_email'], array(
             new Assert\NotBlank(),
             new Assert\Email(array('strict' => true)),
         ));
 
         return $errors;
+    }
+
+    /**
+     * カート画面のチェック
+     *
+     * @Route("/checkToCart", name="shopping/checkToCart")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function checkToCart(Application $app, Request $request)
+    {
+        $cartService = $app['eccube.service.cart'];
+
+        // カートチェック
+        if (!$cartService->isLocked()) {
+            log_info('カートが存在しません');
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+        return new Response();
+    }
+
+    /**
+     * 受注情報を初期化する.
+     *
+     * @Route("/initializeOrder", name="shopping/initializeOrder")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function initializeOrder(Application $app, Request $request)
+    {
+        $cartService = $app['eccube.service.cart'];
+        // 購入処理中の受注情報を取得
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+
+        // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
+        if (is_null($Order)) {
+            // 未ログインの場合, ログイン画面へリダイレクト.
+            if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
+                // 非会員でも一度会員登録されていればショッピング画面へ遷移
+                $Customer = $app['eccube.service.shopping']->getNonMember($this->sessionKey);
+
+                if (is_null($Customer)) {
+                    log_info('未ログインのためログイン画面にリダイレクト');
+                    return $app->redirect($app->url('shopping_login'));
+                }
+            } else {
+                $Customer = $app->user();
+            }
+
+            try {
+                // 受注情報を作成
+                //$Order = $app['eccube.service.shopping']->createOrder($Customer);
+                $Order = $app['eccube.helper.order']->createProcessingOrder(
+                    $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
+                $cartService->setPreOrderId($Order->getPreOrderId());
+                $cartService->save();
+            } catch (CartException $e) {
+                log_error('初回受注情報作成エラー', array($e->getMessage()));
+                $app->addRequestError($e->getMessage());
+                return $app->redirect($app->url('cart'));
+            }
+
+            // セッション情報を削除
+            $app['session']->remove($this->sessionOrderKey);
+            $app['session']->remove($this->sessionMultipleKey);
+        }
+
+        // 受注関連情報を最新状態に更新
+        $app['orm.em']->refresh($Order);
+
+        $app['request_scope']->set('Order', $Order);
+        return new Response();
+    }
+
+    /**
+     * 受注の単価集計をする
+     *
+     * @Route("/calculateOrder", name="shopping/calculateOrder")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function calculateOrder(Application $app, Request $request)
+    {
+        $Order = $app['request_scope']->get('Order');
+        // 構築したOrderを集計する.
+        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+        return new Response();
+    }
+
+    /**
+     * フォームを作成し, イベントハンドラを設定する
+     *
+     * @Route("/createForm", name="shopping/createForm")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function createForm(Application $app, Request $request)
+    {
+        $Order = $app['request_scope']->get('Order');
+        // フォームの生成
+        $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
+        $app['request_scope']->set(OrderType::class, $form);
+        return new Response();
+    }
+
+    /**
+     * mode に応じて各変更ページへリダイレクトする.
+     *
+     * @Route("/redirectToChange", name="shopping/redirectToChange")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function redirectToChange(Application $app, Request $request)
+    {
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
+
+        // requestのバインド後、Calculatorに再集計させる
+        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+
+        // 支払い方法の変更や配送業者の変更があった場合はDBに保持する.
+        if ($form->isSubmitted() && $form->isValid()) {
+            // POSTされたデータをDBに保持.
+            $app['orm.em']->flush();
+
+            $mode = $form['mode']->getData();
+            switch ($mode) {
+                case 'shipping_change':
+                    // お届け先設定一覧へリダイレクト
+                    $param = $form['param']->getData();
+                    return $app->redirect($app->url('shopping_shipping', array('id' => $param)));
+                case 'shipping_edit_change':
+                    // お届け先設定一覧へリダイレクト
+                    $param = $form['param']->getData();
+                    return $app->redirect($app->url('shopping_shipping_edit', array('id' => $param)));
+                case 'shipping_multiple_change':
+                    // 複数配送設定へリダイレクト
+                    return $app->redirect($app->url('shopping_shipping_multiple'));
+                case 'payment':
+                case 'delivery':
+                default:
+                    return $app->redirect($app->url('shopping'));
+            }
+        }
+
+        return new Response();
+    }
+
+    /**
+     * 受注合計のマイナスをチェックする
+     *
+     * @Route("/checkToMinusPrice", name="shopping/checkToMinusPrice")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function checkToMinusPrice(Application $app, Request $request)
+    {
+        $Order = $app['request_scope']->get('Order');
+        if ($Order->getTotalPrice() < 0) {
+            // 合計金額がマイナスの場合、エラー
+            log_info('受注金額マイナスエラー', array($Order->getId()));
+            $message = $app->trans('shopping.total.price', array('totalPrice' => number_format($Order->getTotalPrice())));
+            $app->addError($message);
+
+            return $app->redirect($app->url('shopping_error'));
+        }
+        return new Response();
+    }
+
+    /**
+     * 複数配送時のエラーを表示する
+     *
+     * @Route("/handleMultipleErrors", name="shopping/handleMultipleErrors")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function handleMultipleErrors(Application $app, Request $request)
+    {
+        $Order = $app['request_scope']->get('Order');
+
+        // 複数配送の場合、エラーメッセージを一度だけ表示
+        if (!$app['session']->has($this->sessionMultipleKey)) {
+            if (count($Order->getShippings()) > 1) {
+                $app->addRequestError('shopping.multiple.delivery');
+            }
+            $app['session']->set($this->sessionMultipleKey, 'multiple');
+        }
+
+        return new Response();
+    }
+
+    /**
+     * 受注の存在チェック
+     *
+     * @Route("/existsOrder", name="shopping/existsOrder")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function existsOrder(Application $app, Request $request)
+    {
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            log_info('購入処理中の受注情報がないため購入エラー');
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
+        $app['request_scope']->set('Order', $Order);
+        return new Response();
+    }
+
+    /**
+     * 受注完了処理
+     *
+     * @Route("/completeOrder", name="shopping/completeOrder")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function completeOrder(Application $app, Request $request)
+    {
+        $Order = $app['request_scope']->get('Order');
+        $form = $app['request_scope']->get(OrderType::class);
+
+        // requestのバインド後、Calculatorに再集計させる
+        $app->forward($app->path("shopping/calculateOrder"));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $Order = $form->getData();
+            log_info('購入処理開始', array($Order->getId()));
+
+            // トランザクション制御
+            $em = $app['orm.em'];
+            $em->getConnection()->beginTransaction();
+            try {
+
+                // お問い合わせ、配送時間などのフォーム項目をセット
+                // FormTypeで更新されるため不要
+                //$app['eccube.service.shopping']->setFormData($Order, $data);
+
+                // 購入処理
+                $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
+
+                // 集計は,この1行でいけるはず
+                // プラグインで Strategy をセットしたりする
+                // 集計はステートレスな実装とし、再計算時に状態を考慮しなくても良いようにする
+                $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+
+                // Order も引数で渡すのがベスト??
+                $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
+
+                $paymentMethod = $app['payment.method.request']($Order->getPayment()->getMethodClass(), $form, $request);
+                // 必要に応じて別のコントローラへ forward or redirect(移譲)
+                // forward の処理はプラグイン内で書けるようにしておく
+                // dispatch をしたら, パスを返して forwardする
+                // http://silex.sensiolabs.org/doc/cookbook/sub_requests.html
+                // 確認画面も挟める
+                // Request をセッションに入れるべし
+                $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+                // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
+                // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
+                if ($dispatcher instanceof Response
+                    && ($dispatcher->isRedirection() || $dispatcher->getContent())) { // $paymentMethod->apply() が Response を返した場合は画面遷移
+                    return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
+                }
+                $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
+                if (!$PaymentResult->isSuccess()) {
+                    $em->getConnection()->rollback();
+                    return $app->redirect($app->url('shopping_error'));
+                }
+
+                $em->flush();
+                $em->getConnection()->commit();
+
+                log_info('購入処理完了', array($Order->getId()));
+
+            } catch (ShoppingException $e) {
+
+                log_error('購入エラー', array($e->getMessage()));
+
+                $em->getConnection()->rollback();
+
+                $app->log($e);
+                $app->addError($e->getMessage());
+
+                return $app->redirect($app->url('shopping_error'));
+            } catch (\Exception $e) {
+
+                log_error('予期しないエラー', array($e->getMessage()));
+
+                $em->getConnection()->rollback();
+
+                $app->log($e);
+
+                $app->addError('front.shopping.system.error');
+                return $app->redirect($app->url('shopping_error'));
+            }
+
+            return $app->forward($app->path('shopping/afterComplete'));
+        }
+
+        return new Response();
+    }
+
+    /**
+     * 受注完了の後処理
+     *
+     * @Route("/afterComplete", name="shopping/afterComplete")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function afterComplete(Application $app, Request $request)
+    {
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
+
+        // カート削除
+        $app['eccube.service.cart']->clear()->save();
+
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'Order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING, $event);
+
+        if ($event->getResponse() !== null) {
+            log_info('イベントレスポンス返却', array($Order->getId()));
+            return $event->getResponse();
+        }
+
+        // 受注IDをセッションにセット
+        $app['session']->set($this->sessionOrderKey, $Order->getId());
+
+        // メール送信
+        $MailHistory = $app['eccube.service.shopping']->sendOrderMail($Order);
+
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'Order' => $Order,
+                'MailHistory' => $MailHistory,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE, $event);
+
+        if ($event->getResponse() !== null) {
+            log_info('イベントレスポンス返却', array($Order->getId()));
+            return $event->getResponse();
+        }
+
+        // 完了画面表示
+        return $app->redirect($app->url('shopping_complete'));
     }
 }

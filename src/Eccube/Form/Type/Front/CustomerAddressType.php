@@ -25,11 +25,18 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 class CustomerAddressType extends AbstractType
 {
@@ -49,13 +56,13 @@ class CustomerAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => true,
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -63,12 +70,12 @@ class CustomerAddressType extends AbstractType
                     )),
                 ),
             ))
-            ->add('zip', 'zip')
-            ->add('address', 'address')
-            ->add('tel', 'tel', array(
+            ->add('zip', ZipType::class)
+            ->add('address', AddressType::class)
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelType::class, array(
                 'required' => false,
             ));
     }
@@ -76,7 +83,7 @@ class CustomerAddressType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\CustomerAddress',
@@ -86,7 +93,7 @@ class CustomerAddressType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'customer_address';
     }

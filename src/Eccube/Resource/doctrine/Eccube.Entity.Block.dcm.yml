@@ -2,6 +2,10 @@ Eccube\Entity\Block:
     type: entity
     table: dtb_block
     repositoryClass: Eccube\Repository\BlockRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     uniqueConstraints:
         device_type_id:
             columns:

@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\SearchCustomerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -41,7 +42,7 @@ class CustomerController extends AbstractController
         $session = $request->getSession();
         $pagination = array();
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_customer');
+            ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(

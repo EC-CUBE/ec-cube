@@ -27,11 +27,11 @@ use Doctrine\ORM\Query\AST\OrderByItem;
 use Doctrine\ORM\Query\AST\PartialObjectExpression;
 use Doctrine\ORM\Query\AST\PathExpression;
 use Doctrine\ORM\Query\AST\SelectExpression;
+use Doctrine\ORM\Query\AST\SelectStatement;
 use Doctrine\ORM\Query\AST\SimpleArithmeticExpression;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\Query\SqlWalker;
-use Doctrine\ORM\Query\AST\SelectStatement;
 
 /**
  * Wraps the query in order to select root entity IDs for pagination.

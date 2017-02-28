@@ -6,9 +6,9 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Eccube\Application;
 use Eccube\Entity\Customer;
-use Eccube\Tests\Mock\CsrfTokenMock;
+use Eccube\Util\Cache;
 use Faker\Factory as Faker;
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use Silex\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -46,13 +46,19 @@ abstract class EccubeTestCase extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
+
         if (!$this->isSqliteInMemory()) {
             $this->app['orm.em']->getConnection()->rollback();
             $this->app['orm.em']->getConnection()->close();
         }
 
-        $this->cleanUpProperties();
-        $this->app = null;
+        // XXX PHP5.5/5.6でSegmentation Faultが発生するため
+        if (PHP_VERSION_ID >= 70000) {
+            $this->cleanUpProperties();
+            $this->app = null;
+        }
+
+        \Eccube\Application::clearInstance();
     }
 
     /**
@@ -269,7 +275,8 @@ abstract class EccubeTestCase extends WebTestCase
         $app['debug'] = true;
 
         // ログの内容をERRORレベルでしか出力しないように設定を上書き
-        $app['config'] = $app->share($app->extend('config', function ($config, \Silex\Application $app) {
+        if (!$app->offsetExists('config')) {
+            $app->extend('config', function ($config, $app) {
             $config['log']['log_level'] = 'ERROR';
             $config['log']['action_level'] = 'ERROR';
             $config['log']['passthru_level'] = 'ERROR';
@@ -283,19 +290,24 @@ abstract class EccubeTestCase extends WebTestCase
             $config['log']['channel'] = $channel;
 
             return $config;
-        }));
-        $app->initLogger();
+                });
+            $app->initLogger();
+        }
 
         $app->initialize();
+
         $app->initializePlugin();
         $app['session.test'] = true;
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
 
-        $app['form.csrf_provider'] = $app->share(function () {
-            return new CsrfTokenMock();
-        });
-        $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
+        unset($app['csrf.token_manager']); // 上書きできないので unset する
+        $app->register(new \Eccube\Tests\ServiceProvider\CsrfMockServiceProvider());
+
+        if (!$app->offsetExists('eccube.fixture.generator')) {
+            $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
+        }
         $app->boot();
+        $app->flush();
 
         return $app;
     }
@@ -340,6 +352,7 @@ abstract class EccubeTestCase extends WebTestCase
         $config['mail']['password'] = null;
         $config['mail']['encryption'] = null;
         $config['mail']['auth_mode'] = null;
+        $this->app->offsetUnset('config');
         $this->app['config'] = $config;
         $this->app['swiftmailer.use_spool'] = false;
         $this->app['swiftmailer.options'] = $this->app['config']['mail'];
@@ -354,8 +367,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         try {
             $client = new Client();
-            $request = $client->get(self::MAILCATCHER_URL.'messages');
-            $response = $request->send();
+            $response = $client->get(self::MAILCATCHER_URL.'messages');
             if ($response->getStatusCode() !== 200) {
                 throw new HttpException($response->getStatusCode());
             }
@@ -375,10 +387,10 @@ abstract class EccubeTestCase extends WebTestCase
     {
         try {
             $client = new Client();
-            $request = $client->delete(self::MAILCATCHER_URL.'messages');
-            $request->send();
+            $response = $client->delete(self::MAILCATCHER_URL.'messages');
         } catch (\Exception $e) {
-            $this->app->log('['.get_class().'] '.$e->getMessage());
+            // FIXME
+            // $this->app->log('['.get_class().'] '.$e->getMessage());
         }
     }
 
@@ -390,8 +402,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected function getMailCatcherMessages()
     {
         $client = new Client();
-        $request = $client->get(self::MAILCATCHER_URL.'messages');
-        $response = $request->send();
+        $response = $client->get(self::MAILCATCHER_URL.'messages');
 
         return json_decode($response->getBody(true));
     }
@@ -405,8 +416,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected function getMailCatcherMessage($id)
     {
         $client = new Client();
-        $request = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-        $response = $request->send();
+        $response = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
 
         return json_decode($response->getBody(true));
     }

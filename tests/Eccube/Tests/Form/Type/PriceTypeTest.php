@@ -23,7 +23,10 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class PriceTypeTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\PriceType;
+
+class PriceTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -62,14 +65,8 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $app = $this->createApplication();
-
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']
-            ->createBuilder('price', null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $this->app['form.factory']
+            ->createBuilder(PriceType::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 
@@ -108,36 +105,14 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testNotRequiredOption()
     {
-        $app = $this->createApplication();
-
-        $form = $app['form.factory']
-            ->createBuilder('price', null, array(
-                'csrf_protection' => false,
+        $form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('price', PriceType::class, array(
                 'required' => false,
             ))
             ->getForm();
 
-        $form->submit('');
-        $this->assertTrue($form->isValid());
-    }
-
-    public function createApplication()
-    {
-        // \Eccube\Applicationは重いから呼ばない
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        });
-
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\PriceType($self->config);
-
-            return $types;
-        }));
-
-        return $app;
+        $form->submit(['price' => '']);
+        $this->assertTrue($form->isValid(), (string) $form->getErrors(true, false));
     }
 }

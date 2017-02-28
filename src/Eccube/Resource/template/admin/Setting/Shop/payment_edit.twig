@@ -132,7 +132,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" {{ form_enctype(form) }}>
+    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
         {{ form_widget(form._token) }}
         {{ form_widget(form.charge_flg) }}
         {{ form_widget(form.fix_flg) }}
@@ -209,7 +209,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="detail_list_footer__body_inner" class="box-body">
                             <div id="detail_list_footer__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->

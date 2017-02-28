@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -40,7 +41,7 @@ class MasterType extends AbstractType
             'multiple'=> false,
             'expanded' => false,
             'required' => false,
-            'empty_value' => false,
+            'placeholder' => false,
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('m')
                     ->orderBy('m.rank', 'ASC');
@@ -51,7 +52,7 @@ class MasterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'master';
     }
@@ -61,6 +62,6 @@ class MasterType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return EntityType::class;
     }
 }

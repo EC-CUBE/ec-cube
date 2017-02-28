@@ -34,13 +34,13 @@ class FaxType extends AbstractType
      */
     public function getParent()
     {
-        return 'tel';
+        return TelType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'fax';
     }

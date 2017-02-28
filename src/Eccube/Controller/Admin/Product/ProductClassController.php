@@ -34,6 +34,9 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\TaxRule;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ProductClassType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -65,18 +68,18 @@ class ProductClassController
             $builder = $app['form.factory']->createBuilder();
 
             $builder
-                ->add('class_name1', 'entity', array(
+                ->add('class_name1', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
-                    'property' => 'name',
-                    'empty_value' => '規格1を選択',
+                    'choice_label' => 'name',
+                    'placeholder' => '規格1を選択',
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
                 ))
-                ->add('class_name2', 'entity', array(
+                ->add('class_name2', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
-                    'property' => 'name',
-                    'empty_value' => '規格2を選択',
+                    'choice_label' => 'name',
+                    'placeholder' => '規格2を選択',
                     'required' => false,
                 ));
 
@@ -134,8 +137,8 @@ class ProductClassController
                         $builder = $app['form.factory']->createBuilder();
 
                         $builder
-                            ->add('product_classes', 'collection', array(
-                                'type' => 'admin_product_class',
+                            ->add('product_classes', CollectionType::class, array(
+                                'entry_type' => ProductClassType::class,
                                 'allow_add' => true,
                                 'allow_delete' => true,
                                 'data' => $ProductClasses,
@@ -228,8 +231,8 @@ class ProductClassController
             $builder = $app['form.factory']->createBuilder();
 
             $builder
-                ->add('product_classes', 'collection', array(
-                    'type' => 'admin_product_class',
+                ->add('product_classes', CollectionType::class, array(
+                    'entry_type' => ProductClassType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'data' => $ProductClasses,
@@ -285,8 +288,8 @@ class ProductClassController
 
         /* @var FormBuilder $builder */
         $builder = $app['form.factory']->createBuilder();
-        $builder->add('product_classes', 'collection', array(
-                    'type' => 'admin_product_class',
+        $builder->add('product_classes', CollectionType::class, array(
+                    'entry_type' => ProductClassType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
         ));
@@ -548,16 +551,16 @@ class ProductClassController
         }
 
         $form = $app->form()
-            ->add('class_name1', 'entity', array(
+            ->add('class_name1', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
-                'property' => 'name',
-                'empty_value' => '規格1を選択',
+                'choice_label' => 'name',
+                'placeholder' => '規格1を選択',
                 'data' => $ClassName1,
             ))
-            ->add('class_name2', 'entity', array(
+            ->add('class_name2', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
-                'property' => 'name',
-                'empty_value' => '規格2を選択',
+                'choice_label' => 'name',
+                'placeholder' => '規格2を選択',
                 'data' => $ClassName2,
             ))
             ->getForm();
@@ -679,7 +682,7 @@ class ProductClassController
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
-        
+
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {

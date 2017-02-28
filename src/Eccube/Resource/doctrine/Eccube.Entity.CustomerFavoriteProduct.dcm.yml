@@ -2,6 +2,10 @@ Eccube\Entity\CustomerFavoriteProduct:
     type: entity
     table: dtb_customer_favorite_product
     repositoryClass: Eccube\Repository\CustomerFavoriteProductRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

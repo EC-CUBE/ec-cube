@@ -23,7 +23,10 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\RepeatedPasswordType;
+
+class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -44,16 +47,14 @@ class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $app = $this->createApplication();
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('password', 'repeated_password', array(
+        $this->form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('password', RepeatedPasswordType::class, array(
             ))
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;
@@ -151,25 +152,5 @@ class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
-    }
-
-    public function createApplication()
-    {
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        });
-
-        // fix php5.3
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\RepeatedPasswordType($self->config);
-
-            return $types;
-        }));
-
-        return $app;
     }
 }

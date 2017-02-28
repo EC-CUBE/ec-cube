@@ -105,7 +105,7 @@ class BlockRepositoryTest extends EccubeTestCase
         $config = $this->app['config'];
         $config['block_realdir'] = vfsStream::url('rootDir');
         $config['block_default_realdir'] = vfsStream::url('rootDir/default');
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         file_put_contents($this->app['config']['block_realdir'].'/'.$fileName.'.twig', 'test');
 
@@ -127,7 +127,7 @@ class BlockRepositoryTest extends EccubeTestCase
         $config = $this->app['config'];
         $config['block_realdir'] = vfsStream::url('rootDir');
         $config['block_default_realdir'] = vfsStream::url('rootDir').'/default';
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         file_put_contents($this->app['config']['block_default_realdir'].'/'.$fileName.'.twig', 'test');
 

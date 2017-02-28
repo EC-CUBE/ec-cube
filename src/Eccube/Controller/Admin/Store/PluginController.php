@@ -28,16 +28,17 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
+use Eccube\Form\Type\Admin\PluginLocalInstallType;
+use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Util\Str;
+use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\FormError;
-use Monolog\Logger;
 
 class PluginController extends AbstractController
 {
@@ -75,7 +76,7 @@ class PluginController extends AbstractController
         foreach ($Plugins as $Plugin) {
 
             $form = $app['form.factory']
-                ->createNamedBuilder('form'.$Plugin->getId(), 'plugin_management', null, array(
+                ->createNamedBuilder('form'.$Plugin->getId(), PluginManagementType::class, null, array(
                     'plugin_id' => $Plugin->getId(),
                 ))
                 ->getForm();
@@ -167,7 +168,7 @@ class PluginController extends AbstractController
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         $form = $app['form.factory']
-            ->createNamedBuilder('form'.$id, 'plugin_management', null, array(
+            ->createNamedBuilder('form'.$id, PluginManagementType::class, null, array(
                 'plugin_id' => null, // placeHolder
             ))
             ->getForm();
@@ -297,40 +298,6 @@ class PluginController extends AbstractController
         return $app->redirect($app->url('admin_store_plugin'));
     }
 
-    /**
-     * 対象プラグインの README を返却します。
-     *
-     * @param Application $app
-     * @param unknown $code
-     */
-    public function readme(Application $app, Request $request, $id)
-    {
-        if ($request->isXmlHttpRequest()) {
-            $Plugin = $app['eccube.repository.plugin']->find($id);
-            if (!$Plugin) {
-                $response = new Response(json_encode('NG'), 400);
-                $response->headers->set('Content-Type', 'application/json');
-                return $response;
-            }
-
-            $code = $Plugin->getCode();
-            $readme = $app['config'][$code]['const']['readme'];
-            $data = array(
-                'code' => $code,
-                'name' => $Plugin->getName(),
-                'readme' => $readme,
-            );
-
-            $response = new Response(json_encode($data));
-            $response->headers->set('Content-Type', 'application/json');
-            return $response;
-        }
-
-        $response = new Response(json_encode('NG'), 400);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
-
     public function handler(Application $app)
     {
         $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
@@ -372,7 +339,7 @@ class PluginController extends AbstractController
     public function install(Application $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('plugin_local_install')
+            ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
 
         $errors = array();
@@ -657,7 +624,7 @@ class PluginController extends AbstractController
 
         // 認証キーの取得
         $form->add(
-            'authentication_key', 'text', array(
+            'authentication_key', TextType::class, array(
             'label' => '認証キー',
             'constraints' => array(
                 new Assert\Regex(array(

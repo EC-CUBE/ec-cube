@@ -24,6 +24,7 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -67,8 +68,8 @@ class ZipType extends AbstractType
         }
 
         $builder
-            ->add($options['zip01_name'], 'text', array_merge_recursive($options['options'], $options['zip01_options']))
-            ->add($options['zip02_name'], 'text', array_merge_recursive($options['options'], $options['zip02_options']))
+            ->add($options['zip01_name'], TextType::class, array_merge_recursive($options['options'], $options['zip01_options']))
+            ->add($options['zip02_name'], TextType::class, array_merge_recursive($options['options'], $options['zip02_options']))
         ;
 
         $builder->setAttribute('zip01_name', $options['zip01_name']);
@@ -115,7 +116,7 @@ class ZipType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zip';
     }

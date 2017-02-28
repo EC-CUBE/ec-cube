@@ -24,6 +24,7 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Eccube\Form\Type\Admin\MasterdataType;
 
 class MasterdataTypeTest extends AbstractTypeTestCase
 {
@@ -39,7 +40,7 @@ class MasterdataTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('admin_system_masterdata', null, array(
+            ->createBuilder(MasterdataType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
@@ -56,9 +57,8 @@ class MasterdataTypeTest extends AbstractTypeTestCase
         $choices = $view->vars['choices'];
 
         $expect = 'Eccube-Entity';
-
         foreach ($choices as $choice) {
-            $actual = $choice->data;
+            $actual = $choice->label;
             $this->assertStringStartsWith($expect, $actual);
         }
     }

@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,7 +40,7 @@ class PluginLocalInstallType extends AbstractType
     {
 
         $builder
-            ->add('plugin_archive', 'file', array(
+            ->add('plugin_archive', FileType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
@@ -56,7 +57,7 @@ class PluginLocalInstallType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'plugin_local_install';
     }

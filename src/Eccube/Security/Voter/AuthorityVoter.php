@@ -24,9 +24,9 @@
 
 namespace Eccube\Security\Voter;
 
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Eccube\Application;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoter implements VoterInterface
 {
@@ -52,14 +52,17 @@ class AuthorityVoter implements VoterInterface
     {
 
         $request = null;
+        $path = null;
         try {
-            $request = $this->app['request'];
+            $request = $this->app['request_stack']->getMasterRequest();
         } catch (\RuntimeException $e) {
             // requestが取得できない場合、無視する(テストプログラムで不要なため)
             return;
         }
 
-        $path = rawurldecode($request->getPathInfo());
+        if (is_object($request)) {
+            $path = rawurldecode($request->getPathInfo());
+        }
 
         $Member = $this->app->user();
 

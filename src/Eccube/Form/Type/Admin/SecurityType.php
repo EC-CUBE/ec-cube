@@ -25,6 +25,9 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -48,7 +51,7 @@ class SecurityType extends AbstractType
     {
         $app = $this->app;
         $builder
-            ->add('admin_route_dir', 'text', array(
+            ->add('admin_route_dir', TextType::class, array(
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -58,14 +61,14 @@ class SecurityType extends AbstractType
                    )),
                 ),
             ))
-            ->add('admin_allow_host', 'textarea', array(
+            ->add('admin_allow_host', TextareaType::class, array(
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['stext_len'])),
                 ),
             ))
-            ->add('force_ssl', 'checkbox', array(
+            ->add('force_ssl', CheckboxType::class, array(
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
@@ -76,7 +79,7 @@ class SecurityType extends AbstractType
                 $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $app['validator']->validateValue($ip, array(
+                    $errors = $app['validator']->validate($ip, array(
                             new Assert\Ip(),
                         )
                     );
@@ -91,7 +94,7 @@ class SecurityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_security';
     }

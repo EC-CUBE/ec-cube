@@ -24,11 +24,13 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Application;
-use Silex\Application as BaseApplication;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
+use Silex\Application;
 
-class InstallServiceProvider implements ServiceProviderInterface
+
+class InstallServiceProvider  implements ServiceProviderInterface, BootableProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -36,24 +38,24 @@ class InstallServiceProvider implements ServiceProviderInterface
      * This method should only be used to configure services and parameters.
      * It should not get services.
      *
-     * @param BaseApplication $app An Application instance
+     * @param Container $app An Pimple\Container instance
      */
-    public function register(BaseApplication $app)
+    public function register(Container $app)
     {
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+        $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
 
             return $extensions;
-        }));
+        });
 
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        $app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\Install\Step1Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step3Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step4Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step5Type($app);
 
             return $types;
-        }));
+        });
     }
 
     /**
@@ -63,7 +65,7 @@ class InstallServiceProvider implements ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    public function boot(BaseApplication $app)
+    public function boot(Application $app)
     {
     }
 }

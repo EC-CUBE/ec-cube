@@ -29,6 +29,9 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * @group plugin
+ */
 class BlockControllerTest extends AbstractAdminWebTestCase
 {
 
@@ -50,7 +53,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentBlock_edit()
     {
-        $this->client->request('GET',
+        $crawler = $this->client->request('GET',
             $this->app->url(
                 'admin_content_block_edit',
                 array('id' => 1)

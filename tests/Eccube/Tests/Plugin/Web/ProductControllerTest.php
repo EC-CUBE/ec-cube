@@ -27,13 +27,16 @@ namespace Eccube\Tests\Plugin\Web;
 use Eccube\Common\Constant;
 use Eccube\Event\EccubeEvents;
 
+/**
+ * @group plugin
+ */
 class ProductControllerTest extends AbstractWebTestCase
 {
 
     public function testRoutingList()
     {
         $client = $this->client;
-        $client->request('GET', $this->app->url('product_list'));
+        $crawler = $client->request('GET', $this->app->url('product_list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $hookpoins = array(

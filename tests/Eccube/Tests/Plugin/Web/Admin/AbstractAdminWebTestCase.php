@@ -28,6 +28,7 @@ use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
     public function setUp()

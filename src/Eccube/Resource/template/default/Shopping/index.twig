@@ -21,33 +21,51 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% form_theme form 'Form/form_div_layout.twig' %}
+
 {% block javascript %}
 <script>
 $(function() {
 
     $('.delivery').on('change', function() {
-        $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
+        $('#shopping_order_mode').val('delivery');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
 
     $('.payment').on('change', function() {
-        $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
+        $('#shopping_order_mode').val('payment');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
 
     $('.btn-shipping').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
-        $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('shipping_change');
+        $('#shopping_order_param').val($(this).data('id'));
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
+        $('#shopping-form').attr('action', '{{ url("shopping/confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
     $('.btn-shipping-edit').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
-        $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('shipping_edit_change');
+        $('#shopping_order_param').val($(this).data('id'));
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
+        $('#shopping-form').attr('action', '{{ url("shopping/confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
     $('.btn-shipping-multiple').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
-        $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('shipping_multiple_change');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
+        $('#shopping-form').attr('action', '{{ url("shopping/confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
@@ -159,8 +177,10 @@ $(function() {
                 {% endfor %}
             </div><!-- /.col -->
         </div><!-- /.row -->
-        <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
+        <form id="shopping-form" method="post" action="{{ url('shopping/confirm') }}">
             {{ form_widget(form._token) }}
+            {{ form_widget(form.mode) }}
+            {{ form_widget(form.param) }}
             <div id="shopping_confirm" class="row">
                 <div id="confirm_main" class="col-sm-8">
                     <div id="cart_box" class="cart_item table">
@@ -168,14 +188,14 @@ $(function() {
                             {% for orderDetail in Order.orderDetails %}
                             <div id="cart_box_list__item_box--{{ loop.index }}" class="item_box tr">
                                 <div id="cart_box_list__item--{{ loop.index }}" class="td table">
-                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" /></div>
+                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo">{# TODO 暫定 #}{% if orderDetail.productName != '送料' %}<img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product is null ? null : orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" />{% endif %}</div>
                                     <dl id="cart_box_list__detail--{{ loop.index }}" class="item_detail">
                                         <dt id="cart_box_list__name--{{ loop.index }}" class="item_name text-default">{{ orderDetail.productName }}</dt>
                                         <dd id="cart_box_list__class_category--{{ loop.index }}" class="item_pattern small">
-                                            {% if orderDetail.productClass.classCategory1 %}
+                                            {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory1 %}
                                                 {{ orderDetail.productClass.classCategory1.className }}：{{ orderDetail.productClass.classCategory1 }}
                                             {% endif %}
-                                            {% if orderDetail.productClass.classCategory2 %}
+                                            {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory2 %}
                                                 <br>{{ orderDetail.productClass.classCategory2.className }}：{{ orderDetail.productClass.classCategory2 }}
                                             {% endif %}
                                         </dd>
@@ -251,20 +271,20 @@ $(function() {
                             {{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
                             <div id="shopping_confirm_box__shipping_delivery--{{ idx }}" class="form-inline form-group">
                                 <label>配送方法</label>
-                                {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
-                                {{ form_errors(form.shippings[idx].delivery) }}
+                                {{ form_widget(form.Shippings[idx].Delivery, {'attr': {'class': 'delivery form-control'}}) }}
+                                {{ form_errors(form.Shippings[idx].Delivery) }}
                             </div>
 
                             <div id="shopping_confirm_box__shipping_delivery_date_time--{{ idx }}" class="form-inline form-group">
                                 <label>お届け日</label>
-                                {{ form_widget(form.shippings[idx].shippingDeliveryDate) }}<br class="sp">
+                                {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'attr': {'class': 'form-control'}}) }}<br class="sp">
                                 <label>お届け時間</label>
-                                {{ form_widget(form.shippings[idx].deliveryTime) }}
+                                {{ form_widget(form.Shippings[idx].DeliveryTime, {'attr': {'class': 'form-control'}}) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping" data-id="{{ shipping.id }}">変更</a></p>
                             {% else %}
-                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit" data-id="{{ shipping.id }}">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
@@ -278,21 +298,21 @@ $(function() {
                     <div id="payment_list" class="column">
                         <div id="payment_list__body" class="form-group">
                             <ul id="payment_list__list" class="payment_list">
-                            {% for key, child in form.payment %}
+                            {% for key, child in form.Payment %}
                             <li>
-                                {{ form_widget(child, {'attr': {'class': 'payment' }}) }}
-                                {% if form.payment.vars.choices[key].data.payment_image is not null %}
+                                {{ form_label(child, null, { 'widget' : form_widget(child, {'attr': {'class': 'payment' }}) }) }}
+                                {% if form.Payment.vars.choices[key].data.payment_image is not null %}
                                 <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}">
                                 {% endif %}
                             </li>
                             {% endfor %}
-                            {{ form_errors(form.payment) }}
+                            {{ form_errors(form.Payment) }}
                             </ul>
                         </div>
                     </div>
                     <h2 class="heading02">お問い合わせ欄</h2>
                     <div id="contact_message" class="column">
-                        {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
                         {{ form_errors(form.message) }}
                     </div>
                     <div class="extra-form column">
@@ -311,16 +331,16 @@ $(function() {
                             <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                         </dl>
                         <dl id="summary_box__quantity_price">
-                            <dt>手数料</dt>
+                            <dt>内手数料</dt>
                             <dd>{{ Order.charge|price }}</dd>
                         </dl>
                         <dl id="summary_box__shipping_price">
-                            <dt>送料</dt>
+                            <dt>内送料</dt>
                             <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                         </dl>
                         {% if Order.discount > 0 %}
                         <dl id="summary_box__discount_price">
-                            <dt>値引き</dt>
+                            <dt>内値引き</dt>
                             <dd>{{ (0 - Order.discount)|price}}</dd>
                         </dl>
                         {% endif %}

@@ -24,6 +24,7 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Eccube\Form\Type\Master\CalcRuleType;
 
 class CalcRuleTypeTest extends AbstractTypeTestCase
 {
@@ -39,7 +40,7 @@ class CalcRuleTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('calc_rule', null, array(
+            ->createBuilder(CalcRuleType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

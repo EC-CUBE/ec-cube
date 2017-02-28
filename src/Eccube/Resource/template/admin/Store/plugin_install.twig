@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_store_plugin_install') }}" {{ form_enctype(form) }}>
+    <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_store_plugin_install') }}" enctype="multipart/form-data">
     <div class="col-md-9">
        {{ form_widget(form._token) }}
        <div class="box">

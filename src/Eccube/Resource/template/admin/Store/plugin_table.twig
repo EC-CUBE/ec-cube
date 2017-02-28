@@ -30,13 +30,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <th>コード</th>
                     <th>アップデート</th>
                     <th>設定</th>
-                    <th>README</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for Plugin in Plugins %}
                     {% set form = plugin_forms[Plugin.id] %}
-                    <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" {{ form_enctype(form) }}>
+                    <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" enctype="multipart/form-data">
                         <tr class="{% if Plugin.enable == 0 %}active{% endif %}">
                             <td class="tp">
                                 <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
@@ -55,7 +54,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </a>
                             </td>
                             <td class="tv text-center">{{ Plugin.version }}</td>
-                            <td class="tc">{{ Plugin.code }}</td>
+                            <td class="tc"><p>{{ Plugin.code }}</p>
+                                {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
+                                    <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">詳細を表示</a>
+                                {% endif %}
+                            </td>
                             <td class="tu">
                             {% if Plugin.source == 0 %}
                                 {{ form_widget(form._token) }}
@@ -79,18 +82,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% else %}
                                     <p>アップデート対象プラグインはありません。</p>
                                 {% endif %}
-                                <p><a href="{{ Plugin.productUrl }}" target="_blank">詳細</a></p>
+                                <p><a href="{{ Plugin.productUrl }}" target="_blank">詳細情報</a></p>
                             {% endif %}
                             </td>
                             <td class="ta text-center">
                                 {% if configPages[Plugin.code] is defined %}
                                    <a href='{{configPages[Plugin.code]}}'>設定</a>
                                 {% endif %}
-                            </td>
-                            <td class="tr text-center">
-                               {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                               <a class="prevention-mask view_readme" href="" data-readme="{{ Plugin.id }}">README</a>
-                               {% endif %}
                             </td>
                         </tr>
                     </form>

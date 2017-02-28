@@ -2,6 +2,10 @@ Eccube\Entity\TaxRule:
     type: entity
     table: dtb_tax_rule
     repositoryClass: Eccube\Repository\TaxRuleRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

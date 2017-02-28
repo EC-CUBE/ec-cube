@@ -23,7 +23,10 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class KanaTypeTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\KanaType;
+
+class KanaTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -31,7 +34,7 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    protected $maxLength = 50;
+    protected $maxLength = 25;
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -91,25 +94,12 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $config['config']['name_len'] = 50; // php5.3で落ちてしまうので...
-            $config['config']['kana_len'] = 50;
-            $types[] = new \Eccube\Form\Type\NameType($config['config']); // Nameに依存する
-            $types[] = new \Eccube\Form\Type\KanaType($config['config']);
-            return $types;
-        }));
-
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('kana', 'kana')
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('kana', KanaType::class)
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;
@@ -121,7 +111,7 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
     public function testValidData($data)
     {
         $this->form->submit($data);
-        $this->assertTrue($this->form->isValid());
+        $this->assertTrue($this->form->isValid(), (string)$this->form->getErrors(true, false));
     }
 
     public function testInvalidData_Kana01_MaxLength()

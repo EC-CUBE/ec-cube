@@ -24,9 +24,14 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\Master\CalcRuleType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxRuleType extends AbstractType
@@ -37,17 +42,17 @@ class TaxRuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('option_product_tax_rule', 'choice', array(
+            ->add('option_product_tax_rule', ChoiceType::class, array(
                 'label' => '商品別税率機能',
-                'choices' => array(
+                'choices' => array_flip(array(
                     '1' => '有効',
                     '0' => '無効',
-                ),
+                )),
                 'expanded' => true,
                 'multiple' => false,
                 'mapped' => false,
             ))
-            ->add('tax_rate', 'integer', array(
+            ->add('tax_rate', IntegerType::class, array(
                 'label' => '消費税率',
                 'required' => true,
                 'constraints' => array(
@@ -59,18 +64,18 @@ class TaxRuleType extends AbstractType
                     )),
                 ),
             ))
-            ->add('calc_rule', 'calc_rule', array(
+            ->add('calc_rule', CalcRuleType::class, array(
                 'label' => '課税規則',
                 'required' => true,
             ))
-            ->add('apply_date', 'date', array(
+            ->add('apply_date', DateType::class, array(
                 'label' => '適用日時',
                 'required' => 'false',
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd HH:mm',
                 'years' => range(date('Y'), date('Y') + 2),
-                'empty_value' => array(
+                'placeholder' => array(
                     'year' => '----',
                     'month' => '--',
                     'day' => '--',
@@ -86,7 +91,7 @@ class TaxRuleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'allow_extra_fields' => true,
@@ -96,7 +101,7 @@ class TaxRuleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'tax_rule';
     }

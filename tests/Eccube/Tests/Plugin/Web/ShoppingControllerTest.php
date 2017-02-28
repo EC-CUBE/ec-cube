@@ -26,6 +26,9 @@ namespace Eccube\Tests\Plugin\Web;
 
 use Eccube\Event\EccubeEvents;
 
+/**
+ * @group plugin
+ */
 class ShoppingControllerTest extends AbstractWebTestCase
 {
 

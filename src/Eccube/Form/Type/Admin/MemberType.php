@@ -24,9 +24,12 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MemberType extends AbstractType
@@ -44,14 +47,14 @@ class MemberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => '名前',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array('max' => $this->config['stext_len'])),
                 ),
             ))
-            ->add('department', 'text', array(
+            ->add('department', TextType::class, array(
                 'required' => false,
                 'label' => '所属',
                 'constraints' => array(
@@ -59,7 +62,7 @@ class MemberType extends AbstractType
                     new Assert\Length(array('max' => $this->config['stext_len'])),
                 ),
             ))
-            ->add('login_id', 'text', array(
+            ->add('login_id', TextType::class, array(
                 'label' => 'ログインID',
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -70,7 +73,7 @@ class MemberType extends AbstractType
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
             ))
-            ->add('password', 'repeated', array(
+            ->add('password', RepeatedType::class, array(
                 // 'type' => 'password',
                 'first_options'  => array(
                     'label' => 'パスワード',
@@ -87,17 +90,17 @@ class MemberType extends AbstractType
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
             ))
-            ->add('Authority', 'entity', array(
+            ->add('Authority', EntityType::class, array(
                 'label' => '権限',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
-                'empty_value' => 'form.empty_value',
+                'placeholder' => 'form.empty_value',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('Work', 'entity', array(
+            ->add('Work', EntityType::class, array(
                 'label' => '稼働/非稼働',
                 'class' => 'Eccube\Entity\Master\Work',
                 'expanded' => true,
@@ -112,7 +115,7 @@ class MemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Member',
@@ -122,7 +125,7 @@ class MemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_member';
     }

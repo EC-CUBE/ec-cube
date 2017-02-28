@@ -2,6 +2,10 @@ Eccube\Entity\ClassCategory:
     type: entity
     table: dtb_class_category
     repositoryClass: Eccube\Repository\ClassCategoryRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

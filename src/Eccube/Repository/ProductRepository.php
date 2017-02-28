@@ -24,10 +24,10 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Application;
-use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Eccube\Application;
+use Eccube\Util\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**

@@ -27,6 +27,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\MemberType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -77,7 +78,7 @@ class MemberController extends AbstractController
         $app['orm.em']->detach($LoginMember);
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_member', $Member);
+            ->createBuilder(MemberType::class, $Member);
 
         $event = new EventArgs(
             array(
@@ -130,7 +131,7 @@ class MemberController extends AbstractController
             }
         }
 
-        $app['security']->getToken()->setUser($LoginMember);
+        $app['security.token_storage']->getToken()->setUser($LoginMember);
 
         return $app->render('Setting/System/member_edit.twig', array(
             'form' => $form->createView(),

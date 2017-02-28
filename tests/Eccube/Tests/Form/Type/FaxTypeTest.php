@@ -23,7 +23,11 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class FaxTypeTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\FaxType;
+use Eccube\Form\Type\TelType;
+
+class FaxTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -133,17 +137,21 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $app = $this->createApplication();
+        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
+        $config = $this->app['config'];
+        // test*_LengthMin のために tel_len_min を変更する
+        $config['tel_len_min'] = 2;
+        $this->app->overwrite('config', $config);
 
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'fax', array(
+        $this->form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
+            ->add('tel', FaxType::class, array(
                 'required' => false,
             ))
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;
@@ -155,7 +163,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     public function testValidData($data)
     {
         $this->form->submit($data);
-        $this->assertTrue($this->form->isValid());
+        $this->assertTrue($this->form->isValid(), (string) $this->form->getErrors(true, false));
     }
 
     public function testInvalidTel01_LengthMax()
@@ -186,7 +194,6 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->formData['tel']['tel01'] = '1';
         $this->form->submit($this->formData);
-
         $this->assertFalse($this->form->isValid());
     }
 
@@ -260,9 +267,8 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testRequiredAddNotBlank_Tel01()
     {
-        $app = $this->createApplication();
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, array('csrf_protection' => false))
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -275,9 +281,8 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testRequiredAddNotBlank_Tel02()
     {
-        $app = $this->createApplication();
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, array('csrf_protection' => false))
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -290,9 +295,8 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testRequiredAddNotBlank_Tel03()
     {
-        $app = $this->createApplication();
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, array('csrf_protection' => false))
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -301,26 +305,5 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-    }
-
-    public function createApplication()
-    {
-
-        // \Eccube\Applicationは重いから呼ばない
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        });
-
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $types[] = new \Eccube\Form\Type\TelType();
-            $types[] = new \Eccube\Form\Type\FaxType();
-
-            return $types;
-        }));
-
-        return $app;
     }
 }

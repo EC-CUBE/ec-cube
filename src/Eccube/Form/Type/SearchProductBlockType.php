@@ -25,7 +25,9 @@
 namespace Eccube\Form\Type;
 
 use Eccube\Application;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -54,19 +56,17 @@ class SearchProductBlockType extends AbstractType
         $Categories = $this->app['eccube.repository.category']
             ->getList(null, true);
 
-        $builder->add('category_id', 'entity', array(
+        $builder->add('category_id', EntityType::class, array(
             'class' => 'Eccube\Entity\Category',
-            'property' => 'NameWithLevel',
+            'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
-            'empty_value' => '全ての商品',
-            'empty_data' => null,
+            'placeholder' => '全ての商品',
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
         ));
-        $builder->add('name', 'search', array(
+        $builder->add('name', SearchType::class, array(
             'required' => false,
             'label' => '商品名を入力',
-            'empty_data' => null,
             'attr' => array(
                 'maxlength' => 50,
             ),
@@ -87,7 +87,7 @@ class SearchProductBlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'search_product_block';
     }

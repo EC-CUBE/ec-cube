@@ -11,6 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
+use Eccube\Tests\EccubeTestCase;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\User;
  *
  * @requires PHP 5.4
  */
-class SecurityTraitTest extends \PHPUnit_Framework_TestCase
+class SecurityTraitTest extends EccubeTestCase
 {
     public function testUser()
     {
@@ -78,10 +79,11 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
 
     public function createApplication($users = array())
     {
-        $app = new \Eccube\Application();
-
-        // ログの内容をERRORレベルでしか出力しないように設定を上書き
-        $app['config'] = $app->share($app->extend('config', function ($config, \Silex\Application $app) {
+        $app = \Eccube\Application::getInstance();
+        $app['debug'] = true;
+        if (!$app->offsetExists('config')) {
+            // ログの内容をERRORレベルでしか出力しないように設定を上書き
+            $app->extend('config', function ($config, $app) {
             $config['log']['log_level'] = 'ERROR';
             $config['log']['action_level'] = 'ERROR';
             $config['log']['passthru_level'] = 'ERROR';
@@ -95,9 +97,9 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
             $config['log']['channel'] = $channel;
 
             return $config;
-        }));
-        $app->initLogger();
-
+                });
+            $app->initLogger();
+        }
         $app->register(new SecurityServiceProvider(), array(
             'security.firewalls' => array(
                 'default' => array(
@@ -107,6 +109,7 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
+        $app->initialize();
         return $app;
     }
 }

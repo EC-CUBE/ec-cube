@@ -24,9 +24,9 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Eccube\Application;
 
 class SaveEventSubscriber implements EventSubscriber
@@ -63,9 +63,8 @@ class SaveEventSubscriber implements EventSubscriber
             $entity->setUpdateDate(new \DateTime());
         }
 
-        if ($this->app['security']->getToken() && $this->app['security']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
-            $Member = $this->app['security']->getToken()->getUser();
-            $entity->setCreator($Member);
+        if ($this->app['security.token_storage']->getToken() && $this->app['security.authorization_checker']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
+            $entity->setCreator($this->app->user());
         }
     }
 

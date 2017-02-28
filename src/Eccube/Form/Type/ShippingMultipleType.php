@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\Type\ShippingMultipleItemType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -60,8 +62,8 @@ class ShippingMultipleType extends AbstractType
                 $shippings = $app['eccube.repository.shipping']->findShippingsProduct($data->getOrder(), $data->getProductClass());
 
                 $form
-                    ->add('shipping', 'collection', array(
-                        'type' => 'shipping_multiple_item',
+                    ->add('shipping', CollectionType::class, array(
+                        'entry_type' => ShippingMultipleItemType::class,
                         'data' => $shippings,
                         'allow_add' => true,
                         'allow_delete' => true,
@@ -74,7 +76,7 @@ class ShippingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'shipping_multiple';
     }

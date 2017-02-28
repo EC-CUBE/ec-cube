@@ -2,6 +2,10 @@ Eccube\Entity\PluginEventHandler:
     type: entity
     table: dtb_plugin_event_handler
     repositoryClass: Eccube\Repository\PluginEventHandlerRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
 
     id:
         id:

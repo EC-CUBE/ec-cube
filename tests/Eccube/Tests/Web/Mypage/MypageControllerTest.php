@@ -126,7 +126,7 @@ class MypageControllerTest extends AbstractWebTestCase
             $this->app->path('mypage_history', array('id' => $Order->getId()))
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
-        
+
     }
     public function testHistory404()
     {
@@ -137,19 +137,21 @@ class MypageControllerTest extends AbstractWebTestCase
         $Order = $this->app['eccube.fixture.generator']->createOrder($Customer, array($ProductClasses[0]),null,0,0,'order_processing');
         $this->logIn($Customer);
         $client = $this->client;
-        
-        try {
-            $crawler = $client->request(
-                'GET',
-                $this->app->path('mypage_history', array('id' => $Order->getId()))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
-            $this->actual = $e->getMessage();
-            $this->expected = '';
+        // debugはONの時に404ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
-        $this->verify();
-        
+
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage_history', array('id' => $Order->getId()))
+        );
+        // debugはOFFの時に404ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 404;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
+        }
     }
 
     public function testHistoryWithNotfound()
@@ -158,18 +160,22 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $this->logIn($Customer);
         $client = $this->client;
-
-        try {
-            $crawler = $client->request(
-                'GET',
-                $this->app->path('mypage_history', array('id' => 999999999))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
-            $this->actual = $e->getMessage();
-            $this->expected = '';
+        // debugはONの時に404ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
-        $this->verify();
+
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage_history', array('id' => 999999999))
+        );
+
+        // debugはOFFの時に404ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 404;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
+        }
     }
 
     /**
@@ -186,6 +192,8 @@ class MypageControllerTest extends AbstractWebTestCase
             $expectedIds[] = $Product->getId();
             $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($Customer);
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime());
+            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
             $CustomerFavoriteProduct->setProduct($Product);
             $CustomerFavoriteProduct->setDelFlg(0);
             $this->app['orm.em']->persist($CustomerFavoriteProduct);
@@ -223,6 +231,8 @@ class MypageControllerTest extends AbstractWebTestCase
         $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
         $CustomerFavoriteProduct->setCustomer($this->app->user());
         $Product = $this->app['eccube.repository.product']->get(1);
+        $CustomerFavoriteProduct->setCreateDate(new \DateTime());
+        $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
         $CustomerFavoriteProduct->setProduct($Product);
         $CustomerFavoriteProduct->setDelFlg(0);
 

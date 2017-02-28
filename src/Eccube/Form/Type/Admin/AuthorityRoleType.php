@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -47,15 +49,15 @@ class AuthorityRoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Authority', 'entity', array(
+            ->add('Authority', EntityType::class, array(
                 'label' => '権限',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
-                'empty_value' => 'form.empty_value',
+                'placeholder' => 'form.empty_value',
             ))
-            ->add('deny_url', 'text', array(
+            ->add('deny_url', TextType::class, array(
                 'label' => '拒否URL',
                 'required' => false,
             ))
@@ -87,7 +89,7 @@ class AuthorityRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_authority_role';
     }

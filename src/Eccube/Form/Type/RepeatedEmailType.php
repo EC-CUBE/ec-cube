@@ -25,6 +25,8 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,7 +38,7 @@ class RepeatedEmailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'type' => 'email',
+            'entry_type' => EmailType::class,
             'required' => true,
             'invalid_message' => 'form.member.email.invalid',
             'options' => array(
@@ -64,13 +66,13 @@ class RepeatedEmailType extends AbstractType
      */
     public function getParent()
     {
-        return 'repeated';
+        return RepeatedType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'repeated_email';
     }

@@ -2,6 +2,10 @@ Eccube\Entity\Master\Sex:
     type: entity
     table: mtb_sex
     repositoryClass: Eccube\Repository\Master\SexRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

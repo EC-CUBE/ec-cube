@@ -23,9 +23,10 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Doctrine\ORM\EntityRepository;
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\EntityRepository;
 
 class MailTemplateType extends AbstractType
 {
@@ -36,7 +37,7 @@ class MailTemplateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\MailTemplate',
-            'empty_value' => '-',
+            'placeholder' => '-',
             // なぜかrankを持っていない
             'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('mt')
@@ -48,7 +49,7 @@ class MailTemplateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'mail_template';
     }
@@ -58,6 +59,6 @@ class MailTemplateType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Form\Type\Admin\ProductClassType;
 
 class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
@@ -51,7 +52,7 @@ class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('admin_product_class', null, array(
+            ->createBuilder(ProductClassType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

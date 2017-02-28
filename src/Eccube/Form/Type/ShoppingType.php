@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,9 +45,9 @@ class ShoppingType extends AbstractType
         $message = $options['message'];
 
         $builder
-            ->add('payment', 'entity', array(
+            ->add('payment', EntityType::class, array(
                 'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
+                'choice_label' => 'method',
                 'choices' => $payments,
                 'data' => $payment,
                 'expanded' => true,
@@ -53,7 +55,7 @@ class ShoppingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('message', 'textarea', array(
+            ->add('message', TextareaType::class, array(
                 'required' => false,
                 'data' => $message,
                 'constraints' => array(
@@ -74,7 +76,7 @@ class ShoppingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'shopping';
     }

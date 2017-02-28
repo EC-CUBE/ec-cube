@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Eccube\Form\Type\Master\ProductTypeType;
 
 class ProductTypeTypeTest extends AbstractTypeTestCase
 {
@@ -41,7 +42,7 @@ class ProductTypeTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('product_type', null, array(
+            ->createBuilder(ProductTypeType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

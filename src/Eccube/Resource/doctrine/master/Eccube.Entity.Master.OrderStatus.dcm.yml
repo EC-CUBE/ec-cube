@@ -2,6 +2,10 @@ Eccube\Entity\Master\OrderStatus:
     type: entity
     table: mtb_order_status
     repositoryClass: Eccube\Repository\Master\OrderStatusRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

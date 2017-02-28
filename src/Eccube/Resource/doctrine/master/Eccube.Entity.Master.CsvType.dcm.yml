@@ -2,6 +2,10 @@ Eccube\Entity\Master\CsvType:
     type: entity
     table: mtb_csv_type
     repositoryClass: Eccube\Repository\Master\CsvTypeRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

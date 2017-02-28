@@ -114,13 +114,13 @@ class PaymentRepository extends EntityRepository
      * @param $deliveries
      * @return array
      */
-    public function findAllowedPayments($deliveries)
+    public function findAllowedPayments($deliveries, $retuenType = false)
     {
         $payments = array();
         $i = 0;
 
         foreach ($deliveries as $Delivery) {
-            $p = $this->findPayments($Delivery);
+            $p = $this->findPayments($Delivery, $retuenType);
 
             if ($i != 0) {
 

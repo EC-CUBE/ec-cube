@@ -24,9 +24,11 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 class ProductTypeType extends AbstractType
 {
@@ -44,7 +46,7 @@ class ProductTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'product_type';
     }
@@ -54,6 +56,6 @@ class ProductTypeType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Form\Type\Admin\TradelawType;
+
 class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -70,7 +72,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('tradelaw', null, array(
+            ->createBuilder(TradelawType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

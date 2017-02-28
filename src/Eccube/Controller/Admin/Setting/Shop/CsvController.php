@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,7 +47,7 @@ class CsvController extends AbstractController
 
         $builder = $app->form();
 
-        $builder->add('csv_type', 'csv_type', array(
+        $builder->add('csv_type', \Eccube\Form\Type\Master\CsvType::class, array(
             'label' => 'CSV出力項目',
             'required' => true,
             'constraints' => array(
@@ -57,9 +58,9 @@ class CsvController extends AbstractController
 
         $CsvNotOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
 
-        $builder->add('csv_not_output', 'entity', array(
+        $builder->add('csv_not_output', EntityType::class, array(
             'class' => 'Eccube\Entity\Csv',
-            'property' => 'disp_name',
+            'choice_label' => 'disp_name',
             'required' => false,
             'expanded' => false,
             'multiple' => true,
@@ -68,9 +69,9 @@ class CsvController extends AbstractController
 
         $CsvOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED), array('rank' => 'ASC'));
 
-        $builder->add('csv_output', 'entity', array(
+        $builder->add('csv_output', EntityType::class, array(
             'class' => 'Eccube\Entity\Csv',
-            'property' => 'disp_name',
+            'choice_label' => 'disp_name',
             'required' => false,
             'expanded' => false,
             'multiple' => true,

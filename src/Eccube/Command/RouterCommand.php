@@ -24,22 +24,17 @@
 namespace Eccube\Command;
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 
 class RouterCommand extends \Knp\Command\Command
 {
 
     protected $app;
-
-    public function __construct(\Eccube\Application $app, $name = null) {
-        parent::__construct($name);
-        $this->app = $app;
-    }
 
     protected function configure() {
         $this
@@ -57,9 +52,9 @@ EOF
             );
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output) {
 
+        $this->app = $this->getSilexApplication();
         $this->app->initialize();
         $this->app->boot();
 

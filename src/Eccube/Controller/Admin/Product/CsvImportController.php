@@ -34,6 +34,7 @@ use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
+use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -60,7 +61,7 @@ class CsvImportController
      */
     public function csvProduct(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
+        $form = $app['form.factory']->createBuilder(CsvImportType::class)->getForm();
 
         $headers = $this->getProductCsvHeader();
 
@@ -412,7 +413,7 @@ class CsvImportController
     public function csvCategory(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
+        $form = $app['form.factory']->createBuilder(CsvImportType::class)->getForm();
 
         $headers = $this->getCategoryCsvHeader();
 
@@ -717,6 +718,7 @@ class CsvImportController
         // カテゴリの登録
         $categories = explode(',', $row['商品カテゴリ(ID)']);
         $rank = 1;
+        $categoriesIdList = array();
         foreach ($categories as $category) {
 
             if (preg_match('/^\d+$/', $category)) {
@@ -724,15 +726,22 @@ class CsvImportController
                 if (!$Category) {
                     $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
                 } else {
-                    $ProductCategory = new ProductCategory();
-                    $ProductCategory->setProductId($Product->getId());
-                    $ProductCategory->setCategoryId($Category->getId());
-                    $ProductCategory->setProduct($Product);
-                    $ProductCategory->setCategory($Category);
-                    $ProductCategory->setRank($rank);
-                    $Product->addProductCategory($ProductCategory);
-                    $rank++;
-                    $this->em->persist($ProductCategory);
+                    foreach($Category->getPath() as $ParentCategory){
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                            $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $rank);
+                            $app['orm.em']->persist($ProductCategory);
+                            $rank++;
+                            $Product->addProductCategory($ProductCategory);
+                            $categoriesIdList[$ParentCategory->getId()] = true;
+                        }
+                    }
+                    if (!isset($categoriesIdList[$Category->getId()])){
+                        $ProductCategory = $this->makeProductCategory($Product, $Category, $rank);
+                        $rank++;
+                        $this->em->persist($ProductCategory);
+                        $Product->addProductCategory($ProductCategory);
+                        $categoriesIdList[$Category->getId()] = true;
+                    }
                 }
             } else {
                 $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
@@ -1144,5 +1153,23 @@ class CsvImportController
             'カテゴリ名' => 'category_name',
             '親カテゴリID' => 'parent_category_id',
         );
+    }
+    
+        /**
+     * ProductCategory作成
+     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\Category $Category
+     * @return ProductCategory
+     */
+    private function makeProductCategory($Product, $Category, $rank)
+    {
+        $ProductCategory = new ProductCategory();
+        $ProductCategory->setProduct($Product);
+        $ProductCategory->setProductId($Product->getId());
+        $ProductCategory->setCategory($Category);
+        $ProductCategory->setCategoryId($Category->getId());
+        $ProductCategory->setRank($rank);
+        
+        return $ProductCategory;
     }
 }

@@ -2,6 +2,10 @@ Eccube\Entity\Master\Tag:
     type: entity
     table: mtb_tag
     repositoryClass: Eccube\Repository\Master\TagRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

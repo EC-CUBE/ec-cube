@@ -2,6 +2,10 @@ Eccube\Entity\News:
     type: entity
     table: dtb_news
     repositoryClass: Eccube\Repository\NewsRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

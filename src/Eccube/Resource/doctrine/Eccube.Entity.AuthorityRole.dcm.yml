@@ -2,6 +2,10 @@ Eccube\Entity\AuthorityRole:
     type: entity
     table: dtb_authority_role
     repositoryClass: Eccube\Repository\AuthorityRoleRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

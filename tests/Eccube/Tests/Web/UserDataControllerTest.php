@@ -16,6 +16,8 @@ class UserDataControllerTest extends AbstractWebTestCase
         parent::setUp();
         $root = vfsStream::setup('rootDir');
         vfsStream::newDirectory('user_data');
+        // 404ページ表示のためにerror.twigを用意します、内容はダミーです。
+        vfsStream::newFile('error.twig')->at($root)->setContent('Error 404');
 
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->app['config'];
@@ -23,7 +25,7 @@ class UserDataControllerTest extends AbstractWebTestCase
         $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';
         mkdir($config['user_data_realdir']);
 
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         $this->DeviceType = $this->app['orm.em']
             ->getRepository('Eccube\Entity\Master\DeviceType')
@@ -61,17 +63,20 @@ class UserDataControllerTest extends AbstractWebTestCase
 
     public function testIndexWithNotFound()
     {
-        $client = $this->createClient();
-        try {
-            $crawler = $client->request(
-                'GET',
-                '/user_data/aaa'
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
-            $this->expected = 404;
-            $this->actual = $e->getStatusCode();
+        // debugはONの時に404ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
-        $this->verify();
+        $client = $this->createClient();
+        $crawler = $client->request(
+            'GET',
+            '/user_data/aaa'
+        );
+        // debugはOFFの時に404ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 404;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
+        }
     }
 }
