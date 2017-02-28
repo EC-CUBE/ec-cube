@@ -295,7 +295,6 @@ class CartValidationTest extends AbstractWebTestCase
         $message = $crawler->filter('#cart_box__message--1')->text();
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
 
-        $this->markTestSkipped('エラーメッセージが2つ表示される不具合を修正したらSkipを外すこと');
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
 
         $message = $crawler->filter('#cart_box__message')->text();

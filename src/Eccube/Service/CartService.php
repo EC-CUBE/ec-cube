@@ -279,7 +279,7 @@ class CartService
 
         $tmp_subtotal = 0;
         $tmp_quantity = 0;
-        foreach ($this->getCart()->getCartItems() as $cartitem) {
+        foreach ($this->getCartObj()->getCartItems() as $cartitem) {
             $pc = $cartitem->getObject();
             if ($pc->getId() != $ProductClass->getId()) {
                 // 追加された商品以外のtotal priceをセット
@@ -299,17 +299,20 @@ class CartService
             throw new CartException('cart.over.price_limit');
         }
 
-        // 制限数チェック
+        // 制限数チェック(在庫不足の場合は、処理の中でカート内商品を削除している)
         $quantity = $this->setProductLimit($ProductClass, $productName, $tmp_quantity);
 
-        $CartItem = new CartItem();
-        $CartItem
-            ->setClassName('Eccube\Entity\ProductClass')
-            ->setClassId((string)$ProductClass->getId())
-            ->setPrice($ProductClass->getPrice02IncTax())
-            ->setQuantity($quantity);
+		// 新しい数量でカート内商品を登録する
+        if (0 < $quantity) {
+            $CartItem = new CartItem();
+            $CartItem
+                ->setClassName('Eccube\Entity\ProductClass')
+                ->setClassId((string)$ProductClass->getId())
+                ->setPrice($ProductClass->getPrice02IncTax())
+                ->setQuantity($quantity);
 
-        $this->cart->setCartItem($CartItem);
+            $this->cart->setCartItem($CartItem);
+        }
 
         return $this;
     }
@@ -434,10 +437,11 @@ class CartService
 
                     $productName = $this->getProductName($ProductClass);
 
-                    // 制限数チェック
+                    // 制限数チェック(在庫不足の場合は、処理の中でカート内商品を削除している)
                     $quantity = $this->setProductLimit($ProductClass, $productName, $CartItem->getQuantity());
 
-                    if ($CartItem->getQuantity() != $quantity) {
+                    /// 個数が異なれば、新しい数量でカート内商品を更新する
+                    if ((0 < $quantity) && ($CartItem->getQuantity() != $quantity)) {
                         // 個数が異なれば更新
                         $CartItem->setQuantity($quantity);
                         $this->cart->setCartItem($CartItem);
@@ -643,7 +647,7 @@ class CartService
      * @param ProductClass $ProductClass
      * @param $productName
      * @param $quantity
-     * @return int|string
+     * @return int チェック後に更新した個数
      */
     private function setProductLimit(ProductClass $ProductClass, $productName, $quantity)
     {
@@ -652,8 +656,6 @@ class CartService
          * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
          * ここでは ProductClass::stock で在庫のチェックをする
          */
-
-        $tmp_quantity = 0;
 
         // 在庫数(在庫無制限の場合、null)
         $stock = $ProductClass->getStock();
@@ -668,8 +670,9 @@ class CartService
 
             if ($saleLimit && $saleLimit < $quantity) {
                 // 販売制限数を超えていれば販売制限数をセット
-                $tmp_quantity = $saleLimit;
                 $this->addError('cart.over.sale_limit', $productName);
+
+                return $saleLimit;
             }
         } else {
             // 在庫制限あり
@@ -678,6 +681,8 @@ class CartService
                 // 在庫がなければカートから削除
                 $this->addError('cart.zero.stock', $productName);
                 $this->removeProduct($ProductClass->getId());
+
+                return 0;
             } else {
                 // 在庫数チェックと販売制限数チェックどちらを適用するか設定
                 $message = 'cart.over.stock';
@@ -697,18 +702,14 @@ class CartService
 
                 if ($limit < $quantity) {
                     // 在庫数、販売制限数を超えていれば購入可能数までをセット
-                    $tmp_quantity = $limit;
                     $this->addError($message, $productName);
+
+                    return $limit;
                 }
             }
         }
 
-        if ($tmp_quantity) {
-            $quantity = $tmp_quantity;
-        }
-
         return $quantity;
-
     }
 
 }
