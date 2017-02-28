@@ -35,6 +35,7 @@ use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
 use Eccube\InstallApplication;
+use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -423,27 +424,47 @@ class InstallController
                 'db.options' => $database['database']
             ));
 
+            $ormMappings = array(
+                array(
+                    'type' => 'yml',
+                    'namespace' => 'Eccube\Entity',
+                    'path' => array(
+                        __DIR__ . '/../../Resource/doctrine',
+                        __DIR__ . '/../../Resource/doctrine/master',
+                    ),
+                ),
+                array(  // TODO 暫定
+                    'type' => 'annotation',
+                    'namespace' => 'Acme\Entity',
+                    'path' => array(
+                        __DIR__.'/../../../../app/Acme/Entity',
+                    ),
+                    'use_simple_annotation_reader' => false,
+                )
+            );
+
+            // XXX 同梱したプラグインがエラーになるため暫定
+            $pluginConfigs = PluginConfigManager::getPluginConfigAll();
+            foreach ($pluginConfigs as $code) {
+                $config = $code['config'];
+                // Doctrine Extend
+                if (isset($config['orm.path']) && is_array($config['orm.path'])) {
+                    $paths = array();
+                    foreach ($config['orm.path'] as $path) {
+                        $paths[] = __DIR__.'/../../../../app/Plugin/'.$config['code'].$path;
+                    }
+                    $ormMappings[] = array(
+                        'type' => 'annotation',
+                        'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                        'path' => $paths,
+                        'use_simple_annotation_reader' => false,
+                    );
+                }
+            }
             $this->app->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
                 'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
                 'orm.em.options' => array(
-                    'mappings' => array(
-                        array(
-                            'type' => 'yml',
-                            'namespace' => 'Eccube\Entity',
-                            'path' => array(
-                                __DIR__ . '/../../Resource/doctrine',
-                                __DIR__ . '/../../Resource/doctrine/master',
-                            ),
-                        ),
-                        array(  // TODO 暫定
-                            'type' => 'annotation',
-                            'namespace' => 'Acme\Entity',
-                            'path' => array(
-                                __DIR__.'/../../../../app/Acme/Entity',
-                            ),
-                            'use_simple_annotation_reader' => false,
-                        )
-                    ),
+                    'mappings' => $ormMappings
                 )
             ));
 
