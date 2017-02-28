@@ -1,5 +1,5 @@
 <?php
-namespace Eccube2\Controller;
+namespace Acme\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Response;

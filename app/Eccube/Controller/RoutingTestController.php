@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube2\Controller;
+namespace Acme\Controller;
 
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;

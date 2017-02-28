@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube2\Entity;
+namespace Acme\Entity;
 
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\AssociationOverrides;

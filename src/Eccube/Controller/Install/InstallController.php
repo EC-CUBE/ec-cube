@@ -437,9 +437,9 @@ class InstallController
                         ),
                         array(  // TODO 暫定
                             'type' => 'annotation',
-                            'namespace' => 'Eccube2\Entity',
+                            'namespace' => 'Acme\Entity',
                             'path' => array(
-                                __DIR__.'/../../../../app/Eccube/Entity',
+                                __DIR__.'/../../../../app/Acme/Entity',
                             ),
                             'use_simple_annotation_reader' => false,
                         )

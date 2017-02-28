@@ -588,13 +588,12 @@ class Application extends \Silex\Application
         //     'use_simple_annotation_reader' => false,
         // );
 
-        // ここを有効にすると本体の Entity でもアノテーションが使える
-        // が、 Yaml との共存はできない模様...
+        // TODO namespace は暫定
         $ormMappings[] = array(
             'type' => 'annotation',
-            'namespace' => 'Eccube2\Entity',
+            'namespace' => 'Acme\Entity',
             'path' => array(
-                __DIR__.'/../../app/Eccube/Entity',
+                __DIR__.'/../../app/Acme/Entity',
             ),
             'use_simple_annotation_reader' => false,
         );
