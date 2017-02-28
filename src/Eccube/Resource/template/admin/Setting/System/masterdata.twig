@@ -81,6 +81,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 <div id="result_list__body_inner" class="table-responsive">
                     <table id="result_list__list" class="table table-bordered table-striped">
+                        <colgroup>
+                            <col width="50%">
+                            <col>
+                        </colgroup>
                         <tr id="result_list__list_header">
                             <th id="result_list__header_id">ID</th>
                             <th id="result_list__header_name">Name</th>
@@ -90,9 +94,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <tr id="result_list__item--{{ data.vars.name }}">
                             <td id="result_list__id--{{ data.vars.name }}">
                                 {{form_widget(data.id)}}
+                                {{form_errors(data.id)}}
                             </td>
                             <td id="result_list__name--{{ data.vars.name }}">
                                 {{form_widget(data.name)}}
+                                {{form_errors(data.name)}}
                             </td>
                             {#
                             <td id="result_list__rank">
