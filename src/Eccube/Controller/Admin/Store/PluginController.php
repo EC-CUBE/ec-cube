@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
+use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Util\Str;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
@@ -75,7 +76,7 @@ class PluginController extends AbstractController
         foreach ($Plugins as $Plugin) {
 
             $form = $app['form.factory']
-                ->createNamedBuilder('form'.$Plugin->getId(), 'plugin_management', null, array(
+                ->createNamedBuilder('form'.$Plugin->getId(), PluginManagementType::class, null, array(
                     'plugin_id' => $Plugin->getId(),
                 ))
                 ->getForm();
@@ -167,7 +168,7 @@ class PluginController extends AbstractController
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         $form = $app['form.factory']
-            ->createNamedBuilder('form'.$id, 'plugin_management', null, array(
+            ->createNamedBuilder('form'.$id, PluginManagementType::class, null, array(
                 'plugin_id' => null, // placeHolder
             ))
             ->getForm();
