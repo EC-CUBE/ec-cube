@@ -426,17 +426,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <dl id="product_info_result_box__body_sub_price" class="dl-horizontal">
                                     <dt id="product_info_result_box__subtotal">小計：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
-                                    <dt id="product_info_result_box__discount">値引き：</dt>
+                                    <dt id="product_info_result_box__discount">内値引き：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.discount) }}
                                         {{ form_errors(form.discount) }}
                                     </dd>
-                                    <dt id="product_info_result_box__delivery_fee_total">送料：</dt>
+                                    <dt id="product_info_result_box__delivery_fee_total">内送料：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.delivery_fee_total) }}
                                         {{ form_errors(form.delivery_fee_total) }}
                                     </dd>
-                                    <dt id="product_info_result_box__charge">手数料：</dt>
+                                    <dt id="product_info_result_box__charge">内手数料：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.charge) }}
                                         {{ form_errors(form.charge) }}

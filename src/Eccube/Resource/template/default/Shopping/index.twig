@@ -188,7 +188,7 @@ $(function() {
                             {% for orderDetail in Order.orderDetails %}
                             <div id="cart_box_list__item_box--{{ loop.index }}" class="item_box tr">
                                 <div id="cart_box_list__item--{{ loop.index }}" class="td table">
-                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product is null ? null : orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" /></div>
+                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo">{# TODO 暫定 #}{% if orderDetail.productName != '送料' %}<img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product is null ? null : orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" />{% endif %}</div>
                                     <dl id="cart_box_list__detail--{{ loop.index }}" class="item_detail">
                                         <dt id="cart_box_list__name--{{ loop.index }}" class="item_name text-default">{{ orderDetail.productName }}</dt>
                                         <dd id="cart_box_list__class_category--{{ loop.index }}" class="item_pattern small">

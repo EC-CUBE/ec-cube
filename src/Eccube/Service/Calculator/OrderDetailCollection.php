@@ -27,5 +27,18 @@ class OrderDetailCollection extends \ArrayIterator
         ));
     }
 
+    /**
+     * 同名の明細が存在するかどうか.
+     *
+     * TODO 暫定対応. 本来は明細種別でチェックする.
+     */
+    public function hasProductByName($productName)
+    {
+        $OrderDetails = array_filter($this->getArrayCopy(),
+                                     function ($OrderDetail) use ($productName) {
+                                         return $OrderDetail->getProductName() == $productName;
+                                     });
+        return !empty($OrderDetails);
+    }
     // map, filter, reduce も実装したい
 }

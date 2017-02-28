@@ -38,6 +38,9 @@ class OrderHelper
     /** @var DeliveryRepository */
     protected $deliveryRepository;
 
+    /** @var DeliveryFeeRepository */
+    protected $deliveryFeeRepository;
+
     /** @var PaymentRepository */
     protected $paymentRepository;
 
@@ -54,6 +57,7 @@ class OrderHelper
         $this->orderRepository = $app['eccube.repository.order'];
         $this->paymentRepository = $app['eccube.repository.payment'];
         $this->deliveryRepository = $app['eccube.repository.delivery'];
+        $this->deliveryFeeRepository = $app['eccube.repository.delivery_fee'];
         $this->taxRuleRepository = $app['eccube.repository.tax_rule'];
         $this->orderStatusRepository = $app['eccube.repository.order_status'];
     }
@@ -230,8 +234,9 @@ class OrderHelper
         $Shipping->setDelivery($Delivery);
         $Shipping->setShippingDeliveryName($Delivery->getName());
 
-//        $deliveryFee = $this->deliversyFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
-        $Shipping->setShippingDeliveryFee(500); // FIXME 配送料の取得を行う
+        // TODO 配送料の取得方法はこれで良いか要検討
+        $deliveryFee = $this->deliveryFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
+        $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
     }
 
     public function setDefaultPayment(Order $Order)

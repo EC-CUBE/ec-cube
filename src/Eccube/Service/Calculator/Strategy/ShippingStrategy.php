@@ -30,14 +30,18 @@ class ShippingStrategy implements CalculateStrategyInterface
                 return $carry += $item;
             }
         );
-        $OrderDetail = new OrderDetail();
-        $OrderDetail->setProductName("送料")
-            ->setPrice($delivery_fee_total)
-            ->setPriceIncTax($delivery_fee_total)
-            ->setQuantity(1);
 
-        // 初回集計時と再集計時で処理を分けないといけない
-        $OrderDetails[] = $OrderDetail;
+        // 送料が存在しない場合は追加
+        if (!$OrderDetails->hasProductByName('送料')) {
+            $OrderDetail = new OrderDetail();
+            $OrderDetail->setProductName("送料")
+                ->setPrice($delivery_fee_total)
+                ->setPriceIncTax($delivery_fee_total)
+                ->setTaxRate(0)
+                ->setQuantity(1);
+            $this->Order->setDeliveryFeeTotal($delivery_fee_total);
+            $OrderDetails->append($OrderDetail);
+        }
     }
 
     public function setApplication(Application $app)

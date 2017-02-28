@@ -25,7 +25,6 @@ class CalculateContext
                 // ここのタイミングで Persist 可能?
             }
         }
-
         return $this->calculateOrder($this->Order);
     }
 
@@ -57,6 +56,6 @@ class CalculateContext
     {
         $this->Order = $Order;
         // ArrayIterator のラップしたクラスを作って明細種別ごとに管理したい
-        $this->OrderDetails = new OrderDetailCollection($Order->getOrderDetails());
+        $this->OrderDetails = new OrderDetailCollection($Order->getOrderDetails()->toArray());
     }
 }
