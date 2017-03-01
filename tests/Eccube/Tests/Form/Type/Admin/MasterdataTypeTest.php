@@ -58,7 +58,7 @@ class MasterdataTypeTest extends AbstractTypeTestCase
 
         $expect = 'Eccube-Entity';
         foreach ($choices as $choice) {
-            $actual = $choice->label;
+            $actual = $choice->value;
             $this->assertStringStartsWith($expect, $actual);
         }
     }
