@@ -742,15 +742,9 @@ class ShoppingController extends AbstractController
         // Form生成
         $builder = $app->form();
         $builder
-<<<<<<< HEAD
             ->add('shipping_multiple', CollectionType::class, array(
                 'entry_type' => ShippingMultipleType::class,
-                'data' => $shipmentItems,
-=======
-            ->add('shipping_multiple', 'collection', array(
-                'type' => 'shipping_multiple',
                 'data' => $ShipmentItemsForFormBuilder,
->>>>>>> upstream/master
                 'allow_add' => true,
                 'allow_delete' => true,
             ));
