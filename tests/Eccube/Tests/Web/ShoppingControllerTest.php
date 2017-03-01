@@ -127,7 +127,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // お届け先指定画面
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_delivery')
+            $this->app->path('shopping_redirect_to'),
+            ['shopping_order_mode' => 'delivery']
         );
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -151,7 +152,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // お届け先指定画面
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_delivery'),
+            $this->app->path('shopping_redirect_to'),
             array(
                 'shopping' => array(
                     'shippings' => array(
@@ -163,7 +164,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     'payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
-                )
+                ),
+                ['shopping_order_mode' => 'delivery']
             )
         );
 
@@ -187,7 +189,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // お届け先指定
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_delivery'),
+            $this->app->path('shopping_redirect_to'),
             array(
                 'shopping' => array(
                     'shippings' => array(
@@ -199,7 +201,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     'payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
-                )
+                ),
+                ['shopping_order_mode' => 'delivery']
             )
         );
 
@@ -227,7 +230,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 支払い方法選択
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_payment'),
+            $this->app->path('shopping_redirect_to'),
             array(
                 'shopping' => array(
                     'shippings' => array(
@@ -239,7 +242,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     'payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
-                )
+                ),
+                ['shopping_order_mode' => 'payment']
             )
         );
 
@@ -262,7 +266,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 支払い方法選択
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_payment'),
+            $this->app->path('shopping_redirect_to'),
             array(
                 'shopping' => array(
                     'shippings' => array(
@@ -274,7 +278,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                     'payment' => 100, // payment=100 は無効な値
                     'message' => $faker->text(),
                     '_token' => 'dummy'
-                )
+                ),
+                ['shopping_order_mode' => 'payment']
             )
         );
 
