@@ -140,6 +140,11 @@ class ProductRepository extends EntityRepository
             $qb->addOrderBy('p.id', 'DESC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_newer']) {
+            // 在庫切れ商品非表示の設定が有効時対応
+            // @see https://github.com/EC-CUBE/ec-cube/issues/1998
+            if ($this->app['orm.em']->getFilters()->isEnabled('nostock_hidden') == true) {
+                $qb->innerJoin('p.ProductClasses', 'pc');
+            }
             $qb->orderBy('p.create_date', 'DESC');
         } else {
             if ($categoryJoin === false) {

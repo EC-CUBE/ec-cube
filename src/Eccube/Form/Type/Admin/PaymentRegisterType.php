@@ -63,7 +63,9 @@ class PaymentRegisterType extends AbstractType
             ->add('rule_min', MoneyType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
+                'precision' => 0,
                 'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $app['config']['int_len'],
@@ -77,7 +79,9 @@ class PaymentRegisterType extends AbstractType
             ->add('rule_max', MoneyType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
+                'precision' => 0,
                 'scale' => 0,
+                'grouping' => true,
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -115,7 +119,9 @@ class PaymentRegisterType extends AbstractType
                     $form->add('charge', MoneyType::class, array(
                         'label' => '手数料',
                         'currency' => 'JPY',
+                        'precision' => 0,
                         'scale' => 0,
+                        'grouping' => true,
                         'constraints' => array(
                             new Assert\NotBlank(),
                             new Assert\Length(array(

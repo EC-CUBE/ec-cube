@@ -32,8 +32,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Customer
- *
- *  @UniqueEntity("email")
  */
 class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 {

@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\ProductTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -76,18 +77,11 @@ class DeliveryType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            // todo type paymentに変更
-            ->add('payments', EntityType::class, array(
+            ->add('payments', PaymentType::class, array(
                 'label' => '支払方法',
-                'class' => 'Eccube\Entity\Payment',
-                'choice_label' => 'method',
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'query_builder' => function($er) {
-                    return $er->createQueryBuilder('p')
-                        ->orderBy('p.rank', 'DESC');
-                },
                 'mapped' => false,
             ))
             ->add('delivery_times', CollectionType::class, array(
@@ -101,7 +95,9 @@ class DeliveryType extends AbstractType
             ->add('free_all', PriceType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
+                'precision' => 0,
                 'scale' => 0,
+                'grouping' => true,
                 'required' => false,
                 'mapped' => false
             ))

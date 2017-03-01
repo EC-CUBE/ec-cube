@@ -11,7 +11,6 @@
 
 namespace Plugin\[code]\ServiceProvider;
 
-use Eccube\Application;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -19,7 +18,6 @@ use Monolog\Logger;
 use Plugin\[code]\Form\Type\[code]ConfigType;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class [code]ServiceProvider implements ServiceProviderInterface
 {

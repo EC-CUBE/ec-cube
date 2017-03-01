@@ -449,9 +449,9 @@ class OrderRepository extends EntityRepository
                 ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
         }
 
-
         // Order By
-        $qb->addOrderBy('o.update_date', 'DESC');
+        $qb->orderBy('o.update_date', 'DESC');
+        $qb->addorderBy('o.id', 'DESC');
 
         return $qb;
     }

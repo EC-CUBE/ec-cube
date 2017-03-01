@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
@@ -114,6 +115,9 @@ class ShoppingService
         if (is_null($nonMember)) {
             return null;
         }
+        if (!array_key_exists('customer', $nonMember) || !array_key_exists('pref', $nonMember)) {
+            return null;
+        }
 
         $Customer = $nonMember['customer'];
         $Customer->setPref($this->app['eccube.repository.master.pref']->find($nonMember['pref']));
@@ -167,6 +171,14 @@ class ShoppingService
         // 受注情報を作成
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
+
+        // device type
+        if ($this->app['mobile_detect']->isMobile()) {
+            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_SP);
+        } else {
+            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+        }
+        $Order->setDeviceType($DeviceType);
 
         $this->em->persist($Order);
 
@@ -223,6 +235,7 @@ class ShoppingService
 
     /**
      * 受注情報を作成
+     *
      * @param $Customer
      * @return \Eccube\Entity\Order
      */
@@ -237,12 +250,14 @@ class ShoppingService
 
     /**
      * 受注情報を作成
+     *
      * @return \Eccube\Entity\Order
      */
     public function newOrder()
     {
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
         $Order = new \Eccube\Entity\Order($OrderStatus);
+
         return $Order;
     }
 
@@ -494,7 +509,7 @@ class ShoppingService
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getId())
+            ->setTaxRule($TaxRule->getCalcRule()->getId())
             ->setTaxRate($TaxRule->getTaxRate());
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
@@ -607,6 +622,7 @@ class ShoppingService
         foreach ($shipmentItems as $ShipmentItem) {
             $productDeliveryFeeTotal += $ShipmentItem->getProductClass()->getDeliveryFee() * $ShipmentItem->getQuantity();
         }
+
         return $productDeliveryFeeTotal;
     }
 
@@ -719,24 +735,47 @@ class ShoppingService
      */
     public function isOrderProduct($em, \Eccube\Entity\Order $Order)
     {
-        // 商品公開ステータスチェック
         $orderDetails = $Order->getOrderDetails();
 
         foreach ($orderDetails as $orderDetail) {
+
             if (is_null($orderDetail->getProduct())) {
                 // FIXME 配送明細を考慮する必要がある
                 continue;
             }
+
+            // 商品削除チェック
+            if ($orderDetail->getProductClass()->getDelFlg()) {
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('cart.product.delete');
+                return false;
+            }
+
+            // 商品公開ステータスチェック
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
+
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('cart.product.not.status');
                 return false;
             }
 
             // 購入制限数チェック
             if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
                 if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.sale_limit');
                     return false;
                 }
+            }
+
+            // 購入数チェック
+            if ($orderDetail->getQuantity() < 1) {
+                // 購入数量が1未満ならエラー
+
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('???');
+                return false;
             }
 
         }
@@ -755,7 +794,13 @@ class ShoppingService
                     $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
                 );
                 // 購入数量と在庫数をチェックして在庫がなければエラー
-                if ($orderDetail->getQuantity() > $productStock->getStock()) {
+                if ($productStock->getStock() < 1) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.stock');
+                    return false;
+                } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.stock');
                     return false;
                 }
             }

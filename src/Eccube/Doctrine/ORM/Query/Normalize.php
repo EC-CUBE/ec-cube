@@ -52,7 +52,7 @@ class Normalize extends FunctionNode
                 $sql = sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
                 break;
             case 'pdo_mysql':
-                $sql = sprintf('%s COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
+                $sql = sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
                 break;
             default:
                 $sql = sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker));

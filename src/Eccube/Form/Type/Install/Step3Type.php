@@ -117,6 +117,15 @@ class Step3Type extends AbstractType
                 'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
                 'required' => false,
             ))
+            ->add('trusted_proxies_connection_only', CheckboxType::class, array(
+                'label' => 'サイトが信頼されたロードバランサー、プロキシサーバからのみアクセスされる',
+                'required' => false,
+            ))
+            ->add('trusted_proxies', TextareaType::class, array(
+                'label' => 'ロードバランサー、プロキシサーバのIP',
+                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください（X-Forwarded-Proto、X-Forwarded-Host、X-Forwarded-Portヘッダーに対応してる必要があります）',
+                'required' => false,
+            ))
             ->add('mail_backend', ChoiceType::class, array(
                 'label' => 'メーラーバックエンド',
                 'choices' => array_flip(array(

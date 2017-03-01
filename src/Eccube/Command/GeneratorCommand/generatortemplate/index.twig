@@ -1,0 +1,12 @@
+{# default_frame.twigを継承して共通のヘッダー、フッターを表示するにはdtb_page_layout に登録が必要 #}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = '[code]_page' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-danger">こんにちわ</p>
+        </div>
+    </div>
+{% endblock %}

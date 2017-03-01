@@ -162,6 +162,14 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
         };
         $app['eccube.repository.master.order_status'] = function () use ($app) {
+        };
+        $app['eccube.repository.master.product_list_max'] = function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListMax');
+        };
+        $app['eccube.repository.master.product_list_order_by'] = function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
+        };
+        $app['eccube.repository.master.order_status'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         };
         $app['eccube.repository.master.device_type'] = function () use ($app) {

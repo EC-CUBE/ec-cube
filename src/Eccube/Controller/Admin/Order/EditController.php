@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -70,7 +71,7 @@ class EditController extends AbstractController
 
         if (is_null($id)) {
             // 空のエンティティを作成.
-            $TargetOrder = $this->newOrder();
+            $TargetOrder = $this->newOrder($app);
         } else {
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
@@ -81,9 +82,23 @@ class EditController extends AbstractController
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
         $OriginalOrderDetails = new ArrayCollection();
+        // 編集前のお届け先情報を保持
+        $OriginalShippings = new ArrayCollection();
+        // 編集前のお届け先のアイテム情報を保持
+        $OriginalShipmentItems = new ArrayCollection();
 
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
+        }
+
+        // 編集前の情報を保持
+        foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
+            foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
+                // アイテム情報
+                $OriginalShipmentItems->add($tmpOriginalShipmentItem);
+            }
+            // お届け先情報
+            $OriginalShippings->add($tmpOriginalShippings);
         }
 
         $builder = $app['form.factory']
@@ -156,12 +171,24 @@ class EditController extends AbstractController
                             foreach ($Shippings as $Shipping) {
                                 $shipmentItems = $Shipping->getShipmentItems();
                                 foreach ($shipmentItems as $ShipmentItem) {
+                                    // 削除予定から商品アイテムを外す
+                                    $OriginalShipmentItems->removeElement($ShipmentItem);
                                     $ShipmentItem->setOrder($TargetOrder);
                                     $ShipmentItem->setShipping($Shipping);
                                     $app['orm.em']->persist($ShipmentItem);
                                 }
+                                // 削除予定からお届け先情報を外す
+                                $OriginalShippings->removeElement($Shipping);
                                 $Shipping->setOrder($TargetOrder);
                                 $app['orm.em']->persist($Shipping);
+                            }
+                            // 商品アイテムを削除する
+                            foreach ($OriginalShipmentItems as $OriginalShipmentItem) {
+                                $app['orm.em']->remove($OriginalShipmentItem);
+                            }
+                            // お届け先情報削除する
+                            foreach ($OriginalShippings as $OriginalShipping) {
+                                $app['orm.em']->remove($OriginalShipping);
                             }
                         } else {
                             // 単一配送の場合, ShippimentItemsはOrderDetailの内容をコピーし、delete/insertで作り直す.
@@ -591,12 +618,16 @@ class EditController extends AbstractController
         }
     }
 
-    protected function newOrder()
+    protected function newOrder(Application $app)
     {
         $Order = new \Eccube\Entity\Order();
         $Shipping = new \Eccube\Entity\Shipping();
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
+
+        // device type
+        $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_ADMIN);
+        $Order->setDeviceType($DeviceType);
 
         return $Order;
     }
