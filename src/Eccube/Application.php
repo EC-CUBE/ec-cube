@@ -23,13 +23,13 @@
 
 namespace Eccube;
 
-use Binfo\Silex\MobileDetectServiceProvider;
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
+use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Sergiors\Silex\Provider\AnnotationsServiceProvider;
 use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
 use Sergiors\Silex\Provider\RoutingServiceProvider;
