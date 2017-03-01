@@ -683,14 +683,17 @@ class CsvImportController
             $rank = 1;
             foreach ($images as $image) {
 
-                $ProductImage = new ProductImage();
-                $ProductImage->setFileName(Str::trimAll($image));
-                $ProductImage->setProduct($Product);
-                $ProductImage->setRank($rank);
+                $fileName = Str::trimAll($image);
+                if (!empty($fileName)) {
+                    $ProductImage = new ProductImage();
+                    $ProductImage->setFileName(Str::trimAll($image));
+                    $ProductImage->setProduct($Product);
+                    $ProductImage->setRank($rank);
 
-                $Product->addProductImage($ProductImage);
-                $rank++;
-                $this->em->persist($ProductImage);
+                    $Product->addProductImage($ProductImage);
+                    $rank++;
+                    $this->em->persist($ProductImage);
+                }
             }
         }
     }
