@@ -90,7 +90,6 @@ class ProductClassType extends AbstractType
             ->add('price01', MoneyType::class, array(
                 'label' => '通常価格',
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'required' => false,
@@ -107,7 +106,6 @@ class ProductClassType extends AbstractType
             ->add('price02', MoneyType::class, array(
                 'label' => '販売価格',
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
@@ -135,7 +133,6 @@ class ProductClassType extends AbstractType
             ->add('delivery_fee', MoneyType::class, array(
                 'label' => '商品送料',
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'required' => false,

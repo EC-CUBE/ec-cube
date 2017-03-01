@@ -167,7 +167,6 @@ class OrderType extends AbstractType
             ->add('discount', MoneyType::class, array(
                 'label' => '値引き',
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
@@ -180,7 +179,6 @@ class OrderType extends AbstractType
             ->add('delivery_fee_total', MoneyType::class, array(
                 'label' => '送料',
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
@@ -193,7 +191,6 @@ class OrderType extends AbstractType
             ->add('charge', MoneyType::class, array(
                 'label' => '手数料',
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(

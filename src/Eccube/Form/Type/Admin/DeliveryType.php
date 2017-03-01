@@ -95,7 +95,6 @@ class DeliveryType extends AbstractType
             ->add('free_all', PriceType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'required' => false,

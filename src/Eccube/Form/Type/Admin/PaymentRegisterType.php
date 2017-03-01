@@ -63,7 +63,6 @@ class PaymentRegisterType extends AbstractType
             ->add('rule_min', MoneyType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
@@ -79,7 +78,6 @@ class PaymentRegisterType extends AbstractType
             ->add('rule_max', MoneyType::class, array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'required' => false,
@@ -119,7 +117,6 @@ class PaymentRegisterType extends AbstractType
                     $form->add('charge', MoneyType::class, array(
                         'label' => '手数料',
                         'currency' => 'JPY',
-                        'precision' => 0,
                         'scale' => 0,
                         'grouping' => true,
                         'constraints' => array(

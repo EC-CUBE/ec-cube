@@ -162,7 +162,6 @@ class ShopMasterType extends AbstractType
                 'label' => '送料無料条件(金額)',
                 'required' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(

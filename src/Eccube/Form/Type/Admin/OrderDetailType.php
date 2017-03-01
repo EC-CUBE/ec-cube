@@ -60,7 +60,6 @@ class OrderDetailType extends AbstractType
             ))
             ->add('price', MoneyType::class, array(
                 'currency' => 'JPY',
-                'precision' => 0,
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
