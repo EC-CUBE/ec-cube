@@ -686,7 +686,7 @@ class CsvImportController
                 $fileName = Str::trimAll($image);
                 if (!empty($fileName)) {
                     $ProductImage = new ProductImage();
-                    $ProductImage->setFileName(Str::trimAll($image));
+                    $ProductImage->setFileName($fileName);
                     $ProductImage->setProduct($Product);
                     $ProductImage->setRank($rank);
 
