@@ -168,7 +168,7 @@ class OrderTest extends EccubeTestCase
             $faker->randomNumber(5),
             $faker->randomNumber(5)
         );
-        $this->expected = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
+        $this->expected = $Order->getSubTotal() + $Order->getCharge() - $Order->getDiscount();
         $this->actual = $Order->getTotalPrice();
         $this->verify();
     }
