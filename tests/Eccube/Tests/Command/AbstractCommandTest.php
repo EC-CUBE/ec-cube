@@ -102,7 +102,7 @@ abstract class AbstractCommandTest extends EccubeTestCase
         }
 
         if ($this->loopCnt > self::LOOP_MAX_LIMIT) {
-            throw new \Exception($this->content . ' Contents reach loop limit of ' . self::LOOP_MAX_LIMIT . ' (AbstractCommandTest::LOOP_MAX_LIMIT)');
+            throw new \Exception($this->content.' Contents reach loop limit of '.self::LOOP_MAX_LIMIT . ' (AbstractCommandTest::LOOP_MAX_LIMIT)');
         }
         return $this->content;
     }
@@ -138,7 +138,7 @@ abstract class AbstractCommandTest extends EccubeTestCase
      */
     protected function getQuestionMark($no)
     {
-        return AbstractPluginGenerator::INPUT_OPEN . $no . AbstractPluginGenerator::INPUT_CLOSE;
+        return AbstractPluginGenerator::INPUT_OPEN.$no.AbstractPluginGenerator::INPUT_CLOSE;
     }
 
     public function createApplication()
@@ -146,21 +146,23 @@ abstract class AbstractCommandTest extends EccubeTestCase
         $app = Application::getInstance();
         $app['debug'] = true;
         $app->initialize();
-
         // Console
-        $app->register(
-            new \Knp\Provider\ConsoleServiceProvider(), array(
-            'console.name' => 'EC-CUBE',
-            'console.version' => \Eccube\Common\Constant::VERSION,
-            'console.project_directory' => __DIR__ . "/.."
-            )
-        );
+        if (!$app->offsetExists('console')) {
+            $app->register(
+                new \Knp\Provider\ConsoleServiceProvider(), array(
+                    'console.name' => 'EC-CUBE',
+                    'console.version' => \Eccube\Common\Constant::VERSION,
+                    'console.project_directory' => __DIR__."/.."
+                )
+            );
+        }
 
         // Migration
-        $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
-            'db.migrations.path' => __DIR__ . '/../../../../src/Eccube/Resource/doctrine/migration',
-        ));
-
+        if (!$app->offsetExists('db.migrations.path')) {
+            $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
+                'db.migrations.path' => __DIR__.'/../../../../src/Eccube/Resource/doctrine/migration',
+            ));
+        }
         $app->boot();
         $app['console'];
 
