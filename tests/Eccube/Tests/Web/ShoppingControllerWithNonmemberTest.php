@@ -95,7 +95,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
