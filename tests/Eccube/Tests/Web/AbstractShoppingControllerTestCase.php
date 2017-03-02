@@ -89,8 +89,8 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         if (count($shippings) < 1) {
             $shippings = array(
                 array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1
+                    'Delivery' => 1,
+                    'shipping_delivery_date' => null
                 ),
             );
         }
@@ -98,10 +98,10 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $confirm_url,
-            array('shopping' =>
+            array('_shopping_order' =>
                   array(
-                      'shippings' => $shippings,
-                      'payment' => 3,
+                      'Shippings' => $shippings,
+                      'Payment' => 3,
                       'message' => $faker->text(),
                       '_token' => 'dummy'
                   )
