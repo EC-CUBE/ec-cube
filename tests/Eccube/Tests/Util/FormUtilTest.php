@@ -65,4 +65,33 @@ class FormUtilTest extends EccubeTestCase
         // dateはDateTimeに変換されている.
         $this->assertInstanceOf('\DateTime', $data['date']);
     }
+
+    /**
+     * AddressTypeなど, 子要素をもつFormTypeのテスト.
+     */
+    public function testNestedFormType()
+    {
+        $formData = array(
+            'address' => array(
+                'pref' => '27',
+                'addr01' => '北区',
+                'addr02' => '梅田'
+            )
+        );
+
+        $form = $this->app['form.factory']
+            ->createBuilder(
+                'form',
+                null,
+                array(
+                    'csrf_protection' => false,
+                )
+            )
+            ->add('address', 'address')
+            ->getForm();
+
+        $form->submit($formData);
+        $viewData = FormUtil::getViewData($form);
+        $this->assertEquals($formData, $viewData);
+    }
 }

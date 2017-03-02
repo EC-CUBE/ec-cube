@@ -37,8 +37,14 @@ class FormUtil
     public static function getViewData(FormInterface $form)
     {
         $viewData = array();
-        foreach ($form->all() as $key => $value) {
-            $viewData[$key] = $value->getViewData();
+        $forms = $form->all();
+
+        if (empty($forms)) {
+            return $form->getViewData();
+        }
+
+        foreach ($forms as $key => $value) {
+            $viewData[$key] = self::getViewData($value);
         }
 
         return $viewData;
