@@ -344,6 +344,118 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->verify();
     }
 
+    public function testOrderEditWithShippingItemDelete()
+    {
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
+        $Shippings = $Order->getShippings();
+
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formData,
+            'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $this->expected = $formData['name']['name01'];
+        $this->actual = $EditedOrder->getName01();
+        $this->verify();
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassExpected = array();
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            $stopFlag = true;
+            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
+                if ($stopFlag === true) {
+                    $stopFlag = false;
+                    $newFormData['Shippings'][$idx]['ShipmentItems'][$subIsx]['quantity'] = 0;
+                    continue;
+                }
+                $productClassExpected[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+            }
+        }
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $newFormData,
+            'mode' => 'register'
+            )
+        );
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassActual = array();
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
+                $productClassActual[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+            }
+        }
+
+        $this->expected = $productClassExpected;
+        $this->actual = $productClassActual;
+        $this->verify();
+    }
+
+    public function testOrderEditWithShippingDelete()
+    {
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
+        $Shippings = $Order->getShippings();
+
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formData,
+            'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $this->expected = $formData['name']['name01'];
+        $this->actual = $EditedOrder->getName01();
+        $this->verify();
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassExpected = array();
+        $stopFlag = true;
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            if ($stopFlag === true) {
+                $stopFlag = false;
+                unset($newFormData['Shippings'][$idx]);
+                continue;
+            }
+            $productClassExpected[] = $Shippings;
+        }
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $newFormData,
+            'mode' => 'register'
+            )
+        );
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassActual = array();
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            $productClassActual[] = $Shippings;
+        }
+
+        $this->expected = $productClassExpected;
+        $this->actual = $productClassActual;
+        $this->verify();
+    }
+
     /**
      * 複数配送用受注編集用フォーム作成.
      *

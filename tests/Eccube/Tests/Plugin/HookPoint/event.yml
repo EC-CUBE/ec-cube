@@ -105,7 +105,8 @@ admin.customer.delete.complete:
   - [onAdminCustomer4, NORMAL]
 
 # export
-
+admin.customer.csv.export:
+  - [onAdminCustomerExportCsv, NORMAL]
 
 
 # Admin/Customer/CustomerEditController
@@ -193,9 +194,12 @@ admin.order.delete.complete:
   - [onAdminOrder3, NORMAL]
 
 # exportOrder
+admin.order.csv.export.order:
+  - [onAdminOrderExportCsv, NORMAL]
 
 # exportShipping
-
+admin.order.csv.export.shipping:
+  - [onAdminOrderShippingExportCsv, NORMAL]
 
 
 # Admin/Product/CategoryController
@@ -211,7 +215,8 @@ admin.product.category.delete.complete:
   - [onAdminCategory3, NORMAL]
 
 # export
-
+admin.product.category.csv.export:
+  - [onAdminCategoryExportCsv, NORMAL]
 
 
 # Admin/Product/ClassCategoryController
@@ -305,7 +310,8 @@ admin.product.display.complete:
   - [onAdminProduct9, NORMAL]
 
 # export
-
+admin.product.csv.export:
+  - [onAdminProductExportCsv, NORMAL]
 
 
 # Admin/Setting/Shop/CsvController

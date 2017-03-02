@@ -60,6 +60,7 @@ class ShipmentItemType extends AbstractType
             ->add('price', MoneyType::class, array(
                 'currency' => 'JPY',
                 'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(

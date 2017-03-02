@@ -40,9 +40,9 @@ $(function(){
 {% endblock javascript %}
 
 {% block main %}
+<div class="row" id="aside_wrap">
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
         {{ form_widget(form._token) }}
-        <div class="row" id="aside_wrap">
             <div id="detail_wrap" class="col-md-9">
                 <div id="delivery_info_box" class="box">
                     <div id="delivery_info_box__header" class="box-header">
@@ -140,9 +140,8 @@ $(function(){
                 </div>
 
             </div><!-- /.col -->
-
-            <div id="common_box" class="col-md-3">
-                <div class="col_inner" id="aside_column">
+            <div class="col-md-3" id="aside_column">
+                <div id="common_box" class="col_inner">
                     <div id="common_button_box" class="box no-header">
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
@@ -162,10 +161,7 @@ $(function(){
                     </div>
                 </div>
             </div><!-- /.col -->
-
-
-
-        </div>
     </form>
+</div>
 
 {% endblock %}

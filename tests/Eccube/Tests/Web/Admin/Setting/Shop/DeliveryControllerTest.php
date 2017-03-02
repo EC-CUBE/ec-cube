@@ -236,7 +236,11 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $deliveryFree = array();
         // 47 93 ?
         for ($i = 48; $i <= 93; $i++) {
-            $deliveryFree[$i] = array('fee' => $faker->randomNumber(5));
+            $tmpFee = $faker->randomNumber(5);
+            if (mt_rand(0, 1)) {
+                $tmpFee = number_format($tmpFee);
+            }
+            $deliveryFree[$i] = array('fee' => $tmpFee);
         }
 
         $form = array(

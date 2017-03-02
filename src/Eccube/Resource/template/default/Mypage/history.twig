@@ -167,7 +167,7 @@ $(function(){
                             {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
                         </p>
                         <p id="shipping_list__delivery--{{ Shipping.id }}">
-                            配送方法：　{{ Shipping.shipping_delivery_name }}{{ Shipping.delivery_fee ? '（＋' ~ Shipping.delivery_fee.fee|price ~ '）' : '' }}<br>
+                            配送方法：　{{ Shipping.shipping_delivery_name }}{{ Shipping.shipping_delivery_fee ? '（＋' ~ Shipping.shipping_delivery_fee|price ~ '）' : '' }}<br>
                             お届け日：　{{ Shipping.shipping_delivery_date|date_format|default('指定なし') }}<br>
                             お届け時間：　{{ Shipping.shipping_delivery_time|default('指定なし') }}
                         </p>

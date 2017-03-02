@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Command\PluginCommand;
+namespace Eccube\Command\GeneratorCommand;
 
 use Eccube\Command\PluginCommand\AbstractPluginGenerator;
 use Eccube\Common\Constant;
@@ -50,12 +50,12 @@ class PluginGenerator extends AbstractPluginGenerator
     {
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('---Plugin Generator');
-        $this->output->writeln('---[*]You can exit from Console Application, by typing ' . self::STOP_PROCESS . ' instead of typing another word.');
+        $this->output->writeln('---[*]You can exit from Console Application, by typing '.self::STOP_PROCESS.' instead of typing another word.');
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('');
     }
 
-    protected function initFildset()
+    protected function initFieldSet()
     {
         $this->paramList = array(
             'pluginName' => array(
@@ -71,10 +71,11 @@ class PluginGenerator extends AbstractPluginGenerator
                 'no' => 2,
                 'label' => '[+]Plugin Code: ',
                 'value' => null,
-                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers are allowed)',
+                'name' => '[+]Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
                 'validation' => array(
                     'isRequired' => true,
-                    'patern' => '/^[A-Z][0-9a-zA-Z]*$/'
+                    'pattern' => '/^[A-Z][0-9a-zA-Z]*$/',
+                    'isCode' => $this->getPluginCodes(),
                 )
             ),
             'version' => array(
@@ -84,7 +85,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 'name' => '[+]Please enter version (correct format is x.y.z)',
                 'validation' => array(
                     'isRequired' => true,
-                    'patern' => '/^\d+.\d+.\d+$/'
+                    'pattern' => '/^\d+.\d+.\d+$/',
                 )
             ),
             'author' => array(
@@ -101,44 +102,66 @@ class PluginGenerator extends AbstractPluginGenerator
                 'label' => '[+]Old version support: ',
                 'value' => null,
                 'name' => '[+]Do you want to support old versions too? [y/n]',
-                'show' => array(1 => 'Yes' ,0 => 'No'),
+                'show' => array(1 => 'Yes', 0 => 'No'),
                 'validation' => array(
                     'isRequired' => true,
-                    'choice' => array('y' => 1, 'n' => 0)
+                    'choice' => array('y' => 1, 'n' => 0),
                 )
             ),
             'events' => array(
                 'no' => 6,
-                'label' => '[+]Site events: ',
+                'label' => '[+]SiteEvents: ',
                 'value' => array(),
                 'name' => '[+]Please enter site events(you can find documentation here http://www.ec-cube.net/plugin/)',
                 'validation' => array(
                     'isRequired' => false,
-                    'inArray' => 'getEvents'
+                    'inArray' => 'getEvents',
                 )
             ),
             'hookPoints' => array(
                 'no' => 7,
-                'label' => '[+]Hook points: ',
+                'label' => '[+]hookpoint: ',
                 'value' => array(),
-                'name' => '[+]Please enter hook point, sample：front.cart.up.initialize',
+                'name' => '[+]Please enter hookpoint, sample：front.cart.up.initialize',
                 'validation' => array(
                     'isRequired' => false,
-                    'inArray' => $this->getHookPoints()
+                    'inArray' => $this->getHookPoints(),
                 )
-            )
+            ),
+            'useOrmPath' => array(
+                'no' => 8,
+                'label' => '[+]Use orm.path: ',
+                'value' => null,
+                'name' => '[+]Would you like to use orm.path? [y/n]',
+                'show' => array(1 => 'Yes', 0 => 'No'),
+                'validation' => array(
+                    'isRequired' => true,
+                    'choice' => array('y' => 1, 'n' => 0),
+                )
+            ),
         );
     }
 
-    private function getHookPoints()
+    /**
+     * フックポイント一覧の取得
+     *
+     * @return array
+     */
+    protected function getHookPoints()
     {
         if ($this->hookPoints === null) {
             $Ref = new \ReflectionClass('\Eccube\Event\EccubeEvents');
             $this->hookPoints = array_flip($Ref->getConstants());
         }
+
         return $this->hookPoints;
     }
 
+    /**
+     * イベント一覧の取得
+     *
+     * @return array|mixed
+     */
     protected function getEvents()
     {
         if (!isset($this->paramList['supportFlag']['value'])) {
@@ -148,13 +171,13 @@ class PluginGenerator extends AbstractPluginGenerator
             $this->events = array();
             $routeEvents = array();
             if ($this->paramList['supportFlag']['value']) {
-                $this->events = include $this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/eventsList.php';
+                $this->events = include $this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/eventList.php';
                 $routeEvents['eccube.event.controller.__route__.before'] = 'Controller__route__Before';
                 $routeEvents['eccube.event.controller.__route__.after'] = 'Controller__route__After';
                 $routeEvents['eccube.event.controller.__route__.finish'] = 'Controller__route__Finish';
                 $routeEvents['eccube.event.render.__route__.before'] = 'Render__route__Before';
             }
-            $this->events += include $this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/eventsListNew.php';
+            $this->events += include $this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/eventListNew.php';
 
             $routeEvents['eccube.event.route.__route__.request'] = 'Route__route__Request';
             $routeEvents['eccube.event.route.__route__.controller'] = 'Route__route__Controller';
@@ -191,11 +214,13 @@ class PluginGenerator extends AbstractPluginGenerator
     {
         $pluginCode = $this->paramList['pluginCode']['value'];
 
-        $Plugin = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $pluginCode));
-        if ($Plugin) {
-            $this->exitGenerator('<error>Plugin with this name already exists</error>');
+        $codes = $this->getPluginCodes();
+        if (in_array($pluginCode, $codes)) {
+            $this->exitGenerator('<error>Plugin with this code already exists.</error>');
+
             return;
         }
+
         $this->createFilesAndFolders($pluginCode, $this->paramList);
         $this->createDbRecords($pluginCode, $this->paramList);
         $this->exitGenerator('Plugin was created successfully');
@@ -213,12 +238,15 @@ class PluginGenerator extends AbstractPluginGenerator
         $config['name'] = $paramList['pluginName']['value'];
         $config['code'] = $code;
         $config['version'] = $paramList['version']['value'];
-        if (!empty($paramList['hookPoints']['value'])) {
-            $config['event'] = $code . 'Event';
+        if (!empty($paramList['hookPoints']['value']) || !empty($paramList['events']['value'])) {
+            $config['event'] = $code.'Event';
         }
-        $config['service'] = array($code . 'ServiceProvider');
+        $config['service'] = array($code.'ServiceProvider');
+        if ($this->paramList['useOrmPath']['value']) {
+            $config['orm.path'] = array('/Resource/doctrine');
+        }
 
-        $codePath = $this->app['config']['root_dir'] . '/app/Plugin/' . $code;
+        $codePath = $this->app['config']['root_dir'].'/app/Plugin/'.$code;
 
         $file = new Filesystem();
         $file->mkdir($codePath);
@@ -228,7 +256,7 @@ class PluginGenerator extends AbstractPluginGenerator
             $fsList['dir'][$codePath] = false;
         }
 
-        $srcPath = $codePath . '/config.yml';
+        $srcPath = $codePath.'/config.yml';
         file_put_contents($srcPath, Yaml::dump($config));
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -236,11 +264,11 @@ class PluginGenerator extends AbstractPluginGenerator
             $fsList['file'][$srcPath] = false;
         }
 
-        $author = $paramList['pluginName']['value'];
+        $author = $paramList['author']['value'];
         $year = date('Y');
 
         // PluginManager
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/PluginManager.php');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/PluginManager.php');
         $from = '/\[code\]/';
         $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
         $from = '/\[author\]/';
@@ -248,7 +276,7 @@ class PluginGenerator extends AbstractPluginGenerator
         $from = '/\[year\]/';
         $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
 
-        $srcPath = $codePath . '/PluginManager.php';
+        $srcPath = $codePath.'/PluginManager.php';
         file_put_contents($srcPath, $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -257,22 +285,24 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         // ServiceProvider
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/ServiceProvider.php');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/ServiceProvider.php');
         $from = '/\[code\]/';
         $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
+        $from = '/\[lower_code\]/';
+        $pluginFileAfter = preg_replace($from, mb_strtolower($code), $pluginFileAfter);
         $from = '/\[author\]/';
         $pluginFileAfter = preg_replace($from, $author, $pluginFileAfter);
         $from = '/\[year\]/';
         $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
 
-        $file->mkdir($codePath . '/ServiceProvider');
-        if (is_dir($codePath . '/ServiceProvider')) {
-            $fsList['dir'][$codePath . '/ServiceProvider'] = true;
+        $file->mkdir($codePath.'/ServiceProvider');
+        if (is_dir($codePath.'/ServiceProvider')) {
+            $fsList['dir'][$codePath.'/ServiceProvider'] = true;
         } else {
-            $fsList['dir'][$codePath . '/ServiceProvider'] = false;
+            $fsList['dir'][$codePath.'/ServiceProvider'] = false;
         }
 
-        $srcPath = $codePath . '/ServiceProvider/' . $code . 'ServiceProvider.php';
+        $srcPath = $codePath.'/ServiceProvider/'.$code.'ServiceProvider.php';
         file_put_contents($srcPath, $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -281,7 +311,7 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         // ConfigController
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/ConfigController.php');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/ConfigController.php');
         $from = '/\[code\]/';
         $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
         $from = '/\[author\]/';
@@ -291,14 +321,14 @@ class PluginGenerator extends AbstractPluginGenerator
         $from = '/\[code_name\]/';
         $pluginFileAfter = preg_replace($from, mb_strtolower($code), $pluginFileAfter);
 
-        $file->mkdir($codePath . '/Controller');
-        if (is_dir($codePath . '/Controller')) {
-            $fsList['dir'][$codePath . '/Controller'] = true;
+        $file->mkdir($codePath.'/Controller');
+        if (is_dir($codePath.'/Controller')) {
+            $fsList['dir'][$codePath.'/Controller'] = true;
         } else {
-            $fsList['dir'][$codePath . '/Controller'] = false;
+            $fsList['dir'][$codePath.'/Controller'] = false;
         }
 
-        $srcPath = $codePath . '/Controller/ConfigController.php';
+        $srcPath = $codePath.'/Controller/ConfigController.php';
         file_put_contents($srcPath, $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -307,7 +337,7 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         // Controller
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/Controller.php');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/Controller.php');
         $from = '/\[code\]/';
         $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
         $from = '/\[author\]/';
@@ -317,7 +347,7 @@ class PluginGenerator extends AbstractPluginGenerator
         $from = '/\[code_name\]/';
         $pluginFileAfter = preg_replace($from, mb_strtolower($code), $pluginFileAfter);
 
-        $srcPath = $codePath . '/Controller/' . $code . 'Controller.php';
+        $srcPath = $codePath.'/Controller/'.$code.'Controller.php';
         file_put_contents($srcPath, $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -326,7 +356,7 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         // Form
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/ConfigType.php');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/ConfigType.php');
         $from = '/\[code\]/';
         $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
         $from = '/\[author\]/';
@@ -336,15 +366,15 @@ class PluginGenerator extends AbstractPluginGenerator
         $from = '/\[code_name\]/';
         $pluginFileAfter = preg_replace($from, mb_strtolower($code), $pluginFileAfter);
 
-        $file->mkdir($codePath . '/Form/Type');
-        if (is_dir($codePath . '/Form/Type')) {
-            $fsList['dir'][$codePath . '/Form/Type'] = true;
+        $file->mkdir($codePath.'/Form/Type');
+        if (is_dir($codePath.'/Form/Type')) {
+            $fsList['dir'][$codePath.'/Form/Type'] = true;
         } else {
-            $fsList['dir'][$codePath . '/Form/Type'] = false;
+            $fsList['dir'][$codePath.'/Form/Type'] = false;
         }
 
-        $srcPath = $codePath . '/Form/Type/' . $code . 'ConfigType.php';
-        file_put_contents($codePath . '/Form/Type/' . $code . 'ConfigType.php', $pluginFileAfter);
+        $srcPath = $codePath.'/Form/Type/'.$code.'ConfigType.php';
+        file_put_contents($codePath.'/Form/Type/'.$code.'ConfigType.php', $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
         } else {
@@ -352,18 +382,18 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         // Twig
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/config.twig');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/config.twig');
         $from = '/\[code\]/';
         $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
 
-        $file->mkdir($codePath . '/Resource/template/admin');
-        if (is_dir($codePath . '/Resource/template/admin')) {
-            $fsList['dir'][$codePath . '/Resource/template/admin'] = true;
+        $file->mkdir($codePath.'/Resource/template/admin');
+        if (is_dir($codePath.'/Resource/template/admin')) {
+            $fsList['dir'][$codePath.'/Resource/template/admin'] = true;
         } else {
-            $fsList['dir'][$codePath . '/Resource/template/admin'] = false;
+            $fsList['dir'][$codePath.'/Resource/template/admin'] = false;
         }
 
-        $srcPath = $codePath . '/Resource/template/admin/config.twig';
+        $srcPath = $codePath.'/Resource/template/admin/config.twig';
         file_put_contents($srcPath, $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -372,18 +402,18 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         // index.twig
-        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/index.twig');
+        $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/index.twig');
         $from = '/\[code\]/';
-        $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
+        $pluginFileAfter = preg_replace($from, mb_strtolower($code), $pluginFileBefore);
 
-        $file->mkdir($codePath . '/Resource/template/admin');
-        if (is_dir($codePath . '/Resource/template/admin')) {
-            $fsList['dir'][$codePath . '/Resource/template/admin'] = true;
+        $file->mkdir($codePath.'/Resource/template/admin');
+        if (is_dir($codePath.'/Resource/template/admin')) {
+            $fsList['dir'][$codePath.'/Resource/template/admin'] = true;
         } else {
-            $fsList['dir'][$codePath . '/Resource/template/admin'] = false;
+            $fsList['dir'][$codePath.'/Resource/template/admin'] = false;
         }
 
-        $srcPath = $codePath . '/Resource/template/index.twig';
+        $srcPath = $codePath.'/Resource/template/index.twig';
         file_put_contents($srcPath, $pluginFileAfter);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
@@ -392,29 +422,31 @@ class PluginGenerator extends AbstractPluginGenerator
         }
 
         $onFunctions = array();
+        $eventKeys = array();
         $onEvents = array();
 
-        //イベント
+        // イベント
         $events = $paramList['events']['value'];
         if (count($events) > 0) {
             foreach ($events as $eventKey => $eventConst) {
-                $onEvents[$eventKey] = array(array('on' . $eventConst . ', NORMAL'));
-                $onFunctions[] = 'on' . $eventConst;
+                $onEvents[$eventKey] = array(array('on'.$eventConst.', NORMAL'));
+                $onFunctions[$eventKey] = 'on'.$eventConst;
+                $eventKeys[] = $eventKey;
             }
         }
 
-        //フックポイント
+        // フックポイント
         $hookPoints = $paramList['hookPoints']['value'];
         if (count($hookPoints)) {
             foreach ($hookPoints as $hookKey => $hookConst) {
-                $onName = 'on' . join(array_map('ucfirst', explode('_', strtolower($hookConst))));
-                $onEvents[$hookKey] = array(array($onName . ', NORMAL'));
-                $onFunctions[] = $onName;
+                $onName = 'on'.join(array_map('ucfirst', explode('_', strtolower($hookConst))));
+                $onEvents[$hookKey] = array(array($onName.', NORMAL'));
+                $onFunctions[$hookKey] = $onName;
             }
         }
 
         if (count($onEvents)) {
-            $srcPath = $codePath . '/event.yml';
+            $srcPath = $codePath.'/event.yml';
             file_put_contents($srcPath, str_replace('\'', '', Yaml::dump($onEvents)));
             if (is_file($srcPath)) {
                 $fsList['file'][$srcPath] = true;
@@ -422,7 +454,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 $fsList['file'][$srcPath] = false;
             }
 
-            $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/EventHookpoint2.php');
+            $pluginFileBefore = file_get_contents($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/Event.php');
 
             // Event
             $from = '/\[code\]/';
@@ -433,12 +465,29 @@ class PluginGenerator extends AbstractPluginGenerator
             $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
 
             $functions = '';
-            foreach ($onFunctions as $functionName) {
-                $functions .= "    public function " . $functionName . "(EventArgs \$event)\n    {\n    }\n\n";
+            $args = include $this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/eventArguments.php';
+            foreach ($onFunctions as $key => $name) {
+                if (in_array($key, $eventKeys)) {
+                    // 共通イベントは引数の型を利用するイベントにより変更
+                    $ext = pathinfo($key, PATHINFO_EXTENSION);
+                    if (array_key_exists($ext, $args)) {
+                        $functions .= "    /**\n     * @param {$args[$ext]} \$event\n     */\n    public function {$name}({$args[$ext]} \$event)\n    {\n    }\n\n";
+                    } else {
+                        // 旧イベントの場合、引数は「eccube.event.render」のみ可能
+                        if (preg_match("/^eccube.event.render\./", $key)) {
+                            $functions .= "    /**\n     * @param {$args['eccube.event.render']} \$event\n     */\n    public function {$name}({$args['eccube.event.render']} \$event)\n    {\n    }\n\n";
+                        } else {
+                            $functions .= "    /**\n     *\n     */\n    public function {$name}()\n    {\n    }\n\n";
+                        }
+                    }
+                } else {
+                    // HookPointイベントの引数はEventArgs共通
+                    $functions .= "    /**\n     * @param EventArgs \$event\n     */\n    public function {$name}(EventArgs \$event)\n    {\n    }\n\n";
+                }
             }
             $from = '/\[hookpoint_function\]/';
             $pluginFileAfter = preg_replace($from, $functions, $pluginFileAfter);
-            $srcPath = $codePath . '/' . $code . 'Event.php';
+            $srcPath = $codePath.'/'.$code.'Event.php';
             file_put_contents($srcPath, $pluginFileAfter);
             if (is_file($srcPath)) {
                 $fsList['file'][$srcPath] = true;
@@ -447,63 +496,17 @@ class PluginGenerator extends AbstractPluginGenerator
             }
         }
 
-        // config.ymlを再作成
-        $config = array();
-        $config['name'] = $paramList['pluginName']['value'];
-        $config['code'] = $code;
-        $config['version'] = $paramList['version']['value'];
-        $config['event'] = $code . 'Event';
-        $config['service'] = array($code . 'ServiceProvider');
-        $srcPath = $codePath . '/config.yml';
-        file_put_contents($srcPath, Yaml::dump($config));
-        if (is_file($srcPath)) {
-            $fsList['file'][$srcPath] = true;
-        } else {
-            $fsList['file'][$srcPath] = false;
-        }
-
         // LICENSE
-        $srcPath = $codePath . '/LICENSE';
-        $file->copy($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/LICENSE', $srcPath);
+        $srcPath = $codePath.'/LICENSE';
+        $file->copy($this->app['config']['root_dir'].'/src/Eccube/Command/GeneratorCommand/generatortemplate/LICENSE', $srcPath);
         if (is_file($srcPath)) {
             $fsList['file'][$srcPath] = true;
         } else {
             $fsList['file'][$srcPath] = false;
         }
 
-        $dirFileNg = array();
-        $dirFileOk = array();
-        foreach ($fsList['dir'] as $path => $flag) {
-            if ($flag) {
-                $dirFileOk[] = $path;
-            } else {
-                $dirFileNg[] = $path;
-            }
-        }
-        foreach ($fsList['file'] as $path => $flag) {
-            if ($flag) {
-                $dirFileOk[] = $path;
-            } else {
-                $dirFileNg[] = $path;
-            }
-        }
-        $this->output->writeln('');
-        $this->output->writeln('[+]File system');
-        if (!empty($dirFileOk)) {
-            $this->output->writeln('');
-            $this->output->writeln(' this files and folders were created.');
-            foreach ($dirFileOk as $path) {
-                $this->output->writeln('<info> - ' . $path . '</info>');
-            }
-        }
+        $this->completeMessage($fsList);
 
-        if (!empty($dirFileNg)) {
-            $this->output->writeln('');
-            $this->output->writeln(' this files and folders was not created.');
-            foreach ($dirFileOk as $path) {
-                $this->output->writeln('<error> - ' . $path . '</error>');
-            }
-        }
     }
 
     private function createDbRecords($code, $paramList)
@@ -524,9 +527,9 @@ class PluginGenerator extends AbstractPluginGenerator
         $this->output->writeln('');
         $this->output->writeln('[+]Database');
         if ($Plugin->getId()) {
-            $this->output->writeln('<info> Plugin information was added to table [DB.Plugin] (id=' . $Plugin->getId() . ')</info>');
+            $this->output->writeln('<info> Plugin information was added to table [DB.Plugin] (id='.$Plugin->getId().')</info>');
         } else {
-            $this->output->writeln('<error> there was a problem inserting plugin information to table [DB.Plugin] (id=' . $Plugin->getId() . ')</error>');
+            $this->output->writeln('<error> there was a problem inserting plugin information to table [DB.Plugin] (id='.$Plugin->getId().')</error>');
         }
 
         $hookPoints = $paramList['hookPoints']['value'];
@@ -537,7 +540,7 @@ class PluginGenerator extends AbstractPluginGenerator
         $eventCount = 0;
         foreach ($hookPoints as $hookKey => $hookConst) {
             $PluginEventHandler = new PluginEventHandler();
-            $functionName = 'on' . join(array_map('ucfirst', explode('_', strtolower($hookConst))));
+            $functionName = 'on'.join(array_map('ucfirst', explode('_', strtolower($hookConst))));
             $PluginEventHandler->setPlugin($Plugin)
                 ->setEvent($hookKey)
                 ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($hookKey, $functionName))
@@ -550,7 +553,7 @@ class PluginGenerator extends AbstractPluginGenerator
         $this->app['orm.em']->flush();
         if ($eventCount) {
             $this->output->writeln('');
-            $this->output->writeln('<info> Plugin information was added to table [DB.PluginEventHandler] (inserts number=' . $eventCount . ') </info>');
+            $this->output->writeln('<info> Plugin information was added to table [DB.PluginEventHandler] (inserts number='.$eventCount.') </info>');
         }
     }
 }

@@ -29,6 +29,7 @@ use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
+use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Sergiors\Silex\Provider\AnnotationsServiceProvider;
 use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
 use Sergiors\Silex\Provider\RoutingServiceProvider;
@@ -159,6 +160,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new MobileDetectServiceProvider());
 
         $this->error(function (\Exception $e, Request $request, $code) {
             if ($this['debug']) {
@@ -215,6 +217,8 @@ class Application extends \Silex\Application
                 'auto_convert' => true
             ]
         ]);
+        // init proxy
+        $this->initProxy();
 
         // init ec-cube service provider
         $this->register(new ServiceProvider\EccubeServiceProvider());
@@ -737,13 +741,19 @@ class Application extends \Silex\Application
             ),
         );
 
+        $channel = null;
+        // 強制SSL
+        if ($this['config']['force_ssl'] == \Eccube\Common\Constant::ENABLED) {
+            $channel = "https";
+        }
+
         $this['security.access_rules'] = array(
-            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
-            array('^/mypage', 'ROLE_USER'),
+            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN', $channel),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY', $channel),
+            array('^/mypage', 'ROLE_USER', $channel),
         );
 
         $this['eccube.password_encoder'] = function ($app) {
@@ -775,6 +785,22 @@ class Application extends \Silex\Application
         };
 
         $this->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+    }
+
+    /**
+     * ロードバランサー、プロキシサーバの設定を行う
+     */
+    public function initProxy()
+    {
+        $config = $this['config'];
+        if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
+            $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($config) {
+                // サブリクエストのREMOTE_ADDRも動的に設定を行う必要があるため、KernelEvents::REQUESTを使用する
+                Request::setTrustedProxies(array_merge(array($event->getRequest()->server->get('REMOTE_ADDR')), $config['trusted_proxies']));
+            }, self::EARLY_EVENT);
+        } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
+            Request::setTrustedProxies($config['trusted_proxies']);
+        }
     }
 
     public function initializePlugin()

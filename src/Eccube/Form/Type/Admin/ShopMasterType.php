@@ -163,6 +163,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'currency' => 'JPY',
                 'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $config['price_len'],

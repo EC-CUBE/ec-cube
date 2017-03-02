@@ -93,7 +93,7 @@ class InstallController
     {
         $request->getSession()->remove(self::SESSION_KEY);
 
-        return $app->redirect($app->url('install_step1'));
+        return $app->redirect($app->path('install_step1'));
     }
 
     // ようこそ
@@ -106,7 +106,7 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-            return $app->redirect($app->url('install_step2'));
+            return $app->redirect($app->path('install_step2'));
         }
 
         $this->checkModules($app);
@@ -177,6 +177,13 @@ class InstallController
                 }
                 $sessionData['admin_force_ssl'] = (bool) $config['force_ssl'];
 
+                // ロードバランサー、プロキシサーバ設定
+                $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
+                $trustedProxies = $config['trusted_proxies'];
+                if (count($trustedProxies) > 0) {
+                    $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n", $trustedProxies));
+                }
+
                 // メール設定
                 $config_file = $this->config_path . '/mail.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
@@ -196,7 +203,7 @@ class InstallController
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
 
-            return $app->redirect($app->url('install_step4'));
+            return $app->redirect($app->path('install_step4'));
         }
 
         return $app['twig']->render('step3.twig', array(
@@ -239,7 +246,7 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
 
-            return $app->redirect($app->url('install_step5'));
+            return $app->redirect($app->path('install_step5'));
         }
 
         return $app['twig']->render('step4.twig', array(
@@ -300,7 +307,7 @@ class InstallController
 
             $request->getSession()->remove(self::SESSION_KEY);
 
-            return $app->redirect($app->url('install_complete'));
+            return $app->redirect($app->path('install_complete'));
         }
 
         return $app['twig']->render('step5.twig', array(
@@ -312,8 +319,19 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        $config_file = $this->config_path . '/path.yml';
-        $config = Yaml::parse(file_get_contents($config_file));
+        $config_yml = $this->config_path . '/config.yml';
+        $config = Yaml::parse(file_get_contents($config_yml));
+        $config_path = $this->config_path . '/path.yml';
+        $path_yml = Yaml::parse(file_get_contents($config_path));
+
+        $config = array_replace_recursive($path_yml, $config);
+
+
+        if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
+            Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')), $config['trusted_proxies']));
+        } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
+            Request::setTrustedProxies($config['trusted_proxies']);
+        }
 
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
@@ -353,17 +371,17 @@ class InstallController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] '.$module.' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $app->addWarning('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $app->addWarning('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
@@ -698,6 +716,18 @@ class InstallController
         } else {
             $adminAllowHosts = explode("\n", $allowHost);
         }
+        $trustedProxies = Str::convertLineFeed($data['trusted_proxies']);
+        if (empty($trustedProxies)) {
+            $adminTrustedProxies = array();
+        } else {
+            $adminTrustedProxies = explode("\n", $trustedProxies);
+            // ループバックアドレスを含める
+            $adminTrustedProxies = array_merge($adminTrustedProxies, array('127.0.0.1/8', '::1'));
+        }
+        if ($data['trusted_proxies_connection_only']) {
+            // ループバックアドレスを含める
+            $adminTrustedProxies = array('127.0.0.1/8', '::1');
+        }
 
         $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
         $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
@@ -710,6 +740,8 @@ class InstallController
 
         $config = Yaml::parse(file_get_contents($config_file));
         $config['admin_allow_host'] = $adminAllowHosts;
+        $config['trusted_proxies_connection_only'] = $data['trusted_proxies_connection_only'];
+        $config['trusted_proxies'] = $adminTrustedProxies;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);
 
@@ -915,7 +947,7 @@ class InstallController
 
         if (empty($Plugins)) {
             // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
-            return $app->redirect($app->url('migration_end'));
+            return $app->redirect($app->path('migration_end'));
         } else {
             return $app['twig']->render('migration_plugin.twig', array(
                     'Plugins' => $Plugins,

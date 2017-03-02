@@ -2060,6 +2060,9 @@ margin-top: 5px;
 	font-weight: bold;
 }
 
+#delivery_address_list div.is-edit {
+    position: relative;
+}
 
 /* Error Page */
 
@@ -3251,8 +3254,10 @@ fieldset[disabled] .btn-link:focus {
         transform: translateX(0);
     }
 
-
-
+    /* My page address */
+    #delivery_address_list div.is-edit p.btn_edit {
+        top: 30%;
+    }
 
 }
 @media only screen and (min-width: 768px) {
@@ -4328,6 +4333,11 @@ fieldset[disabled] .btn-link:focus {
     }
     .mypage .title_hint + .form-group {
         padding-top: 8px;
+    }
+
+    /* My page address */
+    #delivery_address_list div.is-edit p.btn_edit {
+        top: 30%;
     }
 
 

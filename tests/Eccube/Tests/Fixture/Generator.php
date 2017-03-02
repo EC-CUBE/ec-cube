@@ -130,6 +130,8 @@ class Generator {
         $this->app['orm.em']->persist($CustomerAddress);
         $this->app['orm.em']->flush($CustomerAddress);
 
+        $Customer->addCustomerAddress($CustomerAddress);
+        $this->app['orm.em']->flush($Customer);
         return $Customer;
     }
 

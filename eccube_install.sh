@@ -92,6 +92,7 @@ case "${DBTYPE}" in
 ;;
 "mysql" )
     #-- DB Seting MySQL
+    DBPASS=`echo $DBPASS | tr -d " "`
     MYSQL=mysql
     ROOTUSER=root
     ROOTPASS=${DBPASS}
@@ -219,7 +220,6 @@ case "${DBTYPE}" in
     get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME} || exit 1
 ;;
 "mysql" )
-    DBPASS=`echo $DBPASS | tr -d " "`
     if [ -n ${DBPASS} ]; then
         PASSOPT="--password=$DBPASS"
         CONFIGPASS=$DBPASS

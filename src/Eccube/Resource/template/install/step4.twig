@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <form name="form1" id="form1" method="post" action="{{ url('install_step4') }}">
+                            <form name="form1" id="form1" method="post" action="{{ path('install_step4') }}">
                                 {{ form_widget(form._token) }}
                                 {{ form_row(form.database) }}
                                 {{ form_row(form.database_host) }}
@@ -62,7 +62,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_row(form.database_password) }}
                                 <ul class="btn_area">
                                     <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
-                                    <li><a href="{{ url('install_step3') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                    <li><a href="{{ path('install_step3') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
                                 </ul>
                             </form>
                         </div>
