@@ -90,7 +90,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             $shippings = array(
                 array(
                     'Delivery' => 1,
-                    'shipping_delivery_date' => null
+                    'DeliveryTime' => 1
                 ),
             );
         }

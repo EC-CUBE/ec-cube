@@ -124,17 +124,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // 完了画面
         $crawler = $this->scenarioComplete(
             $client,
-            $this->app->path('shopping_confirm'),
+            $this->app->path('shopping/confirm'),
             array(
                 // 配送先1
                 array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1
+                    'Delivery' => 1,
+                    'DeliveryTime' => 1
                 ),
                 // 配送先2
                 array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1
+                    'Delivery' => 1,
+                    'DeliveryTime' => 1
                 )
             )
         );

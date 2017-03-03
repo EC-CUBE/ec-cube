@@ -111,8 +111,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/redirect', '\Eccube\Controller\ShoppingController::redirectTo')->bind('shopping_redirect_to');
         //$c->match('/shopping/confirm', '\Eccube\Controller\ShoppingController::confirm')->bind('shopping_confirm');
         // $c->match('/shopping/delivery', '\Eccube\Controller\ShoppingController::delivery')->bind('shopping_delivery');
-        $c->match('/shopping/payment', '\Eccube\Controller\ShoppingController::payment')->bind('shopping_payment');
-        $c->match('/shopping/shipping_change/{id}', '\Eccube\Controller\ShoppingController::shippingChange')->assert('id', '\d+')->bind('shopping_shipping_change');
+        //$c->match('/shopping/payment', '\Eccube\Controller\ShoppingController::payment')->bind('shopping_payment');
+        //$c->match('/shopping/shipping_change/{id}', '\Eccube\Controller\ShoppingController::shippingChange')->assert('id', '\d+')->bind('shopping_shipping_change');
         $c->match('/shopping/shipping/{id}', '\Eccube\Controller\ShoppingController::shipping')->assert('id', '\d+')->bind('shopping_shipping');
         $c->match('/shopping/shipping_edit_change/{id}', '\Eccube\Controller\ShoppingController::shippingEditChange')->assert('id', '\d+')->bind('shopping_shipping_edit_change');
         $c->match('/shopping/shipping_edit/{id}', '\Eccube\Controller\ShoppingController::shippingEdit')->assert('id', '\d+')->bind('shopping_shipping_edit');
