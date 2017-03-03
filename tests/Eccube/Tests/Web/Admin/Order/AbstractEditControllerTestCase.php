@@ -143,15 +143,17 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $orderDetail = array();
         $OrderDetailColl = $Order->getOrderDetails();
         foreach ($OrderDetailColl as $OrderDetail) {
+            $Product = $OrderDetail->getProduct();
+            $ProductClass = $OrderDetail->getProductClass();
             $orderDetail[] = array(
-                'Product' => $OrderDetail->getProduct()->getId(),
-                'ProductClass' => $OrderDetail->getProductClass()->getId(),
+                'Product' => is_object($Product) ? $Product->getId() : null,
+                'ProductClass' => is_object($ProductClass) ? $ProductClass->getId() : null,
                 'price' => $OrderDetail->getPrice(),
                 'quantity' => $OrderDetail->getQuantity(),
                 'tax_rate' => $OrderDetail->getTaxRate(),
                 'tax_rule' => $OrderDetail->getTaxRule(),
-                'product_name' => $OrderDetail->getProduct()->getName(),
-                'product_code' => $OrderDetail->getProductClass()->getCode(),
+                'product_name' => is_object($Product) ? $Product->getName() : '送料', // XXX v3.1 より 送料等, Product の無い明細が追加される
+                'product_code' => is_object($ProductClass) ? $ProductClass->getCode() : null,
             );
         }
         //受注お届け

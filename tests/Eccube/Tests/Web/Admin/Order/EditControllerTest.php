@@ -256,7 +256,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $OrderDetails = $EditedOrder->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
-            if ($this->actual == $OrderDetail->getProduct()->getName()) {
+            if (is_Object($OrderDetail->getProduct())
+                && $this->actual == $OrderDetail->getProduct()->getName()) {
                 $this->fail('#1452 の不具合');
             }
         }
