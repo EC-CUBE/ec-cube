@@ -507,7 +507,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $productName = 'test01';
         $this->expectOutputRegex("/$productName/");
-        $this->createProduct($productName);
+        $Product = $this->createProduct($productName);
+
         $post = array('admin_search_product' =>
             array(
                 '_token' => 'dummy',

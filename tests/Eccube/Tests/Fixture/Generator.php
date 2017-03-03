@@ -261,8 +261,8 @@ class Generator {
         $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
         $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
-        // TODO Inheritance Mapping の検証用
-        $Product = new \Acme\Entity\ExtendedProduct();
+
+        $Product = new Product();
         if (is_null($product_name)) {
             $product_name = $faker->word;
         }

@@ -28,6 +28,8 @@ class SecurityTraitTest extends EccubeTestCase
 {
     public function testUser()
     {
+        // FIXME 正しい EncodePassword が実装されたら有効にする
+        $this->markTestIncomplete('EncodePassword is not implemented.');
         $request = Request::create('/');
 
         $app = $this->createApplication(array(
@@ -69,6 +71,8 @@ class SecurityTraitTest extends EccubeTestCase
 
     public function testEncodePassword()
     {
+        // FIXME 正しい EncodePassword が実装されたら有効にする
+        $this->markTestIncomplete('EncodePassword is not implemented.');
         $app = $this->createApplication(array(
             'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
         ));

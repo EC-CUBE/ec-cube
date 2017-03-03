@@ -21,7 +21,7 @@ class PaymentServiceTest extends AbstractServiceTestCase
 
         $form = new \Eccube\Form\Type\ShoppingType();
         $paymentMethod = $this->app['payment.method']($Order->getPayment()->getMethodClass(), $form);
-        $this->assertInstanceOf(\Eccube\Service\Payment\Method\EccubePaymentCreditCard::class, $paymentMethod);
+        $this->assertInstanceOf(\Eccube\Service\Payment\Method\Cash::class, $paymentMethod);
 
         $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
         $this->assertFalse($dispatcher);
