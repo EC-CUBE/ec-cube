@@ -79,7 +79,7 @@ class ShoppingController extends AbstractController
     /**
      * 購入画面表示
      *
-     * @Route("", name="shopping")
+     * @Route("/", name="shopping")
      * @Template("Shopping/index.twig")
      *
      * @param Application $app
