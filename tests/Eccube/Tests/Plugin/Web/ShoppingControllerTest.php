@@ -128,12 +128,12 @@ class ShoppingControllerTest extends AbstractWebTestCase
         );
 
         // 完了画面
-        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $crawler = $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
                 EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
                 EccubeEvents::MAIL_ORDER,
@@ -172,14 +172,14 @@ class ShoppingControllerTest extends AbstractWebTestCase
         // お届け先指定画面
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_delivery')
+            $this->app->path('shopping_redirect_to')
         );
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_DELIVERY_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
             )
         );
         $this->verifyOutputString($hookpoins);
@@ -214,16 +214,16 @@ class ShoppingControllerTest extends AbstractWebTestCase
         // お届け先指定画面
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_delivery'),
+            $this->app->path('shopping_redirect_to'),
             array(
-                'shopping' => array(
-                    'shippings' => array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
                         0 => array(
-                            'delivery' => 1,
-                            'deliveryTime' => 1
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
                         ),
                     ),
-                    'payment' => 1,
+                    'Payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
                 )
@@ -234,8 +234,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_DELIVERY_INITIALIZE,
-                EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
             )
         );
         $this->verifyOutputString($hookpoins);
@@ -269,7 +268,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         // お届け先指定
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_delivery'),
+            $this->app->path('shopping_redirect_to'),
             array(
                 'shopping' => array(
                     'shippings' => array(
@@ -287,7 +286,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_DELIVERY_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
             )
         );
         $this->verifyOutputString($hookpoins);
@@ -322,16 +321,16 @@ class ShoppingControllerTest extends AbstractWebTestCase
         // 支払い方法選択
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_payment'),
+            $this->app->path('shopping_redirect_to'),
             array(
-                'shopping' => array(
-                    'shippings' => array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
                         0 => array(
-                            'delivery' => 1,
-                            'deliveryTime' => 1
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
                         ),
                     ),
-                    'payment' => 1,
+                    'Payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
                 )
@@ -342,8 +341,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_PAYMENT_INITIALIZE,
-                EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
             )
         );
         $this->verifyOutputString($hookpoins);
@@ -378,16 +376,16 @@ class ShoppingControllerTest extends AbstractWebTestCase
         // 支払い方法選択
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_payment'),
+            $this->app->path('shopping_redirect_to'),
             array(
-                'shopping' => array(
-                    'shippings' => array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
                         0 => array(
-                            'delivery' => 1,
-                            'deliveryTime' => 1
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
                         ),
                     ),
-                    'payment' => 100, // payment=100 は無効な値
+                    'Payment' => 100, // payment=100 は無効な値
                     'message' => $faker->text(),
                     '_token' => 'dummy'
                 )
@@ -396,7 +394,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_PAYMENT_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
             )
         );
         $this->verifyOutputString($hookpoins);
@@ -425,17 +423,12 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
-                EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE,
             )
         );
 
         // お届け先指定画面
         $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
         $crawler = $this->scenarioComplete($client, $shipping_url);
-
-        // /shipping/shipping_change/<id> から /shipping/shipping/<id> へリダイレクト
-        $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
-        $this->assertTrue($client->getResponse()->isRedirect($shipping_url));
 
         $this->verifyOutputString($hookpoins);
     }
@@ -463,7 +456,6 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
-                EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE,
             )
         );
 
@@ -513,7 +505,6 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
-                EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE,
                 EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE,
 
             )
@@ -576,11 +567,11 @@ class ShoppingControllerTest extends AbstractWebTestCase
         );
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
                 EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
                 EccubeEvents::MAIL_ORDER,
@@ -657,16 +648,16 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $confirm_url,
-            array('shopping' =>
+            array('_shopping_order' =>
                   array(
-                      'shippings' =>
+                      'Shippings' =>
                       array(0 =>
                             array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
+                                'Delivery' => 1,
+                                'DeliveryTime' => 1
                             ),
                       ),
-                      'payment' => 1,
+                      'Payment' => 1,
                       'message' => $faker->text(),
                       '_token' => 'dummy'
                   )

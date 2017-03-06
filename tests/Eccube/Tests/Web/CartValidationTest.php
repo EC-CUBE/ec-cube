@@ -2079,14 +2079,13 @@ class CartValidationTest extends AbstractWebTestCase
         // change payment
         $paymentForm = array(
             '_token' => 'dummy',
-            'payment' => 4,
+            'Payment' => 4,
             'message' => $this->getFaker()->paragraph,
-            'shippings' => array(
-                array('delivery' => 1,),
+            'Shippings' => array(
+                array('Delivery' => 1,),
             ),
         );
-        $client->request('POST', $this->app->url('shopping_payment'), array('shopping' => $paymentForm));
-        $client->followRedirect();
+        $client->request('POST', $this->app->url('shopping_redirect_to'), array('_shopping_order' => $paymentForm));
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2138,14 +2137,13 @@ class CartValidationTest extends AbstractWebTestCase
         // change payment
         $paymentForm = array(
             '_token' => 'dummy',
-            'payment' => 4, // change payment
+            'Payment' => 4, // change payment
             'message' => $this->getFaker()->paragraph,
-            'shippings' => array(
-                array('delivery' => 1,),
+            'Shippings' => array(
+                array('Delivery' => 1,),
             ),
         );
-        $client->request('POST', $this->app->url('shopping_payment'), array('shopping' => $paymentForm));
-        $client->followRedirect();
+        $client->request('POST', $this->app->url('shopping_redirect_to'), array('_shopping_order' => $paymentForm));
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2198,14 +2196,13 @@ class CartValidationTest extends AbstractWebTestCase
         // change payment
         $paymentForm = array(
             '_token' => 'dummy',
-            'payment' => 4, // change payment
+            'Payment' => 4, // change payment
             'message' => $this->getFaker()->paragraph,
-            'shippings' => array(
-                array('delivery' => 1,),
+            'Shippings' => array(
+                array('Delivery' => 1,),
             ),
         );
-        $client->request('POST', $this->app->url('shopping_payment'), array('shopping' => $paymentForm));
-        $client->followRedirect();
+        $client->request('POST', $this->app->url('shopping_redirect_to'), array('_shopping_order' => $paymentForm));
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2256,13 +2253,13 @@ class CartValidationTest extends AbstractWebTestCase
         // change payment
         $paymentForm = array(
             '_token' => 'dummy',
-            'payment' => 4, // change payment
+            'Payment' => 4, // change payment
             'message' => $this->getFaker()->paragraph,
-            'shippings' => array(
-                array('delivery' => 1,),
+            'Shippings' => array(
+                array('Delivery' => 1,),
             ),
         );
-        $client->request('POST', $this->app->url('shopping_payment'), array('shopping' => $paymentForm));
+        $client->request('POST', $this->app->url('shopping_redirect_to'), array('_shopping_order' => $paymentForm));
 
         // only one redirect (shopping 1)
         $crawler = $client->followRedirect();
@@ -2317,13 +2314,13 @@ class CartValidationTest extends AbstractWebTestCase
         // change payment
         $paymentForm = array(
             '_token' => 'dummy',
-            'payment' => 4, // change payment
+            'Payment' => 4, // change payment
             'message' => $this->getFaker()->paragraph,
-            'shippings' => array(
-                array('delivery' => 1,),
+            'Shippings' => array(
+                array('Delivery' => 1,),
             ),
         );
-        $client->request('POST', $this->app->url('shopping_payment'), array('shopping' => $paymentForm));
+        $client->request('POST', $this->app->url('shopping_redirect_to'), array('_shopping_order' => $paymentForm));
 
         // only one redirect (shopping 1)
         $crawler = $client->followRedirect();
@@ -2866,19 +2863,19 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         if (strlen($confirmUrl) == 0) {
-            $confirmUrl = $this->app->url('shopping_confirm');
+            $confirmUrl = $this->app->url('shopping/confirm');
         }
 
         if (count($arrShopping) == 0) {
             $arrShopping = array(
-                'shippings' =>
+                'Shippings' =>
                     array(
                         array(
-                            'delivery' => 1,
-                            'deliveryTime' => 1
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
                         ),
                     ),
-                'payment' => 3,
+                'Payment' => 3,
                 'message' => $faker->text(),
                 '_token' => 'dummy',
             );
@@ -2886,7 +2883,7 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $confirmUrl,
-            array('shopping' => $arrShopping)
+            array('_shopping_order' => $arrShopping)
         );
 
         return $crawler;

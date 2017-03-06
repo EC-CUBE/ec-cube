@@ -82,7 +82,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $crawler = $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -154,14 +154,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             'POST',
             $this->app->path('shopping_redirect_to'),
             array(
-                'shopping' => array(
-                    'shippings' => array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
                         0 => array(
-                            'delivery' => 1,
-                            'deliveryTime' => 1
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
                         ),
                     ),
-                    'payment' => 1,
+                    'Payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
                 ),
@@ -232,14 +232,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             'POST',
             $this->app->path('shopping_redirect_to'),
             array(
-                'shopping' => array(
-                    'shippings' => array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
                         0 => array(
-                            'delivery' => 1,
-                            'deliveryTime' => 1
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
                         ),
                     ),
-                    'payment' => 1,
+                    'Payment' => 1,
                     'message' => $faker->text(),
                     '_token' => 'dummy'
                 ),
@@ -306,9 +306,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
         $crawler = $this->scenarioComplete($client, $shipping_url);
 
-        // /shipping/shipping_change/<id> から /shipping/shipping/<id> へリダイレクト
-        $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
-        $this->assertTrue($client->getResponse()->isRedirect($shipping_url));
+        $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     /**
@@ -406,7 +404,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $Messages = $this->getMailCatcherMessages();
