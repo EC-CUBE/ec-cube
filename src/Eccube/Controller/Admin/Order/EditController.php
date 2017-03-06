@@ -130,6 +130,19 @@ class EditController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
+            // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
+            // see EditControllerTest::testOrderProcessingWithTax
+            $OrderDetails = $TargetOrder->getOrderDetails();
+            $taxtotal = 0;
+            foreach ($OrderDetails as $OrderDetail) {
+                $tax = $app['eccube.service.tax_rule']
+                    ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
+                $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+
+                $taxtotal += $tax * $OrderDetail->getQuantity();
+            }
+            $TargetOrder->setTax($taxtotal);
+
             // 入力情報にもとづいて再計算.
             // TODO 購入フローのように、明細の自動生成をどこまで行うか検討する. 単純集計でよいような気がする
             // 集計は,この1行でいけるはず

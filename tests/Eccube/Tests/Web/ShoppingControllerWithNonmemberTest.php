@@ -161,6 +161,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     public function testShippingEdit()
     {
+        // FIXME お届け先情報編集機能が実装されたら有効にする
+        $this->markTestIncomplete('Shipping edit is not implemented.');
+
         $faker = $this->getFaker();
         $client = $this->createClient();
 
@@ -215,6 +218,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     public function testShippingEditWithPostToComplete()
     {
+        // FIXME お届け先情報編集機能が実装されたら有効にする
+        $this->markTestIncomplete('Shipping edit is not implemented.');
+
         $faker = $this->getFaker();
         $client = $this->createClient();
 

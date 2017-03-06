@@ -33,7 +33,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     public function setUp()
     {
         parent::setUp();
-
+        // FIXME 複数配送の機能が実装されたら有効にする
+        $this->markTestIncomplete('Multiple Order is not implemented.');
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         // 複数配送を有効に
         $BaseInfo->setOptionMultipleShipping(1);

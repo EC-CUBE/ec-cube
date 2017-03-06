@@ -135,8 +135,9 @@ class OrderType extends AbstractType
             function (FormEvent $event) {
                 /** @var Order $Order */
                 $Order = $event->getData();
-                $Order->setPaymentMethod($Order->getPayment()->getMethod());
-                $Order->setCharge($Order->getPayment()->getCharge());
+                $Payment = $Order->getPayment();
+                $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
+                $Order->setCharge($Payment ? $Payment->getCharge() : null);
             }
         );
     }

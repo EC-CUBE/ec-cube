@@ -113,18 +113,17 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
             )
         );
 
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
                 EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
                 EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,
             )
         );
-
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
         $this->verifyOutputString($hookpoins);
@@ -200,16 +199,16 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $confirm_url,
-            array('shopping' =>
+            array('_shopping_order' =>
                   array(
-                      'shippings' =>
+                      'Shippings' =>
                       array(0 =>
                             array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
+                                'Delivery' => 1,
+                                'DeliveryTime' => 1
                             ),
                       ),
-                      'payment' => 1,
+                      'Payment' => 1,
                       'message' => $faker->text(),
                       '_token' => 'dummy'
                   )
