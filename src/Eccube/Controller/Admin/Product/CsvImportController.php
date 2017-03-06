@@ -192,6 +192,11 @@ class CsvImportController
                             }
                         }
 
+                        if ($this->checkImageFormat($row, $Product)) {
+                            $this->addErrors(($data->key() + 1) . '行目の商品画像には末尾に"/"もしくは"../"を使用できません。');
+                            return $this->render($app, $form, $headers, $this->productTwig);
+                        }
+
                         // 商品画像登録
                         $this->createProductImage($row, $Product);
 
@@ -663,6 +668,25 @@ class CsvImportController
         return ($ret !== false) ? $data : false;
     }
 
+    /**
+     * 画像フォーマットチェック
+     */
+    protected function checkImageFormat($row, Product $Product)
+    {
+        if ($row['商品画像'] != '') {
+            // 画像の登録
+            $images = explode(',', $row['商品画像']);
+            $pattern = "/\\$|^.*.\.\\\.*|\/$|^.*.\.\/\.*/";
+            foreach ($images as $image) {
+                $fileName = Str::trimAll($image);
+                if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
+                    return ture;
+                }
+            }
+        }
+
+        return false;
+    }
 
     /**
      * 商品画像の削除、登録

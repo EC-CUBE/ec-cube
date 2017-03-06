@@ -1,0 +1,413 @@
+[28-Feb-2017 10:17:29 UTC] PHP Notice:  Undefined index: eccube_install in /home/ubuntu/workspace/ec-cube/html/index.php on line 45
+[28-Feb-2017 10:17:29 UTC] PHP Stack trace:
+[28-Feb-2017 10:17:29 UTC] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 682
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:54:12 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:682
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 682
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:54:29 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:682
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:57:31 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:57:53 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:58:10 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:58:19 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 690
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 16:58:51 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 690
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:10:23 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP Warning:  preg_match(): Unknown modifier '$' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:685
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 690
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:11:28 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:15:40 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:16:09 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:16:23 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:16:31 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:17:25 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:17:33 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:17:45 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP Warning:  preg_match(): No ending delimiter '/' found in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 684
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   9. preg_match() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:684
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:18:54 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:19:04 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 689
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:19:25 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:20:11 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:20:30 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:21:21 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:22:35 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:22:52 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:23 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:31 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:37 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 685
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:24:43 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:25:18 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:26:31 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:30:25 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:30:50 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:00 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:06 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:14 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP Notice:  Use of undefined constant ture - assumed 'ture' in /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php on line 683
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP Stack trace:
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   1. {main}() /home/ubuntu/workspace/ec-cube/html/index.php:0
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   2. Silex\Application->run() /home/ubuntu/workspace/ec-cube/html/index.php:51
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   3. Silex\Application->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:563
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/ec-cube/vendor/silex/silex/src/Silex/Application.php:586
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   5. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:64
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   6. call_user_func_array:{/home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144}() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   7. Eccube\Controller\Admin\Product\CsvImportController->csvProduct() /home/ubuntu/workspace/ec-cube/vendor/symfony/http-kernel/HttpKernel.php:144
+[06-Mar-2017 17:31:20 Asia/Tokyo] PHP   8. Eccube\Controller\Admin\Product\CsvImportController->checkImageFormat() /home/ubuntu/workspace/ec-cube/src/Eccube/Controller/Admin/Product/CsvImportController.php:195
