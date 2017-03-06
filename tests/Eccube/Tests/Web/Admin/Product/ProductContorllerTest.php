@@ -34,6 +34,14 @@ use Symfony\Component\DomCrawler\Crawler;
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
 
+    public function setUp()
+    {
+        parent::setUp();
+        // 検索時, IDの重複を防ぐため事前に10個生成しておく
+        for ($i = 0; $i < 10; $i++) {
+            $this->createProduct();
+        }
+    }
     public function createFormData()
     {
         $faker = $this->getFaker();
