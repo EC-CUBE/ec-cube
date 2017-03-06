@@ -169,7 +169,7 @@ class ShoppingController extends AbstractController
      * 購入処理
      *
      * @Method("POST")
-     * @Route("/shopping/confirm", name="shopping/confirm")
+     * @Route("/confirm", name="shopping/confirm")
      */
     public function confirm(Application $app, Request $request)
     {

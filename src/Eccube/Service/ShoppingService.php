@@ -122,6 +122,13 @@ class ShoppingService
         $Customer = $nonMember['customer'];
         $Customer->setPref($this->app['eccube.repository.master.pref']->find($nonMember['pref']));
 
+        foreach ($Customer->getCustomerAddresses() as $CustomerAddress) {
+            $Pref = $CustomerAddress->getPref();
+            if ($Pref) {
+                $CustomerAddress->setPref($this->app['eccube.repository.master.pref']->find($Pref->getId()));
+            }
+        }
+
         return $Customer;
 
     }
