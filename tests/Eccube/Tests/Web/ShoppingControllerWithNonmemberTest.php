@@ -44,7 +44,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->app['eccube.service.cart']->unlock();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping');
+        $crawler = $client->request('GET', '/shopping/');
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
     }
@@ -54,7 +54,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->app['eccube.service.cart']->lock();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping');
+        $crawler = $client->request('GET', '/shopping/');
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
     }
@@ -156,82 +156,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
     }
 
-    public function testShippingEditChange()
-    {
-        // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
-        $faker = $this->getFaker();
-        $client = $this->createClient();
-
-        $this->scenarioCartIn($client);
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
-        $crawler = $this->scenarioConfirm($client);
-
-        $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
-
-        $crawler = $client->request('GET', $crawler->filter('a.btn-shipping-edit')->attr('href'));
-
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
-    }
-
     /**
-     * 購入確認画面→お届け先の設定(非会員)
+     * 購入確認画面→お届け先の設定画面(非会員)へ遷移する
      */
-    public function testShippingEditChangeWithPost()
-    {
-        // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
-
-        $faker = $this->getFaker();
-        $client = $this->createClient();
-
-        $this->scenarioCartIn($client);
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
-        $crawler = $this->scenarioConfirm($client);
-
-        $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
-
-        $crawler = $client->request('POST', $crawler->filter('a.btn-shipping-edit')->attr('href'));
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-    }
-
-    /**
-     * 購入確認画面→お届け先の設定(非会員)
-     */
-    public function testShippingEditChangeWithPostVerify()
-    {
-        // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
-
-        $faker = $this->getFaker();
-        $client = $this->createClient();
-
-        $this->scenarioCartIn($client);
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
-
-        // 購入確認画面
-        $crawler = $this->scenarioConfirm($client);
-        $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
-
-        // お届け先設定画面への遷移前チェック
-        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $crawler = $this->scenarioComplete($client, $shipping_edit_change_url);
-
-        // お届け先設定画面へ遷移
-        $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
-        $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
-    }
-
     public function testShippingEdit()
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
@@ -249,13 +176,35 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        // お届け先設定画面への遷移前チェック
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $crawler = $this->scenarioComplete($client, $shipping_edit_change_url);
+        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
 
-        // お届け先設定画面へ遷移
+        // 値を保持してお届け先設定画面へ遷移
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_redirect_to'),
+            array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
+                        0 => array(
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
+                        ),
+                    ),
+                    'Payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy',
+                    'mode' => 'shipping_edit_change',
+                    'param' => $matches[1],
+                )
+            )
+        );
+
+        // お届け先設定画面へリダイレクト.
         $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
+        $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
 
+        // お届け先設定画面が表示される.
         $crawler = $client->request('GET', $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -284,12 +233,43 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        // お届け先設定画面への遷移前チェック
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $crawler = $this->scenarioComplete($client, $shipping_edit_change_url);
+        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
 
-        // お届け先設定画面へ遷移し POST 送信
+        // 値を保持してお届け先設定画面へ遷移
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_redirect_to'),
+            array(
+                '_shopping_order' => array(
+                    'Shippings' => array(
+                        0 => array(
+                            'Delivery' => 1,
+                            'DeliveryTime' => 1
+                        ),
+                    ),
+                    'Payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy',
+                    'mode' => 'shipping_edit_change',
+                    'param' => $matches[1],
+                )
+            )
+        );
+
+        // お届け先設定画面へリダイレクト.
         $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
+        $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
+
+        // お届け先設定画面が表示される.
+        $crawler = $client->request('GET', $shipping_edit_url);
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $this->expected = 'お届け先の変更';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->assertContains($this->expected, $this->actual);
+
+        // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();
         $formData['fax'] = array(
             'fax01' => 111,
@@ -307,7 +287,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $Messages = $this->getMailCatcherMessages();
@@ -326,34 +306,5 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
             'second' => $email
         );
         return $form;
-    }
-
-    /**
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1280
-     */
-    public function testShippingEditTitle()
-    {
-        $client = $this->createClient();
-        $this->scenarioCartIn($client);
-
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
-
-        /** @var $crawler Crawler*/
-        $crawler = $this->scenarioConfirm($client);
-        $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
-
-        $shippingCrawler = $crawler->filter('#shipping_confirm_box--0');
-        $url = $shippingCrawler->selectLink('変更')->link()->getUri();
-        $url = str_replace('shipping_edit_change', 'shipping_edit', $url);
-
-        // Get shipping edit
-        $crawler = $client->request('GET', $url);
-        // Title
-        $this->assertContains('お届け先の変更', $crawler->html());
-        // Header
-        $this->assertContains('お届け先の変更', $crawler->filter('title')->html());
     }
 }
