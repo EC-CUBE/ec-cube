@@ -29,6 +29,7 @@ use Eccube\Entity\Master\Disp;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Util\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -129,6 +130,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testProductSearchByName()
     {
         $TestProduct = $this->createProduct();
+        $TestProduct->setName(Str::random());
+        $this->app['orm.em']->flush($TestProduct);
 
         $post = array('admin_search_product' =>
             array(
