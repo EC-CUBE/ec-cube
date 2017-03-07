@@ -9,39 +9,34 @@ Eccube\Entity\ClassName:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: class_name_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         rank:
             type: integer
-            nullable: false
-            unsigned: false
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     oneToMany:
         ClassCategories:
             targetEntity: Eccube\Entity\ClassCategory

@@ -9,62 +9,59 @@ Eccube\Entity\Product:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: product_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
-            nullable: false
-            length: 65535
+            type: string
+            length: 255
         note:
-            type: text
+            type: string
+            length: 4000
             nullable: true
-            length: 65535
         description_list:
-            type: text
+            type: string
+            length: 4000
             nullable: true
-            length: 65535
         description_detail:
-            type: text
+            type: string
+            length: 4000
             nullable: true
-            length: 65535
         search_word:
-            type: text
+            type: string
+            length: 4000
             nullable: true
-            length: 65535
         free_area:
             type: text
             nullable: true
-            length: 65535
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
         Status:
             targetEntity: Eccube\Entity\Master\Disp
             joinColumn:
                 name: status
                 referencedColumnName: id
-                default: 2
+                options:
+                    unsigned: true
+                    default: 2
     oneToMany:
         ProductCategories:
             targetEntity: Eccube\Entity\ProductCategory

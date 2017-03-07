@@ -9,25 +9,21 @@ Eccube\Entity\CustomerFavoriteProduct:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: favorite_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     manyToOne:
         Customer:
             targetEntity: Eccube\Entity\Customer
@@ -35,10 +31,14 @@ Eccube\Entity\CustomerFavoriteProduct:
             joinColumn:
                 name: customer_id
                 referencedColumnName: customer_id
+                options:
+                    unsigned: true
         Product:
             targetEntity: Eccube\Entity\Product
             inversedBy: CustomerFavoriteProducts
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

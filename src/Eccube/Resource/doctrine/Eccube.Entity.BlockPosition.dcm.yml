@@ -9,30 +9,27 @@ Eccube\Entity\BlockPosition:
     id:
         page_id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
         target_id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
         block_id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
     fields:
         block_row:
             type: integer
             nullable: true
-            unsigned: false
+            options:
+                unsigned: true
         anywhere:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: false
+                default: 0
     manyToOne:
         Block:
             targetEntity: Eccube\Entity\Block
@@ -40,12 +37,14 @@ Eccube\Entity\BlockPosition:
             joinColumn:
                 name: block_id
                 referencedColumnName: block_id
-                nullable: false
+                options:
+                    unsigned: true
         PageLayout:
             targetEntity: Eccube\Entity\PageLayout
             inversedBy: BlockPositions
             joinColumn:
                 name: page_id
                 referencedColumnName: page_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

@@ -9,23 +9,21 @@ Eccube\Entity\ProductImage:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: product_image_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         file_name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         rank:
-            type: integer
-            nullable: false
-            unsigned: false
+            type: smallint
+            options:
+                unsigned: true
         create_date:
             type: datetime
-            nullable: false
     manyToOne:
         Product:
             targetEntity: Eccube\Entity\Product
@@ -33,11 +31,13 @@ Eccube\Entity\ProductImage:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
-                nullable: false
+                options:
+                    unsigned: true
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

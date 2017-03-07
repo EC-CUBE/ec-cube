@@ -9,44 +9,42 @@ Eccube\Entity\Member:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: member_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         department:
-            type: text
+            type: string
+            length: 255
             nullable: true
         login_id:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         password:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         salt:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         rank:
-            type: integer
-            nullable: false
-            unsigned: false
+            type: smallint
+            options:
+                unsigned: true
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
         login_date:
             type: datetime
             nullable: true
@@ -56,14 +54,20 @@ Eccube\Entity\Member:
             joinColumn:
                 name: work
                 referencedColumnName: id
+                options:
+                    unsigned: true
         Authority:
             targetEntity: Eccube\Entity\Master\Authority
             joinColumn:
                 name: authority
                 referencedColumnName: id
+                options:
+                    unsigned: true
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

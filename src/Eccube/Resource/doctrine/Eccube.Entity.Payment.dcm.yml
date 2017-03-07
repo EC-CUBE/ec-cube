@@ -9,58 +9,53 @@ Eccube\Entity\Payment:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: payment_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         method:
-            type: text
+            type: string
             nullable: true
+            length: 255
             column: payment_method
         charge:
             type: decimal
             nullable: true
             precision: 10
             scale: 0
+            options:
+                unsigned: true
+                default: 0
         rule_max:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
-        rank:
-            type: integer
             nullable: true
-            unsigned: false
+            options:
+                unsigned: true
+        rank:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
         fix_flg:
             type: smallint
             nullable: true
-            unsigned: false
             options:
-                default: '1'
-        del_flg:
-            type: smallint
-            nullable: false
-            unsigned: false
-            options:
-                default: '0'
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
+                unsigned: true
+                default: 1
         payment_image:
-            type: text
+            type: string
+            length: 255
             nullable: true
         charge_flg:
             type: smallint
             nullable: true
-            unsigned: false
             options:
-                default: '1'
+                unsigned: true
+                default: 1
         rule_min:
             type: decimal
             nullable: true
@@ -74,13 +69,25 @@ Eccube\Entity\Payment:
             type: string
             length: 255
             nullable: true
+            options:
+                unsigned: true
+        del_flg:
+            type: smallint
+            options:
+                unsigned: true
+                default: 0
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     oneToMany:
         PaymentOptions:
             targetEntity: Eccube\Entity\PaymentOption

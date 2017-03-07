@@ -9,17 +9,16 @@ Eccube\Entity\Master\Tag:
     id:
         id:
             type: smallint
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         rank:
             type: smallint
-            nullable: false
-            unsigned: false
+            options:
+                unsigned: true
     oneToMany:
         ProductTag:
             targetEntity: Eccube\Entity\ProductTag

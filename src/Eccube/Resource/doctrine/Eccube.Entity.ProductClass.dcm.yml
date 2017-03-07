@@ -17,60 +17,63 @@ Eccube\Entity\ProductClass:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: product_class_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         code:
-            type: text
+            type: string
+            length: 255
             column: product_code
             nullable: true
-            fixed: false
         stock:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
+            nullable: true
         stock_unlimited:
             type: smallint
-            nullable: false
-            unsigned: false
-            default: false
+            options:
+                unsigned: true
+                default: 0
         sale_limit:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
+            nullable: true
+            options:
+                unsigned: true
         price01:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
+            nullable: true
+            options:
+                unsigned: true
         price02:
             type: decimal
-            nullable: false
             precision: 10
             scale: 0
+            options:
+                unsigned: true
         delivery_fee:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
+            nullable: true
+            options:
+                unsigned: true
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     manyToOne:
         Product:
             targetEntity: Eccube\Entity\Product
@@ -78,36 +81,45 @@ Eccube\Entity\ProductClass:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
-                nullable: false
+                options:
+                    unsigned: true
         ProductType:
             targetEntity: Eccube\Entity\Master\ProductType
             joinColumn:
                 name: product_type_id
                 referencedColumnName: id
-                nullable: false
+                options:
+                    unsigned: true
         ClassCategory1:
             targetEntity: Eccube\Entity\ClassCategory
             joinColumn:
                 name: class_category_id1
                 referencedColumnName: class_category_id
                 nullable: true
+                options:
+                    unsigned: true
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
             joinColumn:
                 name: class_category_id2
                 referencedColumnName: class_category_id
                 nullable: true
+                options:
+                    unsigned: true
         DeliveryDate:
             targetEntity: Eccube\Entity\DeliveryDate
             joinColumn:
                 name: delivery_date_id
                 referencedColumnName: date_id
+                options:
+                    unsigned: true
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     oneToOne:
         ProductStock:
             targetEntity: Eccube\Entity\ProductStock

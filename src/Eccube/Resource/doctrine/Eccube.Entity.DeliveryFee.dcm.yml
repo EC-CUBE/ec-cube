@@ -9,18 +9,19 @@ Eccube\Entity\DeliveryFee:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: fee_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         fee:
             type: decimal
-            nullable: false
             precision: 10
             scale: 0
+            options:
+                unsigned: true
+                options: 0
     manyToOne:
         Delivery:
             targetEntity: Eccube\Entity\Delivery
@@ -28,10 +29,13 @@ Eccube\Entity\DeliveryFee:
             joinColumn:
                 name: delivery_id
                 referencedColumnName: delivery_id
+                options:
+                    unsigned: true
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
             joinColumn:
                 name: pref
                 referencedColumnName: id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

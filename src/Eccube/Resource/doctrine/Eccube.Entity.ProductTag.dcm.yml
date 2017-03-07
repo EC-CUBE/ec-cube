@@ -9,16 +9,14 @@ Eccube\Entity\ProductTag:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: product_tag_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         create_date:
             type: datetime
-            nullable: false
     manyToOne:
         Product:
             targetEntity: Eccube\Entity\Product
@@ -26,18 +24,21 @@ Eccube\Entity\ProductTag:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
-                nullable: false
+                options:
+                    unsigned: true
         Tag:
             targetEntity: Eccube\Entity\Master\Tag
             inversedBy: ProductTag
             joinColumn:
                 name: tag
                 referencedColumnName: id
-                nullable: false
+                options:
+                    unsigned: true
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

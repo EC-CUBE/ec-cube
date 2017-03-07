@@ -9,33 +9,32 @@ Eccube\Entity\AuthorityRole:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: authority_role_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         deny_url:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         Authority:
             targetEntity: Eccube\Entity\Master\Authority
             joinColumn:
                 name: authority_id
                 referencedColumnName: id
-                nullable: false
+                options:
+                    unsigned: true
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

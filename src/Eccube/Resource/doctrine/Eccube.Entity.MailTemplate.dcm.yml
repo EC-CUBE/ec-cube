@@ -9,45 +9,47 @@ Eccube\Entity\MailTemplate:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: template_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         file_name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         subject:
-            type: text
+            type: string
+            length: 255
             nullable: true
         header:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         footer:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

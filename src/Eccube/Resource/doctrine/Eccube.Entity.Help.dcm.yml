@@ -9,59 +9,73 @@ Eccube\Entity\Help:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         customer_agreement:
             type: text
             nullable: true
         law_company:
-            type: text
+            type: string
+            length: 255
             nullable: true
         law_manager:
-            type: text
+            type: string
+            length: 255
             nullable: true
         law_zip01:
-            type: text
+            type: string
+            length: 3
             nullable: true
         law_zip02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         law_zipcode:
-            type: text
+            type: string
+            length: 7
             nullable: true
         law_addr01:
-            type: text
+            type: string
+            length: 255
             nullable: true
         law_addr02:
-            type: text
+            type: string
+            length: 255
             nullable: true
         law_tel01:
-            type: text
+            type: string
+            length: 5
             nullable: true
         law_tel02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         law_tel03:
-            type: text
+            type: string
+            length: 4
             nullable: true
         law_fax01:
-            type: text
+            type: string
+            length: 5
             nullable: true
         law_fax02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         law_fax03:
-            type: text
+            type: string
+            length: 4
             nullable: true
         law_email:
-            type: text
+            type: string
+            length: 255
             nullable: true
         law_url:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         law_term01:
             type: text
@@ -95,18 +109,20 @@ Eccube\Entity\Help:
             nullable: true
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         LawCountry:
             targetEntity: Eccube\Entity\Master\Country
             joinColumn:
                 name: law_country_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
         LawPref:
             targetEntity: Eccube\Entity\Master\Pref
             joinColumn:
                 name: law_pref
                 referencedColumnName: id
+                options:
+                    unsigned: true
