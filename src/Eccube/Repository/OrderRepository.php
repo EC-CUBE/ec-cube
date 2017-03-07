@@ -141,8 +141,7 @@ class OrderRepository extends EntityRepository
                 $joinedCustomer = true;
             }
 
-            $date = $searchData['birth_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['birth_start'];
             $qb
                 ->andWhere('c.birth >= :birth_start')
                 ->setParameter('birth_start', $date);
@@ -155,8 +154,7 @@ class OrderRepository extends EntityRepository
 
             $date = clone $searchData['birth_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('c.birth < :birth_end')
                 ->setParameter('birth_end', $date);
@@ -193,8 +191,7 @@ class OrderRepository extends EntityRepository
 
         // oreder_date
         if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
-            $date = $searchData['order_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['order_date_start'];
             $qb
                 ->andWhere('o.create_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
@@ -202,8 +199,7 @@ class OrderRepository extends EntityRepository
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
             $date = clone $searchData['order_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('o.create_date < :order_date_end')
                 ->setParameter('order_date_end', $date);
@@ -211,8 +207,7 @@ class OrderRepository extends EntityRepository
 
         // create_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
-            $date = $searchData['update_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('o.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
@@ -220,8 +215,7 @@ class OrderRepository extends EntityRepository
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('o.update_date < :update_date_end')
                 ->setParameter('update_date_end', $date);
@@ -358,8 +352,7 @@ class OrderRepository extends EntityRepository
 
         // oreder_date
         if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
-            $date = $searchData['order_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['order_date_start'];
             $qb
                 ->andWhere('o.order_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
@@ -367,8 +360,7 @@ class OrderRepository extends EntityRepository
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
             $date = clone $searchData['order_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('o.order_date < :order_date_end')
                 ->setParameter('order_date_end', $date);
@@ -376,8 +368,7 @@ class OrderRepository extends EntityRepository
 
         // payment_date
         if (!empty($searchData['payment_date_start']) && $searchData['payment_date_start']) {
-            $date = $searchData['payment_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['payment_date_start'];
             $qb
                 ->andWhere('o.payment_date >= :payment_date_start')
                 ->setParameter('payment_date_start', $date);
@@ -385,8 +376,7 @@ class OrderRepository extends EntityRepository
         if (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
             $date = clone $searchData['payment_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('o.payment_date < :payment_date_end')
                 ->setParameter('payment_date_end', $date);
@@ -394,8 +384,7 @@ class OrderRepository extends EntityRepository
 
         // commit_date
         if (!empty($searchData['commit_date_start']) && $searchData['commit_date_start']) {
-            $date = $searchData['commit_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['commit_date_start'];
             $qb
                 ->andWhere('o.commit_date >= :commit_date_start')
                 ->setParameter('commit_date_start', $date);
@@ -403,8 +392,7 @@ class OrderRepository extends EntityRepository
         if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
             $date = clone $searchData['commit_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('o.commit_date < :commit_date_end')
                 ->setParameter('commit_date_end', $date);
@@ -413,8 +401,7 @@ class OrderRepository extends EntityRepository
 
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
-            $date = $searchData['update_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('o.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
@@ -422,8 +409,7 @@ class OrderRepository extends EntityRepository
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('o.update_date < :update_date_end')
                 ->setParameter('update_date_end', $date);

@@ -106,9 +106,20 @@ class Extract extends FunctionNode
     {
         $driver = $sqlWalker->getConnection()->getDriver()->getName();
         if ($driver == 'pdo_sqlite') {
+            // TODO utcとの時差を考慮する
             return sprintf("CAST(STRFTIME('%s', %s) AS INTEGER)", $this->formats[$this->field], $this->source->dispatch($sqlWalker));
         } else {
-            return sprintf('EXTRACT(%s FROM %s %s)', $this->field, (string)$this->type, $this->source->dispatch($sqlWalker));
+            $diff = date('Z');// UTCとの時差(秒数)
+            if ($driver === 'pdo_pgsql') {
+                $second = "'$diff SECONDS'";
+            } else {
+                $second = "$diff SECOND";
+            }
+            return sprintf(
+                "EXTRACT(%s FROM %s %s + INTERVAL $second)",
+                $this->field,
+                (string)$this->type,
+                $this->source->dispatch($sqlWalker));
         }
     }
 }
