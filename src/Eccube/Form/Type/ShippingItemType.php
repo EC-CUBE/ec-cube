@@ -118,7 +118,7 @@ class ShippingItemType extends AbstractType
                 }
 
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app){
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (!$data) {
@@ -131,7 +131,7 @@ class ShippingItemType extends AbstractType
                 }
 
                 $deliveryTimes = null;
-                $delivery = $this->app['eccube.repository.delivery']->find($value);
+                $delivery = $app['eccube.repository.delivery']->find($value);
                 if ($delivery) {
                     $deliveryTimes = $delivery->getDeliveryTimes();
 
