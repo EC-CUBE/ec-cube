@@ -17,7 +17,7 @@ class Version20161219135621 extends AbstractMigration
     {
         // 後続の Version20161108095350.php でインデックスを再作成するため一旦削除する
         // 同一マイグレーションファイル内でインデックスの drop/create をしようとするとエラーになるため
-        $this->dropIndex($schema, 'dtb_customer', 'dtb_customer_email_idx');
+        //$this->dropIndex($schema, 'dtb_customer', 'dtb_customer_email_idx');
         $this->dropIndex($schema, 'dtb_order', 'dtb_order_order_email_idx');
     }
 
