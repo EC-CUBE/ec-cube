@@ -669,17 +669,6 @@ class CsvImportController
     protected function createProductImage($row, Product $Product, $data)
     {
         if ($row['商品画像'] != '') {
-            
-            // 商品画像名のフォーマットチェック
-            $images = explode(',', $row['商品画像']);
-            $pattern = "/\\$|^.*.\.\\\.*|\/$|^.*.\.\/\.*/";
-            foreach ($images as $image) {
-                $fileName = Str::trimAll($image);
-                if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
-                    $this->addErrors(($data->key() + 1) . '行目の商品画像には末尾に"/"や"../"を使用できません。');
-                }
-            }
-
             // 画像の削除
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
@@ -690,18 +679,27 @@ class CsvImportController
             // 画像の登録
             $images = explode(',', $row['商品画像']);
             $rank = 1;
+
+            $pattern = "/\\$|^.*.\.\\\.*|\/$|^.*.\.\/\.*/";
             foreach ($images as $image) {
 
                 $fileName = Str::trimAll($image);
-                if (!empty($fileName)) {
-                    $ProductImage = new ProductImage();
-                    $ProductImage->setFileName($fileName);
-                    $ProductImage->setProduct($Product);
-                    $ProductImage->setRank($rank);
 
-                    $Product->addProductImage($ProductImage);
-                    $rank++;
-                    $this->em->persist($ProductImage);
+                // 商品画像名のフォーマットチェック
+                if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
+                    $this->addErrors(($data->key() + 1) . '行目の商品画像には末尾に"/"や"../"を使用できません。');
+                } else {
+                    // 空文字は登録対象外
+                    if (!empty($fileName)) {
+                        $ProductImage = new ProductImage();
+                        $ProductImage->setFileName($fileName);
+                        $ProductImage->setProduct($Product);
+                        $ProductImage->setRank($rank);
+    
+                        $Product->addProductImage($ProductImage);
+                        $rank++;
+                        $this->em->persist($ProductImage);
+                    }
                 }
             }
         }
