@@ -118,6 +118,47 @@ class ShippingItemType extends AbstractType
                 }
 
             })
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $data = $event->getData();
+                $form = $event->getForm();
+                if (!$data) {
+                    return;
+                }
+
+                $value = $data['delivery'];
+                if (empty($value)) {
+                    $value = 0;
+                }
+
+                $deliveryTimes = null;
+                $delivery = $this->app['eccube.repository.delivery']->find($value);
+                if ($delivery) {
+                    $deliveryTimes = $delivery->getDeliveryTimes();
+                }
+
+                $value = $data['deliveryTime'];
+                $filteredDeliveryTimes = $deliveryTimes->filter(function ($DeliveryTime) use ($value) {
+                    return  $DeliveryTime->getId() == $value;
+                });
+                if (!$filteredDeliveryTimes->count()) {
+                    $data['deliveryTime'] = null;
+                    $event->setData($data);
+                }
+
+                // deliveryの値をもとにdeliveryTimeの選択肢を作り直す
+                if ($form->has('deliveryTime')) {
+                    $form->remove('deliveryTime');
+                }
+                $form->add('deliveryTime', 'entity', array(
+                    'class' => 'Eccube\Entity\DeliveryTime',
+                    'property' => 'delivery_time',
+                    'choices' => $deliveryTimes,
+                    'required' => false,
+                    'empty_value' => '指定なし',
+                    'empty_data' => null,
+                    'label' => 'お届け時間',
+                ));
+            })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
