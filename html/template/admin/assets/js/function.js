@@ -225,23 +225,12 @@ $(function () {
 $(window).load(function() {
     var el = $(".errormsg");
     if (el.length) {
-        // Open panel when has error
-        openPanel(el.first());
         var errorOffset = el.first().offset().top;
         var screenHeight = $(window).height();
-        var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
+        var errorMargin = parseInt(screenHeight / 10) + $('header').outerHeight();
 
-        $('html, body').scrollTop(errorOffset - errorMargin);
-    }
-
-    function openPanel(el) {
-        var accordion = el.parents('div.accordion');
-        if (accordion) {
-            var toggle = accordion.find('div.toggle');
-            if (!toggle.hasClass('active')) {
-                toggle.addClass('active');
-                accordion.find('div.accpanel').toggle('fast');
-            }
-        }
+        $('html, body').animate({
+            scrollTop: (errorOffset - errorMargin)
+        }, 500);
     }
 });
