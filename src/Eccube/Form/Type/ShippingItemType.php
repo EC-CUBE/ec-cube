@@ -134,15 +134,17 @@ class ShippingItemType extends AbstractType
                 $delivery = $this->app['eccube.repository.delivery']->find($value);
                 if ($delivery) {
                     $deliveryTimes = $delivery->getDeliveryTimes();
-                }
 
-                $value = $data['deliveryTime'];
-                $filteredDeliveryTimes = $deliveryTimes->filter(function ($DeliveryTime) use ($value) {
-                    return  $DeliveryTime->getId() == $value;
-                });
-                if (!$filteredDeliveryTimes->count()) {
-                    $data['deliveryTime'] = null;
-                    $event->setData($data);
+                    if (isset($data['deliveryTime'])) {
+                        $value = $data['deliveryTime'];
+                        $filteredDeliveryTimes = $deliveryTimes->filter(function ($DeliveryTime) use ($value) {
+                            return  $DeliveryTime->getId() == $value;
+                        });
+                        if (!$filteredDeliveryTimes->count()) {
+                            $data['deliveryTime'] = null;
+                            $event->setData($data);
+                        }
+                    }
                 }
 
                 // deliveryの値をもとにdeliveryTimeの選択肢を作り直す
