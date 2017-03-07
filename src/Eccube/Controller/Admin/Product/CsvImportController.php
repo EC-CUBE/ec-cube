@@ -663,12 +663,14 @@ class CsvImportController
         return ($ret !== false) ? $data : false;
     }
 
+
     /**
      * 商品画像の削除、登録
      */
     protected function createProductImage($row, Product $Product, $data)
     {
         if ($row['商品画像'] != '') {
+
             // 画像の削除
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
