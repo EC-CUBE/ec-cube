@@ -221,10 +221,12 @@ $(function () {
     });
 });
 
-// Scroll to error message if have
+// 入力チェックエラー発生時にエラー発生箇所までスクロールさせる
 $(window).load(function() {
-    var el = $(".errormsg");
+    var el = $('.errormsg');
     if (el.length) {
+        // Open panel when has error
+        openPanel(el);
         var errorOffset = el.first().offset().top;
         var screenHeight = $(window).height();
         var errorMargin = parseInt(screenHeight / 10) + $('header').outerHeight();
@@ -232,5 +234,18 @@ $(window).load(function() {
         $('html, body').animate({
             scrollTop: (errorOffset - errorMargin)
         }, 500);
+    }
+
+    function openPanel(el) {
+        var accordion = el.parents('div.accordion');
+        var $ac = $('.accpanel', accordion);
+        if (!$ac) {
+            return false;
+        }
+
+        if ($ac.css('display') == 'none') {
+            $ac.siblings('.toggle').addClass('active');
+            $ac.slideDown(0);
+        }
     }
 });
