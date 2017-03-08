@@ -11,6 +11,7 @@ use Faker\Factory as Faker;
 use GuzzleHttp\Client;
 use Silex\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -30,7 +31,25 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function setUp()
     {
+        $src = __DIR__.'/../../../src/Eccube/Resource/config/log.yml.dist';
+        $dist = __DIR__.'/../../../app/config/eccube/log.yml';
+
+        $config = Yaml::parse(file_get_contents($src));
+        $config['log']['log_level'] = 'ERROR';
+        $config['log']['action_level'] = 'ERROR';
+        $config['log']['passthru_level'] = 'ERROR';
+
+        $channel = $config['log']['channel'];
+        foreach (array('monolog', 'front', 'admin') as $key) {
+            $channel[$key]['log_level'] = 'ERROR';
+            $channel[$key]['action_level'] = 'ERROR';
+            $channel[$key]['passthru_level'] = 'ERROR';
+        }
+        $config['log']['channel'] = $channel;
+        file_put_contents($dist, Yaml::dump($config));
+
         parent::setUp();
+
         $this->app->setTestMode(true);
         if ($this->isSqliteInMemory()) {
             $this->initializeDatabase();
@@ -52,13 +71,7 @@ abstract class EccubeTestCase extends WebTestCase
             $this->app['orm.em']->getConnection()->close();
         }
 
-        // XXX PHP5.5/5.6でSegmentation Faultが発生するため
-        if (PHP_VERSION_ID >= 70000) {
-            $this->cleanUpProperties();
-            $this->app = null;
-        }
-
-        \Eccube\Application::clearInstance();
+        $this->cleanUpProperties();
     }
 
     /**
@@ -271,41 +284,19 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
+        Application::clearInstance();
         $app = Application::getInstance();
         $app['debug'] = true;
 
-        // ログの内容をERRORレベルでしか出力しないように設定を上書き
-        if (!$app->offsetExists('config')) {
-            $app->extend('config', function ($config, $app) {
-            $config['log']['log_level'] = 'ERROR';
-            $config['log']['action_level'] = 'ERROR';
-            $config['log']['passthru_level'] = 'ERROR';
-
-            $channel = $config['log']['channel'];
-            foreach (array('monolog', 'front', 'admin') as $key) {
-                $channel[$key]['log_level'] = 'ERROR';
-                $channel[$key]['action_level'] = 'ERROR';
-                $channel[$key]['passthru_level'] = 'ERROR';
-            }
-            $config['log']['channel'] = $channel;
-
-            return $config;
-                });
-            $app->initLogger();
-        }
-
         $app->initialize();
-
         $app->initializePlugin();
+
         $app['session.test'] = true;
         unset($app['exception_handler']);
 
-        unset($app['csrf.token_manager']); // 上書きできないので unset する
         $app->register(new \Eccube\Tests\ServiceProvider\CsrfMockServiceProvider());
+        $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
 
-        if (!$app->offsetExists('eccube.fixture.generator')) {
-            $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
-        }
         $app->boot();
         $app->flush();
 
