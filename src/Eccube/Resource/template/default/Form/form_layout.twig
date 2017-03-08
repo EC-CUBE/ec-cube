@@ -240,7 +240,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {%- block zip_widget -%}
     {%- if freeze -%}
-        〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
+        {%- if freeze_display_text -%}〒&nbsp;{%- endif -%}{{ form_widget(form[form.vars.zip01_name]) }}{%- if freeze_display_text -%}&nbsp;-&nbsp;{%- endif -%}{{- form_widget(form[form.vars.zip02_name]) }}
     {%- else -%}
         〒{{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }}-{{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;', 'pattern': '\\d*'}}) }} <span class="question-circle"><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>
         {%- for child in form %}
