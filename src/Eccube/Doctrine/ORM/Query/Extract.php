@@ -105,21 +105,33 @@ class Extract extends FunctionNode
     public function getSql(SqlWalker $sqlWalker)
     {
         $driver = $sqlWalker->getConnection()->getDriver()->getName();
-        if ($driver == 'pdo_sqlite') {
-            // TODO utcとの時差を考慮する
-            return sprintf("CAST(STRFTIME('%s', %s) AS INTEGER)", $this->formats[$this->field], $this->source->dispatch($sqlWalker));
-        } else {
-            $diff = date('Z');// UTCとの時差(秒数)
-            if ($driver === 'pdo_pgsql') {
-                $second = "'$diff SECONDS'";
-            } else {
-                $second = "$diff SECOND";
-            }
-            return sprintf(
-                "EXTRACT(%s FROM %s %s + INTERVAL $second)",
-                $this->field,
-                (string)$this->type,
-                $this->source->dispatch($sqlWalker));
+        // UTCとの時差(秒数)
+        $diff = intval(date('Z'));
+        $second = abs($diff);
+        $op = ($diff === $second) ? '+' : '-';
+
+        switch ($driver) {
+            case 'pdo_sqlite':
+                $sql = sprintf(
+                    "CAST(STRFTIME('%s', DATETIME(%s, '${op}{$second} SECONDS')) AS INTEGER)",
+                    $this->formats[$this->field],
+                    $this->source->dispatch($sqlWalker));
+                break;
+            case 'pdo_pgsql':
+                $sql = sprintf(
+                    "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
+                    $this->field,
+                    (string)$this->type,
+                    $this->source->dispatch($sqlWalker));
+                break;
+            default:
+                $sql = sprintf(
+                    "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
+                    $this->field,
+                    (string)$this->type,
+                    $this->source->dispatch($sqlWalker));
         }
+
+        return $sql;
     }
 }

@@ -171,9 +171,12 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             );
 
             if ($Shippings->getShippingDeliveryDate() instanceof \DateTime) {
-                $shippingDeliveryDate['year'] = $Shippings->getShippingDeliveryDate()->format('Y');
-                $shippingDeliveryDate['month'] = $Shippings->getShippingDeliveryDate()->format('n');
-                $shippingDeliveryDate['day'] = $Shippings->getShippingDeliveryDate()->format('d');
+                $timezone = new \DateTimeZone($this->app['config']['timezone']);
+                $date = $Shippings->getShippingDeliveryDate();
+                $date->setTimeZone($timezone);
+                $shippingDeliveryDate['year'] = $date->format('Y');
+                $shippingDeliveryDate['month'] = $date->format('n');
+                $shippingDeliveryDate['day'] = $date->format('d');
             }
             $shipmentItems = array();
             /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
