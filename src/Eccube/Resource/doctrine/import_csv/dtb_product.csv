@@ -1,0 +1,8 @@
+product_id,creator_id,status,db_id,name,note,description_list,description_detail,search_word,free_area,del_flg,create_date,update_date,discriminator_type,extended_parameter
+"1","1","1",,"ディナーフォーク",,,"セットで揃えたいディナー用のカトラリー。
+定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。
+最高級プラチナフォークは、贈り物としても人気です。",,,"0","2017-03-07 10:14:52","2017-03-07 10:14:52","extendedproduct",
+"2","1","1",,"パーコレーター",,,"
+パーコレーターはコーヒーの粉をセットして直火にかけて抽出する器具です。
+アウトドアでも淹れたてのコーヒーをお楽しみいただけます。
+いまだけ、おいしい淹れ方の冊子つきです。",,,"0","2017-03-07 10:14:52","2017-03-07 10:14:52","extendedproduct",

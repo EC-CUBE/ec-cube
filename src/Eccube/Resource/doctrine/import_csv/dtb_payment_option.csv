@@ -1,0 +1,6 @@
+delivery_id,payment_id,discriminator_type
+"1","1","paymentoption"
+"1","2","paymentoption"
+"1","3","paymentoption"
+"1","4","paymentoption"
+"2","3","paymentoption"

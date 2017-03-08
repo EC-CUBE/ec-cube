@@ -1,0 +1,6 @@
+id,name,rank,discriminator_type
+"1","商品CSV","3","csvtype"
+"2","会員CSV","4","csvtype"
+"3","受注CSV","1","csvtype"
+"4","配送CSV","2","csvtype"
+"5","カテゴリCSV","5","csvtype"

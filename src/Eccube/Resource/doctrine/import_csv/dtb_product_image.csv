@@ -1,0 +1,7 @@
+product_image_id,product_id,creator_id,file_name,rank,create_date,discriminator_type
+"1","1","1","fork-1.jpg","1","2017-03-07 10:14:52","productimage"
+"2","1","1","fork-2.jpg","2","2017-03-07 10:14:52","productimage"
+"3","1","1","fork-3.jpg","3","2017-03-07 10:14:52","productimage"
+"4","2","1","cafe-1.jpg","1","2017-03-07 10:14:52","productimage"
+"5","2","1","cafe-2.jpg","2","2017-03-07 10:14:52","productimage"
+"6","2","1","cafe-3.jpg","3","2017-03-07 10:14:52","productimage"

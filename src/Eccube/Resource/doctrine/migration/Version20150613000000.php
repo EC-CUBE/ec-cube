@@ -47,7 +47,7 @@ class Version20150613000000 extends AbstractMigration
             $this->addSql("SET FOREIGN_KEY_CHECKS=0;");
             $this->addSql("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';");
         }
-
+        /*
         $this->addSql("INSERT INTO mtb_authority (id, name, rank, discriminator_type) VALUES (0, 'システム管理者', 0, 'authority');");
         $this->addSql("INSERT INTO mtb_authority (id, name, rank, discriminator_type) VALUES (1, '店舗オーナー', 1, 'authority');");
 
@@ -801,7 +801,7 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (1, 'default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (2, 'mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (4, 'sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
-
+*/
         if ($this->connection->getDatabasePlatform()->getName() == "postgresql") {
             $this->addSql("SELECT setval('dtb_base_info_id_seq', 2);");
             $this->addSql("SELECT setval('dtb_member_member_id_seq', 2);");

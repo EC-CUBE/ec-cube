@@ -1,0 +1,1 @@
+order_detail_id,order_id,product_id,product_class_id,product_name,product_code,class_name1,class_name2,class_category_name1,class_category_name2,price,quantity,tax_rate,tax_rule,discriminator_type

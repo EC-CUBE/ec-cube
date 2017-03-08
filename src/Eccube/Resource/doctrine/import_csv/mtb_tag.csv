@@ -1,0 +1,4 @@
+id,name,rank,discriminator_type
+"1","新商品","1","tag"
+"2","おすすめ商品","2","tag"
+"3","限定品","3","tag"

@@ -1,0 +1,3 @@
+id,name,rank,discriminator_type
+"1","PostgreSQL","0","db"
+"2","MySQL","1","db"

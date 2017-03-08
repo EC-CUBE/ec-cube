@@ -1,0 +1,11 @@
+page_id,target_id,block_id,block_row,anywhere,discriminator_type
+"1","2","6","1","1","blockposition"
+"1","2","2","2","1","blockposition"
+"1","2","3","3","1","blockposition"
+"1","2","5","4","1","blockposition"
+"1","2","1","5","1","blockposition"
+"1","8","8","1","0","blockposition"
+"1","8","4","2","0","blockposition"
+"1","8","9","3","0","blockposition"
+"1","8","10","4","0","blockposition"
+"1","9","7","1","1","blockposition"

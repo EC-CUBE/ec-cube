@@ -1,0 +1,3 @@
+id,name,rank,discriminator_type
+"1","男性","0","sex"
+"2","女性","1","sex"

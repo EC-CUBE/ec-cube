@@ -310,6 +310,12 @@ function initializeDatabase(\Eccube\Application $app)
     $config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($app['db']);
     $config->setMigrationsNamespace('DoctrineMigrations');
 
+    $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+    $loader->loadFromDirectory(__DIR__.'/src/Eccube/Resource/doctrine/import_csv');
+    $Executor = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($entityManager);
+    $fixtures = $loader->getFixtures();
+    $Executor->execute($fixtures);
+
     $migrationDir = __DIR__.'/src/Eccube/Resource/doctrine/migration';
     $config->setMigrationsDirectory($migrationDir);
     $config->registerMigrationsFromDirectory($migrationDir);
