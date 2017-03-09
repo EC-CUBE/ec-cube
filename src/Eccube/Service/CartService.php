@@ -512,6 +512,7 @@ class CartService
         }
 
         if (!is_null($productName)) {
+            // エラー表示制御用に商品名をセットしておく
             $this->session->getFlashBag()->add('eccube.front.request.product', $productName);
         }
 

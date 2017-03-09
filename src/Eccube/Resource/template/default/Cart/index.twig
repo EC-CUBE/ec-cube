@@ -46,6 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </ul>
                 </div>
 
+                {# エラー表示制御用に商品名を渡しておく #}
                 {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
                 {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
                     <div id="cart_box__message--{{ loop.index }}" class="message">
