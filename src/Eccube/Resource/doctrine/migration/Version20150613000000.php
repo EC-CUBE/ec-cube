@@ -40,7 +40,7 @@ class Version20150613000000 extends AbstractMigration
         // 3.0.1でデータが投入されていれば, マイグレーションを行わない.
         $count = $this->connection->fetchColumn("select count(*) from dtb_member");
         if (intval($count) > 0) {
-            return;
+            //return;
         }
 
         if ($this->connection->getDatabasePlatform()->getName() == "mysql") {
@@ -803,26 +803,35 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (4, 'sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
 */
         if ($this->connection->getDatabasePlatform()->getName() == "postgresql") {
-            $this->addSql("SELECT setval('dtb_base_info_id_seq', 2);");
-            $this->addSql("SELECT setval('dtb_member_member_id_seq', 2);");
-            $this->addSql("SELECT setval('dtb_tax_rule_tax_rule_id_seq', 1);");
-            $this->addSql("SELECT setval('dtb_block_block_id_seq', 11);");
-            $this->addSql("SELECT setval('dtb_page_layout_page_id_seq', 31);");
-            $this->addSql("SELECT setval('dtb_category_category_id_seq', 6);");
-            $this->addSql("SELECT setval('dtb_class_name_class_name_id_seq', 2);");
-            $this->addSql("SELECT setval('dtb_class_category_class_category_id_seq', 6);");
-            $this->addSql("SELECT setval('dtb_delivery_delivery_id_seq', 2);");
-            $this->addSql("SELECT setval('dtb_payment_payment_id_seq', 4);");
-            $this->addSql("SELECT setval('dtb_delivery_fee_fee_id_seq', 94);");
-            $this->addSql("SELECT setval('dtb_delivery_time_time_id_seq', 3);");
-            $this->addSql("SELECT setval('dtb_delivery_date_date_id_seq', 9);");
-            $this->addSql("SELECT setval('dtb_mail_template_template_id_seq', 5);");
-            $this->addSql("SELECT setval('dtb_news_news_id_seq', 1);");
-            $this->addSql("SELECT setval('dtb_product_product_id_seq', 2);");
-            $this->addSql("SELECT setval('dtb_product_class_product_class_id_seq', 10);");
-            $this->addSql("SELECT setval('dtb_product_stock_product_stock_id_seq', 11);");
-            $this->addSql("SELECT setval('dtb_product_image_product_image_id_seq', 6);");
-            $this->addSql("SELECT setval('dtb_template_template_id_seq', 4);");
+            // TODO Fixtureで行うのが適切.
+            $seqences = [
+                // seq , id, table
+                ['dtb_base_info_id_seq', 'id', 'dtb_base_info'],
+                ['dtb_member_member_id_seq', 'member_id', 'dtb_member'],
+                ['dtb_tax_rule_tax_rule_id_seq', 'tax_rule_id', 'dtb_tax_rule'],
+                ['dtb_block_block_id_seq', 'block_id', 'dtb_block'],
+                ['dtb_page_layout_page_id_seq', 'page_id', 'dtb_page_layout'],
+                ['dtb_category_category_id_seq', 'category_id', 'dtb_category'],
+                ['dtb_class_name_class_name_id_seq', 'class_name_id', 'dtb_class_name'],
+                ['dtb_delivery_delivery_id_seq', 'delivery_id', 'dtb_delivery'],
+                ['dtb_payment_payment_id_seq', 'payment_id', 'dtb_payment'],
+                ['dtb_class_category_class_category_id_seq', 'class_category_id', 'dtb_class_category'],
+                ['dtb_delivery_fee_fee_id_seq', 'fee_id', 'dtb_delivery_fee'],
+                ['dtb_delivery_time_time_id_seq', 'time_id', 'dtb_delivery_time'],
+                ['dtb_delivery_date_date_id_seq', 'date_id', 'dtb_delivery_date'],
+                ['dtb_mail_template_template_id_seq', 'template_id', 'dtb_mail_template'],
+                ['dtb_news_news_id_seq', 'news_id', 'dtb_news'],
+                ['dtb_product_product_id_seq', 'product_id', 'dtb_product'],
+                ['dtb_product_class_product_class_id_seq', 'product_class_id', 'dtb_product_class'],
+                ['dtb_product_stock_product_stock_id_seq', 'product_stock_id', 'dtb_product_stock'],
+                ['dtb_product_image_product_image_id_seq', 'product_image_id', 'dtb_product_image'],
+                ['dtb_template_template_id_seq', 'template_id', 'dtb_template'],
+                ['dtb_csv_csv_id_seq', 'csv_id', 'dtb_csv'],
+            ];
+            foreach ($seqences as $seq) {
+                $sql = vsprintf("SELECT setval('%s', (select COALESCE(max(%s), 1) from %s));", $seq);
+                $this->addSql($sql);
+            }
         }
     }
 
