@@ -61,7 +61,7 @@ cart.over.price_limit: 商品を購入できる金額の上限を超えており
 cart.product.type.kind: この商品は同時に購入することはできません。
 cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
-cart.product.not.status: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
+cart.product.not.status: 現時点で購入できない商品(%product%)が含まれておりました。該当商品をカートから削除しました。
 cart.product.not.producttype: |-
   「%product%」はまだ配送の準備ができておりません。
   恐れ入りますがお問い合わせページよりお問い合わせください。

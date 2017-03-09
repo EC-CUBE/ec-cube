@@ -32,13 +32,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <span class="cart_price pc">合計 <span class="price">{{ Cart.total_price|price }}</span></span></p>
     <div id="cart" class="cart">
         <div class="inner">
-            {% for error in app.session.flashbag.get('eccube.front.cart.error')  %}
-                <div class="message">
-                    <p class="errormsg bg-danger">
-                        <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
-                    </p>
-                </div>
-            {% endfor %}
             {% for CartItem in Cart.CartItems %}
                 {% set ProductClass = CartItem.Object %}
                 {% set Product = ProductClass.Product %}

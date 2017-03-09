@@ -749,7 +749,7 @@ class ShoppingService
                 // 商品が非公開ならエラー
 
                 // @deprecated 3.1以降ではexceptionをthrowする
-                // throw new ShoppingException('cart.product.not.status');
+                 // throw new ShoppingException($this->app->trans('cart.product.not.status', array('%product%' => $orderDetail->getProduct()->getName())));
                 return false;
             }
 
