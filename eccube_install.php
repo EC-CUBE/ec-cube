@@ -463,6 +463,7 @@ function getMailConfig()
             'encryption' => NULL,
             'auth_mode' => NULL,
             'charset_iso_2022_jp' => false,
+            'spool' => true,
         ),
     );
     return $mail;
