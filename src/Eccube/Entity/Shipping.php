@@ -240,6 +240,66 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * CustomerAddress 設定されているチェック.
+     *
+     * @param \Eccube\Entity\CustomerAddress $CustomerAddress
+     * @return Boolean
+     */
+    public function hasCustomerAddress(CustomerAddress $CustomerAddress)
+    {
+        if($this->getName01() != $CustomerAddress->getName01()){
+            return false;
+        }
+        if($this->getName02() != $CustomerAddress->getName02()){
+            return false;
+        }
+        if($this->getKana01() != $CustomerAddress->getKana01()){
+            return false;
+        }
+        if($this->getKana02() != $CustomerAddress->getKana02()){
+            return false;
+        }
+        if($this->getCompanyName() != $CustomerAddress->getCompanyName()){
+            return false;
+        }
+        if($this->getTel01() != $CustomerAddress->getTel01()){
+            return false;
+        }
+        if($this->getTel02() != $CustomerAddress->getTel02()){
+            return false;
+        }
+        if($this->getTel03() != $CustomerAddress->getTel03()){
+            return false;
+        }
+        if($this->getFax01() != $CustomerAddress->getFax01()){
+            return false;
+        }
+        if($this->getFax02() != $CustomerAddress->getFax02()){
+            return false;
+        }
+        if($this->getFax03() != $CustomerAddress->getFax03()){
+            return false;
+        }
+        if($this->getZip01() != $CustomerAddress->getZip01()){
+            return false;
+        }
+        if($this->getZip02() != $CustomerAddress->getZip02()){
+            return false;
+        }
+        if($this->getZipCode() != $CustomerAddress->getZip01() . $CustomerAddress->getZip02()){
+            return false;
+        }
+        if($this->getAddr01() != $CustomerAddress->getAddr01()){
+            return false;
+        }
+        if($this->getAddr02() != $CustomerAddress->getAddr02()){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 個人情報をクリア.
      *
      * @return \Eccube\Entity\Shipping

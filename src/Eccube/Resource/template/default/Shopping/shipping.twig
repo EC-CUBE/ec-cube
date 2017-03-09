@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="list_box__list_body_inner" class="tbody">
                             {% for CustomerAddress in Customer.CustomerAddresses %}
                             <div id="list_box__item--{{ CustomerAddress.id }}" class="addr_box tr">
-                            <div id="list_box__id--{{ CustomerAddress.id }}" class="icon_radio td"><input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
+                            <div id="list_box__id--{{ CustomerAddress.id }}" class="icon_radio td"><input type="radio" {% if CustomerAddress.id == addressId %}checked="checked"{% endif %} id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
                             <div id="list_box__address_area--{{ CustomerAddress.id }}" class="column td">
                                 <label for="address{{ CustomerAddress.id }}">
                                     <p id="list_box__address--{{ CustomerAddress.id }}" class="address">

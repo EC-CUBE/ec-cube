@@ -572,6 +572,22 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        // 顧客アドレスID, Shopping/shipping.twigテンプレートで使ってます
+        $addressId = null;
+
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            log_info('購入処理中の受注情報がないため購入エラー');
+            $app->addError('front.shopping.order.error');
+
+            return $app->redirect($app->url('shopping_error'));
+        }
+
+        $Shipping = $Order->findShipping($id);
+        if (!$Shipping) {
+            throw new NotFoundHttpException('お届け先情報が存在しない');
+        }
+
         if ('POST' === $request->getMethod()) {
             $address = $request->get('address');
 
@@ -587,7 +603,6 @@ class ShoppingController extends AbstractController
                     )
                 );
             }
-
             // 選択されたお届け先情報を取得
             $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
                 'Customer' => $app->user(),
@@ -595,19 +610,6 @@ class ShoppingController extends AbstractController
             ));
             if (is_null($CustomerAddress)) {
                 throw new NotFoundHttpException('選択されたお届け先住所が存在しない');
-            }
-
-            $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-            if (!$Order) {
-                log_info('購入処理中の受注情報がないため購入エラー');
-                $app->addError('front.shopping.order.error');
-
-                return $app->redirect($app->url('shopping_error'));
-            }
-
-            $Shipping = $Order->findShipping($id);
-            if (!$Shipping) {
-                throw new NotFoundHttpException('お届け先情報が存在しない');
             }
 
             log_info('お届先情報更新開始', array($Shipping->getId()));
@@ -636,12 +638,21 @@ class ShoppingController extends AbstractController
 
             log_info('お届先情報更新完了', array($Shipping->getId()));
             return $app->redirect($app->url('shopping'));
+        } else {
+            // Shippingの中に顧客アドレスチェックする
+            foreach($app->user()->getCustomerAddresses() as $Address){
+                if($Shipping->hasCustomerAddress($Address) === true){
+                    // Shippingの中にアドレスあった場合はIDを設定する
+                    $addressId = $Address->getId();
+                }
+            }
         }
 
         return $app->render(
             'Shopping/shipping.twig',
             array(
                 'Customer' => $app->user(),
+                'addressId' => $addressId,
                 'shippingId' => $id,
                 'error' => false,
             )
