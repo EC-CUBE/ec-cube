@@ -4,6 +4,7 @@ namespace Eccube\Doctrine\Common\CsvDataFixtures;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
 
 /**
  * @see https://github.com/doctrine/data-fixtures/blob/master/lib/Doctrine/Common/DataFixtures/FixtureInterface.php
@@ -29,8 +30,15 @@ class CsvFixture implements FixtureInterface
         // ファイル名からテーブル名を取得
         $table_name = str_replace('.'.$this->file->getExtension(), '', $this->file->getFilename());
         $sql = $this->getSql($table_name, $headers);
+        /** @var Connection $Connection */
         $Connection = $manager->getConnection();
         $Connection->beginTransaction();
+
+        // mysqlの場合はNO_AUTO_VALUE_ON_ZEROを設定
+        if ('mysql' === $Connection->getDatabasePlatform()->getName()) {
+            $Connection->exec("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';");
+        }
+
         // TODO エラーハンドリング
         $prepare = $Connection->prepare($sql);
         while (!$this->file->eof()) {

@@ -4,6 +4,7 @@ namespace Eccube\Doctrine\Common\CsvDataFixtures;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class Loader
 {
@@ -20,11 +21,42 @@ class Loader
         if (!dir($dir)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $dir));
         }
+
+        // import順序の定義ファイルを取得.
+        $file = $dir.'/definition.yml';
+        if (!file_exists($file)) {
+            throw new \InvalidArgumentException(sprintf('"%s" does not exist', $file));
+        }
+        $definition = Yaml::parse(file_get_contents($file));
+        $definition = array_flip($definition);
+
         $finder = Finder::create()
             ->in($dir)
             ->name('*.csv')
-            ->sortByName()
+            ->sort(
+                // 定義ファイルに記載の順にソート.
+                function (\SplFileInfo $a, \SplFileInfo $b) use ($definition) {
+                    if (!isset($definition[$a->getFilename()])) {
+                        throw new \Exception(sprintf('"%s" is undefined in %s', $a->getFilename()));
+                    }
+                    if (!isset($definition[$b->getFilename()])) {
+                        throw new \Exception(sprintf('"%s" is undefined in %s', $b->getFilename()));
+                    }
+
+                    $a_rank = $definition[$a->getFilename()];
+                    $b_rank = $definition[$b->getFilename()];
+
+                    if ($a_rank < $b_rank) {
+                        return -1;
+                    } elseif ($a_rank > $b_rank) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            )
             ->files();
+
         return $this->loadFromIterator($finder->getIterator());
     }
 
