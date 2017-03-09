@@ -7,10 +7,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 
 /**
+ * CSVファイルを扱うためのフィクスチャ.
+ *
  * @see https://github.com/doctrine/data-fixtures/blob/master/lib/Doctrine/Common/DataFixtures/FixtureInterface.php
  */
 class CsvFixture implements FixtureInterface
 {
+    /** @var \SplFileObject $file */
     protected $file;
 
     public function __construct(\SplFileObject $file)
@@ -18,6 +21,9 @@ class CsvFixture implements FixtureInterface
         $this->file = $file;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function load(ObjectManager $manager)
     {
         // CSV Reader に設定
@@ -57,8 +63,25 @@ class CsvFixture implements FixtureInterface
         $Connection->commit();
     }
 
+    /**
+     * INSERT を生成する.
+     *
+     * @param string $table_name テーブル名
+     * @param array $headers カラム名の配列
+     * @return string INSERT 文
+     */
     public function getSql($table_name, array $headers)
     {
         return 'INSERT INTO '.$table_name.' ('.implode(', ', $headers).') VALUES ('.implode(', ', array_fill(0, count($headers), '?')).')';
+    }
+
+    /**
+     * 保持している \SplFileObject を返す.
+     *
+     * @return \SplFileObject
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }
