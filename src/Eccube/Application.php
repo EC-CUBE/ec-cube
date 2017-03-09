@@ -522,7 +522,6 @@ class Application extends ApplicationTrait
                     'password_parameter' => 'password',
                     'with_csrf' => true,
                     'use_forward' => true,
-                    'use_referer' => true,
                     'default_target_path' => "/{$this['config']['admin_route']}",
                 ),
                 'logout' => array(
