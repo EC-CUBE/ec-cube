@@ -38,6 +38,7 @@ class CsvFixture implements FixtureInterface
             $index = 1;
             // データ行をバインド
             foreach ($rows as $col) {
+                $col = $col === '' ? null : $col;
                 $prepare->bindValue($index, $col);
                 $index++;
             }
