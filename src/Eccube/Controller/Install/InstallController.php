@@ -281,6 +281,7 @@ class InstallController
                     ->setPDO()
                     ->dropTables()
                     ->createTables()
+                    ->importCsv()
                     ->doMigrate()
                     ->insert();
             } else {
@@ -500,6 +501,18 @@ class InstallController
         $schemaTool = new SchemaTool($em);
 
         $schemaTool->createSchema($metadatas);
+
+        return $this;
+    }
+
+    private function importCsv() {
+
+        $em = $this->getEntityManager();
+        $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+        $loader->loadFromDirectory(__DIR__.'/../../Resource/doctrine/import_csv');
+        $Executor = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
+        $fixtures = $loader->getFixtures();
+        $Executor->execute($fixtures);
 
         return $this;
     }
