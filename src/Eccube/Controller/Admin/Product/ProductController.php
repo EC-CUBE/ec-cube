@@ -31,6 +31,7 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Service\CsvExportService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,26 +114,26 @@ class ProductController extends AbstractController
                     $session->set('eccube.admin.product.search.page_no', $page_no);
                 }
                 if (!is_null($searchData)) {
-
                     // 公開ステータス
+                    // 1:公開, 2:非公開, 3:在庫なし
                     $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $app['config']['admin_product_stock_status']) {
-                            $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
-                            $searchData['status'] = null;
-                            $session->set('eccube.admin.product.search', $searchData);
-                        } else {
+                    if (empty($status)) {
+                        $searchData['link_status'] = null;
+                        $searchData['stock_status'] = null;
+                    } else {
+                        $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
+                        $searchData['stock_status'] = null;
+                        if ($status == $app['config']['admin_product_stock_status']) {
+                            // 在庫なし
+                            $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
                         }
                         $page_status = $status;
-                    } else {
-                        $searchData['link_status'] = null;
-                        $searchData['stock_status'] = null;
                     }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
+                    $session->set('eccube.admin.product.search', $searchData);
 
-                    $page_count = empty($pcount) ? $page_count : $pcount;
+                    // 表示件数
+                    $page_count = $request->get('page_count', $page_count);
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
 
@@ -153,20 +154,18 @@ class ProductController extends AbstractController
                         array('wrap-queries' => true)
                     );
 
-                    // セッションから検索条件を復元
+                    // セッションから検索条件を復元(カテゴリ)
                     if (!empty($searchData['category_id'])) {
                         $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
                     }
-                    if (empty($status)) {
-                        if (count($searchData['status']) > 0) {
-                            $status_ids = array();
-                            foreach ($searchData['status'] as $Status) {
-                                $status_ids[] = $Status->getId();
-                            }
-                            $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
+
+                    // セッションから検索条件を復元(スーテタス)
+                    if (isset($searchData['status']) && count($searchData['status']) > 0) {
+                        $status_ids = array();
+                        foreach ($searchData['status'] as $Status) {
+                            $status_ids[] = $Status->getId();
                         }
-                        $searchData['link_status'] = null;
-                        $searchData['stock_status'] = null;
+                        $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                     }
                     $searchForm->setData($searchData);
                 }
@@ -188,7 +187,7 @@ class ProductController extends AbstractController
     public function addImage(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException('リクエストが不正です');
         }
 
         $images = $request->files->get('admin_product');
@@ -200,7 +199,7 @@ class ProductController extends AbstractController
                     //ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
-                        throw new UnsupportedMediaTypeHttpException();
+                        throw new UnsupportedMediaTypeHttpException('ファイル形式が不正です');
                     }
 
                     $extension = $image->getClientOriginalExtension();
@@ -310,6 +309,7 @@ class ProductController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                log_info('商品登録開始', array($id));
                 $Product = $form->getData();
 
                 if (!$has_class) {
@@ -318,8 +318,12 @@ class ProductController extends AbstractController
                     // 個別消費税
                     $BaseInfo = $app['eccube.repository.base_info']->get();
                     if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
-                        if ($ProductClass->getTaxRate()) {
-                            if ($ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                        if ($ProductClass->getTaxRate() !== null) {
+                            if ($ProductClass->getTaxRule()) {
+                                if ($ProductClass->getTaxRule()->getDelFlg() == Constant::ENABLED) {
+                                    $ProductClass->getTaxRule()->setDelFlg(Constant::DISABLED);
+                                }
+
                                 $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
                             } else {
                                 $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
@@ -359,18 +363,26 @@ class ProductController extends AbstractController
 
                 $count = 1;
                 $Categories = $form->get('Category')->getData();
+                $categoriesIdList = array();
                 foreach ($Categories as $Category) {
-                    $ProductCategory = new \Eccube\Entity\ProductCategory();
-                    $ProductCategory
-                        ->setProduct($Product)
-                        ->setProductId($Product->getId())
-                        ->setCategory($Category)
-                        ->setCategoryId($Category->getId())
-                        ->setRank($count);
-                    $app['orm.em']->persist($ProductCategory);
-                    $count++;
-                    /* @var $Product \Eccube\Entity\Product */
-                    $Product->addProductCategory($ProductCategory);
+                    foreach($Category->getPath() as $ParentCategory){
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
+                            $app['orm.em']->persist($ProductCategory);
+                            $count++;
+                            /* @var $Product \Eccube\Entity\Product */
+                            $Product->addProductCategory($ProductCategory);
+                            $categoriesIdList[$ParentCategory->getId()] = true;
+                        }
+                    }
+                    if (!isset($categoriesIdList[$Category->getId()])){
+                        $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                        $app['orm.em']->persist($ProductCategory);
+                        $count++;
+                        /* @var $Product \Eccube\Entity\Product */
+                        $Product->addProductCategory($ProductCategory);
+                        $categoriesIdList[$Category->getId()] = true;
+                    }
                 }
 
                 // 画像の登録
@@ -404,8 +416,10 @@ class ProductController extends AbstractController
                     $app['orm.em']->persist($Product);
 
                     // 削除
-                    $fs = new Filesystem();
-                    $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
+                    if (!empty($delete_image)) {
+                        $fs = new Filesystem();
+                        $fs->remove($app['config']['image_save_realdir'].'/'.$delete_image);
+                    }
                 }
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
@@ -444,7 +458,11 @@ class ProductController extends AbstractController
                     $Product->addProductTag($ProductTag);
                     $app['orm.em']->persist($ProductTag);
                 }
+
+                $Product->setUpdateDate(new \DateTime());
                 $app['orm.em']->flush();
+
+                log_info('商品登録完了', array($id));
 
                 $event = new EventArgs(
                     array(
@@ -459,6 +477,7 @@ class ProductController extends AbstractController
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
+                log_info('商品登録チェックエラー', array($id));
                 $app->addError('admin.register.failed', 'admin');
             }
         }
@@ -507,6 +526,8 @@ class ProductController extends AbstractController
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
+                log_info('商品削除開始', array($id));
+
                 $Product->setDelFlg(Constant::ENABLED);
 
                 $ProductClasses = $Product->getProductClasses();
@@ -557,18 +578,24 @@ class ProductController extends AbstractController
                 // 画像ファイルの削除(commit後に削除させる)
                 foreach ($deleteImages as $deleteImage) {
                     try {
-                        $fs = new Filesystem();
-                        $fs->remove($app['config']['image_save_realdir'] . '/' . $deleteImage);
+                        if (!empty($deleteImage)) {
+                            $fs = new Filesystem();
+                            $fs->remove($app['config']['image_save_realdir'].'/'.$deleteImage);
+                        }
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
                 }
 
+                log_info('商品削除完了', array($id));
+
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {
+                log_info('商品削除エラー', array($id));
                 $app->addError('admin.delete.failed', 'admin');
             }
         } else {
+            log_info('商品削除エラー', array($id));
             $app->addError('admin.delete.failed', 'admin');
         }
 
@@ -714,45 +741,72 @@ class ProductController extends AbstractController
             $qb = $app['eccube.service.csv.export']
                 ->getProductQueryBuilder($request);
 
+            // Get stock status
+            $isOutOfStock = 0;
+            $session = $request->getSession();
+            if ($session->has('eccube.admin.product.search')) {
+                $searchData = $session->get('eccube.admin.product.search', array());
+                if (isset($searchData['stock_status']) && $searchData['stock_status'] === 0) {
+                    $isOutOfStock = 1;
+                }
+            }
+
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
             // distinctのmysqlとpgsqlの挙動をあわせる.
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select')
                 ->resetDQLPart('orderBy')
-                ->select('p')
-                ->orderBy('p.update_date', 'DESC')
-                ->distinct();
+                ->orderBy('p.update_date', 'DESC');
 
+            if ($isOutOfStock) {
+                $qb->select('p, pc')
+                    ->distinct();
+            } else {
+                $qb->select('p')
+                    ->distinct();
+            }
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
 
+            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($app, $request) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
                 $Product = $entity;
 
-                /** @var $Product \Eccube\Entity\ProductClass[] */
+                /** @var $ProductClassess \Eccube\Entity\ProductClass[] */
                 $ProductClassess = $Product->getProductClasses();
 
                 foreach ($ProductClassess as $ProductClass) {
-                    $row = array();
+                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
                         // 商品データを検索.
-                        $data = $csvService->getData($Csv, $Product);
-                        if (is_null($data)) {
+                        $ExportCsvRow->setData($csvService->getData($Csv, $Product));
+                        if ($ExportCsvRow->isDataNull()) {
                             // 商品規格情報を検索.
-                            $data = $csvService->getData($Csv, $ProductClass);
+                            $ExportCsvRow->setData($csvService->getData($Csv, $ProductClass));
                         }
-                        $row[] = $data;
+
+                        $event = new EventArgs(
+                            array(
+                                'csvService' => $csvService,
+                                'Csv' => $Csv,
+                                'ProductClass' => $ProductClass,
+                                'ExportCsvRow' => $ExportCsvRow,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT, $event);
+
+                        $ExportCsvRow->pushData();
                     }
 
-                    //$row[] = number_format(memory_get_usage(true));
+                    // $row[] = number_format(memory_get_usage(true));
                     // 出力.
-                    $csvService->fputcsv($row);
+                    $csvService->fputcsv($ExportCsvRow->getRow());
                 }
             });
         });
@@ -763,6 +817,26 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
 
+        log_info('商品CSV出力ファイル名', array($filename));
+
         return $response;
+    }
+    
+    /**
+     * ProductCategory作成
+     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\Category $Category
+     * @return \Eccube\Entity\ProductCategory
+     */
+    private function createProductCategory($Product, $Category, $count)
+    {
+        $ProductCategory = new \Eccube\Entity\ProductCategory();
+        $ProductCategory->setProduct($Product);
+        $ProductCategory->setProductId($Product->getId());
+        $ProductCategory->setCategory($Category);
+        $ProductCategory->setCategoryId($Category->getId());
+        $ProductCategory->setRank($count);
+        
+        return $ProductCategory;
     }
 }

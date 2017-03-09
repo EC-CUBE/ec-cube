@@ -4,6 +4,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Master\CsvType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
@@ -51,6 +52,47 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testSearchOrderById()
+    {
+        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+
+        $crawler = $this->client->request(
+            'POST', $this->app->url('admin_order'), array(
+            'admin_search_order' => array(
+                '_token' => 'dummy',
+                'multi' => $Order->getId(),
+            )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testSearchOrderByName()
+    {
+        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+        $companyName = $Order->getCompanyName();
+        $OrderList = $this->app['eccube.repository.order']->findBy(array('company_name' => $companyName));
+        $cnt = count($OrderList);
+
+        $crawler = $this->client->request(
+            'POST', $this->app->url('admin_order'), array(
+            'admin_search_order' => array(
+                '_token' => 'dummy',
+                'multi' => $companyName,
+            )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
     }
 
     public function testIndexWithPost()
@@ -182,5 +224,35 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'GET',
             $this->app->path('admin_order_export_shipping')
         );
+    }
+
+    /**
+     * Test for issue 1995
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1995
+     */
+    public function testSearchWithEmail()
+    {
+        $form = array(
+            '_token' => 'dummy',
+            'email' => 'user-1',
+        );
+        /* @var $crawler Crawler */
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order'),
+            array(
+                'admin_search_order' => $form,
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+
+        /* @var $customer \Eccube\Entity\Customer */
+        $customer = $this->app['eccube.repository.customer']->findOneBy(array('email' => 'user-1@example.com'));
+
+        $this->assertContains($customer->getName01(), $crawler->filter('div#result_list_main__body')->html());
     }
 }

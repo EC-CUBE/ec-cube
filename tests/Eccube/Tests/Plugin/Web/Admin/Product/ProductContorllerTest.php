@@ -119,7 +119,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testEditWithPost()
     {
-        $Product = $this->createProduct();
+        $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
@@ -194,6 +194,33 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->verifyOutputString($expected);
+    }
+
+    /**
+     * Product export test
+     */
+    public function testProductExport()
+    {
+        $productName = 'test01';
+        $this->createProduct($productName);
+        $expected = EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT;
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => '',
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+            ));
+        $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_product_export')
+        );
+        $this->expectOutputRegex("/".$expected."/");
     }
 
     private function newTestProduct($TestCreator)

@@ -69,14 +69,14 @@ class TemplateController extends AbstractController
                 if (file_exists($file.'.php')) {
                     $config = require $file.'.php';
                 } elseif (file_exists($file.'.yml')) {
-                    $config = Yaml::parse(file_get_contents($file));
+                    $config = Yaml::parse(file_get_contents($file.'.yml'));
                 }
 
                 $templateCode = $Template->getCode();
                 $config['template_code'] = $templateCode;
                 $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
                 $config['template_html_realdir'] = $config['public_path_realdir'].'/template/'.$templateCode;
-                $config['front_urlpath'] = $config['root_urlpath'].'/template/'.$templateCode;
+                $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
                 $config['block_realdir'] =$config['template_realdir'].'/Block';
 
                 if (file_exists($file.'.php')) {
@@ -276,36 +276,19 @@ class TemplateController extends AbstractController
                     ));
                 }
 
+                $fs = new Filesystem();
+
                 // appディレクトリの存在チェック.
                 if (!file_exists($appDir)) {
-                    $form['file']->addError(new FormError('appディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs->mkdir($appDir);
                 }
 
                 // htmlディレクトリの存在チェック.
                 if (!file_exists($htmlDir)) {
-                    $form['file']->addError(new FormError('htmlディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs->mkdir($htmlDir);
                 }
 
                 // 一時ディレクトリから該当テンプレートのディレクトリへコピーする.
-                $fs = new Filesystem();
                 $fs->mirror($appDir, $targetRealDir);
                 $fs->mirror($htmlDir, $targetHtmlRealDir);
 

@@ -128,6 +128,42 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->verify();
     }
 
+    /**
+     * 価格が高い順のソート
+     */
+    public function testOrderByPriceHigher()
+    {
+        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products[0]->setName('りんご');
+        foreach ($Products[0]->getProductClasses() as $ProductClass) {
+            $ProductClass->setPrice02(100);
+        }
+        $Products[1]->setName('アイス');
+        foreach ($Products[1]->getProductClasses() as $ProductClass) {
+            $ProductClass->setPrice02(1000);
+        }
+        $Products[2]->setName('お鍋');
+        foreach ($Products[2]->getProductClasses() as $ProductClass) {
+            $ProductClass->setPrice02(10000);
+        }
+        $this->app['orm.em']->flush();
+
+        $ProductListOrderBy = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\ProductListOrderBy')
+            ->find($this->app['config']['product_order_price_higher']);
+        $this->searchData = array(
+            'orderby' => $ProductListOrderBy
+        );
+
+        $this->scenario();
+
+        $this->expected = array('お鍋', 'アイス', 'りんご');
+        $this->actual = array($this->Results[0]->getName(),
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName());
+        $this->verify();
+    }
+
     public function testOrderByNewer()
     {
         $Products = $this->app['eccube.repository.product']->findAll();

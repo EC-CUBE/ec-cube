@@ -29,9 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
+<div class="row" id="aside_wrap">
     <form method="post" action="{{ url('admin_setting_system_security') }}">
     {{ form_widget(form._token) }}
-    <div class="row" id="aside_wrap">
         <div  id="security_wrap" class="col-md-9">
             <div id="security_box" class="box">
                 <div id="security_box__header" class="box-header">
@@ -98,6 +98,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- /.box -->
             </div>
         </div><!-- /.col --> 
-    </div>
     </form>
+</div>
 {% endblock %}

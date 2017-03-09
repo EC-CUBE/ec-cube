@@ -42,7 +42,7 @@ class ForgotType extends AbstractType
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
-                new Assert\Email(),
+                new Assert\Email(array('strict' => true)),
             ),
         ));
     }

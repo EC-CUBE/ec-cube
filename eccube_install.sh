@@ -59,6 +59,7 @@ export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 export ROOT_DIR=${BASE_DIR}
 export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
+export ROOT_PUBLIC_URLPATH=${ROOT_URLPATH}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
 export USER_DATA_ROUTE=${USER_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}
@@ -91,6 +92,7 @@ case "${DBTYPE}" in
 ;;
 "mysql" )
     #-- DB Seting MySQL
+    DBPASS=`echo $DBPASS | tr -d " "`
     MYSQL=mysql
     ROOTUSER=root
     ROOTPASS=${DBPASS}
@@ -218,7 +220,6 @@ case "${DBTYPE}" in
     get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME} || exit 1
 ;;
 "mysql" )
-    DBPASS=`echo $DBPASS | tr -d " "`
     if [ -n ${DBPASS} ]; then
         PASSOPT="--password=$DBPASS"
         CONFIGPASS=$DBPASS

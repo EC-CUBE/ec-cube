@@ -4,6 +4,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
 use Eccube\Exception\ShoppingException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -471,18 +472,51 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     }
 
     /**
+     * #1732 のテストケース
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1732
+     */
+    public function testGetFormDeliveryDatesWithStockPending()
+    {
+        $DeliveryDate1 = $this->app['eccube.repository.delivery_date']->find(1);
+        $DeliveryDate9 = $this->app['eccube.repository.delivery_date']->find(9);
+        $Order = $this->createOrder($this->Customer);
+        $i = 0;
+        foreach ($Order->getOrderDetails() as $Detail) {
+            if ($i === 0) {
+                // 1件のみ「お取り寄せ」に設定する
+                $Detail->getProductClass()->setDeliveryDate($DeliveryDate9);
+            } else {
+                $Detail->getProductClass()->setDeliveryDate($DeliveryDate1);
+            }
+
+            $i++;
+        }
+        $this->app['orm.em']->flush();
+
+        $DeliveryDates = $this->app['eccube.service.shopping']->getFormDeliveryDates($Order);
+
+        $this->expected = 0;
+        $this->actual = count($DeliveryDates);
+        $this->verify('お取り寄せを含む場合はお届け日選択不可');
+    }
+
+    /**
      * #1238 のテストケース
      * @link https://github.com/EC-CUBE/ec-cube/issues/1238
      */
     public function testGetFormPayments()
     {
-        $Order = $this->createOrder($this->Customer);
+        $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
+        $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);
         $Order->setSubTotal(2500);
-        $this->app['orm.em']->flush();
+        $this->app['orm.em']->flush($Order);
 
-        $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Payment1 = $this->createPayment($Delivery, 'スキップされる支払い方法', 0, 1000, 2000);
         $Payment2 = $this->createPayment($Delivery, '支払い方法2', 0, 2001, 3000);
+        $Payment3 = $this->createPayment($Delivery, '支払い方法3', 0);
+        $Payment4 = $this->createPayment($Delivery, '支払い方法4', 0);
+        $Payment5 = $this->createPayment($Delivery, '支払い方法5', 0);
+        $Payment6 = $this->createPayment($Delivery, '支払い方法6', 0);
 
         $Payments = $this->app['eccube.service.shopping']->getFormPayments(array($Delivery), $Order);
 
@@ -497,18 +531,57 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
 
-        $Order = $this->createOrder($this->Customer);
+        $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
+        $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);
         $Order->setSubTotal(2500);
-        $this->app['orm.em']->flush();
+        $this->app['orm.em']->flush($Order);
 
-        $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Payment1 = $this->createPayment($Delivery, 'スキップされる支払い方法', 0, 1000, 2000);
         $Payment2 = $this->createPayment($Delivery, '支払い方法2', 0, 2001, 3000);
+        $Payment3 = $this->createPayment($Delivery, '支払い方法3', 0);
+        $Payment4 = $this->createPayment($Delivery, '支払い方法4', 0);
+        $Payment5 = $this->createPayment($Delivery, '支払い方法5', 0);
+        $Payment6 = $this->createPayment($Delivery, '支払い方法6', 0);
 
         $Payments = $this->app['eccube.service.shopping']->getFormPayments(array($Delivery), $Order);
 
         $this->expected = 5;
         $this->actual = count($Payments);
         $this->verify();
+    }
+
+    /**
+     * #2005のテストケース
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2005
+     */
+    public function testOrderDetailForTaxRate()
+    {
+
+        $Product = $this->app['eccube.repository.product']->find(1);
+        $ProductClasses = $Product->getProductClasses();
+
+        foreach ($ProductClasses as $ProductClass) {
+            $ProductClass->setPrice02(649);
+        }
+        $this->app['orm.em']->flush($Product);
+
+        $this->CartService->setProductQuantity($Product->getId(), 1)->save();
+
+        $Order = $this->app['eccube.service.shopping']->createOrder($this->Customer);
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
+
+        $TaxRule->setTaxRate(Taxrule::FLOOR);
+        $this->app['orm.em']->flush($TaxRule);
+
+        // 受注明細で設定された金額
+        foreach ($Order->getOrderDetails() as $OrderDetail) {
+
+            $this->expected = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule())) * $OrderDetail->getQuantity();
+
+            $this->actual = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $TaxRule->getCalcRule()->getId())) * $OrderDetail->getQuantity();
+
+            $this->verify();
+        }
+
     }
 }

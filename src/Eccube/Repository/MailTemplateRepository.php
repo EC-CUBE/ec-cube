@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\Constant;
 
 /**
  * MailTemplateRepository
@@ -37,17 +38,8 @@ class MailTemplateRepository extends EntityRepository
     public function findOrCreate($id)
     {
         if ($id == 0) {
-            $Creator = $this
-                ->getEntityManager()
-                ->getRepository('\Eccube\Entity\Member')
-                ->find(2);
-
             $MailTemplate = new \Eccube\Entity\MailTemplate();
-            $MailTemplate
-                ->setDelFlg(0)
-                ->setCreator($Creator)
-            ;
-
+            $MailTemplate->setDelFlg(Constant::DISABLED);
         } else {
             $MailTemplate = $this->find($id);
 

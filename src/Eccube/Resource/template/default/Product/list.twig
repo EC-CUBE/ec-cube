@@ -46,6 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
+    {% if search_form.category_id.vars.errors|length == 0 %}
     <form name="form1" id="form1" method="get" action="?">
         {{ form_widget(search_form) }}
     </form>
@@ -66,37 +67,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- ▲topicpath▲ -->
     <div id="result_info_box" class="row">
         <form name="page_navi_top" id="page_navi_top" action="?">
-            <p id="result_info_box__item_count" class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
-            </p>
+            {% if pagination.totalItemCount > 0 %}
+                <p id="result_info_box__item_count" class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
+                </p>
 
-            <div id="result_info_box__menu_box" class="col-sm-6 no-padding">
-                <ul id="result_info_box__menu" class="pagenumberarea clearfix">
-                    <li id="result_info_box__disp_menu">
-                        {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-                    </li>
-                    <li id="result_info_box__order_menu">
-                        {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
-                    </li>
-                </ul>
-            </div>
+                <div id="result_info_box__menu_box" class="col-sm-6 no-padding">
+                    <ul id="result_info_box__menu" class="pagenumberarea clearfix">
+                        <li id="result_info_box__disp_menu">
+                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+                        </li>
+                        <li id="result_info_box__order_menu">
+                            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+                        </li>
+                    </ul>
+                </div>
 
-            {% for f in disp_number_form.getIterator %}
-                {% if f.vars.name matches '[^plg*]' %}
-                    {{ form_label(f) }}
-                    {{ form_widget(f) }}
-                    {{ form_errors(f) }}
-                {% endif %}
-            {% endfor %}
+                {% for f in disp_number_form.getIterator %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        {{ form_label(f) }}
+                        {{ form_widget(f) }}
+                        {{ form_errors(f) }}
+                    {% endif %}
+                {% endfor %}
 
-            {% for f in order_by_form.getIterator %}
-                {% if f.vars.name matches '[^plg*]' %}
-                    {{ form_label(f) }}
-                    {{ form_widget(f) }}
-                    {{ form_errors(f) }}
-                {% endif %}
-            {% endfor %}
-
-
+                {% for f in order_by_form.getIterator %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        {{ form_label(f) }}
+                        {{ form_widget(f) }}
+                        {{ form_errors(f) }}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p id="result_info_box__item_count" class="intro col-sm-6"><strong style="display: none;"><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>お探しの商品は見つかりませんでした。</p>
+            {% endif %}
         </form>
     </div>
 
@@ -139,5 +142,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- ▲item_list▲ -->
     {% if pagination.totalItemCount > 0 %}
         {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
+    {% endif %}
+    {% else %}
+        <p class="errormsg text-danger">ご指定のカテゴリは存在しません。</p>
     {% endif %}
 {% endblock %}

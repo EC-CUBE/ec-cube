@@ -21,6 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 <div class="col-sm-3 txt_bnr_area">
     <div class="txt_bnr">
-        <strong>5,000以上の購入で<br><strong>配送料無料</strong></strong><br>一部地域は除く
+        {%- if BaseInfo.delivery_free_amount -%}
+            <strong>{{ BaseInfo.delivery_free_amount|number_format }}円以上の購入で<br><strong>配送料無料</strong></strong><br>一部地域は除く
+        {%- else -%}
+            <strong>0円以上の購入で<br><strong>配送料無料</strong></strong><br>一部地域は除く
+        {%- endif -%}
     </div>
 </div>

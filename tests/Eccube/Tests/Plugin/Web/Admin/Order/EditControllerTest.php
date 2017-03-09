@@ -93,7 +93,10 @@ class EditControllerTest extends AbstractAdminWebTestCase
                     'ProductClass' => $ProductClasses[0]->getId(),
                     'price' => $ProductClasses[0]->getPrice02(),
                     'quantity' => 1,
-                    'tax_rate' => 8
+                    'tax_rate' => 8,
+                    'tax_rule' => 1,
+                    'product_name' => $Product->getName(),
+                    'product_code' => $ProductClasses[0]->getCode(),
                 )
             ),
             'Shippings' => array(
@@ -221,6 +224,29 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $expected = array(
+            EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH,
+            EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE,
+        );
+
+        $this->verifyOutputString($expected);
+    }
+
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer_html'),
             array(
                 'search_word' => $this->Customer->getId()
             ),

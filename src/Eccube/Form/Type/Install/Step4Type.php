@@ -70,9 +70,7 @@ class Step4Type extends AbstractType
             ))
             ->add('database_host', 'text', array(
                 'label' => 'データベースのホスト名',
-                'constraints' => array(
-                    new Assert\Callback(array($this, 'validate')),
-                ),
+                'required' => false,
             ))
             ->add('database_port', 'text', array(
                 'label' => 'ポート番号',
@@ -92,9 +90,7 @@ class Step4Type extends AbstractType
             ))
             ->add('database_password', 'password', array(
                 'label' => 'パスワード',
-                'constraints' => array(
-                    new Assert\Callback(array($this, 'validate')),
-                ),
+                'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();

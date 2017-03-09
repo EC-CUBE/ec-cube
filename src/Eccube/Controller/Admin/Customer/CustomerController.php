@@ -185,6 +185,8 @@ class CustomerController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        log_info('会員削除開始', array($id));
+
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
@@ -201,6 +203,8 @@ class CustomerController extends AbstractController
         $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
+
+        log_info('会員削除完了', array($id));
 
         $event = new EventArgs(
             array(
@@ -245,24 +249,37 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Customer \Eccube\Entity\Customer */
                 $Customer = $entity;
 
-                $row = array();
+                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                 // CSV出力項目と合致するデータを取得.
                 foreach ($Csvs as $Csv) {
                     // 会員データを検索.
-                    $row[] = $csvService->getData($Csv, $Customer);
+                    $ExportCsvRow->setData($csvService->getData($Csv, $Customer));
+
+                    $event = new EventArgs(
+                        array(
+                            'csvService' => $csvService,
+                            'Csv' => $Csv,
+                            'Customer' => $Customer,
+                            'ExportCsvRow' => $ExportCsvRow,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT, $event);
+
+                    $ExportCsvRow->pushData();
                 }
 
                 //$row[] = number_format(memory_get_usage(true));
                 // 出力.
-                $csvService->fputcsv($row);
+                $csvService->fputcsv($ExportCsvRow->getRow());
             });
         });
 
@@ -272,6 +289,8 @@ class CustomerController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
 
         $response->send();
+
+        log_info("会員CSVファイル名", array($filename));
 
         return $response;
     }

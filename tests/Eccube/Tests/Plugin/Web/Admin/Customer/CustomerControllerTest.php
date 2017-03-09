@@ -100,4 +100,18 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 
         $this->verifyOutputString($expected);
     }
+
+    /**
+     * test export customer
+     */
+    public function testExport()
+    {
+        $expected = EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT;
+        $this->client->request(
+            'POST',
+            $this->app->path('admin_customer_export'),
+            array('admin_search_customer' => array('_token' => 'dummy'))
+        );
+        $this->expectOutputRegex('/'.$expected.'/');
+    }
 }

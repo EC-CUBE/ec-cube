@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
@@ -112,6 +113,9 @@ class ShoppingService
         if (is_null($nonMember)) {
             return null;
         }
+        if (!array_key_exists('customer', $nonMember) || !array_key_exists('pref', $nonMember)) {
+            return null;
+        }
 
         $Customer = $nonMember['customer'];
         $Customer->setPref($this->app['eccube.repository.master.pref']->find($nonMember['pref']));
@@ -165,6 +169,14 @@ class ShoppingService
         // 受注情報を作成
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
+
+        // device type
+        if ($this->app['mobile_detect']->isMobile()) {
+            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_SP);
+        } else {
+            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+        }
+        $Order->setDeviceType($DeviceType);
 
         $this->em->persist($Order);
 
@@ -727,25 +739,35 @@ class ShoppingService
 
             // 商品削除チェック
             if ($orderDetail->getProductClass()->getDelFlg()) {
-                throw new ShoppingException('cart.product.delete');
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('cart.product.delete');
+                return false;
             }
 
             // 商品公開ステータスチェック
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
-                throw new ShoppingException('cart.product.not.status');
+
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('cart.product.not.status');
+                return false;
             }
 
             // 購入制限数チェック
             if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
                 if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
-                    throw new ShoppingException('cart.over.sale_limit');
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.sale_limit');
+                    return false;
                 }
             }
 
             // 購入数チェック
             if ($orderDetail->getQuantity() < 1) {
                 // 購入数量が1未満ならエラー
+
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('???');
                 return false;
             }
 
@@ -762,9 +784,13 @@ class ShoppingService
                 );
                 // 購入数量と在庫数をチェックして在庫がなければエラー
                 if ($productStock->getStock() < 1) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.stock');
                     return false;
                 } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
-                    throw new ShoppingException('cart.over.stock');
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.stock');
+                    return false;
                 }
             }
         }
@@ -931,6 +957,12 @@ class ShoppingService
         foreach ($Order->getOrderDetails() as $detail) {
             $deliveryDate = $detail->getProductClass()->getDeliveryDate();
             if (!is_null($deliveryDate)) {
+                if ($deliveryDate->getValue() < 0) {
+                    // 配送日数がマイナスの場合はお取り寄せなのでスキップする
+                    $deliveryDateFlag = false;
+                    break;
+                }
+
                 if ($minDate < $deliveryDate->getValue()) {
                     $minDate = $deliveryDate->getValue();
                 }

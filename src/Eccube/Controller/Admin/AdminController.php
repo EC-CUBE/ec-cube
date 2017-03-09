@@ -26,11 +26,13 @@ namespace Eccube\Controller\Admin;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
@@ -67,7 +69,13 @@ class AdminController extends AbstractController
         if (isset($app['config']['eccube_install']) && $app['config']['eccube_install'] == 1) {
             $file = $app['config']['root_dir'] . '/html/install.php';
             if (file_exists($file)) {
-                $app->addWarning('admin.install.warning', 'admin');
+                $message = $app->trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
+                $app->addWarning($message, 'admin');
+            }
+            $fileOnRoot = $app['config']['root_dir'] . '/install.php';
+            if (file_exists($fileOnRoot)) {
+                $message = $app->trans('admin.install.warning', array('installphpPath' => 'install.php'));
+                $app->addWarning($message, 'admin');
             }
         }
 
@@ -116,6 +124,7 @@ class AdminController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
+        $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
         $Orders = $this->getOrderEachStatus($app['orm.em'], $excludes);
@@ -137,6 +146,7 @@ class AdminController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
         $salesToday = $this->getSalesByDay($app['orm.em'], new \DateTime(), $excludes);
@@ -256,24 +266,22 @@ class AdminController extends AbstractController
     public function searchNonStockProducts(Application $app, Request $request)
     {
         // 商品マスター検索用フォーム
+        /* @var Form $form */
         $form = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
+            $searchData = array();
+            $searchData['stock_status'] = Constant::DISABLED;
+            $session = $request->getSession();
+            $session->set('eccube.admin.product.search', $searchData);
 
-            if ($form->isValid()) {
-                // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
-                $searchData = array();
-                $searchData['stock_status'] = Constant::DISABLED;
-                $session = $request->getSession();
-                $session->set('eccube.admin.product.search', $searchData);
-
-                return $app->redirect($app->url('admin_product_page', array(
-                    'page_no' => 1,
-                    'status' => $app['config']['admin_product_stock_status'])));
-            }
+            return $app->redirect($app->url('admin_product_page', array(
+                'page_no' => 1,
+                'status' => $app['config']['admin_product_stock_status'])));
         }
 
         return $app->redirect($app->url('admin_homepage'));
@@ -281,12 +289,14 @@ class AdminController extends AbstractController
 
     protected function findOrderStatus($em, array $excludes)
     {
+        /* @var $qb QueryBuilder */
         $qb = $em
             ->getRepository('Eccube\Entity\Master\OrderStatus')
             ->createQueryBuilder('os');
 
         return $qb
             ->where($qb->expr()->notIn('os.id', $excludes))
+            ->orderBy('os.rank', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -386,7 +396,7 @@ class AdminController extends AbstractController
         /** @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->getRepository('Eccube\Entity\Product')
             ->createQueryBuilder('p')
-            ->select('count(p.id)')
+            ->select('count(DISTINCT p.id)')
             ->innerJoin('p.ProductClasses', 'pc')
             ->where('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
             ->setParameter('StockUnlimited', Constant::DISABLED);

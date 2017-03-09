@@ -24,12 +24,12 @@
 
 namespace Eccube\Form\Type\Install;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Form\FormError;
-use \Symfony\Component\Form\FormEvents;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Step3Type extends AbstractType
 {
@@ -60,7 +60,7 @@ class Step3Type extends AbstractType
                 'label' => 'メールアドレス（受注メールなどの宛先になります）',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('login_id', 'text', array(
@@ -109,6 +109,15 @@ class Step3Type extends AbstractType
             ->add('admin_allow_hosts', 'textarea', array(
                 'label' => '管理画面へのアクセスを、以下のIPに制限します',
                 'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
+                'required' => false,
+            ))
+            ->add('trusted_proxies_connection_only', 'checkbox', array(
+                'label' => 'サイトが信頼されたロードバランサー、プロキシサーバからのみアクセスされる',
+                'required' => false,
+            ))
+            ->add('trusted_proxies', 'textarea', array(
+                'label' => 'ロードバランサー、プロキシサーバのIP',
+                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください（X-Forwarded-Proto、X-Forwarded-Host、X-Forwarded-Portヘッダーに対応してる必要があります）',
                 'required' => false,
             ))
             ->add('mail_backend', 'choice', array(

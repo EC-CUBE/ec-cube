@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -35,13 +35,10 @@ use Doctrine\ORM\Query;
  */
 class PaymentRepository extends EntityRepository
 {
+
     public function findOrCreate($id)
     {
         if ($id == 0) {
-            $Creator = $this
-                ->getEntityManager()
-                ->getRepository('\Eccube\Entity\Member')
-                ->find(2);
 
             $Payment = $this->findOneBy(array(), array('rank' => 'DESC'));
 
@@ -55,12 +52,9 @@ class PaymentRepository extends EntityRepository
                 ->setRank($rank)
                 ->setDelFlg(0)
                 ->setFixFlg(1)
-                ->setChargeFlg(1)
-                ->setCreator($Creator);
-
+                ->setChargeFlg(1);
         } else {
             $Payment = $this->find($id);
-
         }
 
         return $Payment;
@@ -76,7 +70,6 @@ class PaymentRepository extends EntityRepository
             ->getResult(Query::HYDRATE_ARRAY);
 
         return $result;
-
     }
 
     /**
@@ -135,7 +128,6 @@ class PaymentRepository extends EntityRepository
                 }
 
                 $payments = $arr;
-
             } else {
                 $payments = $p;
             }
@@ -143,6 +135,5 @@ class PaymentRepository extends EntityRepository
         }
 
         return $payments;
-
     }
 }

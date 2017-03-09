@@ -143,7 +143,7 @@ $(function(){
                                             </div>
                                             <dl id="shipping_list__shipment_detail--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_detail">
                                                 <dt id="shipping_list__shipment_product_name--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_name text-default">
-                                                    {{ shipmentItem.productName }}
+                                                    {{ shipmentItem.productName }} ×{{ shipmentItem.quantity }}
                                                 </dt>
                                                 <dd id="shipping_list__shipment_class_category--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_pattern small">
                                                     {% if shipmentItem.productClass.classCategory1 %}
@@ -152,12 +152,6 @@ $(function(){
                                                     {% if shipmentItem.productClass.classCategory2 %}
                                                         <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
                                                     {% endif %}
-                                                </dd>
-                                                <dd id="shipping_list__shipment_price_inc_tax--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_price">
-                                                    {{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}
-                                                </dd>
-                                                <dd id="shipping_list__shipment_total_price--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_subtotal">
-                                                    小計：{{ shipmentItem.totalPrice|price }}
                                                 </dd>
                                             </dl>
                                         </div>
@@ -173,7 +167,7 @@ $(function(){
                             {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
                         </p>
                         <p id="shipping_list__delivery--{{ Shipping.id }}">
-                            配送方法：　{{ Shipping.shipping_delivery_name }}{{ Shipping.delivery_fee ? '（＋' ~ Shipping.delivery_fee.fee|price ~ '）' : '' }}<br>
+                            配送方法：　{{ Shipping.shipping_delivery_name }}{{ Shipping.shipping_delivery_fee ? '（＋' ~ Shipping.shipping_delivery_fee|price ~ '）' : '' }}<br>
                             お届け日：　{{ Shipping.shipping_delivery_date|date_format|default('指定なし') }}<br>
                             お届け時間：　{{ Shipping.shipping_delivery_time|default('指定なし') }}
                         </p>

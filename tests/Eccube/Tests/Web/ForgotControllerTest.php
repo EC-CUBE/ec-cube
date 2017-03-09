@@ -98,33 +98,41 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testResetWithDenied()
     {
+        // debugはONの時に403ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
+        }
         $client = $this->createClient();
-        try {
             $crawler = $client->request(
                 'GET',
                 '/forgot/reset/a___aaa'
             );
-            $this->fail();
-        } catch (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e) {
-            $this->expected = '不正なアクセスです。';
-            $this->actual = $e->getMessage();
+           
+        // debugはOFFの時に403ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 403;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
         }
-        $this->verify();
     }
 
     public function testResetWithNotFound()
     {
-        $client = $this->createClient();
-        try {
-            $crawler = $client->request(
-                'GET',
-                '/forgot/reset/aaaa'
-            );
-            $this->fail();
-        } catch (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e) {
-            $this->expected = '有効期限が切れているか、無効なURLです。';
-            $this->actual = $e->getMessage();
+        // debugはONの時に404ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
-        $this->verify();
+        $client = $this->createClient();
+        
+        $crawler = $client->request(
+           'GET',
+           '/forgot/reset/aaaa'
+        );
+        // debugはOFFの時に404ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 404;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
+        }
     }
 }

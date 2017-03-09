@@ -22,6 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% set body_class = 'cart_page' %}
+{#ログイン状態によって、表示内容を切替#}
+{% if is_granted('ROLE_USER') is empty %}
+    {% set title = '商品購入/お届け先の変更' %}
+{% endif %}
 
 {% block javascript %}
     <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
@@ -35,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
-    <h1 class="page-heading">お届け先の追加</h1>
+    <h1 class="page-heading">お届け先の{% if is_granted('ROLE_USER') %}追加{% else %}変更{% endif %}</h1>
     <div id="detail_wrap" class="container-fluid">
         <div id="detail_box" class="row">
             <form method="post" action="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">

@@ -1,0 +1,27 @@
+DirectoryIndex index.php index.html .ht
+
+<FilesMatch "^composer|^autoload|^cli-config|^COPYING|\.(ini|lock|dist|git|sh|bak|swp)$">
+    order allow,deny
+    deny from all
+</FilesMatch>
+
+<Files ~ "index.php|index_dev.php">
+    order deny,allow
+    allow from all
+</Files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Authorization ヘッダが取得できない環境への対応
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+
+    # さくらのレンタルサーバでサイトへのアクセスをSSL経由に制限する場合の対応
+    # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
+    # RewriteRule ^(.*) - [E=HTTPS:on]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$ [NC]
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

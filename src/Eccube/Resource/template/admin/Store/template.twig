@@ -88,13 +88,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div>
         <div class="col-md-3" id="aside_column">
-            <div class="col_inner">
+            <div id="common_box" class="col_inner">
                 <div class="box no-header">
                     <div class="box-body">
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <button class="btn btn-primary btn-block btn-lg"
-                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit()">登録</button>
+                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit(); return false;">登録</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

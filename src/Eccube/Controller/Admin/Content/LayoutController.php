@@ -186,7 +186,7 @@ class LayoutController
                             return $app->redirect($app->url($OrigTargetPageLayout->getUrl(), array('preview' => 1)));
                         }
                     } else {
-                        return $app->redirect($app->url('homepage')."user_data/".$OrigTargetPageLayout->getUrl().'?preview=1');
+                        return $app->redirect($app->url('homepage').$app['config']['user_data_route']."/".$OrigTargetPageLayout->getUrl().'?preview=1');
                     }
                 } else {
                     $app->addSuccess('admin.register.complete', 'admin');

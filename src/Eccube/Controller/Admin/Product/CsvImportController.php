@@ -74,6 +74,8 @@ class CsvImportController
 
                 if (!empty($formFile)) {
 
+                    log_info('商品CSV登録開始');
+
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
@@ -191,7 +193,7 @@ class CsvImportController
                         }
 
                         // 商品画像登録
-                        $this->createProductImage($row, $Product);
+                        $this->createProductImage($row, $Product, $data);
 
                         $this->em->flush($Product);
 
@@ -393,6 +395,8 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
+                    log_info('商品CSV登録完了');
+
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
 
@@ -421,6 +425,8 @@ class CsvImportController
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
+
+                    log_info('カテゴリCSV登録開始');
 
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
@@ -528,6 +534,8 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
+                    log_info('カテゴリCSV登録完了');
+
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
 
@@ -622,10 +630,20 @@ class CsvImportController
         $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
 
         $file = file_get_contents($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
-        // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-        $encode = Str::characterEncoding(substr($file, 0, 6));
-        if ($encode != 'UTF-8') {
-            $file = mb_convert_encoding($file, 'UTF-8', $encode);
+
+        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
+            // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
+            // see https://github.com/EC-CUBE/ec-cube/issues/1780
+            setlocale(LC_ALL, ''); // 既定のロケールに設定
+            if (mb_detect_encoding($file) === 'UTF-8') { // UTF-8 を検出したら SJIS-win に変換
+                $file = mb_convert_encoding($file, 'SJIS-win', 'UTF-8');
+            }
+        } else {
+            // アップロードされたファイルがUTF-8以外は文字コード変換を行う
+            $encode = Str::characterEncoding(substr($file, 0, 6));
+            if ($encode != 'UTF-8') {
+                $file = mb_convert_encoding($file, 'UTF-8', $encode);
+            }
         }
         $file = Str::convertLineFeed($file);
 
@@ -649,7 +667,7 @@ class CsvImportController
     /**
      * 商品画像の削除、登録
      */
-    protected function createProductImage($row, Product $Product)
+    protected function createProductImage($row, Product $Product, $data)
     {
         if ($row['商品画像'] != '') {
 
@@ -663,16 +681,28 @@ class CsvImportController
             // 画像の登録
             $images = explode(',', $row['商品画像']);
             $rank = 1;
+
+            $pattern = "/\\$|^.*.\.\\\.*|\/$|^.*.\.\/\.*/";
             foreach ($images as $image) {
 
-                $ProductImage = new ProductImage();
-                $ProductImage->setFileName(Str::trimAll($image));
-                $ProductImage->setProduct($Product);
-                $ProductImage->setRank($rank);
+                $fileName = Str::trimAll($image);
 
-                $Product->addProductImage($ProductImage);
-                $rank++;
-                $this->em->persist($ProductImage);
+                // 商品画像名のフォーマットチェック
+                if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
+                    $this->addErrors(($data->key() + 1) . '行目の商品画像には末尾に"/"や"../"を使用できません。');
+                } else {
+                    // 空文字は登録対象外
+                    if (!empty($fileName)) {
+                        $ProductImage = new ProductImage();
+                        $ProductImage->setFileName($fileName);
+                        $ProductImage->setProduct($Product);
+                        $ProductImage->setRank($rank);
+    
+                        $Product->addProductImage($ProductImage);
+                        $rank++;
+                        $this->em->persist($ProductImage);
+                    }
+                }
             }
         }
     }
@@ -699,6 +729,7 @@ class CsvImportController
         // カテゴリの登録
         $categories = explode(',', $row['商品カテゴリ(ID)']);
         $rank = 1;
+        $categoriesIdList = array();
         foreach ($categories as $category) {
 
             if (preg_match('/^\d+$/', $category)) {
@@ -706,15 +737,22 @@ class CsvImportController
                 if (!$Category) {
                     $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
                 } else {
-                    $ProductCategory = new ProductCategory();
-                    $ProductCategory->setProductId($Product->getId());
-                    $ProductCategory->setCategoryId($Category->getId());
-                    $ProductCategory->setProduct($Product);
-                    $ProductCategory->setCategory($Category);
-                    $ProductCategory->setRank($rank);
-                    $Product->addProductCategory($ProductCategory);
-                    $rank++;
-                    $this->em->persist($ProductCategory);
+                    foreach($Category->getPath() as $ParentCategory){
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                            $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $rank);
+                            $app['orm.em']->persist($ProductCategory);
+                            $rank++;
+                            $Product->addProductCategory($ProductCategory);
+                            $categoriesIdList[$ParentCategory->getId()] = true;
+                        }
+                    }
+                    if (!isset($categoriesIdList[$Category->getId()])){
+                        $ProductCategory = $this->makeProductCategory($Product, $Category, $rank);
+                        $rank++;
+                        $this->em->persist($ProductCategory);
+                        $Product->addProductCategory($ProductCategory);
+                        $categoriesIdList[$Category->getId()] = true;
+                    }
                 }
             } else {
                 $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
@@ -1126,5 +1164,23 @@ class CsvImportController
             'カテゴリ名' => 'category_name',
             '親カテゴリID' => 'parent_category_id',
         );
+    }
+    
+        /**
+     * ProductCategory作成
+     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\Category $Category
+     * @return ProductCategory
+     */
+    private function makeProductCategory($Product, $Category, $rank)
+    {
+        $ProductCategory = new ProductCategory();
+        $ProductCategory->setProduct($Product);
+        $ProductCategory->setProductId($Product->getId());
+        $ProductCategory->setCategory($Category);
+        $ProductCategory->setCategoryId($Category->getId());
+        $ProductCategory->setRank($rank);
+        
+        return $ProductCategory;
     }
 }

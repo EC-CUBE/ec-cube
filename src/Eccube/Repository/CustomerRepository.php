@@ -148,18 +148,14 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         if (isset($searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             //スペース除去
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '',$searchData['multi']);
-            if (preg_match('/^\d+$/', $clean_key_multi)) {
-                $qb
-                    ->andWhere('c.id = :customer_id')
-                    ->setParameter('customer_id', $clean_key_multi);
-            } else {
-                $qb
-                    ->andWhere('CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
-                    ->setParameter('name', '%' . $clean_key_multi . '%')
-                    ->setParameter('kana', '%' . $clean_key_multi . '%')
-                    ->setParameter('email', '%' . $clean_key_multi . '%');
-            }
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $id = preg_match('/^\d+$/', $clean_key_multi) ? $clean_key_multi : null;
+            $qb
+                ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
+                ->setParameter('customer_id', $id)
+                ->setParameter('name', '%' . $clean_key_multi . '%')
+                ->setParameter('kana', '%' . $clean_key_multi . '%')
+                ->setParameter('email', '%' . $clean_key_multi . '%');
         }
 
         // Pref
@@ -181,12 +177,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('sexs', $sexs);
         }
 
-        // birth_month
-        // TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-//            $qb
-//                ->andWhere('extract(month from c.birth) = :birth_month')
-//                ->setParameter('birth_month', $searchData['birth_month']);
+            $qb
+                ->andWhere('EXTRACT(MONTH FROM c.birth) = :birth_month')
+                ->setParameter('birth_month', $searchData['birth_month']);
         }
 
         // birth

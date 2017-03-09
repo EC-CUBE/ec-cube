@@ -53,19 +53,6 @@ class ShopMasterType extends AbstractType
                     )),
                 )
             ))
-            ->add('company_kana', 'text', array(
-                'label' => '会社名(フリガナ)',
-                'required' => false,
-                'constraints' => array(
-                    // todo カナへの変換
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                    )),
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
-                ),
-            ))
             ->add('shop_name', 'text', array(
                 'label' => '店名',
                 'required' => true,
@@ -73,19 +60,6 @@ class ShopMasterType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
-                    )),
-                )
-            ))
-            ->add('shop_kana', 'text', array(
-                'label' => '店名(フリガナ)',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
-                    // todo カナへの変換
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                 )
             ))
@@ -127,7 +101,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email02', 'email', array(
@@ -135,7 +109,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email03', 'email', array(
@@ -143,7 +117,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email04', 'email', array(
@@ -151,7 +125,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('good_traded', 'textarea', array(
@@ -179,6 +153,8 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $config['price_len'],
@@ -288,8 +264,41 @@ class ShopMasterType extends AbstractType
                         'message' => 'admin.shop.longitude.invalid'))
                 ),
             ))
-
         ;
+
+        $builder->add(
+            $builder
+                ->create('company_kana', 'text', array(
+                    'label' => '会社名(フリガナ)',
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
+                        new Assert\Length(array(
+                            'max' => $config['stext_len'],
+                        )),
+                    ),
+                ))
+                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+        );
+
+        $builder->add(
+            $builder
+                ->create('shop_kana', 'text', array(
+                    'label' => '店名(フリガナ)',
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Length(array(
+                            'max' => $config['stext_len'],
+                        )),
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
+                    )
+                ))
+                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+        );
     }
 
     /**

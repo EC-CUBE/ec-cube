@@ -204,7 +204,10 @@ class HookPointEvent
     }
 
 // export
-
+    public function onAdminCustomerExportCsv(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT;
+    }
 
 // Admin/Customer/CustomerEditController
 
@@ -356,9 +359,16 @@ class HookPointEvent
     }
 
 // exportOrder
+    public function onAdminOrderExportCsv(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER;
+    }
 
 // exportShipping
-
+    public function onAdminOrderShippingExportCsv(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING;
+    }
 
 // Admin/Product/CategoryController
 
@@ -380,6 +390,10 @@ class HookPointEvent
     }
 
 // export
+    public function onAdminCategoryExportCsv(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT;
+    }
 
 
 // Admin/Product/ClassCategoryController
@@ -520,6 +534,10 @@ class HookPointEvent
     }
 
 // export
+    public function onAdminProductExportCsv(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT;
+    }
 
 
 // Admin/Setting/Shop/CsvController
