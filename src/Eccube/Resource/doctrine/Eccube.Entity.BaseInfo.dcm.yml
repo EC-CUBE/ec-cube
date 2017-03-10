@@ -9,144 +9,179 @@ Eccube\Entity\BaseInfo:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         company_name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         company_kana:
-            type: text
+            type: string
+            length: 255
             nullable: true
         zip01:
-            type: text
+            type: string
+            length: 3
             nullable: true
         zip02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         zipcode:
-            type: text
+            type: string
+            length: 7
             nullable: true
         addr01:
-            type: text
+            type: string
+            length: 255
             nullable: true
         addr02:
-            type: text
+            type: string
+            length: 255
             nullable: true
         tel01:
-            type: text
+            type: string
+            length: 5
             nullable: true
         tel02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         tel03:
-            type: text
+            type: string
+            length: 4
             nullable: true
         fax01:
-            type: text
+            type: string
+            length: 5
             nullable: true
         fax02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         fax03:
-            type: text
+            type: string
+            length: 4
             nullable: true
         business_hour:
-            type: text
+            type: string
+            length: 255
             nullable: true
         email01:
-            type: text
+            type: string
+            length: 255
             nullable: true
         email02:
-            type: text
+            type: string
+            length: 255
             nullable: true
         email03:
-            type: text
+            type: string
+            length: 255
             nullable: true
         email04:
-            type: text
+            type: string
+            length: 255
             nullable: true
         shop_name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         shop_kana:
-            type: text
+            type: string
+            length: 255
             nullable: true
         shop_name_eng:
-            type: text
+            type: string
+            length: 255
             nullable: true
         update_date:
             type: datetime
-            nullable: false
         good_traded:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         message:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         latitude:
-            type: text
+            type: decimal
+            precision: 9
+            scale: 6
             nullable: true
         longitude:
-            type: text
+            type: decimal
+            precision: 9
+            scale: 6
             nullable: true
         delivery_free_amount:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
+            nullable: true
             options:
                 default: null
         delivery_free_quantity:
             type: integer
             nullable: true
             options:
+                unsigned: true
                 default: null
         option_multiple_shipping:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 0
         option_mypage_order_status_display:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 1
         nostock_hidden:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 0
         option_favorite_product:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 1
         option_product_delivery_fee:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 0
         option_product_tax_rule:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 0
         option_customer_activate:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 1
         option_remember_me:
             type: smallint
             nullable: true
             options:
+                unsigned: true
                 default: 0
         authentication_key:
-            type: text
+            type: string
+            length: 255
             nullable: true
     manyToOne:
         Country:
@@ -154,10 +189,14 @@ Eccube\Entity\BaseInfo:
             joinColumn:
                 name: country_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
             joinColumn:
                 name: pref
                 referencedColumnName: id
+                options:
+                    unsigned: true
     lifecycleCallbacks:
         loadClassMetadata: {  }

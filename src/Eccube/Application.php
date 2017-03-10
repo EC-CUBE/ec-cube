@@ -23,8 +23,10 @@
 
 namespace Eccube;
 
+use Doctrine\DBAL\Types\Type;
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -570,6 +572,11 @@ class Application extends \Silex\Application
             $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
         }
 
+        // UTCで保存
+        // @see http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
+        Type::overrideType('datetime', UTCDateTimeType::class);
+        Type::overrideType('datetimetz', UTCDateTimeType::class);
+
         // プラグインのmetadata定義を合わせて行う.
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($this['debug']);
         $ormMappings = array();
@@ -670,6 +677,10 @@ class Application extends \Silex\Application
                 // save
                 $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
                 $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+
+                // timezone
+                $timezoneSubscriber = new \Eccube\Doctrine\EventSubscriber\TimeZoneSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($timezoneSubscriber);
 
                 // clear cache
                 $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);

@@ -36,6 +36,7 @@ class Version20161108095350 extends AbstractMigration
             ),
         );
         $entities = $repository->createQueryBuilder('pl')
+            ->select(['pl.id', 'pl.name', 'pl.rank'])
             ->orderBy('pl.id', 'ASC')
             ->getQuery()
             ->getArrayResult();

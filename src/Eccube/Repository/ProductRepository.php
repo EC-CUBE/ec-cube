@@ -234,8 +234,7 @@ class ProductRepository extends EntityRepository
 
         // crate_date
         if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
-            $date = $searchData['create_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['create_date_start'];
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
@@ -244,8 +243,7 @@ class ProductRepository extends EntityRepository
         if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
             $date = clone $searchData['create_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('p.create_date < :create_date_end')
                 ->setParameter('create_date_end', $date);
@@ -253,8 +251,7 @@ class ProductRepository extends EntityRepository
 
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
-            $date = $searchData['update_date_start']
-                ->format('Y-m-d H:i:s');
+            $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
@@ -262,8 +259,7 @@ class ProductRepository extends EntityRepository
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
-                ->modify('+1 days')
-                ->format('Y-m-d H:i:s');
+                ->modify('+1 days');
             $qb
                 ->andWhere('p.update_date < :update_date_end')
                 ->setParameter('update_date_end', $date);

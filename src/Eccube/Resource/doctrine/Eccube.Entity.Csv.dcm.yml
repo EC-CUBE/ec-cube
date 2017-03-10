@@ -9,51 +9,50 @@ Eccube\Entity\Csv:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: csv_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         entity_name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         field_name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         reference_field_name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         disp_name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
         rank:
             type: smallint
-            nullable: false
-            unsigned: false
-            precision: 3
+            options:
+                unsigned: true
         enable_flg:
             type: smallint
-            nullable: false
-            unsigned: false
+            options:
+                unsigned: true
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         CsvType:
             targetEntity: Eccube\Entity\Master\CsvType
             joinColumn:
                 name: csv_type
                 referencedColumnName: id
-                nullable: false
+                options:
+                    unsigned: true
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

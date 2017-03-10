@@ -9,14 +9,12 @@ Eccube\Entity\PaymentOption:
     id:
         delivery_id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
         payment_id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
     manyToOne:
         Delivery:
             targetEntity: Eccube\Entity\Delivery
@@ -24,12 +22,14 @@ Eccube\Entity\PaymentOption:
             joinColumn:
                 name: delivery_id
                 referencedColumnName: delivery_id
-                nullable: false
+                options:
+                    unsigned: true
         Payment:
             targetEntity: Eccube\Entity\Payment
             inversedBy: PaymentOptions
             joinColumn:
                 name: payment_id
                 referencedColumnName: payment_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

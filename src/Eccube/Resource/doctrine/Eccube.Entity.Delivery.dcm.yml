@@ -9,54 +9,57 @@ Eccube\Entity\Delivery:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: delivery_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         service_name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         description:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         confirm_url:
-            type: text
+            type: string
+            length: 4000
             nullable: true
         rank:
             type: integer
             nullable: true
-            unsigned: false
+            options:
+                unsigned: true
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
         ProductType:
             targetEntity: Eccube\Entity\Master\ProductType
             joinColumn:
                 name: product_type_id
                 referencedColumnName: id
-                nullable: false
+                options:
+                    unsigned: true
     oneToMany:
         PaymentOptions:
             targetEntity: Eccube\Entity\PaymentOption

@@ -9,73 +9,85 @@ Eccube\Entity\CustomerAddress:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: customer_address_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name01:
-            type: text
+            type: string
+            length: 255
             nullable: true
         name02:
-            type: text
+            type: string
+            length: 255
             nullable: true
         kana01:
-            type: text
+            type: string
+            length: 255
             nullable: true
         kana02:
-            type: text
+            type: string
+            length: 255
             nullable: true
         company_name:
-            type: text
+            type: string
+            length: 255
             nullable: true
         zip01:
-            type: text
+            type: string
+            length: 3
             nullable: true
         zip02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         zipcode:
-            type: text
+            type: string
+            length: 7
             nullable: true
         addr01:
-            type: text
+            type: string
+            length: 255
             nullable: true
         addr02:
-            type: text
+            type: string
+            length: 255
             nullable: true
         tel01:
-            type: text
+            type: string
+            length: 5
             nullable: true
         tel02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         tel03:
-            type: text
+            type: string
+            length: 4
             nullable: true
         fax01:
-            type: text
+            type: string
+            length: 5
             nullable: true
         fax02:
-            type: text
+            type: string
+            length: 4
             nullable: true
         fax03:
-            type: text
+            type: string
+            length: 4
             nullable: true
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     manyToOne:
         Customer:
             targetEntity: Eccube\Entity\Customer
@@ -83,15 +95,20 @@ Eccube\Entity\CustomerAddress:
             joinColumn:
                 name: customer_id
                 referencedColumnName: customer_id
-                nullable: false
+                options:
+                    unsigned: true
         Country:
             targetEntity: Eccube\Entity\Master\Country
             joinColumn:
                 name: country_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
             joinColumn:
                 name: pref
                 referencedColumnName: id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

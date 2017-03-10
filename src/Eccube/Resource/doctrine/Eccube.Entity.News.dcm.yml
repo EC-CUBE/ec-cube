@@ -9,63 +9,59 @@ Eccube\Entity\News:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: news_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         date:
             type: datetime
-            nullable: true
             column: news_date
-        rank:
-            type: integer
             nullable: true
-            unsigned: false
+        rank:
+            type: smallint
+            options:
+                unsigned: true
         title:
-            type: text
-            nullable: false
+            type: string
+            length: 255
             column: news_title
         comment:
             type: text
-            nullable: true
             column: news_comment
-        url:
-            type: text
             nullable: true
+        url:
+            type: string
+            length: 4000
             column: news_url
+            nullable: true
         select:
             type: smallint
-            nullable: false
-            unsigned: false
             column: news_select
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         link_method:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
+                unsigned: true
+                default: 0
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

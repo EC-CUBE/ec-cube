@@ -16,6 +16,7 @@ class Version20151113150301 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        return;
         // this up() migration is auto-generated, please modify it to your needs
 
         if ($this->connection->getDatabasePlatform()->getName() == 'mysql') {

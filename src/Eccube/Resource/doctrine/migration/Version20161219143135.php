@@ -15,7 +15,7 @@ class Version20161219143135 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $this->createIndex($schema, 'dtb_customer', array('email'), 'dtb_customer_email_idx', array('email' => 191));
+        //$this->createIndex($schema, 'dtb_customer', array('email'), 'dtb_customer_email_idx', array('email' => 191));
         $this->createIndex($schema, 'dtb_order', array('order_email'), 'dtb_order_order_email_idx', array('order_email' => 191));
     }
 

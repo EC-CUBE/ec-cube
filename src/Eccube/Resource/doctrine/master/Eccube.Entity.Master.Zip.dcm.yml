@@ -8,22 +8,21 @@ Eccube\Entity\Master\Zip:
       type: string
     id:
         id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            type: smallint
             column: zip_id
+            options:
+                unsigned: true
     fields:
         zipcode:
-            type: text
-            nullable: true
+            type: string
+            length: 7
         state:
-            type: text
-            nullable: true
+            type: string
+            length: 255
         city:
-            type: text
-            nullable: true
+            type: string
+            length: 255
         town:
-            type: text
-            nullable: true
+            type: string
+            length: 255
     lifecycleCallbacks: {  }

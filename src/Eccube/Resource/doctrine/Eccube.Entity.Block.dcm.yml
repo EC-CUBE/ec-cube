@@ -14,39 +14,34 @@ Eccube\Entity\Block:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: block_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
+            type: string
+            length: 255
             column: block_name
             nullable: true
         file_name:
             type: string
-            length: 200
-            nullable: false
-        create_date:
-            type: datetime
-            nullable: false
-        update_date:
-            type: datetime
-            nullable: false
+            length: 255
         logic_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '1'
+                unsigned: true
+                default: 1
         deletable_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '1'
+                unsigned: true
+                default: 1
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
     oneToMany:
         BlockPositions:
             targetEntity: Eccube\Entity\BlockPosition
@@ -58,4 +53,6 @@ Eccube\Entity\Block:
             joinColumn:
                 name: device_type_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

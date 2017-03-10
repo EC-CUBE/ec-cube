@@ -9,69 +9,73 @@ Eccube\Entity\TaxRule:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: tax_rule_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         tax_rate:
             type: decimal
-            nullable: false
             precision: 10
             scale: 0
             options:
-                default: '8'
+                unsigned: true
+                default: 8
         tax_adjust:
             type: decimal
-            nullable: false
             precision: 10
             scale: 0
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         apply_date:
             type: datetime
-            nullable: false
         del_flg:
             type: smallint
-            nullable: false
-            unsigned: false
             options:
-                default: '0'
+                unsigned: true
+                default: 0
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
         Country:
             targetEntity: Eccube\Entity\Master\Country
             joinColumn:
                 name: country_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
             joinColumn:
                 name: pref_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
         Product:
             targetEntity: Eccube\Entity\Product
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
+                options:
+                    unsigned: true
         CalcRule:
             targetEntity: Eccube\Entity\Master\Taxrule
             joinColumn:
                 name: calc_rule
                 referencedColumnName: id
+                options:
+                    unsigned: true
     oneToOne:
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
@@ -79,5 +83,6 @@ Eccube\Entity\TaxRule:
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
-
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

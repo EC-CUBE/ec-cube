@@ -9,31 +9,29 @@ Eccube\Entity\ProductStock:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: product_stock_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         stock:
             type: decimal
-            nullable: true
             precision: 10
             scale: 0
+            nullable: true
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                options:
+                    unsigned: true
     oneToOne:
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
@@ -41,5 +39,7 @@ Eccube\Entity\ProductStock:
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }
 

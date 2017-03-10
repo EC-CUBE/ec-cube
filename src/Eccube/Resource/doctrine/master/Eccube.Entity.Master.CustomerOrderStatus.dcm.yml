@@ -9,15 +9,14 @@ Eccube\Entity\Master\CustomerOrderStatus:
     id:
         id:
             type: smallint
-            nullable: false
-            unsigned: false
-            id: true
+            options:
+                unsigned: true
     fields:
         name:
-            type: text
-            nullable: true
+            type: string
+            length: 255
         rank:
             type: smallint
-            nullable: false
-            unsigned: false
+            options:
+                unsigned: true
     lifecycleCallbacks: {  }

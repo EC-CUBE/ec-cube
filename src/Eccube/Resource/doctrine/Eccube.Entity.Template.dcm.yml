@@ -9,31 +9,30 @@ Eccube\Entity\Template:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: template_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         code:
-            type: text
-            nullable: false
+            type: string
+            length: 255
             column: template_code
         name:
-            type: text
-            nullable: false
+            type: string
+            length: 255
             column: template_name
         create_date:
             type: datetime
-            nullable: false
         update_date:
             type: datetime
-            nullable: false
     manyToOne:
         DeviceType:
             targetEntity: Eccube\Entity\Master\DeviceType
             joinColumn:
                 name: device_type_id
                 referencedColumnName: id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }

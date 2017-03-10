@@ -9,16 +9,15 @@ Eccube\Entity\DeliveryTime:
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
-            id: true
             column: time_id
             generator:
                 strategy: AUTO
+            options:
+                unsigned: true
     fields:
         delivery_time:
-            type: text
-            nullable: false
+            type: string
+            length: 255
     manyToOne:
         Delivery:
             targetEntity: Eccube\Entity\Delivery
@@ -26,4 +25,6 @@ Eccube\Entity\DeliveryTime:
             joinColumn:
                 name: delivery_id
                 referencedColumnName: delivery_id
+                options:
+                    unsigned: true
     lifecycleCallbacks: {  }
