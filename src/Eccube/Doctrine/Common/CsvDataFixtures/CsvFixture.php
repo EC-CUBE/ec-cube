@@ -5,6 +5,7 @@ namespace Eccube\Doctrine\Common\CsvDataFixtures;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Table;
 
 /**
  * CSVファイルを扱うためのフィクスチャ.
@@ -61,6 +62,47 @@ class CsvFixture implements FixtureInterface
             $this->file->next();
         }
         $Connection->commit();
+
+        // postgresqlの場合はシーケンスを振り直す
+        if ('postgresql' === $Connection->getDatabasePlatform()->getName()) {
+            // テーブル情報を取得
+            $sm = $Connection->getSchemaManager();
+            $table = $sm->listTableDetails($table_name);
+
+            // 主キーがないテーブルはスキップ
+            if (!$table->hasPrimaryKey()) {
+                return;
+            }
+
+            // 複合主キーのテーブルはスキップ
+            $pkColumns = $table->getPrimaryKey()->getColumns();
+            if (count($pkColumns) != 1) {
+                return;
+            }
+
+            // シーケンス名を取得
+            $pk_name = $pkColumns[0];
+            $sequence_name = sprintf('%s_%s_seq', $table_name, $pk_name);
+
+            // シーケンスの存在チェック
+            $sql = 'SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_name = ?';
+            $count = $Connection->fetchColumn($sql, [$sequence_name]);
+            if ($count < 1) {
+                return;
+            }
+
+            // シーケンスを更新
+            $sql = sprintf('SELECT MAX(%s) FROM %s', $pk_name, $table_name);
+            $max = $Connection->fetchColumn($sql);
+            if (is_null($max)) {
+                // レコードが無い場合は1を初期値に設定
+                $sql = sprintf("SELECT SETVAL('%s', 1, false)", $sequence_name);
+            } else {
+                // レコードがある場合は最大値を設定
+                $sql = sprintf("SELECT SETVAL('%s', %s)", $sequence_name, $max);
+            }
+            $Connection->executeQuery($sql);
+        }
     }
 
     /**

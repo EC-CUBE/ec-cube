@@ -802,6 +802,7 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (2, 'mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date, discriminator_type) VALUES (4, 'sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'template');");
 */
+        return;
         if ($this->connection->getDatabasePlatform()->getName() == "postgresql") {
             // TODO Fixtureで行うのが適切.
             $seqences = [
