@@ -829,7 +829,15 @@ class Version20150613000000 extends AbstractMigration
                 ['dtb_csv_csv_id_seq', 'csv_id', 'dtb_csv'],
             ];
             foreach ($seqences as $seq) {
-                $sql = vsprintf("SELECT setval('%s', (select COALESCE(max(%s), 1) from %s));", $seq);
+                list($seq, $id, $table) = $seq;
+
+                $sql = sprintf("select max(%s) from %s", $id, $table);
+                $max = $this->connection->fetchColumn($sql);
+                if (is_null($max)) {
+                    $sql = sprintf("select setval('%s', 1, false)", $seq);
+                } else {
+                    $sql = sprintf("select setval('%s', %s)", $seq, $max);
+                }
                 $this->addSql($sql);
             }
         }
