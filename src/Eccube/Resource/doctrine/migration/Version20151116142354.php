@@ -16,6 +16,8 @@ class Version20151116142354 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        return;
+
         // this up() migration is auto-generated, please modify it to your needs
 
         // pageを追加

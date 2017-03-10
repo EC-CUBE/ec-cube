@@ -14,6 +14,8 @@ class Version20160823172700 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        return;
+
         $app = \Eccube\Application::getInstance();
         /** @var EntityManager $em */
         $em = $app["orm.em"];
