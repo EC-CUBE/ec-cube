@@ -1,3 +1,4 @@
 id,name,rank,discriminator_type
-"1","価格順","0","productlistorderby"
-"2","新着順","1","productlistorderby"
+"1","価格が低い順","0","productlistorderby"
+"2","新着順","2","productlistorderby"
+"3","価格が高い順","1","productlistorderby"
