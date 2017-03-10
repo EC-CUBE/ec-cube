@@ -173,10 +173,13 @@ class ProductRepository extends EntityRepository
         // id
         if (isset($searchData['id']) && Str::isNotBlank($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
-            $qb
-                ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
-                ->setParameter('id', $id)
-                ->setParameter('likeid', '%' . $searchData['id'] . '%');
+            if ($id === null) {
+            $qb->andWhere('p.name LIKE :likeid OR pc.code LIKE :likeid')
+                    ->setParameter('likeid', '%' . $searchData['id'] . '%');
+            } else {
+                $qb->andWhere('p.id = :id')
+                    ->setParameter('id', $id);
+            }
         }
 
         // code

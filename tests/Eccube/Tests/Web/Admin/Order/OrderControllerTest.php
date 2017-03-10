@@ -16,7 +16,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Payment = $this->app['eccube.repository.payment']->find(1);
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
         for ($i = 0; $i < 10; $i++) {
-            $Customer = $this->createCustomer('user-'.$i.'@example.com');
+            $Customer = $this->createCustomer('user-' . $i . '@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderStatus);
