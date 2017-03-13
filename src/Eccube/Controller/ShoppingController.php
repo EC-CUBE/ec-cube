@@ -790,6 +790,25 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
 
+            //非会員場合はお届け情報は追加する
+            if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
+                // Sessionから住所を取得する
+                $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+                $customerAddresses = unserialize($customerAddresses);
+                $hasAddress = false;
+                // 既に住所あった場合は有フラグを立てる
+                foreach($customerAddresses as $idx => $address){
+                    if($Shipping->hasCustomerAddress($address)){
+                        $hasAddress = true;
+                        break;
+                    }
+                }
+                // 登録されてない住所は追加する
+                if($hasAddress === false){
+                    $customerAddresses[] = $CustomerAddress;
+                    $app['session']->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+                }
+            }
             log_info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
             return $app->redirect($app->url('shopping'));
         }
