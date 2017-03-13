@@ -390,71 +390,33 @@ class Application extends \Silex\Application
         });
 
         $this->before(function (Request $request, \Silex\Application $app) {
-            $app['admin'] = false;
-            $app['front'] = false;
+            $app['admin'] = $app['front'] = false;
             $pathinfo = rawurldecode($request->getPathInfo());
             if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                 $app['admin'] = true;
             } else {
                 $app['front'] = true;
             }
+
+            // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             if ($app->isAdminRequest()) {
                 if (file_exists(__DIR__.'/../../app/template/admin')) {
                     $paths[] = __DIR__.'/../../app/template/admin';
                 }
                 $paths[] = $app['config']['template_admin_realdir'];
                 $paths[] = __DIR__.'/../../app/Plugin';
-                // $cache = $cacheBaseDir.'admin';
-
+                $cacheDir =  __DIR__.'/../../app/cache/twig/admin';
             } else {
                 if (file_exists($app['config']['template_realdir'])) {
                     $paths[] = $app['config']['template_realdir'];
                 }
                 $paths[] = $app['config']['template_default_realdir'];
                 $paths[] = __DIR__.'/../../app/Plugin';
-                // $cache = $cacheBaseDir.$app['config']['template_code'];
-                $app['front'] = true;
+                $cacheDir =  __DIR__.'/../../app/cache/twig/'.$app['config']['template_code'];
             }
-            // $twig->setCache($cache);
+            $app['twig']->setCache($app['debug'] ? null : $cacheDir);
             $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
-            // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            if (!$app->offsetExists('twig')) {
-
-                $app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
-                        $paths = array();
-
-                        // 互換性がないのでprofiler とproduction 時のcacheを分離する
-                        if (isset($app['profiler'])) {
-                            $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
-                        } else {
-                            $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
-                        }
-
-                        if ($app->isAdminRequest()) {
-                            if (file_exists(__DIR__.'/../../app/template/admin')) {
-                                $paths[] = __DIR__.'/../../app/template/admin';
-                            }
-                            $paths[] = $app['config']['template_admin_realdir'];
-                            $paths[] = __DIR__.'/../../app/Plugin';
-                            $cache = $cacheBaseDir.'admin';
-
-                        } else {
-                            if (file_exists($app['config']['template_realdir'])) {
-                                $paths[] = $app['config']['template_realdir'];
-                            }
-                            $paths[] = $app['config']['template_default_realdir'];
-                            $paths[] = __DIR__.'/../../app/Plugin';
-                            $cache = $cacheBaseDir.$app['config']['template_code'];
-                            $app['front'] = true;
-                        }
-                        $twig->setCache($cache);
-                        $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
-
-                        return $twig;
-                    }
-                );
-            }
             // 管理画面のIP制限チェック.
             if ($app->isAdminRequest()) {
                 // IP制限チェック
