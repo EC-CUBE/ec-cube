@@ -44,7 +44,12 @@ class FormUtil
         }
 
         foreach ($forms as $key => $value) {
-            $viewData[$key] = self::getViewData($value);
+            // choice typeは各選択肢もFormとして扱われるため再帰しない.
+            if ($value->getConfig()->hasOption('choices')) {
+                $viewData[$key] = $value->getViewData();
+            } else {
+                $viewData[$key] = self::getViewData($value);
+            }
         }
 
         return $viewData;

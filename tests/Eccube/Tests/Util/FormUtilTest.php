@@ -94,4 +94,58 @@ class FormUtilTest extends EccubeTestCase
         $viewData = FormUtil::getViewData($form);
         $this->assertEquals($formData, $viewData);
     }
+
+    /**
+     * choice typeのテスト
+     */
+    public function testChoiceType()
+    {
+        $formData = array(
+            'sex' => '1',
+        );
+
+        $form = $this->app['form.factory']
+            ->createBuilder(
+                'form',
+                null,
+                array(
+                    'csrf_protection' => false,
+                )
+            )
+            ->add('sex', 'sex')
+            ->getForm();
+
+        $form->submit($formData);
+        $viewData = FormUtil::getViewData($form);
+        $this->assertEquals($formData, $viewData);
+    }
+
+
+    /**
+     * choice type(multiple)のテスト
+     */
+    public function testChoiceTypeMultiple()
+    {
+        $formData = array(
+            'sex' => array('1', '2')
+        );
+
+        $form = $this->app['form.factory']
+            ->createBuilder(
+                'form',
+                null,
+                array(
+                    'csrf_protection' => false,
+                )
+            )
+            ->add('sex', 'sex', array(
+                'multiple' => true,
+            ))
+            ->getForm();
+
+        $form->submit($formData);
+        $viewData = FormUtil::getViewData($form);
+        $this->assertEquals($formData, $viewData);
+    }
+
 }
