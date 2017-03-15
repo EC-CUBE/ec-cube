@@ -411,21 +411,16 @@ class CsvImportController
      */
     public function csvCategory(Application $app, Request $request)
     {
-
         $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getCategoryCsvHeader();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
-
             if ($form->isValid()) {
-
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
-
                     log_info('カテゴリCSV登録開始');
 
                     $data = $this->getImportData($app, $formFile);
@@ -434,9 +429,12 @@ class CsvImportController
                         return $this->render($app, $form, $headers, $this->categoryTwig);
                     }
 
-                    $keys = array_keys($headers);
+                    /**
+                     * Checking the header for the data column flexible.
+                     */
+                    $requireHeader = array('カテゴリ名');
                     $columnHeaders = $data->getColumnHeaders();
-                    if ($keys !== $columnHeaders) {
+                    if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
                         return $this->render($app, $form, $headers, $this->categoryTwig);
                     }
@@ -447,8 +445,6 @@ class CsvImportController
                         return $this->render($app, $form, $headers, $this->categoryTwig);
                     }
 
-                    $headerSize = count($keys);
-
                     $this->em = $app['orm.em'];
                     $this->em->getConfiguration()->setSQLLogger(null);
 
@@ -456,15 +452,9 @@ class CsvImportController
 
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-
-                        if ($headerSize != count($row)) {
-                            $this->addErrors(($data->key() + 1) . '行目のCSVフォーマットが一致しません。');
-                            return $this->render($app, $form, $headers, $this->categoryTwig);
-                        }
-
-                        if ($row['カテゴリID'] == '') {
-                            $Category = new Category();
-                        } else {
+                        /** @var $Category Category*/
+                        $Category = new Category();
+                        if (isset($row['カテゴリID']) && strlen($row['カテゴリID']) > 0) {
                             if (!preg_match('/^\d+$/', $row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -478,57 +468,63 @@ class CsvImportController
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDと親カテゴリIDが同じです。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-
                         }
 
-                        if (Str::isBlank($row['カテゴリ名'])) {
+                        // Rank
+                        if (isset($row['表示ランク']) && strlen($row['表示ランク']) > 0) {
+                            $Category->setRank(Str::trimAll($row['表示ランク']));
+                        } else {
+                            $Category->setRank(1);
+                        }
+
+                        if (!isset($row['カテゴリ名']) || Str::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリ名が設定されていません。');
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         } else {
                             $Category->setName(Str::trimAll($row['カテゴリ名']));
                         }
 
-                        if ($row['親カテゴリID'] != '') {
-
+                        $ParentCategory = null;
+                        if (isset($row['親カテゴリID']) && Str::isNotBlank($row['親カテゴリID'])) {
                             if (!preg_match('/^\d+$/', $row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
 
+                            /** @var $ParentCategory Category*/
                             $ParentCategory = $app['eccube.repository.category']->find($row['親カテゴリID']);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-
-                        } else {
-                            $ParentCategory = null;
                         }
-
                         $Category->setParent($ParentCategory);
-                        if ($ParentCategory) {
-                            $Category->setLevel($ParentCategory->getLevel() + 1);
+                        // Level
+                        if (isset($row['階層']) && Str::isNotBlank($row['階層'])) {
+                            if ($ParentCategory == null) {
+                                $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+                            $level = Str::trimAll($row['階層']);
                         } else {
-                            $Category->setLevel(1);
+                            $level = 1;
+                            if ($ParentCategory) {
+                                $level = $ParentCategory->getLevel() + 1;
+                            }
                         }
+                        $Category->setLevel($level);
 
                         if ($app['config']['category_nest_level'] < $Category->getLevel()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
-                        $status = $app['eccube.repository.category']->save($Category);
-
-                        if (!$status) {
-                            $this->addErrors(($data->key() + 1) . '行目のカテゴリが設定できません。');
-                        }
-
                         if ($this->hasErrors()) {
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
+                        $Category->setDelFlg(Constant::DISABLED);
 
                         $this->em->persist($Category);
-
                     }
 
                     $this->em->flush();
@@ -538,7 +534,6 @@ class CsvImportController
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
-
             }
         }
 
