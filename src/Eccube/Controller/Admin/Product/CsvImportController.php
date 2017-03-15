@@ -490,6 +490,7 @@ class CsvImportController
                         if (isset($row['親カテゴリID']) && Str::isNotBlank($row['親カテゴリID'])) {
                             if (!preg_match('/^\d+$/', $row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
+
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
 
@@ -497,14 +498,16 @@ class CsvImportController
                             $ParentCategory = $app['eccube.repository.category']->find($row['親カテゴリID']);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
+
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
                         }
                         $Category->setParent($ParentCategory);
                         // Level
                         if (isset($row['階層']) && Str::isNotBlank($row['階層'])) {
-                            if ($ParentCategory == null) {
+                            if ($ParentCategory == null && $row['階層'] != 1) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
+
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
                             $level = Str::trimAll($row['階層']);
@@ -518,6 +521,7 @@ class CsvImportController
 
                         if ($app['config']['category_nest_level'] < $Category->getLevel()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
+
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
