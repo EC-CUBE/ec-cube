@@ -474,7 +474,9 @@ class CsvImportController
                         if (isset($row['表示ランク']) && strlen($row['表示ランク']) > 0) {
                             $Category->setRank(Str::trimAll($row['表示ランク']));
                         } else {
-                            $Category->setRank(1);
+                            if (!$Category->getRank()) {
+                                $Category->setRank(1);
+                            }
                         }
 
                         if (!isset($row['カテゴリ名']) || Str::isBlank($row['カテゴリ名'])) {
