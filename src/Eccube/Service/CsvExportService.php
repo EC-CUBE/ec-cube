@@ -358,12 +358,11 @@ class CsvExportService
     public function getOrderQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.order.search')) {
-            $searchData = $session->get('eccube.admin.order.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = array();
-        }
+        $viewData = $session->get('eccube.admin.order.search', array());
+        $app = \Eccube\Application::getInstance();
+        $searchForm = $app['form.factory']
+            ->create('admin_search_order', null, array('csrf_protection' => true));
+        $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
 
         // 受注データのクエリビルダを構築.
         $qb = $this->orderRepository
@@ -405,15 +404,20 @@ class CsvExportService
     public function getProductQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.product.search')) {
-            $searchData = $session->get('eccube.admin.product.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = array();
+                $viewData = $session->get('eccube.admin.product.search', array());
+        $app = \Eccube\Application::getInstance();
+        $searchForm = $app['form.factory']
+            ->create('admin_search_product', null, array('csrf_protection' => true));
+        $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
+        if(isset($viewData['link_status']) && strlen($viewData['link_status'])){
+            $searchData['link_status'] = $app['eccube.repository.master.disp']->find($viewData['link_status']);
+        }
+        if(isset($viewData['stock_status'])){
+            $searchData['stock_status'] = $viewData['stock_status'];
         }
 
-        // 商品データのクエリビルダを構築.
-        $qb = $this->productRepository
+         // 商品データのクエリビルダを構築.
+         $qb = $this->productRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
 
         return $qb;

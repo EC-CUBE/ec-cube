@@ -31,6 +31,7 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Service\CsvExportService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,7 +97,8 @@ class ProductController extends AbstractController
                 );
 
                 // sessionのデータ保持
-                $session->set('eccube.admin.product.search', $searchData);
+                $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.product.search', $viewData);
                 $session->set('eccube.admin.product.search.page_no', $page_no);
             }
         } else {
@@ -106,33 +108,72 @@ class ProductController extends AbstractController
                 $session->remove('eccube.admin.product.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.product.search');
                 if (is_null($page_no)) {
                     $page_no = intval($session->get('eccube.admin.product.search.page_no'));
                 } else {
                     $session->set('eccube.admin.product.search.page_no', $page_no);
                 }
-                if (!is_null($searchData)) {
-
-                    // 公開ステータス
-                    $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $app['config']['admin_product_stock_status']) {
-                            $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
-                            $searchData['status'] = null;
-                            $session->set('eccube.admin.product.search', $searchData);
-                        } else {
-                            $searchData['stock_status'] = Constant::DISABLED;
+                // sessionのデータ保持
+                $viewData  = $session->get('eccube.admin.product.search');
+                // sessionある時検索行います
+                if (!is_null($viewData )) {
+                    // 検索結果のリンクステータス
+                    $linkStatus = $request->get('status');
+                    if (!empty($linkStatus)) {
+                        // リンクステータスは在庫なし:3 以外場合
+                        if ($linkStatus != $app['config']['admin_product_stock_status']) {
+                            $viewData['link_status'] = $linkStatus;
+                            $viewData['stock_status'] = null;
+                            $viewData['status'] = null;
+                        }else{
+                            // リンクステータスは在庫なし:3です
+                            $viewData['link_status'] = null;
+                            $viewData['stock_status'] = Constant::DISABLED;
+                            $viewData['status'] = null;
                         }
-                        $page_status = $status;
-                    } else {
-                        $searchData['link_status'] = null;
-                        $searchData['stock_status'] = null;
+                        // ページステータスを設定します（リンクステータスAタグ表示のために）
+                        $page_status = $linkStatus;
+                    // 商品詳細から戻った場合は
+                    } elseif($request->get('resume') == Constant::ENABLED){
+                        // sessionに「公開か非公開」ステータスチェックする
+                        if (isset($viewData['link_status']) && $viewData['link_status']) {
+                           $page_status = $viewData['link_status'];
+                        // sessionに「在庫なし」ステータスチェックする
+                        } elseif (isset($viewData['stock_status']) && $viewData['stock_status'] == Constant::DISABLED){
+                            $page_status = $app['config']['admin_product_stock_status'];
                     }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
+                    // リンクステータスない場合は「すべて」を表示
+                    }else{
+                        $viewData['link_status'] = null;
+                        $viewData['stock_status'] = null;
+                    }
 
-                    $page_count = empty($pcount) ? $page_count : $pcount;
+                    $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
+                    // リンクステータス[公開か非公開]設定されている場合は検索パラメター設定する
+                    if($viewData['link_status']){
+                        $searchData['link_status'] = $app['eccube.repository.master.disp']->find($viewData['link_status']);
+                    }
+                    // リンクステータス[在庫なし]設定されている場合は検索パラメター設定する
+                    if(isset($viewData['stock_status'])){
+                        $searchData['stock_status'] = $viewData['stock_status'];
+                    }
+
+                    if(isset($viewData['page_count'])){
+                        $pcount =  $viewData['page_count'];
+                    }else{
+                        $pcount =  $page_count;
+                    }
+
+                    // 表示件数
+                    $pcount = $request->get('page_count', $pcount);
+                    foreach($pageMaxis as $perPage){
+                        if($perPage->getName() == $pcount){
+                            $page_count = $perPage->getName();
+                        }
+                    }
+                    // 商品ステータス変わったものsessionに保存する
+                    $viewData['page_count'] = $page_count;
+                    $session->set('eccube.admin.product.search', $viewData);
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
 
@@ -165,8 +206,6 @@ class ProductController extends AbstractController
                         }
                         $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                     }
-                    
-                    $searchForm->setData($searchData);
                 }
             }
         }
@@ -415,8 +454,10 @@ class ProductController extends AbstractController
                     $app['orm.em']->persist($Product);
 
                     // 削除
-                    $fs = new Filesystem();
-                    $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
+                    if (!empty($delete_image)) {
+                        $fs = new Filesystem();
+                        $fs->remove($app['config']['image_save_realdir'].'/'.$delete_image);
+                    }
                 }
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
@@ -575,8 +616,10 @@ class ProductController extends AbstractController
                 // 画像ファイルの削除(commit後に削除させる)
                 foreach ($deleteImages as $deleteImage) {
                     try {
-                        $fs = new Filesystem();
-                        $fs->remove($app['config']['image_save_realdir'] . '/' . $deleteImage);
+                        if (!empty($deleteImage)) {
+                            $fs = new Filesystem();
+                            $fs->remove($app['config']['image_save_realdir'].'/'.$deleteImage);
+                        }
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
@@ -736,45 +779,72 @@ class ProductController extends AbstractController
             $qb = $app['eccube.service.csv.export']
                 ->getProductQueryBuilder($request);
 
+            // Get stock status
+            $isOutOfStock = 0;
+            $session = $request->getSession();
+            if ($session->has('eccube.admin.product.search')) {
+                $searchData = $session->get('eccube.admin.product.search', array());
+                if (isset($searchData['stock_status']) && $searchData['stock_status'] === 0) {
+                    $isOutOfStock = 1;
+                }
+            }
+
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
             // distinctのmysqlとpgsqlの挙動をあわせる.
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select')
                 ->resetDQLPart('orderBy')
-                ->select('p')
-                ->orderBy('p.update_date', 'DESC')
-                ->distinct();
+                ->orderBy('p.update_date', 'DESC');
 
+            if ($isOutOfStock) {
+                $qb->select('p, pc')
+                    ->distinct();
+            } else {
+                $qb->select('p')
+                    ->distinct();
+            }
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
 
+            $app['eccube.service.csv.export']->exportData(function ($entity, CsvExportService $csvService) use ($app, $request) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
                 $Product = $entity;
 
-                /** @var $Product \Eccube\Entity\ProductClass[] */
+                /** @var $ProductClassess \Eccube\Entity\ProductClass[] */
                 $ProductClassess = $Product->getProductClasses();
 
                 foreach ($ProductClassess as $ProductClass) {
-                    $row = array();
+                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
                         // 商品データを検索.
-                        $data = $csvService->getData($Csv, $Product);
-                        if (is_null($data)) {
+                        $ExportCsvRow->setData($csvService->getData($Csv, $Product));
+                        if ($ExportCsvRow->isDataNull()) {
                             // 商品規格情報を検索.
-                            $data = $csvService->getData($Csv, $ProductClass);
+                            $ExportCsvRow->setData($csvService->getData($Csv, $ProductClass));
                         }
-                        $row[] = $data;
+
+                        $event = new EventArgs(
+                            array(
+                                'csvService' => $csvService,
+                                'Csv' => $Csv,
+                                'ProductClass' => $ProductClass,
+                                'ExportCsvRow' => $ExportCsvRow,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT, $event);
+
+                        $ExportCsvRow->pushData();
                     }
 
-                    //$row[] = number_format(memory_get_usage(true));
+                    // $row[] = number_format(memory_get_usage(true));
                     // 出力.
-                    $csvService->fputcsv($row);
+                    $csvService->fputcsv($ExportCsvRow->getRow());
                 }
             });
         });

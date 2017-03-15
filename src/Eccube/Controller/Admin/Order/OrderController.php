@@ -89,7 +89,8 @@ class OrderController extends AbstractController
                 );
 
                 // sessionのデータ保持
-                $session->set('eccube.admin.order.search', $searchData);
+                $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.order.search', $viewData);
                 $session->set('eccube.admin.order.search.page_no', $page_no);
             }
         } else {
@@ -99,30 +100,41 @@ class OrderController extends AbstractController
                 $session->remove('eccube.admin.order.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.order.search');
                 if (is_null($page_no)) {
                     $page_no = intval($session->get('eccube.admin.order.search.page_no'));
                 } else {
                     $session->set('eccube.admin.order.search.page_no', $page_no);
                 }
-
-                if (!is_null($searchData)) {
-
+                $viewData  = $session->get('eccube.admin.order.search');
+                if (!is_null($viewData)) {
+                    $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
                         if ($status != $app['config']['admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
+                            $app['eccube.repository.master.order_status']->find($status);
                         } else {
                             $searchData['stock_status'] = $app['config']['disabled'];
                         }
                         $page_status = $status;
                     }
                     // 表示件数
-                    $pcount = $request->get('page_count');
+                    if(isset($viewData['page_count'])){
+                        $pcount =  $viewData['page_count'];
+                    }else{
+                        $pcount =  $page_count;
+                    }
 
-                    $page_count = empty($pcount) ? $page_count : $pcount;
+                    // 表示件数
+                    $pcount = $request->get('page_count', $pcount);
+                    foreach($pageMaxis as $perPage){
+                        if($perPage->getName() == $pcount){
+                            $page_count = $perPage->getName();
+                        }
+                    }
+                    // 商品ステータス変わったものsessionに保存する
+                    $viewData['page_count'] = $page_count;
+                    $session->set('eccube.admin.order.search', $viewData);
 
                     $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
 
@@ -140,33 +152,6 @@ class OrderController extends AbstractController
                         $page_no,
                         $page_count
                     );
-
-                    // セッションから検索条件を復元
-                    if (!empty($searchData['status'])) {
-                        $searchData['status'] = $app['eccube.repository.master.order_status']->find($searchData['status']);
-                    }
-                    if (count($searchData['multi_status']) > 0) {
-                        $statusIds = array();
-                        foreach ($searchData['multi_status'] as $Status) {
-                            $statusIds[] = $Status->getId();
-                        }
-                        $searchData['multi_status'] = $app['eccube.repository.master.order_status']->findBy(array('id' => $statusIds));
-                    }
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
-                            $sex_ids[] = $Sex->getId();
-                        }
-                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
-                    }
-                    if (count($searchData['payment']) > 0) {
-                        $payment_ids = array();
-                        foreach ($searchData['payment'] as $Payment) {
-                            $payment_ids[] = $Payment->getId();
-                        }
-                        $searchData['payment'] = $app['eccube.repository.payment']->findBy(array('id' => $payment_ids));
-                    }
-                    $searchForm->setData($searchData);
                 }
             }
         }
@@ -261,7 +246,7 @@ class OrderController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -269,23 +254,34 @@ class OrderController extends AbstractController
                 $OrderDetails = $Order->getOrderDetails();
 
                 foreach ($OrderDetails as $OrderDetail) {
-                    $row = array();
+                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
                         // 受注データを検索.
-                        $data = $csvService->getData($Csv, $Order);
-                        if (is_null($data)) {
+                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
+                        if ($ExportCsvRow->isDataNull()) {
                             // 受注データにない場合は, 受注明細を検索.
-                            $data = $csvService->getData($Csv, $OrderDetail);
+                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderDetail));
                         }
-                        $row[] = $data;
 
+                        $event = new EventArgs(
+                            array(
+                                'csvService' => $csvService,
+                                'Csv' => $Csv,
+                                'OrderDetail' => $OrderDetail,
+                                'ExportCsvRow' => $ExportCsvRow,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+
+                        $ExportCsvRow->pushData();
                     }
 
                     //$row[] = number_format(memory_get_usage(true));
                     // 出力.
-                    $csvService->fputcsv($row);
+                    $csvService->fputcsv($ExportCsvRow->getRow());
                 }
             });
         });
@@ -332,7 +328,7 @@ class OrderController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -345,25 +341,37 @@ class OrderController extends AbstractController
                     /** @var $ShipmentItems \Eccube\Entity\ShipmentItem */
                     $ShipmentItems = $Shipping->getShipmentItems();
                     foreach ($ShipmentItems as $ShipmentItem) {
-                        $row = array();
+                        $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                         // CSV出力項目と合致するデータを取得.
                         foreach ($Csvs as $Csv) {
                             // 受注データを検索.
-                            $data = $csvService->getData($Csv, $Order);
-                            if (is_null($data)) {
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Order));
+                            if ($ExportCsvRow->isDataNull()) {
                                 // 配送情報を検索.
-                                $data = $csvService->getData($Csv, $Shipping);
+                                $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
                             }
-                            if (is_null($data)) {
+                            if ($ExportCsvRow->isDataNull()) {
                                 // 配送商品を検索.
-                                $data = $csvService->getData($Csv, $ShipmentItem);
+                                $ExportCsvRow->setData($csvService->getData($Csv, $ShipmentItem));
                             }
-                            $row[] = $data;
+
+                            $event = new EventArgs(
+                                array(
+                                    'csvService' => $csvService,
+                                    'Csv' => $Csv,
+                                    'ShipmentItem' => $ShipmentItem,
+                                    'ExportCsvRow' => $ExportCsvRow,
+                                ),
+                                $request
+                            );
+                            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
+
+                            $ExportCsvRow->pushData();
                         }
                         //$row[] = number_format(memory_get_usage(true));
                         // 出力.
-                        $csvService->fputcsv($row);
+                        $csvService->fputcsv($ExportCsvRow->getRow());
                     }
                 }
             });

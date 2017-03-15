@@ -180,7 +180,7 @@ $(function() {
                                         {% if page_status is null %}
                                         <a>すべて</a>
                                         {% else %}
-                                        <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
+                                        <a href="{{ path('admin_product_page', {'page_no': 1} ) }}">すべて</a>
                                         {% endif %}
                                     </li>
                                     {% for disp in disps %}
@@ -188,7 +188,7 @@ $(function() {
                                       {% if page_status == disp.id %}
                                       <a>{{ disp.name|e }}</a>
                                       {% else %}
-                                      <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                      <a href="{{ path('admin_product_page', {'page_no': 1, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
                                       {% endif %}
                                       </li>
                                     {% endfor %}
@@ -196,7 +196,7 @@ $(function() {
                                       {% if page_status == app.config.admin_product_stock_status %}
                                           <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
                                       {% else %}
-                                          <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                          <a href="{{ path('admin_product_page', {'page_no': 1, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
                                       {% endif %}
                                       </li>
                                     </ul>
