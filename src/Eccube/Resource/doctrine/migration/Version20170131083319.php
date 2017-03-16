@@ -17,6 +17,8 @@ class Version20170131083319 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        return;
+
         $tables = $schema->getTables();
         $app = \Eccube\Application::getInstance();
         $em = $app['orm.em'];
