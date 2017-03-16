@@ -178,12 +178,15 @@ class InstallController
                 $sessionData['admin_force_ssl'] = (bool) $config['force_ssl'];
 
                 // ロードバランサー、プロキシサーバ設定
-                $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
-                $trustedProxies = $config['trusted_proxies'];
-                if (count($trustedProxies) > 0) {
-                    $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n", $trustedProxies));
+                if (isset($config['trusted_proxies_connection_only'])) {
+                    $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
                 }
-
+                if (isset($config['trusted_proxies'])) {
+                    $trustedProxies = $config['trusted_proxies'];
+                    if (count($trustedProxies) > 0) {
+                        $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n", $trustedProxies));
+                    }
+                }
                 // メール設定
                 $config_file = $this->config_path . '/mail.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
