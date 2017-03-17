@@ -30,47 +30,41 @@ $(function() {
         var item = $('#item' + idx);
         var row = $('#item' + idx + '-0');
         var addrow = $(row).clone();
+        $(item).append($(addrow));
 
         // 行のID設定
         var i = 0;
         $('#item' + idx).find('.shipping_item').each(function() {
+            //タグ「<div id="item?-?"」のID設定
             $(this).attr('id', 'item' + idx + '-' + i);
-            i++;
-        });
-        $(addrow).attr('id', 'item' + idx + '-' + i);
-
-        // お届け先設定
-        i = 0;
-        $('#item' + idx).find('select').each(function() {
-            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
-            i++;
-        });
-        $(addrow).find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
-
-        // 数量設定
-        i = 0;
-        $('#item' + idx).find('input').each(function() {
-            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
-            i++;
-        });
-        $(addrow).find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
-
-        // 削除ボタン設定
-        i = 0;
-        $('#item' + idx).find('button').each(function() {
-            $(this).attr('data-itemidx', idx + '-' + i);
-            $(this).data('itemidx', idx + '-' + i);
-            if (i != 0) {
-                // 1行目以外の削除ボタンを表示
-                $(this).removeAttr('style');
+            if (i == 0) {
+                i++;
+                return;
             }
+            //セレクトボックスのIDとNAME設定
+            $(this).find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
+            $(this).find('select').attr('id', 'form[shipping_multiple_' + idx + '_shipping_' + i + '_customer_address');
+            
+            //INPUTのIDとNAME設定
+            $(this).find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
+            $(this).find('input').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + i + '_quantity');
+            
+        　　//タグのID治す
+            $(this).find('[id*="multiple_list__shipping_address"]').attr('id', 'multiple_list__shipping_address--' + idx + '_' + i + '');
+            $(this).find('[id*="multiple_list__shipping_quantity"]').attr('id', 'multiple_list__shipping_quantity--' + idx + '_' + i + '');
+            //$(this).find('[id*="button__delete"]').attr('id', 'button__delete--' + idx + '_' + i + '');
+            $(this).find('button').each(function() {
+                $(this).attr('id', 'button__delete--' + idx + '_' + i + '');
+                $(this).attr('data-itemidx', idx + '-' + i);
+                $(this).data('itemidx', idx + '-' + i);
+                if (i != 0) {
+                   // 1行目以外の削除ボタンを表示
+                   $(this).removeAttr('style');
+                }
+            });
             i++;
         });
-        $(addrow).find('button').attr('data-itemidx', idx + '-' + i);
-        $(addrow).find('button').data('itemidx', idx + '-' + i);
-        $(addrow).find('button').removeAttr('style');
-
-        $(item).append($(addrow));
+       
     });
 
     $(document).on('click', '.delete', function() {
