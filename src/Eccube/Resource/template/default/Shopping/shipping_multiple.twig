@@ -30,27 +30,29 @@ $(function() {
         var itemIdx = 0;
         var item = $('#item' + idx);
         var row = $('#item' + idx + '-0');
+        
+        // 既存のお届け先のrowをコピーして雛形とする
         var addrow = $(row).clone();
         
+        // 追加する要素のIndexを決定
         item.find('.shipping_item').each(function() {
             itemIdx = $(this).attr('data-itemidx');
         });
         itemIdx = 1 + parseInt(itemIdx);
         
         // 行のID設定
-        
         addrow.attr('id', 'item' + idx + '-' + itemIdx);
         addrow.attr('data-itemidx', itemIdx);
         
-        //セレクトボックスのIDとNAME設定
+        // お届け先セレクトボックスのIDとNAME設定
         addrow.find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
         addrow.find('select').attr('id', 'form[shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
 
-        //INPUTのIDとNAME設定
+        // 数量のINPUTのIDとNAME設定
         addrow.find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][quantity]');
         addrow.find('input').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_quantity');
 
-        //タグのID治す
+        // その他、divやbuttonのID設定
         addrow.find('[id*="multiple_list__shipping_address"]').attr('id', 'multiple_list__shipping_address--' + idx + '_' + itemIdx + '');
         addrow.find('[id*="multiple_list__shipping_quantity"]').attr('id', 'multiple_list__shipping_quantity--' + idx + '_' + itemIdx + '');
         addrow.find('button').each(function() {
