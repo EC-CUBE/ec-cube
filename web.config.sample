@@ -11,6 +11,9 @@
         </rule>
         <rule name="Force simple error message for requests for non-existent favicon.ico" stopProcessing="true">
           <match url="favicon\.ico" />
+          <conditions>
+              <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+          </conditions>
           <action type="CustomResponse" statusCode="404" subStatusCode="1" statusReason="File Not Found" statusDescription="The requested file favicon.ico was not found" />
         </rule>
         <!-- Rewrite URLs of the form 'x' to the form 'index.php/x'. -->
