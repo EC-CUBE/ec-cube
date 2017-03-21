@@ -6,6 +6,8 @@ Eccube\Entity\Master\Pref:
     discriminatorColumn:
       name: discriminator_type
       type: string
+    cache:
+      usage : NONSTRICT_READ_WRITE
     id:
         id:
             type: smallint

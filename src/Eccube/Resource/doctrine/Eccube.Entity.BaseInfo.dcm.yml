@@ -6,6 +6,8 @@ Eccube\Entity\BaseInfo:
     discriminatorColumn:
       name: discriminator_type
       type: string
+    cache:
+      usage : NONSTRICT_READ_WRITE
     id:
         id:
             type: integer
@@ -191,6 +193,8 @@ Eccube\Entity\BaseInfo:
                 referencedColumnName: id
                 options:
                     unsigned: true
+            cache:
+              usage : NONSTRICT_READ_WRITE
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
             joinColumn:
@@ -198,5 +202,7 @@ Eccube\Entity\BaseInfo:
                 referencedColumnName: id
                 options:
                     unsigned: true
+            cache:
+              usage : NONSTRICT_READ_WRITE
     lifecycleCallbacks:
         loadClassMetadata: {  }

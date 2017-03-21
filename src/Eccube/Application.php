@@ -561,16 +561,12 @@ class Application extends \Silex\Application
 
     public function initDoctrine()
     {
-        if (!$this->offsetExists('dbs')) {
-            $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-                'dbs.options' => array(
-                    'default' => $this['config']['database']
-                )
-            ));
-        }
-        if (!$this->offsetExists('orm.ems')) {
-            $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
-        }
+        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+            'dbs.options' => array(
+                'default' => $this['config']['database']
+            )
+        ));
+        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
 
         // UTCで保存
         // @see http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
@@ -656,45 +652,67 @@ class Application extends \Silex\Application
             }
         }
 
-        if (!$this->offsetExists('orm.ems')) {
-            $this->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-                'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
-                'orm.em.options' => $options,
-                'orm.custom.functions.string' => array(
-                    'NORMALIZE' => 'Eccube\Doctrine\ORM\Query\Normalize',
-                ),
-                'orm.custom.functions.numeric' => array(
-                    'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
-                ),
-            ));
-            $this->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
-                // tax_rule
-                $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-                $taxRuleRepository->setApplication($app);
-                $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
-                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
+        $this->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
+            'orm.em.options' => $options,
+            'orm.custom.functions.string' => array(
+                'NORMALIZE' => 'Eccube\Doctrine\ORM\Query\Normalize',
+            ),
+            'orm.custom.functions.numeric' => array(
+                'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
+            ),
+        ));
 
-                // save
-                $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+        $this->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
+            // tax_rule
+            $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
+            $taxRuleRepository->setApplication($app);
+            $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
+            $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
 
-                // timezone
-                $timezoneSubscriber = new \Eccube\Doctrine\EventSubscriber\TimeZoneSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($timezoneSubscriber);
+            // save
+            $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
+            $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
-                // clear cache
-                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
+            // timezone
+            $timezoneSubscriber = new \Eccube\Doctrine\EventSubscriber\TimeZoneSubscriber($app);
+            $em->getEventManager()->addEventSubscriber($timezoneSubscriber);
 
-                // filters
-                $config = $em->getConfiguration();
-                $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
-                $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
-                $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
-                $em->getFilters()->enable('soft_delete');
+            // clear cache
+            $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
+            $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
 
-                return $em;
-            });
+            // filters
+            $config = $em->getConfiguration();
+            $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
+            $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+            $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
+            $em->getFilters()->enable('soft_delete');
+
+            return $em;
+        });
+
+        if (!$this['debug']) {
+            // second level cacheの設定.
+            $this->extend(
+                'orm.em.config',
+                function (\Doctrine\ORM\Configuration $config, \Silex\Application $app) {
+                    $config->setSecondLevelCacheEnabled();
+                    $cacheConfig = $config->getSecondLevelCacheConfiguration();
+                    $regionConfig = $cacheConfig->getRegionsConfiguration();
+                    // TODO キャッシュ先は設定で切り替えられるように
+                    $cache = $this['orm.cache.factory'](
+                        'filesystem',
+                        [
+                            'path' => __DIR__.'/../../app/cache/doctrine/second'
+                        ]
+                    );
+                    $factory = new \Doctrine\ORM\Cache\DefaultCacheFactory($regionConfig, $cache);
+                    $cacheConfig->setCacheFactory($factory);
+
+                    return $config;
+                }
+            );
         }
     }
 
