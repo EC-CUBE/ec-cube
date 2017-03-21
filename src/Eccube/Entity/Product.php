@@ -24,8 +24,9 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Common\Constant;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Common\Constant;
+
 /**
  * Product
  */
@@ -100,7 +101,7 @@ class Product extends \Eccube\Entity\AbstractEntity
                 if ($ProductClass->getClassCategory1()) {
                     $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
                     if (!empty($classCategoryId1)) {
-                        $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
+                        $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)');
                         if ($ProductClass->getClassCategory2()) {
                             $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
                         }
