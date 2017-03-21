@@ -46,7 +46,7 @@ $(function() {
         
         // お届け先セレクトボックスのIDとNAME設定
         addrow.find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
-        addrow.find('select').attr('id', 'form[shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
+        addrow.find('select').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
 
         // 数量のINPUTのIDとNAME設定
         addrow.find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][quantity]');
