@@ -7,4 +7,4 @@ mail:
     encryption: null
     auth_mode: null
     charset_iso_2022_jp: false
-    spool: true
+    use_spool: true

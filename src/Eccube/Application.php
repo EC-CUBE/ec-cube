@@ -407,8 +407,8 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         $this['swiftmailer.options'] = $this['config']['mail'];
 
-        if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
-            $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
+        if (isset($this['config']['mail']['use_spool']) && is_bool($this['config']['mail']['use_spool'])) {
+            $this['swiftmailer.use_spool'] = $this['config']['mail']['use_spool'];
         }
         // デフォルトはsmtpを使用
         $transport = $this['config']['mail']['transport'];
