@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Entity;
+use Eccube\Util\EntityUtil;
 
 /**
  * Delivery
@@ -401,6 +402,9 @@ class Delivery extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 

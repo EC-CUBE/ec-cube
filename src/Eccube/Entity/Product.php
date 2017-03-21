@@ -26,6 +26,8 @@ namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Util\EntityUtil;
+
 /**
  * Product
  */
@@ -903,6 +905,9 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 
