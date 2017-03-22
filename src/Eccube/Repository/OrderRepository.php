@@ -507,8 +507,6 @@ class OrderRepository extends EntityRepository
             ->andWhere('o.OrderStatus in (:OrderStatuses)')
             ->setParameter('Customer', $Customer)
             ->setParameter('OrderStatuses', $OrderStatuses)
-            ->groupBy('o.id')
-            ->orderBy('o.id', 'ASC')
             ->getQuery()
             ->getResult();
 
