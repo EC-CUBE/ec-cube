@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endif %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% if PageLayout.meta_tags is not empty %}
-    {{ PageLayout.meta_tags }}
+    {{ PageLayout.meta_tags|raw }}
 {% endif %}
 {% block meta_tags %}{% endblock %}
 <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
