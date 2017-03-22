@@ -127,10 +127,12 @@ class MainEditType extends AbstractType
                 )
             ))->add('meta_tags', 'textarea', array(
                 'label' => '追加metaタグ',
-                'attr' => array(
-                    'placeholder' => '複数のmetaタグを入力可能',
-                ),
-                'required' => false
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['lltext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
