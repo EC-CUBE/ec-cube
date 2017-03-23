@@ -658,6 +658,7 @@ class InstallController
         $config->registerMigrationsFromDirectory($migrationDir);
 
         $migration = new Migration($config);
+        $migration->setNoMigrationException(true);
 
         return $migration;
     }

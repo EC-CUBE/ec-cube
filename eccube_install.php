@@ -319,6 +319,7 @@ function initializeDatabase(\Eccube\Application $app)
     $config->registerMigrationsFromDirectory($migrationDir);
 
     $migration = new \Doctrine\DBAL\Migrations\Migration($config);
+    $migration->setNoMigrationException(true);
     $migration->migrate();
     out('Database migration successfully!', 'success');
 
