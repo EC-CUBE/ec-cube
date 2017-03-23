@@ -67,15 +67,18 @@ class SearchOrderType extends AbstractType
             ->add('email', 'text', array(
                 'required' => false,
             ))
-            ->add('tel', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
-                    )),
-                ),
-            ))
+            ->add(
+                $builder->create('tel', 'text', array(
+                        'required' => false,
+                        'constraints' => array(
+                            new Assert\Regex(array(
+                                'pattern' => "/^[\d-]+$/u",
+                                'message' => 'form.type.admin.nottelstyle',
+                            )),
+                        ),
+                    ))
+                    ->addEventSubscriber(new \Eccube\EventListener\ConvertTelListener())
+            )
             ->add('sex', 'sex', array(
                 'label' => '性別',
                 'required' => false,
