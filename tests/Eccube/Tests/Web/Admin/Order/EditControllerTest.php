@@ -274,6 +274,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
             $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
         }
+        
+        // Multi用項目を削除
+        foreach($formDataForEdit['Shippings'] as $key => $node){
+            if(isset($node['ShipmentItems'])){
+                unset($formDataForEdit['Shippings'][$key]['ShipmentItems']);
+            }
+        }
 
         // 管理画面で受注編集する
         $this->client->request(
