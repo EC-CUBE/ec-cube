@@ -184,6 +184,9 @@ class Application extends ApplicationTrait
         // init security
         $this->initSecurity();
 
+        // init proxy
+        $this->initProxy();
+
         // init ec-cube service provider
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
@@ -519,6 +522,7 @@ class Application extends ApplicationTrait
                     'password_parameter' => 'password',
                     'with_csrf' => true,
                     'use_forward' => true,
+                    'default_target_path' => "/{$this['config']['admin_route']}",
                 ),
                 'logout' => array(
                     'logout_path' => "/{$this['config']['admin_route']}/logout",
@@ -609,6 +613,22 @@ class Application extends ApplicationTrait
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         });
 
+    }
+
+    /**
+     * ロードバランサー、プロキシサーバの設定を行う
+     */
+    public function initProxy()
+    {
+        $config = $this['config'];
+        if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
+            $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($config) {
+                // サブリクエストのREMOTE_ADDRも動的に設定を行う必要があるため、KernelEvents::REQUESTを使用する
+                Request::setTrustedProxies(array_merge(array($event->getRequest()->server->get('REMOTE_ADDR')), $config['trusted_proxies']));
+            }, self::EARLY_EVENT);
+        } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
+            Request::setTrustedProxies($config['trusted_proxies']);
+        }
     }
 
     public function initializePlugin()

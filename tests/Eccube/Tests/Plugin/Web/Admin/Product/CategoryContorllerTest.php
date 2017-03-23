@@ -212,6 +212,18 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
+    /**
+     * test export category
+     */
+    public function testExport()
+    {
+        $this->client->request('GET',
+            $this->app->url('admin_product_category_export')
+        );
+        $expected = EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT;
+        $this->expectOutputRegex("/".$expected."/");
+    }
+
     private function newTestCategory($TestCreator, $TestParentCategory = null)
     {
         $TestCategory = new \Eccube\Entity\Category();

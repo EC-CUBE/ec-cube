@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\DomCrawler\Crawler;
+
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
 
@@ -408,5 +410,31 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // https://github.com/EC-CUBE/ec-cube/issues/1305
         $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
         $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
+    }
+
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1280
+     */
+    public function testShippingEditTitle()
+    {
+        $this->logIn();
+        $client = $this->client;
+        $this->scenarioCartIn($client);
+
+        /** @var $crawler Crawler*/
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $shippingCrawler = $crawler->filter('#shipping_confirm_box--0');
+        $url = $shippingCrawler->selectLink('変更')->link()->getUri();
+        $url = str_replace('shipping_change', 'shipping_edit', $url);
+
+        // Get shipping edit
+        $crawler = $client->request('GET', $url);
+
+        // Title
+        $this->assertContains('お届け先の追加', $crawler->html());
     }
 }

@@ -31,12 +31,12 @@
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
+<div class="row" id="aside_wrap">
 <form name="content_block_form" id="content_block_form" method="post" action="
 {%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block_new')}}{% endif -%}">
     {{ form_widget(form._token) }}
     {{ form_widget(form.id) }}
     {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
-    <div class="row" id="aside_wrap">
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box form-horizontal">
                 <div id="detail_box__header" class="box-header">
@@ -92,8 +92,8 @@
 
         </div>
         <!-- /.col -->
-        <div id="common_box" class="col-md-3">
-            <div class="col_inner" id="aside_column">
+        <div class="col-md-3" id="aside_column">
+            <div id="common_box" class="col_inner">
                 <div id="common_button_box" class="box no-header">
                     <div id="common_button_box__body" class="box-body">
                         <div id="common_button_box__insert_button" class="row text-center">
@@ -108,7 +108,7 @@
             </div>
         </div>
         <!-- /.col -->
-    </div>
-
 </form>
+</div>
+
 {% endblock %}

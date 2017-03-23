@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Payment;
 
 /**
  * DelivRepository
@@ -42,7 +43,7 @@ class DeliveryRepository extends EntityRepository
 
             $ProductType = $em
                 ->getRepository('\Eccube\Entity\Master\ProductType')
-                ->findOneBy(array(), array('rank' => 'DESC'));
+                ->findOneBy(array(), array('rank' => 'ASC'));
 
             $Delivery = $this->findOneBy(array(), array('rank' => 'DESC'));
 
@@ -98,9 +99,11 @@ class DeliveryRepository extends EntityRepository
 
             foreach ($paymentOptions as $PaymentOption) {
                 foreach ($payments as $Payment) {
-                    if ($PaymentOption->getPayment()->getId() == $Payment['id']) {
-                        $arr[$Delivery->getId()] = $Delivery;
-                        break;
+                    if ($PaymentOption->getPayment() instanceof Payment) {
+                        if ($PaymentOption->getPayment()->getId() == $Payment['id']) {
+                            $arr[$Delivery->getId()] = $Delivery;
+                            break;
+                        }
                     }
                 }
             }

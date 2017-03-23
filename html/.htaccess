@@ -1,11 +1,20 @@
 order deny,allow
 allow from all
 <IfModule mod_rewrite.c>
+    #403 Forbidden対応方法
+    #ページアクセスできない時シンボリックリンクが有効になっていない可能性あります、
+    #オプションを追加してください
+    #Options +FollowSymLinks +SymLinksIfOwnerMatch
+
     RewriteEngine On
 
     # Authorization ヘッダが取得できない環境への対応
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+
+    # さくらのレンタルサーバでサイトへのアクセスをSSL経由に制限する場合の対応
+    # RewriteCond %{HTTP:x-sakura-forwarded-for} !^$
+    # RewriteRule ^(.*) - [E=HTTPS:on]
 
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

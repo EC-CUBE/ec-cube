@@ -347,9 +347,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
         $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->assertLessThanOrEqual(1, count($Messages), 'Bccメールは送信しない');
     }
 
     public function testSendPasswordResetCompleteMail()
@@ -372,9 +370,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
         $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->assertLessThanOrEqual(1, count($Messages), 'Bccメールは送信しない');
     }
 
     protected function getMessages()

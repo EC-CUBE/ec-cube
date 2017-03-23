@@ -46,12 +46,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <ul class="btn_area">
                                 <li>
                                     {% if protectedDirs|length > 0 %}
-                                        <a href="{{ url('install_step2') }}" class="btn btn-primary btn-block btn-lg">更新する</a>
+                                        <a href="{{ path('install_step2') }}" class="btn btn-primary btn-block btn-lg">更新する</a>
                                     {% else %}
-                                        <a href="{{ url('install_step3') }}" class="btn btn-primary btn-block btn-lg">次へ進む</a>
+                                        <a href="{{ path('install_step3') }}" class="btn btn-primary btn-block btn-lg">次へ進む</a>
                                     {% endif %}
                                 </li>
-                                <li><a href="{{ url('install_step1') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                <li><a href="{{ path('install_step1') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
                             </ul>
                         </div><!-- /.col -->
                     </div>

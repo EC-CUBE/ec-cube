@@ -1623,6 +1623,7 @@ textarea.form-control{
     }
 	.sortable_list .tableish:not(.ui-sortable) .item_box > div {
 		border-top: 1px solid #d1d8d9;
+		word-break: break-all;
 	}
     .sortable_list .tableish:not(.ui-sortable) .item_box > div:first-child {
         padding-left: 8px;

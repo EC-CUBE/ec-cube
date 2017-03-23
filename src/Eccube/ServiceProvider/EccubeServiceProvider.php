@@ -100,6 +100,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.page_max'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
         });
+        $app['eccube.repository.master.product_list_max'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListMax');
+        });
+        $app['eccube.repository.master.product_list_order_by'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
+        });
         $app['eccube.repository.master.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });

@@ -39,6 +39,9 @@ class ShopController extends AbstractController
         $builder = $app['form.factory']
             ->createBuilder('shop_master', $BaseInfo);
 
+        $CloneInfo = clone $BaseInfo;
+        $app['orm.em']->detach($CloneInfo);
+
         $event = new EventArgs(
             array(
                 'builder' => $builder,
@@ -71,6 +74,8 @@ class ShopController extends AbstractController
             }
             $app->addError('admin.shop.save.error', 'admin');
         }
+
+        $app['twig']->addGlobal('BaseInfo', $CloneInfo);
 
         return $app->render('Setting/Shop/shop_master.twig', array(
             'form' => $form->createView(),

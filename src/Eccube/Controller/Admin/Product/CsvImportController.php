@@ -193,7 +193,7 @@ class CsvImportController
                         }
 
                         // 商品画像登録
-                        $this->createProductImage($row, $Product);
+                        $this->createProductImage($row, $Product, $data);
 
                         $this->em->flush($Product);
 
@@ -667,7 +667,7 @@ class CsvImportController
     /**
      * 商品画像の削除、登録
      */
-    protected function createProductImage($row, Product $Product)
+    protected function createProductImage($row, Product $Product, $data)
     {
         if ($row['商品画像'] != '') {
 
@@ -681,16 +681,28 @@ class CsvImportController
             // 画像の登録
             $images = explode(',', $row['商品画像']);
             $rank = 1;
+
+            $pattern = "/\\$|^.*.\.\\\.*|\/$|^.*.\.\/\.*/";
             foreach ($images as $image) {
 
-                $ProductImage = new ProductImage();
-                $ProductImage->setFileName(Str::trimAll($image));
-                $ProductImage->setProduct($Product);
-                $ProductImage->setRank($rank);
+                $fileName = Str::trimAll($image);
 
-                $Product->addProductImage($ProductImage);
-                $rank++;
-                $this->em->persist($ProductImage);
+                // 商品画像名のフォーマットチェック
+                if (strlen($fileName) > 0 && preg_match($pattern, $fileName)) {
+                    $this->addErrors(($data->key() + 1) . '行目の商品画像には末尾に"/"や"../"を使用できません。');
+                } else {
+                    // 空文字は登録対象外
+                    if (!empty($fileName)) {
+                        $ProductImage = new ProductImage();
+                        $ProductImage->setFileName($fileName);
+                        $ProductImage->setProduct($Product);
+                        $ProductImage->setRank($rank);
+    
+                        $Product->addProductImage($ProductImage);
+                        $rank++;
+                        $this->em->persist($ProductImage);
+                    }
+                }
             }
         }
     }

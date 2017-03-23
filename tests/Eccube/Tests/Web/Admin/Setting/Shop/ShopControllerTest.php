@@ -65,6 +65,11 @@ class ShopControllerTest extends AbstractAdminWebTestCase
 
     public function createFormData()
     {
+        $delivery_free_amount = 1000;
+        if (mt_rand(0, 1)) {
+            $delivery_free_amount = number_format($delivery_free_amount);
+        }
+
         $form = array(
             '_token' => 'dummy',
             'company_name' => '会社名',
@@ -96,7 +101,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             'email02' => 'eccube@example.com',
             'email03' => 'eccube@example.com',
             'email04' => 'eccube@example.com',
-            'delivery_free_amount' => '1000',
+            'delivery_free_amount' => $delivery_free_amount,
             'delivery_free_quantity' => '1000',
             'good_traded' => '取り扱い商品',
             'message' => 'メッセージ',
