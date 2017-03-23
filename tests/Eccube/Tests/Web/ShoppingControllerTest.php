@@ -285,6 +285,35 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * 購入確認画面
+     */
+    public function testPaymentEmpty()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($client);
+
+        // 支払い方法のMINとMAXルール変更
+        $PaymentColl = $this->app['eccube.repository.payment']->findAll();
+        foreach($PaymentColl as $Payment){
+                $Payment->setRuleMin(0);
+                $Payment->setRuleMax(0);
+        }
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $email02 = $BaseInfo->getEmail02();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->expected = '合計金額に対して可能な支払い方法がありません。' . $email02 . 'にお問い合わせ下さい。';
+        $this->actual = $crawler->filter('p.errormsg')->text();
+        $this->verify();
+    }
+
+    /**
      * 購入確認画面→お届け先の設定
      */
     public function testShippingChangeWithPost()
