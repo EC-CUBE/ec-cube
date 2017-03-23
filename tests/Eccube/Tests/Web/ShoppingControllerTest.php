@@ -247,6 +247,55 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * 購入確認画面→支払い方法失敗する、レイアウトヘッダーとフッター確認
+     */
+    public function testOrtderConfirmLayout()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($client);
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // 支払い方法選択
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_payment'),
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 0,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
+            )
+        );
+        // レイアウトヘッダーの部分確認
+        $this->expected = 'header';
+        $this->actual = $crawler->filter('header')->attr('id');
+        $this->verify();
+
+        // レイアウトフッターの部分確認
+        $this->expected = 'footer';
+        $this->actual = $crawler->filter('footer')->attr('id');
+        $this->verify();
+
+        // 確認画面で支払方法エラー表示する確認
+        $this->expected = '有効な値ではありません。';
+        $this->actual = $crawler->filter('P.errormsg')->text();
+        $this->verify();
+    }
+
+    /**
      * 購入確認画面→支払い方法選択(エラー)
      */
     public function testPaymentWithError()
