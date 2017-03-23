@@ -500,7 +500,14 @@ class CartService
         $this->errors[] = $error;
         $this->session->getFlashBag()->add('eccube.front.request.error', $error);
         if (!is_null($productName)) {
-            $this->session->getFlashBag()->add('eccube.front.request.product', $productName);
+            // 追加されているエラーのキーを取得する
+            $cnt = $this->session->getFlashBag()->peek('eccube.front.request.error');
+            end($cnt);
+            $key = key($cnt);
+            // エラーと同じキー商品名を設定する
+            $tmpBag = $this->session->getFlashBag()->get('eccube.front.request.product');
+            $tmpBag[$key] = $productName;
+            $this->session->getFlashBag()->set('eccube.front.request.product', $tmpBag);
         }
 
         return $this;
