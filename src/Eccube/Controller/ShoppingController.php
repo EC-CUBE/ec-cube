@@ -392,7 +392,7 @@ class ShoppingController extends AbstractController
                 $Order->setMessage($message);
             }
 
-            // お問い合わせ欄をセット
+            // 配送情報をセット
             if($form['shippings']->isValid()) {
                 $shippings = $form['shippings']->getData();
 
