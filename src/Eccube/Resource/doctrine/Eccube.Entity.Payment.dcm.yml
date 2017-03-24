@@ -61,6 +61,8 @@ Eccube\Entity\Payment:
             nullable: true
             precision: 10
             scale: 0
+            options:
+                unsigned: true
         method_class:
             type: string
             length: 255
@@ -69,8 +71,6 @@ Eccube\Entity\Payment:
             type: string
             length: 255
             nullable: true
-            options:
-                unsigned: true
         del_flg:
             type: smallint
             options:

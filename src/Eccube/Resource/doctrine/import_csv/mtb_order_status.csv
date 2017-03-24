@@ -1,0 +1,9 @@
+id,name,rank,discriminator_type
+"7","決済処理中","0","orderstatus"
+"1","新規受付","1","orderstatus"
+"2","入金待ち","2","orderstatus"
+"6","入金済み","3","orderstatus"
+"3","キャンセル","4","orderstatus"
+"4","取り寄せ中","5","orderstatus"
+"5","発送済み","6","orderstatus"
+"8","購入処理中","7","orderstatus"

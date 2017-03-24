@@ -290,8 +290,6 @@ function initializeDatabase(\Eccube\Application $app)
     // Get an instance of your entity manager
     $entityManager = $app['orm.em'];
 
-    $pdo = $entityManager->getConnection()->getWrappedConnection();
-
     // Clear Doctrine to be safe
     $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
     $entityManager->clear();
@@ -310,11 +308,18 @@ function initializeDatabase(\Eccube\Application $app)
     $config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($app['db']);
     $config->setMigrationsNamespace('DoctrineMigrations');
 
+    $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+    $loader->loadFromDirectory(__DIR__.'/src/Eccube/Resource/doctrine/import_csv');
+    $Executor = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($entityManager);
+    $fixtures = $loader->getFixtures();
+    $Executor->execute($fixtures);
+
     $migrationDir = __DIR__.'/src/Eccube/Resource/doctrine/migration';
     $config->setMigrationsDirectory($migrationDir);
     $config->registerMigrationsFromDirectory($migrationDir);
 
     $migration = new \Doctrine\DBAL\Migrations\Migration($config);
+    $migration->setNoMigrationException(true);
     $migration->migrate();
     out('Database migration successfully!', 'success');
 
@@ -325,31 +330,49 @@ function initializeDatabase(\Eccube\Application $app)
     $encodedPassword = $passwordEncoder->encodePassword($login_password, $salt);
 
     out('Creating admin accounts...', 'info');
-    $sql = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date, name, department, discriminator_type) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者', 'EC-CUBE SHOP', 'member');";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(
-        array(
-            ':login_id' => $login_id,
-            ':admin_pass' => $encodedPassword,
-            ':salt' => $salt
-        )
-    );
-    $stmt->closeCursor();
+    $member_id = ('postgresql' === $app['db']->getDatabasePlatform()->getName())
+        ? $app['db']->fetchColumn("select nextval('dtb_member_member_id_seq')")
+        : null;
+
+    $app['db']->insert('dtb_member', [
+        'member_id' => $member_id,
+        'login_id' => $login_id,
+        'password' => $encodedPassword,
+        'salt' => $salt,
+        'work' => 1,
+        'del_flg' => 0,
+        'authority' => 0,
+        'creator_id' => 1,
+        'rank' => 1,
+        'update_date' => new \DateTime(),
+        'create_date' => new \DateTime(),
+        'name' => '管理者',
+        'department' => 'EC-CUBE SHOP',
+        'discriminator_type' => 'member'
+    ], [
+        'update_date' => Doctrine\DBAL\Types\Type::DATETIME,
+        'create_date' => Doctrine\DBAL\Types\Type::DATETIME,
+    ]);
 
     $shop_name = getenv('SHOP_NAME');
     $admin_mail = getenv('ADMIN_MAIL');
-    $sql = "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, option_product_tax_rule, discriminator_type) VALUES (1, :shop_name, :admin_mail1, :admin_mail2, :admin_mail3, :admin_mail4, current_timestamp, 0, 'baseinfo')";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(
-        array(
-            ':shop_name' => $shop_name,
-            ':admin_mail1' => $admin_mail,
-            ':admin_mail2' => $admin_mail,
-            ':admin_mail3' => $admin_mail,
-            ':admin_mail4' => $admin_mail,
-        )
-    );
-    $stmt->closeCursor();
+
+    $id = ('postgresql' === $app['db']->getDatabasePlatform()->getName())
+        ? $app['db']->fetchColumn("select nextval('dtb_base_info_id_seq')")
+        : null;
+
+    $app['db']->insert('dtb_base_info', [
+        'id' => $id,
+        'shop_name' => $shop_name,
+        'email01' => $admin_mail,
+        'email02' => $admin_mail,
+        'email03' => $admin_mail,
+        'email04' => $admin_mail,
+        'update_date' => new \DateTime(),
+        'discriminator_type' => 'baseinfo'
+    ], [
+        'update_date' => \Doctrine\DBAL\Types\Type::DATETIME
+    ]);
 }
 
 function updatePermissions($argv)

@@ -1,0 +1,9 @@
+id,name,rank,discriminator_type
+"7","注文未完了","0","customerorderstatus"
+"1","注文受付","1","customerorderstatus"
+"2","入金待ち","2","customerorderstatus"
+"6","注文受付","3","customerorderstatus"
+"3","キャンセル","4","customerorderstatus"
+"4","注文受付","5","customerorderstatus"
+"5","発送済み","6","customerorderstatus"
+"8","注文未完了","7","customerorderstatus"

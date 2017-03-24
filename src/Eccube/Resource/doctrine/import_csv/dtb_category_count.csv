@@ -1,0 +1,5 @@
+category_id,product_count,create_date,discriminator_type
+"1","1","2017-03-07 10:14:52","categorycount"
+"4","1","2017-03-07 10:14:52","categorycount"
+"5","1","2017-03-07 10:14:52","categorycount"
+"6","2","2017-03-07 10:14:52","categorycount"

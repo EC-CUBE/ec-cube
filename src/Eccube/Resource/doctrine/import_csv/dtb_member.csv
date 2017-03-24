@@ -1,0 +1,2 @@
+member_id,work,authority,creator_id,name,department,login_id,password,salt,rank,del_flg,create_date,update_date,login_date,discriminator_type
+"1","1","0","1","dummy",,"dummy","dummy","dummy","0","1","2017-03-07 10:14:52","2017-03-07 10:14:52",,"member"

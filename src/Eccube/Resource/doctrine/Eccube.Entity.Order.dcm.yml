@@ -12,7 +12,7 @@ Eccube\Entity\Order:
             columns:
                 - pre_order_id
             options:
-                length: 191
+                length: 40
         dtb_order_order_email_idx:
             columns:
                 - order_email
