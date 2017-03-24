@@ -900,8 +900,7 @@ class Application extends \Silex\Application
         if (!file_exists($config_php)) {
             $config_yml = $ymlPath.'/'.$config_name.'.yml';
             if (file_exists($config_yml)) {
-                $ymlContent = str_replace('%ROOT_DIR%', realpath(__DIR__.'/../../'), file_get_contents($config_yml));
-                $config = Yaml::parse($ymlContent);
+                $config = Yaml::parse(file_get_contents($config_yml));
                 $config = empty($config) ? array() : $config;
                 if (isset($this['output_config_php']) && $this['output_config_php']) {
                     file_put_contents($config_php, sprintf('<?php return %s', var_export($config, true)).';');
@@ -910,6 +909,12 @@ class Application extends \Silex\Application
         } else {
             $config = require $config_php;
         }
+
+        // `%ROOT_DIR%`を絶対パスに変換
+        $rootDir = realpath(__DIR__.'/../../');
+        array_walk($config, function(&$value) use ($rootDir) {
+            $value = str_replace('%ROOT_DIR%', $rootDir, $value);
+        });
 
         $config_dist = array();
         $config_php_dist = $distPath.'/'.$config_name.'.dist.php';
