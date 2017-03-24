@@ -865,7 +865,7 @@ class InstallController
         $ADMIN_ROUTE = $data['admin_dir'];
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
-        $ROOT_DIR = realpath(__DIR__ . '/../../../../');
+        $ROOT_DIR = '%ROOT_DIR%';
         $ROOT_URLPATH = $request->getBasePath();
         $ROOT_PUBLIC_URLPATH = $ROOT_URLPATH . RELATIVE_PUBLIC_DIR_PATH;
 

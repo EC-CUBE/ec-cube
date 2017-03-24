@@ -890,6 +890,12 @@ class Application extends \Silex\Application
             $config = require $config_php;
         }
 
+        // `%ROOT_DIR%`を絶対パスに変換
+        $rootDir = realpath(__DIR__.'/../../');
+        array_walk($config, function(&$value) use ($rootDir) {
+            $value = str_replace('%ROOT_DIR%', $rootDir, $value);
+        });
+
         $config_dist = array();
         $config_php_dist = $distPath.'/'.$config_name.'.dist.php';
         if (!file_exists($config_php_dist)) {
