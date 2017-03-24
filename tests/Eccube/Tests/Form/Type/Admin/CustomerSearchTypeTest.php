@@ -47,7 +47,7 @@ class CustomerSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function testTel_ValidData()
     {
         $formData = array(
-            'tel' => '0-12３-45ー'
+            'tel' => '12345'
         );
 
         $this->form->submit($formData);
