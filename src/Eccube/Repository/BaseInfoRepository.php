@@ -61,6 +61,10 @@ class BaseInfoRepository extends EntityRepository
             ->where('b.id = :id')
             ->setParameter('id', $id);
 
+        if (!$this->app['debug']) {
+            $qb->setCacheable(true);
+        }
+
         return $qb->getQuery()
             ->useResultCache(true, $lifetime)
             ->getSingleResult();
