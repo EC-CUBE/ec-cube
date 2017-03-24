@@ -216,6 +216,8 @@ class PaymentController extends AbstractController
             $app['orm.em']->flush();
 
             $app->addSuccess('admin.rank.move.complete', 'admin');
+        } else {
+            $app->addError('admin.rank.up.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
@@ -238,7 +240,10 @@ class PaymentController extends AbstractController
             $app['orm.em']->flush();
 
             $app->addSuccess('admin.rank.move.complete', 'admin');
+        } else {
+            $app->addError('admin.rank.down.error', 'admin');
         }
+
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
 }

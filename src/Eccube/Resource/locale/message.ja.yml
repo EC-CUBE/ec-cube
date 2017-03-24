@@ -85,6 +85,8 @@ admin.delete.complete: 削除が完了しました。
 admin.delete.failed: 削除できませんでした。
 admin.delete.warning: 既に削除されています。
 admin.rank.move.complete: ランクの移動が完了しました。
+admin.rank.up.error: ランクを上へ移動できませんでした。
+admin.rank.down.error: ランクを下へ移動できませんでした。
 
 admin.order.save.complete: 受注情報を保存しました。
 admin.order.delete.complete: 受注情報を削除しました。
