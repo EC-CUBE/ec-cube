@@ -71,7 +71,7 @@ class SearchOrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
-                        'pattern' => "/^[\d-]+$/u",
+                        'pattern' => "/^[\d]+$/u",
                         'message' => 'form.type.admin.nottelstyle',
                     )),
                 ),
