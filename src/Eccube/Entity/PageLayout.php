@@ -249,6 +249,11 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $meta_robots;
+    
+    /**
+     * @var string
+     */
+    private $meta_tags;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -541,6 +546,29 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     public function getMetaRobots()
     {
         return $this->meta_robots;
+    }
+    
+    /**
+     * Set meta_tags
+     *
+     * @param string $metaTags
+     * @return PageLayout
+     */
+    public function setMetaTags($metaTags)
+    {
+        $this->meta_tags = $metaTags;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_tags
+     *
+     * @return string
+     */
+    public function getMetaTags()
+    {
+        return $this->meta_tags;
     }
 
     /**

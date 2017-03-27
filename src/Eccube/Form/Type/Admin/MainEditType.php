@@ -125,6 +125,14 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     ))
                 )
+            ))->add('meta_tags', 'textarea', array(
+                'label' => '追加metaタグ',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['lltext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
