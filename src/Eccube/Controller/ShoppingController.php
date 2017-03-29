@@ -322,8 +322,12 @@ class ShoppingController extends AbstractController
             return $event->getResponse();
         }
 
-        // 受注IDセッションを削除
+        // 受注に関連するセッションを削除
         $app['session']->remove($this->sessionOrderKey);
+        $app['session']->remove($this->sessionMultipleKey);
+        // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
+        $app['session']->set($this->sessionKey, array());
+        $app['session']->set($this->sessionCustomerAddressKey, array());
 
         log_info('購入処理完了', array($orderId));
 

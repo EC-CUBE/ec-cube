@@ -94,7 +94,7 @@ $(function() {
 
         var data = $(this).data();
         shipment_idx = data.idx;
-        
+
         shipmentItem_idx = 0;
         for(i = 0; i < shipping_details_count.length; i++) { 
             if (shipping_details_count[i].idx == shipment_idx) {
@@ -516,7 +516,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div id="shipping_info__button_new"><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
             {% endif %}
             {% for shippingForm in form.Shippings %}
-            {% set shippingIndex = loop.index0 %}
+            {% set shippingIndex = shippingForm.vars.name %}
             <div id="shipping_info_box--{{ shippingIndex }}" class="box accordion">
                 <div id="shipping_info_box__toggle--{{ shippingIndex }}" class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>

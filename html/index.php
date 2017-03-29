@@ -35,6 +35,9 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
+\Symfony\Component\Debug\ErrorHandler::register();
+\Eccube\Exception\EccubeExceptionHandler::register(false);
+
 // output_config_php = true に設定することで、Config Yaml ファイルを元に Config PHP ファイルが出力されます。
 // app/config/eccube, src/Eccube/Resource/config 以下に書き込み権限が必要です。
 // Config PHP ファイルが存在する場合は、 Config Yaml より優先されます。

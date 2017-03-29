@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,28 +22,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Common;
+namespace DoctrineMigrations;
 
-class Constant {
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
-    /**
-     * EC-CUBE VERSION.
-     */
-    const VERSION = '3.0.14';
-
-    /**
-     * Enable value.
-     */
-    const ENABLED = 1;
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20170224150000 extends AbstractMigration
+{
 
     /**
-     * Disable value.
+     * @param Schema $schema
      */
-    const DISABLED = 0;
+    public function up(Schema $schema)
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $t = $schema->getTable('dtb_page_layout');
+        if (!$t->hasColumn('meta_tags')) {
+            $t->addColumn('meta_tags', 'text', array('NotNull' => false));
+        }
+    }
 
     /**
-     * Csrf Token Name.
+     * @param Schema $schema
      */
-    const TOKEN_NAME = '_token';
-
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+    }
 }

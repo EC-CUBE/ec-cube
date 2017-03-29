@@ -53,6 +53,9 @@ Eccube\Entity\PageLayout:
         meta_robots:
             type: text
             nullable: true
+        meta_tags:
+            type: text
+            nullable: true
     oneToMany:
         BlockPositions:
             targetEntity: Eccube\Entity\BlockPosition

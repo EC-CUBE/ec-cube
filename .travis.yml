@@ -64,7 +64,7 @@ before_script:
 
 script: # PHP7 + precise のテストは実行されない
   - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'trusty' ]]; then phpdbg -qrr ./vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
-  - if [[ $PHP_SAPI != 'phpdbg' ]]; then phpunit ; fi
+  - if [[ $PHP_SAPI != 'phpdbg' ]]; then ./vendor/bin/phpunit ; fi
 
 after_script:
   - if [[ $PHP_SAPI = 'phpdbg' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
