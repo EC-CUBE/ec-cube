@@ -67,9 +67,13 @@ class LogType extends AbstractType
             ->add('line_max', 'text', array(
                 'label' => '表示行数',
                 'data' => '50',
+                'attr' => array(
+                    'maxlength' => 6,
+                ),
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                     new Assert\NotBlank(),
+                    new Assert\Range(array('min' => 0, 'max' => 100000)),
                 ),
             ));
     }
