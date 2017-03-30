@@ -96,9 +96,10 @@ class LogControllerTest extends AbstractAdminWebTestCase
      *
      * @param string|int $value
      * @param string     $expected
+     * @param string     $message
      * @dataProvider dataProvider
      */
-    public function testSystemLogValidate($value, $expected)
+    public function testSystemLogValidate($value, $expected, $message)
     {
         $this->createTestFile(1);
 
@@ -116,6 +117,9 @@ class LogControllerTest extends AbstractAdminWebTestCase
         list($this->actual) = $crawler->filter('#line-max')->extract(array('style'));
         $this->expected = $expected;
         $this->verify();
+        if ($message) {
+            $this->assertContains($message, $crawler->filter('#log_conditions_box__body')->html());
+        }
     }
 
     /**
@@ -124,13 +128,13 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function dataProvider()
     {
         return array(
-            array('', 'background-color:#ffe8e8;'),
-            array('a', 'background-color:#ffe8e8;'),
-            array(-1, 'background-color:#ffe8e8;'),
-            array(0, ''),
-            array(100000, ''),
-            array(1.1, ''),
-            array(100001, 'background-color:#ffe8e8;'),
+            array('', 'background-color:#ffe8e8;', '※ 入力されていません。'),
+            array('a', 'background-color:#ffe8e8;', '※ 有効な数字ではありません。'),
+            array(-1, 'background-color:#ffe8e8;', '※ 0以上でなければなりません。'),
+            array(0, '', ''),
+            array(50000, '', ''),
+            array(1.1, '', ''),
+            array(100001, 'background-color:#ffe8e8;', '※ 50000以下でなければなりません。'),
         );
     }
 

@@ -71,9 +71,8 @@ class LogType extends AbstractType
                     'maxlength' => 6,
                 ),
                 'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                     new Assert\NotBlank(),
-                    new Assert\Range(array('min' => 0, 'max' => 100000)),
+                    new Assert\Range(array('min' => 0, 'max' => 50000)),
                 ),
             ));
     }
