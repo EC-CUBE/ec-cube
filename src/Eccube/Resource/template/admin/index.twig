@@ -49,7 +49,7 @@ $(function(){
             <div class="col-md-6">
                 <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
                 {{ form_widget(searchOrderForm._token) }}
-                <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
+                <input type="hidden" id="admin_search_order_status" name="admin_search_order[multi_status]" value="">
                 <div class="box" id="order_info">
                     <div class="box-header">
                         <h3 class="box-title">受注状況<a href="{{ url('admin_order') }}" class="icon_wrap"><svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg></a></h3>
