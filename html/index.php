@@ -45,7 +45,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 $app = \Eccube\Application::getInstance(array('output_config_php' => false));
 
 // インストールされてなければインストーラにリダイレクト
-if ($app['config']['eccube_install']) {
+if (isset($app['config']['eccube_install']) && $app['config']['eccube_install']) {
     $app->initialize();
     $app->initializePlugin();
     if ($app['config']['http_cache']['enabled']) {
