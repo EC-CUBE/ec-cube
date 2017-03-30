@@ -366,11 +366,4 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
             }
         }
     }
-
-    public function tearDown()
-    {
-
-        $this->app->initDoctrine();
-
-    }
 }
