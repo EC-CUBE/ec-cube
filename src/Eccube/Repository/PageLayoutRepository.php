@@ -155,11 +155,17 @@ class PageLayoutRepository extends EntityRepository
             ->getResult();
 
         $OwnBlockPosition = $ownResult->getBlockPositions();
+        $OwnBlockPositionIds = array();
+        foreach ($OwnBlockPosition as $BlockPosition) {
+            $OwnBlockPositionIds[] =  $BlockPosition->getBlockId();
+        }
+
         foreach ($anyResults as $anyResult) {
             $BlockPositions = $anyResult->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
-                if (!$OwnBlockPosition->contains($BlockPosition)) {
+                if (!in_array($BlockPosition->getBlockId(), $OwnBlockPositionIds)) {
                     $ownResult->addBlockPosition($BlockPosition);
+                    $OwnBlockPositionIds[] = $BlockPosition->getBlockId();
                 }
             }
         }
