@@ -169,9 +169,10 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             );
 
             if ($Shippings->getShippingDeliveryDate() instanceof \DateTime) {
-                $shippingDeliveryDate['year'] = $Shippings->getShippingDeliveryDate()->format('Y');
-                $shippingDeliveryDate['month'] = $Shippings->getShippingDeliveryDate()->format('n');
-                $shippingDeliveryDate['day'] = $Shippings->getShippingDeliveryDate()->format('d');
+                $dateShipping = $Shippings->getShippingDeliveryDate();
+                $shippingDeliveryDate['year'] = $dateShipping->format('Y');
+                $shippingDeliveryDate['month'] = $dateShipping->format('n');
+                $shippingDeliveryDate['day'] = $dateShipping->format('j');
             }
             $shipmentItems = array();
             /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
