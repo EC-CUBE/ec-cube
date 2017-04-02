@@ -558,7 +558,7 @@ class ShoppingService
 
         // 商品ごとの配送料合計
         $productDeliveryFeeTotal = 0;
-        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+        if ($this->BaseInfo->getOptionProductDeliveryFee() === Constant::ENABLED) {
             $productDeliveryFeeTotal = $ProductClass->getDeliveryFee() * $quantity;
         }
 
@@ -671,7 +671,7 @@ class ShoppingService
 
         // 商品ごとの配送料合計
         $productDeliveryFeeTotal = 0;
-        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+        if ($this->BaseInfo->getOptionProductDeliveryFee() === Constant::ENABLED) {
             $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
         }
 
@@ -828,7 +828,7 @@ class ShoppingService
             $Shipping->setDeliveryFee($deliveryFee);
             // 商品ごとの配送料合計
             $productDeliveryFeeTotal = 0;
-            if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+            if ($this->BaseInfo->getOptionProductDeliveryFee() === Constant::ENABLED) {
                 $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
             }
             $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
