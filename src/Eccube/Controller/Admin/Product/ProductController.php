@@ -644,6 +644,13 @@ class ProductController extends AbstractController
                     $CopyStock->setProductClass($Class);
                     $app['orm.em']->persist($CopyStock);
 
+                    $TaxRule = $Class->getTaxRule();
+                    if ($TaxRule) {
+                        $CopyTaxRule = clone $TaxRule;
+                        $CopyTaxRule->setProductClass($Class);
+                        $CopyTaxRule->setProduct($CopyProduct);
+                        $app['orm.em']->persist($CopyTaxRule);
+                    }
                     $app['orm.em']->persist($Class);
                 }
                 $Images = $CopyProduct->getProductImage();
