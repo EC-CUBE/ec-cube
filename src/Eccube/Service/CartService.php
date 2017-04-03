@@ -498,9 +498,9 @@ class CartService
     public function addError($error = null, $productName = null)
     {
         $this->errors[] = $error;
-        $this->session->getFlashBag()->add('eccube.front.request.error', $error);
+        $this->session->getFlashBag()->set('eccube.front.request.error', $error);
         if (!is_null($productName)) {
-            $this->session->getFlashBag()->add('eccube.front.request.product', $productName);
+            $this->session->getFlashBag()->set('eccube.front.request.product', $productName);
         }
 
         return $this;
