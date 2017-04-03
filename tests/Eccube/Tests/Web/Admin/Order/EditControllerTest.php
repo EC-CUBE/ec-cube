@@ -369,7 +369,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
             )
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $this->assertContains("受注情報を保存しました", $this->client->getResponse()->getContent());
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
 
         //確認する「トータル税金」
