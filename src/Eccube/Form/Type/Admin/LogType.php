@@ -68,7 +68,7 @@ class LogType extends AbstractType
                 'label' => '表示行数',
                 'data' => '50',
                 'attr' => array(
-                    'maxlength' => 6,
+                    'maxlength' => 5,
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),
