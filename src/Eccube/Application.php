@@ -31,6 +31,7 @@ use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
+use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Sergiors\Silex\Provider\AnnotationsServiceProvider;
 use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
@@ -523,6 +524,7 @@ class Application extends \Silex\Application
 
     public function initDoctrine()
     {
+        $this->register(new EntityEventServiceProvider());
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
                 'default' => $this['config']['database']
