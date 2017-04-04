@@ -77,6 +77,11 @@ class EccubeExtension extends \Twig_Extension
         );
     }
 
+    public function getTokenParsers()
+    {
+        return $this->app['twig_parsers'];
+    }
+
     /**
      * Name of this extension
      *

@@ -323,6 +323,42 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return new ParameterBag();
         };
 
+        $app['eccube.twig.node.hello'] = $app->protect(function ($node, $compiler) {
+            $compiler
+            ->addDebugInfo($node)
+            ->write("echo 'Helloooooo ' . ")
+            ->subcompile($node->getNode('expr'))
+            ->raw(" . '!';\n")
+            ;
+
+        });
+
+        $app['eccube.twig.node.jiro'] = $app->protect(function ($node, $compiler) {
+            $compiler
+            ->addDebugInfo($node)
+            ->write("echo 'jirooooooo ' . ")
+            ->subcompile($node->getNode('expr'))
+            ->raw(" . '!';\n")
+            ;
+
+        });
+
+        $app['eccube.twig.generic_node_names'] = function () use ($app) {
+            return [
+                'hello',
+                'jiro',
+                'bbb'
+            ];
+        };
+
+        $app['twig_parsers'] = function () use ($app) {
+            $GenericTokenParsers = [];
+            foreach ($app['eccube.twig.generic_node_names'] as $tagName) {
+                $GenericTokenParsers[] = new \Eccube\Twig\Extension\GenericTokenParser($app, $tagName);
+            }
+            return $GenericTokenParsers;
+        };
+
         // Form\Type
         $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
