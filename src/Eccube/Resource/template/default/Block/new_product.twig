@@ -19,116 +19,90 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<div id="contents_top">
-<div id="item_list">
-    <div class="row">
-        <div class="col-sm-6 col-xs-12">
-            <div class="row no-padding">
-                <div class="col-xs-6">
-                    <div class="img img_right"><a href="#"><img src="{{ app.config.front_urlpath }}/img/top/img01.jpg"></a></div>
+
+<div class="ec-eyecatchRole">
+    <div class="ec-grid2">
+        <div class="ec-grid2__cell">
+            <div class="ec-splitImg">
+                <div class="ec-splitImg__item"><img src="{{ app.config.front_urlpath }}/img/top/img01.jpg">
                 </div>
-                <div class="col-xs-6">
-                    <div class="img"><a href="#"><img src="{{ app.config.front_urlpath }}/img/top/img02.jpg"></a></div>
+                <div class="ec-splitImg__item"><img src="{{ app.config.front_urlpath }}/img/top/img02.jpg">
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xs-12 comment_area">
-            <div class="txt_center">
-                <h4>新入荷商品特集</h4>
-                <h5>この季節にぴったりな商品をご用意しました</h5>
-                <p>さわやかな日差しが過ごしやすい季節。心地よいくらしのための、お部屋のアクセントになるおすすめのファブリックやグッズをご紹介します。</p>
-                <p><a class="btn btn-success" href="{{ url('product_list') }}">商品一覧へ<svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></a></p>
+        <div class="ec-grid2__cell">
+            <div class="ec-eyecatchRole__intro">
+                <p class="ec-eyecatchRole__introTitle"> 新入荷商品特集</p>
+                <p class="ec-heading-bold">この季節にぴったりな商品をご用意しました</p>
+                <p class="ec-font-size-4">さわやかな日差しが過ごしやすい季節。心地よいくらしのための、お部屋のアクセントになるおすすめのファブリックやグッズをご紹介します。</p>
+                <p><a class="ec-inlineBtn--primary">一覧を見る<span class="ec-icon">
+                        <svg viewbox="0 0 360 360">
+                          <path d="M250,179.85c0,2.086-0.805,3.931-2.405,5.531L135.499,297.446c-1.604,1.604-3.45,2.404-5.532,2.404   c-2.086,0-3.932-0.8-5.533-2.404l-12.028-12.024c-1.605-1.601-2.405-3.444-2.405-5.53c0-2.082,0.8-3.927,2.405-5.531l94.537-94.51   l-94.537-94.509c-1.605-1.601-2.405-3.446-2.405-5.531c0-2.082,0.8-3.927,2.405-5.531l12.028-12.024   c1.601-1.601,3.446-2.405,5.533-2.405c2.082,0,3.928,0.804,5.532,2.405l112.096,112.063C249.196,175.923,250,177.768,250,179.85z"></path>
+                        </svg></span></a></p>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4 col-xs-12">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img03.jpg"></div>
-                    <dl>
-                        <dt class="item_name text-warning">お気に入りのエスプレッソタイム</dt>
-                        <dd class="item_comment">コーヒータイムを上質な時間にしてくれる、口当たりのよさとデザイン性を兼ね備えたエスプレッソカップを集めました・・・</dd>
-                        <dd class="more_link text-warning">read more</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img04.jpg"></div>
-                    <dl>
-                        <dt class="item_name text-warning">アウトドアにおすすめのアイテム</dt>
-                        <dd class="item_comment">カジュアルすぎない感じがちょうどよい、大人のためのアウトドアマガジンから、バイヤーおすすめのアイテムをセレクト・・・</dd>
-                        <dd class="more_link text-warning">read more</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img05.jpg"></div>
-                    <dl>
-                        <dt class="item_name text-warning">フランス製のデッドストック</dt>
-                        <dd class="item_comment">60～70年代のフランス製のデッドストックの器を集めました。絶妙な色合いと、独特の優しい風合いをお楽しみいただけ・・・</dd>
-                        <dd class="more_link text-warning">read more</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3 col-xs-6">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img06.jpg"></div>
-                    <p class="item_comment text-warning">木彫りのぬくもりがあたたかいアニマルオブジェ</p>
-                    <dl>
-                        <dt class="item_name">オブジェ（ふくろう）</dt>
-                        <dd class="item_price">\ 1,785</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img07.jpg"></div>
-                    <p class="item_comment text-warning">青色が美しい職人が仕上げた吹きガラス</p>
-                    <dl>
-                        <dt class="item_name">ガラス瓶</dt>
-                        <dd class="item_price special_price">\ 1,785</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img08.jpg"></div>
-                    <p class="item_comment text-warning">いつかは持ちたい。一生モノの銀製カトラリー</p>
-                    <dl>
-                        <dt class="item_name">シルバーカトラリー</dt>
-                        <dd class="item_price">\ 1,785</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6">
-            <div class="pickup_item">
-                <a href="#">
-                    <div class="item_photo"><img src="{{ app.config.front_urlpath }}/img/top/img09.jpg"></div>
-                    <p class="item_comment text-warning">こだわりのシルクスクリーンプリントがポイント</p>
-                    <dl>
-                        <dt class="item_name">フォトクッションカバー</dt>
-                        <dd class="item_price">\ 1,785</dd>
-                    </dl>
-                </a>
-            </div>
-        </div>
-    </div>
-    
 </div>
+<div class="ec-role">
+    <div class="ec-displayB">
+        <div class="ec-displayB__cell">
+            <a href="#">
+                <div class="ec-displayB__img"><img src="{{ app.config.front_urlpath }}/img/top/img03.jpg"></div>
+                <div class="ec-displayB__catch">お気に入りのエスプレッソタイム</div>
+                <div class="ec-displayB__comment ec-font-size-1">コーヒータイムを上質な時間にしてくれる、口当たりのよさとデザイン性を兼ね備えたエスプレッソカップを集めました・・・</div>
+                <div class="ec-displayB__link">read more</div>
+            </a>
+        </div>
+        <div class="ec-displayB__cell">
+            <a href="#">
+                <div class="ec-displayB__img"><img src="{{ app.config.front_urlpath }}/img/top/img04.jpg"></div>
+                <div class="ec-displayB__catch">アウトドアにおすすめのアイテム</div>
+                <div class="ec-displayB__comment ec-font-size-1">カジュアルすぎない感じがちょうどよい、大人のためのアウトドアマガジンから、バイヤーおすすめのアイテムをセレクト・・・</div>
+                <div class="ec-displayB__link">read more</div>
+            </a>
+        </div>
+        <div class="ec-displayB__cell">
+            <a href="#">
+                <div class="ec-displayB__img"><img src="{{ app.config.front_urlpath }}/img/top/img05.jpg"></div>
+                <div class="ec-displayB__catch">フランス製のデッドストック</div>
+                <div class="ec-displayB__comment ec-font-size-1">コ60～70年代のフランス製のデッドストックの器を集めました。絶妙な色合いと、独特の優しい風合いをお楽しみいただけ・・・</div>
+                <div class="ec-displayB__link">read more
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="ec-displayC">
+        <div class="ec-displayC__cell">
+            <a class="ec-displayC" href="#">
+                <div class="ec-displayC__img"><img src="{{ app.config.front_urlpath }}/img/top/img06.jpg"></div>
+                <div class="ec-displayC__catch">木彫りのぬくもりがあたたかいアニマルオブジェ</div>
+                <div class="ec-displayC__title">オブジェ（ふくろう）</div>
+                <div class="ec-displayC__price">¥ 1,785</div>
+            </a>
+        </div>
+        <div class="ec-displayC__cell">
+            <a class="ec-displayC" href="#">
+                <div class="ec-displayC__img"><img src="{{ app.config.front_urlpath }}/img/top/img07.jpg"></div>
+                <div class="ec-displayC__catch">青色が美しい職人が仕上げた吹きガラス</div>
+                <div class="ec-displayC__title">ガラス瓶</div>
+                <div class="ec-displayC__price">¥ 1,785</div>
+            </a>
+        </div>
+        <div class="ec-displayC__cell">
+            <a class="ec-displayC" href="#">
+                <div class="ec-displayC__img"><img src="{{ app.config.front_urlpath }}/img/top/img08.jpg"></div>
+                <div class="ec-displayC__catch">いつかは持ちたい。一生モノの銀製カトラリー</div>
+                <div class="ec-displayC__title">シルバーカトラリー</div>
+                <div class="ec-displayC__price--sp">¥ 1,785</div>
+            </a>
+        </div>
+        <div class="ec-displayC__cell">
+            <a class="ec-displayC" href="#">
+                <div class="ec-displayC__img"><img src="{{ app.config.front_urlpath }}/img/top/img09.jpg"></div>
+                <div class="ec-displayC__catch">こだわりのシルクスクリーンプリントがポイント</div>
+                <div class="ec-displayC__title">フォトクッションカバー</div>
+                <div class="ec-displayC__price">¥ 1,785</div>
+            </a>
+        </div>
+    </div>
 </div>

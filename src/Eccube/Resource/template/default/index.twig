@@ -23,33 +23,108 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set body_class = 'front_page' %}
 
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+    <style>
+
+        .slick-slider {
+            margin-bottom: 30px;
+        }
+
+        .slick-dots {
+            position: absolute;
+            bottom: -45px;
+            display: block;
+            width: 100%;
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .slick-dots li {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            padding: 0;
+
+            cursor: pointer;
+        }
+
+        .slick-dots li button {
+            font-size: 0;
+            line-height: 0;
+            display: block;
+            width: 20px;
+            height: 20px;
+            padding: 5px;
+            cursor: pointer;
+            color: transparent;
+            border: 0;
+            outline: none;
+            background: transparent;
+        }
+
+        .slick-dots li button:hover,
+        .slick-dots li button:focus {
+            outline: none;
+        }
+
+        .slick-dots li button:hover:before,
+        .slick-dots li button:focus:before {
+            opacity: 1;
+        }
+
+        .slick-dots li button:before {
+            content: " ";
+            line-height: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            text-align: center;
+            opacity: .25;
+            background-color: black;
+            border-radius: 50%;
+
+        }
+
+        .slick-dots li.slick-active button:before {
+            opacity: .75;
+            background-color: black;
+        }
+
+        .slick-dots li button.thumbnail img {
+            width: 0;
+            height: 0;
+        }
+
+    </style>
+{% endblock %}
+
 {% block javascript %}
-<script>
-$(function(){
-    $('.main_visual').slick({
-        dots: true,
-        arrows: false,
-        autoplay: true,
-        speed: 300
-    });
-});
-</script>
+    <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <script>
+        $(function() {
+            $('.main_visual').slick({
+                dots: true,
+                arrows: false,
+                autoplay: true,
+                speed: 300
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
-    <div class="row">
-       <div class="col-sm-12">
-            <div class="main_visual">
-                <div class="item">
-                  <img src="{{ app.config.front_urlpath }}/img/top/mv01.jpg">
-                </div>
-                <div class="item">
-                  <img src="{{ app.config.front_urlpath }}/img/top/mv02.jpg">
-                </div>
-                <div class="item">
-                  <img src="{{ app.config.front_urlpath }}/img/top/mv03.jpg">
-                </div>
-            </div>
+    <div class="ec-sliderRole">
+        <div class="main_visual">
+            <div class="item"><img src="{{ app.config.front_urlpath }}/img/top/mv01.jpg"></div>
+            <div class="item"><img src="{{ app.config.front_urlpath }}/img/top/mv02.jpg"></div>
+            <div class="item"><img src="{{ app.config.front_urlpath }}/img/top/mv03.jpg"></div>
         </div>
     </div>
 {% endblock %}
