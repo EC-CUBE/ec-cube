@@ -48,6 +48,7 @@ class EccubeExtension extends \Twig_Extension
     {
         $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
 
+        $app = $this->app;
         return array(
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
@@ -58,6 +59,22 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
             new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
+
+            new \Twig_SimpleFunction('php_*', function() {
+                    $arg_list = func_get_args();
+                    $function = array_shift($arg_list);
+                    return call_user_func_array($function, $arg_list);
+            }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
+
+            new \Twig_SimpleFunction('eccube_block_*', function() use ($app) {
+                    $arg_list = func_get_args();
+                    $function = array_shift($arg_list);
+                    $template = $app['twig']->loadTemplate('render_block.twig');
+                    if (!isset($arg_list[0])) {
+                        $arg_list[0] = [];
+                    }
+                    echo $result = $template->renderBlock($function, $arg_list[0]);
+            }, ['pre_escape' => 'html', 'is_safe' => ['html']])
         );
     }
 
