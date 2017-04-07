@@ -322,7 +322,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['request_scope'] = function () {
             return new ParameterBag();
         };
-
+        // TODO 使用するか検討
         $app['eccube.twig.node.hello'] = $app->protect(function ($node, $compiler) {
             $compiler
             ->addDebugInfo($node)
@@ -332,7 +332,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             ;
 
         });
-
+        // TODO 使用するか検討
         $app['eccube.twig.node.jiro'] = $app->protect(function ($node, $compiler) {
             $compiler
             ->addDebugInfo($node)
@@ -343,6 +343,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
         });
 
+        // TODO 使用するか検討
         $app['eccube.twig.generic_node_names'] = function () use ($app) {
             return [
                 'hello',
@@ -351,12 +352,18 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             ];
         };
 
+        // TODO 使用するか検討
         $app['twig_parsers'] = function () use ($app) {
             $GenericTokenParsers = [];
             foreach ($app['eccube.twig.generic_node_names'] as $tagName) {
                 $GenericTokenParsers[] = new \Eccube\Twig\Extension\GenericTokenParser($app, $tagName);
             }
             return $GenericTokenParsers;
+        };
+
+        // TODO ServiceProvider から追加できるよう Collection にする
+        $app['eccube.twig.block.templates'] = function () {
+            return ['render_block.twig', 'render_block2.twig'];
         };
 
         // Form\Type
