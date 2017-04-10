@@ -363,7 +363,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
         // TODO ServiceProvider から追加できるよう Collection にする
         $app['eccube.twig.block.templates'] = function () {
-            return ['render_block.twig', 'render_block2.twig'];
+            return [
+                // 'render_block.twig',
+            ];
         };
 
         // Form\Type
