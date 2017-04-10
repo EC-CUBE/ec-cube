@@ -44,7 +44,7 @@ class FunctionsTest extends EccubeTestCase
     {
         $app = $this->app;
         $this->app->extend('eccube.twig.block.templates', function ($templates) use ($app) {
-                $templates[] = 'test_block.twig';
+                $templates = ['test_block.twig']; // eccube.twig.block.templates を初期化
                 return $templates;
             });
 
@@ -66,7 +66,7 @@ class FunctionsTest extends EccubeTestCase
     {
         $app = $this->app;
         $this->app->extend('eccube.twig.block.templates', function ($templates) use ($app) {
-                $templates[] = 'test_block2.twig';
+                $templates = ['test_block2.twig']; // eccube.twig.block.templates を初期化
                 return $templates;
             });
 
