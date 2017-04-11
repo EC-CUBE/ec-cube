@@ -431,6 +431,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
             return $types;
         });
+        $app['eccube.sql.filter.configurator'] = function() use ($app) {
+            return new \Eccube\Doctrine\Filter\SQLFilterConfigurator($app);
+        };
+        $app['eccube.sql.filter.configurator']->addFilter(\Acme\Entity\SecretProductFilter::class);
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
