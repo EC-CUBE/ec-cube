@@ -82,10 +82,11 @@ class NewsController extends AbstractController
             if (!$News) {
                 throw new NotFoundHttpException();
             }
-            $News->setLinkMethod((bool) $News->getLinkMethod());
         } else {
             $News = new \Eccube\Entity\News();
         }
+
+        $News->setLinkMethod((bool) $News->getLinkMethod());
 
         $builder = $app['form.factory']
             ->createBuilder(NewsType::class, $News);

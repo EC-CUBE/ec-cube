@@ -122,8 +122,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'admin_search_order' => array(
                     '_token' => 'dummy',
                     'status' => 1,
-                    'sex' => array(1, 2),
-                    'payment' => array(1, 2, 3, 4)
+                    'sex' => array('1', '2'),
+                    'payment' => array('1', '2', '3', '4')
                 )
             )
         );

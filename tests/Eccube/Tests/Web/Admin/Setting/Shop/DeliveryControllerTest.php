@@ -250,7 +250,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             'description' => $faker->word,
             'confirm_url' => $faker->url,
             'product_type' => rand(1, 2),
-            'payments' => array(1),
+            'payments' => array('1'),
             'delivery_times' => array(
                 array('delivery_time' => 'AM'),
                 array('delivery_time' => 'PM'),
