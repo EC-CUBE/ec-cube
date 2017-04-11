@@ -26,9 +26,16 @@ namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
 use Eccube\Util\EntityUtil;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Order
+ *
+ * @ORM\Table(name="dtb_order", indexes={@ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_order_order_email_idx", columns={"order_email"}), @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}), @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}), @ORM\Index(name="dtb_order_commit_date_idx", columns={"commit_date"}), @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\OrderRepository")
  */
 class Order extends \Eccube\Entity\AbstractEntity
 {
@@ -152,248 +159,387 @@ class Order extends \Eccube\Entity\AbstractEntity
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="order_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
      */
     private $pre_order_id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="message", type="string", length=4000, nullable=true)
      */
     private $message;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_name01", type="string", length=255, nullable=true)
      */
     private $name01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_name02", type="string", length=255, nullable=true)
      */
     private $name02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_kana01", type="string", length=255, nullable=true)
      */
     private $kana01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_kana02", type="string", length=255, nullable=true)
      */
     private $kana02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_company_name", type="string", length=255, nullable=true)
      */
     private $company_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_tel01", type="string", length=5, nullable=true)
      */
     private $tel01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_tel02", type="string", length=4, nullable=true)
      */
     private $tel02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_tel03", type="string", length=4, nullable=true)
      */
     private $tel03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_fax01", type="string", length=5, nullable=true)
      */
     private $fax01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_fax02", type="string", length=4, nullable=true)
      */
     private $fax02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_fax03", type="string", length=4, nullable=true)
      */
     private $fax03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_zip01", type="string", length=3, nullable=true)
      */
     private $zip01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_zip02", type="string", length=4, nullable=true)
      */
     private $zip02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_zipcode", type="string", length=7, nullable=true)
      */
     private $zipcode;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_addr01", type="string", length=255, nullable=true)
      */
     private $addr01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="order_addr02", type="string", length=255, nullable=true)
      */
     private $addr02;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="order_birth", type="datetime", nullable=true)
      */
     private $birth;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="subtotal", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $subtotal;
+    private $subtotal = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="discount", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $discount;
+    private $discount = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="delivery_fee_total", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $delivery_fee_total;
+    private $delivery_fee_total = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="charge", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $charge;
+    private $charge = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="tax", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $tax;
+    private $tax = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $total;
+    private $total = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="payment_total", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $payment_total;
+    private $payment_total = 0;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
      */
     private $payment_method;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="note", type="string", length=4000, nullable=true)
      */
     private $note;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="order_date", type="datetime", nullable=true)
      */
     private $order_date;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="commit_date", type="datetime", nullable=true)
      */
     private $commit_date;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="payment_date", type="datetime", nullable=true)
      */
     private $payment_date;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $del_flg;
+    private $del_flg = 0;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderDetail", mappedBy="Order", cascade={"persist"})
+     * @ORM\OrderBy({
+     *     "id"="ASC"
+     * })
      */
     private $OrderDetails;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist"})
+     * @ORM\OrderBy({
+     *     "id"="ASC"
+     * })
      */
     private $Shippings;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\MailHistory", mappedBy="Order")
+     * @ORM\OrderBy({
+     *     "send_date"="DESC"
+     * })
      */
     private $MailHistories;
 
     /**
      * @var \Eccube\Entity\Customer
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="Orders")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id")
+     * })
      */
     private $Customer;
 
     /**
      * @var \Eccube\Entity\Master\Country
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_country_id", referencedColumnName="id")
+     * })
      */
     private $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_pref", referencedColumnName="id")
+     * })
      */
     private $Pref;
 
     /**
      * @var \Eccube\Entity\Master\Sex
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_sex", referencedColumnName="id")
+     * })
      */
     private $Sex;
 
     /**
      * @var \Eccube\Entity\Master\Job
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_job", referencedColumnName="id")
+     * })
      */
     private $Job;
 
     /**
      * @var \Eccube\Entity\Payment
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="payment_id")
+     * })
      */
     private $Payment;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
+     * })
      */
     private $DeviceType;
 
     /**
      * @var \Eccube\Entity\Master\CustomerOrderStatus
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * })
      */
     private $CustomerOrderStatus;
 
     /**
-     * @var \Eccube\Entity\Master\OrderStatus
-     */
-    private $OrderStatus;
-
-    /**
      * @var \Eccube\Entity\Master\OrderStatusColor
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * })
      */
     private $OrderStatusColor;
+
+    /**
+     * @var \Eccube\Entity\Master\OrderStatus
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * })
+     */
+    private $OrderStatus;
 
     /**
      * Constructor
@@ -416,9 +562,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -426,12 +572,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set pre_order_id
+     * Set preOrderId.
      *
-     * @param  string $preOrderId
+     * @param string|null $preOrderId
+     *
      * @return Order
      */
-    public function setPreOrderId($preOrderId)
+    public function setPreOrderId($preOrderId = null)
     {
         $this->pre_order_id = $preOrderId;
 
@@ -439,9 +586,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get pre_order_id
+     * Get preOrderId.
      *
-     * @return string
+     * @return string|null
      */
     public function getPreOrderId()
     {
@@ -449,12 +596,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set message
+     * Set message.
      *
-     * @param  string $message
+     * @param string|null $message
+     *
      * @return Order
      */
-    public function setMessage($message)
+    public function setMessage($message = null)
     {
         $this->message = $message;
 
@@ -462,9 +610,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get message
+     * Get message.
      *
-     * @return string
+     * @return string|null
      */
     public function getMessage()
     {
@@ -472,12 +620,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name01
+     * Set name01.
      *
-     * @param  string $name01
+     * @param string|null $name01
+     *
      * @return Order
      */
-    public function setName01($name01)
+    public function setName01($name01 = null)
     {
         $this->name01 = $name01;
 
@@ -485,9 +634,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name01
+     * Get name01.
      *
-     * @return string
+     * @return string|null
      */
     public function getName01()
     {
@@ -495,12 +644,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name02
+     * Set name02.
      *
-     * @param  string $name02
+     * @param string|null $name02
+     *
      * @return Order
      */
-    public function setName02($name02)
+    public function setName02($name02 = null)
     {
         $this->name02 = $name02;
 
@@ -508,9 +658,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name02
+     * Get name02.
      *
-     * @return string
+     * @return string|null
      */
     public function getName02()
     {
@@ -518,12 +668,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set kana01
+     * Set kana01.
      *
-     * @param  string $kana01
+     * @param string|null $kana01
+     *
      * @return Order
      */
-    public function setKana01($kana01)
+    public function setKana01($kana01 = null)
     {
         $this->kana01 = $kana01;
 
@@ -531,9 +682,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get kana01
+     * Get kana01.
      *
-     * @return string
+     * @return string|null
      */
     public function getKana01()
     {
@@ -541,12 +692,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set kana02
+     * Set kana02.
      *
-     * @param  string $kana02
+     * @param string|null $kana02
+     *
      * @return Order
      */
-    public function setKana02($kana02)
+    public function setKana02($kana02 = null)
     {
         $this->kana02 = $kana02;
 
@@ -554,9 +706,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get kana02
+     * Get kana02.
      *
-     * @return string
+     * @return string|null
      */
     public function getKana02()
     {
@@ -564,12 +716,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set company_name
+     * Set companyName.
      *
-     * @param  string $companyName
+     * @param string|null $companyName
+     *
      * @return Order
      */
-    public function setCompanyName($companyName)
+    public function setCompanyName($companyName = null)
     {
         $this->company_name = $companyName;
 
@@ -577,9 +730,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get company_name
+     * Get companyName.
      *
-     * @return string
+     * @return string|null
      */
     public function getCompanyName()
     {
@@ -587,12 +740,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email
+     * Set email.
      *
-     * @param  string $email
+     * @param string|null $email
+     *
      * @return Order
      */
-    public function setEmail($email)
+    public function setEmail($email = null)
     {
         $this->email = $email;
 
@@ -600,9 +754,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email
+     * Get email.
      *
-     * @return string
+     * @return string|null
      */
     public function getEmail()
     {
@@ -610,12 +764,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel01
+     * Set tel01.
      *
-     * @param  string $tel01
+     * @param string|null $tel01
+     *
      * @return Order
      */
-    public function setTel01($tel01)
+    public function setTel01($tel01 = null)
     {
         $this->tel01 = $tel01;
 
@@ -623,9 +778,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel01
+     * Get tel01.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel01()
     {
@@ -633,12 +788,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel02
+     * Set tel02.
      *
-     * @param  string $tel02
+     * @param string|null $tel02
+     *
      * @return Order
      */
-    public function setTel02($tel02)
+    public function setTel02($tel02 = null)
     {
         $this->tel02 = $tel02;
 
@@ -646,9 +802,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel02
+     * Get tel02.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel02()
     {
@@ -656,12 +812,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel03
+     * Set tel03.
      *
-     * @param  string $tel03
+     * @param string|null $tel03
+     *
      * @return Order
      */
-    public function setTel03($tel03)
+    public function setTel03($tel03 = null)
     {
         $this->tel03 = $tel03;
 
@@ -669,9 +826,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel03
+     * Get tel03.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel03()
     {
@@ -679,12 +836,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax01
+     * Set fax01.
      *
-     * @param  string $fax01
+     * @param string|null $fax01
+     *
      * @return Order
      */
-    public function setFax01($fax01)
+    public function setFax01($fax01 = null)
     {
         $this->fax01 = $fax01;
 
@@ -692,9 +850,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax01
+     * Get fax01.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax01()
     {
@@ -702,12 +860,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax02
+     * Set fax02.
      *
-     * @param  string $fax02
+     * @param string|null $fax02
+     *
      * @return Order
      */
-    public function setFax02($fax02)
+    public function setFax02($fax02 = null)
     {
         $this->fax02 = $fax02;
 
@@ -715,9 +874,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax02
+     * Get fax02.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax02()
     {
@@ -725,12 +884,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax03
+     * Set fax03.
      *
-     * @param  string $fax03
+     * @param string|null $fax03
+     *
      * @return Order
      */
-    public function setFax03($fax03)
+    public function setFax03($fax03 = null)
     {
         $this->fax03 = $fax03;
 
@@ -738,9 +898,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax03
+     * Get fax03.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax03()
     {
@@ -748,12 +908,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip01
+     * Set zip01.
      *
-     * @param  string $zip01
+     * @param string|null $zip01
+     *
      * @return Order
      */
-    public function setZip01($zip01)
+    public function setZip01($zip01 = null)
     {
         $this->zip01 = $zip01;
 
@@ -761,9 +922,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zip01
+     * Get zip01.
      *
-     * @return string
+     * @return string|null
      */
     public function getZip01()
     {
@@ -771,12 +932,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip02
+     * Set zip02.
      *
-     * @param  string $zip02
+     * @param string|null $zip02
+     *
      * @return Order
      */
-    public function setZip02($zip02)
+    public function setZip02($zip02 = null)
     {
         $this->zip02 = $zip02;
 
@@ -784,9 +946,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zip02
+     * Get zip02.
      *
-     * @return string
+     * @return string|null
      */
     public function getZip02()
     {
@@ -794,12 +956,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zipcode
+     * Set zipcode.
      *
-     * @param  string $zipcode
+     * @param string|null $zipcode
+     *
      * @return Order
      */
-    public function setZipcode($zipcode)
+    public function setZipcode($zipcode = null)
     {
         $this->zipcode = $zipcode;
 
@@ -807,9 +970,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zipcode
+     * Get zipcode.
      *
-     * @return string
+     * @return string|null
      */
     public function getZipcode()
     {
@@ -817,12 +980,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set addr01
+     * Set addr01.
      *
-     * @param  string $addr01
+     * @param string|null $addr01
+     *
      * @return Order
      */
-    public function setAddr01($addr01)
+    public function setAddr01($addr01 = null)
     {
         $this->addr01 = $addr01;
 
@@ -830,9 +994,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get addr01
+     * Get addr01.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddr01()
     {
@@ -840,12 +1004,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set addr02
+     * Set addr02.
      *
-     * @param  string $addr02
+     * @param string|null $addr02
+     *
      * @return Order
      */
-    public function setAddr02($addr02)
+    public function setAddr02($addr02 = null)
     {
         $this->addr02 = $addr02;
 
@@ -853,9 +1018,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get addr02
+     * Get addr02.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddr02()
     {
@@ -863,12 +1028,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set birth
+     * Set birth.
      *
-     * @param  \DateTime $birth
+     * @param \DateTime|null $birth
+     *
      * @return Order
      */
-    public function setBirth($birth)
+    public function setBirth($birth = null)
     {
         $this->birth = $birth;
 
@@ -876,9 +1042,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get birth
+     * Get birth.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getBirth()
     {
@@ -886,9 +1052,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set subtotal
+     * Set subtotal.
      *
-     * @param  string $subtotal
+     * @param string $subtotal
+     *
      * @return Order
      */
     public function setSubtotal($subtotal)
@@ -899,7 +1066,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get subtotal
+     * Get subtotal.
      *
      * @return string
      */
@@ -909,9 +1076,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set discount
+     * Set discount.
      *
-     * @param  string $discount
+     * @param string $discount
+     *
      * @return Order
      */
     public function setDiscount($discount)
@@ -922,7 +1090,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get discount
+     * Get discount.
      *
      * @return string
      */
@@ -932,9 +1100,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delivery_fee_total
+     * Set deliveryFeeTotal.
      *
-     * @param  string $deliveryFeeTotal
+     * @param string $deliveryFeeTotal
+     *
      * @return Order
      */
     public function setDeliveryFeeTotal($deliveryFeeTotal)
@@ -945,7 +1114,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get delivery_fee_total
+     * Get deliveryFeeTotal.
      *
      * @return string
      */
@@ -955,9 +1124,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set charge
+     * Set charge.
      *
-     * @param  string $charge
+     * @param string $charge
+     *
      * @return Order
      */
     public function setCharge($charge)
@@ -968,7 +1138,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get charge
+     * Get charge.
      *
      * @return string
      */
@@ -978,9 +1148,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tax
+     * Set tax.
      *
-     * @param  string $tax
+     * @param string $tax
+     *
      * @return Order
      */
     public function setTax($tax)
@@ -991,7 +1162,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tax
+     * Get tax.
      *
      * @return string
      */
@@ -1001,9 +1172,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set total
+     * Set total.
      *
-     * @param  string $total
+     * @param string $total
+     *
      * @return Order
      */
     public function setTotal($total)
@@ -1014,7 +1186,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get total
+     * Get total.
      *
      * @return string
      */
@@ -1024,9 +1196,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set payment_total
+     * Set paymentTotal.
      *
-     * @param  string $paymentTotal
+     * @param string $paymentTotal
+     *
      * @return Order
      */
     public function setPaymentTotal($paymentTotal)
@@ -1037,7 +1210,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get payment_total
+     * Get paymentTotal.
      *
      * @return string
      */
@@ -1047,12 +1220,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set payment_method
+     * Set paymentMethod.
      *
-     * @param  string $paymentMethod
+     * @param string|null $paymentMethod
+     *
      * @return Order
      */
-    public function setPaymentMethod($paymentMethod)
+    public function setPaymentMethod($paymentMethod = null)
     {
         $this->payment_method = $paymentMethod;
 
@@ -1060,9 +1234,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get payment_method
+     * Get paymentMethod.
      *
-     * @return string
+     * @return string|null
      */
     public function getPaymentMethod()
     {
@@ -1070,12 +1244,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set note
+     * Set note.
      *
-     * @param  string $note
+     * @param string|null $note
+     *
      * @return Order
      */
-    public function setNote($note)
+    public function setNote($note = null)
     {
         $this->note = $note;
 
@@ -1083,9 +1258,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get note
+     * Get note.
      *
-     * @return string
+     * @return string|null
      */
     public function getNote()
     {
@@ -1093,9 +1268,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
-     * @param  \DateTime $createDate
+     * @param \DateTime $createDate
+     *
      * @return Order
      */
     public function setCreateDate($createDate)
@@ -1106,7 +1282,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -1116,9 +1292,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
-     * @param  \DateTime $updateDate
+     * @param \DateTime $updateDate
+     *
      * @return Order
      */
     public function setUpdateDate($updateDate)
@@ -1129,7 +1306,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -1139,12 +1316,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set order_date
+     * Set orderDate.
      *
-     * @param  \DateTime $orderDate
+     * @param \DateTime|null $orderDate
+     *
      * @return Order
      */
-    public function setOrderDate($orderDate)
+    public function setOrderDate($orderDate = null)
     {
         $this->order_date = $orderDate;
 
@@ -1152,9 +1330,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get order_date
+     * Get orderDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getOrderDate()
     {
@@ -1162,12 +1340,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set commit_date
+     * Set commitDate.
      *
-     * @param  \DateTime $commitDate
+     * @param \DateTime|null $commitDate
+     *
      * @return Order
      */
-    public function setCommitDate($commitDate)
+    public function setCommitDate($commitDate = null)
     {
         $this->commit_date = $commitDate;
 
@@ -1175,9 +1354,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get commit_date
+     * Get commitDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getCommitDate()
     {
@@ -1185,12 +1364,13 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set payment_date
+     * Set paymentDate.
      *
-     * @param  \DateTime $paymentDate
+     * @param \DateTime|null $paymentDate
+     *
      * @return Order
      */
-    public function setPaymentDate($paymentDate)
+    public function setPaymentDate($paymentDate = null)
     {
         $this->payment_date = $paymentDate;
 
@@ -1198,9 +1378,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get payment_date
+     * Get paymentDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getPaymentDate()
     {
@@ -1208,9 +1388,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set del_flg
+     * Set delFlg.
      *
-     * @param  integer $delFlg
+     * @param int $delFlg
+     *
      * @return Order
      */
     public function setDelFlg($delFlg)
@@ -1221,9 +1402,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -1231,30 +1412,33 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add OrderDetails
+     * Add orderDetail.
      *
-     * @param  \Eccube\Entity\OrderDetail $orderDetails
+     * @param \Eccube\Entity\OrderDetail $orderDetail
+     *
      * @return Order
      */
-    public function addOrderDetail(\Eccube\Entity\OrderDetail $orderDetails)
+    public function addOrderDetail(\Eccube\Entity\OrderDetail $orderDetail)
     {
-        $this->OrderDetails[] = $orderDetails;
+        $this->OrderDetails[] = $orderDetail;
 
         return $this;
     }
 
     /**
-     * Remove OrderDetails
+     * Remove orderDetail.
      *
-     * @param \Eccube\Entity\OrderDetail $orderDetails
+     * @param \Eccube\Entity\OrderDetail $orderDetail
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeOrderDetail(\Eccube\Entity\OrderDetail $orderDetails)
+    public function removeOrderDetail(\Eccube\Entity\OrderDetail $orderDetail)
     {
-        $this->OrderDetails->removeElement($orderDetails);
+        return $this->OrderDetails->removeElement($orderDetail);
     }
 
     /**
-     * Get OrderDetails
+     * Get orderDetails.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1264,30 +1448,33 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add Shippings
+     * Add shipping.
      *
-     * @param  \Eccube\Entity\Shipping $shippings
+     * @param \Eccube\Entity\Shipping $shipping
+     *
      * @return Order
      */
-    public function addShipping(\Eccube\Entity\Shipping $shippings)
+    public function addShipping(\Eccube\Entity\Shipping $shipping)
     {
-        $this->Shippings[] = $shippings;
+        $this->Shippings[] = $shipping;
 
         return $this;
     }
 
     /**
-     * Remove Shippings
+     * Remove shipping.
      *
-     * @param \Eccube\Entity\Shipping $shippings
+     * @param \Eccube\Entity\Shipping $shipping
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeShipping(\Eccube\Entity\Shipping $shippings)
+    public function removeShipping(\Eccube\Entity\Shipping $shipping)
     {
-        $this->Shippings->removeElement($shippings);
+        return $this->Shippings->removeElement($shipping);
     }
 
     /**
-     * Get Shippings
+     * Get shippings.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1297,30 +1484,33 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add MailHistories
+     * Add mailHistory.
      *
-     * @param  \Eccube\Entity\MailHistory $mailHistories
+     * @param \Eccube\Entity\MailHistory $mailHistory
+     *
      * @return Order
      */
-    public function addMailHistory(\Eccube\Entity\MailHistory $mailHistories)
+    public function addMailHistory(\Eccube\Entity\MailHistory $mailHistory)
     {
-        $this->MailHistories[] = $mailHistories;
+        $this->MailHistories[] = $mailHistory;
 
         return $this;
     }
 
     /**
-     * Remove MailHistories
+     * Remove mailHistory.
      *
-     * @param \Eccube\Entity\MailHistory $mailHistories
+     * @param \Eccube\Entity\MailHistory $mailHistory
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeMailHistory(\Eccube\Entity\MailHistory $mailHistories)
+    public function removeMailHistory(\Eccube\Entity\MailHistory $mailHistory)
     {
-        $this->MailHistories->removeElement($mailHistories);
+        return $this->MailHistories->removeElement($mailHistory);
     }
 
     /**
-     * Get MailHistories
+     * Get mailHistories.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1330,9 +1520,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Customer
+     * Set customer.
      *
-     * @param  \Eccube\Entity\Customer $customer
+     * @param \Eccube\Entity\Customer|null $customer
+     *
      * @return Order
      */
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -1343,22 +1534,20 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Customer
+     * Get customer.
      *
-     * @return \Eccube\Entity\Customer
+     * @return \Eccube\Entity\Customer|null
      */
     public function getCustomer()
     {
-        if (EntityUtil::isEmpty($this->Customer)) {
-            return null;
-        }
         return $this->Customer;
     }
 
     /**
-     * Set Country
+     * Set country.
      *
-     * @param  \Eccube\Entity\Master\Country $country
+     * @param \Eccube\Entity\Master\Country|null $country
+     *
      * @return Order
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1369,9 +1558,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Country
+     * Get country.
      *
-     * @return \Eccube\Entity\Master\Country
+     * @return \Eccube\Entity\Master\Country|null
      */
     public function getCountry()
     {
@@ -1379,9 +1568,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Pref
+     * Set pref.
      *
-     * @param  \Eccube\Entity\Master\Pref $pref
+     * @param \Eccube\Entity\Master\Pref|null $pref
+     *
      * @return Order
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -1392,9 +1582,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Pref
+     * Get pref.
      *
-     * @return \Eccube\Entity\Master\Pref
+     * @return \Eccube\Entity\Master\Pref|null
      */
     public function getPref()
     {
@@ -1402,9 +1592,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Sex
+     * Set sex.
      *
-     * @param  \Eccube\Entity\Master\Sex $sex
+     * @param \Eccube\Entity\Master\Sex|null $sex
+     *
      * @return Order
      */
     public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -1415,9 +1606,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Sex
+     * Get sex.
      *
-     * @return \Eccube\Entity\Master\Sex
+     * @return \Eccube\Entity\Master\Sex|null
      */
     public function getSex()
     {
@@ -1425,9 +1616,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Job
+     * Set job.
      *
-     * @param  \Eccube\Entity\Master\Job $job
+     * @param \Eccube\Entity\Master\Job|null $job
+     *
      * @return Order
      */
     public function setJob(\Eccube\Entity\Master\Job $job = null)
@@ -1438,9 +1630,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Job
+     * Get job.
      *
-     * @return \Eccube\Entity\Master\Job
+     * @return \Eccube\Entity\Master\Job|null
      */
     public function getJob()
     {
@@ -1448,9 +1640,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Payment
+     * Set payment.
      *
-     * @param  \Eccube\Entity\Payment $payment
+     * @param \Eccube\Entity\Payment|null $payment
+     *
      * @return Order
      */
     public function setPayment(\Eccube\Entity\Payment $payment = null)
@@ -1461,22 +1654,20 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Payment
+     * Get payment.
      *
-     * @return \Eccube\Entity\Payment
+     * @return \Eccube\Entity\Payment|null
      */
     public function getPayment()
     {
-        if (EntityUtil::isEmpty($this->Payment)) {
-            return null;
-        }
         return $this->Payment;
     }
 
     /**
-     * Set DeviceType
+     * Set deviceType.
      *
-     * @param  \Eccube\Entity\Master\DeviceType $deviceType
+     * @param \Eccube\Entity\Master\DeviceType|null $deviceType
+     *
      * @return Order
      */
     public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
@@ -1487,9 +1678,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get DeviceType
+     * Get deviceType.
      *
-     * @return \Eccube\Entity\Master\DeviceType
+     * @return \Eccube\Entity\Master\DeviceType|null
      */
     public function getDeviceType()
     {
@@ -1497,9 +1688,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set CustomerOrderStatus
+     * Set customerOrderStatus.
      *
-     * @param  \Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus
+     * @param \Eccube\Entity\Master\CustomerOrderStatus|null $customerOrderStatus
+     *
      * @return Order
      */
     public function setCustomerOrderStatus(\Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus = null)
@@ -1510,9 +1702,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get CustomerOrderStatus
+     * Get customerOrderStatus.
      *
-     * @return \Eccube\Entity\Master\CustomerOrderStatus
+     * @return \Eccube\Entity\Master\CustomerOrderStatus|null
      */
     public function getCustomerOrderStatus()
     {
@@ -1520,32 +1712,10 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set OrderStatus
+     * Set orderStatusColor.
      *
-     * @param  \Eccube\Entity\Master\OrderStatus $orderStatus
-     * @return Order
-     */
-    public function setOrderStatus(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
-    {
-        $this->OrderStatus = $orderStatus;
-
-        return $this;
-    }
-
-    /**
-     * Get OrderStatus
+     * @param \Eccube\Entity\Master\OrderStatusColor|null $orderStatusColor
      *
-     * @return \Eccube\Entity\Master\OrderStatus
-     */
-    public function getOrderStatus()
-    {
-        return $this->OrderStatus;
-    }
-
-    /**
-     * Set OrderStatusColor
-     *
-     * @param  \Eccube\Entity\Master\OrderStatusColor $orderStatusColor
      * @return Order
      */
     public function setOrderStatusColor(\Eccube\Entity\Master\OrderStatusColor $orderStatusColor = null)
@@ -1556,12 +1726,36 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get OrderStatusColor
+     * Get orderStatusColor.
      *
-     * @return \Eccube\Entity\Master\OrderStatusColor
+     * @return \Eccube\Entity\Master\OrderStatusColor|null
      */
     public function getOrderStatusColor()
     {
         return $this->OrderStatusColor;
+    }
+
+    /**
+     * Set orderStatus.
+     *
+     * @param \Eccube\Entity\Master\OrderStatus|null $orderStatus
+     *
+     * @return Order
+     */
+    public function setOrderStatus(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
+    {
+        $this->OrderStatus = $orderStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get orderStatus.
+     *
+     * @return \Eccube\Entity\Master\OrderStatus|null
+     */
+    public function getOrderStatus()
+    {
+        return $this->OrderStatus;
     }
 }

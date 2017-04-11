@@ -28,6 +28,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * MailTemplate
+ *
+ * @ORM\Table(name="dtb_mail_template")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\MailTemplateRepository")
  */
 class MailTemplate extends \Eccube\Entity\AbstractEntity
 {
@@ -40,60 +46,85 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="template_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
      */
     private $file_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
      */
     private $subject;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="header", type="string", length=4000, nullable=true)
      */
     private $header;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="footer", type="string", length=4000, nullable=true)
      */
     private $footer;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $del_flg;
+    private $del_flg = 0;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -101,12 +132,13 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param string $name
+     * @param string|null $name
+     *
      * @return MailTemplate
      */
-    public function setName($name)
+    public function setName($name = null)
     {
         $this->name = $name;
 
@@ -114,9 +146,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string|null
      */
     public function getName()
     {
@@ -124,12 +156,13 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set file_name
+     * Set fileName.
      *
-     * @param string $fileName
+     * @param string|null $fileName
+     *
      * @return MailTemplate
      */
-    public function setFileName($fileName)
+    public function setFileName($fileName = null)
     {
         $this->file_name = $fileName;
 
@@ -137,9 +170,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get file_name
+     * Get fileName.
      *
-     * @return string 
+     * @return string|null
      */
     public function getFileName()
     {
@@ -147,12 +180,13 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set subject
+     * Set subject.
      *
-     * @param string $subject
+     * @param string|null $subject
+     *
      * @return MailTemplate
      */
-    public function setSubject($subject)
+    public function setSubject($subject = null)
     {
         $this->subject = $subject;
 
@@ -160,9 +194,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get subject
+     * Get subject.
      *
-     * @return string 
+     * @return string|null
      */
     public function getSubject()
     {
@@ -170,12 +204,13 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set header
+     * Set header.
      *
-     * @param string $header
+     * @param string|null $header
+     *
      * @return MailTemplate
      */
-    public function setHeader($header)
+    public function setHeader($header = null)
     {
         $this->header = $header;
 
@@ -183,9 +218,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get header
+     * Get header.
      *
-     * @return string 
+     * @return string|null
      */
     public function getHeader()
     {
@@ -193,12 +228,13 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set footer
+     * Set footer.
      *
-     * @param string $footer
+     * @param string|null $footer
+     *
      * @return MailTemplate
      */
-    public function setFooter($footer)
+    public function setFooter($footer = null)
     {
         $this->footer = $footer;
 
@@ -206,9 +242,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get footer
+     * Get footer.
      *
-     * @return string 
+     * @return string|null
      */
     public function getFooter()
     {
@@ -216,9 +252,10 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set del_flg
+     * Set delFlg.
      *
-     * @param integer $delFlg
+     * @param int $delFlg
+     *
      * @return MailTemplate
      */
     public function setDelFlg($delFlg)
@@ -229,9 +266,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer 
+     * @return int
      */
     public function getDelFlg()
     {
@@ -239,9 +276,10 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return MailTemplate
      */
     public function setCreateDate($createDate)
@@ -252,9 +290,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -262,9 +300,10 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return MailTemplate
      */
     public function setUpdateDate($updateDate)
@@ -275,9 +314,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -285,12 +324,13 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set creator.
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
+     *
      * @return MailTemplate
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -298,9 +338,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

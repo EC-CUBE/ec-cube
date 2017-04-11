@@ -6,69 +6,105 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Csv
+ *
+ * @ORM\Table(name="dtb_csv")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CsvRepository")
  */
 class Csv extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="csv_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="entity_name", type="string", length=255)
      */
     private $entity_name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="field_name", type="string", length=255)
      */
     private $field_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="reference_field_name", type="string", length=255, nullable=true)
      */
     private $reference_field_name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="disp_name", type="string", length=255)
      */
     private $disp_name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="enable_flg", type="smallint", options={"unsigned":true})
      */
     private $enable_flg;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
      * @var \Eccube\Entity\Master\CsvType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="csv_type", referencedColumnName="id")
+     * })
      */
     private $CsvType;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -76,9 +112,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set entity_name
+     * Set entityName.
      *
      * @param string $entityName
+     *
      * @return Csv
      */
     public function setEntityName($entityName)
@@ -89,7 +126,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get entity_name
+     * Get entityName.
      *
      * @return string
      */
@@ -99,9 +136,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set field_name
+     * Set fieldName.
      *
      * @param string $fieldName
+     *
      * @return Csv
      */
     public function setFieldName($fieldName)
@@ -112,9 +150,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get field_name
+     * Get fieldName.
      *
-     * @return string 
+     * @return string
      */
     public function getFieldName()
     {
@@ -122,12 +160,13 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set reference_field_name
+     * Set referenceFieldName.
      *
-     * @param string $feferenceFieldName
+     * @param string|null $referenceFieldName
+     *
      * @return Csv
      */
-    public function setReferenceFieldName($referenceFieldName)
+    public function setReferenceFieldName($referenceFieldName = null)
     {
         $this->reference_field_name = $referenceFieldName;
 
@@ -135,9 +174,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get reference_field_name
+     * Get referenceFieldName.
      *
-     * @return string 
+     * @return string|null
      */
     public function getReferenceFieldName()
     {
@@ -145,9 +184,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set disp_name
+     * Set dispName.
      *
      * @param string $dispName
+     *
      * @return Csv
      */
     public function setDispName($dispName)
@@ -158,9 +198,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get disp_name
+     * Get dispName.
      *
-     * @return string 
+     * @return string
      */
     public function getDispName()
     {
@@ -168,9 +208,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param integer $rank
+     * @param int $rank
+     *
      * @return Csv
      */
     public function setRank($rank)
@@ -181,9 +222,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer 
+     * @return int
      */
     public function getRank()
     {
@@ -191,9 +232,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set enable_flg
+     * Set enableFlg.
      *
-     * @param integer $enableFlg
+     * @param int $enableFlg
+     *
      * @return Csv
      */
     public function setEnableFlg($enableFlg)
@@ -204,9 +246,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get enable_flg
+     * Get enableFlg.
      *
-     * @return integer 
+     * @return int
      */
     public function getEnableFlg()
     {
@@ -214,9 +256,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return Csv
      */
     public function setCreateDate($createDate)
@@ -227,9 +270,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -237,9 +280,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return Csv
      */
     public function setUpdateDate($updateDate)
@@ -250,22 +294,23 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
         return $this->update_date;
     }
 
-   /**
-     * Set CsvType
+    /**
+     * Set csvType.
      *
-     * @param \Eccube\Entity\Master\CsvType $csvType
+     * @param \Eccube\Entity\Master\CsvType|null $csvType
+     *
      * @return Csv
      */
-    public function setCsvType(\Eccube\Entity\Master\CsvType $csvType)
+    public function setCsvType(\Eccube\Entity\Master\CsvType $csvType = null)
     {
         $this->CsvType = $csvType;
 
@@ -273,9 +318,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get CsvType
+     * Get csvType.
      *
-     * @return \Eccube\Entity\Master\CsvType
+     * @return \Eccube\Entity\Master\CsvType|null
      */
     public function getCsvType()
     {
@@ -283,12 +328,13 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set creator.
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
+     *
      * @return Csv
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -296,9 +342,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

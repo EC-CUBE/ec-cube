@@ -24,30 +24,50 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * DeliveryTime
+ *
+ * @ORM\Table(name="dtb_delivery_time")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryTimeRepository")
  */
 class DeliveryTime extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="time_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="delivery_time", type="string", length=255)
      */
     private $delivery_time;
 
     /**
      * @var \Eccube\Entity\Delivery
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryTimes")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="delivery_id")
+     * })
      */
     private $Delivery;
 
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -55,9 +75,10 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delivery_time
+     * Set deliveryTime.
      *
-     * @param  string    $deliveryTime
+     * @param string $deliveryTime
+     *
      * @return DeliveryTime
      */
     public function setDeliveryTime($deliveryTime)
@@ -68,7 +89,7 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get deliv_time
+     * Get deliveryTime.
      *
      * @return string
      */
@@ -78,22 +99,23 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Delivery
+     * Set delivery.
      *
-     * @param  \Eccube\Entity\Delivery $Delivery
+     * @param \Eccube\Entity\Delivery|null $delivery
+     *
      * @return DeliveryTime
      */
-    public function setDelivery(\Eccube\Entity\Delivery $Delivery)
+    public function setDelivery(\Eccube\Entity\Delivery $delivery = null)
     {
-        $this->Delivery = $Delivery;
+        $this->Delivery = $delivery;
 
         return $this;
     }
 
     /**
-     * Get Delivery
+     * Get delivery.
      *
-     * @return \Eccube\Entity\$Delivery
+     * @return \Eccube\Entity\Delivery|null
      */
     public function getDelivery()
     {

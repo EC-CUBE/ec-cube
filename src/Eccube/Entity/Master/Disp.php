@@ -24,17 +24,30 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Disp
+ *
+ * @ORM\Table(name="mtb_disp")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\Master\DispRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class Disp extends \Eccube\Entity\AbstractEntity
 {
 
-
+    /**
+     * @var integer
+     */
     const DISPLAY_SHOW = 1;
 
+    /**
+     * @var integer
+     */
     const DISPLAY_HIDE = 2;
-
 
     /**
      * @return string
@@ -45,24 +58,47 @@ class Disp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
+
     /**
-     * Get id
+     * Set id.
      *
-     * @return integer
+     * @param int $id
+     *
+     * @return Disp
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -70,9 +106,10 @@ class Disp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return Disp
      */
     public function setName($name)
@@ -83,7 +120,7 @@ class Disp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -93,9 +130,10 @@ class Disp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param  integer $rank
+     * @param int $rank
+     *
      * @return Disp
      */
     public function setRank($rank)
@@ -106,25 +144,12 @@ class Disp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return Disp
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 }

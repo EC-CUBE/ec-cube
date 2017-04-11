@@ -24,8 +24,16 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * News
+ *
+ * @ORM\Table(name="dtb_news")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\NewsRepository")
  */
 class News extends \Eccube\Entity\AbstractEntity
 {
@@ -38,69 +46,99 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="news_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="news_date", type="datetime", nullable=true)
      */
     private $date;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="news_title", type="string", length=255)
      */
     private $title;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="news_comment", type="text", nullable=true)
      */
     private $comment;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="news_url", type="string", length=4000, nullable=true)
      */
     private $url;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="news_select", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $select;
+    private $select = 0;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="link_method", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $link_method;
+    private $link_method = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     */
+    private $del_flg = 0;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var integer
-     */
-    private $del_flg;
-
-    /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -108,12 +146,13 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set date
+     * Set date.
      *
-     * @param  \DateTime $date
+     * @param \DateTime|null $date
+     *
      * @return News
      */
-    public function setDate($date)
+    public function setDate($date = null)
     {
         $this->date = $date;
 
@@ -121,9 +160,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getDate()
     {
@@ -131,9 +170,10 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param  integer $rank
+     * @param int $rank
+     *
      * @return News
      */
     public function setRank($rank)
@@ -144,9 +184,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
@@ -154,9 +194,10 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set title
+     * Set title.
      *
-     * @param  string $title
+     * @param string $title
+     *
      * @return News
      */
     public function setTitle($title)
@@ -167,7 +208,7 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -177,12 +218,13 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set comment
+     * Set comment.
      *
-     * @param  string $comment
+     * @param string|null $comment
+     *
      * @return News
      */
-    public function setComment($comment)
+    public function setComment($comment = null)
     {
         $this->comment = $comment;
 
@@ -190,9 +232,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get comment
+     * Get comment.
      *
-     * @return string
+     * @return string|null
      */
     public function getComment()
     {
@@ -200,12 +242,13 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set url
+     * Set url.
      *
-     * @param  string $url
+     * @param string|null $url
+     *
      * @return News
      */
-    public function setUrl($url)
+    public function setUrl($url = null)
     {
         $this->url = $url;
 
@@ -213,9 +256,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get url
+     * Get url.
      *
-     * @return string
+     * @return string|null
      */
     public function getUrl()
     {
@@ -223,9 +266,10 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set select
+     * Set select.
      *
-     * @param  integer $select
+     * @param int $select
+     *
      * @return News
      */
     public function setSelect($select)
@@ -236,9 +280,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get select
+     * Get select.
      *
-     * @return integer
+     * @return int
      */
     public function getSelect()
     {
@@ -246,9 +290,10 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set link_method
+     * Set linkMethod.
      *
-     * @param  integer $linkMethod
+     * @param int $linkMethod
+     *
      * @return News
      */
     public function setLinkMethod($linkMethod)
@@ -258,10 +303,10 @@ class News extends \Eccube\Entity\AbstractEntity
         return $this;
     }
 
-    /*
-     * Get link_method
+    /**
+     * Get linkMethod.
      *
-     * @return integer
+     * @return int
      */
     public function getLinkMethod()
     {
@@ -269,55 +314,10 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set delFlg.
      *
-     * @param  \DateTime $createDate
-     * @return News
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
-
-        return $this;
-    }
-
-    /**
-     * Get create_date
+     * @param int $delFlg
      *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set update_date
-     *
-     * @param  \DateTime $updateDate
-     * @return News
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
-
-        return $this;
-    }
-
-    /**
-     * Get update_date
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
-
-    /**
-     * Set del_flg
-     *
-     * @param  integer $delFlg
      * @return News
      */
     public function setDelFlg($delFlg)
@@ -328,9 +328,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -338,12 +338,61 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set createDate.
      *
-     * @param  \Eccube\Entity\Member $creator
+     * @param \DateTime $createDate
+     *
      * @return News
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreateDate($createDate)
+    {
+        $this->create_date = $createDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createDate.
+     *
+     * @return \DateTime
+     */
+    public function getCreateDate()
+    {
+        return $this->create_date;
+    }
+
+    /**
+     * Set updateDate.
+     *
+     * @param \DateTime $updateDate
+     *
+     * @return News
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Set creator.
+     *
+     * @param \Eccube\Entity\Member|null $creator
+     *
+     * @return News
+     */
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -351,9 +400,9 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

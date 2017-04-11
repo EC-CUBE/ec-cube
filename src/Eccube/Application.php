@@ -541,24 +541,13 @@ class Application extends \Silex\Application
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($this['debug']);
         $ormMappings = array();
         $ormMappings[] = array(
-            'type' => 'yml',
-            'namespace' => 'Eccube\Entity',
-            'path' => array(
-                __DIR__.'/Resource/doctrine',
-                __DIR__.'/Resource/doctrine/master',
-            ),
-        );
-        // ここを有効にすると本体の Entity でもアノテーションが使える
-        // が、 Yaml との共存はできない模様...
-        // $ormMappings[] = array(
-        //     'type' => 'annotation',
-        //     'namespace' => 'Eccube\Entity',
-        //     'path' => array(
-        //         __DIR__.'/Entity',
-        //         __DIR__.'/Entity/master',
-        //     ),
-        //     'use_simple_annotation_reader' => false,
-        // );
+             'type' => 'annotation',
+             'namespace' => 'Eccube\Entity',
+             'path' => array(
+                 __DIR__.'/Entity'
+             ),
+             'use_simple_annotation_reader' => false,
+         );
 
         // TODO namespace は暫定
         $ormMappings[] = array(

@@ -6,6 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductImage
+ *
+ * @ORM\Table(name="dtb_product_image")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\ProductImageRepository")
  */
 class ProductImage extends \Eccube\Entity\AbstractEntity
 {
@@ -18,40 +24,60 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="product_image_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="file_name", type="string", length=255)
      */
     private $file_name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \Eccube\Entity\Product
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductImage")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     * })
      */
     private $Product;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -59,9 +85,10 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set file_name
+     * Set fileName.
      *
      * @param string $fileName
+     *
      * @return ProductImage
      */
     public function setFileName($fileName)
@@ -72,9 +99,9 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get file_name
+     * Get fileName.
      *
-     * @return string 
+     * @return string
      */
     public function getFileName()
     {
@@ -82,9 +109,10 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param integer $rank
+     * @param int $rank
+     *
      * @return ProductImage
      */
     public function setRank($rank)
@@ -95,9 +123,9 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer 
+     * @return int
      */
     public function getRank()
     {
@@ -105,9 +133,10 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return ProductImage
      */
     public function setCreateDate($createDate)
@@ -118,9 +147,9 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -128,12 +157,13 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Product
+     * Set product.
      *
-     * @param \Eccube\Entity\Product $product
+     * @param \Eccube\Entity\Product|null $product
+     *
      * @return ProductImage
      */
-    public function setProduct(\Eccube\Entity\Product $product)
+    public function setProduct(\Eccube\Entity\Product $product = null)
     {
         $this->Product = $product;
 
@@ -141,9 +171,9 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Product
+     * Get product.
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product|null
      */
     public function getProduct()
     {
@@ -151,12 +181,13 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set creator.
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
+     *
      * @return ProductImage
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -164,9 +195,9 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

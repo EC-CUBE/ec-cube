@@ -24,40 +24,70 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * ProductCategory
+ *
+ * @ORM\Table(name="dtb_product_category")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\ProductCategoryRepository")
  */
 class ProductCategory extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $product_id;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $category_id;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
     /**
      * @var \Eccube\Entity\Product
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     * })
      */
     private $Product;
 
     /**
      * @var \Eccube\Entity\Category
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="category_id", referencedColumnName="category_id")
+     * })
      */
     private $Category;
 
+
     /**
-     * Set product_id
+     * Set productId.
      *
-     * @param  integer         $productId
+     * @param int $productId
+     *
      * @return ProductCategory
      */
     public function setProductId($productId)
@@ -68,9 +98,9 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get product_id
+     * Get productId.
      *
-     * @return integer
+     * @return int
      */
     public function getProductId()
     {
@@ -78,9 +108,10 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set category_id
+     * Set categoryId.
      *
-     * @param  integer         $categoryId
+     * @param int $categoryId
+     *
      * @return ProductCategory
      */
     public function setCategoryId($categoryId)
@@ -91,9 +122,9 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get category_id
+     * Get categoryId.
      *
-     * @return integer
+     * @return int
      */
     public function getCategoryId()
     {
@@ -101,9 +132,10 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param  integer         $rank
+     * @param int $rank
+     *
      * @return ProductCategory
      */
     public function setRank($rank)
@@ -114,9 +146,9 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
@@ -124,9 +156,10 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Product
+     * Set product.
      *
-     * @param  \Eccube\Entity\Product $product
+     * @param \Eccube\Entity\Product|null $product
+     *
      * @return ProductCategory
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
@@ -137,9 +170,9 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Product
+     * Get product.
      *
-     * @return \Eccube\Entity\Product
+     * @return \Eccube\Entity\Product|null
      */
     public function getProduct()
     {
@@ -147,9 +180,10 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Category
+     * Set category.
      *
-     * @param  \Eccube\Entity\Category $category
+     * @param \Eccube\Entity\Category|null $category
+     *
      * @return ProductCategory
      */
     public function setCategory(\Eccube\Entity\Category $category = null)
@@ -160,9 +194,9 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Category
+     * Get category.
      *
-     * @return \Eccube\Entity\Category
+     * @return \Eccube\Entity\Category|null
      */
     public function getCategory()
     {

@@ -24,8 +24,16 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * MailHistory
+ *
+ * @ORM\Table(name="dtb_mail_history")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
  */
 class MailHistory extends \Eccube\Entity\AbstractEntity
 {
@@ -38,44 +46,70 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="send_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="send_date", type="datetime", nullable=true)
      */
     private $send_date;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
      */
     private $subject;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="mail_body", type="text", nullable=true)
      */
     private $mail_body;
 
     /**
      * @var \Eccube\Entity\Order
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
+     * })
      */
     private $Order;
 
     /**
      * @var \Eccube\Entity\MailTemplate
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\MailTemplate")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="template_id", referencedColumnName="template_id")
+     * })
      */
     private $MailTemplate;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id", nullable=true)
+     * })
      */
     private $Creator;
 
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -83,12 +117,13 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set send_date
+     * Set sendDate.
      *
-     * @param  \DateTime   $sendDate
+     * @param \DateTime|null $sendDate
+     *
      * @return MailHistory
      */
-    public function setSendDate($sendDate)
+    public function setSendDate($sendDate = null)
     {
         $this->send_date = $sendDate;
 
@@ -96,9 +131,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get send_date
+     * Get sendDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getSendDate()
     {
@@ -106,12 +141,13 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set subject
+     * Set subject.
      *
-     * @param  string      $subject
+     * @param string|null $subject
+     *
      * @return MailHistory
      */
-    public function setSubject($subject)
+    public function setSubject($subject = null)
     {
         $this->subject = $subject;
 
@@ -119,9 +155,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get subject
+     * Get subject.
      *
-     * @return string
+     * @return string|null
      */
     public function getSubject()
     {
@@ -129,12 +165,13 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set mail_body
+     * Set mailBody.
      *
-     * @param  string      $mailBody
+     * @param string|null $mailBody
+     *
      * @return MailHistory
      */
-    public function setMailBody($mailBody)
+    public function setMailBody($mailBody = null)
     {
         $this->mail_body = $mailBody;
 
@@ -142,9 +179,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get mail_body
+     * Get mailBody.
      *
-     * @return string
+     * @return string|null
      */
     public function getMailBody()
     {
@@ -152,12 +189,13 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Order
+     * Set order.
      *
-     * @param  \Eccube\Entity\Order $order
+     * @param \Eccube\Entity\Order|null $order
+     *
      * @return MailHistory
      */
-    public function setOrder(\Eccube\Entity\Order $order)
+    public function setOrder(\Eccube\Entity\Order $order = null)
     {
         $this->Order = $order;
 
@@ -165,9 +203,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Order
+     * Get order.
      *
-     * @return \Eccube\Entity\Order
+     * @return \Eccube\Entity\Order|null
      */
     public function getOrder()
     {
@@ -175,9 +213,10 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set MailTemplate
+     * Set mailTemplate.
      *
-     * @param  \Eccube\Entity\MailTemplate $mailTemplate
+     * @param \Eccube\Entity\MailTemplate|null $mailTemplate
+     *
      * @return MailHistory
      */
     public function setMailTemplate(\Eccube\Entity\MailTemplate $mailTemplate = null)
@@ -188,9 +227,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get MailTemplate
+     * Get mailTemplate.
      *
-     * @return \Eccube\Entity\MailTemplate
+     * @return \Eccube\Entity\MailTemplate|null
      */
     public function getMailTemplate()
     {
@@ -198,12 +237,13 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set creator.
      *
-     * @param  \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
+     *
      * @return MailHistory
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -211,9 +251,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

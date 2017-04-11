@@ -29,6 +29,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Category
+ *
+ * @ORM\Table(name="dtb_category")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CategoryRepository")
  */
 class Category extends \Eccube\Entity\AbstractEntity
 {
@@ -145,57 +151,90 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="category_name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="hierarchy", type="integer")
      */
     private $level;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="integer")
      */
     private $rank;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     */
+    private $del_flg = 0;
+
+    /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var integer
-     */
-    private $del_flg;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Category")
      */
     private $ProductCategories;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\Category", mappedBy="Parent")
+     * @ORM\OrderBy({
+     *     "rank"="DESC"
+     * })
      */
     private $Children;
 
     /**
      * @var \Eccube\Entity\Category
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Children")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_category_id", referencedColumnName="category_id")
+     * })
      */
     private $Parent;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
@@ -209,9 +248,9 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -219,9 +258,10 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string   $name
+     * @param string $name
+     *
      * @return Category
      */
     public function setName($name)
@@ -232,7 +272,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -242,9 +282,10 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set level
+     * Set level.
      *
-     * @param  integer  $level
+     * @param int $level
+     *
      * @return Category
      */
     public function setLevel($level)
@@ -255,9 +296,9 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get level
+     * Get level.
      *
-     * @return integer
+     * @return int
      */
     public function getLevel()
     {
@@ -265,9 +306,10 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param  integer  $rank
+     * @param int $rank
+     *
      * @return Category
      */
     public function setRank($rank)
@@ -278,9 +320,9 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
@@ -288,55 +330,10 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set delFlg.
      *
-     * @param  \DateTime $createDate
-     * @return Category
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
-
-        return $this;
-    }
-
-    /**
-     * Get create_date
+     * @param int $delFlg
      *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set update_date
-     *
-     * @param  \DateTime $updateDate
-     * @return Category
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
-
-        return $this;
-    }
-
-    /**
-     * Get update_date
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
-
-    /**
-     * Set del_flg
-     *
-     * @param  integer  $delFlg
      * @return Category
      */
     public function setDelFlg($delFlg)
@@ -347,9 +344,9 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -357,30 +354,81 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add ProductCategories
+     * Set createDate.
      *
-     * @param  \Eccube\Entity\ProductCategory $productCategories
+     * @param \DateTime $createDate
+     *
      * @return Category
      */
-    public function addProductCategory(\Eccube\Entity\ProductCategory $productCategories)
+    public function setCreateDate($createDate)
     {
-        $this->ProductCategories[] = $productCategories;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Remove ProductCategories
+     * Get createDate.
      *
-     * @param \Eccube\Entity\ProductCategory $productCategories
+     * @return \DateTime
      */
-    public function removeProductCategory(\Eccube\Entity\ProductCategory $productCategories)
+    public function getCreateDate()
     {
-        $this->ProductCategories->removeElement($productCategories);
+        return $this->create_date;
     }
 
     /**
-     * Get ProductCategories
+     * Set updateDate.
+     *
+     * @param \DateTime $updateDate
+     *
+     * @return Category
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Add productCategory.
+     *
+     * @param \Eccube\Entity\ProductCategory $productCategory
+     *
+     * @return Category
+     */
+    public function addProductCategory(\Eccube\Entity\ProductCategory $productCategory)
+    {
+        $this->ProductCategories[] = $productCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove productCategory.
+     *
+     * @param \Eccube\Entity\ProductCategory $productCategory
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductCategory(\Eccube\Entity\ProductCategory $productCategory)
+    {
+        return $this->ProductCategories->removeElement($productCategory);
+    }
+
+    /**
+     * Get productCategories.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -390,30 +438,33 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add Children
+     * Add child.
      *
-     * @param  \Eccube\Entity\Category $children
+     * @param \Eccube\Entity\Category $child
+     *
      * @return Category
      */
-    public function addChild(\Eccube\Entity\Category $children)
+    public function addChild(\Eccube\Entity\Category $child)
     {
-        $this->Children[] = $children;
+        $this->Children[] = $child;
 
         return $this;
     }
 
     /**
-     * Remove Children
+     * Remove child.
      *
-     * @param \Eccube\Entity\Category $children
+     * @param \Eccube\Entity\Category $child
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeChild(\Eccube\Entity\Category $children)
+    public function removeChild(\Eccube\Entity\Category $child)
     {
-        $this->Children->removeElement($children);
+        return $this->Children->removeElement($child);
     }
 
     /**
-     * Get Children
+     * Get children.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -423,9 +474,10 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Parent
+     * Set parent.
      *
-     * @param  \Eccube\Entity\Category $parent
+     * @param \Eccube\Entity\Category|null $parent
+     *
      * @return Category
      */
     public function setParent(\Eccube\Entity\Category $parent = null)
@@ -436,9 +488,9 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Parent
+     * Get parent.
      *
-     * @return \Eccube\Entity\Category
+     * @return \Eccube\Entity\Category|null
      */
     public function getParent()
     {
@@ -446,9 +498,10 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set creator.
      *
-     * @param  \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
+     *
      * @return Category
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -459,9 +512,9 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {
