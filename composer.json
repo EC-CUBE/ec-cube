@@ -77,6 +77,7 @@
     "autoload": {
         "files": [ "src/Eccube/Resource/functions/log.php" ],
         "psr-4": {
+            "Eccube\\Entity\\": "app/cache/doctrine/entity-proxies",
             "Eccube\\": "src/Eccube",
             "Acme\\": "app/Acme",
             "Plugin\\": "app/Plugin",
