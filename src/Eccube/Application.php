@@ -167,6 +167,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());
         $this->register(new MobileDetectServiceProvider());
 
         $this->error(function (\Exception $e, Request $request, $code) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac060f3cccb3a6dce9057ac748735ed6",
+    "content-hash": "eca66bb2e54e350777b3d3a12111f0b0",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1789,6 +1789,59 @@
                 "silex"
             ],
             "time": "2016-05-09T06:24:24+00:00"
+        },
+        {
+            "name": "saxulum/saxulum-validator-provider",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saxulum/saxulum-validator-provider.git",
+                "reference": "32f6ce87a05ccdfd12f6381365b89aa2612ece48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saxulum/saxulum-validator-provider/zipball/32f6ce87a05ccdfd12f6381365b89aa2612ece48",
+                "reference": "32f6ce87a05ccdfd12f6381365b89aa2612ece48",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "~1.0",
+                "php": ">=5.5.9,<8.0",
+                "pimple/pimple": ">=2.1,<4",
+                "symfony/validator": "~2.3|~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "silex/api": "~2.0@dev",
+                "silex/providers": "~2.0@dev",
+                "symfony/config": "~2.3|~3.0",
+                "symfony/yaml": "~2.3|~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Saxulum\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dominik Zogg",
+                    "email": "dominik.zogg@gmail.com"
+                }
+            ],
+            "description": "Saxulum Validator Provider (yaml)",
+            "keywords": [
+                "cilex",
+                "pimple",
+                "saxulum",
+                "silex",
+                "validator"
+            ],
+            "time": "2015-12-19T17:34:02+00:00"
         },
         {
             "name": "saxulum/saxulum-webprofiler-provider",

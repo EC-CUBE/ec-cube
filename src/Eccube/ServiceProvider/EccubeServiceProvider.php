@@ -372,6 +372,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
             $extensions[] = new \Eccube\Form\Extension\FreezeTypeExtension();
+            $extensions[] = new \Eccube\Form\Extension\DoctrineOrmExtension($app['orm.em']);
             return $extensions;
         });
         $app->extend('form.types', function ($types) use ($app) {
