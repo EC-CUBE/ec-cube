@@ -26,8 +26,6 @@
 - dtb_authority_role.csv
 - dtb_base_info.csv
 - dtb_category.csv
-- dtb_category_count.csv
-- dtb_category_total_count.csv
 - dtb_class_name.csv
 - dtb_class_category.csv
 - dtb_csv.csv
