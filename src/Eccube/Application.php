@@ -635,7 +635,7 @@ class Application extends \Silex\Application
                         $newDriver->setFileExtension($oldDriver->getFileExtension());
                         $newDriver->addExcludePaths($oldDriver->getExcludePaths());
                         $newDriver->setTraitProxiesDirectory(
-                            realpath(__DIR__.'/../../app/cache/doctrine/entity-proxies'));
+                            realpath(__DIR__.'/../../app/proxy/entity'));
                         $chain->addDriver($newDriver, $namespace);
                     }
                 }

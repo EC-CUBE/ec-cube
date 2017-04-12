@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation as Eccube;
 
 /**
- * @Eccube\EntityExt(target="Eccube\Entity\Product")
+ * @Eccube\EntityExtension("Eccube\Entity\Product")
  */
 trait MakerTrait
 {

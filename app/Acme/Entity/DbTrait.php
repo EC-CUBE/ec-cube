@@ -3,10 +3,10 @@
 namespace Acme\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExt;
+use Eccube\Annotation as Eccube;
 
 /**
- * @EntityExt(target="Eccube\Entity\Product")
+ * @Eccube\EntityExtension("Eccube\Entity\Product")
  */
 trait DbTrait
 {

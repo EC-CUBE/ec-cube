@@ -24,7 +24,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Eccube\Annotation\EntityExt;
+use Eccube\Annotation\EntityExtension;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,12 +32,12 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\CS\Finder;
 
 
-class GenProxyCommand extends Command
+class GenerateProxyCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('debug:entity-proxy')
+            ->setName('generate-proxies')
             ->setDescription('generate entity proxies');
     }
 
@@ -85,13 +85,13 @@ class GenProxyCommand extends Command
             }
         }
 
-        // traitから@EntityExtを抽出
+        // traitから@EntityExtensionを抽出
         $reader = new AnnotationReader();
         $proxies = [];
         foreach ($traits as $trait) {
-            $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExt::class);
+            $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
             if ($anno) {
-                $proxies[$anno->target][] = $trait;
+                $proxies[$anno->value][] = $trait;
             }
         }
         // プロキシファイルの生成
@@ -141,7 +141,7 @@ class GenProxyCommand extends Command
             }
             $generator->setImplementedInterfaces($interfaces);
 
-            $dir = $app['config']['root_dir'].'/app/cache/doctrine/entity-proxies';
+            $dir = $app['config']['root_dir'].'/app/proxy/entity';
             $file = basename($rc->getFileName());
 
             $code = $generator->generate();

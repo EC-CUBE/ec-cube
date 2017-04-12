@@ -2,6 +2,7 @@
 
 namespace Eccube\Annotation;
 
+use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\ORM\Mapping\Annotation;
 
 
@@ -9,11 +10,10 @@ use Doctrine\ORM\Mapping\Annotation;
  * @Annotation
  * @Target("CLASS")
  */
-final class EntityExt implements Annotation
+final class EntityExtension implements Annotation
 {
     /**
      * @var string
      */
-    public $target;
-
+    public $value;
 }
