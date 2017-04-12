@@ -1,0 +1,175 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'registration_page' %}
+
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+    $(function() {
+        $('#zip-search').click(function() {
+            AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
+        });
+    });
+</script>
+{% endblock javascript %}
+
+{% block main %}
+<h1 class="page-heading">新規会員登録</h1>
+<div id="top_wrap" class="container-fluid">
+    <div id="top_box" class="row">
+        <div id="top_box__body" class="col-md-10 col-md-offset-1">
+            <form method="post" action="{{ url('entry') }}">
+                {{ form_widget(form._token) }}
+                <div id="top_box__body_inner" class="dl_table">
+                    <dl id="top_box__name">
+                        <dt>{{ form_label(form.name) }}</dt>
+                        <dd class="form-group input_name">
+                            {{ form_widget(form.name.name01) }}
+                            {{ form_widget(form.name.name02) }}
+                            {{ form_errors(form.name.name01) }}
+                            {{ form_errors(form.name.name02) }}
+                        </dd>
+                    </dl>
+                    <dl id="top_box__kana">
+                        <dt>{{ form_label(form.kana) }}</dt>
+                        <dd class="form-group input_name">
+                            {{ form_widget(form.kana.kana01) }}
+                            {{ form_widget(form.kana.kana02) }}
+                            {{ form_errors(form.kana.kana01) }}
+                            {{ form_errors(form.kana.kana02) }}
+                        </dd>
+                    </dl>
+                    <dl id="top_box__company_name">
+                        <dt>{{ form_label(form.company_name) }}</dt>
+                        <dd class="form-group input_name">
+                            {{ form_widget(form.company_name) }}
+                            {{ form_errors(form.company_name) }}
+                        </dd>
+                    </dl>
+                    <dl id="top_box__address_detail">
+                        <dt>{{ form_label(form.address) }}</dt>
+                        <dd>
+                            <div id="top_box__zip" class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                            <div id="top_box__address" class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl id="top_box__tel">
+                        <dt>{{ form_label(form.tel) }}</dt>
+                        <dd>
+                            <div class="form-inline form-group input_tel">
+                                {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                {{ form_errors(form.tel) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl id="top_box__fax">
+                        <dt>{{ form_label(form.fax) }}</dt>
+                        <dd>
+                            <div class="form-inline form-group input_tel">
+                                {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
+                                {{ form_errors(form.fax) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl id="top_box__email">
+                        <dt>{{ form_label(form.email) }}</dt>
+                        <dd>
+                            {% for emailField in form.email %}
+                            <div class="form-group {% if emailField.vars.errors is not empty %}has-error{% endif %}">
+                                {{ form_widget(emailField) }}
+                                {{ form_errors(emailField) }}
+                            </div>
+                            {% endfor %}
+                        </dd>
+                    </dl>
+                    <dl id="top_box__password">
+                        <dt>{{ form_label(form.password) }}</dt>
+                        <dd>
+                            {% for passwordField in form.password %}
+                            <div class="form-group {% if passwordField.vars.errors is not empty %}has-error{% endif %}">
+                                {{ form_widget(passwordField, { type : 'password' }) }}
+                                {{ form_errors(passwordField) }}
+                            </div>
+                            {% endfor %}
+                        </dd>
+                    </dl>
+                </div>
+                <div id="top_box__birth" class="dl_table not_required">
+                    <dl>
+                        <dt>{{ form_label(form.birth) }}</dt>
+                        <dd>
+                            <div class="form-group form-inline">
+                                {{ form_widget(form.birth) }}
+                                {{ form_errors(form.birth) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt id="top_box__sex">{{ form_label(form.sex) }}</dt>
+                        <dd>
+                            <div class="form-group form-inline">
+                                {{ form_widget(form.sex) }}
+                                {{ form_errors(form.sex) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl id="top_box__job">
+                        <dt>{{ form_label(form.job) }}</dt>
+                        <dd>
+                            <div class="form-group form-inline">
+                                {{ form_widget(form.job) }}
+                                {{ form_errors(form.job) }}
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                {% for f in form %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        <div class="extra-form dl_table">
+                            {{ form_row(f) }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <input id="top_box__hidden_mode" type="hidden" name="mode" value="confirm">
+                <p id="top_box__agreement" class="form_terms_link"><a href="{{ url('help_agreement') }}" target="_blank">利用規約</a>に同意してお進みください
+                </p>
+
+                <div id="top_box__footer" class="row no-padding">
+                    <div id="top_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                        <p>
+                            <button type="submit" class="btn btn-primary btn-block">同意する</button>
+                        </p>
+                        <p><a href="{{ url('index') }}" class="btn btn-info btn-block">同意しない</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</div>
+{% endblock %}

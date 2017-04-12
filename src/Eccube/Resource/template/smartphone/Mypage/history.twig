@@ -1,0 +1,259 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block javascript %}
+<script>
+$(function(){
+    $(".title").on("click", function(){
+        $(this).next().slideToggle();
+    });
+    $(".close").on("click", function(){
+        $(this).parent().slideToggle();
+    });
+});
+</script>
+{% endblock %}
+{% block main %}
+    <h1 class="page-heading">マイページ/ご注文履歴詳細</h1>
+    <div id="detail_wrap" class="container-fluid">
+
+        {% include 'Mypage/navi.twig' %}
+
+        <div id="detail_box" class="row">
+            <div id="detail_box__body" class="col-md-12">
+                <dl id="detail_box__body_inner" class="order_detail">
+                    <dt id="detail_box__create_date">ご注文日時：</dt>
+                    <dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
+                    <dt id="detail_box__id">ご注文番号：</dt>
+                    <dd>{{ Order.id }}</dd>
+                    {% if BaseInfo.option_mypage_order_status_display %}
+                        <dt id="detail_box__customer_order_status">ご注文状況：</dt>
+                        <dd>{{ Order.CustomerOrderStatus }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+
+        <div id="shopping_confirm" class="row">
+            <div id="confirm_main" class="col-sm-8">
+                <div id="detail_list_box__body" class="cart_item table">
+                    <div id="detail_list_box__list" class="tbody">
+                        {% set remessage = '' %}
+                        {% for OrderDetail in Order.OrderDetails %}
+                            <div id="detail_list__item_box--{{ OrderDetail.id }}" class="item_box tr">
+                                <div id="detail_list__item--{{ OrderDetail.id }}" class="td table">
+                                    <div id="detail_list__image--{{ OrderDetail.id }}" class="item_photo">
+                                        {% if OrderDetail.Product is null %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                        {% else %}
+                                            {% if OrderDetail.enable %}
+                                                <a href="{{ url('product_detail', { id : OrderDetail.Product.id } ) }}">
+                                                    <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.product.MainListImage|no_image_product }}" />
+                                                </a>
+                                            {% else %}
+                                                <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <dl id="detail_list__item_detail--{{ OrderDetail.id }}" class="item_detail">
+                                        <dt id="detail_list__product_name--{{ OrderDetail.id }}" class="item_name text-default">
+                                            {% if OrderDetail.Product is null %}
+                                                {{ OrderDetail.product_name }}
+                                            {% else %}
+                                                {% if OrderDetail.enable %}
+                                                    <a href="{{ url('product_detail', {'id': OrderDetail.Product.id}) }}">
+                                                        {{ OrderDetail.product_name }}
+                                                    </a>
+                                                {% else %}
+                                                    {{ OrderDetail.product_name }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </dt>
+                                        <dd id="detail_list__classcategory_name--{{ OrderDetail.id }}" class="item_pattern small">
+                                            {% if OrderDetail.classcategory_name1 is not empty %}
+                                                {{ OrderDetail.classcategory_name1 }}
+                                            {% endif %}
+                                            {% if OrderDetail.classcategory_name2 is not empty %}
+                                                / {{ OrderDetail.classcategory_name2 }}
+                                            {% endif %}
+                                        </dd>
+                                        <dd id="detail_list__price_inc_tax--{{ OrderDetail.id }}" class="item_price">
+                                            {{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity|number_format }}
+                                        </dd>
+                                        <dd id="detail_list__total_price--{{ OrderDetail.id }}" class="item_subtotal">
+                                            小計：{{ OrderDetail.total_price|price }}
+                                        </dd>
+                                        {% if OrderDetail.product and OrderDetail.price_inc_tax != OrderDetail.productClass.price02IncTax %}
+                                            <dd id="detail_list__price02_inc_tax--{{ OrderDetail.id }}" class="text-danger">
+                                                <strong>【現在価格】{{ OrderDetail.productClass.price02IncTax|price }}</strong>
+                                            </dd>
+                                            {% set remessage = true %}
+                                        {% endif %}
+                                    </dl>
+                                </div>
+                            </div><!--/item_box-->
+                        {% endfor %}
+                    </div>
+                </div><!--/cart_item-->
+
+                <h2 class="heading02">配送情報</h2>
+                {% set OrderDetail = Order.OrderDetails.0 %}
+                {% for Shipping in Order.Shippings %}
+                    <div id="shipping_list--{{ Shipping.id }}" class="column is-edit">
+                        <h3>お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</h3>
+                        <div id="shipping_list__body--{{ Shipping.id }}" class="cart_item table">
+                            <div id="shipping_list__list--{{ Shipping.id }}" class="tbody">
+                                {% for shipmentItem in Shipping.shipmentItems %}
+                                    <div id="shipping_list__shipment--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_box tr">
+                                        <div id="shipping_list__shipment_item--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="td table">
+                                            <div id="shipping_list__shipment_image--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_photo">
+                                                {% if shipmentItem.product is null %}
+                                                    <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                                {% else %}
+                                                    {% if shipmentItem.product.enable %}
+                                                        <img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" />
+                                                    {% else %}
+                                                        <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                            <dl id="shipping_list__shipment_detail--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_detail">
+                                                <dt id="shipping_list__shipment_product_name--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_name text-default">
+                                                    {{ shipmentItem.productName }} ×{{ shipmentItem.quantity }}
+                                                </dt>
+                                                <dd id="shipping_list__shipment_class_category--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_pattern small">
+                                                    {% if shipmentItem.productClass.classCategory1 %}
+                                                        {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
+                                                    {% endif %}
+                                                    {% if shipmentItem.productClass.classCategory2 %}
+                                                        <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                                    {% endif %}
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div><!--/item_box-->
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <p id="shipping_list__address--{{ Shipping.id }}" class="address">
+                            {{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
+                            ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})&nbsp;様<br>
+                            〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>
+                            {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
+                        </p>
+                        <p id="shipping_list__delivery--{{ Shipping.id }}">
+                            配送方法：　{{ Shipping.shipping_delivery_name }}{{ Shipping.shipping_delivery_fee ? '（＋' ~ Shipping.shipping_delivery_fee|price ~ '）' : '' }}<br>
+                            お届け日：　{{ Shipping.shipping_delivery_date|date_format|default('指定なし') }}<br>
+                            お届け時間：　{{ Shipping.shipping_delivery_time|default('指定なし') }}
+                        </p>
+                    </div>
+                    {% if loop.last == false%}<hr>{% endif %}
+                {% endfor %}
+                <h2 class="heading02">お支払方法</h2>
+                <div id="detail_box__payment_method" class="column">
+                    <p>
+                        支払方法： {{ Order.PaymentMethod }}
+                    </p>
+                </div>
+                <h2 class="heading02">お問い合わせ</h2>
+                <div id="detail_box__message" class="column">
+                    <p>
+                        {{ Order.message|default('記載なし')|nl2br }}
+                    </p>
+                </div>
+
+                <h2 class="heading02">メール配信履歴一覧</h2>
+                <div id="mail_list" class="column mail_list">
+                    {% for MailHistory in Order.MailHistories %}
+                        <dl id="mail_list__item--{{ loop.index }}">
+                            <dt id="mail_list__send_date--{{ loop.index }}">
+                                <span class="date">{{ MailHistory.send_date|date("Y/m/d H:i:s") }}</span>
+                            </dt>
+                            <dd id="mail_list__subject--{{ loop.index }}">
+                                <span class="title">
+                                    <a data-toggle="modal" data-target="#myModal{{ loop.index }}">{{ MailHistory.subject }}</a>
+                                </span>
+                                <p id="mail_list__mail_body--{{ loop.index }}" style="display: none;">
+                                    {{ MailHistory.mail_body|nl2br }}<br>
+                                    <span class="close"><a>閉じる</a></span>
+                                </p>
+                            </dd>
+                        </dl>
+                    {% else %}
+                        メール履歴がありません。
+                    {% endfor %}
+                </div>
+            </div><!-- /.col -->
+
+            <div id="confirm_side" class="col-sm-4">
+                <div id="summary_box" class="total_box">
+                    <dl id="summary_box__subtotal">
+                        <dt>小計</dt>
+                        <dd>{{ Order.subtotal|price }}</dd>
+                    </dl>
+                    <dl id="summary_box__charge">
+                        <dt>手数料</dt>
+                        <dd>{{ Order.charge|price }}</dd>
+                    </dl>
+                    <dl id="summary_box__delivery_fee_total">
+                        <dt>送料合計</dt>
+                        <dd>{{ Order.delivery_fee_total|price }}</dd>
+                    </dl>
+                    {% if Order.discount > 0 %}
+                        <dl id="summary_box__discount">
+                            <dt>値引き</dt>
+                            <dd>
+                                &minus;{{ Order.discount|price }}
+                            </dd>
+                        </dl>
+                    {% endif %}
+
+                    <div id="summary_box__summary" class="total_amount">
+                        <p id="summary_box__payment_total" class="total_price">
+                            合計 <strong class="text-primary">{{ Order.payment_total|price }}<span class="small">税込</span></strong>
+                        </p>
+                        <p id="summary_box__reorder_button">
+                            <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="btn btn-primary btn-block" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">再注文する</a>
+                        </p>
+                    </div>
+                    {% if remessage %}
+                        <p id="summary_box__message" class="text-danger">
+                            <strong>※金額が変更されている商品があるため、再注文時はご注意ください。</strong>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+        <div id="detail_box__top_button" class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <a href="{{ url('mypage') }}" class="btn btn-default btn-sm">戻る</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

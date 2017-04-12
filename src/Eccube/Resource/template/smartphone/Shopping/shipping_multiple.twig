@@ -1,0 +1,188 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+    $('.add').click(function() {
+        var data = $(this).data();
+        var idx = data.idx;
+        var item = $('#item' + idx);
+        var row = $('#item' + idx + '-0');
+        var addrow = $(row).clone();
+
+        // 行のID設定
+        var i = 0;
+        $('#item' + idx).find('.shipping_item').each(function() {
+            $(this).attr('id', 'item' + idx + '-' + i);
+            i++;
+        });
+        $(addrow).attr('id', 'item' + idx + '-' + i);
+
+        // お届け先設定
+        i = 0;
+        $('#item' + idx).find('select').each(function() {
+            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
+            i++;
+        });
+        $(addrow).find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
+
+        // 数量設定
+        i = 0;
+        $('#item' + idx).find('input').each(function() {
+            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
+            i++;
+        });
+        $(addrow).find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
+
+        // 削除ボタン設定
+        i = 0;
+        $('#item' + idx).find('button').each(function() {
+            $(this).attr('data-itemidx', idx + '-' + i);
+            $(this).data('itemidx', idx + '-' + i);
+            if (i != 0) {
+                // 1行目以外の削除ボタンを表示
+                $(this).removeAttr('style');
+            }
+            i++;
+        });
+        $(addrow).find('button').attr('data-itemidx', idx + '-' + i);
+        $(addrow).find('button').data('itemidx', idx + '-' + i);
+        $(addrow).find('button').removeAttr('style');
+
+        $(item).append($(addrow));
+    });
+
+    $(document).on('click', '.delete', function() {
+        var data = $(this).data();
+        $('#item' + data.itemidx).remove();
+    });
+
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+    <h1 class="page-heading">お届け先の複数指定</h1>
+    <div id="multiple_wrap" class="container-fluid">
+        <form id="shipping-multiple-form" method="post" action="{{ url('shopping_shipping_multiple') }}">
+            {{ form_widget(form._token) }}
+            <div id="multiple_list_box" class="row">
+                <div id="multiple_list_box__body" class="col-sm-10 col-sm-offset-1">
+                    <p class="message">各商品のお届け先を選択してください。(※数量の合計は、カゴの中の数量と合わせてください。)</p>
+
+                    {% for error in errors %}
+                        <div class="text-danger">{{ error.message }}</div>
+                    {% endfor %}
+
+                    {% if is_granted('ROLE_USER') %}
+                    {% else %}
+                        <p><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
+                    {% endif %}
+
+                    {% for shipmentItem in shipmentItems %}
+                        {% set idx = loop.index0 %}
+                        {% set itemvalue = 0 %}
+                        <hr>
+                        <div id="multiple_list__item_box--{{ idx }}" class="cart_item table shipping_multiple_table">
+                            <div id="multiple_list__item_box__body--{{ idx }}" class="tbody">
+                                <div id="multiple_list__item_box_body_inner--{{ idx }}" class="item_box tr">
+                                    <div id="multiple_list__item--{{ idx }}" class="td table">
+                                        <div id="multiple_list__image--{{ idx }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}"/></div>
+                                        <dl id="multiple_list__item_detail--{{ idx }}" class="item_detail">
+                                            <dt id="multiple_list__product_name--{{ idx }}" class="item_name text-default">
+                                                <strong>{{ shipmentItem.productName }}</strong></dt>
+                                            <dd id="multiple_list__product_class_category--{{ idx }}" class="item_pattern small">
+                                                <p>
+                                                    {% if shipmentItem.productClass.classCategory1 %}
+                                                        {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
+                                                        <br>
+                                                    {% endif %}
+                                                    {% if shipmentItem.productClass.classCategory2 %}
+                                                        {{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                                        <br>
+                                                    {% endif %}
+                                                </p>
+                                            </dd>
+                                            <dd id="multiple_list__total_price--{{ idx }}">小計：{{ shipmentItem.totalPrice|price }}</dd>
+                                            {% for key, value in compItemQuantities %}
+                                                {% if shipmentItem.productClass.id == key %}
+                                                    <dd id="multiple_list__value--{{ idx }}_{{ key }}">数量：{{ value }}</dd>
+                                                    {% set itemvalue = value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </dl>
+                                    </div>
+                                </div>
+                                <!--/item_box-->
+                            </div>
+                        </div><!--/cart_item-->
+
+                        <div id="item{{ idx }}">
+                            {% for shipping in form.shipping_multiple[idx].shipping %}
+                                <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
+                                    <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="form-group">
+                                        <label>お届け先</label>
+                                        {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
+                                        {{ form_errors(shipping.customer_address) }}
+                                    </div>
+                                    <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="form-group">
+                                        <label>数量</label>
+                                        {% for key, value in compItemQuantities %}
+                                            {% if shipmentItem.productClass.id == key %}
+                                                {% set quantity = shipping.quantity.vars.value ?: value %}
+                                                {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}, 'value': quantity}) }}
+                                                {{ form_errors(shipping.quantity) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <p id="multiple_list__add_button">
+                            <button id="button__add" type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
+                        </p>
+                    {% endfor %}
+                    <div class="extra-form">
+                        {% for f in form %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div id="multiple_list__footer" class="row no-padding">
+                        <div id="multiple_list__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                            <p id="multiple_list__confirm_button">
+                                <button id="button__confirm" type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button>
+                            </p>
+                            <p id="multiple_list__back_button"><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- /.row -->
+        </form>
+    </div>
+
+{% endblock %}

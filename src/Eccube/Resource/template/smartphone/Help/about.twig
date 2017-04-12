@@ -1,0 +1,133 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+
+{% block javascript %}
+{% if BaseInfo.latitude is not null and BaseInfo.longitude is not null %}
+<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script>
+$(function() {
+    $("#maps").css({
+        'margin-top': '15px',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+        'width': '98%',
+        'height': '300px'
+    });
+    var lat = {{ BaseInfo.latitude|escape('js') }};
+    var lng = {{ BaseInfo.longitude|escape('js') }};
+    if (lat && lng) {
+        var latlng = new google.maps.LatLng(lat, lng);
+        var mapOptions = {
+            zoom: 15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map($("#maps").get(0), mapOptions);
+        var marker = new google.maps.Marker({map: map, position: latlng});
+    } else {
+        $("#maps").remove();
+    }
+});
+</script>
+{% endif %}
+{% endblock javascript %}
+
+{% block main %}
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">当サイトについて</h1>
+                <div id="help_about" class="container-fluid">
+                    <div id="help_about_box" class="row">
+                        <div id="help_about_box__body" class="col-md-10 col-md-offset-1">
+                            <div id="help_about_box__body_innner" class="dl_table">
+                                {% if BaseInfo.shop_name is defined %}
+                                    <dl id="help_about_box__shop_name">
+                                        <dt>店名</dt>
+                                        <dd>{{ BaseInfo.shop_name }}</dd>
+                                    </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.company_name is defined %}
+                                <dl id="help_about_box__company_name">
+                                    <dt>会社名</dt>
+                                    <dd>{{ BaseInfo.company_name }}</dd>
+                                </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.zip01 is defined %}
+                                <dl id="help_about_box__zip">
+                                    <dt>所在地</dt>
+                                    <dd>〒{{ BaseInfo.zip01 }}-{{ BaseInfo.zip02 }}<br />
+                                        {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
+                                    </dd>
+                                </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.tel01 is defined %}
+                                    <dl id="help_about_box__tel">
+                                        <dt>電話番号</dt>
+                                        <dd>{{ BaseInfo.tel01 }}-{{ BaseInfo.tel02 }}-{{ BaseInfo.tel03 }}</dd>
+                                    </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.fax01 is defined %}
+                                    <dl id="help_about_box__fax">
+                                        <dt>FAX番号</dt>
+                                        <dd>{{ BaseInfo.fax01 }}-{{ BaseInfo.fax02 }}-{{ BaseInfo.fax03 }}</dd>
+                                    </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.business_hour is defined %}
+                                    <dl id="help_about_box__business_hour">
+                                        <dt>営業時間</dt>
+                                        <dd>{{ BaseInfo.business_hour }}</dd>
+                                    </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.good_traded is defined %}
+                                    <dl id="help_about_box__good_traded">
+                                        <dt>取扱商品</dt>
+                                        <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
+                                    </dl>
+                                {% endif %}
+
+                                {% if BaseInfo.message is defined %}
+                                    <dl id="help_about_box__message">
+                                        <dt>メッセージ</dt>
+                                        <dd>{{ BaseInfo.message|nl2br }}</dd>
+                                    </dl>
+                                {% endif %}
+                            </div>
+
+                            <div id="maps"></div>
+
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

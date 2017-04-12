@@ -1,0 +1,48 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">パスワード発行メールの送信 完了</h1>
+                <div id="complete_wrap" class="container-fluid">
+                    <div id="complete_box" class="row">
+                        <div id="complete_box__body" class="col-md-10 col-md-offset-1">
+                            <div id="complete_box__message" class="complete_message">
+                                <h2>パスワード再発行メールの送信が完了しました。</h2>
+                                <p>ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。<br/>
+                            メールの内容をご確認いただきますよう、お願いいたします。</p>
+                                <p>※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。</p>
+                            </div>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

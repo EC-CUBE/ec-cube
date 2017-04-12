@@ -1,0 +1,88 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+<div id="cart_area">
+    <p class="clearfix cart-trigger"><a href="#cart">
+            <svg class="cb cb-shopping-cart">
+                <use xlink:href="#cb-shopping-cart"/>
+            </svg>
+            <span class="badge">{{ Cart.total_quantity }}</span>
+            <svg class="cb cb-close">
+                <use xlink:href="#cb-close"/>
+            </svg>
+        </a>
+        <span class="cart_price pc">合計 <span class="price">{{ Cart.total_price|price }}</span></span></p>
+    <div id="cart" class="cart">
+        <div class="inner">
+            {% for error in app.session.flashbag.get('eccube.front.cart.error')  %}
+                <div class="message">
+                    <p class="errormsg bg-danger">
+                        <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
+                    </p>
+                </div>
+            {% endfor %}
+            {% for CartItem in Cart.CartItems %}
+                {% set ProductClass = CartItem.Object %}
+                {% set Product = ProductClass.Product %}
+                <div class="item_box clearfix">
+                    <div class="item_photo"><img
+                                src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}"
+                                alt="{{ Product.name }}"></div>
+                    <dl class="item_detail">
+                        <dt class="item_name">{{ Product.name }}</dt>
+                        <dd class="item_pattern small">
+                            {%- if ProductClass.ClassCategory1 -%}
+                                {{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
+                                {%- if ProductClass.ClassCategory2 -%}
+                                    <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
+                                {%- endif -%}
+                            {%- endif -%}
+                        </dd>
+                        <dd class="item_price">{{ CartItem.price|price }}<span class="small">税込</span></dd>
+                        <dd class="item_quantity form-group form-inline">数量：{{ CartItem.quantity }}</dd>
+                    </dl>
+                </div><!--/item_box-->
+                <p class="cart_price sp">合計 <span class="price">{{ Cart.total_price|price }}</span></p>
+            {% endfor %}
+            {% if Cart.CartItems|length > 0 %}
+
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <a href="{{ url('cart') }}" class="btn btn-primary">カートへ進む</a>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-default btn-sm cart-trigger">キャンセル</button>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="btn_area">
+                    <div class="message">
+                        <p class="errormsg bg-danger" style="margin-bottom: 20px;">
+                            現在カート内に<br>商品はございません。
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

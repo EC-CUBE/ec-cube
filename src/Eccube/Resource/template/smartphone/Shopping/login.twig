@@ -1,0 +1,97 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block main %}
+
+    <h1 class="page-heading">ログイン</h1>
+    <div id="login_wrap" class="container-fluid">
+        <form method="post" action="{{ url('login_check') }}">
+            <input type="hidden" name="_target_path" value="shopping" />
+            <input type="hidden" name="_failure_path" value="shopping_login" />
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div id="login_box" class="login_cart row">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div id="customer_box" class="col-sm-8 col-sm-offset-2" style="height: 330px;">
+                {% else %}
+                <div id="customer_box" class="col-sm-8" style="height: 330px;">
+                {% endif %}
+                    <div id="customer_box__body" class="column">
+                        <div id="customer_box__body_inner" class="column_inner clearfix">
+                            <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
+                            <div id="customer_box__login_email" class="form-group">
+                                {{ form_widget(form.login_email, {attr: {'style' : 'ime-mode: disabled;', placeholder: 'メールアドレス', 'autofocus': true}}) }} <br class="sp">
+                            </div>
+                            <div id="customer_box__login_pass" class="form-group">
+                                {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
+                                {% if BaseInfo.option_remember_me %}
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <input type="hidden" name="login_memory" value="1">
+                                    {% else %}
+                                        {{ form_widget(form.login_memory) }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="extra-form form-group">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_row(f) }}
+                                        {{ form_widget(f) }}
+                                        {{ form_errors(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if error %}
+                                <div id="customer_box__error_message" class="form-group">
+                                    <span class="text-danger">{{ error|trans|raw }}</span>
+                                </div>
+                            {% endif %}
+                            <div id="customer_box__login_button" class="btn_area">
+                                <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
+                                <ul id="customer_box__login_menu">
+                                <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
+                                <li><a href="{{ url('entry') }}">新規会員登録</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                {% else %}
+                <div id="guest_box" class="col-sm-4" style="height: 330px;">
+                    <div id="guest_box__body" class="column">
+                        <div id="guest_box__body_inner" class="column_inner">
+                            <p id="guest_box__message" class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
+                            <p id="guest_box__confirm_button" class="btn_area">
+                                <a href="{{ url('shopping_nonmember') }}" class="btn btn-info btn-block btn-lg">ゲスト購入</a></p>
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+                {% endif %}
+            </div><!-- /.row -->
+        </form>
+    </div>
+{% endblock %}

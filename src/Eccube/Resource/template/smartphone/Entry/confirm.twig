@@ -1,0 +1,147 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'registration_page' %}
+
+{% block main %}
+    <h1 class="page-heading">新規会員登録確認</h1>
+    <div id="confirm_wrap" class="container-fluid">
+        <div id="confirm_box" class="row">
+            <div id="confirm_box__body" class="col-md-10 col-md-offset-1">
+                <p id="confirm_box__message">下記の内容で送信してもよろしいでしょうか？<br/>よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
+
+                <form method="post" action="{{ url('entry') }}">
+                    {{ form_widget(form._token) }}
+                    <div id="confirm_box__body_inner" class="dl_table">
+                        <dl id="confirm_box__name">
+                            <dt>{{ form_label(form.name) }}</dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
+                                {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__kana">
+                            <dt>{{ form_label(form.kana) }}</dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
+                                {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__company_name">
+                            <dt>{{ form_label(form.company_name) }}</dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.company_name) }}
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__address_detail">
+                            <dt>{{ form_label(form.address) }}</dt>
+                            <dd>
+                                <div id="confirm_box__zip" class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                <div id="confirm_box__address" class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                    {{ form_widget(form.address) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__tel">
+                            <dt>{{ form_label(form.tel) }}</dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__fax">
+                            <dt>{{ form_label(form.fax) }}</dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__email">
+                            <dt>{{ form_label(form.email) }}</dt>
+                            <dd>
+                                <div class="form-group">
+                                    {{ form_widget(form.email.first) }}
+                                    {{ form_widget(form.email.second, {freeze_display_text: false}) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__password">
+                            <dt>{{ form_label(form.password) }}</dt>
+                            <dd>
+                                <div class="form-group">
+                                    ********
+                                    {{ form_widget(form.password.first, {freeze_display_text: false}) }}
+                                    {{ form_widget(form.password.second, {freeze_display_text: false}) }}
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="dl_table not_required">
+                        <dl id="confirm_box__birth">
+                            <dt>{{ form_label(form.birth) }}</dt>
+                            <dd>
+                                <div class="form-group form-inline">
+                                    {{ form_widget(form.birth) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__sex">
+                            <dt>{{ form_label(form.sex) }}</dt>
+                            <dd>
+                                <div class="form-group form-inline">
+                                    {{ form_widget(form.sex) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="confirm_box__job">
+                            <dt>{{ form_label(form.job) }}</dt>
+                            <dd>
+                                <div class="form-group form-inline">
+                                    {{ form_widget(form.job) }}
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div id="confirm_box__footer" class="row no-padding">
+                        <div id="confirm_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                            <p id="confirm_box__insert_button">
+                                <button type="submit" class="btn btn-primary btn-block" name="mode" value="complete">
+                                    会員登録をする
+                                </button>
+                            </p>
+                            <p id="confirm_box__back_button">
+                                <button type="submit" class="btn btn-info btn-block" name="mode" value="back">戻る
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+{% endblock %}

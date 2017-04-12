@@ -1,0 +1,58 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% if is_granted('ROLE_USER') %}
+    <div id="member" class="member drawer_block pc">
+        <ul class="member_link">
+            <li>
+                <a href="{{ url('mypage') }}">
+                    <svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg>マイページ
+                </a>
+            </li>
+            {% if BaseInfo.option_favorite_product == 1 %}
+                <li><a href="{{ url('mypage_favorite') }}"><svg class="cb cb-heart-circle"><use xlink:href="#cb-heart-circle"></use></svg>お気に入り</a></li>
+            {% endif %}
+            <li>
+                <a href="{{ url('logout') }}">
+                    <svg class="cb cb-lock-circle"><use xlink:href="#cb-lock-circle" /></svg>ログアウト
+                </a>
+            </li>
+        </ul>
+    </div>
+{% else %}
+    <div id="member" class="member drawer_block pc">
+        <ul class="member_link">
+            <li>
+                <a href="{{ url('entry') }}">
+                    <svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg>新規会員登録
+                </a>
+            </li>
+            {% if BaseInfo.option_favorite_product == 1 %}
+                <li><a href="{{ url('mypage_favorite') }}"><svg class="cb cb-heart-circle"><use xlink:href="#cb-heart-circle"></use></svg>お気に入り</a></li>
+            {% endif %}
+            <li>
+                <a href="{{ url('mypage_login') }}">
+                    <svg class="cb cb-lock-circle"><use xlink:href="#cb-lock-circle" /></svg>ログイン
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

@@ -1,0 +1,82 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <h1 class="page-heading">ログイン</h1>
+    <div class="container-fluid">
+        <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')">
+            {% if app.session.flashBag.has('eccube.login.target.path') %}
+                {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
+                    <input type="hidden" name="_target_path" value="{{ targetPath }}" />
+                {% endfor %}
+            {% endif %}
+            <div id="login_box" class="row">
+                <div id="mypage_login_wrap" class="col-sm-8 col-sm-offset-2">
+                    <div id="mypage_login_box" class="column">
+
+                        <div id="mypage_login_box__body" class="column_inner clearfix">
+                            <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
+                            <div id="mypage_login_box__login_email" class="form-group">
+                                {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : 'メールアドレス', 'autofocus': true}}) }}
+                            </div>
+                            <div id="mypage_login_box__login_pass" class="form-group">
+                                {{ form_widget(form.login_pass,  {'attr': {'placeholder' : 'パスワード' }}) }}
+                                {% if BaseInfo.option_remember_me %}
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <input id="mypage_login_box__login_memory" type="hidden" name="login_memory" value="1">
+                                    {% else %}
+                                        {{ form_widget(form.login_memory) }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="extra-form form-group">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_label(f) }}
+                                        {{ form_widget(f) }}
+                                        {{ form_errors(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if error %}
+                            <div id="mypage_login_box__error_message" class="form-group">
+                                <span class="text-danger">{{ error|trans|raw }}</span>
+                            </div>
+                            {% endif %}
+                            <div id="mypage_login__login_button" class="btn_area">
+                                <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
+                                <ul id="mypage_login__login_menu" >
+                                    <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
+                                    <li><a href="{{ url('entry') }}">新規会員登録</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        </form>
+    </div>
+{% endblock %}

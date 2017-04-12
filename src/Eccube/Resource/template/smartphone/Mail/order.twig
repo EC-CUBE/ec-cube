@@ -1,0 +1,110 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{{ Order.name01 }} {{ Order.name02 }} 様
+
+{{ header }}
+
+************************************************
+　ご請求金額
+************************************************
+
+ご注文番号：{{ Order.id }}
+お支払い合計：{{ Order.payment_total|price}}
+お支払い方法：{{ Order.payment_method }}
+メッセージ：{{ Order.message }}
+
+
+************************************************
+　ご注文商品明細
+************************************************
+
+{% for OrderDetail in Order.OrderDetails %}
+商品コード: {{ OrderDetail.product_code }}
+商品名: {{ OrderDetail.product_name }}  {{ OrderDetail.classcategory_name1 }}  {{ OrderDetail.classcategory_name2 }}
+単価： {{ calc_inc_tax(OrderDetail.price, OrderDetail.tax_rate, OrderDetail.tax_rule)|price }}
+数量： {{ OrderDetail.quantity|number_format }}
+
+{% endfor %}
+
+-------------------------------------------------
+小　計 {{ Order.subtotal|price }}{% if Order.tax > 0 %}(うち消費税 {{ Order.tax|price }}){% endif %}
+
+手数料 {{ Order.charge|price }}
+送　料 {{ Order.delivery_fee_total|price}}
+{% if Order.discount > 0 %}
+値引き {{ (0 - Order.discount)|price}}
+{% endif %}
+============================================
+合　計 {{ Order.payment_total|price }}
+
+************************************************
+　ご注文者情報
+************************************************
+お名前　：{{ Order.name01 }} {{ Order.name02 }} 様
+フリガナ：{{ Order.kana01 }} {{ Order.kana02 }} 様
+{% if Order.company_name %}
+会社名　：{{ Order.company_name }}
+{% endif %}
+{% if app.config.form_country_enable %}
+国　　　：{{ Order.Country }}
+ZIPCODE ：{{ Order.zip_code }}
+{% endif %}
+郵便番号：〒{{ Order.zip01 }}-{{ Order.zip02 }}
+住所　　：{{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
+電話番号：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
+FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+
+メールアドレス：{{ Order.email }}
+
+************************************************
+　配送情報
+************************************************
+
+{%  for Shipping in Order.Shippings %}
+◎お届け先{% if Order.multiple %}{{ loop.index }}{% endif %}
+
+お名前　：{{ Shipping.name01 }} {{ Shipping.name02 }} 様
+フリガナ：{{ Shipping.kana01 }} {{ Shipping.kana02 }} 様
+{% if Shipping.company_name %}
+会社名　：{{ Shipping.company_name }}
+{% endif %}
+{% if app.config.form_country_enable %}
+    　国　　　：{{ Shipping.Country.name }}
+    　ZIPCODE ：{{ Shipping.zip_code }}
+{% endif %}
+郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+住所　　：{{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
+電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
+FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+
+お届け日：{{ Shipping.shipping_delivery_date is empty ? '指定なし' : Shipping.shipping_delivery_date|date_format }}
+お届け時間：{{ Shipping.shipping_delivery_time|default('指定なし') }}
+
+{%  for ShipmentItem in Shipping.ShipmentItems %}
+商品コード: {{ ShipmentItem.product_code }}
+商品名: {{ ShipmentItem.product_name }}  {{ ShipmentItem.classcategory_name1 }}  {{ ShipmentItem.classcategory_name2 }}
+数量：{{ ShipmentItem.quantity|number_format }}
+
+{% endfor %}
+{% endfor %}
+
+{{ footer }}
