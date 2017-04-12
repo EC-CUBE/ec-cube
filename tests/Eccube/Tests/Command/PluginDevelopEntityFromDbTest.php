@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Command;
 
-use Eccube\Application;
 use Eccube\Command\PluginCommand;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
@@ -365,5 +364,12 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
                 $entityManager->getConnection()->executeQuery($query);
             }
         }
+    }
+
+    public function tearDown()
+    {
+        $this->app->initDoctrine();
+        $this->cleanUpProperties();
+        $this->app = null;
     }
 }
