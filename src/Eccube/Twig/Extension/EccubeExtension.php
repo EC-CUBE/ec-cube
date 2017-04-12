@@ -48,6 +48,7 @@ class EccubeExtension extends \Twig_Extension
     {
         $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
 
+        $app = $this->app;
         return array(
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
@@ -58,6 +59,33 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
             new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
+
+            new \Twig_SimpleFunction('php_*', function() {
+                    $arg_list = func_get_args();
+                    $function = array_shift($arg_list);
+                    if (is_callable($function)) {
+                        return call_user_func_array($function, $arg_list);
+                    }
+                    trigger_error('Called to an undefined function : php_'. $function, E_USER_WARNING);
+
+            }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
+
+            new \Twig_SimpleFunction('eccube_block_*', function() use ($app) {
+                    $sources = $app['eccube.twig.block.templates'];
+                    $arg_list = func_get_args();
+                    $block_name = array_shift($arg_list);
+                    foreach ($sources as $source) {
+                        $template = $app['twig']->loadTemplate($source);
+                        if (!isset($arg_list[0])) {
+                            $arg_list[0] = [];
+                        }
+                        if ($template->hasBlock($block_name, $arg_list[0])) {
+                            echo $result = $template->renderBlock($block_name, $arg_list[0]);
+                            return;
+                        }
+                    }
+                    trigger_error($block_name.' block is not found', E_USER_WARNING);
+            }, ['pre_escape' => 'html', 'is_safe' => ['html']])
         );
     }
 
@@ -75,6 +103,11 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFilter('ellipsis', array($this, 'getEllipsis')),
             new \Twig_SimpleFilter('time_ago', array($this, 'getTimeAgo')),
         );
+    }
+
+    public function getTokenParsers()
+    {
+        return $this->app['twig_parsers'];
     }
 
     /**
