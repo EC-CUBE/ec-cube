@@ -22,15 +22,15 @@
  */
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 
 use Doctrine\ORM\Events;
 
 /**
  * @Annotation
- * @TargetEvent(Events::onFlush)
+ * @TargetEvent(Events::postRemove)
  */
-final class OnFlush extends EntityEvent
+final class PostRemove extends EntityEvent
 {
 }

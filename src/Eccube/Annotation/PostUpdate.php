@@ -22,15 +22,15 @@
  */
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 
 use Doctrine\ORM\Events;
 
 /**
  * @Annotation
- * @TargetEvent(Events::preUpdate)
+ * @TargetEvent(Events::postUpdate)
  */
-final class PreUpdate extends EntityEvent
+final class PostUpdate extends EntityEvent
 {
 }

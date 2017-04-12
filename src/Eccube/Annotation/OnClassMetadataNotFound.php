@@ -22,15 +22,15 @@
  */
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 
 use Doctrine\ORM\Events;
 
 /**
  * @Annotation
- * @TargetEvent(Events::postFlush)
+ * @TargetEvent(Events::onClassMetadataNotFound)
  */
-final class PostFlush extends EntityEvent
+final class OnClassMetadataNotFound extends EntityEvent
 {
 }

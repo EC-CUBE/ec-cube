@@ -22,15 +22,15 @@
  */
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 
 use Doctrine\ORM\Events;
 
 /**
  * @Annotation
- * @TargetEvent(Events::postUpdate)
+ * @TargetEvent(Events::onClear)
  */
-final class PostUpdate extends EntityEvent
+final class OnClear extends EntityEvent
 {
 }
