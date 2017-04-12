@@ -431,6 +431,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
             return $types;
         });
+        $app['eccube.entity.event.dispatcher']->addEventListener(new \Acme\Entity\SoldOutEventListener());
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
