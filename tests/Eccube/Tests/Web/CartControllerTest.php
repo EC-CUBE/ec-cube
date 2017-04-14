@@ -63,4 +63,23 @@ class CartControllerTest extends AbstractWebTestCase
         $this->client->request('PUT', '/cart/remove/1');
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
+
+    public function testRoutingCartUpWithLimit()
+    {
+        $this->client->request('POST', '/cart/add', array('product_class_id' => 10));
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $this->client->request('PUT', '/cart/up/10');
+        $crawler = $this->client->followRedirect();
+        $errorMeg = $crawler->filter("p.errormsg");
+        //count message error
+        $this->expected = 1;
+        $this->actual = count($errorMeg);
+        $this->verify();
+    }
 }
