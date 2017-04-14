@@ -311,7 +311,7 @@ class CartService
                 ->setPrice($ProductClass->getPrice02IncTax())
                 ->setQuantity($quantity);
 
-            $this->cart->setCartItem($CartItem);
+            $this->cart->setCartItem($CartItem, $this->generateCartCompareService());
         }
 
         return $this;
@@ -444,7 +444,7 @@ class CartService
                     if ((0 < $quantity) && ($CartItem->getQuantity() != $quantity)) {
                         // 個数が異なれば更新
                         $CartItem->setQuantity($quantity);
-                        $this->cart->setCartItem($CartItem);
+                        $this->cart->setCartItem($CartItem, $this->generateCartCompareService());
                     }
                 }
 
@@ -712,4 +712,11 @@ class CartService
         return $quantity;
     }
 
+    /**
+     * @return \Eccube\Service\CartCompareService
+     */
+    public function generateCartCompareService()
+    {
+        return $this->app['eccube.service.cart.compare']($this->getCart());
+    }
 }

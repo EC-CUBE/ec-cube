@@ -91,21 +91,17 @@ class Cart extends \Eccube\Entity\AbstractEntity
 
     /**
      * @param  \Eccube\Entity\CartItem $AddCartItem
+     * @param  \Eccube\Service\CartCompareService $compareService
      * @return \Eccube\Entity\Cart
      */
-    public function setCartItem(\Eccube\Entity\CartItem $AddCartItem)
+    public function setCartItem(\Eccube\Entity\CartItem $AddCartItem, $compareService)
     {
-        $find = false;
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
-                $find = true;
-                $CartItem
-                    ->setPrice($AddCartItem->getPrice())
-                    ->setQuantity($AddCartItem->getQuantity());
-            }
-        }
-
-        if (!$find) {
+        $CartItem = $compareService->getExistsCartItem($AddCartItem);
+        if ($CartItem) {
+            $CartItem
+                ->setPrice($AddCartItem->getPrice())
+                ->setQuantity($AddCartItem->getQuantity());
+        } else {
             $this->addCartItem($AddCartItem);
         }
 
