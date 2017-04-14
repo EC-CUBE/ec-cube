@@ -154,9 +154,7 @@ class LayoutController
                         ->setBlock($Block)
                         ->setPageLayout($TargetPageLayout)
                         ->setAnywhere($anywhere);
-//                    if ($id == 0) {
-//                        $BlockPosition->setAnywhere(0);
-//                    }
+
                     $TargetPageLayout->addBlockPosition($BlockPosition);
                     $app['orm.em']->persist($BlockPosition);
                 }
