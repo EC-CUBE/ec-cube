@@ -22,15 +22,15 @@
  */
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 
 use Doctrine\ORM\Events;
 
 /**
  * @Annotation
- * @TargetEvent(Events::loadClassMetadata)
+ * @TargetEvent(Events::prePersist)
  */
-final class LoadClassMetadata extends EntityEvent
+final class PrePersist extends EntityEvent
 {
 }

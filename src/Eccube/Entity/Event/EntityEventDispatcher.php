@@ -30,8 +30,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Eccube\Entity\Event\Annotations\TargetEntity;
-use Eccube\Entity\Event\Annotations\TargetEvent;
+use Eccube\Annotation\TargetEntity;
+use Eccube\Annotation\TargetEvent;
 
 class EntityEventDispatcher
 {
@@ -42,7 +42,6 @@ class EntityEventDispatcher
 
     function __construct(EntityManager $em)
     {
-        AnnotationRegistry::registerAutoloadNamespace('Eccube\Entity\Event\Annotations', __DIR__.'/../../..');
         $this->entityManager = $em;
     }
 

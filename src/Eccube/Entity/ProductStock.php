@@ -6,53 +6,19 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductStock
+ *
+ * @ORM\Table(name="dtb_product_stock")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\ProductStockRepository")
  */
 class ProductStock extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
-    private $id;
-
-    /**
-     * @var integer
-     */
     private $product_class_id;
-
-    /**
-     * @var string
-     */
-    private $stock;
-
-    /**
-     * @var \DateTime
-     */
-    private $create_date;
-
-    /**
-     * @var \DateTime
-     */
-    private $update_date;
-
-    /**
-     * @var \Eccube\Entity\Member
-     */
-    private $Creator;
-
-    public function __clone()
-    {
-        $this->id = null;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set product_class_id
@@ -63,14 +29,12 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     public function setProductClassId($productClassId)
     {
         $this->product_class_id = $productClassId;
-
         return $this;
     }
-
     /**
      * Get product_class_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductClassId()
     {
@@ -78,12 +42,74 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set stock
+     * @var integer
      *
-     * @param string $stock
+     * @ORM\Column(name="product_stock_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="stock", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $stock;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
+     */
+    private $create_date;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
+     */
+    private $update_date;
+
+    /**
+     * @var \Eccube\Entity\ProductClass
+     *
+     * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="ProductStock")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="product_class_id")
+     * })
+     */
+    private $ProductClass;
+
+    /**
+     * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
+     */
+    private $Creator;
+
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set stock.
+     *
+     * @param string|null $stock
+     *
      * @return ProductStock
      */
-    public function setStock($stock)
+    public function setStock($stock = null)
     {
         $this->stock = $stock;
 
@@ -91,9 +117,9 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get stock
+     * Get stock.
      *
-     * @return string 
+     * @return string|null
      */
     public function getStock()
     {
@@ -101,9 +127,10 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return ProductStock
      */
     public function setCreateDate($createDate)
@@ -114,9 +141,9 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -124,9 +151,10 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return ProductStock
      */
     public function setUpdateDate($updateDate)
@@ -137,9 +165,9 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -147,37 +175,10 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set productClass.
      *
-     * @param \Eccube\Entity\Member $creator
-     * @return ProductStock
-     */
-    public function setCreator(\Eccube\Entity\Member $creator)
-    {
-        $this->Creator = $creator;
-
-        return $this;
-    }
-
-    /**
-     * Get Creator
+     * @param \Eccube\Entity\ProductClass|null $productClass
      *
-     * @return \Eccube\Entity\Member 
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
-    }
-    /**
-     * @var \Eccube\Entity\ProductClass
-     */
-    private $ProductClass;
-
-
-    /**
-     * Set ProductClass
-     *
-     * @param \Eccube\Entity\ProductClass $productClass
      * @return ProductStock
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
@@ -188,12 +189,36 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get ProductClass
+     * Get productClass.
      *
-     * @return \Eccube\Entity\ProductClass 
+     * @return \Eccube\Entity\ProductClass|null
      */
     public function getProductClass()
     {
         return $this->ProductClass;
+    }
+
+    /**
+     * Set creator.
+     *
+     * @param \Eccube\Entity\Member|null $creator
+     *
+     * @return ProductStock
+     */
+    public function setCreator(\Eccube\Entity\Member $creator = null)
+    {
+        $this->Creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator.
+     *
+     * @return \Eccube\Entity\Member|null
+     */
+    public function getCreator()
+    {
+        return $this->Creator;
     }
 }

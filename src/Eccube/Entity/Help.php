@@ -27,169 +27,245 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Help
+ *
+ * @ORM\Table(name="dtb_help")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\HelpRepository")
  */
 class Help extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="customer_agreement", type="text", nullable=true)
      */
     private $customer_agreement;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_company", type="string", length=255, nullable=true)
      */
     private $law_company;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_manager", type="string", length=255, nullable=true)
      */
     private $law_manager;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_zip01", type="string", length=3, nullable=true)
      */
     private $law_zip01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_zip02", type="string", length=4, nullable=true)
      */
     private $law_zip02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_zipcode", type="string", length=7, nullable=true)
      */
     private $law_zipcode;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_addr01", type="string", length=255, nullable=true)
      */
     private $law_addr01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_addr02", type="string", length=255, nullable=true)
      */
     private $law_addr02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_tel01", type="string", length=5, nullable=true)
      */
     private $law_tel01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_tel02", type="string", length=4, nullable=true)
      */
     private $law_tel02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_tel03", type="string", length=4, nullable=true)
      */
     private $law_tel03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_fax01", type="string", length=5, nullable=true)
      */
     private $law_fax01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_fax02", type="string", length=4, nullable=true)
      */
     private $law_fax02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_fax03", type="string", length=4, nullable=true)
      */
     private $law_fax03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_email", type="string", length=255, nullable=true)
      */
     private $law_email;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_url", type="string", length=4000, nullable=true)
      */
     private $law_url;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term01", type="text", nullable=true)
      */
     private $law_term01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term02", type="text", nullable=true)
      */
     private $law_term02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term03", type="text", nullable=true)
      */
     private $law_term03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term04", type="text", nullable=true)
      */
     private $law_term04;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term05", type="text", nullable=true)
      */
     private $law_term05;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term06", type="text", nullable=true)
      */
     private $law_term06;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term07", type="text", nullable=true)
      */
     private $law_term07;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term08", type="text", nullable=true)
      */
     private $law_term08;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term09", type="text", nullable=true)
      */
     private $law_term09;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="law_term10", type="text", nullable=true)
      */
     private $law_term10;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
      * @var \Eccube\Entity\Master\Country
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="law_country_id", referencedColumnName="id")
+     * })
      */
     private $LawCountry;
 
     /**
      * @var \Eccube\Entity\Master\Pref
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="law_pref", referencedColumnName="id")
+     * })
      */
     private $LawPref;
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -197,12 +273,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set customer_agreement
+     * Set customerAgreement.
      *
-     * @param string $customerAgreement
+     * @param string|null $customerAgreement
+     *
      * @return Help
      */
-    public function setCustomerAgreement($customerAgreement)
+    public function setCustomerAgreement($customerAgreement = null)
     {
         $this->customer_agreement = $customerAgreement;
 
@@ -210,9 +287,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get customer_agreement
+     * Get customerAgreement.
      *
-     * @return string 
+     * @return string|null
      */
     public function getCustomerAgreement()
     {
@@ -220,12 +297,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_company
+     * Set lawCompany.
      *
-     * @param string $lawCompany
+     * @param string|null $lawCompany
+     *
      * @return Help
      */
-    public function setLawCompany($lawCompany)
+    public function setLawCompany($lawCompany = null)
     {
         $this->law_company = $lawCompany;
 
@@ -233,9 +311,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_company
+     * Get lawCompany.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawCompany()
     {
@@ -243,12 +321,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_manager
+     * Set lawManager.
      *
-     * @param string $lawManager
+     * @param string|null $lawManager
+     *
      * @return Help
      */
-    public function setLawManager($lawManager)
+    public function setLawManager($lawManager = null)
     {
         $this->law_manager = $lawManager;
 
@@ -256,9 +335,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_manager
+     * Get lawManager.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawManager()
     {
@@ -266,12 +345,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_zip01
+     * Set lawZip01.
      *
-     * @param string $lawZip01
+     * @param string|null $lawZip01
+     *
      * @return Help
      */
-    public function setLawZip01($lawZip01)
+    public function setLawZip01($lawZip01 = null)
     {
         $this->law_zip01 = $lawZip01;
 
@@ -279,9 +359,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_zip01
+     * Get lawZip01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawZip01()
     {
@@ -289,12 +369,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_zip02
+     * Set lawZip02.
      *
-     * @param string $lawZip02
+     * @param string|null $lawZip02
+     *
      * @return Help
      */
-    public function setLawZip02($lawZip02)
+    public function setLawZip02($lawZip02 = null)
     {
         $this->law_zip02 = $lawZip02;
 
@@ -302,9 +383,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_zip02
+     * Get lawZip02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawZip02()
     {
@@ -312,12 +393,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_zipcode
+     * Set lawZipcode.
      *
-     * @param string $lawZipcode
+     * @param string|null $lawZipcode
+     *
      * @return Help
      */
-    public function setLawZipcode($lawZipcode)
+    public function setLawZipcode($lawZipcode = null)
     {
         $this->law_zipcode = $lawZipcode;
 
@@ -325,9 +407,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_zipcode
+     * Get lawZipcode.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawZipcode()
     {
@@ -335,12 +417,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_addr01
+     * Set lawAddr01.
      *
-     * @param string $lawAddr01
+     * @param string|null $lawAddr01
+     *
      * @return Help
      */
-    public function setLawAddr01($lawAddr01)
+    public function setLawAddr01($lawAddr01 = null)
     {
         $this->law_addr01 = $lawAddr01;
 
@@ -348,9 +431,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_addr01
+     * Get lawAddr01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawAddr01()
     {
@@ -358,12 +441,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_addr02
+     * Set lawAddr02.
      *
-     * @param string $lawAddr02
+     * @param string|null $lawAddr02
+     *
      * @return Help
      */
-    public function setLawAddr02($lawAddr02)
+    public function setLawAddr02($lawAddr02 = null)
     {
         $this->law_addr02 = $lawAddr02;
 
@@ -371,9 +455,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_addr02
+     * Get lawAddr02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawAddr02()
     {
@@ -381,12 +465,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_tel01
+     * Set lawTel01.
      *
-     * @param string $lawTel01
+     * @param string|null $lawTel01
+     *
      * @return Help
      */
-    public function setLawTel01($lawTel01)
+    public function setLawTel01($lawTel01 = null)
     {
         $this->law_tel01 = $lawTel01;
 
@@ -394,9 +479,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_tel01
+     * Get lawTel01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTel01()
     {
@@ -404,12 +489,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_tel02
+     * Set lawTel02.
      *
-     * @param string $lawTel02
+     * @param string|null $lawTel02
+     *
      * @return Help
      */
-    public function setLawTel02($lawTel02)
+    public function setLawTel02($lawTel02 = null)
     {
         $this->law_tel02 = $lawTel02;
 
@@ -417,9 +503,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_tel02
+     * Get lawTel02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTel02()
     {
@@ -427,12 +513,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_tel03
+     * Set lawTel03.
      *
-     * @param string $lawTel03
+     * @param string|null $lawTel03
+     *
      * @return Help
      */
-    public function setLawTel03($lawTel03)
+    public function setLawTel03($lawTel03 = null)
     {
         $this->law_tel03 = $lawTel03;
 
@@ -440,9 +527,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_tel03
+     * Get lawTel03.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTel03()
     {
@@ -450,12 +537,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_fax01
+     * Set lawFax01.
      *
-     * @param string $lawFax01
+     * @param string|null $lawFax01
+     *
      * @return Help
      */
-    public function setLawFax01($lawFax01)
+    public function setLawFax01($lawFax01 = null)
     {
         $this->law_fax01 = $lawFax01;
 
@@ -463,9 +551,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_fax01
+     * Get lawFax01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawFax01()
     {
@@ -473,12 +561,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_fax02
+     * Set lawFax02.
      *
-     * @param string $lawFax02
+     * @param string|null $lawFax02
+     *
      * @return Help
      */
-    public function setLawFax02($lawFax02)
+    public function setLawFax02($lawFax02 = null)
     {
         $this->law_fax02 = $lawFax02;
 
@@ -486,9 +575,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_fax02
+     * Get lawFax02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawFax02()
     {
@@ -496,12 +585,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_fax03
+     * Set lawFax03.
      *
-     * @param string $lawFax03
+     * @param string|null $lawFax03
+     *
      * @return Help
      */
-    public function setLawFax03($lawFax03)
+    public function setLawFax03($lawFax03 = null)
     {
         $this->law_fax03 = $lawFax03;
 
@@ -509,9 +599,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_fax03
+     * Get lawFax03.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawFax03()
     {
@@ -519,12 +609,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_email
+     * Set lawEmail.
      *
-     * @param string $lawEmail
+     * @param string|null $lawEmail
+     *
      * @return Help
      */
-    public function setLawEmail($lawEmail)
+    public function setLawEmail($lawEmail = null)
     {
         $this->law_email = $lawEmail;
 
@@ -532,9 +623,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_email
+     * Get lawEmail.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawEmail()
     {
@@ -542,12 +633,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_url
+     * Set lawUrl.
      *
-     * @param string $lawUrl
+     * @param string|null $lawUrl
+     *
      * @return Help
      */
-    public function setLawUrl($lawUrl)
+    public function setLawUrl($lawUrl = null)
     {
         $this->law_url = $lawUrl;
 
@@ -555,9 +647,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_url
+     * Get lawUrl.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawUrl()
     {
@@ -565,12 +657,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term01
+     * Set lawTerm01.
      *
-     * @param string $lawTerm01
+     * @param string|null $lawTerm01
+     *
      * @return Help
      */
-    public function setLawTerm01($lawTerm01)
+    public function setLawTerm01($lawTerm01 = null)
     {
         $this->law_term01 = $lawTerm01;
 
@@ -578,9 +671,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term01
+     * Get lawTerm01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm01()
     {
@@ -588,12 +681,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term02
+     * Set lawTerm02.
      *
-     * @param string $lawTerm02
+     * @param string|null $lawTerm02
+     *
      * @return Help
      */
-    public function setLawTerm02($lawTerm02)
+    public function setLawTerm02($lawTerm02 = null)
     {
         $this->law_term02 = $lawTerm02;
 
@@ -601,9 +695,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term02
+     * Get lawTerm02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm02()
     {
@@ -611,12 +705,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term03
+     * Set lawTerm03.
      *
-     * @param string $lawTerm03
+     * @param string|null $lawTerm03
+     *
      * @return Help
      */
-    public function setLawTerm03($lawTerm03)
+    public function setLawTerm03($lawTerm03 = null)
     {
         $this->law_term03 = $lawTerm03;
 
@@ -624,9 +719,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term03
+     * Get lawTerm03.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm03()
     {
@@ -634,12 +729,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term04
+     * Set lawTerm04.
      *
-     * @param string $lawTerm04
+     * @param string|null $lawTerm04
+     *
      * @return Help
      */
-    public function setLawTerm04($lawTerm04)
+    public function setLawTerm04($lawTerm04 = null)
     {
         $this->law_term04 = $lawTerm04;
 
@@ -647,9 +743,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term04
+     * Get lawTerm04.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm04()
     {
@@ -657,12 +753,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term05
+     * Set lawTerm05.
      *
-     * @param string $lawTerm05
+     * @param string|null $lawTerm05
+     *
      * @return Help
      */
-    public function setLawTerm05($lawTerm05)
+    public function setLawTerm05($lawTerm05 = null)
     {
         $this->law_term05 = $lawTerm05;
 
@@ -670,9 +767,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term05
+     * Get lawTerm05.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm05()
     {
@@ -680,12 +777,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term06
+     * Set lawTerm06.
      *
-     * @param string $lawTerm06
+     * @param string|null $lawTerm06
+     *
      * @return Help
      */
-    public function setLawTerm06($lawTerm06)
+    public function setLawTerm06($lawTerm06 = null)
     {
         $this->law_term06 = $lawTerm06;
 
@@ -693,9 +791,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term06
+     * Get lawTerm06.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm06()
     {
@@ -703,12 +801,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term07
+     * Set lawTerm07.
      *
-     * @param string $lawTerm07
+     * @param string|null $lawTerm07
+     *
      * @return Help
      */
-    public function setLawTerm07($lawTerm07)
+    public function setLawTerm07($lawTerm07 = null)
     {
         $this->law_term07 = $lawTerm07;
 
@@ -716,9 +815,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term07
+     * Get lawTerm07.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm07()
     {
@@ -726,12 +825,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term08
+     * Set lawTerm08.
      *
-     * @param string $lawTerm08
+     * @param string|null $lawTerm08
+     *
      * @return Help
      */
-    public function setLawTerm08($lawTerm08)
+    public function setLawTerm08($lawTerm08 = null)
     {
         $this->law_term08 = $lawTerm08;
 
@@ -739,9 +839,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term08
+     * Get lawTerm08.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm08()
     {
@@ -749,12 +849,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term09
+     * Set lawTerm09.
      *
-     * @param string $lawTerm09
+     * @param string|null $lawTerm09
+     *
      * @return Help
      */
-    public function setLawTerm09($lawTerm09)
+    public function setLawTerm09($lawTerm09 = null)
     {
         $this->law_term09 = $lawTerm09;
 
@@ -762,9 +863,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term09
+     * Get lawTerm09.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm09()
     {
@@ -772,12 +873,13 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_term10
+     * Set lawTerm10.
      *
-     * @param string $lawTerm10
+     * @param string|null $lawTerm10
+     *
      * @return Help
      */
-    public function setLawTerm10($lawTerm10)
+    public function setLawTerm10($lawTerm10 = null)
     {
         $this->law_term10 = $lawTerm10;
 
@@ -785,9 +887,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get law_term10
+     * Get lawTerm10.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLawTerm10()
     {
@@ -795,9 +897,10 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return Help
      */
     public function setCreateDate($createDate)
@@ -808,9 +911,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -818,9 +921,10 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return Help
      */
     public function setUpdateDate($updateDate)
@@ -831,9 +935,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -841,9 +945,10 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set LawCountry
+     * Set lawCountry.
      *
-     * @param \Eccube\Entity\Master\Country $lawCountry
+     * @param \Eccube\Entity\Master\Country|null $lawCountry
+     *
      * @return Help
      */
     public function setLawCountry(\Eccube\Entity\Master\Country $lawCountry = null)
@@ -854,9 +959,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get LawCountry
+     * Get lawCountry.
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country|null
      */
     public function getLawCountry()
     {
@@ -864,9 +969,10 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set LawPref
+     * Set lawPref.
      *
-     * @param \Eccube\Entity\Master\Pref $lawPref
+     * @param \Eccube\Entity\Master\Pref|null $lawPref
+     *
      * @return Help
      */
     public function setLawPref(\Eccube\Entity\Master\Pref $lawPref = null)
@@ -877,9 +983,9 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get LawPref
+     * Get lawPref.
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref|null
      */
     public function getLawPref()
     {

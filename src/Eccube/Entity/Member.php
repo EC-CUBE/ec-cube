@@ -24,17 +24,19 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
- * member
- * @Entity
+ * Member
+ *
+ * @ORM\Table(name="dtb_member")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
  */
 class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
@@ -78,81 +80,119 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * @Id
-     * @Column(name="member_id")
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="member_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="department", type="string", length=255, nullable=true)
      */
     private $department;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="login_id", type="string", length=255)
      */
     private $login_id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="salt", type="string", length=255)
      */
     private $salt;
 
     /**
-     * @var \Eccube\Entity\Master\Authority
-     */
-    private $Authority;
-
-    /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
     /**
-     * @var \Eccube\Entity\Master\Work
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $Work;
-
-    /**
-     * @var integer
-     */
-    private $del_flg;
-
-    /**
-     * @var \Eccube\Entity\Member
-     */
-    private $Creator;
+    private $del_flg = 0;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="login_date", type="datetime", nullable=true)
      */
     private $login_date;
 
     /**
-     * Get id
+     * @var \Eccube\Entity\Master\Work
      *
-     * @return integer
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="work", referencedColumnName="id")
+     * })
+     */
+    private $Work;
+
+    /**
+     * @var \Eccube\Entity\Master\Authority
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="authority", referencedColumnName="id")
+     * })
+     */
+    private $Authority;
+
+    /**
+     * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
+     */
+    private $Creator;
+
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -160,12 +200,13 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string $name
+     * @param string|null $name
+     *
      * @return Member
      */
-    public function setName($name)
+    public function setName($name = null)
     {
         $this->name = $name;
 
@@ -173,9 +214,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
@@ -183,12 +224,13 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set department
+     * Set department.
      *
-     * @param  string $department
+     * @param string|null $department
+     *
      * @return Member
      */
-    public function setDepartment($department)
+    public function setDepartment($department = null)
     {
         $this->department = $department;
 
@@ -196,9 +238,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get department
+     * Get department.
      *
-     * @return string
+     * @return string|null
      */
     public function getDepartment()
     {
@@ -206,9 +248,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set login_id
+     * Set loginId.
      *
-     * @param  string $loginId
+     * @param string $loginId
+     *
      * @return Member
      */
     public function setLoginId($loginId)
@@ -219,7 +262,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get login_id
+     * Get loginId.
      *
      * @return string
      */
@@ -229,9 +272,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set password
+     * Set password.
      *
-     * @param  string $password
+     * @param string $password
+     *
      * @return Member
      */
     public function setPassword($password)
@@ -242,7 +286,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get password
+     * Get password.
      *
      * @return string
      */
@@ -252,9 +296,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set salt
+     * Set salt.
      *
-     * @param  string $salt
+     * @param string $salt
+     *
      * @return Member
      */
     public function setSalt($salt)
@@ -265,7 +310,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get salt
+     * Get salt.
      *
      * @return string
      */
@@ -275,32 +320,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set authority
+     * Set rank.
      *
-     * @param \Eccube\Entity\Master\Authority $authority
-     * @return Member
-     */
-    public function setAuthority(\Eccube\Entity\Master\Authority $Authority = null)
-    {
-        $this->Authority = $Authority;
-
-        return $this;
-    }
-
-    /**
-     * Get authority
+     * @param int $rank
      *
-     * @return \Eccube\Entity\Master\Authority
-     */
-    public function getAuthority()
-    {
-        return $this->Authority;
-    }
-
-    /**
-     * Set rank
-     *
-     * @param  integer $rank
      * @return Member
      */
     public function setRank($rank)
@@ -311,9 +334,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
@@ -321,32 +344,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set work
+     * Set delFlg.
      *
-     * @param  \Eccube\Entity\Master\Work $Work
-     * @return Member
-     */
-    public function setWork(\Eccube\Entity\Master\Work $Work)
-    {
-        $this->Work = $Work;
-
-        return $this;
-    }
-
-    /**
-     * Get work
+     * @param int $delFlg
      *
-     * @return \Eccube\Entity\Master\Work
-     */
-    public function getWork()
-    {
-        return $this->Work;
-    }
-
-    /**
-     * Set del_flg
-     *
-     * @param  integer $delFlg
      * @return Member
      */
     public function setDelFlg($delFlg)
@@ -357,9 +358,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return boolean
+     * @return int
      */
     public function getDelFlg()
     {
@@ -367,32 +368,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set Creator
+     * Set createDate.
      *
-     * @param  \Eccube\Entity\Member $Creator
-     * @return \Eccube\Entity\Member
-     */
-    public function setCreator(\Eccube\Entity\Member $Creator)
-    {
-        $this->Creator = $Creator;
-
-        return $this;
-    }
-
-    /**
-     * Get Creator
+     * @param \DateTime $createDate
      *
-     * @return \Eccube\Entity\Member
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
-    }
-
-    /**
-     * Set create_date
-     *
-     * @param  \DateTime $createDate
      * @return Member
      */
     public function setCreateDate($createDate)
@@ -403,7 +382,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -413,9 +392,10 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
-     * @param  \DateTime $updateDate
+     * @param \DateTime $updateDate
+     *
      * @return Member
      */
     public function setUpdateDate($updateDate)
@@ -426,7 +406,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -436,12 +416,13 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set login_date
+     * Set loginDate.
      *
-     * @param  \DateTime $loginDate
+     * @param \DateTime|null $loginDate
+     *
      * @return Member
      */
-    public function setLoginDate($loginDate)
+    public function setLoginDate($loginDate = null)
     {
         $this->login_date = $loginDate;
 
@@ -449,12 +430,84 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get login_date
+     * Get loginDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getLoginDate()
     {
         return $this->login_date;
+    }
+
+    /**
+     * Set work.
+     *
+     * @param \Eccube\Entity\Master\Work|null $work
+     *
+     * @return Member
+     */
+    public function setWork(\Eccube\Entity\Master\Work $work = null)
+    {
+        $this->Work = $work;
+
+        return $this;
+    }
+
+    /**
+     * Get work.
+     *
+     * @return \Eccube\Entity\Master\Work|null
+     */
+    public function getWork()
+    {
+        return $this->Work;
+    }
+
+    /**
+     * Set authority.
+     *
+     * @param \Eccube\Entity\Master\Authority|null $authority
+     *
+     * @return Member
+     */
+    public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
+    {
+        $this->Authority = $authority;
+
+        return $this;
+    }
+
+    /**
+     * Get authority.
+     *
+     * @return \Eccube\Entity\Master\Authority|null
+     */
+    public function getAuthority()
+    {
+        return $this->Authority;
+    }
+
+    /**
+     * Set creator.
+     *
+     * @param \Eccube\Entity\Member|null $creator
+     *
+     * @return Member
+     */
+    public function setCreator(\Eccube\Entity\Member $creator = null)
+    {
+        $this->Creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator.
+     *
+     * @return \Eccube\Entity\Member|null
+     */
+    public function getCreator()
+    {
+        return $this->Creator;
     }
 }

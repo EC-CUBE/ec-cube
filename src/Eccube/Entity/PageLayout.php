@@ -6,6 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PageLayout
+ *
+ * @ORM\Table(name="dtb_page_layout", indexes={@ORM\Index(name="dtb_page_layout_url_idx", columns={"url"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\PageLayoutRepository")
  */
 class PageLayout extends \Eccube\Entity\AbstractEntity
 {
@@ -191,72 +197,105 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
 
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="page_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="page_name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
      */
     private $file_name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="edit_flg", type="smallint", options={"unsigned":true,"default":1})
      */
-    private $edit_flg;
+    private $edit_flg = 1;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="author", type="string", length=255, nullable=true)
      */
     private $author;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="keyword", type="string", length=255, nullable=true)
      */
     private $keyword;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="update_url", type="string", length=255, nullable=true)
      */
     private $update_url;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="meta_robots", type="string", length=255, nullable=true)
      */
     private $meta_robots;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="PageLayout", cascade={"persist","remove"})
      */
     private $BlockPositions;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
+     * })
      */
     private $DeviceType;
 
@@ -271,7 +310,6 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param integer $id
      * @return PageLayout
      */
     public function setId($id)
@@ -280,6 +318,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
 
         return $this;
     }
+
     /**
      * Get id
      *
@@ -291,12 +330,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param string $name
+     * @param string|null $name
+     *
      * @return PageLayout
      */
-    public function setName($name)
+    public function setName($name = null)
     {
         $this->name = $name;
 
@@ -304,9 +344,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
@@ -314,9 +354,10 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
+     *
      * @return PageLayout
      */
     public function setUrl($url)
@@ -327,7 +368,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
@@ -337,12 +378,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set file_name
+     * Set fileName.
      *
-     * @param string $fileName
+     * @param string|null $fileName
+     *
      * @return PageLayout
      */
-    public function setFileName($fileName)
+    public function setFileName($fileName = null)
     {
         $this->file_name = $fileName;
 
@@ -350,9 +392,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get file_name
+     * Get fileName.
      *
-     * @return string
+     * @return string|null
      */
     public function getFileName()
     {
@@ -360,9 +402,10 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set edit_flg
+     * Set editFlg.
      *
-     * @param integer $editFlg
+     * @param int $editFlg
+     *
      * @return PageLayout
      */
     public function setEditFlg($editFlg)
@@ -373,9 +416,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get edit_flg
+     * Get editFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getEditFlg()
     {
@@ -383,12 +426,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set author
+     * Set author.
      *
-     * @param string $author
+     * @param string|null $author
+     *
      * @return PageLayout
      */
-    public function setAuthor($author)
+    public function setAuthor($author = null)
     {
         $this->author = $author;
 
@@ -396,9 +440,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get author
+     * Get author.
      *
-     * @return string
+     * @return string|null
      */
     public function getAuthor()
     {
@@ -406,12 +450,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set description
+     * Set description.
      *
-     * @param string $description
+     * @param string|null $description
+     *
      * @return PageLayout
      */
-    public function setDescription($description)
+    public function setDescription($description = null)
     {
         $this->description = $description;
 
@@ -419,9 +464,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get description
+     * Get description.
      *
-     * @return string
+     * @return string|null
      */
     public function getDescription()
     {
@@ -429,12 +474,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set keyword
+     * Set keyword.
      *
-     * @param string $keyword
+     * @param string|null $keyword
+     *
      * @return PageLayout
      */
-    public function setKeyword($keyword)
+    public function setKeyword($keyword = null)
     {
         $this->keyword = $keyword;
 
@@ -442,9 +488,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get keyword
+     * Get keyword.
      *
-     * @return string
+     * @return string|null
      */
     public function getKeyword()
     {
@@ -452,12 +498,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_url
+     * Set updateUrl.
      *
-     * @param string $updateUrl
+     * @param string|null $updateUrl
+     *
      * @return PageLayout
      */
-    public function setUpdateUrl($updateUrl)
+    public function setUpdateUrl($updateUrl = null)
     {
         $this->update_url = $updateUrl;
 
@@ -465,9 +512,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_url
+     * Get updateUrl.
      *
-     * @return string
+     * @return string|null
      */
     public function getUpdateUrl()
     {
@@ -475,9 +522,10 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return PageLayout
      */
     public function setCreateDate($createDate)
@@ -488,7 +536,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -498,9 +546,10 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return PageLayout
      */
     public function setUpdateDate($updateDate)
@@ -511,7 +560,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -521,12 +570,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set meta_robots
+     * Set metaRobots.
      *
-     * @param string $metaRobots
+     * @param string|null $metaRobots
+     *
      * @return PageLayout
      */
-    public function setMetaRobots($metaRobots)
+    public function setMetaRobots($metaRobots = null)
     {
         $this->meta_robots = $metaRobots;
 
@@ -534,9 +584,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get meta_robots
+     * Get metaRobots.
      *
-     * @return string
+     * @return string|null
      */
     public function getMetaRobots()
     {
@@ -544,9 +594,10 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add BlockPosition
+     * Add blockPosition.
      *
      * @param \Eccube\Entity\BlockPosition $blockPosition
+     *
      * @return PageLayout
      */
     public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
@@ -557,17 +608,19 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Remove BlockPosition
+     * Remove blockPosition.
      *
      * @param \Eccube\Entity\BlockPosition $blockPosition
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlockPositions->removeElement($blockPosition);
+        return $this->BlockPositions->removeElement($blockPosition);
     }
 
     /**
-     * Get BlockPositions
+     * Get blockPositions.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -577,9 +630,10 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set DeviceType
+     * Set deviceType.
      *
-     * @param \Eccube\Entity\Master\DeviceType $deviceType
+     * @param \Eccube\Entity\Master\DeviceType|null $deviceType
+     *
      * @return PageLayout
      */
     public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
@@ -590,9 +644,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get DeviceType
+     * Get deviceType.
      *
-     * @return \Eccube\Entity\Master\DeviceType
+     * @return \Eccube\Entity\Master\DeviceType|null
      */
     public function getDeviceType()
     {

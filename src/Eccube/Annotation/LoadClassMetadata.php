@@ -22,15 +22,15 @@
  */
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 
 use Doctrine\ORM\Events;
 
 /**
  * @Annotation
- * @TargetEvent(Events::postRemove)
+ * @TargetEvent(Events::loadClassMetadata)
  */
-final class PostRemove extends EntityEvent
+final class LoadClassMetadata extends EntityEvent
 {
 }

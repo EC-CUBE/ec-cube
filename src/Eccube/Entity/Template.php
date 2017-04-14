@@ -27,6 +27,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Template
+ *
+ * @ORM\Table(name="dtb_template")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\TemplateRepository")
  */
 class Template extends \Eccube\Entity\AbstractEntity
 {
@@ -52,40 +58,57 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="template_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="template_code", type="string", length=255)
      */
     private $code;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="template_name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
+     * })
      */
     private $DeviceType;
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -93,9 +116,10 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set code
+     * Set code.
      *
      * @param string $code
+     *
      * @return Template
      */
     public function setCode($code)
@@ -106,7 +130,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get code
+     * Get code.
      *
      * @return string
      */
@@ -116,9 +140,10 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Template
      */
     public function setName($name)
@@ -129,7 +154,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -139,9 +164,10 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
      * @param \DateTime $createDate
+     *
      * @return Template
      */
     public function setCreateDate($createDate)
@@ -152,7 +178,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -162,9 +188,10 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return Template
      */
     public function setUpdateDate($updateDate)
@@ -175,7 +202,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -185,9 +212,10 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set DeviceType
+     * Set deviceType.
      *
-     * @param \Eccube\Entity\Master\DeviceType $deviceType
+     * @param \Eccube\Entity\Master\DeviceType|null $deviceType
+     *
      * @return Template
      */
     public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
@@ -198,9 +226,9 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get DeviceType
+     * Get deviceType.
      *
-     * @return \Eccube\Entity\Master\DeviceType
+     * @return \Eccube\Entity\Master\DeviceType|null
      */
     public function getDeviceType()
     {

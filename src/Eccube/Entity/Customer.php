@@ -32,208 +32,314 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Customer
+ *
+ * @ORM\Table(name="dtb_customer", uniqueConstraints={@ORM\UniqueConstraint(name="secret_key", columns={"secret_key"})}, indexes={@ORM\Index(name="dtb_customer_buy_times_idx", columns={"buy_times"}), @ORM\Index(name="dtb_customer_buy_total_idx", columns={"buy_total"}), @ORM\Index(name="dtb_customer_create_date_idx", columns={"create_date"}), @ORM\Index(name="dtb_customer_update_date_idx", columns={"update_date"}), @ORM\Index(name="dtb_customer_last_buy_date_idx", columns={"last_buy_date"}), @ORM\Index(name="dtb_customer_email_idx", columns={"email"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
  */
 class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="customer_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name01", type="string", length=255)
      */
     private $name01;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name02", type="string", length=255)
      */
     private $name02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
      */
     private $kana01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
      */
     private $kana02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
      */
     private $company_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
      */
     private $zip01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
      */
     private $zip02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
      */
     private $zipcode;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
      */
     private $addr01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
      */
     private $addr02;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
      */
     private $tel01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
      */
     private $tel02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
      */
     private $tel03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
      */
     private $fax01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
      */
     private $fax02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
      */
     private $fax03;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="birth", type="datetime", nullable=true)
      */
     private $birth;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
      */
     private $password;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
      */
     private $salt;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="secret_key", type="string", length=255)
      */
     private $secret_key;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="first_buy_date", type="datetime", nullable=true)
      */
     private $first_buy_date;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="last_buy_date", type="datetime", nullable=true)
      */
     private $last_buy_date;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="buy_times", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
      */
-    private $buy_times;
+    private $buy_times = 0;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="buy_total", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
      */
-    private $buy_total;
+    private $buy_total = 0;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="note", type="string", length=4000, nullable=true)
      */
     private $note;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="reset_key", type="string", length=255, nullable=true)
      */
     private $reset_key;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="reset_expire", type="datetime", nullable=true)
      */
     private $reset_expire;
 
     /**
-     * @var \Eccube\Entity\Master\CustomerStatus
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $Status;
+    private $del_flg = 0;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var integer
-     */
-    private $del_flg;
-
-    /**
-     * @var \Eccube\Entity\Master\Sex
-     */
-    private $Sex;
-
-    /**
-     * @var \Eccube\Entity\Master\Job
-     */
-    private $Job;
-
-    /**
-     * @var \Eccube\Entity\Master\Country
-     */
-    private $Country;
-
-    /**
-     * @var \Eccube\Entity\Master\Pref
-     */
-    private $Pref;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Customer")
      */
     private $CustomerFavoriteProducts;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerAddress", mappedBy="Customer")
+     * @ORM\OrderBy({
+     *     "id"="ASC"
+     * })
      */
     private $CustomerAddresses;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\Order", mappedBy="Customer")
      */
     private $Orders;
+
+    /**
+     * @var \Eccube\Entity\Master\CustomerStatus
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * })
+     */
+    private $Status;
+
+    /**
+     * @var \Eccube\Entity\Master\Sex
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sex", referencedColumnName="id")
+     * })
+     */
+    private $Sex;
+
+    /**
+     * @var \Eccube\Entity\Master\Job
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="job", referencedColumnName="id")
+     * })
+     */
+    private $Job;
+
+    /**
+     * @var \Eccube\Entity\Master\Country
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     * })
+     */
+    private $Country;
+
+    /**
+     * @var \Eccube\Entity\Master\Pref
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pref", referencedColumnName="id")
+     * })
+     */
+    private $Pref;
 
     /**
      * Constructor
@@ -290,9 +396,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -300,9 +406,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set name01
+     * Set name01.
      *
-     * @param  string   $name01
+     * @param string $name01
+     *
      * @return Customer
      */
     public function setName01($name01)
@@ -313,7 +420,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get name01
+     * Get name01.
      *
      * @return string
      */
@@ -323,9 +430,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set name02
+     * Set name02.
      *
-     * @param  string   $name02
+     * @param string $name02
+     *
      * @return Customer
      */
     public function setName02($name02)
@@ -336,7 +444,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get name02
+     * Get name02.
      *
      * @return string
      */
@@ -346,12 +454,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set kana01
+     * Set kana01.
      *
-     * @param  string   $kana01
+     * @param string|null $kana01
+     *
      * @return Customer
      */
-    public function setKana01($kana01)
+    public function setKana01($kana01 = null)
     {
         $this->kana01 = $kana01;
 
@@ -359,9 +468,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get kana01
+     * Get kana01.
      *
-     * @return string
+     * @return string|null
      */
     public function getKana01()
     {
@@ -369,12 +478,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set kana02
+     * Set kana02.
      *
-     * @param  string   $kana02
+     * @param string|null $kana02
+     *
      * @return Customer
      */
-    public function setKana02($kana02)
+    public function setKana02($kana02 = null)
     {
         $this->kana02 = $kana02;
 
@@ -382,9 +492,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get kana02
+     * Get kana02.
      *
-     * @return string
+     * @return string|null
      */
     public function getKana02()
     {
@@ -392,12 +502,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set company_name
+     * Set companyName.
      *
-     * @param  string   $companyName
+     * @param string|null $companyName
+     *
      * @return Customer
      */
-    public function setCompanyName($companyName)
+    public function setCompanyName($companyName = null)
     {
         $this->company_name = $companyName;
 
@@ -405,9 +516,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get company_name
+     * Get companyName.
      *
-     * @return string
+     * @return string|null
      */
     public function getCompanyName()
     {
@@ -415,12 +526,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set zip01
+     * Set zip01.
      *
-     * @param  string   $zip01
+     * @param string|null $zip01
+     *
      * @return Customer
      */
-    public function setZip01($zip01)
+    public function setZip01($zip01 = null)
     {
         $this->zip01 = $zip01;
 
@@ -428,9 +540,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get zip01
+     * Get zip01.
      *
-     * @return string
+     * @return string|null
      */
     public function getZip01()
     {
@@ -438,12 +550,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set zip02
+     * Set zip02.
      *
-     * @param  string   $zip02
+     * @param string|null $zip02
+     *
      * @return Customer
      */
-    public function setZip02($zip02)
+    public function setZip02($zip02 = null)
     {
         $this->zip02 = $zip02;
 
@@ -451,9 +564,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get zip02
+     * Get zip02.
      *
-     * @return string
+     * @return string|null
      */
     public function getZip02()
     {
@@ -461,12 +574,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set zipcode
+     * Set zipcode.
      *
-     * @param  string   $zipcode
+     * @param string|null $zipcode
+     *
      * @return Customer
      */
-    public function setZipcode($zipcode)
+    public function setZipcode($zipcode = null)
     {
         $this->zipcode = $zipcode;
 
@@ -474,12 +588,23 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set addr01
+     * Get zipcode.
      *
-     * @param  string   $addr01
+     * @return string|null
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
+    }
+
+    /**
+     * Set addr01.
+     *
+     * @param string|null $addr01
+     *
      * @return Customer
      */
-    public function setAddr01($addr01)
+    public function setAddr01($addr01 = null)
     {
         $this->addr01 = $addr01;
 
@@ -487,9 +612,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get addr01
+     * Get addr01.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddr01()
     {
@@ -497,12 +622,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set addr02
+     * Set addr02.
      *
-     * @param  string   $addr02
+     * @param string|null $addr02
+     *
      * @return Customer
      */
-    public function setAddr02($addr02)
+    public function setAddr02($addr02 = null)
     {
         $this->addr02 = $addr02;
 
@@ -510,9 +636,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get addr02
+     * Get addr02.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddr02()
     {
@@ -520,9 +646,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set email
+     * Set email.
      *
-     * @param  string   $email
+     * @param string $email
+     *
      * @return Customer
      */
     public function setEmail($email)
@@ -533,7 +660,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -542,14 +669,14 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
         return $this->email;
     }
 
-
     /**
-     * Set tel01
+     * Set tel01.
      *
-     * @param  string   $tel01
+     * @param string|null $tel01
+     *
      * @return Customer
      */
-    public function setTel01($tel01)
+    public function setTel01($tel01 = null)
     {
         $this->tel01 = $tel01;
 
@@ -557,9 +684,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get tel01
+     * Get tel01.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel01()
     {
@@ -567,12 +694,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set tel02
+     * Set tel02.
      *
-     * @param  string   $tel02
+     * @param string|null $tel02
+     *
      * @return Customer
      */
-    public function setTel02($tel02)
+    public function setTel02($tel02 = null)
     {
         $this->tel02 = $tel02;
 
@@ -580,9 +708,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get tel02
+     * Get tel02.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel02()
     {
@@ -590,12 +718,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set tel03
+     * Set tel03.
      *
-     * @param  string   $tel03
+     * @param string|null $tel03
+     *
      * @return Customer
      */
-    public function setTel03($tel03)
+    public function setTel03($tel03 = null)
     {
         $this->tel03 = $tel03;
 
@@ -603,9 +732,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get tel03
+     * Get tel03.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel03()
     {
@@ -613,12 +742,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set fax01
+     * Set fax01.
      *
-     * @param  string   $fax01
+     * @param string|null $fax01
+     *
      * @return Customer
      */
-    public function setFax01($fax01)
+    public function setFax01($fax01 = null)
     {
         $this->fax01 = $fax01;
 
@@ -626,9 +756,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get fax01
+     * Get fax01.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax01()
     {
@@ -636,12 +766,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set fax02
+     * Set fax02.
      *
-     * @param  string   $fax02
+     * @param string|null $fax02
+     *
      * @return Customer
      */
-    public function setFax02($fax02)
+    public function setFax02($fax02 = null)
     {
         $this->fax02 = $fax02;
 
@@ -649,9 +780,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get fax02
+     * Get fax02.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax02()
     {
@@ -659,12 +790,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set fax03
+     * Set fax03.
      *
-     * @param  string   $fax03
+     * @param string|null $fax03
+     *
      * @return Customer
      */
-    public function setFax03($fax03)
+    public function setFax03($fax03 = null)
     {
         $this->fax03 = $fax03;
 
@@ -672,9 +804,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get fax03
+     * Get fax03.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax03()
     {
@@ -682,12 +814,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set birth
+     * Set birth.
      *
-     * @param  \DateTime $birth
+     * @param \DateTime|null $birth
+     *
      * @return Customer
      */
-    public function setBirth($birth)
+    public function setBirth($birth = null)
     {
         $this->birth = $birth;
 
@@ -695,9 +828,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get birth
+     * Get birth.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getBirth()
     {
@@ -705,12 +838,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set password
+     * Set password.
      *
-     * @param  string   $password
+     * @param string|null $password
+     *
      * @return Customer
      */
-    public function setPassword($password)
+    public function setPassword($password = null)
     {
         $this->password = $password;
 
@@ -718,9 +852,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get password
+     * Get password.
      *
-     * @return string
+     * @return string|null
      */
     public function getPassword()
     {
@@ -728,12 +862,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set salt
+     * Set salt.
      *
-     * @param  string   $salt
+     * @param string|null $salt
+     *
      * @return Customer
      */
-    public function setSalt($salt)
+    public function setSalt($salt = null)
     {
         $this->salt = $salt;
 
@@ -741,9 +876,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get salt
+     * Get salt.
      *
-     * @return string
+     * @return string|null
      */
     public function getSalt()
     {
@@ -751,9 +886,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set secret_key
+     * Set secretKey.
      *
-     * @param  string   $secretKey
+     * @param string $secretKey
+     *
      * @return Customer
      */
     public function setSecretKey($secretKey)
@@ -764,7 +900,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get secret_key
+     * Get secretKey.
      *
      * @return string
      */
@@ -774,12 +910,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set first_buy_date
+     * Set firstBuyDate.
      *
-     * @param  \DateTime $firstBuyDate
+     * @param \DateTime|null $firstBuyDate
+     *
      * @return Customer
      */
-    public function setFirstBuyDate($firstBuyDate)
+    public function setFirstBuyDate($firstBuyDate = null)
     {
         $this->first_buy_date = $firstBuyDate;
 
@@ -787,9 +924,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get first_buy_date
+     * Get firstBuyDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getFirstBuyDate()
     {
@@ -797,12 +934,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set last_buy_date
+     * Set lastBuyDate.
      *
-     * @param  \DateTime $lastBuyDate
+     * @param \DateTime|null $lastBuyDate
+     *
      * @return Customer
      */
-    public function setLastBuyDate($lastBuyDate)
+    public function setLastBuyDate($lastBuyDate = null)
     {
         $this->last_buy_date = $lastBuyDate;
 
@@ -810,9 +948,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get last_buy_date
+     * Get lastBuyDate.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getLastBuyDate()
     {
@@ -820,12 +958,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set buy_times
+     * Set buyTimes.
      *
-     * @param  string   $buyTimes
+     * @param string|null $buyTimes
+     *
      * @return Customer
      */
-    public function setBuyTimes($buyTimes)
+    public function setBuyTimes($buyTimes = null)
     {
         $this->buy_times = $buyTimes;
 
@@ -833,9 +972,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get buy_times
+     * Get buyTimes.
      *
-     * @return string
+     * @return string|null
      */
     public function getBuyTimes()
     {
@@ -843,12 +982,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set buy_total
+     * Set buyTotal.
      *
-     * @param  string   $buyTotal
+     * @param string|null $buyTotal
+     *
      * @return Customer
      */
-    public function setBuyTotal($buyTotal)
+    public function setBuyTotal($buyTotal = null)
     {
         $this->buy_total = $buyTotal;
 
@@ -856,9 +996,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get buy_total
+     * Get buyTotal.
      *
-     * @return string
+     * @return string|null
      */
     public function getBuyTotal()
     {
@@ -866,12 +1006,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set note
+     * Set note.
      *
-     * @param  string   $note
+     * @param string|null $note
+     *
      * @return Customer
      */
-    public function setNote($note)
+    public function setNote($note = null)
     {
         $this->note = $note;
 
@@ -879,9 +1020,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get note
+     * Get note.
      *
-     * @return string
+     * @return string|null
      */
     public function getNote()
     {
@@ -889,12 +1030,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set resetKey
+     * Set resetKey.
      *
-     * @param  string   $resetKey
+     * @param string|null $resetKey
+     *
      * @return Customer
      */
-    public function setResetKey($resetKey)
+    public function setResetKey($resetKey = null)
     {
         $this->reset_key = $resetKey;
 
@@ -902,9 +1044,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get resetKey
+     * Get resetKey.
      *
-     * @return string
+     * @return string|null
      */
     public function getResetKey()
     {
@@ -912,12 +1054,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set resetExpire
+     * Set resetExpire.
      *
-     * @param  \DateTime   $resetExpire
+     * @param \DateTime|null $resetExpire
+     *
      * @return Customer
      */
-    public function setResetExpire($resetExpire)
+    public function setResetExpire($resetExpire = null)
     {
         $this->reset_expire = $resetExpire;
 
@@ -925,9 +1068,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get resetExpire
+     * Get resetExpire.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getResetExpire()
     {
@@ -935,78 +1078,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set Status
+     * Set delFlg.
      *
-     * @param  \Eccube\Entity\Master\CustomerStatus $status
-     * @return Customer
-     */
-    public function setStatus(\Eccube\Entity\Master\CustomerStatus $status = null)
-    {
-        $this->Status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get Status
+     * @param int $delFlg
      *
-     * @return \Eccube\Entity\Master\CustomerStatus
-     */
-    public function getStatus()
-    {
-        return $this->Status;
-    }
-
-    /**
-     * Set create_date
-     *
-     * @param  \DateTime $createDate
-     * @return Customer
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
-
-        return $this;
-    }
-
-    /**
-     * Get create_date
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set update_date
-     *
-     * @param  \DateTime $updateDate
-     * @return Customer
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
-
-        return $this;
-    }
-
-    /**
-     * Get update_date
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
-
-    /**
-     * Set del_flg
-     *
-     * @param  integer  $delFlg
      * @return Customer
      */
     public function setDelFlg($delFlg)
@@ -1017,9 +1092,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -1027,30 +1102,81 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Add CustomerFavoriteProducts
+     * Set createDate.
      *
-     * @param  \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
+     * @param \DateTime $createDate
+     *
      * @return Customer
      */
-    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
+    public function setCreateDate($createDate)
     {
-        $this->CustomerFavoriteProducts[] = $customerFavoriteProducts;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Remove CustomerFavoriteProducts
+     * Get createDate.
      *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
+     * @return \DateTime
      */
-    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
+    public function getCreateDate()
     {
-        $this->CustomerFavoriteProducts->removeElement($customerFavoriteProducts);
+        return $this->create_date;
     }
 
     /**
-     * Get CustomerFavoriteProducts
+     * Set updateDate.
+     *
+     * @param \DateTime $updateDate
+     *
+     * @return Customer
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Add customerFavoriteProduct.
+     *
+     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+     *
+     * @return Customer
+     */
+    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+    {
+        $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
+
+        return $this;
+    }
+
+    /**
+     * Remove customerFavoriteProduct.
+     *
+     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+    {
+        return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
+    }
+
+    /**
+     * Get customerFavoriteProducts.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1060,9 +1186,46 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Add Orders
+     * Add customerAddress.
      *
-     * @param  \Eccube\Entity\Orders $order
+     * @param \Eccube\Entity\CustomerAddress $customerAddress
+     *
+     * @return Customer
+     */
+    public function addCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddress)
+    {
+        $this->CustomerAddresses[] = $customerAddress;
+
+        return $this;
+    }
+
+    /**
+     * Remove customerAddress.
+     *
+     * @param \Eccube\Entity\CustomerAddress $customerAddress
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddress)
+    {
+        return $this->CustomerAddresses->removeElement($customerAddress);
+    }
+
+    /**
+     * Get customerAddresses.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCustomerAddresses()
+    {
+        return $this->CustomerAddresses;
+    }
+
+    /**
+     * Add order.
+     *
+     * @param \Eccube\Entity\Order $order
+     *
      * @return Customer
      */
     public function addOrder(\Eccube\Entity\Order $order)
@@ -1073,17 +1236,19 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Remove Orders
+     * Remove order.
      *
-     * @param \Eccube\Entity\Orders $order
+     * @param \Eccube\Entity\Order $order
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeOrder(\Eccube\Entity\Order $order)
     {
-        $this->Orders->removeElement($order);
+        return $this->Orders->removeElement($order);
     }
 
     /**
-     * Get Orders
+     * Get orders.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1093,42 +1258,34 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Add CustomerAddress
+     * Set status.
      *
-     * @param  \Eccube\Entity\CustomerAddress $CustomerAddress
+     * @param \Eccube\Entity\Master\CustomerStatus|null $status
+     *
      * @return Customer
      */
-    public function addCustomerAddresses(\Eccube\Entity\CustomerAddress $CustomerAddress)
+    public function setStatus(\Eccube\Entity\Master\CustomerStatus $status = null)
     {
-        $this->CustomerAddresses[] = $CustomerAddress;
+        $this->Status = $status;
 
         return $this;
     }
 
     /**
-     * Remove CustomerAddresses
+     * Get status.
      *
-     * @param \Eccube\Entity\CustomerAddress $CustomerAddress
+     * @return \Eccube\Entity\Master\CustomerStatus|null
      */
-    public function removeCustomerAddress(\Eccube\Entity\CustomerAddress $CustomerAddress)
+    public function getStatus()
     {
-        $this->CustomerAddresses->removeElement($CustomerAddress);
+        return $this->Status;
     }
 
     /**
-     * Get CustomerAddresses
+     * Set sex.
      *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCustomerAddresses()
-    {
-        return $this->CustomerAddresses;
-    }
-
-    /**
-     * Set Sex
+     * @param \Eccube\Entity\Master\Sex|null $sex
      *
-     * @param  \Eccube\Entity\Master\Sex $sex
      * @return Customer
      */
     public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -1139,9 +1296,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get Sex
+     * Get sex.
      *
-     * @return \Eccube\Entity\Master\Sex
+     * @return \Eccube\Entity\Master\Sex|null
      */
     public function getSex()
     {
@@ -1149,9 +1306,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set Job
+     * Set job.
      *
-     * @param  \Eccube\Entity\Master\Job $job
+     * @param \Eccube\Entity\Master\Job|null $job
+     *
      * @return Customer
      */
     public function setJob(\Eccube\Entity\Master\Job $job = null)
@@ -1162,9 +1320,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get Job
+     * Get job.
      *
-     * @return \Eccube\Entity\Master\Job
+     * @return \Eccube\Entity\Master\Job|null
      */
     public function getJob()
     {
@@ -1172,9 +1330,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set Country
+     * Set country.
      *
-     * @param  \Eccube\Entity\Master\Country $country
+     * @param \Eccube\Entity\Master\Country|null $country
+     *
      * @return Customer
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1185,9 +1344,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get Country
+     * Get country.
      *
-     * @return \Eccube\Entity\Master\Country
+     * @return \Eccube\Entity\Master\Country|null
      */
     public function getCountry()
     {
@@ -1195,9 +1354,10 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set Pref
+     * Set pref.
      *
-     * @param  \Eccube\Entity\Master\Pref $pref
+     * @param \Eccube\Entity\Master\Pref|null $pref
+     *
      * @return Customer
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -1208,35 +1368,12 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get Pref
+     * Get pref.
      *
-     * @return \Eccube\Entity\Master\Pref
+     * @return \Eccube\Entity\Master\Pref|null
      */
     public function getPref()
     {
         return $this->Pref;
-    }
-
-    /**
-     * Get zipcode
-     *
-     * @return string
-     */
-    public function getZipcode()
-    {
-        return $this->zipcode;
-    }
-
-    /**
-     * Add CustomerAddresses
-     *
-     * @param \Eccube\Entity\CustomerAddress $customerAddresses
-     * @return Customer
-     */
-    public function addCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddresses)
-    {
-        $this->CustomerAddresses[] = $customerAddresses;
-
-        return $this;
     }
 }

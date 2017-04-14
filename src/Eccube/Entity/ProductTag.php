@@ -6,137 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductTag
+ *
+ * @ORM\Table(name="dtb_product_tag")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\ProductTagRepository")
  */
 class ProductTag extends \Eccube\Entity\AbstractEntity
 {
-    /**
-     * @var integer
-     */
-    private $id;
-
-    /**
-     * @var \DateTime
-     */
-    private $create_date;
-
-    /**
-     * @var \Eccube\Entity\Product
-     */
-    private $Product;
-
-    /**
-     * @var \Eccube\Entity\Master\Tag
-     */
-    private $Tag;
-
-    /**
-     * @var \Eccube\Entity\Member
-     */
-    private $Creator;
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set create_date
-     *
-     * @param \DateTime $createDate
-     * @return ProductTag
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
-
-        return $this;
-    }
-
-    /**
-     * Get create_date
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set Product
-     *
-     * @param \Eccube\Entity\Product $product
-     * @return ProductTag
-     */
-    public function setProduct(\Eccube\Entity\Product $product)
-    {
-        $this->Product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get Product
-     *
-     * @return \Eccube\Entity\Product
-     */
-    public function getProduct()
-    {
-        return $this->Product;
-    }
-
-    /**
-     * Set Tag
-     *
-     * @param \Eccube\Entity\Master\Tag $tag
-     * @return ProductTag
-     */
-    public function setTag(\Eccube\Entity\Master\Tag $tag)
-    {
-        $this->Tag = $tag;
-
-        return $this;
-    }
-
-    /**
-     * Get Tag
-     *
-     * @return \Eccube\Entity\Master\Tag
-     */
-    public function getTag()
-    {
-        return $this->Tag;
-    }
-
-    /**
-     * Set Creator
-     *
-     * @param \Eccube\Entity\Member $creator
-     * @return ProductTag
-     */
-    public function setCreator(\Eccube\Entity\Member $creator)
-    {
-        $this->Creator = $creator;
-
-        return $this;
-    }
-
-    /**
-     * Get Creator
-     *
-     * @return \Eccube\Entity\Member
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
-    }
-
     /**
      * Get tag_id
      * use csv export
@@ -149,5 +27,158 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
             return null;
         }
         return $this->Tag->getId();
+    }
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="product_tag_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
+     */
+    private $create_date;
+
+    /**
+     * @var \Eccube\Entity\Product
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductTag")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     * })
+     */
+    private $Product;
+
+    /**
+     * @var \Eccube\Entity\Master\Tag
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Tag", inversedBy="ProductTag")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tag", referencedColumnName="id")
+     * })
+     */
+    private $Tag;
+
+    /**
+     * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
+     */
+    private $Creator;
+
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set createDate.
+     *
+     * @param \DateTime $createDate
+     *
+     * @return ProductTag
+     */
+    public function setCreateDate($createDate)
+    {
+        $this->create_date = $createDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createDate.
+     *
+     * @return \DateTime
+     */
+    public function getCreateDate()
+    {
+        return $this->create_date;
+    }
+
+    /**
+     * Set product.
+     *
+     * @param \Eccube\Entity\Product|null $product
+     *
+     * @return ProductTag
+     */
+    public function setProduct(\Eccube\Entity\Product $product = null)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product.
+     *
+     * @return \Eccube\Entity\Product|null
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
+     * Set tag.
+     *
+     * @param \Eccube\Entity\Master\Tag|null $tag
+     *
+     * @return ProductTag
+     */
+    public function setTag(\Eccube\Entity\Master\Tag $tag = null)
+    {
+        $this->Tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get tag.
+     *
+     * @return \Eccube\Entity\Master\Tag|null
+     */
+    public function getTag()
+    {
+        return $this->Tag;
+    }
+
+    /**
+     * Set creator.
+     *
+     * @param \Eccube\Entity\Member|null $creator
+     *
+     * @return ProductTag
+     */
+    public function setCreator(\Eccube\Entity\Member $creator = null)
+    {
+        $this->Creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator.
+     *
+     * @return \Eccube\Entity\Member|null
+     */
+    public function getCreator()
+    {
+        return $this->Creator;
     }
 }

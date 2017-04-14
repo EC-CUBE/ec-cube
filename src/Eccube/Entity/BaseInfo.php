@@ -24,216 +24,315 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * BaseInfo
+ *
+ * @ORM\Table(name="dtb_base_info")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\BaseInfoRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class BaseInfo extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
      */
     private $company_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="company_kana", type="string", length=255, nullable=true)
      */
     private $company_kana;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
      */
     private $zip01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
      */
     private $zip02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
      */
     private $zipcode;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
      */
     private $addr01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
      */
     private $addr02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
      */
     private $tel01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
      */
     private $tel02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
      */
     private $tel03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
      */
     private $fax01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
      */
     private $fax02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
      */
     private $fax03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="business_hour", type="string", length=255, nullable=true)
      */
     private $business_hour;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="email01", type="string", length=255, nullable=true)
      */
     private $email01;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="email02", type="string", length=255, nullable=true)
      */
     private $email02;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="email03", type="string", length=255, nullable=true)
      */
     private $email03;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="email04", type="string", length=255, nullable=true)
      */
     private $email04;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="shop_name", type="string", length=255, nullable=true)
      */
     private $shop_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="shop_kana", type="string", length=255, nullable=true)
      */
     private $shop_kana;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="shop_name_eng", type="string", length=255, nullable=true)
      */
     private $shop_name_eng;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="good_traded", type="string", length=4000, nullable=true)
      */
     private $good_traded;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="message", type="string", length=4000, nullable=true)
      */
     private $message;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="latitude", type="decimal", precision=9, scale=6, nullable=true)
      */
     private $latitude;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="longitude", type="decimal", precision=9, scale=6, nullable=true)
      */
     private $longitude;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="delivery_free_amount", type="decimal", precision=10, scale=0, nullable=true)
      */
     private $delivery_free_amount;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="delivery_free_quantity", type="integer", nullable=true, options={"unsigned":true})
      */
     private $delivery_free_quantity;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_multiple_shipping", type="smallint", nullable=true, options={"unsigned":true,"default":0})
      */
-    private $option_multiple_shipping;
+    private $option_multiple_shipping = 0;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_mypage_order_status_display", type="smallint", nullable=true, options={"unsigned":true,"default":1})
      */
-    private $option_mypage_order_status_display;
+    private $option_mypage_order_status_display = 1;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="nostock_hidden", type="smallint", nullable=true, options={"unsigned":true,"default":0})
      */
-    private $nostock_hidden;
+    private $nostock_hidden = 0;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_favorite_product", type="smallint", nullable=true, options={"unsigned":true,"default":1})
      */
-    private $option_favorite_product;
+    private $option_favorite_product = 1;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_product_delivery_fee", type="smallint", nullable=true, options={"unsigned":true,"default":0})
      */
-    private $option_product_delivery_fee;
+    private $option_product_delivery_fee = 0;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_product_tax_rule", type="smallint", nullable=true, options={"unsigned":true,"default":0})
      */
-    private $option_product_tax_rule;
+    private $option_product_tax_rule = 0;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_customer_activate", type="smallint", nullable=true, options={"unsigned":true,"default":1})
      */
-    private $option_customer_activate;
+    private $option_customer_activate = 1;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="option_remember_me", type="smallint", nullable=true, options={"unsigned":true,"default":0})
      */
-    private $option_remember_me;
+    private $option_remember_me = 0;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="authentication_key", type="string", length=255, nullable=true)
      */
     private $authentication_key;
 
     /**
      * @var \Eccube\Entity\Master\Country
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     * })
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
     private $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pref", referencedColumnName="id")
+     * })
+     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
     private $Pref;
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -241,12 +340,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set company_name
+     * Set companyName.
      *
-     * @param string $companyName
+     * @param string|null $companyName
+     *
      * @return BaseInfo
      */
-    public function setCompanyName($companyName)
+    public function setCompanyName($companyName = null)
     {
         $this->company_name = $companyName;
 
@@ -254,9 +354,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get company_name
+     * Get companyName.
      *
-     * @return string 
+     * @return string|null
      */
     public function getCompanyName()
     {
@@ -264,12 +364,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set company_kana
+     * Set companyKana.
      *
-     * @param string $companyKana
+     * @param string|null $companyKana
+     *
      * @return BaseInfo
      */
-    public function setCompanyKana($companyKana)
+    public function setCompanyKana($companyKana = null)
     {
         $this->company_kana = $companyKana;
 
@@ -277,9 +378,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get company_kana
+     * Get companyKana.
      *
-     * @return string 
+     * @return string|null
      */
     public function getCompanyKana()
     {
@@ -287,12 +388,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip01
+     * Set zip01.
      *
-     * @param string $zip01
+     * @param string|null $zip01
+     *
      * @return BaseInfo
      */
-    public function setZip01($zip01)
+    public function setZip01($zip01 = null)
     {
         $this->zip01 = $zip01;
 
@@ -300,9 +402,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zip01
+     * Get zip01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getZip01()
     {
@@ -310,12 +412,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip02
+     * Set zip02.
      *
-     * @param string $zip02
+     * @param string|null $zip02
+     *
      * @return BaseInfo
      */
-    public function setZip02($zip02)
+    public function setZip02($zip02 = null)
     {
         $this->zip02 = $zip02;
 
@@ -323,9 +426,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zip02
+     * Get zip02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getZip02()
     {
@@ -333,12 +436,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zipcode
+     * Set zipcode.
      *
-     * @param string $zipcode
+     * @param string|null $zipcode
+     *
      * @return BaseInfo
      */
-    public function setZipcode($zipcode)
+    public function setZipcode($zipcode = null)
     {
         $this->zipcode = $zipcode;
 
@@ -346,9 +450,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zipcode
+     * Get zipcode.
      *
-     * @return string 
+     * @return string|null
      */
     public function getZipcode()
     {
@@ -356,12 +460,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set addr01
+     * Set addr01.
      *
-     * @param string $addr01
+     * @param string|null $addr01
+     *
      * @return BaseInfo
      */
-    public function setAddr01($addr01)
+    public function setAddr01($addr01 = null)
     {
         $this->addr01 = $addr01;
 
@@ -369,9 +474,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get addr01
+     * Get addr01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getAddr01()
     {
@@ -379,12 +484,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set addr02
+     * Set addr02.
      *
-     * @param string $addr02
+     * @param string|null $addr02
+     *
      * @return BaseInfo
      */
-    public function setAddr02($addr02)
+    public function setAddr02($addr02 = null)
     {
         $this->addr02 = $addr02;
 
@@ -392,9 +498,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get addr02
+     * Get addr02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getAddr02()
     {
@@ -402,12 +508,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel01
+     * Set tel01.
      *
-     * @param string $tel01
+     * @param string|null $tel01
+     *
      * @return BaseInfo
      */
-    public function setTel01($tel01)
+    public function setTel01($tel01 = null)
     {
         $this->tel01 = $tel01;
 
@@ -415,9 +522,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel01
+     * Get tel01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getTel01()
     {
@@ -425,12 +532,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel02
+     * Set tel02.
      *
-     * @param string $tel02
+     * @param string|null $tel02
+     *
      * @return BaseInfo
      */
-    public function setTel02($tel02)
+    public function setTel02($tel02 = null)
     {
         $this->tel02 = $tel02;
 
@@ -438,9 +546,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel02
+     * Get tel02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getTel02()
     {
@@ -448,12 +556,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel03
+     * Set tel03.
      *
-     * @param string $tel03
+     * @param string|null $tel03
+     *
      * @return BaseInfo
      */
-    public function setTel03($tel03)
+    public function setTel03($tel03 = null)
     {
         $this->tel03 = $tel03;
 
@@ -461,9 +570,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel03
+     * Get tel03.
      *
-     * @return string 
+     * @return string|null
      */
     public function getTel03()
     {
@@ -471,12 +580,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax01
+     * Set fax01.
      *
-     * @param string $fax01
+     * @param string|null $fax01
+     *
      * @return BaseInfo
      */
-    public function setFax01($fax01)
+    public function setFax01($fax01 = null)
     {
         $this->fax01 = $fax01;
 
@@ -484,9 +594,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax01
+     * Get fax01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getFax01()
     {
@@ -494,12 +604,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax02
+     * Set fax02.
      *
-     * @param string $fax02
+     * @param string|null $fax02
+     *
      * @return BaseInfo
      */
-    public function setFax02($fax02)
+    public function setFax02($fax02 = null)
     {
         $this->fax02 = $fax02;
 
@@ -507,9 +618,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax02
+     * Get fax02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getFax02()
     {
@@ -517,12 +628,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax03
+     * Set fax03.
      *
-     * @param string $fax03
+     * @param string|null $fax03
+     *
      * @return BaseInfo
      */
-    public function setFax03($fax03)
+    public function setFax03($fax03 = null)
     {
         $this->fax03 = $fax03;
 
@@ -530,9 +642,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax03
+     * Get fax03.
      *
-     * @return string 
+     * @return string|null
      */
     public function getFax03()
     {
@@ -540,12 +652,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set business_hour
+     * Set businessHour.
      *
-     * @param string $businessHour
+     * @param string|null $businessHour
+     *
      * @return BaseInfo
      */
-    public function setBusinessHour($businessHour)
+    public function setBusinessHour($businessHour = null)
     {
         $this->business_hour = $businessHour;
 
@@ -553,9 +666,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get business_hour
+     * Get businessHour.
      *
-     * @return string 
+     * @return string|null
      */
     public function getBusinessHour()
     {
@@ -563,12 +676,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email01
+     * Set email01.
      *
-     * @param string $email01
+     * @param string|null $email01
+     *
      * @return BaseInfo
      */
-    public function setEmail01($email01)
+    public function setEmail01($email01 = null)
     {
         $this->email01 = $email01;
 
@@ -576,9 +690,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email01
+     * Get email01.
      *
-     * @return string 
+     * @return string|null
      */
     public function getEmail01()
     {
@@ -586,12 +700,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email02
+     * Set email02.
      *
-     * @param string $email02
+     * @param string|null $email02
+     *
      * @return BaseInfo
      */
-    public function setEmail02($email02)
+    public function setEmail02($email02 = null)
     {
         $this->email02 = $email02;
 
@@ -599,9 +714,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email02
+     * Get email02.
      *
-     * @return string 
+     * @return string|null
      */
     public function getEmail02()
     {
@@ -609,12 +724,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email03
+     * Set email03.
      *
-     * @param string $email03
+     * @param string|null $email03
+     *
      * @return BaseInfo
      */
-    public function setEmail03($email03)
+    public function setEmail03($email03 = null)
     {
         $this->email03 = $email03;
 
@@ -622,9 +738,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email03
+     * Get email03.
      *
-     * @return string 
+     * @return string|null
      */
     public function getEmail03()
     {
@@ -632,12 +748,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email04
+     * Set email04.
      *
-     * @param string $email04
+     * @param string|null $email04
+     *
      * @return BaseInfo
      */
-    public function setEmail04($email04)
+    public function setEmail04($email04 = null)
     {
         $this->email04 = $email04;
 
@@ -645,9 +762,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email04
+     * Get email04.
      *
-     * @return string 
+     * @return string|null
      */
     public function getEmail04()
     {
@@ -655,12 +772,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shop_name
+     * Set shopName.
      *
-     * @param string $shopName
+     * @param string|null $shopName
+     *
      * @return BaseInfo
      */
-    public function setShopName($shopName)
+    public function setShopName($shopName = null)
     {
         $this->shop_name = $shopName;
 
@@ -668,9 +786,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get shop_name
+     * Get shopName.
      *
-     * @return string 
+     * @return string|null
      */
     public function getShopName()
     {
@@ -678,12 +796,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shop_kana
+     * Set shopKana.
      *
-     * @param string $shopKana
+     * @param string|null $shopKana
+     *
      * @return BaseInfo
      */
-    public function setShopKana($shopKana)
+    public function setShopKana($shopKana = null)
     {
         $this->shop_kana = $shopKana;
 
@@ -691,9 +810,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get shop_kana
+     * Get shopKana.
      *
-     * @return string 
+     * @return string|null
      */
     public function getShopKana()
     {
@@ -701,12 +820,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shop_name_eng
+     * Set shopNameEng.
      *
-     * @param string $shopNameEng
+     * @param string|null $shopNameEng
+     *
      * @return BaseInfo
      */
-    public function setShopNameEng($shopNameEng)
+    public function setShopNameEng($shopNameEng = null)
     {
         $this->shop_name_eng = $shopNameEng;
 
@@ -714,9 +834,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get shop_name_eng
+     * Get shopNameEng.
      *
-     * @return string 
+     * @return string|null
      */
     public function getShopNameEng()
     {
@@ -724,9 +844,10 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
+     *
      * @return BaseInfo
      */
     public function setUpdateDate($updateDate)
@@ -737,9 +858,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -747,12 +868,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set good_traded
+     * Set goodTraded.
      *
-     * @param string $goodTraded
+     * @param string|null $goodTraded
+     *
      * @return BaseInfo
      */
-    public function setGoodTraded($goodTraded)
+    public function setGoodTraded($goodTraded = null)
     {
         $this->good_traded = $goodTraded;
 
@@ -760,9 +882,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get good_traded
+     * Get goodTraded.
      *
-     * @return string 
+     * @return string|null
      */
     public function getGoodTraded()
     {
@@ -770,12 +892,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set message
+     * Set message.
      *
-     * @param string $message
+     * @param string|null $message
+     *
      * @return BaseInfo
      */
-    public function setMessage($message)
+    public function setMessage($message = null)
     {
         $this->message = $message;
 
@@ -783,9 +906,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get message
+     * Get message.
      *
-     * @return string 
+     * @return string|null
      */
     public function getMessage()
     {
@@ -793,12 +916,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set latitude
+     * Set latitude.
      *
-     * @param string $latitude
+     * @param string|null $latitude
+     *
      * @return BaseInfo
      */
-    public function setLatitude($latitude)
+    public function setLatitude($latitude = null)
     {
         $this->latitude = $latitude;
 
@@ -806,9 +930,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get latitude
+     * Get latitude.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLatitude()
     {
@@ -816,12 +940,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set longitude
+     * Set longitude.
      *
-     * @param string $longitude
+     * @param string|null $longitude
+     *
      * @return BaseInfo
      */
-    public function setLongitude($longitude)
+    public function setLongitude($longitude = null)
     {
         $this->longitude = $longitude;
 
@@ -829,9 +954,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get longitude
+     * Get longitude.
      *
-     * @return string 
+     * @return string|null
      */
     public function getLongitude()
     {
@@ -839,12 +964,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delivery_free_amount
+     * Set deliveryFreeAmount.
      *
-     * @param string $deliveryFreeAmount
+     * @param string|null $deliveryFreeAmount
+     *
      * @return BaseInfo
      */
-    public function setDeliveryFreeAmount($deliveryFreeAmount)
+    public function setDeliveryFreeAmount($deliveryFreeAmount = null)
     {
         $this->delivery_free_amount = $deliveryFreeAmount;
 
@@ -852,9 +978,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get delivery_free_amount
+     * Get deliveryFreeAmount.
      *
-     * @return string 
+     * @return string|null
      */
     public function getDeliveryFreeAmount()
     {
@@ -862,12 +988,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delivery_free_quantity
+     * Set deliveryFreeQuantity.
      *
-     * @param integer $deliveryFreeQuantity
+     * @param int|null $deliveryFreeQuantity
+     *
      * @return BaseInfo
      */
-    public function setDeliveryFreeQuantity($deliveryFreeQuantity)
+    public function setDeliveryFreeQuantity($deliveryFreeQuantity = null)
     {
         $this->delivery_free_quantity = $deliveryFreeQuantity;
 
@@ -875,9 +1002,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get delivery_free_quantity
+     * Get deliveryFreeQuantity.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getDeliveryFreeQuantity()
     {
@@ -885,12 +1012,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_multiple_shipping
+     * Set optionMultipleShipping.
      *
-     * @param integer $optionMultipleShipping
+     * @param int|null $optionMultipleShipping
+     *
      * @return BaseInfo
      */
-    public function setOptionMultipleShipping($optionMultipleShipping)
+    public function setOptionMultipleShipping($optionMultipleShipping = null)
     {
         $this->option_multiple_shipping = $optionMultipleShipping;
 
@@ -898,9 +1026,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_multiple_shipping
+     * Get optionMultipleShipping.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getOptionMultipleShipping()
     {
@@ -908,12 +1036,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_mypage_order_status_display
+     * Set optionMypageOrderStatusDisplay.
      *
-     * @param integer $optionMypageOrderStatusDisplay
+     * @param int|null $optionMypageOrderStatusDisplay
+     *
      * @return BaseInfo
      */
-    public function setOptionMypageOrderStatusDisplay($optionMypageOrderStatusDisplay)
+    public function setOptionMypageOrderStatusDisplay($optionMypageOrderStatusDisplay = null)
     {
         $this->option_mypage_order_status_display = $optionMypageOrderStatusDisplay;
 
@@ -921,9 +1050,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_mypage_order_status_display
+     * Get optionMypageOrderStatusDisplay.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getOptionMypageOrderStatusDisplay()
     {
@@ -931,12 +1060,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set nostock_hidden
+     * Set nostockHidden.
      *
-     * @param integer $nostockHidden
+     * @param int|null $nostockHidden
+     *
      * @return BaseInfo
      */
-    public function setNostockHidden($nostockHidden)
+    public function setNostockHidden($nostockHidden = null)
     {
         $this->nostock_hidden = $nostockHidden;
 
@@ -944,9 +1074,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get nostock_hidden
+     * Get nostockHidden.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getNostockHidden()
     {
@@ -954,12 +1084,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_favorite_product
+     * Set optionFavoriteProduct.
      *
-     * @param integer $optionFavoriteProduct
+     * @param int|null $optionFavoriteProduct
+     *
      * @return BaseInfo
      */
-    public function setOptionFavoriteProduct($optionFavoriteProduct)
+    public function setOptionFavoriteProduct($optionFavoriteProduct = null)
     {
         $this->option_favorite_product = $optionFavoriteProduct;
 
@@ -967,9 +1098,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_favorite_product
+     * Get optionFavoriteProduct.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getOptionFavoriteProduct()
     {
@@ -977,12 +1108,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_product_delivery_fee
+     * Set optionProductDeliveryFee.
      *
-     * @param integer $optionProductDeliveryFee
+     * @param int|null $optionProductDeliveryFee
+     *
      * @return BaseInfo
      */
-    public function setOptionProductDeliveryFee($optionProductDeliveryFee)
+    public function setOptionProductDeliveryFee($optionProductDeliveryFee = null)
     {
         $this->option_product_delivery_fee = $optionProductDeliveryFee;
 
@@ -990,9 +1122,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_product_delivery_fee
+     * Get optionProductDeliveryFee.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getOptionProductDeliveryFee()
     {
@@ -1000,12 +1132,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_product_tax_rule
+     * Set optionProductTaxRule.
      *
-     * @param integer $optionProductTaxRule
+     * @param int|null $optionProductTaxRule
+     *
      * @return BaseInfo
      */
-    public function setOptionProductTaxRule($optionProductTaxRule)
+    public function setOptionProductTaxRule($optionProductTaxRule = null)
     {
         $this->option_product_tax_rule = $optionProductTaxRule;
 
@@ -1013,9 +1146,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_product_tax_rule
+     * Get optionProductTaxRule.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getOptionProductTaxRule()
     {
@@ -1023,12 +1156,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_customer_activate
+     * Set optionCustomerActivate.
      *
-     * @param integer $optionCustomerActivate
+     * @param int|null $optionCustomerActivate
+     *
      * @return BaseInfo
      */
-    public function setOptionCustomerActivate($optionCustomerActivate)
+    public function setOptionCustomerActivate($optionCustomerActivate = null)
     {
         $this->option_customer_activate = $optionCustomerActivate;
 
@@ -1036,9 +1170,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_customer_activate
+     * Get optionCustomerActivate.
      *
-     * @return integer 
+     * @return int|null
      */
     public function getOptionCustomerActivate()
     {
@@ -1046,12 +1180,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set option_remember_me
+     * Set optionRememberMe.
      *
-     * @param integer $optionRememberMe
+     * @param int|null $optionRememberMe
+     *
      * @return BaseInfo
      */
-    public function setOptionRememberMe($optionRememberMe)
+    public function setOptionRememberMe($optionRememberMe = null)
     {
         $this->option_remember_me = $optionRememberMe;
 
@@ -1059,9 +1194,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get option_remember_me
+     * Get optionRememberMe.
      *
-     * @return integer
+     * @return int|null
      */
     public function getOptionRememberMe()
     {
@@ -1069,20 +1204,23 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set authentication_key
+     * Set authenticationKey.
      *
-     * @param string $authenticationKey
+     * @param string|null $authenticationKey
+     *
      * @return BaseInfo
      */
-    public function setAuthenticationKey($authenticationKey)
+    public function setAuthenticationKey($authenticationKey = null)
     {
         $this->authentication_key = $authenticationKey;
+
+        return $this;
     }
 
     /**
-     * Get authentication_keye
+     * Get authenticationKey.
      *
-     * @return string
+     * @return string|null
      */
     public function getAuthenticationKey()
     {
@@ -1090,9 +1228,10 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Country
+     * Set country.
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param \Eccube\Entity\Master\Country|null $country
+     *
      * @return BaseInfo
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1103,9 +1242,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Country
+     * Get country.
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country|null
      */
     public function getCountry()
     {
@@ -1113,9 +1252,10 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Pref
+     * Set pref.
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param \Eccube\Entity\Master\Pref|null $pref
+     *
      * @return BaseInfo
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -1126,9 +1266,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Pref
+     * Get pref.
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref|null
      */
     public function getPref()
     {

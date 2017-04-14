@@ -24,101 +24,85 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * CustomerFavoriteProduct
+ *
+ * @ORM\Table(name="dtb_customer_favorite_product")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerFavoriteProductRepository")
  */
 class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="favorite_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     */
+    private $del_flg = 0;
+
+    /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var integer
-     */
-    private $del_flg;
-
-    /**
      * @var \Eccube\Entity\Customer
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id")
+     * })
      */
     private $Customer;
 
     /**
      * @var \Eccube\Entity\Product
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     * })
      */
     private $Product;
 
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }
 
     /**
-     * Set create_date
+     * Set delFlg.
      *
-     * @param  \DateTime               $createDate
-     * @return CustomerFavoriteProduct
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
-
-        return $this;
-    }
-
-    /**
-     * Get create_date
+     * @param int $delFlg
      *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set update_date
-     *
-     * @param  \DateTime               $updateDate
-     * @return CustomerFavoriteProduct
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
-
-        return $this;
-    }
-
-    /**
-     * Get update_date
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
-
-    /**
-     * Set del_lfg
-     *
-     * @param  integer $delFlg
      * @return CustomerFavoriteProduct
      */
     public function setDelFlg($delFlg)
@@ -129,9 +113,9 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -139,9 +123,58 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Customer
+     * Set createDate.
      *
-     * @param  \Eccube\Entity\Customer $customer
+     * @param \DateTime $createDate
+     *
+     * @return CustomerFavoriteProduct
+     */
+    public function setCreateDate($createDate)
+    {
+        $this->create_date = $createDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createDate.
+     *
+     * @return \DateTime
+     */
+    public function getCreateDate()
+    {
+        return $this->create_date;
+    }
+
+    /**
+     * Set updateDate.
+     *
+     * @param \DateTime $updateDate
+     *
+     * @return CustomerFavoriteProduct
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Set customer.
+     *
+     * @param \Eccube\Entity\Customer|null $customer
+     *
      * @return CustomerFavoriteProduct
      */
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -152,9 +185,9 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Customer
+     * Get customer.
      *
-     * @return \Eccube\Entity\Customer
+     * @return \Eccube\Entity\Customer|null
      */
     public function getCustomer()
     {
@@ -162,9 +195,10 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Product
+     * Set product.
      *
-     * @param  \Eccube\Entity\Product  $product
+     * @param \Eccube\Entity\Product|null $product
+     *
      * @return CustomerFavoriteProduct
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
@@ -175,9 +209,9 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Product
+     * Get product.
      *
-     * @return \Eccube\Entity\Product
+     * @return \Eccube\Entity\Product|null
      */
     public function getProduct()
     {

@@ -6,6 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CsvType
+ *
+ * @ORM\Table(name="mtb_csv_type")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\Master\CsvTypeRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class CsvType extends \Eccube\Entity\AbstractEntity
 {
@@ -35,25 +42,34 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     const CSV_TYPE_CATEGORY = 5;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
 
     /**
-     * Set id
+     * Set id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return CsvType
      */
     public function setId($id)
@@ -64,9 +80,9 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -74,9 +90,10 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return CsvType
      */
     public function setName($name)
@@ -87,9 +104,9 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -97,9 +114,10 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param integer $rank
+     * @param int $rank
+     *
      * @return CsvType
      */
     public function setRank($rank)
@@ -110,9 +128,9 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer 
+     * @return int
      */
     public function getRank()
     {

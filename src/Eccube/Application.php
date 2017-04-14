@@ -23,10 +23,14 @@
 
 namespace Eccube;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Types\Type;
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -541,24 +545,13 @@ class Application extends \Silex\Application
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($this['debug']);
         $ormMappings = array();
         $ormMappings[] = array(
-            'type' => 'yml',
-            'namespace' => 'Eccube\Entity',
-            'path' => array(
-                __DIR__.'/Resource/doctrine',
-                __DIR__.'/Resource/doctrine/master',
-            ),
-        );
-        // ここを有効にすると本体の Entity でもアノテーションが使える
-        // が、 Yaml との共存はできない模様...
-        // $ormMappings[] = array(
-        //     'type' => 'annotation',
-        //     'namespace' => 'Eccube\Entity',
-        //     'path' => array(
-        //         __DIR__.'/Entity',
-        //         __DIR__.'/Entity/master',
-        //     ),
-        //     'use_simple_annotation_reader' => false,
-        // );
+             'type' => 'annotation',
+             'namespace' => 'Eccube\Entity',
+             'path' => array(
+                 __DIR__.'/Entity'
+             ),
+             'use_simple_annotation_reader' => false,
+         );
 
         // TODO namespace は暫定
         $ormMappings[] = array(
@@ -626,6 +619,30 @@ class Application extends \Silex\Application
                 'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
             ),
         ));
+
+        $this->extend(
+            'orm.em.config',
+            function (\Doctrine\ORM\Configuration $config, \Silex\Application $app) {
+
+                /** @var $chain \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain */
+                $chain = $config->getMetadataDriverImpl();
+                $drivers = $chain->getDrivers();
+                foreach ($drivers as $namespace => $oldDriver) {
+                    if ('Eccube\Entity' === $namespace) {
+                        $newDriver = new AnnotationDriver(
+                            new CachedReader(new AnnotationReader(), new ArrayCache()),
+                            $oldDriver->getPaths());
+                        $newDriver->setFileExtension($oldDriver->getFileExtension());
+                        $newDriver->addExcludePaths($oldDriver->getExcludePaths());
+                        $newDriver->setTraitProxiesDirectory(
+                            realpath(__DIR__.'/../../app/proxy/entity'));
+                        $chain->addDriver($newDriver, $namespace);
+                    }
+                }
+
+                return $config;
+            }
+        );
 
         $this->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
             // tax_rule

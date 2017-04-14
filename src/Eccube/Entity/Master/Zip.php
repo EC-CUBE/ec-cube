@@ -24,8 +24,17 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Zip
+ *
+ * @ORM\Table(name="mtb_zip")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ZipRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class Zip extends \Eccube\Entity\AbstractEntity
 {
@@ -38,34 +47,61 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="zip_id", type="smallint", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="zipcode", type="string", length=7)
      */
     private $zipcode;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="state", type="string", length=255)
      */
     private $state;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="town", type="string", length=255)
      */
     private $town;
 
+
     /**
-     * Get id
+     * Set id.
      *
-     * @return integer
+     * @param int $id
+     *
+     * @return Zip
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -73,9 +109,10 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zipcode
+     * Set zipcode.
      *
-     * @param  string $zipcode
+     * @param string $zipcode
+     *
      * @return Zip
      */
     public function setZipcode($zipcode)
@@ -86,7 +123,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zipcode
+     * Get zipcode.
      *
      * @return string
      */
@@ -96,9 +133,10 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set state
+     * Set state.
      *
-     * @param  string $state
+     * @param string $state
+     *
      * @return Zip
      */
     public function setState($state)
@@ -109,7 +147,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get state
+     * Get state.
      *
      * @return string
      */
@@ -119,9 +157,10 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set city
+     * Set city.
      *
-     * @param  string $city
+     * @param string $city
+     *
      * @return Zip
      */
     public function setCity($city)
@@ -132,7 +171,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get city
+     * Get city.
      *
      * @return string
      */
@@ -142,9 +181,10 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set town
+     * Set town.
      *
-     * @param  string $town
+     * @param string $town
+     *
      * @return Zip
      */
     public function setTown($town)
@@ -155,25 +195,12 @@ class Zip extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get town
+     * Get town.
      *
      * @return string
      */
     public function getTown()
     {
         return $this->town;
-    }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return Zip
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 }

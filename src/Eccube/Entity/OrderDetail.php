@@ -25,9 +25,16 @@
 namespace Eccube\Entity;
 
 use Eccube\Util\EntityUtil;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * OrderDetail
+ *
+ * @ORM\Table(name="dtb_order_detail", indexes={@ORM\Index(name="dtb_order_detail_product_id_key", columns={"product_id"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\OrderDetailRepository")
  */
 class OrderDetail extends \Eccube\Entity\AbstractEntity
 {
@@ -47,43 +54,6 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     public function isEnable()
     {
         if ($this->getProductClass() && $this->getProductClass()->isEnable()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param \Eccube\Entity\BaseInfo
-     * @return bool
-     */
-    public function isEffective(\Eccube\Entity\BaseInfo $BaseInfo)
-    {
-        $downloable = clone $this->getOrder()->getPaymentDate();
-        if ($BaseInfo->getDownloadableDays()) {
-            $downloable->add(new \DateInterval("P" . $BaseInfo->getDownloadableDays() . "D"));
-        }
-
-        if ($BaseInfo->getDownloadableDaysUnlimited() === 1 && $this->getOrder()->getPaymentDate()) {
-            return true;
-        } elseif (new \DateTime() <= $downloable) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDownloadable()
-    {
-        // 販売価格が 0 円
-        if ($this->getPrice() === 0) {
-            return true;
-        }
-        // ダウンロード期限内かつ, 入金日あり
-        elseif ($this->isEffective()) {
             return true;
         } else {
             return false;
@@ -122,69 +92,119 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="order_detail_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="product_name", type="string", length=255)
      */
     private $product_name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="product_code", type="string", length=255, nullable=true)
      */
     private $product_code;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="class_name1", type="string", length=255, nullable=true)
+     */
+    private $class_name1;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="class_name2", type="string", length=255, nullable=true)
+     */
+    private $class_name2;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="class_category_name1", type="string", length=255, nullable=true)
      */
     private $class_category_name1;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="class_category_name2", type="string", length=255, nullable=true)
      */
     private $class_category_name2;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="price", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $price;
+    private $price = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $quantity;
+    private $quantity = 0;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
      */
-    private $tax_rate;
+    private $tax_rate = 0;
 
     /**
-     * @var integer
+     * @var int|null
+     *
+     * @ORM\Column(name="tax_rule", type="smallint", nullable=true, options={"unsigned":true})
      */
     private $tax_rule;
 
     /**
      * @var \Eccube\Entity\Order
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderDetails")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
+     * })
      */
     private $Order;
 
     /**
      * @var \Eccube\Entity\Product
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id", nullable=true)
+     * })
      */
     private $Product;
 
     /**
      * @var \Eccube\Entity\ProductClass
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="product_class_id", nullable=true)
+     * })
      */
     private $ProductClass;
 
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -192,9 +212,10 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set product_name
+     * Set productName.
      *
-     * @param  string      $productName
+     * @param string $productName
+     *
      * @return OrderDetail
      */
     public function setProductName($productName)
@@ -205,7 +226,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get product_name
+     * Get productName.
      *
      * @return string
      */
@@ -215,12 +236,13 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set product_code
+     * Set productCode.
      *
-     * @param  string      $productCode
+     * @param string|null $productCode
+     *
      * @return OrderDetail
      */
-    public function setProductCode($productCode)
+    public function setProductCode($productCode = null)
     {
         $this->product_code = $productCode;
 
@@ -228,9 +250,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get product_code
+     * Get productCode.
      *
-     * @return string
+     * @return string|null
      */
     public function getProductCode()
     {
@@ -238,12 +260,61 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set class_category_name1
+     * Set className1.
      *
-     * @param  string      $classCategoryName1
+     * @param string|null $className1
+     *
      * @return OrderDetail
      */
-    public function setClassCategoryName1($classCategoryName1)
+    public function setClassName1($className1 = null)
+    {
+        $this->class_name1 = $className1;
+
+        return $this;
+    }
+
+    /**
+     * Get className1.
+     *
+     * @return string|null
+     */
+    public function getClassName1()
+    {
+        return $this->class_name1;
+    }
+
+    /**
+     * Set className2.
+     *
+     * @param string|null $className2
+     *
+     * @return OrderDetail
+     */
+    public function setClassName2($className2 = null)
+    {
+        $this->class_name2 = $className2;
+
+        return $this;
+    }
+
+    /**
+     * Get className2.
+     *
+     * @return string|null
+     */
+    public function getClassName2()
+    {
+        return $this->class_name2;
+    }
+
+    /**
+     * Set classCategoryName1.
+     *
+     * @param string|null $classCategoryName1
+     *
+     * @return OrderDetail
+     */
+    public function setClassCategoryName1($classCategoryName1 = null)
     {
         $this->class_category_name1 = $classCategoryName1;
 
@@ -251,9 +322,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get class_category_name1
+     * Get classCategoryName1.
      *
-     * @return string
+     * @return string|null
      */
     public function getClassCategoryName1()
     {
@@ -261,12 +332,13 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set class_category_name2
+     * Set classCategoryName2.
      *
-     * @param  string      $classCategoryName2
+     * @param string|null $classCategoryName2
+     *
      * @return OrderDetail
      */
-    public function setClassCategoryName2($classCategoryName2)
+    public function setClassCategoryName2($classCategoryName2 = null)
     {
         $this->class_category_name2 = $classCategoryName2;
 
@@ -274,9 +346,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get classcategory_name2
+     * Get classCategoryName2.
      *
-     * @return string
+     * @return string|null
      */
     public function getClassCategoryName2()
     {
@@ -284,9 +356,10 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set price
+     * Set price.
      *
-     * @param  string      $price
+     * @param string $price
+     *
      * @return OrderDetail
      */
     public function setPrice($price)
@@ -297,7 +370,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get price
+     * Get price.
      *
      * @return string
      */
@@ -307,9 +380,10 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set quantity
+     * Set quantity.
      *
-     * @param  string      $quantity
+     * @param string $quantity
+     *
      * @return OrderDetail
      */
     public function setQuantity($quantity)
@@ -320,7 +394,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get quantity
+     * Get quantity.
      *
      * @return string
      */
@@ -330,9 +404,10 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tax_rate
+     * Set taxRate.
      *
-     * @param  string      $taxRate
+     * @param string $taxRate
+     *
      * @return OrderDetail
      */
     public function setTaxRate($taxRate)
@@ -343,7 +418,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tax_rate
+     * Get taxRate.
      *
      * @return string
      */
@@ -353,12 +428,13 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tax_rule
+     * Set taxRule.
      *
-     * @param  integer     $taxRule
+     * @param int|null $taxRule
+     *
      * @return OrderDetail
      */
-    public function setTaxRule($taxRule)
+    public function setTaxRule($taxRule = null)
     {
         $this->tax_rule = $taxRule;
 
@@ -366,9 +442,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tax_rule
+     * Get taxRule.
      *
-     * @return integer
+     * @return int|null
      */
     public function getTaxRule()
     {
@@ -376,12 +452,13 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Order
+     * Set order.
      *
-     * @param  \Eccube\Entity\Order $order
+     * @param \Eccube\Entity\Order|null $order
+     *
      * @return OrderDetail
      */
-    public function setOrder(\Eccube\Entity\Order $order)
+    public function setOrder(\Eccube\Entity\Order $order = null)
     {
         $this->Order = $order;
 
@@ -389,9 +466,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Order
+     * Get order.
      *
-     * @return \Eccube\Entity\Order
+     * @return \Eccube\Entity\Order|null
      */
     public function getOrder()
     {
@@ -399,12 +476,13 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Product
+     * Set product.
      *
-     * @param  \Eccube\Entity\Product $product
+     * @param \Eccube\Entity\Product|null $product
+     *
      * @return OrderDetail
      */
-    public function setProduct(\Eccube\Entity\Product $product)
+    public function setProduct(\Eccube\Entity\Product $product = null)
     {
         $this->Product = $product;
 
@@ -412,9 +490,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Product
+     * Get product.
      *
-     * @return \Eccube\Entity\Product
+     * @return \Eccube\Entity\Product|null
      */
     public function getProduct()
     {
@@ -425,12 +503,13 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set ProductClass
+     * Set productClass.
      *
-     * @param  \Eccube\Entity\ProductClass $productClass
+     * @param \Eccube\Entity\ProductClass|null $productClass
+     *
      * @return OrderDetail
      */
-    public function setProductClass(\Eccube\Entity\ProductClass $productClass)
+    public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
     {
         $this->ProductClass = $productClass;
 
@@ -438,71 +517,12 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get ProductClass
+     * Get productClass.
      *
-     * @return \Eccube\Entity\ProductClass
+     * @return \Eccube\Entity\ProductClass|null
      */
     public function getProductClass()
     {
-        if (EntityUtil::isEmpty($this->ProductClass)) {
-            return null;
-        }
         return $this->ProductClass;
-    }
-    /**
-     * @var string
-     */
-    private $class_name1;
-
-    /**
-     * @var string
-     */
-    private $class_name2;
-
-
-    /**
-     * Set class_name1
-     *
-     * @param string $className1
-     * @return OrderDetail
-     */
-    public function setClassName1($className1)
-    {
-        $this->class_name1 = $className1;
-
-        return $this;
-    }
-
-    /**
-     * Get class_name1
-     *
-     * @return string
-     */
-    public function getClassName1()
-    {
-        return $this->class_name1;
-    }
-
-    /**
-     * Set class_name2
-     *
-     * @param string $className2
-     * @return OrderDetail
-     */
-    public function setClassName2($className2)
-    {
-        $this->class_name2 = $className2;
-
-        return $this;
-    }
-
-    /**
-     * Get class_name2
-     *
-     * @return string
-     */
-    public function getClassName2()
-    {
-        return $this->class_name2;
     }
 }

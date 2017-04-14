@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Eccube\Entity\Event\Annotations;
+namespace Eccube\Annotation;
 
 /**
  * @Annotation

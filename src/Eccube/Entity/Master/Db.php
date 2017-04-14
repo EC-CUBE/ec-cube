@@ -24,8 +24,17 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Db
+ *
+ * @ORM\Table(name="mtb_db")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\Master\DbRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class Db extends \Eccube\Entity\AbstractEntity
 {
@@ -38,26 +47,47 @@ class Db extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
     /**
-     * public フィールドのテスト
-     *
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    public $name;
+    private $name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
+
     /**
-     * Get id
+     * Set id.
      *
-     * @return integer
+     * @param int $id
+     *
+     * @return Db
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -65,9 +95,34 @@ class Db extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set name.
      *
-     * @param  integer $rank
+     * @param string $name
+     *
+     * @return Db
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set rank.
+     *
+     * @param int $rank
+     *
      * @return Db
      */
     public function setRank($rank)
@@ -78,25 +133,12 @@ class Db extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return Db
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 }

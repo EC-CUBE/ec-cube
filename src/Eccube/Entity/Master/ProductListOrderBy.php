@@ -23,8 +23,17 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * ProductListOrderBy
+ *
+ * @ORM\Table(name="mtb_product_list_order_by")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductListOrderByRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
 {
@@ -37,24 +46,47 @@ class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
+
     /**
-     * Get id
+     * Set id.
      *
-     * @return integer
+     * @param int $id
+     *
+     * @return ProductListOrderBy
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -62,9 +94,10 @@ class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return ProductListOrderBy
      */
     public function setName($name)
@@ -75,7 +108,7 @@ class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -85,9 +118,10 @@ class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param  integer $rank
+     * @param int $rank
+     *
      * @return ProductListOrderBy
      */
     public function setRank($rank)
@@ -98,25 +132,12 @@ class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return ProductListOrderBy
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 }

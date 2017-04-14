@@ -26,8 +26,16 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Common\Constant;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Product
+ *
+ * @ORM\Table(name="dtb_product")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
  */
 class Product extends \Eccube\Entity\AbstractEntity
 {
@@ -430,78 +438,152 @@ class Product extends \Eccube\Entity\AbstractEntity
         return empty($ProductImages) ? null : $ProductImages[0];
     }
 
+    public function getMainFileName()
+    {
+        if (count($this->ProductImage) > 0) {
+            return $this->ProductImage[0];
+        } else {
+            return null;
+        }
+    }
+
+    public function hasProductClass()
+    {
+        foreach ($this->ProductClasses as $ProductClass) {
+            if (!is_null($ProductClass->getClassCategory1()) && $ProductClass->getDelFlg() == Constant::DISABLED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @var integer
+     *
+     * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="note", type="string", length=4000, nullable=true)
      */
     private $note;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="description_list", type="string", length=4000, nullable=true)
      */
     private $description_list;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="description_detail", type="string", length=4000, nullable=true)
      */
     private $description_detail;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="search_word", type="string", length=4000, nullable=true)
      */
     private $search_word;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="free_area", type="text", nullable=true)
      */
     private $free_area;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
      */
-    private $del_flg;
+    private $del_flg = 0;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductCategories;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductClass", mappedBy="Product", cascade={"persist"})
      */
     private $ProductClasses;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product")
+     * @ORM\OrderBy({
+     *     "rank"="ASC"
+     * })
+     */
+    private $ProductImage;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Product")
+     */
+    private $ProductTag;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Product")
      */
     private $CustomerFavoriteProducts;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
     /**
      * @var \Eccube\Entity\Master\Disp
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Disp")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * })
      */
     private $Status;
 
@@ -510,12 +592,11 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
-        $this->ProductCategories = new ArrayCollection();
-        $this->ProductClasses = new ArrayCollection();
-        $this->ProductStatuses = new ArrayCollection();
-        $this->CustomerFavoriteProducts = new ArrayCollection();
-        $this->ProductImage = new ArrayCollection();
-        $this->ProductTag = new ArrayCollection();
+        $this->ProductCategories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductClasses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductImage = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __clone()
@@ -564,9 +645,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -574,9 +655,10 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return Product
      */
     public function setName($name)
@@ -587,7 +669,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -597,12 +679,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set note
+     * Set note.
      *
-     * @param  string  $note
+     * @param string|null $note
+     *
      * @return Product
      */
-    public function setNote($note)
+    public function setNote($note = null)
     {
         $this->note = $note;
 
@@ -610,9 +693,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get note
+     * Get note.
      *
-     * @return string
+     * @return string|null
      */
     public function getNote()
     {
@@ -620,12 +703,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set description_list
+     * Set descriptionList.
      *
-     * @param string $descriptionList
+     * @param string|null $descriptionList
+     *
      * @return Product
      */
-    public function setDescriptionList($descriptionList)
+    public function setDescriptionList($descriptionList = null)
     {
         $this->description_list = $descriptionList;
 
@@ -633,9 +717,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get description_list
+     * Get descriptionList.
      *
-     * @return string
+     * @return string|null
      */
     public function getDescriptionList()
     {
@@ -643,12 +727,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set description_detail
+     * Set descriptionDetail.
      *
-     * @param string $descriptionDetail
+     * @param string|null $descriptionDetail
+     *
      * @return Product
      */
-    public function setDescriptionDetail($descriptionDetail)
+    public function setDescriptionDetail($descriptionDetail = null)
     {
         $this->description_detail = $descriptionDetail;
 
@@ -656,9 +741,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get description_detail
+     * Get descriptionDetail.
      *
-     * @return string
+     * @return string|null
      */
     public function getDescriptionDetail()
     {
@@ -666,12 +751,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set search_word
+     * Set searchWord.
      *
-     * @param string $searchWord
+     * @param string|null $searchWord
+     *
      * @return Product
      */
-    public function setSearchWord($searchWord)
+    public function setSearchWord($searchWord = null)
     {
         $this->search_word = $searchWord;
 
@@ -679,9 +765,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get search_word
+     * Get searchWord.
      *
-     * @return string
+     * @return string|null
      */
     public function getSearchWord()
     {
@@ -689,12 +775,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set free_area
+     * Set freeArea.
      *
-     * @param string $freeArea
+     * @param string|null $freeArea
+     *
      * @return Product
      */
-    public function setFreeArea($freeArea)
+    public function setFreeArea($freeArea = null)
     {
         $this->free_area = $freeArea;
 
@@ -702,20 +789,20 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get free_area
+     * Get freeArea.
      *
-     * @return string
+     * @return string|null
      */
     public function getFreeArea()
     {
         return $this->free_area;
     }
 
-
     /**
-     * Set del_flg
+     * Set delFlg.
      *
-     * @param  integer $delFlg
+     * @param int $delFlg
+     *
      * @return Product
      */
     public function setDelFlg($delFlg)
@@ -726,9 +813,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -736,9 +823,10 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set createDate.
      *
-     * @param  \DateTime $createDate
+     * @param \DateTime $createDate
+     *
      * @return Product
      */
     public function setCreateDate($createDate)
@@ -749,7 +837,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get create_date
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -759,9 +847,10 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set update_date
+     * Set updateDate.
      *
-     * @param  \DateTime $updateDate
+     * @param \DateTime $updateDate
+     *
      * @return Product
      */
     public function setUpdateDate($updateDate)
@@ -772,7 +861,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get update_date
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -782,30 +871,33 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add ProductCategories
+     * Add productCategory.
      *
-     * @param  \Eccube\Entity\ProductCategory $productCategories
+     * @param \Eccube\Entity\ProductCategory $productCategory
+     *
      * @return Product
      */
-    public function addProductCategory(\Eccube\Entity\ProductCategory $productCategories)
+    public function addProductCategory(\Eccube\Entity\ProductCategory $productCategory)
     {
-        $this->ProductCategories[] = $productCategories;
+        $this->ProductCategories[] = $productCategory;
 
         return $this;
     }
 
     /**
-     * Remove ProductCategories
+     * Remove productCategory.
      *
-     * @param \Eccube\Entity\ProductCategory $productCategories
+     * @param \Eccube\Entity\ProductCategory $productCategory
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeProductCategory(\Eccube\Entity\ProductCategory $productCategories)
+    public function removeProductCategory(\Eccube\Entity\ProductCategory $productCategory)
     {
-        $this->ProductCategories->removeElement($productCategories);
+        return $this->ProductCategories->removeElement($productCategory);
     }
 
     /**
-     * Get ProductCategories
+     * Get productCategories.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -815,30 +907,33 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add ProductClasses
+     * Add productClass.
      *
-     * @param  \Eccube\Entity\ProductClass $productClasses
+     * @param \Eccube\Entity\ProductClass $productClass
+     *
      * @return Product
      */
-    public function addProductClass(\Eccube\Entity\ProductClass $productClasses)
+    public function addProductClass(\Eccube\Entity\ProductClass $productClass)
     {
-        $this->ProductClasses[] = $productClasses;
+        $this->ProductClasses[] = $productClass;
 
         return $this;
     }
 
     /**
-     * Remove ProductClasses
+     * Remove productClass.
      *
-     * @param \Eccube\Entity\ProductClass $productClasses
+     * @param \Eccube\Entity\ProductClass $productClass
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeProductClass(\Eccube\Entity\ProductClass $productClasses)
+    public function removeProductClass(\Eccube\Entity\ProductClass $productClass)
     {
-        $this->ProductClasses->removeElement($productClasses);
+        return $this->ProductClasses->removeElement($productClass);
     }
 
     /**
-     * Get ProductClasses
+     * Get productClasses.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -847,111 +942,11 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductClasses;
     }
 
-    public function hasProductClass()
-    {
-        foreach ($this->ProductClasses as $ProductClass) {
-            if (!is_null($ProductClass->getClassCategory1()) && $ProductClass->getDelFlg() == Constant::DISABLED) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     /**
-     * Add CustomerFavoriteProducts
-     *
-     * @param  \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
-     * @return Product
-     */
-    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
-    {
-        $this->CustomerFavoriteProducts[] = $customerFavoriteProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove CustomerFavoriteProducts
-     *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
-     */
-    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
-    {
-        $this->CustomerFavoriteProducts->removeElement($customerFavoriteProducts);
-    }
-
-    /**
-     * Get CustomerFavoriteProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCustomerFavoriteProducts()
-    {
-        return $this->CustomerFavoriteProducts;
-    }
-
-    /**
-     * Set Creator
-     *
-     * @param  \Eccube\Entity\Member $creator
-     * @return Product
-     */
-    public function setCreator(\Eccube\Entity\Member $creator)
-    {
-        $this->Creator = $creator;
-
-        return $this;
-    }
-
-    /**
-     * Get Creator
-     *
-     * @return \Eccube\Entity\Member
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
-    }
-
-    /**
-     * Set Status
-     *
-     * @param  \Eccube\Entity\Master\Disp $status
-     * @return Product
-     */
-    public function setStatus(\Eccube\Entity\Master\Disp $status = null)
-    {
-        $this->Status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get Status
-     *
-     * @return \Eccube\Entity\Master\Disp
-     */
-    public function getStatus()
-    {
-        return $this->Status;
-    }
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $ProductImage;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $ProductTag;
-
-
-    /**
-     * Add ProductImage
+     * Add productImage.
      *
      * @param \Eccube\Entity\ProductImage $productImage
+     *
      * @return Product
      */
     public function addProductImage(\Eccube\Entity\ProductImage $productImage)
@@ -962,17 +957,19 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Remove ProductImage
+     * Remove productImage.
      *
      * @param \Eccube\Entity\ProductImage $productImage
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage->removeElement($productImage);
+        return $this->ProductImage->removeElement($productImage);
     }
 
     /**
-     * Get ProductImage
+     * Get productImage.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -981,19 +978,11 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductImage;
     }
 
-    public function getMainFileName()
-    {
-        if (count($this->ProductImage) > 0) {
-            return $this->ProductImage[0];
-        } else {
-            return null;
-        }
-    }
-
     /**
-     * Add ProductTag
+     * Add productTag.
      *
      * @param \Eccube\Entity\ProductTag $productTag
+     *
      * @return Product
      */
     public function addProductTag(\Eccube\Entity\ProductTag $productTag)
@@ -1004,17 +993,19 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Remove ProductTag
+     * Remove productTag.
      *
      * @param \Eccube\Entity\ProductTag $productTag
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
     {
-        $this->ProductTag->removeElement($productTag);
+        return $this->ProductTag->removeElement($productTag);
     }
 
     /**
-     * Get ProductTag
+     * Get productTag.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1023,5 +1014,87 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductTag;
     }
 
+    /**
+     * Add customerFavoriteProduct.
+     *
+     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+     *
+     * @return Product
+     */
+    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+    {
+        $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
 
+        return $this;
+    }
+
+    /**
+     * Remove customerFavoriteProduct.
+     *
+     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProduct)
+    {
+        return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
+    }
+
+    /**
+     * Get customerFavoriteProducts.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCustomerFavoriteProducts()
+    {
+        return $this->CustomerFavoriteProducts;
+    }
+
+    /**
+     * Set creator.
+     *
+     * @param \Eccube\Entity\Member|null $creator
+     *
+     * @return Product
+     */
+    public function setCreator(\Eccube\Entity\Member $creator = null)
+    {
+        $this->Creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator.
+     *
+     * @return \Eccube\Entity\Member|null
+     */
+    public function getCreator()
+    {
+        return $this->Creator;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param \Eccube\Entity\Master\Disp|null $status
+     *
+     * @return Product
+     */
+    public function setStatus(\Eccube\Entity\Master\Disp $status = null)
+    {
+        $this->Status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return \Eccube\Entity\Master\Disp|null
+     */
+    public function getStatus()
+    {
+        return $this->Status;
+    }
 }

@@ -24,8 +24,16 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * ClassName
+ *
+ * @ORM\Table(name="dtb_class_name")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\ClassNameRepository")
  */
 class ClassName extends \Eccube\Entity\AbstractEntity
 {
@@ -38,42 +46,66 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="class_name_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="rank", type="integer")
      */
     private $rank;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     */
+    private $del_flg = 0;
+
+    /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var integer
-     */
-    private $del_flg;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ClassCategory", mappedBy="ClassName")
+     * @ORM\OrderBy({
+     *     "rank"="DESC"
+     * })
      */
     private $ClassCategories;
 
     /**
      * @var \Eccube\Entity\Member
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     * })
      */
     private $Creator;
 
@@ -86,9 +118,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -96,9 +128,10 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param  string    $name
+     * @param string $name
+     *
      * @return ClassName
      */
     public function setName($name)
@@ -109,7 +142,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -119,9 +152,10 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param  integer   $rank
+     * @param int $rank
+     *
      * @return ClassName
      */
     public function setRank($rank)
@@ -132,9 +166,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
@@ -142,55 +176,10 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set delFlg.
      *
-     * @param  \DateTime $createDate
-     * @return ClassName
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
-
-        return $this;
-    }
-
-    /**
-     * Get create_date
+     * @param int $delFlg
      *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set update_date
-     *
-     * @param  \DateTime $updateDate
-     * @return ClassName
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
-
-        return $this;
-    }
-
-    /**
-     * Get update_date
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
-
-    /**
-     * Set del_flg
-     *
-     * @param  integer   $delFlg
      * @return ClassName
      */
     public function setDelFlg($delFlg)
@@ -201,9 +190,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get del_flg
+     * Get delFlg.
      *
-     * @return integer
+     * @return int
      */
     public function getDelFlg()
     {
@@ -211,30 +200,81 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add ClassCategories
+     * Set createDate.
      *
-     * @param  \Eccube\Entity\ClassCategory $classCategories
+     * @param \DateTime $createDate
+     *
      * @return ClassName
      */
-    public function addClassCategory(\Eccube\Entity\ClassCategory $classCategories)
+    public function setCreateDate($createDate)
     {
-        $this->ClassCategories[] = $classCategories;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Remove ClassCategories
+     * Get createDate.
      *
-     * @param \Eccube\Entity\ClassCategory $classCategories
+     * @return \DateTime
      */
-    public function removeClassCategory(\Eccube\Entity\ClassCategory $classCategories)
+    public function getCreateDate()
     {
-        $this->ClassCategories->removeElement($classCategories);
+        return $this->create_date;
     }
 
     /**
-     * Get ClassCategories
+     * Set updateDate.
+     *
+     * @param \DateTime $updateDate
+     *
+     * @return ClassName
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Add classCategory.
+     *
+     * @param \Eccube\Entity\ClassCategory $classCategory
+     *
+     * @return ClassName
+     */
+    public function addClassCategory(\Eccube\Entity\ClassCategory $classCategory)
+    {
+        $this->ClassCategories[] = $classCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove classCategory.
+     *
+     * @param \Eccube\Entity\ClassCategory $classCategory
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeClassCategory(\Eccube\Entity\ClassCategory $classCategory)
+    {
+        return $this->ClassCategories->removeElement($classCategory);
+    }
+
+    /**
+     * Get classCategories.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -244,12 +284,13 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Creator
+     * Set creator.
      *
-     * @param  \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
+     *
      * @return ClassName
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -257,9 +298,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

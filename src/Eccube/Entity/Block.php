@@ -6,6 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Block
+ *
+ * @ORM\Table(name="dtb_block", uniqueConstraints={@ORM\UniqueConstraint(name="device_type_id", columns={"device_type_id", "file_name"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Eccube\Repository\BlockRepository")
  */
 class Block extends \Eccube\Entity\AbstractEntity
 {
@@ -15,47 +21,70 @@ class Block extends \Eccube\Entity\AbstractEntity
     const UNUSED_BLOCK_ID = 0;
 
     /**
-     * @var integer
+     * @var int
+     *
+     * @ORM\Column(name="block_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
+     *
+     * @ORM\Column(name="block_name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="file_name", type="string", length=255)
      */
     private $file_name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="logic_flg", type="smallint", options={"unsigned":true,"default":1})
+     */
+    private $logic_flg = 1;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="deletable_flg", type="smallint", options={"unsigned":true,"default":1})
+     */
+    private $deletable_flg = 1;
+
+    /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="datetime")
      */
     private $create_date;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="update_date", type="datetime")
      */
     private $update_date;
 
     /**
-     * @var integer
-     */
-    private $logic_flg;
-
-    /**
-     * @var integer
-     */
-    private $deletable_flg;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Block", cascade={"persist","remove"})
      */
     private $BlockPositions;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
+     * })
      */
     private $DeviceType;
 
@@ -68,10 +97,21 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Set id
      *
-     * @param string $id
-     * @return Block
+     * @param integer $id
+     *
+     * @return integer
      */
     public function setId($id)
     {
@@ -81,22 +121,13 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Set name.
      *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
+     * @param string|null $name
      *
-     * @param string $name
      * @return Block
      */
-    public function setName($name)
+    public function setName($name = null)
     {
         $this->name = $name;
 
@@ -104,9 +135,9 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string|null
      */
     public function getName()
     {
@@ -114,9 +145,10 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set file_name
+     * Set fileName.
      *
      * @param string $fileName
+     *
      * @return Block
      */
     public function setFileName($fileName)
@@ -127,9 +159,9 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get file_name
+     * Get fileName.
      *
-     * @return string 
+     * @return string
      */
     public function getFileName()
     {
@@ -137,68 +169,23 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set create_date
+     * Set logicFlg.
      *
-     * @param \DateTime $createDate
+     * @param int $logicFlg
+     *
      * @return Block
      */
-    public function setCreateDate($createDate)
+    public function setLogicFlg($logicFlg)
     {
-        $this->create_date = $createDate;
+        $this->logic_flg = $logicFlg;
 
         return $this;
     }
 
     /**
-     * Get create_date
+     * Get logicFlg.
      *
-     * @return \DateTime 
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
-
-    /**
-     * Set update_date
-     *
-     * @param \DateTime $updateDate
-     * @return Block
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
-
-        return $this;
-    }
-
-    /**
-     * Get update_date
-     *
-     * @return \DateTime 
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
-    }
-
-    /**
-     * Set php_path
-     *
-     * @param integer $logic_flg
-     * @return Block
-     */
-    public function setLogicFlg($logic_flg)
-    {
-        $this->logic_flg = $logic_flg;
-
-        return $this;
-    }
-
-    /**
-     * Get logic_flg
-     *
-     * @return string
+     * @return int
      */
     public function getLogicFlg()
     {
@@ -206,9 +193,10 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deletable_flg
+     * Set deletableFlg.
      *
-     * @param integer $deletableFlg
+     * @param int $deletableFlg
+     *
      * @return Block
      */
     public function setDeletableFlg($deletableFlg)
@@ -219,9 +207,9 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get deletable_flg
+     * Get deletableFlg.
      *
-     * @return integer 
+     * @return int
      */
     public function getDeletableFlg()
     {
@@ -229,32 +217,83 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add BlocPositions
+     * Set createDate.
      *
-     * @param \Eccube\Entity\BlockPosition $blocPositions
+     * @param \DateTime $createDate
+     *
      * @return Block
      */
-    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
+    public function setCreateDate($createDate)
     {
-        $this->BlockPositions[] = $blockPositions;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Remove BlockPositions
+     * Get createDate.
      *
-     * @param \Eccube\Entity\BlockPosition $blockPositions
+     * @return \DateTime
      */
-    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
+    public function getCreateDate()
     {
-        $this->BlockPositions->removeElement($blockPositions);
+        return $this->create_date;
     }
 
     /**
-     * Get BlockPositions
+     * Set updateDate.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param \DateTime $updateDate
+     *
+     * @return Block
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Add blockPosition.
+     *
+     * @param \Eccube\Entity\BlockPosition $blockPosition
+     *
+     * @return Block
+     */
+    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+    {
+        $this->BlockPositions[] = $blockPosition;
+
+        return $this;
+    }
+
+    /**
+     * Remove blockPosition.
+     *
+     * @param \Eccube\Entity\BlockPosition $blockPosition
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
+    {
+        return $this->BlockPositions->removeElement($blockPosition);
+    }
+
+    /**
+     * Get blockPositions.
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBlockPositions()
     {
@@ -262,9 +301,10 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set DeviceType
+     * Set deviceType.
      *
-     * @param \Eccube\Entity\Master\DeviceType $deviceType
+     * @param \Eccube\Entity\Master\DeviceType|null $deviceType
+     *
      * @return Block
      */
     public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
@@ -275,9 +315,9 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get DeviceType
+     * Get deviceType.
      *
-     * @return \Eccube\Entity\Master\DeviceType 
+     * @return \Eccube\Entity\Master\DeviceType|null
      */
     public function getDeviceType()
     {

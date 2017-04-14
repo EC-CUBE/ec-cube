@@ -6,7 +6,7 @@ namespace Acme\Entity;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Eccube\Entity\Event\Annotations\PreUpdate;
+use Eccube\Annotation\PreUpdate;
 use Eccube\Entity\Event\EntityEventListener;
 use Eccube\Entity\ProductStock;
 
