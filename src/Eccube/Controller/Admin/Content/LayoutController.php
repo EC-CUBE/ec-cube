@@ -89,7 +89,7 @@ class LayoutController
         $listForm->get('layout')->setData($TargetPageLayout);
 
         $form = $builder->getForm();
-
+//dump( $request->request->all() );exit;
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -118,13 +118,15 @@ class LayoutController
                     }
                     // 他のページに anywhere が存在する場合は INSERT しない
                     $anywhere = (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) ? 1 : 0;
+
                     if (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) {
                         $Other = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
                             ->findBy(array(
                                 'anywhere' => 1,
                                 'block_id' => $data['id_' . $i],
                             ));
-                        if (count($Other) > 0) {
+                        //Only for TOP page
+                        if ( $TargetPageLayout != 1) {
                             continue;
                         }
                     }
@@ -143,9 +145,9 @@ class LayoutController
                         ->setBlock($Block)
                         ->setPageLayout($TargetPageLayout)
                         ->setAnywhere($anywhere);
-                    if ($id == 0) {
-                        $BlockPosition->setAnywhere(0);
-                    }
+//                    if ($id == 0) {
+//                        $BlockPosition->setAnywhere(0);
+//                    }
                     $TargetPageLayout->addBlockPosition($BlockPosition);
                     $app['orm.em']->persist($BlockPosition);
                 }
