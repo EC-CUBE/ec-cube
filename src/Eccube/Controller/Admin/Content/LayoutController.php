@@ -38,6 +38,15 @@ class LayoutController
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
 
+        $PreviewBlockPositions = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
+            ->findBy(array(
+                'page_id' => 0,
+            ));
+        foreach ($PreviewBlockPositions as $BlockPosition) {
+            $app['orm.em']->remove($BlockPosition);
+        }
+        $app['orm.em']->flush();
+
         // 編集対象ページ
         /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
         $TargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $id);
@@ -89,7 +98,7 @@ class LayoutController
         $listForm->get('layout')->setData($TargetPageLayout);
 
         $form = $builder->getForm();
-//dump( $request->request->all() );exit;
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -125,8 +134,8 @@ class LayoutController
                                 'anywhere' => 1,
                                 'block_id' => $data['id_' . $i],
                             ));
-                        //Only for TOP page
-                        if ( $TargetPageLayout != 1) {
+                        //exist and not preview model
+                        if (( count($Other) > 0)&&($id)) {
                             continue;
                         }
                     }
