@@ -40,6 +40,18 @@ class CartCompareService
     }
 
     /**
+     * CompareContext::compare()のエイリアス
+     *
+     * @param \Eccube\Entity\CartItem $CartItem1
+     * @param \Eccube\Entity\CartItem $CartItem2
+     * @return bool
+     */
+    public function compare($CartItem1, $CartItem2)
+    {
+        return $this->context->compare($CartItem1, $CartItem2);
+    }
+
+    /**
      * カート内商品と比較し、既に存在する商品を取得する
      *
      * @param \Eccube\Entity\CartItem $CartItem

@@ -272,7 +272,23 @@ class ProductController
                     log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
                     try {
-                        $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+                        /** @var \Eccube\Entity\CartItem $CartItem */
+                        $CartItem = $app['eccube.service.cart']->generateCartItem($addCartData['product_class_id']);
+                        $CartItem->setQuantity($addCartData['quantity']);
+
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'Product' => $Product,
+                                'CartItem' => $CartItem,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_ADD_CART, $event);
+
+                        $app['eccube.service.cart']
+                            ->addCartItem($CartItem)
+                            ->save();
                     } catch (CartException $e) {
                         log_info('カート追加エラー', array($e->getMessage()));
                         $app->addRequestError($e->getMessage());
