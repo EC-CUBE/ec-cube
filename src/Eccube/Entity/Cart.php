@@ -42,6 +42,11 @@ class Cart extends \Eccube\Entity\AbstractEntity
     private $pre_order_id = null;
 
     /**
+     * @var int
+     */
+    private $current_cart_no = 0;
+
+    /**
      * @var array
      */
     private $Payments = array();
@@ -96,9 +101,9 @@ class Cart extends \Eccube\Entity\AbstractEntity
      */
     public function setCartItem(\Eccube\Entity\CartItem $AddCartItem, $compareService)
     {
-        $CartItem = $compareService->getExistsCartItem($AddCartItem);
-        if ($CartItem) {
-            $CartItem
+        $ExistsCartItem = $compareService->getExistsCartItem($AddCartItem);
+        if ($ExistsCartItem) {
+            $ExistsCartItem
                 ->setPrice($AddCartItem->getPrice())
                 ->setQuantity($AddCartItem->getQuantity());
         } else {
@@ -114,6 +119,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
      */
     public function addCartItem(CartItem $CartItem)
     {
+        $CartItem->setCartNo($this->getNextCartNo());
         $this->CartItems[] = $CartItem;
 
         return $this;
@@ -241,4 +247,8 @@ class Cart extends \Eccube\Entity\AbstractEntity
         return $this;
     }
 
+    public function getNextCartNo()
+    {
+        return $this->current_cart_no++;
+    }
 }
