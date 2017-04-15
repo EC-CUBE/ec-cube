@@ -498,13 +498,6 @@ class CartServiceTest extends AbstractServiceTestCase
         } catch (\Eccube\Exception\CartException $e) {
             $this->assertTrue(true);
         }
-
-        try {
-            $this->app['eccube.service.cart']->generateCartItem('a');
-            $this->fail();
-        } catch (\Eccube\Exception\CartException $e) {
-            $this->assertTrue(true);
-        }
     }
 
     public function testAddCartItem_ProductClassEntity()
