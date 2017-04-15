@@ -470,4 +470,250 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->actual = count($ProductTypes);
         $this->verify();
     }
+
+    public function testGenerateCartItem()
+    {
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+
+        $CartItem = $this->app['eccube.service.cart']->generateCartItem($ProductClass);
+        $this->assertInstanceOf('Eccube\Entity\CartItem', $CartItem);
+
+        $CartItem = $this->app['eccube.service.cart']->generateCartItem($ProductClass->getId());
+        $this->assertInstanceOf('Eccube\Entity\CartItem', $CartItem);
+    }
+
+    public function testGenerateCartItem_invalidArgument()
+    {
+        try {
+            $this->app['eccube.service.cart']->generateCartItem(null);
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertTrue(true);
+        }
+
+        try {
+            $this->app['eccube.service.cart']->generateCartItem($this->Product);
+            $this->fail();
+        } catch (\Eccube\Exception\CartException $e) {
+            $this->assertTrue(true);
+        }
+
+        try {
+            $this->app['eccube.service.cart']->generateCartItem('a');
+            $this->fail();
+        } catch (\Eccube\Exception\CartException $e) {
+            $this->assertTrue(true);
+        }
+    }
+
+    public function testAddCartItem_ProductClassEntity()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $CartItem = $cartService->generateCartItem(1);
+        $cartService->addCartItem($CartItem);
+        $CartItems = $cartService->getCart()->getCartItems();
+
+        $this->assertEquals('Eccube\Entity\ProductClass', $CartItems[0]->getClassName());
+        $this->assertEquals(1, $CartItems[0]->getClassId());
+    }
+
+    public function testAddCartItem_Quantity()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+        $this->assertCount(0, $cartService->getCart()->getCartItems());
+
+        $CartItem = $cartService->generateCartItem(1);
+        $cartService->addCartItem($CartItem);
+        $this->assertEquals(1, $cartService->getCartItemQuantity($CartItem));
+
+        $cartService->clear();
+
+        $CartItem = $cartService->generateCartItem(10);
+        $CartItem->setQuantity(6);
+        $cartService->addCartItem($CartItem);
+        $this->assertEquals(5, $cartService->getCartItemQuantity($CartItem));
+
+        $cartService->clear();
+
+        $CartItem = $cartService->generateCartItem(10);
+        $CloneCartItem = clone $CartItem;
+        $CartItem->setQuantity(101);
+        $cartService->addCartItem($CartItem);
+        $this->assertEquals(5, $cartService->getCartItemQuantity($CloneCartItem));
+    }
+
+    public function testSetCartItemQuantityWithObject()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $ProductClasses = $this->Product->getProductClasses();
+        $CartItem = $this->app['eccube.service.cart']->generateCartItem($ProductClasses[0]);
+        $cartService
+            ->setCartItemQuantity($CartItem, 1)
+            ->save();
+
+        $Cart = $this->app['session']->get('cart');
+        $CartItems = $Cart->getCartItems();
+
+        $this->assertCount(1, $CartItems);
+    }
+
+    public function testSetCartItemQuantityWithProductHide()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+        $this->Product->setStatus($Disp);
+        $this->app['orm.em']->flush();
+
+        try {
+            $ProductClasses = $this->Product->getProductClasses();
+            $ProductClass = $ProductClasses[0];
+            $CartItem = $cartService->generateCartItem($ProductClass);
+            $cartService
+                ->setCartItemQuantity($CartItem, 1)
+                ->save();
+            $this->fail();
+        } catch (CartException $e) {
+            $this->expected = 'cart.product.not.status';
+            $this->actual = $e->getMessage();
+        }
+        $this->verify();
+    }
+
+    public function testSetCartItemQuantityWithOverPrice()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $ProductClass->setPrice02($this->app['config']['max_total_fee']);
+        $this->app['orm.em']->flush();
+
+        try {
+            $CartItem = $cartService->generateCartItem($ProductClass);
+            $cartService->setCartItemQuantity($CartItem, 2)->save();
+        } catch (CartException $e) {
+            $this->actual = $cartService->getError();
+            $this->expected = 'cart.over.price_limit';
+        }
+
+        $this->verify();
+    }
+
+    public function testSetCartItemQuantityWithOverStock()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $ProductClass->setStockUnlimited(0);
+        $ProductClass->setStock(10);
+        $this->app['orm.em']->flush();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 20)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array('cart.over.stock');
+        $this->verify();
+    }
+
+    public function testSetCartItemQuantityWithOverSaleLimit()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $ProductClasses = $this->Product->getProductClasses();
+        /** @var \Eccube\Entity\ProductClass $ProductClass */
+        $ProductClass = $ProductClasses[0];
+        $ProductClass
+            ->setStockUnlimited(0)
+            ->setStock(10)
+            ->setSaleLimit(5);
+        $this->app['orm.em']->flush();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 7)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array('cart.over.sale_limit');
+        $this->verify();
+    }
+
+    public function testSetCartItemQuantityWithMultipleProductType()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        // カート投入
+        $ProductClasses1 = $this->Product->getProductClasses();
+        $ProductClasses2 = $this->Product2->getProductClasses();
+
+        try {
+            $cartService
+                ->addCartItem($cartService->generateCartItem($ProductClasses1[0]))
+                ->save();
+            $cartService
+                ->addCartItem($cartService->generateCartItem($ProductClasses2[0]))
+                ->save();
+            $this->fail();
+        } catch (CartException $e) {
+            $this->actual = $e->getMessage();
+        }
+        $this->expected = 'cart.product.type.kind';
+        $this->verify('複数配送OFFの場合は複数商品種別のカート投入はエラー');
+    }
+
+    public function testSetCartItemQuantityWithMultipleShipping()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        // 複数配送対応としておく
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+
+        // product_class_id = 2 の ProductType を 2 に変更
+        $ProductClass = $this->app['orm.em']
+            ->getRepository('Eccube\Entity\ProductClass')
+            ->find(2);
+        $ProductClass->setProductType($this->ProductType2);
+
+        // ProductType 1 と 2 で, 共通する支払い方法を削除しておく
+        $PaymentOption = $this
+            ->app['orm.em']
+            ->getRepository('\Eccube\Entity\PaymentOption')
+            ->findOneBy(
+                array(
+                    'delivery_id' => 1,
+                    'payment_id' => 3
+                )
+            );
+        $this->assertNotNull($PaymentOption);
+        $this->app['orm.em']->remove($PaymentOption);
+        $this->app['orm.em']->flush();
+
+        // カート投入
+        try {
+            // XXX createProduct() で生成した商品を使いたいが,
+            // createProduct() で生成すると CartService::getCart()->getCartItem() で
+            // 商品が取得できないため, 初期設定商品を使用する
+            $cartService->setCartItemQuantity($cartService->generateCartItem(1), 1);
+            $cartService->setCartItemQuantity($cartService->generateCartItem(2), 1);
+            $this->fail();
+        } catch (CartException $e) {
+            $this->actual = $e->getMessage();
+        }
+        $this->expected = 'cart.product.payment.kind';
+        $this->verify('複数配送ONの場合は支払い方法の異なるカート投入はエラー');
+    }
 }
