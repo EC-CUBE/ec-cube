@@ -138,9 +138,10 @@ class PageLayoutRepository extends EntityRepository
             ))
             ->getSingleResult();
 
-        if(($url == 'preview')&&($page == 'homepage')) {
+        if(count($ownResult->getBlockPositions()) && ($url == 'preview') && ($page == 'homepage')) {
             return $ownResult;
         }
+
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
