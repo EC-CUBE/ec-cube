@@ -42,26 +42,39 @@ class BlockRepository extends EntityRepository
         $this->app = $app;
     }
 
-    public function findOrCreate($block_id, $DeviceType)
+    /**
+     * @deprecated since 3.0.0
+     */
+    public function findOrCreate(array $conditions)
     {
+        $findObj = null;
+        //Find
+        $findObj = $this->getBlock($conditions);
 
-        if ($block_id == null) {
-            return $this->newBlock($DeviceType);
-        } else {
-            return $this->getBlock($block_id, $DeviceType);
+        if ($findObj == null) {
+            //Create
+            $findObj = $this->newBlock($conditions);
         }
 
+        if ($findObj == null) {
+            throw new \LogicException();
+        }
+
+        return $findObj;
     }
 
-    public function newBlock($DeviceType)
+    public function newBlock(array $conditions)
     {
-        $Block = new \Eccube\Entity\Block();
-        $Block
-            ->setDeviceType($DeviceType)
-            ->setLogicFlg(0)
-            ->setDeletableFlg(1);
+        if (isset($conditions['DeviceType']) && !is_null($conditions['DeviceType'])) {
+            $Block = new \Eccube\Entity\Block();
+            $Block
+                ->setDeviceType($conditions['DeviceType'])
+                ->setLogicFlg(0)
+                ->setDeletableFlg(1);
 
-        return $Block;
+            return $Block;
+        }
+        throw new \LogicException();
     }
 
     /**
@@ -83,16 +96,12 @@ class BlockRepository extends EntityRepository
     /**
      * ブロックの情報を取得.
      *
-     * @param  integer $block_id ブロックID
-     * @param  \Eccube\Entity\Master\DeviceType $DeviceType
+     * @param  array $conditions 検索条件
      * @return array
      */
-    public function getBlock($block_id, $DeviceType)
+    public function getBlock(array $conditions)
     {
-        $Block = $this->findOneBy(array(
-            'id' => $block_id,
-            'DeviceType' => $DeviceType,
-        ));
+        $Block = $this->findOneBy($conditions);
 
         return $Block;
     }
@@ -165,6 +174,7 @@ class BlockRepository extends EntityRepository
     public function getWriteTemplatePath($isUser = false)
     {
         return $this->app['config']['block_realdir'];
+        ddd($this->app['config']['block_realdir'], true);
     }
 
     /**
@@ -176,24 +186,21 @@ class BlockRepository extends EntityRepository
      *      src/Eccube/Resource/template/default/block
      *
      * @param string $fileName
-     * @param  boolean $isUser
      *
-     * @return array
+     * @return string filedata
      */
-    public function getReadTemplateFile($fileName, $isUser = false)
+    public function getReadTemplateFile($fileName)
     {
         $readPaths = array(
             $this->app['config']['block_realdir'],
             $this->app['config']['block_default_realdir'],
         );
+
         foreach ($readPaths as $readPath) {
             $filePath = $readPath . '/' . $fileName . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($filePath)) {
-                return array(
-                    'file_name' => $fileName,
-                    'tpl_data' => file_get_contents($filePath),
-                );
+                return file_get_contents($filePath);
             }
         }
     }

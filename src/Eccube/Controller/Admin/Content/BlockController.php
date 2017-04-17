@@ -65,7 +65,10 @@ class BlockController extends AbstractController
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Block = $app['eccube.repository.block']
-            ->findOrCreate($id, $DeviceType);
+            ->findOrCreate(array(
+                'id' => $id,
+                'DeviceType' => $DeviceType,
+            ));
 
         if (!$Block) {
             throw new NotFoundHttpException();
@@ -81,9 +84,8 @@ class BlockController extends AbstractController
         if ($id) {
             // テンプレートファイルの取得
             $previous_filename = $Block->getFileName();
-            $file = $app['eccube.repository.block']
-                ->getReadTemplateFile($previous_filename, $deletable);
-            $html = $file['tpl_data'];
+            $html = $app['eccube.repository.block']
+                ->getReadTemplateFile($previous_filename);
         }
 
         $event = new EventArgs(

@@ -60,7 +60,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
     public function testGetBlock()
     {
-        $Block = $this->app['eccube.repository.block']->getBlock($this->block_id, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->getBlock(array('id' => $this->block_id, 'DeviceType' => $this->DeviceType));
         $this->assertNotNull($Block);
         $this->expected = $this->block_id;
         $this->actual = $Block->getId();
@@ -71,20 +71,20 @@ class BlockRepositoryTest extends EccubeTestCase
     {
         // TODO findOrCreate(array $condition) にするべき
         // https://github.com/EC-CUBE/ec-cube/issues/922
-        $Block = $this->app['eccube.repository.block']->findOrCreate($this->block_id, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => $this->block_id, 'DeviceType' => $this->DeviceType));
 
         $this->assertNotNull($Block);
         $this->expected = $this->block_id;
         $this->actual = $Block->getId();
         $this->verify('ブロックIDは'.$this->expected.'ではありません');
 
-        $Block = $this->app['eccube.repository.block']->findOrCreate(null, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => null, 'DeviceType' => $this->DeviceType));
         $this->assertNotNull($Block);
         $this->assertTrue($Block instanceof \Eccube\Entity\Block);
         $this->assertNull($Block->getId());
 
-        $Block = $this->app['eccube.repository.block']->findOrCreate(999999, $this->DeviceType);
-        $this->assertNull($Block); // XXX block_id = 999999 の新たなインスタンスを返してほしいが不可能.
+        $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => 999999, 'DeviceType' => $this->DeviceType));
+        $this->assertNull($Block->getId());
     }
 
     public function testGetWriteTemplatePath()
@@ -109,10 +109,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
         file_put_contents($this->app['config']['block_realdir'].'/'.$fileName.'.twig', 'test');
 
-        // XXX 引数 isUser は使用していない
-        $data = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
-        // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
-        $this->actual = $data['tpl_data'];
+        $this->actual = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
         $this->expected = 'test';
         $this->verify();
     }
@@ -134,7 +131,7 @@ class BlockRepositoryTest extends EccubeTestCase
         // XXX 引数 isUser は使用していない
         $data = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
-        $this->actual = $data['tpl_data'];
+        $this->actual = $data;
         $this->expected = 'test';
         $this->verify();
     }
