@@ -1327,6 +1327,7 @@ textarea.form-control{
 .order_list .btn_area li {
     min-width: 160px;
     display: inline-block;
+    vertical-align: middle;
     margin-right: 8px;
     margin-bottom: 8px;
 }
