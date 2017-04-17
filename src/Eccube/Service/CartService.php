@@ -607,6 +607,7 @@ class CartService
      */
     public function getCart()
     {
+        $productClassQuantities = [];
         foreach ($this->cart->getCartItems() as $CartItem) {
 
             /** @var \Eccube\Entity\ProductClass $ProductClass */
@@ -625,18 +626,23 @@ class CartService
                 } else {
 
                     $productName = $this->getProductName($ProductClass);
+                    $productClassId = $ProductClass->getId();
 
-                    // 制限数チェック(在庫不足の場合は、処理の中でカート内商品を削除している)
-                    $quantity = $this->setProductLimit($ProductClass, $productName, $CartItem->getQuantity());
+                    $quantity = $CartItem->getQuantity();
+                    $productClassQuantity = isset($productClassQuantities[$productClassId]) ?
+                        $productClassQuantities[$productClassId] :
+                        0;
+                    $totalQuantity = $productClassQuantity + $quantity;
+                    $newTotalQuantity = $this->setProductLimit($ProductClass, $productName, $totalQuantity);
+                    $newQuantity = min($quantity, $newTotalQuantity - $productClassQuantity);
+                    $productClassQuantities[$productClassId] = $newTotalQuantity;
 
                     /// 個数が異なれば、新しい数量でカート内商品を更新する
-                    if ((0 < $quantity) && ($CartItem->getQuantity() != $quantity)) {
+                    if ((0 < $newQuantity) && ($quantity != $newQuantity)) {
                         // 個数が異なれば更新
-                        $CartItem->setQuantity($quantity);
-                        $this->cart->setCartItem($CartItem, $this->generateCartCompareService());
+                        $CartItem->setQuantity($newQuantity);
                     }
                 }
-
             } else {
                 // 商品情報が削除されていたらエラー
                 $this->setError('cart.product.delete');
