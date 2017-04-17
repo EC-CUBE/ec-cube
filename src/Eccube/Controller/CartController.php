@@ -345,6 +345,50 @@ class CartController extends AbstractController
     }
 
     /**
+     * カートに入っている商品を削除する.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $cart_no
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function removeCartNo(Application $app, Request $request, $cart_no)
+    {
+        $this->isTokenValid($app);
+
+        log_info('カート削除処理開始', array('cart_no' => $cart_no));
+
+        // FRONT_CART_REMOVE_INITIALIZE
+        $event = new EventArgs(
+            array(
+                'cart_no' => $cart_no,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_INITIALIZE, $event);
+
+        $cart_no = $event->getArgument('cart_no');
+        $app['eccube.service.cart']->removeCartNo($cart_no)->save();
+
+        log_info('カート削除処理完了', array('cart_no' => $cart_no));
+
+        // FRONT_CART_REMOVE_COMPLETE
+        $event = new EventArgs(
+            array(
+                'cart_no' => $cart_no,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_COMPLETE, $event);
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
+
+        return $app->redirect($app->url('cart'));
+    }
+
+    /**
      * カートに商品を個数を指定して設定する.
      *
      * @param Application $app

@@ -350,6 +350,48 @@ class CartService
     }
 
     /**
+     * @param int $cart_no
+     * @return \Eccube\Service\CartService
+     */
+    public function removeCartNo($cart_no)
+    {
+        $this->cart->removeCartItemByCartNo($cart_no);
+        $this->resetPayment();
+
+        return $this;
+    }
+
+    /**
+     * 支払い方法を再設定する
+     *
+     * @return $this
+     */
+    protected function resetPayment()
+    {
+        // 支払方法の再設定
+        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+
+            // 複数配送対応
+            $productTypes = array();
+            foreach ($this->getCart()->getCartItems() as $item) {
+                /* @var $ProductClass \Eccube\Entity\ProductClass */
+                $ProductClass = $item->getObject();
+                $productTypes[] = $ProductClass->getProductType();
+            }
+
+            // 配送業者を取得
+            $deliveries = $this->entityManager->getRepository('Eccube\Entity\Delivery')->getDeliveries($productTypes);
+
+            // 支払方法を取得
+            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayments($deliveries);
+
+            $this->getCart()->setPayments($payments);
+        }
+
+        return $this;
+    }
+
+    /**
      *
      * @param  string $productClassId
      * @param  integer $quantity
@@ -613,26 +655,7 @@ class CartService
     public function removeProduct($productClassId)
     {
         $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
-
-        // 支払方法の再設定
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-
-            // 複数配送対応
-            $productTypes = array();
-            foreach ($this->getCart()->getCartItems() as $item) {
-                /* @var $ProductClass \Eccube\Entity\ProductClass */
-                $ProductClass = $item->getObject();
-                $productTypes[] = $ProductClass->getProductType();
-            }
-
-            // 配送業者を取得
-            $deliveries = $this->entityManager->getRepository('Eccube\Entity\Delivery')->getDeliveries($productTypes);
-
-            // 支払方法を取得
-            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayments($deliveries);
-
-            $this->getCart()->setPayments($payments);
-        }
+        $this->resetPayment();
 
         return $this;
     }

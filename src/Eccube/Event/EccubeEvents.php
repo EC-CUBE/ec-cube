@@ -474,6 +474,10 @@ final class EccubeEvents
     const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
     const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
 
+    // remove_cart_no
+    const FRONT_CART_REMOVE_CART_NO_INITIALIZE = 'front.cart.remove_cart_no.initialize';
+    const FRONT_CART_REMOVE_CART_NO_COMPLETE = 'front.cart.remove_cart_no.complete';
+
     // buystep
     const FRONT_CART_BUYSTEP_INITIALIZE = 'front.cart.buystep.initialize';
     const FRONT_CART_BUYSTEP_COMPLETE = 'front.cart.buystep.complete';

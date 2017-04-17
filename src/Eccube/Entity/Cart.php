@@ -153,6 +153,23 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * カート商品をcart_noから削除する
+     *
+     * @param int $cart_no
+     * @return $this
+     */
+    public function removeCartItemByCartNo($cart_no)
+    {
+        $this->CartItems->map(function ($CartItem) use ($cart_no) {
+            if ($CartItem->getCartNo() == $cart_no) {
+                $this->CartItems->removeElement($CartItem);
+            }
+        });
+
+        return $this;
+    }
+
+    /**
      * @return \Eccube\Entity\Cart
      */
     public function clearCartItems()
