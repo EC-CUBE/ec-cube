@@ -53,9 +53,6 @@ class SearchOrderType extends AbstractType
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
-            ->add('status', 'order_status', array(
-                'label' => '対応状況',
-            ))
             ->add('multi_status', 'order_status', array(
                 'label' => '対応状況',
                 'expanded' => true,
