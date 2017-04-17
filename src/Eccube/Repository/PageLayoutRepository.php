@@ -116,7 +116,7 @@ class PageLayoutRepository extends EntityRepository
 
     }
 
-    public function getByUrl(DeviceType $DeviceType, $url)
+    public function getByUrl(DeviceType $DeviceType, $url, $page)
     {
         $options = $this->app['config']['doctrine_cache'];
         $lifetime = $options['result_cache']['lifetime'];
@@ -138,9 +138,9 @@ class PageLayoutRepository extends EntityRepository
             ))
             ->getSingleResult();
 
-        if($url == 'preview')
+        if(($url == 'preview')&&($page == 'homepage')) {
             return $ownResult;
-
+        }
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
