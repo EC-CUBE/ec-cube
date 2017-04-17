@@ -44,7 +44,7 @@
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
+    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}" autocomplete="off">
         {{ form_widget(form._token) }}
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box accordion">
