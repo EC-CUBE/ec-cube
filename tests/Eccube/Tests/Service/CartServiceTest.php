@@ -479,8 +479,18 @@ class CartServiceTest extends AbstractServiceTestCase
         $CartItem = $this->app['eccube.service.cart']->generateCartItem($ProductClass);
         $this->assertInstanceOf('Eccube\Entity\CartItem', $CartItem);
 
+        $this->assertEquals($ProductClass, $CartItem->getObject());
+        $this->assertEquals($ProductClass->getId(), $CartItem->getClassId());
+        $this->assertEquals($ProductClass->getPrice02IncTax(), $CartItem->getPrice());
+        $this->assertEquals(1, $CartItem->getQuantity());
+
         $CartItem = $this->app['eccube.service.cart']->generateCartItem($ProductClass->getId());
         $this->assertInstanceOf('Eccube\Entity\CartItem', $CartItem);
+
+        $this->assertEquals($ProductClass, $CartItem->getObject());
+        $this->assertEquals($ProductClass->getId(), $CartItem->getClassId());
+        $this->assertEquals($ProductClass->getPrice02IncTax(), $CartItem->getPrice());
+        $this->assertEquals(1, $CartItem->getQuantity());
     }
 
     public function testGenerateCartItem_invalidArgument()
@@ -489,13 +499,6 @@ class CartServiceTest extends AbstractServiceTestCase
             $this->app['eccube.service.cart']->generateCartItem(null);
             $this->fail();
         } catch (\Exception $e) {
-            $this->assertTrue(true);
-        }
-
-        try {
-            $this->app['eccube.service.cart']->generateCartItem($this->Product);
-            $this->fail();
-        } catch (\Eccube\Exception\CartException $e) {
             $this->assertTrue(true);
         }
     }
