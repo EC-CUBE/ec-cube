@@ -196,7 +196,6 @@ class AddCartType extends AbstractType
                     )),
                 ), '[classcategory_id2]');
             }
-
         }
     }
 }
