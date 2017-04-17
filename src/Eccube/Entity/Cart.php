@@ -153,23 +153,6 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * カート商品を削除する
-     *
-     * @param CartItem $CartItem カート商品 (同じインスタンスである必要はない)
-     * @param \Eccube\Service\CartCompareService $compareService
-     * @return $this
-     */
-    public function removeCartItemByCartItem(CartItem $CartItem, $compareService)
-    {
-        $TargetCartItem = $compareService->getExistsCartItem($CartItem);
-        if ($TargetCartItem) {
-            $this->CartItems->removeElement($TargetCartItem);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return \Eccube\Entity\Cart
      */
     public function clearCartItems()
