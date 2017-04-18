@@ -712,4 +712,61 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->expected = 'cart.product.payment.kind';
         $this->verify('複数配送ONの場合は支払い方法の異なるカート投入はエラー');
     }
+
+    public function testRemoveCartNo()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+        $ProductClasses = $this->Product->getProductClasses();
+
+        $cartService->setCartItemQuantity($cartService->generateCartItem($ProductClasses[0]), 2);
+        $cartService->setCartItemQuantity($cartService->generateCartItem($ProductClasses[1]), 2);
+        $cartService->setCartItemQuantity($cartService->generateCartItem($ProductClasses[2]), 2);
+
+        $this->assertCount(3, $cartService->getCart()->getCartItems());
+        $cartService->removeCartNo(0);
+        $this->assertCount(2, $cartService->getCart()->getCartItems());
+        $cartService->removeCartNo(0);
+        $this->assertCount(2, $cartService->getCart()->getCartItems());
+        $cartService->removeCartNo(3);
+        $this->assertCount(2, $cartService->getCart()->getCartItems());
+        $cartService->removeCartNo(2);
+        $this->assertCount(1, $cartService->getCart()->getCartItems());
+    }
+
+    public function testRemoveCartItemWithMultiple()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        // 複数配送対応としておく
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+
+        // product_class_id = 2 の ProductType を 2 に変更
+        $ProductClass = $this->app['orm.em']
+            ->getRepository('Eccube\Entity\ProductClass')
+            ->find(2);
+        $ProductClass->setProductType($this->ProductType2);
+
+        // カート投入
+        // XXX createProduct() で生成した商品を使いたいが,
+        // createProduct() で生成すると CartService::getCart()->getCartItem() で
+        // 商品が取得できないため, 初期設定商品を使用する
+        $CartItem1 = $cartService->generateCartItem(1);
+        $CartItem2 = $cartService->generateCartItem(2);
+        $cartService->setCartItemQuantity($CartItem1, 1);
+        $cartService->setCartItemQuantity($CartItem2, 1);
+
+        $this->expected = 1;
+        $this->actual = count($cartService->getCart()->getPayments());
+        $this->verify('設定されている支払い方法は' . $this->expected . '種類');
+
+        // ProductType2 の商品を削除すると支払い方法が再設定される
+        $cartService->removeCartNo(1);
+
+        $this->expected = 4;
+        $this->actual = count($cartService->getCart()->getPayments());
+        $this->verify('設定されている支払い方法は' . $this->expected . '種類');
+    }
 }
