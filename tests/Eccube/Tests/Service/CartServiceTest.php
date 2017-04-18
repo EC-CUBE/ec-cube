@@ -50,12 +50,11 @@ class CartServiceTest extends AbstractServiceTestCase
     }
 
     /**
-     * 必ず別カート商品と判定するストラテジーを追加
+     * 同じ商品規格のカート商品を複数セットできるよう変更
      */
-    protected function addFalseStrategy()
+    protected function setProductClassDuplicable()
     {
-        $strategy = new \Eccube\Tests\Service\CartComparator\Strategy\FalseStrategy();
-        $this->app['eccube.cart.comparator.context']->addStrategy($strategy);
+        $this->app['eccube.cart.comparator.context']->getStrategies()->clear();
     }
 
     public function testUnlock()
@@ -553,7 +552,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testAddCartItem_duplicateProductClass()
     {
-        $this->addFalseStrategy();
+        $this->setProductClassDuplicable();
         /** @var \Eccube\Service\CartService $cartService */
         $cartService = $this->app['eccube.service.cart'];
 
@@ -663,7 +662,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testSetCartItemQuantityWithOverStock_duplicateProductClass()
     {
-        $this->addFalseStrategy();
+        $this->setProductClassDuplicable();
         /** @var \Eccube\Service\CartService $cartService */
         $cartService = $this->app['eccube.service.cart'];
 
@@ -719,7 +718,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testSetCartItemQuantityWithOverSaleLimit_duplicateProductClass()
     {
-        $this->addFalseStrategy();
+        $this->setProductClassDuplicable();
         /** @var \Eccube\Service\CartService $cartService */
         $cartService = $this->app['eccube.service.cart'];
 
@@ -845,7 +844,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testRemoveCartNo_duplicateProductClass()
     {
-        $this->addFalseStrategy();
+        $this->setProductClassDuplicable();
         /** @var \Eccube\Service\CartService $cartService */
         $cartService = $this->app['eccube.service.cart'];
         $CartItems = $cartService->getCart()->getCartItems();
