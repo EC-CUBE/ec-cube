@@ -69,4 +69,16 @@ class CartControllerTest extends AbstractWebTestCase
         $this->client->request('PUT', '/cart/remove/cart_no/1');
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
+
+    public function testRoutingCartUpCartNo()
+    {
+        $this->client->request('PUT', '/cart/up/cart_no/1');
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+    }
+
+    public function testRoutingCartDownCartNo()
+    {
+        $this->client->request('PUT', '/cart/down/cart_no/1');
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+    }
 }

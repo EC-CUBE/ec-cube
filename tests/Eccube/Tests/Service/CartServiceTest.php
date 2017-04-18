@@ -915,4 +915,47 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->actual = count($cartService->getCart()->getPayments());
         $this->verify('設定されている支払い方法は' . $this->expected . '種類');
     }
+
+    public function testUpCartNoQuantity()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $CartItem = $cartService->generateCartItem(1);
+        $cartService->setCartItemQuantity($CartItem, 1);
+        $cart_no = $CartItem->getCartNo();
+
+        $cartService->upCartNoQuantity($cart_no);
+        $quantity = $cartService->getCartItemQuantity($CartItem);
+        $this->assertEquals(2, $quantity);
+    }
+
+    public function testDownCartNoQuantity()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $CartItem = $cartService->generateCartItem(1);
+        $cartService->setCartItemQuantity($CartItem, 2);
+        $cart_no = $CartItem->getCartNo();
+
+        $cartService->downCartNoQuantity($cart_no);
+        $quantity = $cartService->getCartItemQuantity($CartItem);
+        $this->assertEquals(1, $quantity);
+    }
+
+    public function testDownCartNoQuantity_NotRemove()
+    {
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $CartItem = $cartService->generateCartItem(1);
+        $cartService->setCartItemQuantity($CartItem, 1);
+        $cart_no = $CartItem->getCartNo();
+
+        $cartService->downCartNoQuantity($cart_no);
+        $quantity = $cartService->getCartItemQuantity($CartItem);
+        $this->assertEquals(1, $quantity);
+        $this->assertCount(1, $cartService->getCart()->getCartItems());
+    }
 }
