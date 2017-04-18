@@ -433,6 +433,7 @@ final class EccubeEvents
 
     // order
     const FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE = 'front.mypage.mypage.order.initialize';
+    const FRONT_MYPAGE_MYPAGE_ORDER_ADD_CART = 'front.mypage.mypage.order.add_cart';
     const FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE = 'front.mypage.mypage.order.complete';
 
     // favorite
