@@ -116,7 +116,7 @@ class PageLayoutRepository extends EntityRepository
 
     }
 
-    public function getByUrl(DeviceType $DeviceType, $url, $page)
+    public function getByUrl(DeviceType $DeviceType, $url, $page = null)
     {
         $options = $this->app['config']['doctrine_cache'];
         $lifetime = $options['result_cache']['lifetime'];
