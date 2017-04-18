@@ -38,7 +38,7 @@ class LayoutController
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
 
-        $PreviewBlockPositions = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
+        $PreviewBlockPositions = $app['eccube.repository.block_position']
             ->findBy(array(
                 'page_id' => 0,
             ));
