@@ -49,6 +49,15 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->app['orm.em']->flush();
     }
 
+    /**
+     * 必ず別カート商品と判定するストラテジーを追加
+     */
+    protected function addFalseStrategy()
+    {
+        $strategy = new \Eccube\Tests\Service\CartComparator\Strategy\FalseStrategy();
+        $this->app['eccube.cart.comparator.context']->addStrategy($strategy);
+    }
+
     public function testUnlock()
     {
         $cartService = $this->app['eccube.service.cart'];
@@ -542,6 +551,35 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->assertEquals(5, $cartService->getCartItemQuantity($CloneCartItem));
     }
 
+    public function testAddCartItem_duplicateProductClass()
+    {
+        $this->addFalseStrategy();
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        /** @var \Doctrine\Common\Collections\ArrayCollection $CartItems */
+        $CartItems = $cartService->getCart()->getCartItems();
+        $this->assertCount(0, $CartItems);
+
+        $CartItem = $cartService->generateCartItem(10);
+        $cartService->addCartItem($CartItem);
+        $this->assertCount(1, $CartItems);
+        $this->assertEquals(1, $CartItems->last()->getQuantity());
+
+        $CartItem = $cartService->generateCartItem(10);
+        $CartItem->setQuantity(2);
+        $cartService->addCartItem($CartItem);
+        $this->assertCount(2, $CartItems);
+        $this->assertEquals(2, $CartItems->last()->getQuantity());
+
+        $CartItem = $cartService->generateCartItem(10);
+        $CartItem->setQuantity(10);
+        $cartService->addCartItem($CartItem);
+        $this->assertCount(3, $CartItems);
+        // セットした数量は10だが、購入制限で2個に減らされる
+        $this->assertEquals(2, $CartItems->last()->getQuantity());
+    }
+
     public function testSetCartItemQuantityWithObject()
     {
         /** @var \Eccube\Service\CartService $cartService */
@@ -623,6 +661,40 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    public function testSetCartItemQuantityWithOverStock_duplicateProductClass()
+    {
+        $this->addFalseStrategy();
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $ProductClass->setStockUnlimited(0);
+        $ProductClass->setStock(10);
+        $this->app['orm.em']->flush();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 4)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array();
+        $this->verify();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 4)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array();
+        $this->verify();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 4)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array('cart.over.stock');
+        $this->verify();
+    }
+
     public function testSetCartItemQuantityWithOverSaleLimit()
     {
         /** @var \Eccube\Service\CartService $cartService */
@@ -639,6 +711,43 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $CartItem = $cartService->generateCartItem($ProductClass);
         $cartService->setCartItemQuantity($CartItem, 7)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array('cart.over.sale_limit');
+        $this->verify();
+    }
+
+    public function testSetCartItemQuantityWithOverSaleLimit_duplicateProductClass()
+    {
+        $this->addFalseStrategy();
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        $ProductClasses = $this->Product->getProductClasses();
+        /** @var \Eccube\Entity\ProductClass $ProductClass */
+        $ProductClass = $ProductClasses[0];
+        $ProductClass
+            ->setStockUnlimited(0)
+            ->setStock(10)
+            ->setSaleLimit(5);
+        $this->app['orm.em']->flush();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 2)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array();
+        $this->verify();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 2)->save();
+
+        $this->actual = $cartService->getErrors();
+        $this->expected = array();
+        $this->verify();
+
+        $CartItem = $cartService->generateCartItem($ProductClass);
+        $cartService->setCartItemQuantity($CartItem, 2)->save();
 
         $this->actual = $cartService->getErrors();
         $this->expected = array('cart.over.sale_limit');
@@ -732,6 +841,43 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->assertCount(2, $cartService->getCart()->getCartItems());
         $cartService->removeCartNo(2);
         $this->assertCount(1, $cartService->getCart()->getCartItems());
+    }
+
+    public function testRemoveCartNo_duplicateProductClass()
+    {
+        $this->addFalseStrategy();
+        /** @var \Eccube\Service\CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+        $CartItems = $cartService->getCart()->getCartItems();
+
+        $ci = function () use ($cartService) {
+            $CartItem = $cartService->generateCartItem(1);
+            $cartService->addCartItem($CartItem);
+            return $CartItem;
+        };
+
+        $CartItem1 = $ci();
+        $CartItem2 = $ci();
+        $CartItem3 = $ci();
+
+        $this->assertContains($CartItem1, $CartItems);
+        $this->assertContains($CartItem2, $CartItems);
+        $this->assertContains($CartItem3, $CartItems);
+
+        $cartService->removeCartNo($CartItem2->getCartNo());
+        $this->assertContains($CartItem1, $CartItems);
+        $this->assertNotContains($CartItem2, $CartItems);
+        $this->assertContains($CartItem3, $CartItems);
+
+        $cartService->removeCartNo(9999);
+        $this->assertContains($CartItem1, $CartItems);
+        $this->assertNotContains($CartItem2, $CartItems);
+        $this->assertContains($CartItem3, $CartItems);
+
+        $cartService->removeCartNo($CartItem1->getCartNo());
+        $this->assertNotContains($CartItem1, $CartItems);
+        $this->assertNotContains($CartItem2, $CartItems);
+        $this->assertContains($CartItem3, $CartItems);
     }
 
     public function testRemoveCartItemWithMultiple()
