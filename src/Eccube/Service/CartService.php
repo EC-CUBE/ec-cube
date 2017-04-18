@@ -709,6 +709,37 @@ class CartService
     }
 
     /**
+     * @param int $cart_no
+     * @return \Eccube\Service\CartService
+     */
+    public function upCartNoQuantity($cart_no)
+    {
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+        if ($CartItem) {
+            $this->setCartItemQuantity($CartItem, $CartItem->getQuantity() + 1);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $cart_no
+     * @return \Eccube\Service\CartService
+     */
+    public function downCartNoQuantity($cart_no)
+    {
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+        if ($CartItem) {
+            $quantity = $CartItem->getQuantity() - 1;
+            if ($quantity > 0) {
+                $this->setCartItemQuantity($CartItem, $quantity);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getProductTypes()

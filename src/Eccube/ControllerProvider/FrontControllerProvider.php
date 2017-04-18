@@ -50,7 +50,9 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/cart', '\Eccube\Controller\CartController::index')->bind('cart');
         $c->post('/cart/add', '\Eccube\Controller\CartController::add')->bind('cart_add');
         $c->put('/cart/up/{productClassId}', '\Eccube\Controller\CartController::up')->bind('cart_up')->assert('productClassId', '\d+');
+        $c->put('/cart/up/cart_no/{cart_no}', '\Eccube\Controller\CartController::upCartNo')->bind('cart_up_cart_no')->assert('cart_no', '\d+');
         $c->put('/cart/down/{productClassId}', '\Eccube\Controller\CartController::down')->bind('cart_down')->assert('productClassId', '\d+');
+        $c->put('/cart/down/cart_no/{cart_no}', '\Eccube\Controller\CartController::downCartNo')->bind('cart_down_cart_no')->assert('cart_no', '\d+');
         // setquantity deprecated since 3.0.0, to be removed in 3.1
         $c->put('/cart/setQuantity/{productClassId}/{quantity}', '\Eccube\Controller\CartController::setQuantity')->bind('cart_set_quantity')->assert('productClassId', '\d+')->assert('quantity', '\d+');
         $c->put('/cart/remove/{productClassId}', '\Eccube\Controller\CartController::remove')->bind('cart_remove')->assert('productClassId', '\d+');
