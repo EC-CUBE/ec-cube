@@ -508,8 +508,8 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductClasses = new ArrayCollection();
         $this->ProductStatuses = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
-        $this->ProductImage = new ArrayCollection();
-        $this->ProductTag = new ArrayCollection();
+        $this->ProductImages = new ArrayCollection();
+        $this->ProductTags = new ArrayCollection();
     }
 
     public function __clone()
@@ -539,7 +539,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         }
 
         $Images = $this->getProductImage();
-        $this->ProductImage = new ArrayCollection();
+        $this->ProductImages = new ArrayCollection();
         foreach ($Images as $Image) {
             $CloneImage = clone $Image;
             $this->addProductImage($CloneImage);
@@ -547,7 +547,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         }
 
         $Tags = $this->getProductTag();
-        $this->ProductTag = new ArrayCollection();
+        $this->ProductTags = new ArrayCollection();
         foreach ($Tags as $Tag) {
             $CloneTag = clone $Tag;
             $this->addProductTag($CloneTag);
@@ -937,12 +937,12 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductImage;
+    private $ProductImages;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductTag;
+    private $ProductTags;
 
 
     /**
@@ -953,7 +953,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function addProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage[] = $productImage;
+        $this->ProductImages[] = $productImage;
 
         return $this;
     }
@@ -965,7 +965,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage->removeElement($productImage);
+        $this->ProductImages->removeElement($productImage);
     }
 
     /**
@@ -975,13 +975,13 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getProductImage()
     {
-        return $this->ProductImage;
+        return $this->ProductImages;
     }
 
     public function getMainFileName()
     {
-        if (count($this->ProductImage) > 0) {
-            return $this->ProductImage[0];
+        if (count($this->ProductImages) > 0) {
+            return $this->ProductImages[0];
         } else {
             return null;
         }
@@ -995,7 +995,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function addProductTag(\Eccube\Entity\ProductTag $productTag)
     {
-        $this->ProductTag[] = $productTag;
+        $this->ProductTags[] = $productTag;
 
         return $this;
     }
@@ -1007,7 +1007,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
     {
-        $this->ProductTag->removeElement($productTag);
+        $this->ProductTags->removeElement($productTag);
     }
 
     /**
@@ -1017,7 +1017,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getProductTag()
     {
-        return $this->ProductTag;
+        return $this->ProductTags;
     }
 
 
