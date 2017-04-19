@@ -106,6 +106,18 @@ class PageLayoutRepository extends EntityRepository
         foreach ($anyResults as $anyResult) {
             $BlockPositions = $anyResult->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
+
+                $duplicated = $OwnBlockPosition->filter(
+                    function($entry) use ($BlockPosition) {
+                        if( ($entry->getTargetId() == $BlockPosition->getTargetId()) && ( $entry->getBlockId() == $BlockPosition->getBlockId() )  ){
+                            return true;
+                        }
+                    }
+                );
+                if(count($duplicated) > 0){
+                    continue;
+                }
+
                 if (!$OwnBlockPosition->contains($BlockPosition)) {
                     $ownResult->addBlockPosition($BlockPosition);
                 }
@@ -158,6 +170,18 @@ class PageLayoutRepository extends EntityRepository
         foreach ($anyResults as $anyResult) {
             $BlockPositions = $anyResult->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
+
+                $duplicated = $OwnBlockPosition->filter(
+                    function($entry) use ($BlockPosition) {
+                        if( ($entry->getTargetId() == $BlockPosition->getTargetId()) && ( $entry->getBlockId() == $BlockPosition->getBlockId() )  ){
+                            return true;
+                        }
+                    }
+                );
+                if(count($duplicated) > 0){
+                    continue;
+                }
+
                 if (!$OwnBlockPosition->contains($BlockPosition)) {
                     $ownResult->addBlockPosition($BlockPosition);
                 }
