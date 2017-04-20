@@ -47,7 +47,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
      *
      * @param int $id
      *
-     * @return Authority
+     * @return object
      */
     public function setId($id)
     {
@@ -71,7 +71,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
      *
      * @param string $name
      *
-     * @return Authority
+     * @return object
      */
     public function setName($name)
     {
@@ -95,7 +95,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
      *
      * @param int $rank
      *
-     * @return Authority
+     * @return object
      */
     public function setRank($rank)
     {

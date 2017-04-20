@@ -24,6 +24,14 @@ class Tag extends \Eccube\Entity\Master\AbstractMasterEntity
     protected $ProductTag;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Add productTag.
      *
      * @param \Eccube\Entity\ProductTag $productTag
