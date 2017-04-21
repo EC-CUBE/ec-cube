@@ -137,6 +137,20 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     private $quantity = 0;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     */
+    private $tax_rate = 0;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="tax_rule", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $tax_rule;
+
+    /**
      * @var \Eccube\Entity\Order
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderDetails")
@@ -176,6 +190,35 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      */
     private $Shipping;
 
+    /**
+     * @var \Eccube\Entity\Master\TaxType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\TaxType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tax_type_id", referencedColumnName="id")
+     * })
+     */
+    private $TaxType;
+
+    /**
+     * @var \Eccube\Entity\Master\TaxDisplayType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\TaxDisplayType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tax_display_type_id", referencedColumnName="id")
+     * })
+     */
+    private $TaxDisplayType;
+
+    /**
+     * @var \Eccube\Entity\Master\OrderItemType
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderItemType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_item_type_id", referencedColumnName="id")
+     * })
+     */
+    private $OrderItemType;
 
     /**
      * Get id.
@@ -380,6 +423,54 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set taxRate.
+     *
+     * @param string $taxRate
+     *
+     * @return OrderDetail
+     */
+    public function setTaxRate($taxRate)
+    {
+        $this->tax_rate = $taxRate;
+
+        return $this;
+    }
+
+    /**
+     * Get taxRate.
+     *
+     * @return string
+     */
+    public function getTaxRate()
+    {
+        return $this->tax_rate;
+    }
+
+    /**
+     * Set taxRule.
+     *
+     * @param int|null $taxRule
+     *
+     * @return OrderDetail
+     */
+    public function setTaxRule($taxRule = null)
+    {
+        $this->tax_rule = $taxRule;
+
+        return $this;
+    }
+
+    /**
+     * Get taxRule.
+     *
+     * @return int|null
+     */
+    public function getTaxRule()
+    {
+        return $this->tax_rule;
+    }
+
+    /**
      * Set order.
      *
      * @param \Eccube\Entity\Order|null $order
@@ -476,5 +567,77 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     public function getShipping()
     {
         return $this->Shipping;
+    }
+
+    /**
+     * Set taxType
+     *
+     * @param \Eccube\Entity\Master\TaxType $taxType
+     *
+     * @return ShipmentItem
+     */
+    public function setTaxType(\Eccube\Entity\Master\TaxType $taxType = null)
+    {
+        $this->TaxType = $taxType;
+
+        return $this;
+    }
+
+    /**
+     * Get taxType
+     *
+     * @return \Eccube\Entity\Master\TaxType
+     */
+    public function getTaxType()
+    {
+        return $this->TaxType;
+    }
+
+    /**
+     * Set taxDisplayType
+     *
+     * @param \Eccube\Entity\Master\TaxDisplayType $taxDisplayType
+     *
+     * @return ShipmentItem
+     */
+    public function setTaxDisplayType(\Eccube\Entity\Master\TaxDisplayType $taxDisplayType = null)
+    {
+        $this->TaxDisplayType = $taxDisplayType;
+
+        return $this;
+    }
+
+    /**
+     * Get taxDisplayType
+     *
+     * @return \Eccube\Entity\Master\TaxDisplayType
+     */
+    public function getTaxDisplayType()
+    {
+        return $this->TaxDisplayType;
+    }
+
+    /**
+     * Set orderItemType
+     *
+     * @param \Eccube\Entity\Master\OrderItemType $orderItemType
+     *
+     * @return ShipmentItem
+     */
+    public function setOrderItemType(\Eccube\Entity\Master\OrderItemType $orderItemType = null)
+    {
+        $this->OrderItemType = $orderItemType;
+
+        return $this;
+    }
+
+    /**
+     * Get orderItemType
+     *
+     * @return \Eccube\Entity\Master\OrderItemType
+     */
+    public function getOrderItemType()
+    {
+        return $this->OrderItemType;
     }
 }

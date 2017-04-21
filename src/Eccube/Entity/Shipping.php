@@ -196,6 +196,13 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $shipping_commit_date;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="tracking_number", type="string", length=255, nullable=true)
+     */
+    private $tracking_number;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="rank", type="smallint", nullable=true, options={"unsigned":true})
@@ -1175,5 +1182,29 @@ class Shipping extends \Eccube\Entity\AbstractEntity
         $this->ProductClassOfTemp = $ProductClassOfTemp;
 
         return $this;
+    }
+
+    /**
+     * Set trackingNumber
+     *
+     * @param string $trackingNumber
+     *
+     * @return Shipping
+     */
+    public function setTrackingNumber($trackingNumber)
+    {
+        $this->tracking_number = $trackingNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get trackingNumber
+     *
+     * @return string
+     */
+    public function getTrackingNumber()
+    {
+        return $this->tracking_number;
     }
 }
