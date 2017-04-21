@@ -38,7 +38,6 @@ class OrderController extends AbstractController
 
     public function index(Application $app, Request $request, $page_no = null)
     {
-
         $session = $request->getSession();
 
         $builder = $app['form.factory']
@@ -59,13 +58,10 @@ class OrderController extends AbstractController
         $disps = $app['eccube.repository.master.disp']->findAll();
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
-        $page_status = null;
         $active = false;
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
-
             if ($searchForm->isValid()) {
                 $searchData = $searchForm->getData();
 
@@ -105,20 +101,7 @@ class OrderController extends AbstractController
                 } else {
                     $session->set('eccube.admin.order.search.page_no', $page_no);
                 }
-
                 if (!is_null($searchData)) {
-
-                    // 公開ステータス
-                    $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $app['config']['admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
-                        } else {
-                            $searchData['stock_status'] = $app['config']['disabled'];
-                        }
-                        $page_status = $status;
-                    }
                     // 表示件数
                     $pcount = $request->get('page_count');
 
@@ -141,10 +124,6 @@ class OrderController extends AbstractController
                         $page_count
                     );
 
-                    // セッションから検索条件を復元
-                    if (!empty($searchData['status'])) {
-                        $searchData['status'] = $app['eccube.repository.master.order_status']->find($searchData['status']);
-                    }
                     if (count($searchData['multi_status']) > 0) {
                         $statusIds = array();
                         foreach ($searchData['multi_status'] as $Status) {
@@ -177,7 +156,6 @@ class OrderController extends AbstractController
             'disps' => $disps,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
-            'page_status' => $page_status,
             'page_count' => $page_count,
             'active' => $active,
         ));
