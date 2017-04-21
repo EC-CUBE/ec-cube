@@ -497,6 +497,13 @@ class CartService
      */
     public function addError($error = null, $productName = null)
     {
+        // Filter duplicate
+        $arrError = $this->session->getFlashBag()->peek('eccube.front.request.error');
+        $arrProduct = $this->session->getFlashBag()->peek('eccube.front.request.product');
+        if (in_array($error, $arrError) && in_array($productName, $arrProduct)) {
+            return $this;
+        }
+
         $this->errors[] = $error;
         $this->session->getFlashBag()->add('eccube.front.request.error', $error);
         if (!is_null($productName)) {
@@ -505,9 +512,8 @@ class CartService
             end($cnt);
             $key = key($cnt);
             // エラーと同じキー商品名を設定する
-            $tmpBag = $this->session->getFlashBag()->get('eccube.front.request.product');
-            $tmpBag[$key] = $productName;
-            $this->session->getFlashBag()->set('eccube.front.request.product', $tmpBag);
+            $arrProduct[$key] = $productName;
+            $this->session->getFlashBag()->set('eccube.front.request.product', $arrProduct);
         }
 
         return $this;
