@@ -424,10 +424,11 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist"})
-     * @ORM\OrderBy({
-     *     "id"="ASC"
-     * })
+     * @ORM\ManyToMany(targetEntity="Eccube\Entity\Shipping")
+     * @ORM\JoinTable(name="dtb_shipment_items",
+     *      joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="order_id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="shipping_id", referencedColumnName="shipping_id")}
+     *      )
      */
     private $Shippings;
 

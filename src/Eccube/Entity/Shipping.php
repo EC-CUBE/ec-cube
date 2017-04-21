@@ -288,6 +288,17 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $DeliveryFee;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Eccube\Entity\Order")
+     * @ORM\JoinTable(name="dtb_shipment_items",
+     *      joinColumns={@ORM\JoinColumn(name="shipping_id", referencedColumnName="shipping_id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="order_id")}
+     *      )
+     */
+    private $Orders;
+
+    /**
      * @var \Eccube\Entity\ProductClass
      */
     private $ProductClassOfTemp;
@@ -298,6 +309,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function __construct()
     {
         $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1148,6 +1160,42 @@ class Shipping extends \Eccube\Entity\AbstractEntity
         $this->ProductClassOfTemp = $ProductClassOfTemp;
 
         return $this;
+    }
+
+    /**
+     * Add order.
+     *
+     * @param \Eccube\Entity\Order $order
+     *
+     * @return Customer
+     */
+    public function addOrder(\Eccube\Entity\Order $order)
+    {
+        $this->Orders[] = $order;
+
+        return $this;
+    }
+
+    /**
+     * Remove order.
+     *
+     * @param \Eccube\Entity\Order $order
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOrder(\Eccube\Entity\Order $order)
+    {
+        return $this->Orders->removeElement($order);
+    }
+
+    /**
+     * Get orders.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrders()
+    {
+        return $this->Orders;
     }
 
     /**
