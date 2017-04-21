@@ -76,12 +76,25 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
+            ->add('tax_rate', TextType::class, array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+(\.\d+)?$/u",
+                        'message' => 'form.type.float.invalid'
+                    )),
+                )
+            ))
             ->add('product_name', HiddenType::class)
             ->add('product_code', HiddenType::class)
             ->add('class_name1', HiddenType::class)
             ->add('class_name2', HiddenType::class)
             ->add('class_category_name1', HiddenType::class)
             ->add('class_category_name2', HiddenType::class)
+            ->add('tax_rule', HiddenType::class)
         ;
 
         $builder

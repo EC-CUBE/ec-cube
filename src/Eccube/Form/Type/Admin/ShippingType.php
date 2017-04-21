@@ -149,6 +149,13 @@ class ShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
+            ->add('ShipmentItems', CollectionType::class, array(
+                'entry_type' => ShipmentItemType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+            ))
+
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();

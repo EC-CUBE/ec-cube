@@ -32,6 +32,17 @@
       - id: order_edit
         name: 受注登録
         url: admin_order_new
+- id: shipping
+  name: 出荷管理
+  has_child: true
+  icon: cb-shopping-cart
+  child:
+      - id: shipping_master
+        name: 出荷マスター
+        url: admin/shipping
+      - id: shipping_edit
+        name: 出荷登録
+        url: admin_order_new
 - id: customer
   name: 会員管理
   has_child: true

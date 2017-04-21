@@ -258,16 +258,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Pref;
 
     /**
-     * @var \Eccube\Entity\Order
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
-     * })
-     */
-    private $Order;
-
-    /**
      * @var \Eccube\Entity\Delivery
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery")
@@ -1061,30 +1051,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getPref()
     {
         return $this->Pref;
-    }
-
-    /**
-     * Set order.
-     *
-     * @param \Eccube\Entity\Order|null $order
-     *
-     * @return Shipping
-     */
-    public function setOrder(\Eccube\Entity\Order $order = null)
-    {
-        $this->Order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get order.
-     *
-     * @return \Eccube\Entity\Order|null
-     */
-    public function getOrder()
-    {
-        return $this->Order;
     }
 
     /**
