@@ -1000,25 +1000,27 @@ class ShoppingService
      */
     public function getFormPayments($deliveries, Order $Order)
     {
-
         $productTypes = $this->orderService->getProductTypes($Order);
 
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
             // 複数配送時の支払方法
-
             $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
         } else {
-
             // 配送業者をセット
             $shippings = $Order->getShippings();
-            $Shipping = $shippings[0];
-            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery(), true);
-
+            $payments = array();
+            foreach ($shippings as $Shipping) {
+                $paymentsShip = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery(), true);
+                if (!$payments) {
+                    $payments = $paymentsShip;
+                } else {
+                    $payments = array_intersect($payments, $paymentsShip);
+                }
+            }
         }
         $payments = $this->getPayments($payments, $Order->getSubTotal());
 
         return $payments;
-
     }
 
     /**
