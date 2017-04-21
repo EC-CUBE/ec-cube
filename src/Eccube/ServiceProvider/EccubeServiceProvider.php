@@ -208,6 +208,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $blockRepository;
         });
+        $app['eccube.repository.block_position'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\BlockPosition');
+        });
         $app['eccube.repository.order'] = $app->share(function () use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
             $orderRepository->setApplication($app);
