@@ -236,8 +236,8 @@ class OrderType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('Shippings', CollectionType::class, array(
-                'entry_type' => ShippingType::class,
+            ->add('ShipmentItems', CollectionType::class, array(
+                'entry_type' => ShipmentItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

@@ -95,6 +95,7 @@ class ShipmentItemType extends AbstractType
             ->add('class_category_name1', HiddenType::class)
             ->add('class_category_name2', HiddenType::class)
             ->add('tax_rule', HiddenType::class)
+            ->add('order_id', HiddenType::class)
         ;
 
         $builder
@@ -107,6 +108,16 @@ class ShipmentItemType extends AbstractType
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->app['orm.em'],
                     '\Eccube\Entity\ProductClass'
+                )))
+            ->add($builder->create('Order', HiddenType::class)
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->app['orm.em'],
+                    '\Eccube\Entity\Order'
+                )))
+            ->add($builder->create('Shipping', HiddenType::class)
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->app['orm.em'],
+                    '\Eccube\Entity\Shipping'
                 )));
 
         $app = $this->app;

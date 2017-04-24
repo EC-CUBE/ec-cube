@@ -222,15 +222,22 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     <div id="number_info_box__body" class="box-body">
                         <div class="row">
                             <div id="number_info_box__order_status" class="col-sm-4">
-                                <h4>配送番号 <span class="number">{{ Order.id }}</span></h4>
+                                <h4>配送番号 <span class="number">{{ Shipping.id }}</span></h4>
                                 <div class="form-group">
-                                    配送業者
+                                    配送業者 <span class="number">{{ Shipping.ShippingDeliveryName }}</span>
                                 </div>
                                 <div class="form-group">
-                                    配送伝票番号
+                                    配送伝票番号 <span class="number">{{ Shipping.TrackingNumber|default('未登録') }}</span></h4>
                                 </div>
                                 <div class="form-group">
-                                    注文番号
+                                    配達予定日 <span class="number">{{ Shipping.ShippingDeliveryDate }}</span>
+                                </div>
+                                <div class="form-group">
+                                    出荷日 <span class="number">{#{ Shipping.ShippingDeliveryDate }#}</span>
+                                </div>
+
+                                <div class="form-group">
+                                    注文番号 {% for Order in Shipping.Orders  %}<span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span> {% endfor %}
                                 </div>
 
                             </div>
@@ -245,20 +252,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 </div><!-- /.box-header -->
                 <div id="customer_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="customer_info_list" class="order_list form-horizontal">
-                        {% if Order.id is empty %}
-                        <div id="customer_info_list__button_search" class="btn_area">
-                            <ul>
-                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchCustomerModal">会員検索</a></li>
-                            </ul>
-                        </div>
-                        {% endif %}
-                        <div id="customer_info_list__customer" class="form-group">
-                            <div class="col-sm-3 col-lg-2">会員ID</div>
-                            <div class="col-sm-9 col-lg-10">
-
-                            </div>
-
-                        </div>
                         <div id="customer_info_list__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
@@ -347,7 +340,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             <div id="product_info_box" class="box accordion">
                 <div id="product_info_box__toggle" class="box-header toggle active">
-                    <h3 class="box-title">配達商品情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">出荷商品情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="product_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="product_info_list" class="order_list">
@@ -356,7 +349,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% if BaseInfo.optionMultipleShipping != 1 %}
                                 <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">注文から商品の追加</a></li>
                                 {% endif %}
-                                <li><button type="submit" class="btn btn-default" name="mode" value="calc">送料計算結果の更新</button></li>
+                                <li><button type="submit" class="btn btn-default" name="mode" value="calc">送料の更新</button></li>
                             </ul>
                         </div>
                         <div class="tableish"
@@ -378,7 +371,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_widget(orderDetailForm.tax_rule) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
-                                            <span>注文番号:</span><br>
+                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ orderDetailForm.vars.value.order_id }}</a></span><br>
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
                                             <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
@@ -438,22 +431,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {% endfor %}
 
                         </div>
-
-                        <div id="product_info_result_box__sub_price" class="row with-border2 no-margin text-right">
-                            <div class="col-lg-7 col-lg-offset-5">
-                                <dl id="product_info_result_box__body_sub_price" class="dl-horizontal">
-
-                                </dl>
-                            </div>
-                        </div>
-
-                        <div id="product_info_result_box__summary" class="row with-border2 no-margin text-right  ta">
-                            <div class="col-lg-7 col-lg-offset-5">
-                                <dl id="product_info_result_box__body_summary" class="dl-horizontal">
-                                    <dt id="product_info_result_box__total">合計：</dt>
-                                </dl>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -467,7 +444,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             <div id="detail__insert_button" class="row btn_area">
                 <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">受注情報を登録</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">出荷情報を登録</button>
                 </p>
                 <!-- /.col -->
             </div>
@@ -475,7 +452,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div id="detail__back_button" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     {% if id is not null %}
-                        <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
+                        <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.Shipping.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
                     {% endif %}
                 </div>
             </div>

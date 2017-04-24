@@ -317,12 +317,10 @@
                                                     <th class="text-center"><input type="checkbox" id="check-all"></th>
                                                     <th id="result_list_main__header_id">配送番号</th>
                                                     <th id="result_list_main__header_order_date">伝票番号</th>
-                                                    <th id="result_list_main__header_name">お名前</th>
-                                                    <th id="result_list_main__header_payment_method">支払方法</th>
-                                                    <th id="result_list_main__header_payment_total">購入金額(円)</th>
+                                                    <th id="result_list_main__header_name">お届け先名</th>
+                                                    <th id="result_list_main__header_payment_method">お届け先住所</th>
+                                                    <th id="result_list_main__header_delivery_date">お届け予定日</th>
                                                     <th id="result_list_main__header_commit_date">発送日</th>
-                                                    <th id="result_list_main__header_order_status">対応状況</th>
-                                                    <th>&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -330,22 +328,12 @@
                                                     <tr id="result_list_main__item--{{ Shipping.id }}">
                                                         <td id="result_list_main__id_check--{{ Shipping.id }}" class="text-center"><input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}"></td>
                                                         <td id="result_list_main__id--{{ Shipping.id }}"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
-                                                        <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber }} </td>
+                                                        <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber|default('未登録') }} </td>
                                                         <td id="result_list_main__name--{{ Shipping.id }}">{{ Shipping.name01 }} {{ Shipping.name02 }}</td>
-                                                        <td id="result_list_main__payment_method--{{ Shipping.id }}">{#{ Shipping.payment_method }#}</td>
-                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}" class="text-right">{#{ Shipping.payment_total|number_format }#}</td>
-                                                        <td id="result_list_main__commit_date--{{ Shipping.id }}">{#{ Shipping.commit_date|date_format }#}</td>
-                                                        <td id="result_list_main__order_status--{{ Shipping.id }}">{#{ Shipping.OrderStatus }#}</td>
-                                                        <td id="result_list_main__item_menu_box--{{ Shipping.id }}" class="icon_edit">
-                                                            <div id="result_list_main__item_menu--{{ Shipping.id }}" class="dropdown">
-                                                                <a id="result_list_main__item_menu_toggle--{{ Shipping.id }}" class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                                <ul id="result_list_main_item_menu--{{ Shipping.id }}" class="dropdown-menu dropdown-menu-right">
-                                                                    <li><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}">編集</a></li>
-                                                                    <li><a href="{{ url('admin_order_delete', { id : Shipping.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この受注情報を削除してもよろしいですか？">削除</a></li>
-                                                                    <li><a href="{{ url('admin_order_mail', { id : Shipping.id }) }}">メール通知</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
+                                                        <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
+                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate }}</td>
+                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{#{ Shipping.payment_total|number_format }#}</td>
+
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

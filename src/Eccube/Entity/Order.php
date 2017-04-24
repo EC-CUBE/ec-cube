@@ -1487,11 +1487,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getShippings()
     {
-        $Shippings = array_map(function ($ShipmentItem) {
-                return $ShipmentItem->getShipping();
-            },
-            $this->getShipmentItems()->toArray()
-        );
+        $Shippings = [];
+        foreach ($this->getShipmentItems() as $ShipmentItem) {
+            $Shipping = $ShipmentItem->getShipping();
+            $Shippings[$Shipping->getId()] = $Shipping;
+        }
         return new \Doctrine\Common\Collections\ArrayCollection($Shippings);
     }
 
