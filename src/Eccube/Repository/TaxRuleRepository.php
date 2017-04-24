@@ -37,13 +37,6 @@ class TaxRuleRepository extends AbstractRepository
 {
     private $rules = array();
 
-    protected $app;
-
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
-
     public function newTaxRule()
     {
         $TaxRule = new \Eccube\Entity\TaxRule();
@@ -229,6 +222,7 @@ class TaxRuleRepository extends AbstractRepository
 
     /**
      * getById
+     * @deprecated Use TaxRuleRepository::find()
      *
      * @param  int   $id
      * @return array
@@ -245,6 +239,7 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * getByTime
      *
+     * @deprecated Use magic finder methods. TaxRuleRepository::findOneByApplyDate()
      * @param  string $applyDate
      * @return mixed
      */

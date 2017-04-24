@@ -24,8 +24,6 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Application;
-
 /**
  * BaseInfoRepository
  *
@@ -34,38 +32,8 @@ use Eccube\Application;
  */
 class BaseInfoRepository extends AbstractRepository
 {
-    /**
-     * @var \Eccube\Application
-     */
-    protected $app;
-
-    public function setApplication(Application $app)
-    {
-        $this->app = $app;
-    }
-
-    /**
-     * get
-     *
-     * @param mixed $id The identifier.
-     *
-     * @return object|null The entity instance or NULL if the entity can not be found.
-     */
     public function get($id = 1)
     {
-        $options = $this->app['config']['doctrine_cache'];
-        $lifetime = $options['result_cache']['lifetime'];
-
-        $qb = $this->createQueryBuilder('b')
-            ->where('b.id = :id')
-            ->setParameter('id', $id);
-
-        if (!$this->app['debug']) {
-            $qb->setCacheable(true);
-        }
-
-        return $qb->getQuery()
-            ->useResultCache(true, $lifetime)
-            ->getSingleResult();
+        return parent::get($id);
     }
 }

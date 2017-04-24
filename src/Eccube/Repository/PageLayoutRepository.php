@@ -36,12 +36,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class PageLayoutRepository extends AbstractRepository
 {
-    protected $app;
-
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
 
     public function findUnusedBlocks(DeviceType $DeviceType, $pageId)
     {

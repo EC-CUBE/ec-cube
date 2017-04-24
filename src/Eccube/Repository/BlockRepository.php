@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Entity\Block;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -34,13 +35,13 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class BlockRepository extends AbstractRepository
 {
-    protected $app;
 
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
-
+    /**
+     * @deprecated 呼び出し元で制御する
+     * @param $block_id
+     * @param $DeviceType
+     * @return array|\Eccube\Entity\Block
+     */
     public function findOrCreate($block_id, $DeviceType)
     {
 
@@ -82,9 +83,10 @@ class BlockRepository extends AbstractRepository
     /**
      * ブロックの情報を取得.
      *
+     * @deprecated Use magic finder methods. BlockRepository::findOneByIdAndDeviceType()
      * @param  integer $block_id ブロックID
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
-     * @return array
+     * @return Block
      */
     public function getBlock($block_id, $DeviceType)
     {

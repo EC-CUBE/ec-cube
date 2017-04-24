@@ -35,6 +35,11 @@ use Doctrine\ORM\Query;
 class PaymentRepository extends AbstractRepository
 {
 
+    /**
+     * @deprecated 呼び出し元で制御する
+     * @param $id
+     * @return \Eccube\Entity\Payment|null|object
+     */
     public function findOrCreate($id)
     {
         if ($id == 0) {

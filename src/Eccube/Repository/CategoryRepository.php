@@ -36,16 +36,6 @@ use Eccube\Entity\Category;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @var \Eccube\Application
-     */
-    protected $app;
-
-    public function setApplication(Application $app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * 全カテゴリの合計を取得する.
      *
      * @return int 全カテゴリの合計数

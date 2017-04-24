@@ -25,7 +25,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\NoResultException;
-use Eccube\Application;
 use Eccube\Util\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -37,23 +36,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends AbstractRepository
 {
-
-    /**
-     * @var \Eccube\Application
-     */
-    protected $app;
-
-    /**
-     * @param Application $app
-     */
-    public function setApplication(Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * get Product.
      *
+     * @deprecated Use ProductRepository::find()
      * @param  integer $productId
      * @return \Eccube\Entity\Product
      *

@@ -33,6 +33,7 @@ namespace Eccube\Repository;
 class CustomerAddressRepository extends AbstractRepository
 {
     /**
+     * @deprecated 呼び出し元で制御する
      * @param \Eccube\Entity\Customer $Customer
      * @param null $id
      * @return \Eccube\Entity\CustomerAddress|mixed

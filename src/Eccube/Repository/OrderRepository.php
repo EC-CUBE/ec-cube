@@ -35,13 +35,6 @@ use Eccube\Util\Str;
  */
 class OrderRepository extends AbstractRepository
 {
-    protected $app;
-
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
-
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
     {
         $Order = $this
@@ -482,7 +475,7 @@ class OrderRepository extends AbstractRepository
      *
      * @param  \Eccube\Entity\Customer $Customer
      * @param  array $OrderStatuses
-     * @return QueryBuilder
+     * @return array
      */
     public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
     {

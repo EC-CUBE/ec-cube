@@ -12,12 +12,12 @@ use Eccube\Entity\AbstractEntity;
 class AbstractRepository extends EntityRepository
 {
 
-    private $app;
+    protected $app;
 
     /**
      * @param Application $app
      */
-    public function setApp($app)
+    public function setApplication($app)
     {
         $this->app = $app;
     }

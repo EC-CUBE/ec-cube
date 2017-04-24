@@ -35,6 +35,11 @@ use Eccube\Entity\Payment;
 class DeliveryRepository extends AbstractRepository
 {
 
+    /**
+     * @deprecated 呼び出し元で制御する
+     * @param $id
+     * @return \Eccube\Entity\Delivery|null|object
+     */
     public function findOrCreate($id)
     {
         if ($id == 0) {
@@ -71,7 +76,6 @@ class DeliveryRepository extends AbstractRepository
      */
     public function getDeliveries($productTypes)
     {
-
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.ProductType in (:productTypes)')
             ->setParameter('productTypes', $productTypes)
