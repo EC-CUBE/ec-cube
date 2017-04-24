@@ -110,7 +110,7 @@ class NewsRepository extends AbstractRepository
      * @param  \Eccube\Entity\News $News
      * @return boolean 成功した場合 true
      */
-    public function save(\Eccube\Entity\News $News)
+    public function save($News)
     {
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();
@@ -145,7 +145,7 @@ class NewsRepository extends AbstractRepository
      * @param  \Eccube\Entity\News $News
      * @return boolean 成功した場合 true
      */
-    public function delete(\Eccube\Entity\News $News)
+    public function delete($News)
     {
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();

@@ -127,7 +127,7 @@ class ClassNameRepository extends AbstractRepository
      * @param \Eccube\Entity\ClassName $ClassName
      * @return boolean 成功した場合 true
      */
-    public function save(\Eccube\Entity\ClassName $ClassName)
+    public function save($ClassName)
     {
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();
@@ -163,7 +163,7 @@ class ClassNameRepository extends AbstractRepository
      * @param \Eccube\Entity\ClassName $ClassName
      * @return boolean 成功した場合 true
      */
-    public function delete(\Eccube\Entity\ClassName $ClassName)
+    public function delete($ClassName)
     {
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();

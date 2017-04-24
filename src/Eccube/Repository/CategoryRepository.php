@@ -219,7 +219,7 @@ class CategoryRepository extends AbstractRepository
      * @param  \Eccube\Entity\Category $Category カテゴリ
      * @return boolean 成功した場合 true
      */
-    public function save(\Eccube\Entity\Category $Category)
+    public function save($Category)
     {
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();
