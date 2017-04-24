@@ -48,7 +48,7 @@ class PageLayoutRepository extends AbstractRepository
         $em = $this
             ->getEntityManager();
         $blockRepo = $em->getRepository('Eccube\Entity\Block');
-        $ownBlockPositions = $this->get($DeviceType, $pageId)->getBlockPositions();
+        $ownBlockPositions = $this->getByDeviceTypeAndId($DeviceType, $pageId)->getBlockPositions();
         $ids = array();
         foreach ($ownBlockPositions as $ownBlockPosition) {
             $ids[] = $ownBlockPosition->getBlock()->getId();
@@ -66,7 +66,7 @@ class PageLayoutRepository extends AbstractRepository
             ->getResult();
     }
 
-    public function get(DeviceType $DeviceType, $pageId)
+    public function getByDeviceTypeAndId(DeviceType $DeviceType, $pageId)
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
@@ -181,7 +181,7 @@ class PageLayoutRepository extends AbstractRepository
                 ->newPageLayout($DeviceType);
             return $PageLayout;
         } else {
-            return $this->get($DeviceType, $page_id);
+            return $this->getByDeviceTypeAndId($DeviceType, $page_id);
         }
     }
 

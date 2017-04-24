@@ -79,7 +79,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
     public function testGet()
     {
         $PageLayout = $this->app['eccube.repository.page_layout']
-            ->get($this->DeviceType, 1);
+            ->getByDeviceTypeAndId($this->DeviceType, 1);
 
         $this->expected = 1;
         $this->actual = $PageLayout->getId();
