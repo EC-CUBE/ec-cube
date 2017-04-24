@@ -22,6 +22,7 @@ class ShippingRepositoryTest extends EccubeTestCase
     protected $Order;
     protected $Product;
     protected $ProductClass;
+    protected $Shippings;
 
     public function setUp()
     {
@@ -31,6 +32,7 @@ class ShippingRepositoryTest extends EccubeTestCase
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $this->Product = $this->createProduct();
+        $this->Shippings = [];
         $ProductClasses = $this->Product->getProductClasses();
         $this->ProductClass = $ProductClasses[0];
         $quantity = 3;
@@ -57,8 +59,7 @@ class ShippingRepositoryTest extends EccubeTestCase
                 ->setName01($faker->lastName)
                 ->setName02($faker->firstName)
                 ->setKana01('セイ');
-            $this->Order->addShipping($Shipping);
-            $Shipping->setOrder($this->Order);
+
             $this->app['orm.em']->persist($Shipping);
 
             $ShipmentItem = new ShipmentItem();
@@ -70,7 +71,9 @@ class ShippingRepositoryTest extends EccubeTestCase
                 ->setProductCode($this->ProductClass->getCode())
                 ->setPrice($this->ProductClass->getPrice02())
                 ->setQuantity(1);
+            $Shipping->addShipmentItem($ShipmentItem);
             $this->app['orm.em']->persist($ShipmentItem);
+            $this->Shippings[$i] = $Shipping;
         }
 
         $subTotal = 0;
@@ -97,5 +100,14 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->actual = $Shippings[$i]->getKana01();
             $this->verify();
         }
+    }
+
+    public function testGetOrders()
+    {
+        $Shipping = $this->app['eccube.repository.shipping']->find($this->Shippings[0]->getId());
+
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $Shipping->getOrders());
+        $Order = $Shipping->getOrders()->first();
+        $this->assertEquals($this->Order->getId(), $Order->getId());
     }
 }

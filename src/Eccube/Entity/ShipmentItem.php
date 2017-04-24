@@ -153,7 +153,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\Order
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderDetails")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="ShipmentItems")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
      * })

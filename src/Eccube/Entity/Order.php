@@ -424,13 +424,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Eccube\Entity\Shipping")
-     * @ORM\JoinTable(name="dtb_shipment_items",
-     *      joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="order_id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="shipping_id", referencedColumnName="shipping_id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ShipmentItem", mappedBy="Order", cascade={"persist","remove"})
      */
-    private $Shippings;
+    private $ShipmentItems;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -558,7 +554,7 @@ class Order extends \Eccube\Entity\AbstractEntity
             ->setDelFlg(Constant::DISABLED);
 
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1449,29 +1445,39 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add shipping.
+     * Add shipmentItem.
      *
-     * @param \Eccube\Entity\Shipping $shipping
+     * @param \Eccube\Entity\ShipmentItem $shipmentItem
      *
-     * @return Order
+     * @return Shipping
      */
-    public function addShipping(\Eccube\Entity\Shipping $shipping)
+    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
     {
-        $this->Shippings[] = $shipping;
+        $this->ShipmentItems[] = $shipmentItem;
 
         return $this;
     }
 
     /**
-     * Remove shipping.
+     * Remove shipmentItem.
      *
-     * @param \Eccube\Entity\Shipping $shipping
+     * @param \Eccube\Entity\ShipmentItem $shipmentItem
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeShipping(\Eccube\Entity\Shipping $shipping)
+    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
     {
-        return $this->Shippings->removeElement($shipping);
+        return $this->ShipmentItems->removeElement($shipmentItem);
+    }
+
+    /**
+     * Get shipmentItems.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShipmentItems()
+    {
+        return $this->ShipmentItems;
     }
 
     /**
@@ -1481,7 +1487,12 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getShippings()
     {
-        return $this->Shippings;
+        $Shippings = array_map(function ($ShipmentItem) {
+                return $ShipmentItem->getShipping();
+            },
+            $this->getShipmentItems()->toArray()
+        );
+        return new \Doctrine\Common\Collections\ArrayCollection($Shippings);
     }
 
     /**

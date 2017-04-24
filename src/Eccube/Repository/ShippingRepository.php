@@ -44,9 +44,8 @@ class ShippingRepository extends EntityRepository
     public function findShippingsProduct($Order, $productClass)
     {
         $shippings = $this->createQueryBuilder('s')
-            ->innerJoin('Eccube\Entity\Order', 'o', 'WITH', 'o.id = s.Order')
-            ->innerJoin('Eccube\Entity\ShipmentItem', 'si', 'WITH', 'si.Shipping = s.id')
-            ->where('o.id = (:order)')
+            ->innerJoin('Eccube\Entity\ShipmentItem', 'si', 'si.Shipping = s.id')
+            ->where('si.Order = (:order)')
             ->andWhere('si.ProductClass = (:productClass)')
             ->setParameter('order', $Order)
             ->setParameter('productClass', $productClass)

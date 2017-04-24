@@ -477,8 +477,7 @@ class Generator {
             ->setDeliveryFee($DeliveryFee)
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $Order->addShipping($Shipping);
-        $Shipping->setOrder($Order);
+
         $this->app['orm.em']->persist($Shipping);
         $this->app['orm.em']->flush($Shipping);
 
@@ -514,6 +513,7 @@ class Generator {
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity);
             $Shipping->addShipmentItem($ShipmentItem);
+            $Order->addShipmentItem($ShipmentItem);
             $this->app['orm.em']->persist($ShipmentItem);
             $this->app['orm.em']->flush($ShipmentItem);
         }
@@ -533,6 +533,7 @@ class Generator {
         $tax = $Order->calculateTotalTax();
         $Order->setTax($tax);
 
+        $this->app['orm.em']->flush($Shipping);
         $this->app['orm.em']->flush($Order);
         return $Order;
     }
