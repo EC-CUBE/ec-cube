@@ -37,6 +37,8 @@ class HelpRepository extends EntityRepository
     /**
      * get
      *
+     * @see EntityRepository::find()
+     * @deprecated Use HelpRepository::find() .
      * @param mixed $id The identifier.
      *
      * @return object|null The entity instance or NULL if the entity can not be found.
