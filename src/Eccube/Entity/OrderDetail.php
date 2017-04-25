@@ -30,6 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * OrderDetail
  *
+ * @deprecated since 3.1-alpha, to be removed in 3.1
  * @ORM\Table(name="dtb_order_detail", indexes={@ORM\Index(name="dtb_order_detail_product_id_key", columns={"product_id"})})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
@@ -42,6 +43,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
 
     public function isPriceChange()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         if (!$this->getProductClass()) {
             return true;
         } elseif ($this->getProductClass()->getPrice02IncTax() === $this->getPriceIncTax()) {
@@ -53,6 +55,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
 
     public function isEnable()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         if ($this->getProductClass() && $this->getProductClass()->isEnable()) {
             return true;
         } else {
@@ -68,6 +71,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setPriceIncTax($price_inc_tax)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->price_inc_tax = $price_inc_tax;
 
         return $this;
@@ -80,6 +84,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getPriceIncTax()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->price_inc_tax;
     }
 
@@ -88,6 +93,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getTotalPrice()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 
@@ -208,6 +214,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getId()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->id;
     }
 
@@ -220,6 +227,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setProductName($productName)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->product_name = $productName;
 
         return $this;
@@ -232,6 +240,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getProductName()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->product_name;
     }
 
@@ -244,6 +253,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setProductCode($productCode = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->product_code = $productCode;
 
         return $this;
@@ -256,6 +266,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getProductCode()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->product_code;
     }
 
@@ -268,6 +279,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setClassName1($className1 = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->class_name1 = $className1;
 
         return $this;
@@ -280,6 +292,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getClassName1()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->class_name1;
     }
 
@@ -292,6 +305,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setClassName2($className2 = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->class_name2 = $className2;
 
         return $this;
@@ -304,6 +318,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getClassName2()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->class_name2;
     }
 
@@ -316,6 +331,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setClassCategoryName1($classCategoryName1 = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->class_category_name1 = $classCategoryName1;
 
         return $this;
@@ -328,6 +344,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getClassCategoryName1()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->class_category_name1;
     }
 
@@ -340,6 +357,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setClassCategoryName2($classCategoryName2 = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->class_category_name2 = $classCategoryName2;
 
         return $this;
@@ -352,6 +370,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getClassCategoryName2()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->class_category_name2;
     }
 
@@ -364,6 +383,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setPrice($price)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->price = $price;
 
         return $this;
@@ -376,6 +396,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getPrice()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->price;
     }
 
@@ -388,6 +409,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setQuantity($quantity)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->quantity = $quantity;
 
         return $this;
@@ -400,6 +422,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getQuantity()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->quantity;
     }
 
@@ -412,6 +435,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setTaxRate($taxRate)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->tax_rate = $taxRate;
 
         return $this;
@@ -424,6 +448,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getTaxRate()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->tax_rate;
     }
 
@@ -436,6 +461,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setTaxRule($taxRule = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->tax_rule = $taxRule;
 
         return $this;
@@ -448,6 +474,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getTaxRule()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->tax_rule;
     }
 
@@ -460,6 +487,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setOrder(\Eccube\Entity\Order $order = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->Order = $order;
 
         return $this;
@@ -472,6 +500,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getOrder()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->Order;
     }
 
@@ -484,6 +513,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->Product = $product;
 
         return $this;
@@ -496,6 +526,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getProduct()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         if (EntityUtil::isEmpty($this->Product)) {
             return null;
         }
@@ -511,6 +542,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $this->ProductClass = $productClass;
 
         return $this;
@@ -523,6 +555,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getProductClass()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return $this->ProductClass;
     }
 }
