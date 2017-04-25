@@ -210,7 +210,7 @@ class PaymentController extends AbstractController
 
         $targetRank = $currentRank + 1;
         $target = $repo->findOneBy(array('rank' => $targetRank));
-        if($target){
+        if($target) {
             $app['orm.em']->persist($target->setRank($currentRank));
             $app['orm.em']->persist($current->setRank($targetRank));
             $app['orm.em']->flush();
@@ -234,7 +234,7 @@ class PaymentController extends AbstractController
 
         $targetRank = $currentRank - 1;
         $target = $repo->findOneBy(array('rank' => $targetRank));
-        if($target){
+        if($target) {
             $app['orm.em']->persist($target->setRank($currentRank));
             $app['orm.em']->persist($current->setRank($targetRank));
             $app['orm.em']->flush();
