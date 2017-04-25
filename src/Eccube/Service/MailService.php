@@ -355,7 +355,7 @@ class MailService
 
         log_info('受注管理通知メール送信完了', array('count' => $count));
 
-        return $count;
+        return $message;
     }
 
     /**

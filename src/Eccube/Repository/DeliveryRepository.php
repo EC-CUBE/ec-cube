@@ -76,6 +76,7 @@ class DeliveryRepository extends EntityRepository
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.ProductType in (:productTypes)')
             ->setParameter('productTypes', $productTypes)
+            ->orderBy('d.rank', 'DESC')
             ->getQuery()
             ->getResult();
 

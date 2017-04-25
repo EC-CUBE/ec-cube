@@ -363,7 +363,7 @@ class Application extends ApplicationTrait
                 // フロント画面
                 $request = $event->getRequest();
                 $route = $request->attributes->get('_route');
-
+                $page = $route;
                 // ユーザ作成画面
                 if ($route === 'user_data') {
                     $params = $request->attributes->get('_route_params');
@@ -376,7 +376,7 @@ class Application extends ApplicationTrait
                 try {
                     $DeviceType = $app['eccube.repository.master.device_type']
                         ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route, $page);
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }

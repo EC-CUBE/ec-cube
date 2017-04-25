@@ -366,6 +366,93 @@ class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
+     * 金額の上限と販売制限確認
+     */
+    public function testProductInCartIsNotEnoughAndLimit()
+    {
+        $productName = $this->getFaker()->word;
+        /** @var Product $Product */
+        $Product = parent::createProduct($productName, 1);
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setPrice02(999999911);
+        $this->changeStock($ProductClass, 10);
+        /** @var Client $client */
+        $client = $this->client;
+
+        // render
+        $client->request(
+            'GET',
+            $this->app->url('product_detail', array('id' => $Product->getId()))
+        );
+        // submit
+        $arrForm = array(
+            'product_id' => $Product->getId(),
+            'mode' => 'add_cart',
+            'product_class_id' => $ProductClass->getId(),
+            'quantity' => 9,
+            '_token' => 'dummy',
+        );
+        if ($ProductClass->hasClassCategory1()) {
+            $arrForm['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
+        }
+        if ($ProductClass->hasClassCategory2()) {
+            $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
+        }
+
+        $client->request(
+            'POST',
+            $this->app->url('product_detail', array('id' => $Product->getId())),
+            $arrForm
+        );
+
+        $stock = 2000000;
+        $productName = $this->getFaker()->word;
+        $Product = $this->createProduct($productName, 1, 100);
+        $ProductClass = $Product->getProductClasses()->first();
+
+        $productClassId = $ProductClass->getId();
+        $productId = $Product->getId();
+
+        // render
+        $client->request(
+            'GET',
+            $this->app->url('product_detail', array('id' => $productId))
+        );
+
+        // submit
+        $arrForm = array(
+            'product_id' => $productId,
+            'mode' => 'add_cart',
+            'product_class_id' => $productClassId,
+            'quantity' => $stock ,
+            '_token' => 'dummy',
+        );
+        if ($ProductClass->hasClassCategory1()) {
+            $arrForm['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
+        }
+        if ($ProductClass->hasClassCategory2()) {
+            $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
+        }
+
+        $client->request(
+            'POST',
+            $this->app->url('product_detail', array('id' => $productId)),
+            $arrForm
+        );
+
+        // check error message
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $crawler = $client->followRedirect();
+
+        $message = $crawler->filter('div#cart_box__message--1')->text();
+        $this->assertContains('商品を購入できる金額の上限を超えております。数量を調整してください。', $message);
+
+        $message = $crawler->filter('div#cart_box__message--2')->text();
+        $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
+    }
+
+    /**
      * Test product in cart when product has other type
      */
     public function testProductInCartProductType()
