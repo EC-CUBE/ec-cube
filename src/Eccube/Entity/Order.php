@@ -1492,7 +1492,13 @@ class Order extends \Eccube\Entity\AbstractEntity
             $Shipping = $ShipmentItem->getShipping();
             $Shippings[$Shipping->getId()] = $Shipping;
         }
-        return new \Doctrine\Common\Collections\ArrayCollection($Shippings);
+        return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
+    }
+
+    public function setShippings($dummy)
+    {
+        // XXX これが無いと Eccube\Form\Type\Shopping\OrderType がエラーになる
+        return $this;
     }
 
     /**

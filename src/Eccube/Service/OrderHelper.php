@@ -89,9 +89,9 @@ class OrderHelper
 
         foreach ($ShipmentItemsGroupByProductType as $ShipmentItems) {
             $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
-            $this->addShipping($Order, $Shipping);
-            $this->addShipmentItems($Shipping, $ShipmentItems);
+            $this->addShipmentItems($Order, $Shipping, $ShipmentItems);
             $this->setDefaultDelivery($Shipping);
+            $this->em->persist($Shipping);
         }
 
         $this->setDefaultPayment($Order);
@@ -209,8 +209,12 @@ class OrderHelper
         return $Shipping;
     }
 
+    /**
+     * @deprecated
+     */
     public function addShipping(Order $Order, Shipping $Shipping)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
     }
@@ -306,11 +310,11 @@ class OrderHelper
         return $ShipmentItems;
     }
 
-    public function addShipmentItems(Shipping $Shipping, array $ShipmentItems)
+    public function addShipmentItems(Order $Order, Shipping $Shipping, array $ShipmentItems)
     {
-        $Order = $Shipping->getOrder();
         foreach ($ShipmentItems as $ShipmentItem) {
             $Shipping->addShipmentItem($ShipmentItem);
+            $Order->addShipmentItem($ShipmentItem);
             $ShipmentItem->setOrder($Order);
             $ShipmentItem->setShipping($Shipping);
         }

@@ -65,6 +65,7 @@ class OrderType extends AbstractType
                 CollectionType::class,
                 [
                     'entry_type' => ShippingType::class,
+                    'by_reference' => false
                 ]
             )->add(
                 'mode',

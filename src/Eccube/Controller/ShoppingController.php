@@ -915,7 +915,6 @@ class ShoppingController extends AbstractController
                 foreach ($data as $Shipping) {
                     // 配送料金の設定
                     $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
-                    $Order->addShipping($Shipping);
                 }
             }
 

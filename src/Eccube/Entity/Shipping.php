@@ -1167,7 +1167,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
             $Order = $ShipmentItem->getOrder();
             $Orders[$Order->getId()] = $Order;
         }
-        return new \Doctrine\Common\Collections\ArrayCollection($Orders);
+        return new \Doctrine\Common\Collections\ArrayCollection(array_values($Orders));
     }
 
     /**

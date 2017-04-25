@@ -105,14 +105,12 @@ class ShippingType extends AbstractType
                     return;
                 }
 
-                $Order = $Shipping->getOrder();
-
                 // お届け日の設定
                 $minDate = 0;
                 $deliveryDateFlag = false;
 
                 // 配送時に最大となる商品日数を取得
-                foreach ($Order->getOrderDetails() as $detail) {
+                foreach ($Shipping->getShipmentItems() as $detail) {
                     $ProductClass = $detail->getProductClass();
                     if (is_null($ProductClass)) {
                         continue;
