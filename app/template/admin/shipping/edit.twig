@@ -391,28 +391,37 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                         <div class="row">
                                             <div id="product_info_list__price--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
+                                                    単価：&yen; {{ orderDetailForm.vars.value.price }}
+                                                    {#
                                                     {{ form_widget(orderDetailForm.price) }}
                                                     {{ form_errors(orderDetailForm.price) }}
+                                                    #}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
+                                                    数量：{{ orderDetailForm.vars.value.quantity }}
+                                                    {#
                                                     {% if BaseInfo.optionMultipleShipping %}
                                                         数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
                                                         数量：{{ form_widget(orderDetailForm.quantity) }}
                                                     {% endif %}
                                                     {{ form_errors(orderDetailForm.quantity) }}
+                                                    #}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
-                                                    税率：
+                                                    税率：8%
+                                                    {#
                                                     <span class="input-group">
+
                                                         {{ form_widget(orderDetailForm.tax_rate) }}
                                                         {{ form_errors(orderDetailForm.tax_rate) }}
                                                         <span class="input-group-addon">%</span>
                                                     </span>
+                                                    #}
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
