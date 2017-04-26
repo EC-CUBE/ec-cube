@@ -25,11 +25,9 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 
 /**
  * PageLayoutRepository
