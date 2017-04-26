@@ -102,9 +102,13 @@ class Product extends \Eccube\Entity\AbstractEntity
                 if ($ProductClass->getClassCategory1()) {
                     $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
                     if (!empty($classCategoryId1)) {
-                        $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)');
                         if ($ProductClass->getClassCategory2()) {
+                            // 規格2が存在する時、規格1に品切れ中は表示しない
+                            $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
                             $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                        } else {
+                            // 規格1のみが存在する時、品切れ中を表示
+                            $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)');
                         }
                     }
                 }

@@ -27,7 +27,6 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -141,6 +140,11 @@ class ShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
+            // エラーメッセージ表示用(画面上ではform_errorsのみ定義)
+            ->add('shipping_error', 'text', array(
+                'required' => false,
+                'mapped' => false,
+            ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
@@ -214,8 +218,8 @@ class ShippingType extends AbstractType
                     $shipmentItems = $form['ShipmentItems']->getData();
 
                     if (empty($shipmentItems) || count($shipmentItems) < 1) {
-                        // 画面下部にエラーメッセージを表示させる
-                        $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
+                        // 画面にエラーメッセージを表示させる
+                        $form['shipping_error']->addError(new FormError('商品が追加されていません。'));
                     }
                 }
             });

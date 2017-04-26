@@ -537,6 +537,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% if form.Shippings|length > 1 %}
                                     <li><button type="button" class="btn btn-default delete_delivery" data-idx="{{ shippingIndex }}">お届け先情報を削除</button></li>
                                 {% endif %}
+                                    {{ form_errors(shippingForm.shipping_error) }}
                                 {% endif %}
                             </ul>
                         </div>
