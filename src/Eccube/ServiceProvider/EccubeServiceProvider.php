@@ -204,7 +204,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $CategoryRepository;
         };
         $app['eccube.repository.customer'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Customer');
+            $customerRepository = $app['orm.em']->getRepository('Eccube\Entity\Customer');
+            $customerRepository->setApplication($app);
+            return $customerRepository;
         };
         $app['eccube.repository.news'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\News');
@@ -478,6 +480,11 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $types;
         });
         $app['eccube.entity.event.dispatcher']->addEventListener(new \Acme\Entity\SoldOutEventListener());
+        $app['eccube.queries'] = function () {
+            return new \Eccube\Doctrine\Query\Queries();
+        };
+        // TODO QueryCustomizerの追加方法は要検討
+        $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
