@@ -26,6 +26,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Common\Constant;
+use Eccube\Util\EntityUtil;
 
 /**
  * Product
@@ -126,7 +127,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ClassName1
      *
-     * @return bool
+     * @return string
      */
     public function getClassName1()
     {
@@ -138,7 +139,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ClassName2
      *
-     * @return bool
+     * @return string
      */
     public function getClassName2()
     {
@@ -150,7 +151,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getClassCategories1
      *
-     * @return bool
+     * @return array
      */
     public function getClassCategories1()
     {
@@ -162,7 +163,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getClassCategories2
      *
-     * @return bool
+     * @return array
      */
     public function getClassCategories2($class_category1)
     {
@@ -904,6 +905,9 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 

@@ -3,12 +3,9 @@
  */
 
 jQuery(document).ready(function ($) {
-
     /*
      * Brake point Check
      */
-
-
     $(window).on('load , resize', function () {
         $('body').removeClass('pc_view md_view sp_view');
         if (window.innerWidth < 768) {
@@ -222,4 +219,33 @@ $(function () {
         $('body').append($form); // Firefox requires form to be on the page to allow submission
         $form.submit();
     });
+});
+
+// 入力チェックエラー発生時にエラー発生箇所までスクロールさせる
+$(window).load(function() {
+    var el = $('.errormsg');
+    if (el.length) {
+        // Open panel when has error
+        openPanel(el);
+        var errorOffset = el.first().offset().top;
+        var screenHeight = $(window).height();
+        var errorMargin = parseInt(screenHeight / 10) + $('header').outerHeight();
+
+        $('html, body').animate({
+            scrollTop: (errorOffset - errorMargin)
+        }, 500);
+    }
+
+    function openPanel(el) {
+        var accordion = el.parents('div.accordion');
+        var $ac = $('.accpanel', accordion);
+        if (!$ac) {
+            return false;
+        }
+
+        if ($ac.css('display') == 'none') {
+            $ac.siblings('.toggle').addClass('active');
+            $ac.slideDown(0);
+        }
+    }
 });

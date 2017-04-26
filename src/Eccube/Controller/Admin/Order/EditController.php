@@ -29,7 +29,9 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\Form\FormError;
@@ -69,8 +71,13 @@ class EditController extends AbstractController
         // 編集前のお届け先のアイテム情報を保持
         $OriginalShipmentItems = new ArrayCollection();
 
+        // Save previous value before calculate
+        $arrOldOrder = array();
+
+        /** @var $OrderDetail OrderDetail*/
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
+            $arrOldOrder['OrderDetails'][]['quantity'] = $OrderDetail->getQuantity();
         }
 
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
@@ -78,10 +85,14 @@ class EditController extends AbstractController
         }
 
         // 編集前の情報を保持
-        foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
+        /** @var $tmpOriginalShippings Shipping*/
+        foreach ($TargetOrder->getShippings() as $key => $tmpOriginalShippings) {
+            $arrOldOrder['Shippings'][$key]['shipping_delivery_date'] = $tmpOriginalShippings->getShippingDeliveryDate();
+            /** @var $tmpOriginalShipmentItem ShipmentItem*/
             foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
                 // アイテム情報
                 $OriginalShipmentItems->add($tmpOriginalShipmentItem);
+                $arrOldOrder['Shippings'][$key]['ShipmentItems'][]['quantity'] = $tmpOriginalShipmentItem->getQuantity();
             }
             // お届け先情報
             $OriginalShippings->add($tmpOriginalShippings);
@@ -418,6 +429,7 @@ class EditController extends AbstractController
             'Order' => $TargetOrder,
             'id' => $id,
             'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
+            'arrOldOrder' => $arrOldOrder,
         ));
     }
 

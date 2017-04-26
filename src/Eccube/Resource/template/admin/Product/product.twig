@@ -186,9 +186,9 @@ function fnClass(action) {
 {% endblock javascript %}
 
 {% block main %}
+        <div class="row" id="aside_wrap">
             <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
             {{ form_widget(form._token) }}
-            <div class="row" id="aside_wrap">
                 <div id="detail_wrap" class="col-md-9">
                     <div id="detail_box" class="box form-horizontal">
                         <div id="detail_box__header" class="box-header">
@@ -230,6 +230,7 @@ function fnClass(action) {
                                     </div>
 
                                     {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                    {{ form_errors(form.product_image) }}
                                     <a id="file_upload" class="with-icon">
                                         <svg class="cb cb-plus"> <use xlink:href="#cb-plus" /></svg>ファイルをアップロード
                                     </a>
@@ -241,9 +242,11 @@ function fnClass(action) {
                                 {{ form_label(form.description_detail) }}
                                 <div id="detail_description_box__detail" class="col-sm-9 col-lg-10">
                                     {{ form_widget(form.description_detail) }}
+                                    {{ form_errors(form.description_detail) }}
                                     <div id="detail_description_box__list" class="accordion marT15 marB20"><a id="detail_description_box__list_toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
                                         <div class="accpanel padT08">
                                             {{ form_widget(form.description_list) }}
+                                            {{ form_errors(form.description_list) }}
                                         </div>
                                     </div>
                                 </div>
@@ -336,6 +339,7 @@ function fnClass(action) {
                                     {{ form_label(form.class.delivery_fee) }}
                                     <div class="col-sm-3 col-lg-3">
                                         {{ form_widget(form.class.delivery_fee) }}
+                                        {{ form_errors(form.class.delivery_fee) }}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -344,6 +348,7 @@ function fnClass(action) {
                                     {{ form_label(form.class.tax_rate) }}
                                     <div class="col-sm-3 col-lg-3">
                                         {{ form_widget(form.class.tax_rate) }}
+                                        {{ form_errors(form.class.tax_rate) }}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -358,6 +363,7 @@ function fnClass(action) {
                         </div><!-- /.box-header -->
                         <div id="free_box__body" class="box-body accpanel">
                             {{ form_widget(form.free_area, {id: 'wysiwyg-area'}) }}
+                            {{ form_errors(form.free_area) }}
                         </div>
                     </div>
 
@@ -369,8 +375,8 @@ function fnClass(action) {
 
                 </div><!-- /.col -->
 
-                <div id="common_box" class="col-md-3">
-                    <div class="col_inner" id="aside_column">
+                <div class="col-md-3" id="aside_column">
+                    <div id="common_box" class="col_inner">
                         <div id="common_button_box" class="box no-header">
                             <div id="common_button_box__body" class="box-body">
                                 <div id="common_button_box__status" class="row">
@@ -454,12 +460,13 @@ function fnClass(action) {
                             </div><!-- /.box-header -->
                             <div id="common_shop_note_box__body" class="box-body">
                                 {{ form_widget(form.note) }}
+                                {{ form_errors(form.note) }}
                             </div>
                         </div>
                     </div>
                 </div><!-- /.col -->
 
-            </div>
             </form>
+        </div>
 
 {% endblock %}

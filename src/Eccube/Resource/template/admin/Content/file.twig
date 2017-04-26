@@ -52,6 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% endblock javascript %}
 {% block main %}
+<div class="row" id="aside_wrap">
     <form name="form1" id="form1" method="post" action="?"  enctype="multipart/form-data">
     <input type="hidden" name="mode" value="" />
     <input type="hidden" name="now_file" value="{{ tpl_now_dir }}" />
@@ -59,7 +60,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <input type="hidden" name="tree_select_file" value="{{ tpl_now_dir }}" />
     <input type="hidden" name="tree_status" value="" />
     <input type="hidden" name="select_file" value="" />
-    <div class="row" id="aside_wrap">
 
         <div id="upload_wrap" class="col-md-9">
             <div id="upload_list_box" class="box">
@@ -155,8 +155,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div><!-- /.col -->
         
-        <div id="common_box" class="col-md-3">
-            <div class="col_inner" id="aside_column">
+        <div class="col-md-3" id="aside_column">
+            <div id="common_box" class="col_inner">
                 <div id="tree_box" class="box no-header">
                     <div id="tree_box__body" class="box-body">
                         <div id="tree_box__tree" class="row">
@@ -169,8 +169,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div><!-- /.col --> 
 
-    </div>
     </form>
+</div>
 
 
 {% endblock %}

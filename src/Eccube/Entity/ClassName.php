@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
 /**
  * ClassName
  */
@@ -263,6 +265,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 }

@@ -53,9 +53,6 @@ class SearchOrderType extends AbstractType
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
-            ->add('status', 'order_status', array(
-                'label' => '対応状況',
-            ))
             ->add('multi_status', 'order_status', array(
                 'label' => '対応状況',
                 'expanded' => true,
@@ -67,15 +64,18 @@ class SearchOrderType extends AbstractType
             ->add('email', 'text', array(
                 'required' => false,
             ))
-            ->add('tel', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
-                    )),
-                ),
-            ))
+            ->add(
+                $builder->create('tel', 'text', array(
+                        'required' => false,
+                        'constraints' => array(
+                            new Assert\Regex(array(
+                                'pattern' => "/^[\d-]+$/u",
+                                'message' => 'form.type.admin.nottelstyle',
+                            )),
+                        ),
+                    ))
+                    ->addEventSubscriber(new \Eccube\EventListener\ConvertTelListener())
+            )
             ->add('sex', 'sex', array(
                 'label' => '性別',
                 'required' => false,

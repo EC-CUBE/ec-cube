@@ -1481,8 +1481,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      *
      * Then:
      * - Number of Shipping: 2
-     *  + Product type A x 1 - address 1
-     *  + Product type B x 2 - address 1
+     *  + Product type B x 1 - address 1
+     *  + Product type A x 2 - address 1
      * - Mail content: ◎お届け先2
      */
     public function testAddMultiShippingWithProductTypeOfOneShippingAreNotSame()
@@ -1508,19 +1508,21 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $multiForm = array(
             '_token' => 'dummy',
             'shipping_multiple' => array(
-                array(
-                    'shipping' => array(
-                        array(
-                            'customer_address' => 0,
-                            'quantity' => 1,
-                        ),
-                    ),
-                ),
+                // 配送先1 Product 2 type B
                 array(
                     'shipping' => array(
                         array(
                             'customer_address' => 0,
                             'quantity' => 2,
+                        ),
+                    ),
+                ),
+                // 配送先2 Product 1 type A
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => 0,
+                            'quantity' => 1,
                         ),
                     ),
                 ),
@@ -1557,14 +1559,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             $client,
             $this->app->path('shopping_confirm'),
             array(
-                // 配送先1
+                // 配送先1 Product 2 type B
+                array(
+                    'delivery' => 2,
+                ),
+                // 配送先2 Product 1 type A
                 array(
                     'delivery' => 1,
                     'deliveryTime' => 1,
-                ),
-                // 配送先2
-                array(
-                    'delivery' => 2,
                 )
             )
         );
@@ -1603,9 +1605,9 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      *
      * Then:
      * - Number of Shipping: 3
-     *  + Product 1 type A x 1 - address 1
      *  + Product 2 type B x 2 - address 2
      *  + Product 3 type B x 2 - address 1
+     *  + Product 1 type A x 1 - address 1
      * - Mail content: ◎お届け先3
      */
     public function testAddMultiShippingWithManyProductTypeOfOneShippingAreNotSame()
@@ -1656,14 +1658,6 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                 array(
                     'shipping' => array(
                         array(
-                            'customer_address' => 1,
-                            'quantity' => 1,
-                        ),
-                    ),
-                ),
-                array(
-                    'shipping' => array(
-                        array(
                             'customer_address' => 0,
                             'quantity' => 2,
                         ),
@@ -1674,6 +1668,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                         array(
                             'customer_address' => 1,
                             'quantity' => 2,
+                        ),
+                    ),
+                ),
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => 1,
+                            'quantity' => 1,
                         ),
                     ),
                 ),
@@ -1712,8 +1714,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             array(
                 // 配送先1
                 array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1,
+                    'delivery' => 2,
                 ),
                 // 配送先2
                 array(
@@ -1721,7 +1722,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                 ),
                 // 配送先3
                 array(
-                    'delivery' => 2,
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
                 ),
             )
         );
@@ -1892,10 +1894,10 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      *
      * Then:
      * - Number of Shipping: 4
-     *  + Shipping 1: Product type A x2 - address 1
-     *  + Shipping 2: Product type A x1 - address 2
-     *  + Shipping 3: Product type B x2 - address 1
-     *  + Shipping 4: Product type B x1 - address 2
+     *  + Shipping 1: Product type B x2 - address 1
+     *  + Shipping 2: Product type A x2 - address 1
+     *  + Shipping 3: Product type B x1 - address 2
+     *  + Shipping 4: Product type A x1 - address 2
      * - Delivery 3: サンプル宅配
      * - Mail content: ◎お届け先4
      */
@@ -2027,7 +2029,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             }
         );
 
-        $this->expected = 'サンプル宅配';
+        $this->expected = 'サンプル業者';
         $this->actual = $deliver;
         $this->assertTrue(in_array($this->expected, $this->actual));
 
@@ -2036,16 +2038,11 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
             $client,
             $this->app->url('shopping_confirm'),
             array(
-                // Product type 1 with address 1 (two item)
-                array(
-                    'delivery' => 1,
-                    'deliveryTime' => 1,
-                ),
                 // Product type 2 with address 1 (two item)
                 array(
                     'delivery' => 2,
                 ),
-                // Product type 1 with address 2 (one item)
+                // Product type 1 with address 1 (two item)
                 array(
                     'delivery' => 1,
                     'deliveryTime' => 1,
@@ -2053,6 +2050,11 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                 // Product type 2 with address 2 (one item)
                 array(
                     'delivery' => 2,
+                ),
+                // Product type 1 with address 2 (one item)
+                array(
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
                 ),
             )
         );

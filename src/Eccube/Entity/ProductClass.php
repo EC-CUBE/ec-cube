@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
 /**
  * ProductClass
  */
@@ -639,6 +641,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
     /**

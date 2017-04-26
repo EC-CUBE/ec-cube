@@ -116,7 +116,7 @@ class PageLayoutRepository extends EntityRepository
 
     }
 
-    public function getByUrl(DeviceType $DeviceType, $url)
+    public function getByUrl(DeviceType $DeviceType, $url, $page = null)
     {
         $options = $this->app['config']['doctrine_cache'];
         $lifetime = $options['result_cache']['lifetime'];
@@ -138,6 +138,10 @@ class PageLayoutRepository extends EntityRepository
             ))
             ->getSingleResult();
 
+        if(count($ownResult->getBlockPositions()) && ($url == 'preview') && ($page == 'homepage')) {
+            return $ownResult;
+        }
+
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
@@ -155,11 +159,17 @@ class PageLayoutRepository extends EntityRepository
             ->getResult();
 
         $OwnBlockPosition = $ownResult->getBlockPositions();
+        $OwnBlockPositionIds = array();
+        foreach ($OwnBlockPosition as $BlockPosition) {
+            $OwnBlockPositionIds[] =  $BlockPosition->getBlockId();
+        }
+
         foreach ($anyResults as $anyResult) {
             $BlockPositions = $anyResult->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
-                if (!$OwnBlockPosition->contains($BlockPosition)) {
+                if (!in_array($BlockPosition->getBlockId(), $OwnBlockPositionIds)) {
                     $ownResult->addBlockPosition($BlockPosition);
+                    $OwnBlockPositionIds[] = $BlockPosition->getBlockId();
                 }
             }
         }

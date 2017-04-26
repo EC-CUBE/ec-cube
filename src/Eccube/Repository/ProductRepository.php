@@ -24,10 +24,10 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Application;
-use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Eccube\Application;
+use Eccube\Util\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -64,8 +64,16 @@ class ProductRepository extends EntityRepository
     {
         // Product
         try {
-            $qb = $this->createQueryBuilder('p')
-                ->andWhere('p.id = :id');
+            $qb = $this->createQueryBuilder('p');
+            $qb->addSelect(array('pc', 'cc1', 'cc2', 'pi', 'ps'))
+                ->innerJoin('p.ProductClasses', 'pc')
+                ->leftJoin('pc.ClassCategory1', 'cc1')
+                ->leftJoin('pc.ClassCategory2', 'cc2')
+                ->leftJoin('p.ProductImage', 'pi')
+                ->innerJoin('pc.ProductStock', 'ps')
+                ->where('p.id = :id')
+                ->orderBy('cc1.rank', 'DESC')
+                ->addOrderBy('cc2.rank', 'DESC');
 
             $product = $qb
                 ->getQuery()
