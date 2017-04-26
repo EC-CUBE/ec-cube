@@ -363,7 +363,7 @@ class Application extends ApplicationTrait
                 // フロント画面
                 $request = $event->getRequest();
                 $route = $request->attributes->get('_route');
-
+                $page = $route;
                 // ユーザ作成画面
                 if ($route === 'user_data') {
                     $params = $request->attributes->get('_route_params');
@@ -376,7 +376,7 @@ class Application extends ApplicationTrait
                 try {
                     $DeviceType = $app['eccube.repository.master.device_type']
                         ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route, $page);
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
@@ -407,8 +407,8 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         $this['swiftmailer.options'] = $this['config']['mail'];
 
-        if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
-            $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
+        if (isset($this['config']['mail']['use_spool']) && is_bool($this['config']['mail']['use_spool'])) {
+            $this['swiftmailer.use_spool'] = $this['config']['mail']['use_spool'];
         }
         // デフォルトはsmtpを使用
         $transport = $this['config']['mail']['transport'];
@@ -522,6 +522,7 @@ class Application extends ApplicationTrait
                     'password_parameter' => 'password',
                     'with_csrf' => true,
                     'use_forward' => true,
+                    'default_target_path' => "/{$this['config']['admin_route']}",
                 ),
                 'logout' => array(
                     'logout_path' => "/{$this['config']['admin_route']}/logout",

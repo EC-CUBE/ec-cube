@@ -29,11 +29,20 @@ use Eccube\Entity\Master\Disp;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Util\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
 
+    public function setUp()
+    {
+        parent::setUp();
+        // 検索時, IDの重複を防ぐため事前に10個生成しておく
+        for ($i = 0; $i < 10; $i++) {
+            $this->createProduct();
+        }
+    }
     public function createFormData()
     {
         $faker = $this->getFaker();
@@ -121,6 +130,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testProductSearchByName()
     {
         $TestProduct = $this->createProduct();
+        $TestProduct->setName(Str::random());
+        $this->app['orm.em']->flush($TestProduct);
 
         $post = array('admin_search_product' =>
             array(

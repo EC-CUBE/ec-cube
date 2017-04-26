@@ -3,6 +3,8 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Util\EntityUtil;
+
 
 /**
  * ProductTag
@@ -134,6 +136,9 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 

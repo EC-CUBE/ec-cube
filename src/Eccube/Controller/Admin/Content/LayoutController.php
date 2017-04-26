@@ -38,6 +38,15 @@ class LayoutController
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
 
+        $PreviewBlockPositions = $app['eccube.repository.block_position']
+            ->findBy(array(
+                'page_id' => 0,
+            ));
+        foreach ($PreviewBlockPositions as $BlockPosition) {
+            $app['orm.em']->remove($BlockPosition);
+        }
+        $app['orm.em']->flush();
+
         // 編集対象ページ
         /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
         $TargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $id);
@@ -118,13 +127,15 @@ class LayoutController
                     }
                     // 他のページに anywhere が存在する場合は INSERT しない
                     $anywhere = (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) ? 1 : 0;
+
                     if (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) {
                         $Other = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
                             ->findBy(array(
                                 'anywhere' => 1,
                                 'block_id' => $data['id_' . $i],
                             ));
-                        if (count($Other) > 0) {
+                        //exist and not preview model
+                        if (( count($Other) > 0)&&($id)) {
                             continue;
                         }
                     }
@@ -143,9 +154,7 @@ class LayoutController
                         ->setBlock($Block)
                         ->setPageLayout($TargetPageLayout)
                         ->setAnywhere($anywhere);
-                    if ($id == 0) {
-                        $BlockPosition->setAnywhere(0);
-                    }
+
                     $TargetPageLayout->addBlockPosition($BlockPosition);
                     $app['orm.em']->persist($BlockPosition);
                 }

@@ -92,15 +92,18 @@ class SearchCustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('tel', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
-                    )),
-                ),
-            ))
+            ->add(
+                $builder->create('tel', 'text', array(
+                        'required' => false,
+                        'constraints' => array(
+                            new Assert\Regex(array(
+                                'pattern' => "/^[\d-]+$/u",
+                                'message' => 'form.type.admin.nottelstyle',
+                            )),
+                        ),
+                    ))
+                    ->addEventSubscriber(new \Eccube\EventListener\ConvertTelListener())
+            )
             ->add('buy_total_start', 'integer', array(
                 'label' => '購入金額',
                 'required' => false,

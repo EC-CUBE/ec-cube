@@ -82,6 +82,37 @@ class ProductControllerTest extends AbstractWebTestCase
     }
 
     /**
+     * testProductClassSortByRank
+     */
+    public function testProductClassSortByRank()
+    {
+        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        //set 金 rank
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(array('name' => '金'));
+        $ClassCategory->setRank(3);
+        $this->app['orm.em']->persist($ClassCategory);
+        $this->app['orm.em']->flush($ClassCategory);
+        //set 銀 rank
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(array('name' => '銀'));
+        $ClassCategory->setRank(2);
+        $this->app['orm.em']->persist($ClassCategory);
+        $this->app['orm.em']->flush($ClassCategory);
+        //set プラチナ rank
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(array('name' => 'プラチナ'));
+        $ClassCategory->setRank(1);
+        $this->app['orm.em']->persist($ClassCategory);
+        $this->app['orm.em']->flush($ClassCategory);
+        $client = $this->client;
+        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => '1')));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $classCategory = $crawler->filter('#classcategory_id1')->text();
+        //選択してください, 金, 銀, プラチナ sort by rank setup above.
+        $this->expected = '選択してください金銀プラチナ';
+        $this->actual = $classCategory;
+        $this->verify();
+    }
+
+    /**
      * Test product can add favorite when out of stock.
      *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1637

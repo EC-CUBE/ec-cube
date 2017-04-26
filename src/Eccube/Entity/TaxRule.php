@@ -24,6 +24,9 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
+
 /**
  * TaxRule
  */
@@ -306,6 +309,9 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 

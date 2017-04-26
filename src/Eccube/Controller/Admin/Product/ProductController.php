@@ -416,8 +416,10 @@ class ProductController extends AbstractController
                     $app['orm.em']->persist($Product);
 
                     // 削除
-                    $fs = new Filesystem();
-                    $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
+                    if (!empty($delete_image)) {
+                        $fs = new Filesystem();
+                        $fs->remove($app['config']['image_save_realdir'].'/'.$delete_image);
+                    }
                 }
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
@@ -576,8 +578,10 @@ class ProductController extends AbstractController
                 // 画像ファイルの削除(commit後に削除させる)
                 foreach ($deleteImages as $deleteImage) {
                     try {
-                        $fs = new Filesystem();
-                        $fs->remove($app['config']['image_save_realdir'] . '/' . $deleteImage);
+                        if (!empty($deleteImage)) {
+                            $fs = new Filesystem();
+                            $fs->remove($app['config']['image_save_realdir'].'/'.$deleteImage);
+                        }
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
