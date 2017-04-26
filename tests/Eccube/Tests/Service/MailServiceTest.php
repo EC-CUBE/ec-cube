@@ -2,8 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Service\MailService;
-
 /**
  * MailService test cases.
  *
