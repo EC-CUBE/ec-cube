@@ -1524,19 +1524,25 @@ class ShoppingController extends AbstractController
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
 
-        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
-        $errors[] = $app['validator']->validateValue($data['customer_kana01'], array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['kana_len'],)),
-            new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
-        ));
+        // 互換性確保のためキーが存在する場合にのみバリデーションを行う(kana01は3.0.15から追加)
+        if (array_key_exists('customer_kana01', $data)) {
+            $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+            $errors[] = $app['validator']->validateValue($data['customer_kana01'], array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $app['config']['kana_len'],)),
+                new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
+            ));
+        }
 
-        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
-        $errors[] = $app['validator']->validateValue($data['customer_kana02'], array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['kana_len'],)),
-            new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
-        ));
+        // 互換性確保のためキーが存在する場合にのみバリデーションを行う(kana01は3.0.15から追加)
+        if (array_key_exists('customer_kana02', $data)) {
+            $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+            $errors[] = $app['validator']->validateValue($data['customer_kana02'], array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $app['config']['kana_len'],)),
+                new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
+            ));
+        }
 
         $errors[] = $app['validator']->validateValue($data['customer_company_name'], array(
             new Assert\Length(array('max' => $app['config']['stext_len'])),
