@@ -3,11 +3,11 @@
 namespace Acme\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExt;
+use Eccube\Annotation\EntityExtension;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @EntityExt(target="Eccube\Entity\BaseInfo")
+ * @EntityExtension("Eccube\Entity\BaseInfo")
  */
 trait BaseInfoTrait
 {
