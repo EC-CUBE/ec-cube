@@ -1,0 +1,149 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'product_page' %}
+
+{% block javascript %}
+    <script>
+        // 並び順を変更
+        function fnChangeOrderBy(orderby) {
+            eccube.setValue('orderby', orderby);
+            eccube.setValue('pageno', 1);
+            eccube.submitForm();
+        }
+
+        // 表示件数を変更
+        function fnChangeDispNumber(dispNumber) {
+            eccube.setValue('disp_number', dispNumber);
+            eccube.setValue('pageno', 1);
+            eccube.submitForm();
+        }
+        // 商品表示BOXの高さを揃える
+        $(window).load(function() {
+            $('.product_item').matchHeight();
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+    {% if search_form.category_id.vars.errors|length == 0 %}
+    <form name="form1" id="form1" method="get" action="?">
+        {{ form_widget(search_form) }}
+    </form>
+    <!-- ▼topicpath▼ -->
+    <div id="topicpath" class="row">
+        <ol id="list_header_menu">
+            <li><a href="{{ url('product_list') }}">全商品</a></li>
+            {% if Category is not null %}
+                {% for Path in Category.path %}
+                    <li><a href="{{ url('product_list') }}?category_id={{ Path.id }}">{{ Path.name }}</a></li>
+                {% endfor %}
+            {% endif %}
+            {% if search_form.vars.value.name %}
+            <li>「{{ search_form.vars.value.name }}」の検索結果</li>
+            {% endif %}
+        </ol>
+    </div>
+    <!-- ▲topicpath▲ -->
+    <div id="result_info_box" class="row">
+        <form name="page_navi_top" id="page_navi_top" action="?">
+            {% if pagination.totalItemCount > 0 %}
+                <p id="result_info_box__item_count" class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
+                </p>
+
+                <div id="result_info_box__menu_box" class="col-sm-6 no-padding">
+                    <ul id="result_info_box__menu" class="pagenumberarea clearfix">
+                        <li id="result_info_box__disp_menu">
+                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+                        </li>
+                        <li id="result_info_box__order_menu">
+                            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+                        </li>
+                    </ul>
+                </div>
+
+                {% for f in disp_number_form.getIterator %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        {{ form_label(f) }}
+                        {{ form_widget(f) }}
+                        {{ form_errors(f) }}
+                    {% endif %}
+                {% endfor %}
+
+                {% for f in order_by_form.getIterator %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        {{ form_label(f) }}
+                        {{ form_widget(f) }}
+                        {{ form_errors(f) }}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p id="result_info_box__item_count" class="intro col-sm-6"><strong style="display: none;"><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>お探しの商品は見つかりませんでした。</p>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- ▼item_list▼ -->
+    <div id="item_list">
+        <div class="row no-padding">
+            {% for Product in pagination %}
+                <div id="result_list_box--{{ Product.id }}" class="col-sm-3 col-xs-6">
+                    <div id="result_list__item--{{ Product.id }}" class="product_item">
+                        <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                            <div id="result_list__image--{{ Product.id }}" class="item_photo">
+                                <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
+                            </div>
+                            <dl id="result_list__detail--{{ Product.id }}">
+                                <dt id="result_list__name--{{ Product.id }}" class="item_name">{{ Product.name }}</dt>
+                                {% if Product.description_list %}
+                                    <dd id="result_list__description_list--{{ Product.id }}" class="item_comment">{{ Product.description_list|raw|nl2br }}</dd>
+                                {% endif %}
+                                {% if Product.hasProductClass %}
+                                    {% if Product.getPrice02Min == Product.getPrice02Max %}
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">
+                                        {{ Product.getPrice02IncTaxMin|price }}
+                                    </dd>
+                                    {% else %}
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">
+                                        {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                    </dd>
+                                    {% endif %}
+                                {% else %}
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
+                                {% endif %}
+                            </dl>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <!-- ▲item_list▲ -->
+    {% if pagination.totalItemCount > 0 %}
+        {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
+    {% endif %}
+    {% else %}
+        <p class="errormsg text-danger">ご指定のカテゴリは存在しません。</p>
+    {% endif %}
+{% endblock %}

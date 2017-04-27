@@ -179,12 +179,7 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        // device type
-        if ($this->app['mobile_detect']->isMobile()) {
-            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_SP);
-        } else {
-            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
-        }
+        $DeviceType = $this->app['eccube.repository.master.device_type']->find($this->app['mobile_detect.device_type']);
         $Order->setDeviceType($DeviceType);
 
         $this->em->persist($Order);

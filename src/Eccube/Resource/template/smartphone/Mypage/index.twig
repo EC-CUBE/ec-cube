@@ -1,0 +1,100 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <h1 class="page-heading">マイページ/ご注文履歴</h1>
+    <div id="history_wrap" class="container-fluid">
+
+        {% include 'Mypage/navi.twig' %}
+
+        <div id="history_list" class="row">
+            <div id="history_list__body" class="col-md-12">
+
+                {% if pagination.totalItemCount > 0 %}
+                    <p id="history_list__total_count" class="intro"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
+
+                    {% for Order in pagination %}
+                        <div id="history_list__item--{{ Order.id }}" class="historylist_column row">
+                            <div id="history_list__item_info--{{ Order.id }}" class="col-sm-4">
+                                <h3 id="history_list__order_date--{{ Order.id }}" class="order_date">{{ Order.order_date|date("Y/m/d H:i:s") }}</h3>
+                                <dl id="history_list__order_detail--{{ Order.id }}" class="order_detail">
+                                    <dt id="history_list__header_order_id--{{ Order.id }}">ご注文番号：</dt>
+                                    <dd id="history_list__order_id--{{ Order.id }}">{{ Order.id }}</dd>
+                                    {% if BaseInfo.option_mypage_order_status_display %}
+                                        <dt id="history_list__header_order_status--{{ Order.id }}">ご注文状況：</dt>
+                                        <dd id="history_list__order_status--{{ Order.id }}">{{ Order.CustomerOrderStatus }}</dd>
+                                    {% endif %}
+                                </dl>
+                                <p id="history_list__detail_button--{{ Order.id }}"><a class="btn btn-default btn-sm" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
+                            </div>
+                            <div id="history_detail_list--{{ Order.id }}" class="col-sm-8">
+                                {% for OrderDetail in Order.OrderDetails %}
+                                    <div id="history_detail_list__body--{{ Order.id }}_{{ OrderDetail.id }}" class="item_box table">
+                                        <div id="history_detail_list__body_inner--{{ Order.id }}_{{ OrderDetail.id }}" class="tbody">
+                                            <div id="history_detail_list__item--{{ Order.id }}_{{ OrderDetail.id }}" class="tr">
+                                                <div id="history_detail_list__image--{{ Order.id }}_{{ OrderDetail.id }}" class="item_photo td">
+                                                    {% if OrderDetail.Product is null %}
+                                                        <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
+                                                    {% else %}
+                                                        {% if OrderDetail.enable %}
+                                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.product.MainListImage|no_image_product }}">
+                                                        {% else %}
+                                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <dl id="history_detail_list__item_info--{{ Order.id }}_{{ OrderDetail.id }}" class="item_detail td">
+                                                    <dt id="history_detail_list__product_name--{{ Order.id }}_{{ OrderDetail.id }}" class="item_name">{{ OrderDetail.product_name }}</dt>
+                                                    <dd id="history_detail_list__category_name--{{ Order.id }}_{{ OrderDetail.id }}" class="item_pattern small">
+                                                        {% if OrderDetail.class_category_name1 is not empty %}
+                                                            {{ OrderDetail.class_category_name1 }}
+                                                        {% endif %}
+                                                        {% if OrderDetail.class_category_name1 is not empty %}
+                                                            / {{ OrderDetail.class_category_name2 }}
+                                                        {% endif %}
+                                                    </dd>
+                                                    <dd id="history_detail_list__price--{{ Order.id }}_{{ OrderDetail.id }}" class="item_price">{{ OrderDetail.price_inc_tax|price }} ×{{ OrderDetail.quantity }}</dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                    </div><!--/item_box-->
+                                {% endfor %}
+                            </div>
+                        </div><!--/historylist_column-->
+                    {% endfor %}
+
+                    {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+
+                {% else %}
+                    <p id="history_list__not_result_message" class="intro">ご注文履歴がありません。</p>
+                {% endif %}
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
+{% endblock %}

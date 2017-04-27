@@ -1,0 +1,130 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+    $(function() {
+        $('#zip-search').click(function() {
+            AjaxZip3.zip2addr('nonmember[zip][zip01]', 'nonmember[zip][zip02]', 'nonmember[address][pref]', 'nonmember[address][addr01]');
+        });
+    });
+</script>
+{% endblock javascript %}
+
+{% block main %}
+<h1 class="page-heading">お客様情報の入力</h1>
+<div id="detail_wrap" class="container-fluid">
+    <div id="detail_box__body" class="row">
+        <div id="detail_box__body_inner" class="col-md-10 col-md-offset-1">
+            <div id="detail_flow_box__flow_state" class="flowline step4">
+                <ul id="detail_flow_box___flow_state_list"  class="clearfix">
+                    <li><span class="flow_number">1</span><br>カートの商品</li>
+                    <li class="active"><span class="flow_number">2</span><br>お客様情報</li>
+                    <li><span class="flow_number">3</span><br>ご注文内容確認</li>
+                    <li><span class="flow_number">4</span><br>完了</li>
+                </ul>
+            </div>
+            <form method="post" action="{{ url('shopping_nonmember') }}">
+                {{ form_widget(form._token) }}
+                <div id="detail_box__body" class="dl_table">
+                    <dl id="detail_box__name">
+                        <dt>{{ form_label(form.name) }}</dt>
+                        <dd class="form-group input_name">
+                            {{ form_widget(form.name.name01) }}
+                            {{ form_widget(form.name.name02) }}
+                            {{ form_errors(form.name.name01) }}
+                            {{ form_errors(form.name.name02) }}
+                        </dd>
+                    </dl>
+                    <dl id="detail_box__kana">
+                        <dt>{{ form_label(form.kana) }}</dt>
+                        <dd class="form-group input_name">
+                            {{ form_widget(form.kana.kana01) }}
+                            {{ form_widget(form.kana.kana02) }}
+                            {{ form_errors(form.kana.kana01) }}
+                            {{ form_errors(form.kana.kana02) }}
+                        </dd>
+                    </dl>
+                    <dl id="detail_box__company_name">
+                        <dt>{{ form_label(form.company_name) }}</dt>
+                        <dd class="form-group input_name">
+                            {{ form_widget(form.company_name) }}
+                            {{ form_errors(form.company_name) }}
+                        </dd>
+                    </dl>
+                    <dl id="detail_box__address">
+                        <dt>{{ form_label(form.address) }}</dt>
+                        <dd>
+                            <div id="detail_box__zip" class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                            <div id="detail_box__address" class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl id="detail_box__tel">
+                        <dt>{{ form_label(form.tel) }}</dt>
+                        <dd>
+                            <div class="form-inline form-group input_tel">
+                                {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                {{ form_errors(form.tel) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl id="detail_box__email">
+                        <dt>{{ form_label(form.email) }}</dt>
+                        <dd>
+                            <div class="form-group {% if form.email.first.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.first) }}</div>
+                            <div class="form-group {% if form.email.second.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.second, {attr: {placeholder: '確認のためもう一度入力してください'}}) }}
+                                {{ form_errors(form.email.first) }}
+                                {{ form_errors(form.email.second) }}
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                {% for f in form %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        <div class="extra-form dl_table">
+                            {{ form_row(f) }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div id="detail_box__footer" class="row no-padding">
+                    <div id="detail_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                        <p id="detail_box__next_button">
+                            <button type="submit" class="btn btn-primary btn-block">次へ</button>
+                        </p>
+                        <p id="detail_box__back_button"><a href="{{ url('cart') }}" class="btn btn-info btn-block">戻る</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</div>
+{% endblock %}

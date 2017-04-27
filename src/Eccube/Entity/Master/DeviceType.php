@@ -40,6 +40,7 @@ class DeviceType extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     const DEVICE_TYPE_MB = 1;
     const DEVICE_TYPE_SP = 2;
+    // const DEVICE_TYPE_TABLET = 3;
     const DEVICE_TYPE_PC = 10;
     const DEVICE_TYPE_ADMIN = 99;
 }

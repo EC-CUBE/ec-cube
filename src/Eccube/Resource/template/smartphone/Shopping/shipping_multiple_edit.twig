@@ -1,0 +1,121 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block javascript %}
+    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <script>
+        $(function() {
+            $('#zip-search').click(function() {
+                AjaxZip3.zip2addr('shopping_shipping[zip][zip01]', 'shopping_shipping[zip][zip02]', 'shopping_shipping[address][pref]', 'shopping_shipping[address][addr01]');
+            });
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+    <h1 class="page-heading">お届け先の追加</h1>
+    <div id="detail_wrap" class="container-fluid">
+        <div id="detail_box" class="row">
+            <form method="post" action="{{ url('shopping_shipping_multiple_edit') }}">
+                {{ form_widget(form._token) }}
+                <div id="detail_box__body" class="col-sm-10 col-sm-offset-1">
+                    <div id="detail_box__body_inner" class="dl_table">
+                        <dl>
+                            <dt id="detail_box__name">{{ form_label(form.name) }}</dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.name.name01) }}
+                                {{ form_widget(form.name.name02) }}
+                                {{ form_errors(form.name.name01) }}
+                                {{ form_errors(form.name.name02) }}
+                            </dd>
+                        </dl>
+                        <dl id="detail_box__kana">
+                            <dt>{{ form_label(form.kana) }}</dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.kana.kana01) }}
+                                {{ form_widget(form.kana.kana02) }}
+                                {{ form_errors(form.kana.kana01) }}
+                                {{ form_errors(form.kana.kana02) }}
+                            </dd>
+                        </dl>
+                        <dl id="detail_box__company_name">
+                            <dt>{{ form_label(form.company_name) }}</dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.company_name) }}
+                                {{ form_errors(form.company_name) }}
+                            </dd>
+                        </dl>
+                        <dl id="detail_box__address">
+                            <dt>{{ form_label(form.address) }}</dt>
+                            <dd>
+                                <div id="detail_box__zip"
+                                     class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                <div id="detail_box__pref"
+                                     class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                    {{ form_widget(form.address) }}
+                                    {{ form_errors(form.address) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="detail_box__tel">
+                            <dt>{{ form_label(form.tel) }}</dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                    {{ form_errors(form.tel) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl id="detail_box__fax">
+                            <dt>{{ form_label(form.fax) }}</dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
+                                    {{ form_errors(form.fax) }}
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    {% for f in form %}
+                        {% if f.vars.name matches '[^plg*]' %}
+                            <div class="extra-form dl_table">
+                                {{ form_row(f) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div id="detail_box__button_menu" class="row no-padding">
+                        <div class="btn_group col-sm-offset-4 col-sm-4">
+                            <p id="detail_box__insert_button">
+                                <button type="submit" class="btn btn-primary btn-block">登録する</button>
+                            </p>
+                            <p id="detail_box__back_button"><a href="{{ url('shopping_shipping_multiple') }}"
+                                                               class="btn btn-info btn-block">戻る</a></p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

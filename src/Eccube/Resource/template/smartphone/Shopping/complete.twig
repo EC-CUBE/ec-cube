@@ -1,0 +1,72 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block main %}
+    <h1 class="page-heading">ご注文完了</h1>
+    <div id="complete_wrap" class="container-fluid">
+        <div id="complete_flow_box" class="row">
+            <div id="complete_flow_box__body" class="col-md-12">
+                {% if is_granted('ROLE_USER') %}
+                <div id="complete_flow_box__flow_state" class="flowline step3">
+                {% else %}
+                <div id="complete_flow_box__flow_state" class="flowline step4">
+                {% endif %}
+                    <ul id="complete_flow_box__flow_state_list" class="clearfix">
+                        <li><span class="flow_number">1</span><br>カートの商品</li>
+                    {% if is_granted('ROLE_USER') %}
+                        <li><span class="flow_number">2</span><br>ご注文内容確認</li>
+                        <li class="active"><span class="flow_number">3</span><br>完了</li>
+                    {% else %}
+                        <li><span class="flow_number">2</span><br>お客様情報</li>
+                        <li><span class="flow_number">3</span><br>ご注文内容確認</li>
+                        <li class="active"><span class="flow_number">4</span><br>完了</li>
+                    {% endif %}
+                    </ul>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+
+        <div id="deliveradd_input" class="row">
+            <div id="deliveradd_input_box" class="col-sm-10 col-sm-offset-1">
+                <div id="deliveradd_input_box__message" class="complete_message">
+                    <h2 class="heading01">ご注文ありがとうございました</h2>
+                    <p>ただいま、ご注文の確認メールをお送りさせていただきました。<br />
+                        万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br />
+                        今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+                </div>
+                <div id="deliveradd_input_box__top_button" class="row no-padding">
+                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                        <p>
+                            <a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+<div id="contents" class="main_only">
+    <div id="confirm_wrap" class="container-fluid inner no-padding">
+        <div id="main">
+            <h1 class="page-heading">お問い合わせ</h1>
+
+            <div id="confirm_inner" class="container-fluid">
+                <div id="confirm_box" class="row">
+                    <div id="confirm_box__body" class="col-md-10 col-md-offset-1">
+                        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                            また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+
+                        <form name="form1" id="form1" method="post" action="?">
+                            {{ form_widget(form._token) }}
+                            <div id="confirm_box__body_inner" class="dl_table">
+                                <dl id="confirm_box__name">
+                                    <dt>{{ form_label(form.name) }}</dt>
+                                    <dd class="form-group">
+                                        {{ form_widget(form.name.name01) }}
+                                        {{ form_widget(form.name.name02) }}
+                                    </dd>
+                                </dl>
+                                <dl id="confirm_box__kana">
+                                    <dt>{{ form_label(form.kana) }}</dt>
+                                    <dd class="form-group">
+                                        {{ form_widget(form.kana.kana01) }}
+                                        {{ form_widget(form.kana.kana02) }}
+                                    </dd>
+                                </dl>
+                                <dl id="confirm_box__address">
+                                    <dt>{{ form_label(form.address) }}</dt>
+                                    <dd>
+                                        <div class="form-group">
+                                            {{ form_widget(form.zip) }}<br />
+                                            {{ form_widget(form.address) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl id="confirm_box__tel">
+                                    <dt>{{ form_label(form.tel) }}</dt>
+                                    <dd>
+                                        <div class="form-group">
+                                            {{ form_widget(form.tel) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl id="confirm_box__email">
+                                    <dt>{{ form_label(form.email) }}</dt>
+                                    <dd>
+                                        <div class="form-group">
+                                            {{ form_widget(form.email) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl id="confirm_box__contents">
+                                    <dt>{{ form_label(form.contents) }}</dt>
+                                    <dd>
+                                        <div class="column">
+                                            {{ form_widget(form.contents) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div id="confirm_box__footer" class="row no-padding">
+                                <div id="confirm_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p id="confirm_box__confirm_button"><button type="submit" class="btn btn-primary btn-block" name="mode" value="complete">送信をする</button></p>
+                                    <p id="confirm_box__back_button"><button type="submit" class="btn btn-info btn-block" name="mode" value="back">戻る</button></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

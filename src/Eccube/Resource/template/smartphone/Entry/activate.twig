@@ -1,0 +1,48 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'registration_page' %}
+
+{% block main %}
+    <h1 class="page-heading">新規会員登録（完了）</h1>
+    <div id="activate_box" class="container-fluid">
+        <div id="deliveradd_input" class="row">
+            <div id="activate_box__body" class="col-sm-10 col-sm-offset-1">
+                <div id="activate_box__message" class="complete_message">
+                    <h2 class="heading01">本登録が完了いたしました。</h2>
+                    <p>それではショッピングをお楽しみください。</p>
+                    <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+                </div>
+                <div id="activate_box__footer" class="row no-padding">
+                    <div id="activate_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                        <p id="activate_box__top_button" >
+                            <a href="{{ url('index') }}" class="btn btn-info btn-block">トップページへ</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
+{% endblock %}

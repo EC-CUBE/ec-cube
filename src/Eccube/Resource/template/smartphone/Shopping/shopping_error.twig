@@ -1,0 +1,51 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cart_page' %}
+
+{% block main %}
+    <h1 class="page-heading">購入エラー</h1>
+    <div id="error_wrap" class="container-fluid">
+        <div id="error_box" class="row">
+            <div id="error_box__body" class="col-sm-10 col-sm-offset-1">
+                {% for error in app.session.flashbag.get('eccube.front.error')  %}
+                <div id="error_box__error_message-{{ loop.index }}" class="message">
+                    {{ error|trans|nl2br }}
+                </div>
+                {% endfor %}
+                <div id="error_box__footer" class="row no-padding">
+                    <div id="error_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                        <p id="error_box__top_button">
+                            <a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a>
+                        </p>
+                        <p id="error_box__back_button">
+                            <a href="{{ url('cart') }}" class="btn btn-info btn-block">カートに戻る</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
+{% endblock %}

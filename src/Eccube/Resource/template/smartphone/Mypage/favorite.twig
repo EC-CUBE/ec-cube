@@ -1,0 +1,78 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'favorite' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <h1 class="page-heading">マイページ/お気に入り一覧</h1>
+    <div id="favorite_wrap" class="container-fluid">
+
+        {% include 'Mypage/navi.twig' %}
+
+        <div id="favorite_list_box" class="row">
+            <div id="favorite_list_box__body" class="col-md-12">
+            {% if pagination.totalItemCount > 0 %}
+                <p id="favorite_lst__total_item_count" class="intro"><strong>{{ pagination.totalItemCount }}件</strong>のお気に入りがあります。</p>
+                <div id="item_list">
+                    <div id="favorite_list__list" class="row no-padding">
+                        {% for FavoriteProduct in pagination %}
+                        {% set Product = FavoriteProduct.Product %}
+                        <div id="favorite__list--{{ Product.id }}" class="col-sm-3 col-xs-6">
+                            <div id="favorite_list__item--{{ Product.id }}" class="product_item">
+                                <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                                    <div id="favorite_list__image--{{ Product.id }}" class="item_photo">
+                                        <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}" alt="{{ Product.name }}"/>
+                                    </div>
+                                </a>
+                                <a href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                    <button type="button" class="btn_circle"><svg class="cb cb-close"><use xlink:href="#cb-close"></use></svg></button>
+                                </a>
+                                <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                                    <dl id="favorite_list__detail--{{ Product.id }}">
+                                        <dt id="favorite_list__name--{{ Product.id }}" class="item_name" style="height: 22px;"> {{ Product.name }}</dt>
+                                        <dd id="favorite_list__price02_inc_tax--{{ Product.id }}" class="item_price">
+                                            {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
+                                                {{ Product.price02_inc_tax_min|price }}
+                                            {% else %}
+                                                {{ Product.price02_inc_tax_min|price }}～{{ Product.price02_inc_tax_max|price }}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="favorite_list__pagination" class="paging">
+                    {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+                </div>
+            {% else %}
+                <p id="favorite_list__not_found_message" class="intro">お気に入りが登録されていません。</p>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
