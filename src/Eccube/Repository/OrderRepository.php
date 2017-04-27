@@ -36,10 +36,6 @@ use Eccube\Util\Str;
  */
 class OrderRepository extends EntityRepository
 {
-    const QUERY_KEY_SEARCH = '\Eccube\Repository\OrderRepository_SEARCH';
-    const QUERY_KEY_SEARCH_ADMIN = '\Eccube\Repository\OrderRepository_SEARCH_ADMIN';
-    const QUERY_KEY_SEARCH_BY_CUSTOMER = '\Eccube\Repository\OrderRepository_SEARCH_BY_CUSTOMER';
-
     protected $app;
 
     public function setApplication($app)
@@ -248,7 +244,7 @@ class OrderRepository extends EntityRepository
         // Order By
         $qb->addOrderBy('o.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH, $qb, $searchData);
+        return $this->app['eccube.queries']->customize(Constant::QUERY_KEY_ORDER_SEARCH, $qb, $searchData);
     }
 
 
@@ -443,7 +439,7 @@ class OrderRepository extends EntityRepository
         $qb->orderBy('o.update_date', 'DESC');
         $qb->addorderBy('o.id', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH_ADMIN, $qb, $searchData);
+        return $this->app['eccube.queries']->customize(Constant::QUERY_KEY_ORDER_SEARCH_ADMIN, $qb, $searchData);
     }
 
 
@@ -460,7 +456,7 @@ class OrderRepository extends EntityRepository
         // Order By
         $qb->addOrderBy('o.id', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
+        return $this->app['eccube.queries']->customize(Constant::QUERY_KEY_ORDER_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
     }
 
     /**

@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Repository\Constant as QueryKey;
 use Eccube\Util\Str;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -42,9 +43,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class CustomerRepository extends EntityRepository implements UserProviderInterface
 {
-
-    const QUERY_KEY_SEARCH = '\Eccube\Repository\CustomerRepository_SEARCH';
-
     protected $app;
 
     public function setApplication($app)
@@ -291,7 +289,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         // Order By
         $qb->addOrderBy('c.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH, $qb, $searchData);
+        return $this->app['eccube.queries']->customize(QueryKey::QUERY_KEY_CUSTOMER_SEARCH, $qb, $searchData);
     }
 
     /**

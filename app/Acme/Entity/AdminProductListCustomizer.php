@@ -7,10 +7,10 @@ namespace Acme\Entity;
 use Eccube\Annotation\QueryExtension;
 use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\OrderByCustomizer;
-use Eccube\Repository\ProductRepository;
+use Eccube\Repository\Constant;
 
 /**
- * @QueryExtension(ProductRepository::QUERY_KEY_SEARCH_ADMIN)
+ * @QueryExtension(Constant::QUERY_KEY_PRODUCT_SEARCH_ADMIN)
  */
 class AdminProductListCustomizer extends OrderByCustomizer
 {

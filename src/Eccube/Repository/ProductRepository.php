@@ -38,11 +38,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends EntityRepository
 {
-
-    const QUERY_KEY_SEARCH = '\Eccube\Repository\ProductRepository_SEARCH';
-    const QUERY_KEY_SEARCH_ADMIN = '\Eccube\Repository\ProductRepository_SEARCH_ADMIN';
-    const QUERY_KEY_GET_FAVORITE = '\Eccube\Repository\ProductRepository_GET_FAVORITE';
-
     /**
      * @var \Eccube\Application
      */
@@ -160,7 +155,7 @@ class ProductRepository extends EntityRepository
                 ->addOrderBy('p.id', 'DESC');
         }
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH, $qb, $searchData);
+        return $this->app['eccube.queries']->customize(Constant::QUERY_KEY_PRODUCT_SEARCH, $qb, $searchData);
     }
 
     /**
@@ -274,7 +269,7 @@ class ProductRepository extends EntityRepository
         $qb
             ->orderBy('p.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH_ADMIN, $qb, $searchData);
+        return $this->app['eccube.queries']->customize(Constant::QUERY_KEY_PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
 
     /**
@@ -296,6 +291,6 @@ class ProductRepository extends EntityRepository
         // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
         $qb->addOrderBy('cfp.create_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_GET_FAVORITE, $qb, ['customer' => $Customer]);
+        return $this->app['eccube.queries']->customize(Constant::QUERY_KEY_PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
     }
 }
