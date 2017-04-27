@@ -141,7 +141,7 @@ class ProductRepository extends AbstractRepository
                 ->addOrderBy('p.id', 'DESC');
         }
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::PRODUCT_SEARCH, $qb, $searchData);
     }
 
     /**
@@ -255,7 +255,7 @@ class ProductRepository extends AbstractRepository
         $qb
             ->orderBy('p.update_date', 'DESC');
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
 
     /**
@@ -277,6 +277,6 @@ class ProductRepository extends AbstractRepository
         // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
         $qb->addOrderBy('cfp.create_date', 'DESC');
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
     }
 }

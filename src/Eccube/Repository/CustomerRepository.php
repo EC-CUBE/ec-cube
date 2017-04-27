@@ -287,7 +287,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         // Order By
         $qb->addOrderBy('c.update_date', 'DESC');
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::CUSTOMER_SEARCH, $qb, $searchData);
     }
 
     /**

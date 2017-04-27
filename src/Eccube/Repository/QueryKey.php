@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,20 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Entity\Master;
+namespace Eccube\Repository;
 
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ProductListOrderBy
- *
- * @ORM\Table(name="mtb_product_list_order_by")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductListOrderByRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- */
-class ProductListOrderBy extends \Eccube\Entity\Master\AbstractMasterEntity
+final class QueryKey
 {
+    const PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
+    const PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
+    const PRODUCT_GET_FAVORITE  = 'Product.getFavoriteProductQueryBuilderByCustomer';
+
+    const CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
+
+    const ORDER_SEARCH = 'Order.getQueryBuilderBySearchData';
+    const ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
+    const ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
 }

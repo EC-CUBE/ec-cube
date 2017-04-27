@@ -36,7 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Eccube\Repository\Master\CustomerStatusRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
-class CustomerStatus extends \Eccube\Entity\AbstractEntity
+class CustomerStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 仮会員.
@@ -47,108 +47,4 @@ class CustomerStatus extends \Eccube\Entity\AbstractEntity
      * 本会員.
      */
     const ACTIVE = 2;
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
-     */
-    private $rank;
-
-
-    /**
-     * Set id.
-     *
-     * @param int $id
-     *
-     * @return CustomerStatus
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return CustomerStatus
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set rank.
-     *
-     * @param int $rank
-     *
-     * @return CustomerStatus
-     */
-    public function setRank($rank)
-    {
-        $this->rank = $rank;
-
-        return $this;
-    }
-
-    /**
-     * Get rank.
-     *
-     * @return int
-     */
-    public function getRank()
-    {
-        return $this->rank;
-    }
 }

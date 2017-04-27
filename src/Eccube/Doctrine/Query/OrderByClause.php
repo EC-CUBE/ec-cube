@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,20 +21,44 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Entity\Master;
+namespace Eccube\Doctrine\Query;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ProductListOrderBy
+ * ORDER BY句を組み立てるクラス。
  *
- * @ORM\Table(name="mtb_product_list_order_by")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductListOrderByRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @package Eccube\Doctrine\Query
  */
-class ProductListOrderBy extends \Eccube\Entity\Master\AbstractMasterEntity
+class OrderByClause
 {
+
+    private $sort;
+    private $order;
+
+    /**
+     * OrderByClause constructor.
+     * @param $sort
+     * @param string $order
+     */
+    function __construct($sort, $order = 'asc')
+    {
+        $this->sort = $sort;
+        $this->order = $order;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
 }

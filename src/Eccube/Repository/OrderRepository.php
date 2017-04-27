@@ -236,7 +236,7 @@ class OrderRepository extends AbstractRepository
         // Order By
         $qb->addOrderBy('o.update_date', 'DESC');
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::ORDER_SEARCH, $qb, $searchData);
     }
 
 
@@ -431,7 +431,7 @@ class OrderRepository extends AbstractRepository
         $qb->orderBy('o.update_date', 'DESC');
         $qb->addorderBy('o.id', 'DESC');
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }
 
 
@@ -448,7 +448,7 @@ class OrderRepository extends AbstractRepository
         // Order By
         $qb->addOrderBy('o.id', 'DESC');
 
-        return $qb;
+        return $this->app['eccube.queries']->customize(QueryKey::ORDER_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
     }
 
     /**
