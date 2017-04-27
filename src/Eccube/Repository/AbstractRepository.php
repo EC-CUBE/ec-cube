@@ -44,52 +44,7 @@ class AbstractRepository extends EntityRepository
         $this->getEntityManager()->persist($entity);
     }
 
-    /**
-     * IDに紐づくエンティティを取得します。
-     * Result Cacheが有効になっている場合は、Result Cache機能を利用します。
-     *
-     * @param $id|long エンティティのID
-     * @return AbstractEntity
-     */
-    public function get($id)
-    {
-        $qb = $this->createQueryBuilder('e')
-            ->where('e.id = :id')
-            ->setParameter('id', $id);
-
-        if (!$this->app['debug']) {
-            $qb->setCacheable(true);
-        }
-
-        return $qb->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
-            ->getSingleResult();
-    }
-
-    /**
-     * エンティティの一覧を取得します。
-     * Result Cacheが有効になっている場合は、Result Cache機能を利用します。
-     *
-     * @param $sortOptions|array ソート順
-     * @return AbstractEntity[]
-     */
-    public function getAll($sortOptions = [])
-    {
-        $qb = $this->createQueryBuilder('l');
-        foreach ($sortOptions as $sort=>$order) {
-            $qb->addOrderBy('l.'.$sort, $order);
-        }
-
-        if (!$this->app['debug']) {
-            $qb->setCacheable(true);
-        }
-
-        return $qb->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
-            ->getResult();
-    }
-
-    private function getCacheLifetime()
+    protected function getCacheLifetime()
     {
         $options = $this->app['config']['doctrine_cache'];
         return $options['result_cache']['lifetime'];

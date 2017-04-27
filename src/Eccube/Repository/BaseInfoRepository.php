@@ -34,6 +34,16 @@ class BaseInfoRepository extends AbstractRepository
 {
     public function get($id = 1)
     {
-        return parent::get($id);
+        $qb = $this->createQueryBuilder('e')
+            ->where('e.id = :id')
+            ->setParameter('id', $id);
+
+        if (!$this->app['debug']) {
+            $qb->setCacheable(true);
+        }
+
+        return $qb->getQuery()
+            ->useResultCache(true, $this->getCacheLifetime())
+            ->getSingleResult();
     }
 }
