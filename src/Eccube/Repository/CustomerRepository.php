@@ -42,9 +42,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class CustomerRepository extends EntityRepository implements UserProviderInterface
 {
-
-    const QUERY_KEY_SEARCH = '\Eccube\Repository\CustomerRepository_SEARCH';
-
     protected $app;
 
     public function setApplication($app)
@@ -291,7 +288,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         // Order By
         $qb->addOrderBy('c.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(self::QUERY_KEY_SEARCH, $qb, $searchData);
+        return $this->app['eccube.queries']->customize(QueryKey::CUSTOMER_SEARCH, $qb, $searchData);
     }
 
     /**
