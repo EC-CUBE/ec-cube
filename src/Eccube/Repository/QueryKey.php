@@ -24,15 +24,15 @@
 namespace Eccube\Repository;
 
 
-final class Constant
+final class QueryKey
 {
-    const QUERY_KEY_PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
-    const QUERY_KEY_PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
-    const QUERY_KEY_PRODUCT_GET_FAVORITE  = 'Product.getFavoriteProductQueryBuilderByCustomer';
+    const PRODUCT_SEARCH = 'Product.getQueryBuilderBySearchData';
+    const PRODUCT_SEARCH_ADMIN = 'Product.getQueryBuilderBySearchDataForAdmin';
+    const PRODUCT_GET_FAVORITE  = 'Product.getFavoriteProductQueryBuilderByCustomer';
 
-    const QUERY_KEY_CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
+    const CUSTOMER_SEARCH = 'Customer.getQueryBuilderBySearchData';
 
-    const QUERY_KEY_ORDER_SEARCH = 'Order.getQueryBuilderBySearchData';
-    const QUERY_KEY_ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
-    const QUERY_KEY_ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
+    const ORDER_SEARCH = 'Order.getQueryBuilderBySearchData';
+    const ORDER_SEARCH_ADMIN = 'Order.getQueryBuilderBySearchDataForAdmin';
+    const ORDER_SEARCH_BY_CUSTOMER = 'Order.getQueryBuilderByCustomer';
 }
