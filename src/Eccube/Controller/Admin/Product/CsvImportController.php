@@ -672,7 +672,7 @@ class CsvImportController
         if ($row['商品画像'] != '') {
 
             // 画像の削除
-            $ProductImages = $Product->getProductImage();
+            $ProductImages = $Product->getProductImages();
             foreach ($ProductImages as $ProductImage) {
                 $Product->removeProductImage($ProductImage);
                 $this->em->remove($ProductImage);

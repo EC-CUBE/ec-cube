@@ -70,7 +70,7 @@ Eccube\Entity\Product:
             targetEntity: Eccube\Entity\ProductClass
             cascade: ["persist"]
             mappedBy: Product
-        ProductImage:
+        ProductImages:
             targetEntity: Eccube\Entity\ProductImage
             mappedBy: Product
             orderBy:
