@@ -78,7 +78,7 @@ class Layout extends AbstractEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="layout_id", type="integer")
+     * @ORM\Column(name="layout_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
