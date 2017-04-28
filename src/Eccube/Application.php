@@ -482,9 +482,29 @@ class Application extends \Silex\Application
                 }
 
                 try {
+                    if ($request->query->has('device_type_id')) {
+                        $device_type_id = $request->get('device_type_id', \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                    } else {
+                        error_log($this['mobile_detect']->getUserAgent());
+                        $device_type_id = $this['mobile_detect']->isMobile()
+                            ? \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP
+                            : \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC;
+                    }
+
                     $DeviceType = $this['eccube.repository.master.device_type']
-                        ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $this['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                        ->find($device_type_id);
+                    $qb = $this['eccube.repository.page_layout']->createQueryBuilder('p');
+                    $PageLayout = $qb->select('p, pll,l, bp, b')
+                        ->leftJoin('p.PageLayoutLayouts', 'pll')
+                        ->leftJoin('pll.Layout', 'l')
+                        ->leftJoin('l.BlockPositions', 'bp')
+                        ->leftJoin('bp.Block', 'b')
+                        ->where('p.url = :route')
+                        ->andWhere('l.DeviceType = :DeviceType')
+                        ->setParameter('route', $route)
+                        ->setParameter('DeviceType', $DeviceType)
+                        ->getQuery()
+                        ->getSingleResult();
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $this['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
