@@ -507,6 +507,7 @@ class Application extends \Silex\Application
                         ->leftJoin('bp.Block', 'b')
                         ->where('p.url = :route')
                         ->andWhere('l.DeviceType = :DeviceType')
+                        ->orderBy('bp.block_row', 'ASC')
                         ->setParameter('route', $route)
                         ->setParameter('DeviceType', $DeviceType)
                         ->getQuery()
