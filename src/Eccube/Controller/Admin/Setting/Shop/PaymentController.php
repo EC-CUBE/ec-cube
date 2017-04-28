@@ -41,7 +41,7 @@ class PaymentController extends AbstractController
         $Payments = $app['eccube.repository.payment']
             ->findBy(
                 array('del_flg' => 0),
-                array('rank' => 'DESC')
+                array('rank' => 'DESC', 'id' => 'DESC')
             );
 
         $event = new EventArgs(
@@ -203,16 +203,20 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
+        $Payments = $app['eccube.repository.payment']->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC', 'id' => 'ASC'));
+        $rank = 1;
+        while ($Payment = current($Payments)) {
+            if ($Payment->getId() == $id && ($next = next($Payments))) {
+                $Payment->setRank($rank + 1);
+                $next->setRank($rank);
+                $rank++;
+            } else {
+                $Payment->setRank($rank);
+            }
+            $rank++;
+            next($Payments);
+        }
 
-        $current = $repo->find($id);
-        $currentRank = $current->getRank();
-
-        $targetRank = $currentRank + 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
-
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
         $app->addSuccess('admin.rank.move.complete', 'admin');
@@ -224,16 +228,19 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
-
-        $current = $repo->find($id);
-        $currentRank = $current->getRank();
-
-        $targetRank = $currentRank - 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
-
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
+        $Payments = $app['eccube.repository.payment']->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC', 'id' => 'ASC'));
+        $rank = 1;
+        while ($Payment = current($Payments)) {
+            if ($Payment->getId() == $id && ($prev = prev($Payments))) {
+                $Payment->setRank($rank - 1);
+                $prev->setRank($rank);
+                next($Payments);
+            } else {
+                $Payment->setRank($rank);
+            }
+            $rank++;
+            next($Payments);
+        }
         $app['orm.em']->flush();
 
         $app->addSuccess('admin.rank.move.complete', 'admin');
