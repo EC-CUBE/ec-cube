@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 {#
 This file is part of EC-CUBE
 
@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
 <title>{{ BaseInfo.shop_name }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
 {% if PageLayout.author is not empty %}
     <meta name="author" content="{{ PageLayout.author }}">
@@ -37,11 +38,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if PageLayout.meta_robots is not empty %}
     <meta name="robots" content="{{ PageLayout.meta_robots }}">
 {% endif %}
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
-<link rel="stylesheet" href="{{ app.config.front_urlpath }}/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
-<link rel="stylesheet" href="{{ app.config.front_urlpath }}/css/slick.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
-<link rel="stylesheet" href="{{ app.config.front_urlpath }}/css/default.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ app.config.front_urlpath }}/assets/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
 <!-- for original theme CSS -->
 {% block stylesheet %}{% endblock %}
 
@@ -58,9 +57,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 </head>
 <body id="page_{{ app.request_stack.currentrequest.get('_route') }}" class="{{ body_class|default('other_page') }}">
-<div id="wrapper">
-    <header id="header">
-        <div class="container-fluid inner">
+<div class="ec-layoutRole">
+    <div class="ec-layoutRole__header">
+        <div class="ec-headerRole">
             {# ▼HeaderInternal COLUMN #}
             {% if PageLayout.Header %}
                 {# ▼上ナビ #}
@@ -68,49 +67,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {# ▲上ナビ #}
             {% endif %}
             {# ▲HeaderInternal COLUMN #}
-            <p id="btn_menu"><a class="nav-trigger" href="#nav">Menu<span></span></a></p>
         </div>
-    </header>
+    </div>
 
     <div id="contents" class="{{ PageLayout.theme }}">
 
-        <div id="contents_top">
-            {# ▼TOP COLUMN #}
-            {% if PageLayout.ContentsTop %}
-                {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
-                {# ▲上ナビ #}
-            {% endif %}
-            {# ▲TOP COLUMN #}
+    {# ▼TOP COLUMN #}
+    {% if PageLayout.ContentsTop %}
+        {# ▼上ナビ #}
+        <div class="ec-layoutRole__contentTop">
+        {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
         </div>
+        {# ▲上ナビ #}
+    {% endif %}
+    {# ▲TOP COLUMN #}
 
-        <div class="container-fluid inner">
+        <div class="ec-layoutRole__contents">
+            <div class="ec-layoutRole__main">
+
             {# ▼LEFT COLUMN #}
             {% if PageLayout.SideLeft %}
-                <div id="side_left" class="side">
-                    {# ▼左ナビ #}
+                {# ▼左ナビ #}
+                <div class="ec-layoutRole__mainLeft">
                     {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
-                    {# ▲左ナビ #}
                 </div>
+                {# ▲左ナビ #}
             {% endif %}
             {# ▲LEFT COLUMN #}
 
             <div id="main">
                 {# ▼メイン上部 #}
                 {% if PageLayout.MainTop %}
-                    <div id="main_top">
+                    <div class="ec-layoutRole__mainTop">
                         {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
                     </div>
                 {% endif %}
                 {# ▲メイン上部 #}
 
-                <div id="main_middle">
-                    {% block main %}{% endblock %}
-                </div>
+                {# ▼コンテンツメイン #}
+                {% block main %}{% endblock %}
+                {# ▲コンテンツメイン #}
 
                 {# ▼メイン下部 #}
                 {% if PageLayout.MainBottom %}
-                    <div id="main_bottom">
+                    <div class="ec-layoutRole__mainBottom">
                         {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
                     </div>
                 {% endif %}
@@ -119,7 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             {# ▼RIGHT COLUMN #}
             {% if PageLayout.SideRight %}
-                <div id="side_right" class="side">
+                <div class="ec-layoutRole__mainRight">
                     {# ▼右ナビ #}
                     {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
                     {# ▲右ナビ #}
@@ -127,55 +127,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
             {# ▲RIGHT COLUMN #}
 
-            {# ▼BOTTOM COLUMN #}
-            {% if PageLayout.ContentsBottom %}
-                <div id="contents_bottom">
-                    {# ▼下ナビ #}
-                    {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
-                    {# ▲下ナビ #}
-                </div>
-            {% endif %}
-            {# ▲BOTTOM COLUMN #}
-
+            </div>
         </div>
 
-        <footer id="footer">
-            {# ▼Footer COLUMN#}
-            {% if PageLayout.Footer %}
-                {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
-                {# ▲上ナビ #}
-            {% endif %}
-            {# ▲Footer COLUMN#}
+        {# ▼BOTTOM COLUMN #}
+        {% if PageLayout.ContentsBottom %}
+            {# ▼下ナビ #}
+            <div class="ec-layoutRole__contentBottom">
+                {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
+            </div>
+            {# ▲下ナビ #}
+        {% endif %}
+        {# ▲BOTTOM COLUMN #}
 
-        </footer>
+
+        {# ▼Footer COLUMN#}
+        {% if PageLayout.Footer %}
+            {# ▼上ナビ #}
+            {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
+            {# ▲上ナビ #}
+        {% endif %}
+        {# ▲Footer COLUMN#}
 
     </div>
+</div><!-- ec-layoutRole -->
 
-    <div id="drawer" class="drawer sp">
-    </div>
+<div class="ec-overlayRole"></div>
+<div class="ec-drawerRole"></div>
 
-</div>
-
-<div class="overlay"></div>
-
-<script src="{{ app.config.front_urlpath }}/js/vendor/bootstrap.custom.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
-<script src="{{ app.config.front_urlpath }}/js/vendor/slick.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="{{ app.config.front_urlpath }}/assets/js/script.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
 <script src="{{ app.config.front_urlpath }}/js/function.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
 <script src="{{ app.config.front_urlpath }}/js/eccube.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
-<script>
-$(function () {
-    $('#drawer').append($('.drawer_block').clone(true).children());
-    $.ajax({
-        url: '{{ app.config.front_urlpath }}/img/common/svg.html',
-        type: 'GET',
-        dataType: 'html',
-    }).done(function(data){
-        $('body').prepend(data);
-    }).fail(function(data){
-    });
-});
-</script>
 {% block javascript %}{% endblock %}
 </body>
 </html>
