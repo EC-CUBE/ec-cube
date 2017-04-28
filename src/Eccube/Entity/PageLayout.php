@@ -33,6 +33,16 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     const EDIT_FLG_PREVIEW = 1;
     const EDIT_FLG_DEFAULT = 2;
 
+    public function getLayouts()
+    {
+        $Layouts = [];
+        foreach ($this->PageLayoutLayouts as $PageLayoutLayout) {
+            $Layouts[] = $PageLayoutLayout->getLayout();
+        }
+
+        return $Layouts;
+    }
+
     /**
      * Get ColumnNum
      *
@@ -78,46 +88,91 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
         return $BlockPositions;
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getUnusedPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_UNUSED);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getHeadPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEAD);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getHeaderPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEADER);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getContentsTopPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_TOP);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getSideLeftPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_LEFT);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getMainTopPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_TOP);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getMainBottomPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_BOTTOM);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getSideRightPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_RIGHT);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return BlockPosition
+     */
     public function getContentsBottomPosition()
     {
         return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
@@ -129,6 +184,8 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * @deprecated
+     *
      * Get BlocsByTargetId
      *
      * @param integer $target_id
@@ -152,47 +209,65 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
 
     public function getHead()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_HEAD);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEAD) : [];
     }
 
     public function getHeader()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_HEADER);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_HEADER) : [];
     }
 
     public function getContentsTop()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_TOP);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_CONTENTS_TOP) : [];
     }
 
     public function getSideLeft()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_LEFT);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_SIDE_LEFT) : [];
     }
 
     public function getMainTop()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_TOP);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_MAIN_TOP) : [];
     }
 
     public function getMainBottom()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_BOTTOM);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_MAIN_BOTTOM) : [];
     }
 
     public function getSideRight()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_RIGHT);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_SIDE_RIGHT) : [];
     }
 
     public function getContentsBottom()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM) : [];
     }
 
     public function getFooter()
     {
-        return $this->getBlocksByTargetId(self::TARGET_ID_FOOTER);
+        $Layout = current($this->getLayouts());
+
+        return $Layout ? $Layout->getBlocks(self::TARGET_ID_FOOTER) : [];
     }
 
 
@@ -286,8 +361,17 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="PageLayout", cascade={"persist","remove"})
+     *
+     * @deprecated
      */
     private $BlockPositions;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayoutLayout", mappedBy="PageLayout", cascade={"persist","remove"})
+     */
+    private $PageLayoutLayouts;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
@@ -305,6 +389,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     public function __construct()
     {
         $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->PageLayoutLayouts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -617,6 +702,40 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
         return $this->BlockPositions->removeElement($blockPosition);
+    }
+
+    /**
+     * Get pageLayoutLayout.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPageLayoutLayouts()
+    {
+        return $this->PageLayoutLayouts;
+    }
+
+    /**
+     * Add pageLayoutLayout
+     *
+     * @param \Eccube\Entity\PageLayoutLayout $pageLayoutLayout
+     *
+     * @return PageLayout
+     */
+    public function addPageLayoutLayout(\Eccube\Entity\PageLayoutLayout $pageLayoutLayout)
+    {
+        $this->PageLayoutLayouts[] = $pageLayoutLayout;
+
+        return $this;
+    }
+
+    /**
+     * Remove pageLayoutLayout
+     *
+     * @param \Eccube\Entity\PageLayoutLayout $pageLayoutLayout
+     */
+    public function removePageLayoutLayout(\Eccube\Entity\PageLayoutLayout $pageLayoutLayout)
+    {
+        $this->PageLayoutLayouts->removeElement($pageLayoutLayout);
     }
 
     /**

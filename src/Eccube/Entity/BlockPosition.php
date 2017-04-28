@@ -18,9 +18,9 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="page_id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(name="page_id", type="integer", options={"unsigned":true}, nullable=true)
+     *
+     * @deprecated
      */
     private $page_id;
 
@@ -43,6 +43,15 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     private $block_id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="layout_id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $layout_id;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="block_row", type="integer", nullable=true, options={"unsigned":true})
@@ -53,6 +62,8 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * @var int
      *
      * @ORM\Column(name="anywhere", type="smallint", options={"default":0})
+     *
+     * @deprecated
      */
     private $anywhere = 0;
 
@@ -73,9 +84,20 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
      * })
+     *
+     * @deprecated
      */
     private $PageLayout;
 
+    /**
+     * @var \Eccube\Entity\Layout
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="BlockPositions")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="layout_id", referencedColumnName="layout_id")
+     * })
+     */
+    private $Layout;
 
     /**
      * Set pageId.
@@ -83,6 +105,8 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * @param int $pageId
      *
      * @return BlockPosition
+     *
+     * @deprecated
      */
     public function setPageId($pageId)
     {
@@ -95,6 +119,8 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * Get pageId.
      *
      * @return int
+     *
+     * @deprecated
      */
     public function getPageId()
     {
@@ -150,6 +176,30 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set layoutId.
+     *
+     * @param int $layoutId
+     *
+     * @return BlockPosition
+     */
+    public function setLayoutId($layoutId)
+    {
+        $this->layout_id = $layoutId;
+
+        return $this;
+    }
+
+    /**
+     * Get layoutId.
+     *
+     * @return int
+     */
+    public function getLayoutId()
+    {
+        return $this->layout_id;
+    }
+
+    /**
      * Set blockRow.
      *
      * @param int|null $blockRow
@@ -179,6 +229,8 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * @param int $anywhere
      *
      * @return BlockPosition
+     *
+     * @deprecated
      */
     public function setAnywhere($anywhere)
     {
@@ -191,6 +243,8 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * Get anywhere.
      *
      * @return int
+     *
+     * @deprecated
      */
     public function getAnywhere()
     {
@@ -222,11 +276,37 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set layout.
+     *
+     * @param \Eccube\Entity\Layout|null $layout
+     *
+     * @return BlockPosition
+     */
+    public function setLayout(\Eccube\Entity\Layout $Layout = null)
+    {
+        $this->Layout = $Layout;
+
+        return $this;
+    }
+
+    /**
+     * Get Layout.
+     *
+     * @return \Eccube\Entity\Layout|null
+     */
+    public function getLayout()
+    {
+        return $this->Layout;
+    }
+
+    /**
      * Set pageLayout.
      *
      * @param \Eccube\Entity\PageLayout|null $pageLayout
      *
      * @return BlockPosition
+     *
+     * @deprecated
      */
     public function setPageLayout(\Eccube\Entity\PageLayout $pageLayout = null)
     {
@@ -239,6 +319,8 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      * Get pageLayout.
      *
      * @return \Eccube\Entity\PageLayout|null
+     *
+     * @deprecated
      */
     public function getPageLayout()
     {
