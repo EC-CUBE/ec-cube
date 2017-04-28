@@ -28,7 +28,6 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use function Symfony\Component\DependencyInjection\Tests\Fixtures\factoryFunction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
