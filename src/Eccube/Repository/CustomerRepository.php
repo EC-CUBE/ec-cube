@@ -422,9 +422,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      *
      * @param $app
      * @param  Customer $Customer
-     * @param  $orderStatusId
      */
-    public function updateBuyData($app, Customer $Customer, $orderStatusId)
+    public function updateBuyData($app, Customer $Customer)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 

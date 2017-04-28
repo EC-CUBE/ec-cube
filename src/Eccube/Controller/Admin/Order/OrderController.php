@@ -209,7 +209,7 @@ class OrderController extends AbstractController
         $Customer = $Order->getCustomer();
         if ($Customer) {
             // 会員の場合、購入回数、購入金額などを更新
-            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
+            $app['eccube.repository.customer']->updateBuyData($app, $Customer);
         }
 
         $event = new EventArgs(
