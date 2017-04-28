@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
+use Eccube\Entity\PageLayoutLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
@@ -132,6 +133,36 @@ class PageController extends AbstractController
                 if ($fs->exists($oldFilePath)) {
                     $fs->remove($oldFilePath);
                 }
+            }
+
+            foreach ($PageLayout->getPageLayoutLayouts() as $PageLayoutLayout) {
+                $PageLayout->removePageLayoutLayout($PageLayoutLayout);
+                $app['orm.em']->remove($PageLayoutLayout);
+                $app['orm.em']->flush($PageLayoutLayout);
+            }
+
+            $Layout = $form['PcLayout']->getData();
+            if ($Layout) {
+                $PageLayoutLayout = new PageLayoutLayout();
+                $PageLayoutLayout->setLayoutId($Layout->getId());
+                $PageLayoutLayout->setLayout($Layout);
+                $PageLayoutLayout->setPageId($PageLayout->getId());
+                $PageLayoutLayout->setPageLayout($PageLayout);
+
+                $app['orm.em']->persist($PageLayoutLayout);
+                $app['orm.em']->flush($PageLayoutLayout);
+            }
+
+            $Layout = $form['SpLayout']->getData();
+            if ($Layout) {
+                $PageLayoutLayout = new PageLayoutLayout();
+                $PageLayoutLayout->setLayoutId($Layout->getId());
+                $PageLayoutLayout->setLayout($Layout);
+                $PageLayoutLayout->setPageId($PageLayout->getId());
+                $PageLayoutLayout->setPageLayout($PageLayout);
+
+                $app['orm.em']->persist($PageLayoutLayout);
+                $app['orm.em']->flush($PageLayoutLayout);
             }
 
             $event = new EventArgs(
