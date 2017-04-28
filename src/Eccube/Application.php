@@ -490,13 +490,11 @@ class Application extends \Silex\Application
                 }
 
                 try {
+                    $device_type_id = $this['mobile_detect.device_type'];
+
+                    // TODO デバッグ用
                     if ($request->query->has('device_type_id')) {
                         $device_type_id = $request->get('device_type_id', \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    } else {
-                        error_log($this['mobile_detect']->getUserAgent());
-                        $device_type_id = $this['mobile_detect']->isMobile()
-                            ? \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP
-                            : \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC;
                     }
 
                     $DeviceType = $this['eccube.repository.master.device_type']
