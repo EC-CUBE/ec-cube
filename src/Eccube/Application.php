@@ -413,25 +413,20 @@ class Application extends \Silex\Application
                 $paths[] = __DIR__.'/../../app/Plugin';
                 $cacheDir =  __DIR__.'/../../app/cache/twig/admin';
             } else {
-                switch ($app['mobile_detect.device_type']) {
-                    case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP:
-                        // TODO 構成を要検討
-                        if (file_exists(__DIR__.'/../../app/template/smartphone')) {
-                            $paths[] = __DIR__.'/../../app/template/smartphone';
-                        }
-                        $paths[] = __DIR__.'/Resource/template/smartphone';
-                        $paths[] = __DIR__.'/../../app/Plugin';
-                        $cacheDir =  __DIR__.'/../../app/cache/twig/smartphone';
-                        // $cacheDir =  __DIR__.'/../../app/cache/twig/'.$app['config']['template_code'];
-                    default:
-                    case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC:
-                        if (file_exists($app['config']['template_realdir'])) {
-                            $paths[] = $app['config']['template_realdir'];
-                        }
-                        $paths[] = $app['config']['template_default_realdir'];
-                        $paths[] = __DIR__.'/../../app/Plugin';
-                        $cacheDir =  __DIR__.'/../../app/cache/twig/'.$app['config']['template_code'];
+                // モバイル端末時、smartphoneディレクトリを探索パスに追加する.
+                if ($app['mobile_detect.device_type'] == \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP) {
+                    if (file_exists(__DIR__.'/../../app/template/smartphone')) {
+                        $paths[] = __DIR__.'/../../app/template/smartphone';
+                    }
+                    $paths[] = __DIR__.'/Resource/template/smartphone';
                 }
+
+                if (file_exists($app['config']['template_realdir'])) {
+                    $paths[] = $app['config']['template_realdir'];
+                }
+                $paths[] = $app['config']['template_default_realdir'];
+                $paths[] = __DIR__.'/../../app/Plugin';
+                $cacheDir =  __DIR__.'/../../app/cache/twig/'.$app['config']['template_code'];
             }
             $app['twig']->setCache($app['debug'] ? null : $cacheDir);
             $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
