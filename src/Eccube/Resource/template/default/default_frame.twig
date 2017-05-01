@@ -70,8 +70,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     </div>
 
-    <div id="contents" class="{{ PageLayout.theme }}">
-
     {# ▼TOP COLUMN #}
     {% if PageLayout.ContentsTop %}
         {# ▼上ナビ #}
@@ -95,27 +93,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
             {# ▲LEFT COLUMN #}
 
-            <div id="main">
-                {# ▼メイン上部 #}
-                {% if PageLayout.MainTop %}
-                    <div class="ec-layoutRole__mainTop">
-                        {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
-                    </div>
-                {% endif %}
-                {# ▲メイン上部 #}
+            {# ▼メイン上部 #}
+            {% if PageLayout.MainTop %}
+                <div class="ec-layoutRole__mainTop">
+                    {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
+                </div>
+            {% endif %}
+            {# ▲メイン上部 #}
 
-                {# ▼コンテンツメイン #}
-                {% block main %}{% endblock %}
-                {# ▲コンテンツメイン #}
+            {# ▼コンテンツメイン #}
+            {% block main %}{% endblock %}
+            {# ▲コンテンツメイン #}
 
-                {# ▼メイン下部 #}
-                {% if PageLayout.MainBottom %}
-                    <div class="ec-layoutRole__mainBottom">
-                        {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
-                    </div>
-                {% endif %}
-                {# ▲メイン下部 #}
-            </div>
+            {# ▼メイン下部 #}
+            {% if PageLayout.MainBottom %}
+                <div class="ec-layoutRole__mainBottom">
+                    {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
+                </div>
+            {% endif %}
+            {# ▲メイン下部 #}
 
             {# ▼RIGHT COLUMN #}
             {% if PageLayout.SideRight %}
@@ -149,7 +145,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% endif %}
         {# ▲Footer COLUMN#}
 
-    </div>
 </div><!-- ec-layoutRole -->
 
 <div class="ec-overlayRole"></div>
