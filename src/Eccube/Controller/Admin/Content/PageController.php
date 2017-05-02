@@ -98,6 +98,9 @@ class PageController extends AbstractController
             $form->get('tpl_data')->setData($file['tpl_data']);
 
             $fileName = $PageLayout->getFileName();
+        } else {
+            $file = file_get_contents($app['config']['template_admin_realdir'].'/Content/page_contents_template.twig');
+            $form->get('tpl_data')->setData($file);
         }
 
         $form->handleRequest($request);
