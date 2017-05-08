@@ -136,8 +136,12 @@ class OrderHelper
         );
     }
 
+    /**
+     * @deprecated
+     */
     public function createOrderDetailsFromCartItems($CartItems)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $OrderDetails = [];
 
         foreach ($CartItems as $item) {
@@ -175,8 +179,12 @@ class OrderHelper
         return $OrderDetails;
     }
 
+    /**
+     * @deprecated
+     */
     public function addOrderDetails(Order $Order, array $OrderDetails)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         foreach ($OrderDetails as $OrderDetail) {
             $Order->addOrderDetail($OrderDetail);
             $OrderDetail->setOrder($Order);
@@ -272,8 +280,12 @@ class OrderHelper
         $Order->setCharge($Payment->getCharge());
     }
 
+    /**
+     * @deprecated
+     */
     public function createShipmentItemsFromOrderDetails($OrderDetails, $groupByProductType = true)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $ShipmentItems = [];
 
         foreach ($OrderDetails as $OrderDetail) {
