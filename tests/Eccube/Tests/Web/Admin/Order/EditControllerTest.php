@@ -125,8 +125,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
+        $Product = $this->createProduct();
 
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormData($Customer, $Product);
         $this->client->request(
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
@@ -149,7 +150,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->verify();
 
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormData($Customer, $Product);
         $this->client->request(
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
