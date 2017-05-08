@@ -41,8 +41,8 @@ class LayoutController
 
         // 編集対象ページ
         /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
-        $TargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $id);
-        $OrigTargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $origId);
+        $TargetPageLayout = $app['eccube.repository.page_layout']->getByDeviceTypeAndId($DeviceType, $id);
+        $OrigTargetPageLayout = $app['eccube.repository.page_layout']->getByDeviceTypeAndId($DeviceType, $origId);
         $Blocks = $app['orm.em']->getRepository('Eccube\Entity\Block')
             ->findBy(array(
                 'DeviceType' => $DeviceType,
