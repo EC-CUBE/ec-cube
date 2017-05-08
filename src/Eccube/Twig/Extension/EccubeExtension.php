@@ -25,6 +25,7 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Product;
 use Eccube\Util\Str;
 use Silex\Application;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -48,15 +49,15 @@ class EccubeExtension extends \Twig_Extension
         $RoutingExtension = $this->app['twig']->getExtension('routing');
 
         return array(
-            new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
             new \Twig_SimpleFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
-
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::url
             new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
             new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
+            new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
+            new \Twig_SimpleFunction('get_product', array($this, 'getProduct')),
         );
     }
 
@@ -120,64 +121,8 @@ class EccubeExtension extends \Twig_Extension
     public function getCsrfTokenForAnchor()
     {
         $token = $this->app['form.csrf_provider']->getToken(Constant::TOKEN_NAME)->getValue();
-        return 'token-for-anchor=\'' . $token . '\'';
-    }
 
-    /**
-     * return No Image filename
-     *
-     * @return string
-     */
-    public function getNoImageProduct($image)
-    {
-        return empty($image) ? 'no_image_product.jpg' : $image;
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getDateFormatFilter($date, $value = '', $format = 'Y/m/d')
-    {
-        if (is_null($date)) {
-            return $value;
-        } else {
-            return $date->format($format);
-        }
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
-    {
-        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '¥ ' . $price;
-
-        return $price;
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getEllipsis($value, $length = 100, $end = '...')
-    {
-        return Str::ellipsis($value, $length, $end);
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getTimeAgo($date)
-    {
-        return Str::timeAgo($date);
+        return 'token-for-anchor=\''.$token.'\'';
     }
 
     /**
@@ -236,4 +181,80 @@ class EccubeExtension extends \Twig_Extension
     {
         return is_object($value);
     }
+
+    /**
+     * product_idで指定したProductを取得
+     * Productが取得できない場合、デバッグ環境以外は無視される
+     *
+     * @param $id
+     * @return Product|null
+     */
+    public function getProduct($id)
+    {
+        try {
+            $Product = $this->app['eccube.repository.product']->get($id);
+
+            return $Product;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * return No Image filename
+     *
+     * @return string
+     */
+    public function getNoImageProduct($image)
+    {
+        return empty($image) ? 'no_image_product.jpg' : $image;
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getDateFormatFilter($date, $value = '', $format = 'Y/m/d')
+    {
+        if (is_null($date)) {
+            return $value;
+        } else {
+            return $date->format($format);
+        }
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
+    {
+        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
+        $price = '¥ '.$price;
+
+        return $price;
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getEllipsis($value, $length = 100, $end = '...')
+    {
+        return Str::ellipsis($value, $length, $end);
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getTimeAgo($date)
+    {
+        return Str::timeAgo($date);
+    }
+
 }
