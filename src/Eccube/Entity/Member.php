@@ -27,6 +27,7 @@ namespace Eccube\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Eccube\Util\EntityUtil;
 
 /**
  * Member
@@ -379,6 +380,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 

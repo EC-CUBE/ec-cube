@@ -134,7 +134,7 @@ jQuery(document).ready(function ($) {
 /////////// 検索条件をクリア
     $('.search-clear').click(function (event) {
         event.preventDefault(event);
-        $('.search-box-inner input, .search-box-inner select').each(function () {
+        $('#search_form .input_search, .search-box-inner input, .search-box-inner select').each(function () {
             if (this.type == "checkbox" || this.type == "radio") {
                 this.checked = false;
             } else {

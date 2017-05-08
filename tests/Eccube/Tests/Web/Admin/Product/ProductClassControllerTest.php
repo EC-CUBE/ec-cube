@@ -524,4 +524,44 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $taxRule = $app['eccube.repository.tax_rule']->findBy(array('Product' => $product));
         $this->assertCount(0, $taxRule);
     }
+
+    /**
+     * testProductClassSortByRank
+     */
+    public function testProductClassSortByRank()
+    {
+        /* @var $ClassCategory \Eccube\Entity\ClassCategory */
+        //set 金 rank
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(array('name' => '金'));
+        $ClassCategory->setRank(3);
+        $this->app['orm.em']->persist($ClassCategory);
+        $this->app['orm.em']->flush($ClassCategory);
+        //set 銀 rank
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(array('name' => '銀'));
+        $ClassCategory->setRank(2);
+        $this->app['orm.em']->persist($ClassCategory);
+        $this->app['orm.em']->flush($ClassCategory);
+        //set プラチナ rank
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(array('name' => 'プラチナ'));
+        $ClassCategory->setRank(1);
+        $this->app['orm.em']->persist($ClassCategory);
+        $this->app['orm.em']->flush($ClassCategory);
+        $client = $this->client;
+        $crawler = $client->request('GET', $this->app->url('admin_product_product_class', array('id' => 1)));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $classCategory[] = $crawler->filter('#result_box__class_category1--0')->text();
+        $classCategory[] = $crawler->filter('#result_box__class_category1--3')->text();
+        $classCategory[] = $crawler->filter('#result_box__class_category1--6')->text();
+        $class1  = $classCategory[0].$classCategory[1].$classCategory[2];
+        //金, 銀, プラチナ sort by rank setup above.
+        $this->expected = '金';
+        $this->actual = $classCategory[0];
+        $this->assertContains( $this->expected, $this->actual);
+        $this->expected = '銀';
+        $this->actual = $classCategory[1];
+        $this->assertContains( $this->expected, $this->actual);
+        $this->expected = 'プラチナ';
+        $this->actual = $classCategory[2];
+        $this->assertContains( $this->expected, $this->actual);
+    }
 }

@@ -19,6 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+<style media="print" type="text/css">
+    .modal-open .modal {
+        position: absolute;
+        display: block;
+        overflow: visible;
+    }
+    .modal-open #main {
+        visibility:hidden;
+    }
+</style>
+
 <strong>{{ subject }}</strong>
 <br><br>
 <small>{{ body|raw|nl2br }}</small>

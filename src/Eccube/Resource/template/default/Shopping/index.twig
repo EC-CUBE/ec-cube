@@ -298,6 +298,9 @@ $(function() {
                     <div id="payment_list" class="column">
                         <div id="payment_list__body" class="form-group">
                             <ul id="payment_list__list" class="payment_list">
+                            {% if form.payment is empty %}
+                                <p class="errormsg text-danger">合計金額に対して可能な支払い方法がありません。<br>{{ BaseInfo.email02 }}にお問い合わせ下さい。</p>
+                            {% endif %}
                             {% for key, child in form.payment %}
                             <li>
                                 {{ form_widget(child, {'attr': {'class': 'payment' }}) }}
