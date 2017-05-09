@@ -25,6 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -104,12 +105,9 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function calculateSubTotal()
     {
-        $subTotal = 0;
-        foreach ($this->getOrderDetails() as $OrderDetail) {
-            $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
-        }
-
-        return $subTotal;
+        return array_reduce($this->getProductOrderItems(), function($total, $ShipmentItem) {
+            return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+        }, 0);
     }
 
     /**
@@ -152,8 +150,8 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getTotalPrice() {
 
-        // return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
-        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
+         return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
+//        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
     }
 
 
@@ -1442,6 +1440,16 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getOrderDetails()
     {
         return $this->OrderDetails;
+    }
+
+    /**
+     * 商品の受注明細を取得
+     * @return ShipmentItem[]
+     */
+    public function getProductOrderItems()
+    {
+        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        return $sio->getProductClasses()->getArrayCopy();
     }
 
     /**

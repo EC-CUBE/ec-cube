@@ -2,6 +2,7 @@
 
 namespace Eccube\Service\Calculator;
 
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\ShipmentItem;
 
 class ShipmentItemCollection extends \ArrayIterator
@@ -15,16 +16,25 @@ class ShipmentItemCollection extends \ArrayIterator
     // 明細種別ごとに返すメソッド作る
     public function getProductClasses()
     {
-        return new self(array_filter(
-            $this->getArrayCopy(),
-            function ($ShipmentItem) {
-                /* @var ShipmentItem $ShipmentItem */
-                if ($ShipmentItem->getProductClass()) {
-                    return true;
-                }
-                return false;
-            }
-        ));
+        return $this->subCollection(OrderItemType::PRODUCT);
+    }
+
+    public function getDeliveryFees()
+    {
+        return $this->subCollection(OrderItemType::DELIVERY_FEE);
+    }
+
+    /**
+     * 指定した受注明細区分だけの明細を取得.
+     * @param int $orderItemTypeId 受注明細区分ID
+     * @return ShipmentItemCollection
+     */
+    private function subCollection($orderItemTypeId)
+    {
+        return new self(array_filter($this->getArrayCopy(), function($ShipmentItem) use ($orderItemTypeId) {
+            /* @var ShipmentItem $ShipmentItem */
+            return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $orderItemTypeId;
+        }));
     }
 
     /**
@@ -42,4 +52,18 @@ class ShipmentItemCollection extends \ArrayIterator
         return !empty($ShipmentItems);
     }
     // map, filter, reduce も実装したい
+
+    /**
+     * 指定した受注明細区分の明細が存在するかどうか
+     * @param OrderItemType $OrderItemType 受注区分
+     * @return boolean
+     */
+    public function hasItemByOrderItemType($OrderItemType)
+    {
+        $filteredItems = array_filter($this->getArrayCopy(), function($ShipmentItem) use ($OrderItemType) {
+            /* @var ShipmentItem $ShipmentItem */
+            return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $OrderItemType->getId();
+        });
+        return !empty($filteredItems);
+    }
 }

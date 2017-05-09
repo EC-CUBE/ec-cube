@@ -9,11 +9,13 @@ use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\TaxruleRepository;
 use Eccube\Repository\OrderRepository;
@@ -52,6 +54,9 @@ class OrderHelper
     /** @var  OrderStatusRepository */
     protected $orderStatusRepository;
 
+    /** @var OrderItemTypeRepository */
+    protected $orderItemTypeRepository;
+
     public function __construct(Application $app)
     {
         $this->config = $app['config'];
@@ -62,6 +67,7 @@ class OrderHelper
         $this->deliveryFeeRepository = $app['eccube.repository.delivery_fee'];
         $this->taxRuleRepository = $app['eccube.repository.tax_rule'];
         $this->orderStatusRepository = $app['eccube.repository.order_status'];
+        $this->orderItemTypeRepository = $app['eccube.repository.master.order_item_type'];
     }
 
     /**
@@ -147,7 +153,9 @@ class OrderHelper
      */
     private function createShipmentItemsFromCartItems($CartItems)
     {
-        return array_map(function($item) {
+        $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
+
+        return array_map(function($item) use ($ProductItemType) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getObject();
@@ -164,7 +172,8 @@ class OrderHelper
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($item->getQuantity())
                 ->setTaxRule($TaxRule->getId())
-                ->setTaxRate($TaxRule->getTaxRate());
+                ->setTaxRate($TaxRule->getTaxRate())
+                ->setOrderItemType($ProductItemType);
 
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
