@@ -703,10 +703,11 @@ class EditController extends AbstractController
      * - 受注ステータスが発送済に設定された場合に発送日を更新
      * - 受注ステータスが入金済に設定された場合に入金日を更新
      *
-     *
      * @param $app
      * @param $TargetOrder
      * @param $OriginOrder
+     *
+     * TODO Service へ移動する
      */
     protected function updateDate($app, $TargetOrder, $OriginOrder)
     {

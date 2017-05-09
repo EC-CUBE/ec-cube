@@ -325,13 +325,13 @@ class OrderType extends AbstractType
         });
 
         // 商品明細が追加されているかどうかを検証する
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $Order = $event->getData();
-            if ($Order['OrderDetails']->isEmpty()) {
-                $form = $event->getForm();
-                $form['OrderDetailsErrors']->addError(new FormError('商品が追加されていません。'));
-            }
-        });
+        // $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        //     $Order = $event->getData();
+        //     if ($Order['OrderDetails']->isEmpty()) {
+        //         $form = $event->getForm();
+        //         $form['OrderDetailsErrors']->addError(new FormError('商品が追加されていません。'));
+        //     }
+        // });
         // 選択された支払い方法の名称をエンティティにコピーする
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Order = $event->getData();

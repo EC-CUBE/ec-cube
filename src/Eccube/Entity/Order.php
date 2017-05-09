@@ -1490,9 +1490,18 @@ class Order extends \Eccube\Entity\AbstractEntity
         $Shippings = [];
         foreach ($this->getShipmentItems() as $ShipmentItem) {
             $Shipping = $ShipmentItem->getShipping();
-            $Shippings[$Shipping->getId()] = $Shipping;
+            if (is_object($Shipping)) {
+                $name = $Shipping->getName01(); // XXX lazy loading
+                $Shippings[$Shipping->getId()] = $Shipping;
+            }
         }
-        return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
+        $Result = new \Doctrine\Common\Collections\ArrayCollection();
+        foreach ($Shippings as $Shipping) {
+            $Result->add($Shipping);
+        }
+        return $Result;
+        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
+        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
     }
 
     public function setShippings($dummy)

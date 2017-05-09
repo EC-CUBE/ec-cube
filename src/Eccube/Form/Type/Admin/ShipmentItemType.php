@@ -95,7 +95,7 @@ class ShipmentItemType extends AbstractType
             ->add('class_category_name1', HiddenType::class)
             ->add('class_category_name2', HiddenType::class)
             ->add('tax_rule', HiddenType::class)
-            ->add('order_id', HiddenType::class)
+            // ->add('order_id', HiddenType::class)
         ;
 
         $builder
