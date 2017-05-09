@@ -1,0 +1,6 @@
+id,name,rank,discriminator_type
+"1","商品","0","orderitemtype"
+"2","送料","1","orderitemtype"
+"3","手数料","2","orderitemtype"
+"4","割引","3","orderitemtype"
+"5","税","4","orderitemtype"

@@ -34,17 +34,17 @@ class ShippingStrategy implements CalculateStrategyInterface
             }
         );
 
-        // 送料が存在しない場合は追加
-        if (!$ShipmentItems->hasProductByName('送料')) {
-            $ShipmentItem = new ShipmentItem();
-            $ShipmentItem->setProductName("送料")
-                ->setPrice($delivery_fee_total)
-                ->setPriceIncTax($delivery_fee_total)
-                ->setTaxRate(0)
-                ->setQuantity(1);
-            $this->Order->setDeliveryFeeTotal($delivery_fee_total);
-            $ShipmentItems->append($ShipmentItem);
-        }
+//        // 送料が存在しない場合は追加
+//        if (!$ShipmentItems->hasProductByName('送料')) {
+//            $ShipmentItem = new ShipmentItem();
+//            $ShipmentItem->setProductName("送料")
+//                ->setPrice($delivery_fee_total)
+//                ->setPriceIncTax($delivery_fee_total)
+//                ->setTaxRate(0)
+//                ->setQuantity(1);
+//            $this->Order->setDeliveryFeeTotal($delivery_fee_total);
+//            $ShipmentItems->append($ShipmentItem);
+//        }
     }
 
     public function setApplication(Application $app)
