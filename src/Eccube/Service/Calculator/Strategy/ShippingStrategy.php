@@ -3,12 +3,15 @@ namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
+use Eccube\Entity\ShipmentItem;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 
 class ShippingStrategy implements CalculateStrategyInterface
 {
+    /* @var Application $app */
     protected $app;
+
+    /* @var Order $Order */
     protected $Order;
 
     public function __construct(Application $app = null)
@@ -16,7 +19,7 @@ class ShippingStrategy implements CalculateStrategyInterface
         $this->app = $app;
     }
 
-    public function execute(ShipmentItemCollection $OrderDetails)
+    public function execute(ShipmentItemCollection $ShipmentItems)
     {
         // 送料をすべて足す
         $delivery_fee_total = array_reduce(
@@ -32,15 +35,15 @@ class ShippingStrategy implements CalculateStrategyInterface
         );
 
         // 送料が存在しない場合は追加
-        if (!$OrderDetails->hasProductByName('送料')) {
-            $OrderDetail = new OrderDetail();
-            $OrderDetail->setProductName("送料")
+        if (!$ShipmentItems->hasProductByName('送料')) {
+            $ShipmentItem = new ShipmentItem();
+            $ShipmentItem->setProductName("送料")
                 ->setPrice($delivery_fee_total)
                 ->setPriceIncTax($delivery_fee_total)
                 ->setTaxRate(0)
                 ->setQuantity(1);
             $this->Order->setDeliveryFeeTotal($delivery_fee_total);
-            $OrderDetails->append($OrderDetail);
+            $ShipmentItems->append($ShipmentItem);
         }
     }
 

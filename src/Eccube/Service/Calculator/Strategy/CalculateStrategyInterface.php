@@ -8,7 +8,7 @@ use Eccube\Service\Calculator\ShipmentItemCollection;
 
 interface CalculateStrategyInterface
 {
-    public function execute(ShipmentItemCollection $OrderDetails);
+    public function execute(ShipmentItemCollection $ShipmentItems);
 
     public function setApplication(Application $app);
 

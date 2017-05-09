@@ -4,7 +4,7 @@ namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
+use Eccube\Entity\ShipmentItem;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 
 class TaxStrategy implements CalculateStrategyInterface
@@ -17,13 +17,14 @@ class TaxStrategy implements CalculateStrategyInterface
         $this->app = $app;
     }
 
-    public function execute(ShipmentItemCollection $OrderDetails)
+    public function execute(ShipmentItemCollection $ShipmentItems)
     {
         // map でやりたい
-        foreach ($OrderDetails as $OrderDetail) {
+        /* @var ShipmentItem $ShipmentItem */
+        foreach ($ShipmentItems as $ShipmentItem) {
             $tax = $this->app['eccube.service.tax_rule']
-                ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-            $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+                ->calcTax($ShipmentItem->getPrice(), $ShipmentItem->getTaxRate(), $ShipmentItem->getTaxRule());
+            $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice() + $tax);
         }
     }
 
