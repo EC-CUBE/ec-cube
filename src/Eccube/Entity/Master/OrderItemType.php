@@ -57,7 +57,7 @@ class OrderItemType extends \Eccube\Entity\Master\AbstractMasterEntity
     const CHARGE = 3;
 
     /**
-     * 手数料.
+     * 値引き.
      * @var integer
      */
     const DISCOUNT = 4;

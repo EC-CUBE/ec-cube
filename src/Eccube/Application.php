@@ -822,8 +822,10 @@ class Application extends \Silex\Application
         $this->register(new ServiceProvider\EccubePluginServiceProvider());
 
         // TODO Acme\ServiceProvider の初期化はここで OK?
-        foreach ($this['config']['service'] as $service) {
-            $this->register(new $service);
+        if (array_key_exists('service',$this['config'])) {
+            foreach ($this['config']['service'] as $service) {
+                $this->register(new $service);
+            }
         }
         $this->initializedPlugin = true;
     }
