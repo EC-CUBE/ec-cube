@@ -5,7 +5,7 @@ namespace Eccube\Service\Calculator\Strategy;
 use Eccube\Application;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
-use Eccube\Service\Calculator\OrderDetailCollection;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 
 class TaxStrategy implements CalculateStrategyInterface
 {
@@ -17,7 +17,7 @@ class TaxStrategy implements CalculateStrategyInterface
         $this->app = $app;
     }
 
-    public function execute(OrderDetailCollection $OrderDetails)
+    public function execute(ShipmentItemCollection $OrderDetails)
     {
         // map でやりたい
         foreach ($OrderDetails as $OrderDetail) {

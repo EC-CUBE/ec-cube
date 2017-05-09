@@ -56,6 +56,6 @@ class CalculateContext
     {
         $this->Order = $Order;
         // ArrayIterator のラップしたクラスを作って明細種別ごとに管理したい
-        $this->OrderDetails = new OrderDetailCollection($Order->getOrderDetails()->toArray());
+        $this->OrderDetails = new ShipmentItemCollection($Order->getOrderDetails()->toArray());
     }
 }

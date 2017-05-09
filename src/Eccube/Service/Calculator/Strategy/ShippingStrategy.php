@@ -4,7 +4,7 @@ namespace Eccube\Service\Calculator\Strategy;
 use Eccube\Application;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
-use Eccube\Service\Calculator\OrderDetailCollection;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 
 class ShippingStrategy implements CalculateStrategyInterface
 {
@@ -16,7 +16,7 @@ class ShippingStrategy implements CalculateStrategyInterface
         $this->app = $app;
     }
 
-    public function execute(OrderDetailCollection $OrderDetails)
+    public function execute(ShipmentItemCollection $OrderDetails)
     {
         // 送料をすべて足す
         $delivery_fee_total = array_reduce(
