@@ -56,14 +56,14 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetimetz")
      */
     private $create_date;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetimetz")
      */
     private $update_date;
 
