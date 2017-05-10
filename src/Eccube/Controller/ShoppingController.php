@@ -650,7 +650,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を作成
                 try {
                     // 受注情報を作成
-                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
+//                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
+                    $Order = $app['eccube.helper.order']->createProcessingOrder(
+                        $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
+                    $cartService->setPreOrderId($Order->getPreOrderId());
+                    $cartService->save();
                 } catch (CartException $e) {
                     $app->addRequestError($e->getMessage());
                     return $app->redirect($app->url('cart'));
