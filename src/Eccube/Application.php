@@ -27,30 +27,20 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Types\Type;
-use Eccube\Application\ApplicationTrait;
-use Eccube\Common\Constant;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
+use Eccube\Doctrine\EventSubscriber\InitSubscriber;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
-use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
-use Sergiors\Silex\Provider\AnnotationsServiceProvider;
-use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
-use Sergiors\Silex\Provider\RoutingServiceProvider;
-use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
-use Sergiors\Silex\Provider\TemplatingServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
 
@@ -564,10 +554,20 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
 
+        $app = $this;
+        $this->extend('db.event_manager', function ($evm) use ($app) {
+            $initSubscriber = new InitSubscriber($app);
+            $evm->addEventSubscriber($initSubscriber);
+
+            return $evm;
+        });
+
         // UTCで保存
         // @see http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
+        UTCDateTimeType::setTimeZone($this['config']['timezone']);
+        UTCDateTimeTzType::setTimeZone($this['config']['timezone']);
         Type::overrideType('datetime', UTCDateTimeType::class);
-        Type::overrideType('datetimetz', UTCDateTimeType::class);
+        Type::overrideType('datetimetz', UTCDateTimeTzType::class);
 
         // プラグインのmetadata定義を合わせて行う.
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($this['debug']);
@@ -682,10 +682,6 @@ class Application extends \Silex\Application
             // save
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
-
-            // timezone
-            $timezoneSubscriber = new \Eccube\Doctrine\EventSubscriber\TimeZoneSubscriber($app);
-            $em->getEventManager()->addEventSubscriber($timezoneSubscriber);
 
             // clear cache
             $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
