@@ -1,0 +1,92 @@
+{#
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['content', 'layout'] %}
+
+{% block title %}コンテンツ管理{% endblock %}
+{% block sub_title %}レイアウト管理{% endblock %}
+
+{% block main %}
+    <div id="page_wrap" class="container-fluid">
+        <div id="layout_list" class="row">
+            <div id="layout_list_box" class="col-md-12">
+                <div id="layout_list__body" class="box">
+                    <div id="layout_list_box__header" class="box-header">
+                        <div class="box-title">
+                            レイアウト一覧
+                        </div>
+                    </div>
+                    <div id="sortable_list_box" class="box-body no-padding no-border">
+                        <div id="sortable_list_box__list" class="sortable_list">
+                            <div class="tableish">
+                                <div class="item_box tr" style="background-color: #F9F9F9;">
+                                    <div class="item_pattern td"><strong>ID</strong></div>
+                                    <div class="item_pattern td"><strong>レイアウト名</strong></div>
+                                    <div class="item_pattern td"><strong>端末</strong></div>
+                                    <div class="item_pattern td"></div>
+                                </div>
+                                {% for Layout in Layouts %}
+                                    <div id="sortable_list_box__item--{{ Layout.id }}" class="item_box tr">
+                                        <div id="sortable_list_box__id--{{ Layout.id }}" class="item_pattern td">
+                                            {{ Layout.id }}
+                                        </div>
+                                        <div id="sortable_list_box__name--{{ Layout.id }}" class="item_pattern td">
+                                            {{ Layout.name }}
+                                        </div>
+                                        <div id="sortable_list_box__device--{{ Layout.id }}" class="td">
+                                            {{ Layout.device_type }}
+                                        </div>
+                                        <div id="sortable_list_box__menu_box--{{ Layout.id }}" class="icon_edit td">
+                                            <div id="sortable_list_box__menu_box_toggle--{{ Layout.id }}" class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul id="sortable_list_box__menu--{{ Layout.id }}" class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}" >レイアウト編集</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ url('admin_content_layout_delete', { 'id': Layout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このページを削除してもよろしいですか？">削除</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.item_box -->
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                <!-- ▲ データがある時 ▲ -->
+            </div><!-- /.col -->
+
+            <div id="layout_list__footer" class="row btn_area2">
+                <div id="layout_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
+                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_layout_new')}}">新規入力</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

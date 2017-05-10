@@ -24,191 +24,167 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Application;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\PageLayoutType;
+use Eccube\Controller\AbstractController;
+use Eccube\Entity\BlockPosition;
+use Eccube\Entity\Layout;
+use Eccube\Form\Type\Master\DeviceTypeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-class LayoutController
+// todo プレビュー実装
+class LayoutController extends AbstractController
 {
-    private $isPreview = false;
-
-    public function index(Application $app, Request $request, $id = 1, $origId = 1)
+    public function index(Application $app, Request $request)
     {
-        $DeviceType = $app['eccube.repository.master.device_type']
-            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+        $Layouts = $app['eccube.repository.layout']->findBy([], ['id' => 'DESC']);
 
-        // 編集対象ページ
-        /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
-        $TargetPageLayout = $app['eccube.repository.page_layout']->getByDeviceTypeAndId($DeviceType, $id);
-        $OrigTargetPageLayout = $app['eccube.repository.page_layout']->getByDeviceTypeAndId($DeviceType, $origId);
-        $Blocks = $app['orm.em']->getRepository('Eccube\Entity\Block')
-            ->findBy(array(
-                'DeviceType' => $DeviceType,
-            ));
-        $BlockPositions = $TargetPageLayout->getBlockPositions();
+        return $app->render(
+            'Content/layout_list.twig',
+            [
+                'Layouts' => $Layouts,
+            ]
+        );
+    }
 
+    public function delete(Application $app, Request $request, $id)
+    {
+        $this->isTokenValid($app);
 
-        $builderLayout = $app['form.factory']
-            ->createBuilder(PageLayoutType::class);
+        $Layout = $app['eccube.repository.layout']->find($id);
+        if (!$Layout) {
+            $app->deleteMessage();
 
-        // 未使用ブロックの取得
-        $unusedBlocks = $app['eccube.repository.page_layout']->findUnusedBlocks($DeviceType, $id);
-        foreach ($unusedBlocks as $unusedBlock) {
-            $UnusedBlockPosition = new \Eccube\Entity\BlockPosition();
-            $UnusedBlockPosition
-                ->setPageId($id)
-                ->setTargetId(\Eccube\Entity\PageLayout::TARGET_ID_UNUSED)
-                ->setAnywhere(0)
-                ->setBlockRow(0)
-                ->setBlockId($unusedBlock->getId())
-                ->setBlock($unusedBlock)
-                ->setPageLayout($TargetPageLayout);
-            $TargetPageLayout->addBlockPosition($UnusedBlockPosition);
+            return $app->redirect($app->url('admin_content_layout'));
         }
 
-        $builder = $app['form.factory']
-            ->createBuilder();
+        $app['orm.em']->remove($Layout);
+        $app['orm.em']->flush($Layout);
 
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'builderLayout' => $builderLayout,
-                'DeviceType' => $DeviceType,
-                'TargetPageLayout' => $TargetPageLayout,
-                'OrigTargetPageLayout' => $OrigTargetPageLayout,
-                'Blocks' => $Blocks,
-                'BlockPositions' => $BlockPositions,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE, $event);
 
-        $listForm = $builderLayout->getForm();
+        $app->addSuccess('admin.delete.complete', 'admin');
 
-        $listForm->get('layout')->setData($TargetPageLayout);
+        return $app->redirect($app->url('admin_content_layout'));
+    }
+
+    public function edit(Application $app, Request $request, $id = null)
+    {
+        if (is_null($id)) {
+            $Layout = new Layout();
+        } else {
+            // todo レポジトリへ移動
+            try {
+                $Layout = $app['eccube.repository.layout']->createQueryBuilder('l')
+                    ->select('l, bp, b')
+                    ->leftJoin('l.BlockPositions', 'bp')
+                    ->leftJoin('bp.Block', 'b')
+                    ->where('l.id = :layout_id')
+                    ->orderBy('bp.block_row', 'ASC')
+                    ->setParameter('layout_id', $id)
+                    ->getQuery()
+                    ->getSingleResult();
+            } catch (NoResultException $e) {
+                throw new NotFoundHttpException();
+            }
+        }
+
+        // todo レポジトリへ移動
+        // 未使用ブロックの取得
+        $Blocks = $Layout->getBlocks();
+        if (empty($Blocks)) {
+            $UnusedBlocks = $app['eccube.repository.block']->findAll();
+        } else {
+            $UnusedBlocks = $app['eccube.repository.block']
+                ->createQueryBuilder('b')
+                ->select('b')
+                ->where('b not in (:blocks)')
+                ->setParameter('blocks', $Blocks)
+                ->getQuery()
+                ->getResult();
+        }
+
+        $builder = $app->form($Layout);
+        $builder
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                    'required' => false,
+                    'label' => 'レイアウト名',
+                ]
+            )->add(
+                'DeviceType',
+                DeviceTypeType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                    'required' => false,
+                ]
+            );
 
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Layoutの更新
+            $Layout = $form->getData();
+            $app['orm.em']->persist($Layout);
+            $app['orm.em']->flush($Layout);
 
-            if ($form->isValid()) {
-                // 消す
-                foreach ($BlockPositions as $BlockPosition) {
-                    if ($BlockPosition->getPageId() == $id || $BlockPosition->getAnywhere() == 0) {
-                        $TargetPageLayout->removeBlockPosition($BlockPosition);
-                        $app['orm.em']->remove($BlockPosition);
-                    }
-                }
-                $app['orm.em']->flush();
-
-                // TODO: collection を利用
-
-                $data = $request->request->all();
-                $max = count($Blocks);
-                for ($i = 0; $i < $max; $i++) {
-                    // block_id が取得できない場合は INSERT しない
-                    if (!isset($data['id_' . $i])) {
-                        continue;
-                    }
-                    // 未使用は INSERT しない
-                    if ($data['target_id_' . $i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
-                        continue;
-                    }
-                    // 他のページに anywhere が存在する場合は INSERT しない
-                    $anywhere = (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) ? 1 : 0;
-                    if (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) {
-                        $Other = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
-                            ->findBy(array(
-                                'anywhere' => 1,
-                                'block_id' => $data['id_' . $i],
-                            ));
-                        if (count($Other) > 0) {
-                            continue;
-                        }
-                    }
-
-                    $BlockPosition = new \Eccube\Entity\BlockPosition();
-                    $Block = $app['orm.em']->getRepository('Eccube\Entity\Block')
-                        ->findOneBy(array(
-                            'id' => $data['id_' . $i],
-                            'DeviceType' => $DeviceType,
-                        ));
-                    $BlockPosition
-                        ->setPageId($id)
-                        ->setBlockId($data['id_' . $i])
-                        ->setBlockRow($data['top_' . $i])
-                        ->setTargetId($data['target_id_' . $i])
-                        ->setBlock($Block)
-                        ->setPageLayout($TargetPageLayout)
-                        ->setAnywhere($anywhere);
-                    if ($id == 0) {
-                        $BlockPosition->setAnywhere(0);
-                    }
-                    $TargetPageLayout->addBlockPosition($BlockPosition);
-                    $app['orm.em']->persist($BlockPosition);
-                }
-
-                $app['orm.em']->persist($TargetPageLayout);
-                $app['orm.em']->flush();
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'DeviceType' => $DeviceType,
-                        'TargetPageLayout' => $TargetPageLayout,
-                        'OrigTargetPageLayout' => $OrigTargetPageLayout,
-                        'Blocks' => $Blocks,
-                        'BlockPositions' => $BlockPositions,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE, $event);
-
-                if ($this->isPreview) {
-                    if ($OrigTargetPageLayout->getEditFlg()) {
-                        if ($OrigTargetPageLayout->getUrl() === 'product_detail') {
-                            $products = $app['eccube.repository.product']->createQueryBUilder('p')
-                                ->where('p.Status = 1')
-                                ->getQuery()
-                                ->getResult();
-                            $product = null;
-                            foreach ($products as $p) {
-                                $product = $p;
-                                break;
-                            }
-                            if (is_null($product)) {
-                                return '';
-                            }
-                            return $app->redirect($app->url($OrigTargetPageLayout->getUrl(), array('preview' => 1, 'id' => $product->getId())));
-                        } else {
-                            return $app->redirect($app->url($OrigTargetPageLayout->getUrl(), array('preview' => 1)));
-                        }
-                    } else {
-                        return $app->redirect($app->url('homepage').$app['config']['user_data_route']."/".$OrigTargetPageLayout->getUrl().'?preview=1');
-                    }
-                } else {
-                    $app->addSuccess('admin.register.complete', 'admin');
-                    return $app->redirect($app->url('admin_content_layout_edit', array('id' => $id)));
-                }
-
+            // BlockPositionの更新
+            // delete/insertのため、一度削除する.
+            $BlockPositions = $Layout->getBlockPositions();
+            foreach ($BlockPositions as $BlockPosition) {
+                $Layout->removeBlockPosition($BlockPosition);
+                $app['orm.em']->remove($BlockPosition);
+                $app['orm.em']->flush($BlockPosition);
             }
 
+            // ブロックの個数分登録を行う.
+            $max = count($Blocks) + count($UnusedBlocks);
+            $data = $request->request->all();
+            for ($i = 0; $i < $max; $i++) {
+                // block_idが取得できない場合はinsertしない
+                if (!isset($data['block_id_'.$i])) {
+                    continue;
+                }
+                // 未使用ブロックはinsertしない
+                if ($data['target_id_'.$i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
+                    continue;
+                }
+                $Block = $app['eccube.repository.block']->find($data['block_id_'.$i]);
+                $BlockPosition = new BlockPosition();
+                $BlockPosition
+                    ->setBlockId($data['block_id_'.$i])
+                    ->setLayoutId($Layout->getId())
+                    ->setBlockRow($data['block_row_'.$i])
+                    ->setTargetId($data['target_id_'.$i])
+                    ->setBlock($Block)
+                    ->setLayout($Layout);
+                $Layout->addBlockPosition($BlockPosition);
+                $app['orm.em']->persist($BlockPosition);
+                $app['orm.em']->flush($BlockPosition);
+            }
+
+            $app->addSuccess('admin.register.complete', 'admin');
+
+            return $app->redirect($app->url('admin_content_layout_edit', array('id' => $Layout->getId())));
         }
 
-        return $app->render('Content/layout.twig', array(
-            'form' => $form->createView(),
-            'list_form' => $listForm->createView(),
-            'TargetPageLayout' => $TargetPageLayout,
-        ));
+        return $app->render(
+            'Content/layout.twig',
+            array(
+                'form' => $form->createView(),
+                'Layout' => $Layout,
+                'UnusedBlocks' => $UnusedBlocks,
+            )
+        );
     }
-
-    public function preview(Application $app, Request $request, $id)
-    {
-        $this->isPreview = true;
-        return $this->index($app, $request, 0, $id);
-    }
-
 }

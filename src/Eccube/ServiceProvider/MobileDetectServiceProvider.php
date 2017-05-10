@@ -1,25 +1,27 @@
 <?php
-/*
-* This file is part of MobileDetectServiceProvider.
-*
-* (c) Lhassan Baazzi <baazzilhassan@gmail.com>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+
 namespace Eccube\ServiceProvider;
 
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
+
 /**
  * @see https://github.com/jbinfo/MobileDetectServiceProvider/pull/4
  */
 class MobileDetectServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $app)
     {
-        $container['mobile_detect'] = function($c) {
+        $app['mobile_detect'] = function($app) {
             return new \Mobile_Detect();
+        };
+
+        $app['mobile_detect.device_type'] = function ($app) {
+            if ($app['mobile_detect']->isMobile()) {
+                return \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP;
+            } else {
+                return \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC;
+            }
         };
     }
 }

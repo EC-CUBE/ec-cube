@@ -320,6 +320,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.repository.plugin_event_handler'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
         };
+        $app['eccube.repository.layout'] = function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Layout');
+        };
 
         $app['request_scope'] = function () {
             return new ParameterBag();

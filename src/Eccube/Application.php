@@ -413,6 +413,14 @@ class Application extends \Silex\Application
                 $paths[] = __DIR__.'/../../app/Plugin';
                 $cacheDir =  __DIR__.'/../../app/cache/twig/admin';
             } else {
+                // モバイル端末時、smartphoneディレクトリを探索パスに追加する.
+                if ($app['mobile_detect.device_type'] == \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP) {
+                    if (file_exists(__DIR__.'/../../app/template/smartphone')) {
+                        $paths[] = __DIR__.'/../../app/template/smartphone';
+                    }
+                    $paths[] = __DIR__.'/Resource/template/smartphone';
+                }
+
                 if (file_exists($app['config']['template_realdir'])) {
                     $paths[] = $app['config']['template_realdir'];
                 }
@@ -482,9 +490,28 @@ class Application extends \Silex\Application
                 }
 
                 try {
+                    $device_type_id = $this['mobile_detect.device_type'];
+
+                    // TODO デバッグ用
+                    if ($request->query->has('device_type_id')) {
+                        $device_type_id = $request->get('device_type_id', \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                    }
+
                     $DeviceType = $this['eccube.repository.master.device_type']
-                        ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $this['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                        ->find($device_type_id);
+                    $qb = $this['eccube.repository.page_layout']->createQueryBuilder('p');
+                    $PageLayout = $qb->select('p, pll,l, bp, b')
+                        ->leftJoin('p.PageLayoutLayouts', 'pll')
+                        ->leftJoin('pll.Layout', 'l')
+                        ->leftJoin('l.BlockPositions', 'bp')
+                        ->leftJoin('bp.Block', 'b')
+                        ->where('p.url = :route')
+                        ->andWhere('l.DeviceType = :DeviceType')
+                        ->orderBy('bp.block_row', 'ASC')
+                        ->setParameter('route', $route)
+                        ->setParameter('DeviceType', $DeviceType)
+                        ->getQuery()
+                        ->getSingleResult();
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $this['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }

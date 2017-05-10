@@ -68,6 +68,9 @@ class PageLayoutRepositoryTest extends EccubeTestCase
 
     public function testFindUnusedBlocks()
     {
+        // FIXME 同等の処理をレイアウトコントローラに仮実装している。本実装時に見直し。
+        $this->markTestIncomplete('findUnusedBlocks is not implemented.');
+
         $Blocks = $this->app['eccube.repository.page_layout']
             ->findUnusedBlocks($this->DeviceType, 1);
 
