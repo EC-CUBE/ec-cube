@@ -61,7 +61,7 @@ class InitSubscriber implements EventSubscriber
         $platform = $args->getDatabasePlatform()->getName();
         
         if ($platform === 'mysql') {
-            $db->executeQuery("SET SESSION time_zone = 'UTC'");
+            $db->executeQuery("SET SESSION time_zone = '+00:00'");
         } elseif ($platform === 'postgresql') {
             $db->executeQuery("SET TIME ZONE 'UTC'");
         }
