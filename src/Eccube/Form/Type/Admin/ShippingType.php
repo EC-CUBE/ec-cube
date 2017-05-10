@@ -141,6 +141,16 @@ class ShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
+            // prototype用
+            ->add('DeliveryTime', 'entity', array(
+                'class' => 'Eccube\Entity\DeliveryTime',
+                'property' => 'delivery_time',
+                'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('dt')
+                        ->where('0 = 1');
+                },
+            ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();

@@ -38,6 +38,17 @@ $(function() {
         AjaxZip3.zip2addr('order[zip][zip01]', 'order[zip][zip02]', 'order[address][pref]', 'order[address][addr01]');
     });
 
+    $('form[name="form1"]').on('submit', function () {
+        var $button = $('#shipping_info__button_new button');
+        if ($button.is(':focus')) {
+            var $lastShipping = $('*[id^="shipping_info_box--"]:last');
+            var index = $lastShipping.length ? $lastShipping.data().index + 1 : 0;
+            var prototype = $button.data().prototype;
+            var $newWidget = $(prototype.replace(/__name__/g, index));
+            $(this).append($newWidget);
+        }
+    });
+
     // 注文者情報をコピー
     $('.copyCustomerToShippingButton').on('click', function() {
         var data = $(this).data();
@@ -513,11 +524,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             {# お届け先情報 #}
             {% if BaseInfo.optionMultipleShipping %}
-            <div id="shipping_info__button_new"><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
+            <div id="shipping_info__button_new"><button type="submit" class="btn btn-default" name="mode" value="add_delivery"  data-prototype="
+                {% filter escape %}
+                    {{ include('Order/shipping_prototype.twig', { 'shippingForm': form.Shippings.vars.prototype }) }}
+                {% endfilter %}">お届け先を新規追加</button></div>
             {% endif %}
             {% for shippingForm in form.Shippings %}
             {% set shippingIndex = shippingForm.vars.name %}
-            <div id="shipping_info_box--{{ shippingIndex }}" class="box accordion">
+            <div id="shipping_info_box--{{ shippingIndex }}" data-index="{{ shippingIndex }}" class="box accordion">
                 <div id="shipping_info_box__toggle--{{ shippingIndex }}" class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->

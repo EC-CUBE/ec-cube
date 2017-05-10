@@ -259,22 +259,6 @@ class EditController extends AbstractController
 
                     break;
 
-                case 'add_delivery':
-                    // お届け先情報の新規追加
-
-                    $form = $builder->getForm();
-
-                    $Shipping = new \Eccube\Entity\Shipping();
-                    $Shipping->setDelFlg(Constant::DISABLED);
-
-                    $TargetOrder->addShipping($Shipping);
-
-                    $Shipping->setOrder($TargetOrder);
-
-                    $form->setData($TargetOrder);
-
-                    break;
-
                 default:
                     break;
             }
