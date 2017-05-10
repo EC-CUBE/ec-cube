@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+    <title>{{ BaseInfo.shop_name }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
+    {% if PageLayout.author is not empty %}
+        <meta name="author" content="{{ PageLayout.author }}">
+    {% endif %}
+    {% if PageLayout.description is not empty %}
+        <meta name="description" content="{{ PageLayout.description }}">
+    {% endif %}
+    {% if PageLayout.keyword is not empty %}
+        <meta name="keywords" content="{{ PageLayout.keyword }}">
+    {% endif %}
+    {% if PageLayout.meta_robots is not empty %}
+        <meta name="robots" content="{{ PageLayout.meta_robots }}">
+    {% endif %}
+    <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ app.config.front_urlpath }}/assets/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
+    <!-- for original theme CSS -->
+    {% block stylesheet %}{% endblock %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ app.config.front_urlpath }}/js/vendor/jquery-1.11.3.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"><\/script>')</script>
+
+    {# ▼Head COLUMN #}
+    {% if PageLayout.Head %}
+        {# ▼上ナビ #}
+        {{ include('block.twig', {'Blocks': PageLayout.Head}) }}
+        {# ▲上ナビ #}
+    {% endif %}
+    {# ▲Head COLUMN #}
+
+</head>
+<body id="page_{{ app.request_stack.currentrequest.get('_route') }}" class="{{ body_class|default('other_page') }}">
+<div class="ec-layoutRole">
+    <div class="ec-layoutRole__header">
+        <div class="ec-headerRole">
+            {# ▼HeaderInternal COLUMN #}
+            {% if PageLayout.Header %}
+                {# ▼上ナビ #}
+                {{ include('block.twig', {'Blocks': PageLayout.Header}) }}
+                {# ▲上ナビ #}
+            {% endif %}
+            {# ▲HeaderInternal COLUMN #}
+        </div>
+    </div>
+
+    {# ▼TOP COLUMN #}
+    {% if PageLayout.ContentsTop %}
+        {# ▼上ナビ #}
+        <div class="ec-layoutRole__contentTop">
+            {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
+        </div>
+        {# ▲上ナビ #}
+    {% endif %}
+    {# ▲TOP COLUMN #}
+
+    <div class="ec-layoutRole__contents">
+        <div class="ec-layoutRole__main">
+
+            {# ▼LEFT COLUMN #}
+            {% if PageLayout.SideLeft %}
+                {# ▼左ナビ #}
+                <div class="ec-layoutRole__mainLeft">
+                    {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
+                </div>
+                {# ▲左ナビ #}
+            {% endif %}
+            {# ▲LEFT COLUMN #}
+
+            {# ▼メイン上部 #}
+            {% if PageLayout.MainTop %}
+                <div class="ec-layoutRole__mainTop">
+                    {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
+                </div>
+            {% endif %}
+            {# ▲メイン上部 #}
+
+            {# ▼コンテンツメイン #}
+            {% block main %}{% endblock %}
+            {# ▲コンテンツメイン #}
+
+            {# ▼メイン下部 #}
+            {% if PageLayout.MainBottom %}
+                <div class="ec-layoutRole__mainBottom">
+                    {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
+                </div>
+            {% endif %}
+            {# ▲メイン下部 #}
+
+            {# ▼RIGHT COLUMN #}
+            {% if PageLayout.SideRight %}
+                <div class="ec-layoutRole__mainRight">
+                    {# ▼右ナビ #}
+                    {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
+                    {# ▲右ナビ #}
+                </div>
+            {% endif %}
+            {# ▲RIGHT COLUMN #}
+
+        </div>
+    </div>
+
+    {# ▼BOTTOM COLUMN #}
+    {% if PageLayout.ContentsBottom %}
+        {# ▼下ナビ #}
+        <div class="ec-layoutRole__contentBottom">
+            {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
+        </div>
+        {# ▲下ナビ #}
+    {% endif %}
+    {# ▲BOTTOM COLUMN #}
+
+
+    {# ▼Footer COLUMN#}
+    {% if PageLayout.Footer %}
+        {# ▼上ナビ #}
+        {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
+        {# ▲上ナビ #}
+    {% endif %}
+    {# ▲Footer COLUMN#}
+
+</div><!-- ec-layoutRole -->
+
+
+{# TODO display:none
+<div class="ec-overlayRole"></div> #}
+<div class="ec-drawerRole"></div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="{{ app.config.front_urlpath }}/assets/js/script.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+<script src="{{ app.config.front_urlpath }}/js/function.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+<script src="{{ app.config.front_urlpath }}/js/eccube.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+{% block javascript %}{% endblock %}
+</body>
+</html>
