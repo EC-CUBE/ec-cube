@@ -51,6 +51,7 @@ install:
 
 before_script:
   - CODENAME=$(lsb_release -c -s)
+  - if [[ $DB = 'mysql' ]]; then mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql; fi
   - if [[ $PHP_SAPI != 'phpdbg' ]] || [[ $CODENAME = 'trusty' ]]; then phpenv config-rm xdebug.ini ; fi
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update || true
