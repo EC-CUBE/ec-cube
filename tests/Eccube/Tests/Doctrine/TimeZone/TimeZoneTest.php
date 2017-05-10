@@ -12,7 +12,7 @@ class TimeZoneTest extends EccubeTestCase
         parent::setUp();
 
         // 2000-01-01 00:00:00 +09 (jst)
-        // 1999-12-31 03:00:00 +00 (utc)
+        // 1999-12-31 15:00:00 +00 (utc)
         // の日時データを登録
         $sql = "
             insert into dtb_product (
