@@ -19,9 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<script type="text/javascript">
+{% block javascript %}
+<script>
     $(function() {
-        $('.news__item').each(function() {
+        $('.news__items').each(function() {
             var listLenght = $(this).find('li').length;
             if (listLenght > 5) {
                 $(this).find('li:gt(4)').each(function() {
@@ -40,44 +41,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         });
     });
 </script>
+{% endblock %}
 
-<div class="ec-role">
-    <div class="ec-grid2">
-        <div class="ec-grid2__cel9">
-            <div class="ec-news">
-                <div class="ec-news__title">新着情報
+<div class="ec-news">
+    <div class="ec-news__title">新着情報</div>
+    <ul class="ec-news__items">
+        {% for News in NewsList %}
+        <li class="ec-news__item">
+            <div class="ec-newsline">
+                <div class="ec-newsline__info">
+                    <div class="ec-newsline__date">{{ News.date|date("Y/m/d") }}</div>
+                    <div class="ec-newsline__comment">{{ News.title }}</div>
+                    {% if News.comment or News.url %}
+                    <div class="ec-newsline__close">
+                        <a class="ec-closeBtn--circle">
+                            <span class="ec-closeBtn--circle__icon">
+                                <svg viewbox="0 0 360 360">
+                                    <path d="M180,249.85c-2.085,0-3.93-0.805-5.531-2.404L62.405,135.348c-1.604-1.604-2.405-3.45-2.405-5.532   c0-2.086,0.8-3.932,2.405-5.533l12.024-12.027c1.601-1.605,3.445-2.405,5.531-2.405c2.082,0,3.926,0.8,5.531,2.405L180,206.792   l94.509-94.537c1.601-1.605,3.446-2.405,5.532-2.405c2.082,0,3.927,0.8,5.53,2.405l12.024,12.027   c1.602,1.601,2.405,3.447,2.405,5.533c0,2.082-0.804,3.928-2.405,5.532L185.53,247.446C183.925,249.045,182.082,249.85,180,249.85z   "></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
-                <ul class="ec-news__items">
-                    {% for News in NewsList %}
-                        <li class="ec-news__item">
-                            <div class="ec-newsline">
-                                <div class="ec-newsline__info">
-                                    <div class="ec-newsline__date">{{ News.date|date("Y/m/d") }}</div>
-                                    <div class="ec-newsline__comment">{{ News.title }}</div>
-                                    {% if News.comment or News.url %}
-                                        <div class="ec-newsline__close">
-                                            <a class="ec-closeBtn--circle">
-                                        <span class="ec-closeBtn--circle__icon">
-                                            <svg viewbox="0 0 360 360">
-                                                <path d="M180,249.85c-2.085,0-3.93-0.805-5.531-2.404L62.405,135.348c-1.604-1.604-2.405-3.45-2.405-5.532   c0-2.086,0.8-3.932,2.405-5.533l12.024-12.027c1.601-1.605,3.445-2.405,5.531-2.405c2.082,0,3.926,0.8,5.531,2.405L180,206.792   l94.509-94.537c1.601-1.605,3.446-2.405,5.532-2.405c2.082,0,3.927,0.8,5.53,2.405l12.024,12.027   c1.602,1.601,2.405,3.447,2.405,5.533c0,2.082-0.804,3.928-2.405,5.532L185.53,247.446C183.925,249.045,182.082,249.85,180,249.85z   "></path>
-                                            </svg>
-                                        </span>
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                {% if News.comment or News.url %}
-                                <div class="ec-newsline__description">
-                                    {{ News.comment|raw|nl2br }}
-                                    {% if News.url %}<br>
-                                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>詳しくはこちら</a>{% endif %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% if News.comment or News.url %}
+                <div class="ec-newsline__description">
+                    {{ News.comment|raw|nl2br }}
+                    {% if News.url %}<br>
+                    <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>詳しくはこちら</a>
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
-        </div>
-    </div>
+        </li>
+        {% endfor %}
+    </ul>
 </div>

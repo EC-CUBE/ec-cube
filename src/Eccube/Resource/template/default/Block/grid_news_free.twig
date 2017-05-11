@@ -19,8 +19,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<div class="ec-banner">
-    <div class="ec-banner__intro">5000円以上の購入で</div>
-    <div class="ec-banner__title">配送料無料</div>
-    <div>一部地域は除く</div>
+<div class="ec-role">
+    <div class="ec-grid3">
+        <div class="ec-grid3__cell3">
+            {{ render(path('block_news')) }}
+        </div>
+        <div class="ec-grid3__cell">
+            {{ include('Block/free.twig', ignore_missing = false) }}
+        </div>
+    </div>
 </div>
+
+
