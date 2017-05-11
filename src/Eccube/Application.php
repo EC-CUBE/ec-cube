@@ -643,6 +643,9 @@ class Application extends ApplicationTrait
         // load plugin
         $this->loadPlugin();
 
+        // load event extension
+        $this->loadEventExtension();
+
         $this->initializedPlugin = true;
     }
 
@@ -954,6 +957,16 @@ class Application extends ApplicationTrait
                     $this->register(new $class($this));
                 }
             }
+        }
+    }
+
+    public function loadEventExtension()
+    {
+        $class = '\\Ext\\Event';
+        if (class_exists($class)) {
+            $subscriber = new $class($this);
+            $this['eccube.event.dispatcher']->addSubscriber($subscriber);
+            $this['monolog']->debug("load event extension.");
         }
     }
 
