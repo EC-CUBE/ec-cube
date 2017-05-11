@@ -57,7 +57,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="send_date", type="datetime", nullable=true)
+     * @ORM\Column(name="send_date", type="datetimetz", nullable=true)
      */
     private $send_date;
 

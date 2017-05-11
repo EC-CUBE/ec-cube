@@ -140,21 +140,21 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetimetz")
      */
     private $create_date;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetimetz")
      */
     private $update_date;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="login_date", type="datetime", nullable=true)
+     * @ORM\Column(name="login_date", type="datetimetz", nullable=true)
      */
     private $login_date;
 

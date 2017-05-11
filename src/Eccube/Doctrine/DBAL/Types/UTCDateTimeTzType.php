@@ -26,8 +26,9 @@ namespace Eccube\Doctrine\DBAL\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
+use Doctrine\DBAL\Types\DateTimeTzType;
 
-class UTCDateTimeType extends DateTimeType
+class UTCDateTimeTzType extends DateTimeTzType
 {
     /**
      * UTCのタイムゾーン
@@ -65,7 +66,7 @@ class UTCDateTimeType extends DateTimeType
         }
 
         $converted = \DateTime::createFromFormat(
-            $platform->getDateTimeFormatString(),
+            $platform->getDateTimeTzFormatString(),
             $value,
             self::getUtcTimeZone()
         );
@@ -74,7 +75,7 @@ class UTCDateTimeType extends DateTimeType
             throw ConversionException::conversionFailedFormat(
                 $value,
                 $this->getName(),
-                $platform->getDateTimeFormatString()
+                $platform->getDateTimeTzFormatString()
             );
         }
 
