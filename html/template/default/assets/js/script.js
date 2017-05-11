@@ -89,7 +89,11 @@ $(function(){
     $(".ec-cartNavi").on("click",function(){
         $(".ec-headerRole__cart").toggleClass("is_active")
     })
-
+})
+$(function(){
+    $(".ec-cartNavi--cancel").on("click",function(){
+        $(".ec-headerRole__cart").toggleClass("is_active")
+    })
 })
 
 $(function(){
@@ -115,6 +119,32 @@ $(function(){
 //         speed: 300
 //     });
 // });
+
+
+// Slick Slide
+// TODO FIX CLASS NAME
+$(function(){
+    $('.item_visual').slick({
+        dots: false,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    dots: true
+                }
+            }]
+    })
+});
+$(function(){
+    $('.item_nav').slick({//サムネイル画像
+        dots: false,
+        arrows:false,
+        slidesToShow: 3,
+        focusOnSelect: true,
+        asNavFor: '.item_visual',//スライダー部分の要素を記述
+    })
+});
 
 /***/ })
 /******/ ]);
