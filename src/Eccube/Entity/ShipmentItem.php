@@ -44,7 +44,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      * Set price IncTax
      *
      * @param  string       $price_inc_tax
-     * @return ProductClass
+     * @return ShipmentItem
      */
     public function setPriceIncTax($price_inc_tax)
     {
@@ -427,7 +427,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      *
      * @param string $taxRate
      *
-     * @return OrderDetail
+     * @return ShipmentItem
      */
     public function setTaxRate($taxRate)
     {
@@ -451,7 +451,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      *
      * @param int|null $taxRule
      *
-     * @return OrderDetail
+     * @return ShipmentItem
      */
     public function setTaxRule($taxRule = null)
     {

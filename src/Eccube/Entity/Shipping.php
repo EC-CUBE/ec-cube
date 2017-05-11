@@ -25,6 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -1008,6 +1009,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getShipmentItems()
     {
         return $this->ShipmentItems;
+    }
+
+    /**
+     * 商品の受注明細を取得
+     * @return ShipmentItem[]
+     */
+    public function getProductOrderItems()
+    {
+        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        return $sio->getProductClasses()->getArrayCopy();
     }
 
     /**

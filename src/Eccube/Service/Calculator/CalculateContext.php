@@ -2,26 +2,32 @@
 namespace Eccube\Service\Calculator;
 
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
+use Eccube\Entity\ShipmentItem;
+use Eccube\Service\Calculator\Strategy\CalculateStrategyInterface;
 
 class CalculateContext
 {
+    /* @var Order $Order */
     protected $Order;
-    protected $OrderDetails = []; // Collection になってる？
+
+    /* @var ShipmentItemCollection $ShipmentItems */
+    protected $ShipmentItems = []; // Collection になってる？
 
     // $app['eccube.calculate.strategies'] に DI する
+    /* @var CalculateStrategyInterface[] $CalculateStrategies */
     protected $CalculateStrategies;
 
     public function executeCalculator()
     {
         foreach ($this->CalculateStrategies as $Strategy) {
-            $Strategy->execute($this->OrderDetails);
+            $Strategy->execute($this->ShipmentItems);
         }
 
-        foreach($this->OrderDetails as $OrderDetail) {
-            if (!$this->Order->getOrderDetails()->contains($OrderDetail)) {
-                $OrderDetail->setOrder($this->Order);
-                $this->Order->addOrderDetail($OrderDetail);
+        /** @var ShipmentItem $ShipmentItem */
+        foreach($this->ShipmentItems as $ShipmentItem) {
+            if (!$this->Order->getShipmentItems()->contains($ShipmentItem)) {
+                $ShipmentItem->setOrder($this->Order);
+                $this->Order->addShipmentItem($ShipmentItem);
                 // ここのタイミングで Persist 可能?
             }
         }
@@ -56,6 +62,6 @@ class CalculateContext
     {
         $this->Order = $Order;
         // ArrayIterator のラップしたクラスを作って明細種別ごとに管理したい
-        $this->OrderDetails = new OrderDetailCollection($Order->getOrderDetails()->toArray());
+        $this->ShipmentItems = new ShipmentItemCollection($Order->getShipmentItems()->toArray());
     }
 }

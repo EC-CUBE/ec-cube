@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -649,7 +650,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を作成
                 try {
                     // 受注情報を作成
-                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
+//                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
+                    $Order = $app['eccube.helper.order']->createProcessingOrder(
+                        $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
+                    $cartService->setPreOrderId($Order->getPreOrderId());
+                    $cartService->save();
                 } catch (CartException $e) {
                     $app->addRequestError($e->getMessage());
                     return $app->redirect($app->url('cart'));
@@ -711,7 +716,7 @@ class ShoppingController extends AbstractController
         // 処理しやすいようにすべてのShippingItemをまとめる
         $ShipmentItems = array();
         foreach ($Order->getShippings() as $Shipping) {
-            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
+            foreach ($Shipping->getProductOrderItems() as $ShipmentItem) {
                 $ShipmentItems[] = $ShipmentItem;
             }
         }
@@ -822,7 +827,6 @@ class ShoppingController extends AbstractController
 
             // お届け先情報をすべて削除
             foreach ($Order->getShippings() as $Shipping) {
-                $Order->removeShipping($Shipping);
                 $app['orm.em']->remove($Shipping);
             }
 
@@ -843,8 +847,7 @@ class ShoppingController extends AbstractController
                         $Shipping
                             ->setFromCustomerAddress($CustomerAddress)
                             ->setDelivery($Delivery)
-                            ->setDelFlg(Constant::DISABLED)
-                            ->setOrder($Order);
+                            ->setDelFlg(Constant::DISABLED);
 
                         $ShippingList[$cusAddId][$productTypeId] = $Shipping;
                     }
@@ -856,6 +859,8 @@ class ShoppingController extends AbstractController
                     $app['orm.em']->persist($Shipping);
                 }
             }
+
+            $ProductOrderType = $app['eccube.repository.master.order_item_type']->find(OrderItemType::PRODUCT);
 
             // お届け先に、配送商品の情報(ShipmentItem)を関連付ける
             foreach ($data as $mulitples) {
@@ -891,7 +896,8 @@ class ShoppingController extends AbstractController
                             ->setProductName($Product->getName())
                             ->setProductCode($ProductClass->getCode())
                             ->setPrice($ProductClass->getPrice02())
-                            ->setQuantity($quantity);
+                            ->setQuantity($quantity)
+                            ->setOrderItemType($ProductOrderType);
 
                         $ClassCategory1 = $ProductClass->getClassCategory1();
                         if (!is_null($ClassCategory1)) {

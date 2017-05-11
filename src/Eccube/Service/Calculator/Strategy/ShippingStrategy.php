@@ -2,46 +2,53 @@
 namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
-use Eccube\Service\Calculator\OrderDetailCollection;
+use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\Shipping;
+use Eccube\Repository\Master\OrderItemTypeRepository;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 
 class ShippingStrategy implements CalculateStrategyInterface
 {
+    /* @var Application $app */
     protected $app;
+
+    /* @var Order $Order */
     protected $Order;
 
-    public function __construct(Application $app = null)
-    {
-        $this->app = $app;
-    }
+    /** @var OrderItemTypeRepository */
+    protected $OrderItemTypeRepository;
 
-    public function execute(OrderDetailCollection $OrderDetails)
+    public function execute(ShipmentItemCollection $ShipmentItems)
     {
-        // 送料をすべて足す
-        $delivery_fee_total = array_reduce(
-            array_map(
-                function ($Shipping) {
-                    return $Shipping->getShippingDeliveryFee();
-                },
-                $this->Order->getShippings()->toArray()
-            ),
-            function ($carry, $item) {
-                return $carry += $item;
+        // 送料の受注明細区分
+        $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
+
+        // 配送ごとに送料の明細を作成
+        foreach ($this->Order->getShippings() as $Shipping) {
+            /* @var Shipping $Shipping */
+            $sio = new ShipmentItemCollection($Shipping->getShipmentItems()->toArray());
+            if (!$sio->hasItemByOrderItemType($DeliveryFeeType)) {
+                $ShipmentItem = new ShipmentItem();
+                $ShipmentItem->setProductName("送料")
+                    ->setPrice($Shipping->getShippingDeliveryFee())
+                    ->setPriceIncTax($Shipping->getShippingDeliveryFee())
+                    ->setTaxRate(0)
+                    ->setQuantity(1)
+                    ->setOrderItemType($DeliveryFeeType)
+                    ->setShipping($Shipping);
+                $ShipmentItems->append($ShipmentItem);
+                $Shipping->addShipmentItem($ShipmentItem);
             }
-        );
-
-        // 送料が存在しない場合は追加
-        if (!$OrderDetails->hasProductByName('送料')) {
-            $OrderDetail = new OrderDetail();
-            $OrderDetail->setProductName("送料")
-                ->setPrice($delivery_fee_total)
-                ->setPriceIncTax($delivery_fee_total)
-                ->setTaxRate(0)
-                ->setQuantity(1);
-            $this->Order->setDeliveryFeeTotal($delivery_fee_total);
-            $OrderDetails->append($OrderDetail);
         }
+
+        // 合計送料の計算
+        $deliveryFeeTotal = array_reduce($ShipmentItems->getDeliveryFees()->getArrayCopy(), function($total, $ShipmentItem) {
+            /* @var ShipmentItem $ShipmentItem */
+            return $total + $ShipmentItem->getPriceIncTax();
+        }, 0);
+        $this->Order->setDeliveryFeeTotal($deliveryFeeTotal);
     }
 
     public function setApplication(Application $app)
