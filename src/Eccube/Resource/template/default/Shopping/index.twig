@@ -203,10 +203,10 @@ $(function() {
                 <div id="confirm_main" class="col-sm-8">
                     <div id="cart_box" class="cart_item table">
                         <div id="cart_box_list" class="tbody">
-                            {% for orderDetail in Order.orderDetails %}
+                            {% for orderDetail in Order.productOrderItems %}
                             <div id="cart_box_list__item_box--{{ loop.index }}" class="item_box tr">
                                 <div id="cart_box_list__item--{{ loop.index }}" class="td table">
-                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo">{# TODO 暫定 #}{% if orderDetail.productName != '送料' %}<img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product is null ? null : orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" />{% endif %}</div>
+                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product is null ? null : orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" /></div>
                                     <dl id="cart_box_list__detail--{{ loop.index }}" class="item_detail">
                                         <dt id="cart_box_list__name--{{ loop.index }}" class="item_name text-default">{{ orderDetail.productName }}</dt>
                                         <dd id="cart_box_list__class_category--{{ loop.index }}" class="item_pattern small">
@@ -261,7 +261,7 @@ $(function() {
                             <h3>お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</h3>
                             <div id="shipping_confirm_box__body--{{ idx }}" class="cart_item table">
                                 <div id="shipping_confirm_box__list--{{ idx }}" class="tbody">
-                                {% for shipmentItem in shipping.shipmentItems %}
+                                {% for shipmentItem in shipping.productOrderItems %}
                                     <div id="shipping_confirm_box__item--{{ idx }}_{{ shipmentItem.id }}" class="item_box tr">
                                         <div id="shipping_box__body_inner--{{ idx }}_{{ shipmentItem.id }}" class="td table">
                                             <div id="shipping_box__photo--{{ idx }}_{{ shipmentItem.id }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" /></div>

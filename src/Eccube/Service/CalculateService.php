@@ -12,6 +12,7 @@ class CalculateService
     protected $Deliveries = [];
     protected $Payment;
 
+    /** @var CalculateContext */
     protected $CalculateContext;
 
     public function __construct($Order, $Customer)
@@ -33,7 +34,7 @@ class CalculateService
      */
     public function calculate()
     {
-        $Order = $this->CalculateContext->executeCalculator($this->Order);
+        $Order = $this->CalculateContext->executeCalculator();
         return $Order;
     }
 

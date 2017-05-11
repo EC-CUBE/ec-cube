@@ -2,16 +2,20 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\TaxruleRepository;
 use Eccube\Repository\OrderRepository;
@@ -50,6 +54,9 @@ class OrderHelper
     /** @var  OrderStatusRepository */
     protected $orderStatusRepository;
 
+    /** @var OrderItemTypeRepository */
+    protected $orderItemTypeRepository;
+
     public function __construct(Application $app)
     {
         $this->config = $app['config'];
@@ -60,6 +67,7 @@ class OrderHelper
         $this->deliveryFeeRepository = $app['eccube.repository.delivery_fee'];
         $this->taxRuleRepository = $app['eccube.repository.tax_rule'];
         $this->orderStatusRepository = $app['eccube.repository.order_status'];
+        $this->orderItemTypeRepository = $app['eccube.repository.master.order_item_type'];
     }
 
     /**
@@ -82,10 +90,13 @@ class OrderHelper
         $this->setCustomer($Order, $Customer);
 
         // 明細情報の設定
-        $OrderDetails = $this->createOrderDetailsFromCartItems($CartItems);
-        $this->addOrderDetails($Order, $OrderDetails);
-
-        $ShipmentItemsGroupByProductType = $this->createShipmentItemsFromOrderDetails($Order->getOrderDetails(), true);
+        $ShipmentItems = $this->createShipmentItemsFromCartItems($CartItems);
+        $ShipmentItemsGroupByProductType = array_reduce($ShipmentItems, function($result, $item) {
+            /* @var ShipmentItem $item */
+            $productTypeId = $item->getProductClass()->getProductType()->getId();
+            $result[$productTypeId][] = $item;
+            return $result;
+        }, []);
 
         foreach ($ShipmentItemsGroupByProductType as $ShipmentItems) {
             $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
@@ -134,6 +145,49 @@ class OrderHelper
                 'del_flg',
             ]
         );
+    }
+
+    /**
+     * @param ArrayCollection $CartItems
+     * @return ShipmentItem[]
+     */
+    private function createShipmentItemsFromCartItems($CartItems)
+    {
+        $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
+
+        return array_map(function($item) use ($ProductItemType) {
+            /* @var $item CartItem */
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ProductClass = $item->getObject();
+            /* @var $Product \Eccube\Entity\Product */
+            $Product = $ProductClass->getProduct();
+            $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
+
+            $ShipmentItem = new ShipmentItem();
+            $ShipmentItem
+                ->setProduct($Product)
+                ->setProductClass($ProductClass)
+                ->setProductName($Product->getName())
+                ->setProductCode($ProductClass->getCode())
+                ->setPrice($ProductClass->getPrice02())
+                ->setQuantity($item->getQuantity())
+                ->setTaxRule($TaxRule->getId())
+                ->setTaxRate($TaxRule->getTaxRate())
+                ->setOrderItemType($ProductItemType);
+
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            if (!is_null($ClassCategory1)) {
+                $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
+                $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
+            }
+            $ClassCategory2 = $ProductClass->getClassCategory2();
+            if (!is_null($ClassCategory2)) {
+                $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
+                $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
+            }
+
+            return $ShipmentItem;
+        }, $CartItems->toArray());
     }
 
     /**
@@ -253,12 +307,13 @@ class OrderHelper
 
     public function setDefaultPayment(Order $Order)
     {
-        $OrderDetails = $Order->getOrderDetails();
+        $ShipmentItems = $Order->getShipmentItems();
 
         // 受注明細に含まれる商品種別を抽出.
         $ProductTypes = [];
-        foreach ($OrderDetails as $OrderDetail) {
-            $ProductClass = $OrderDetail->getProductClass();
+        /** @var ShipmentItem $ShipmentItem */
+        foreach ($ShipmentItems as $ShipmentItem) {
+            $ProductClass = $ShipmentItem->getProductClass();
             if (is_null($ProductClass)) {
                 // 商品明細のみ対象とする. 送料明細等はスキップする.
                 continue;
