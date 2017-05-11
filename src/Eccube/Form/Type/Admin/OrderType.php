@@ -230,12 +230,12 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('OrderDetails', CollectionType::class, array(
-                'entry_type' => OrderDetailType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-            ))
+            // ->add('OrderDetails', CollectionType::class, array(
+            //     'entry_type' => OrderDetailType::class,
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'prototype' => true,
+            // ))
             ->add('ShipmentItems', CollectionType::class, array(
                 'entry_type' => ShipmentItemType::class,
                 'allow_add' => true,

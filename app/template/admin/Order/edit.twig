@@ -123,13 +123,14 @@ $(function() {
     // 受注明細行の行数カウンタ.
     // 受注登録・編集画面上でグローバルな変数.
     // search_product.twig/order_detail_prototype.twigで利用しています.
+{#
     {% if form.OrderDetails is empty %}
         {% set maxIndex = 0 %}
     {% else %}
         {% set maxIndex = max(form.OrderDetails|keys) + 1 %}
     {% endif %}
     order_details_count = '{{ maxIndex }}';
-    
+#}  
     var shipping_details_count = [];
     {% if BaseInfo.optionMultipleShipping %}
         {% for shippingKey, shippingForm in form.Shippings %}
@@ -383,7 +384,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              id="order_detail_list"
                              data-prototype="
                                 {% filter escape %}
-                                     {{ include('Order/order_detail_prototype.twig', { 'orderDetailForm': form.OrderDetails.vars.prototype }) }}
+                                     {#{ include('Order/order_detail_prototype.twig', { 'orderDetailForm': form.OrderDetails.vars.prototype }) }#}
                                 {% endfilter %}">
 
                             {{ form_errors(form.OrderDetailsErrors) }}

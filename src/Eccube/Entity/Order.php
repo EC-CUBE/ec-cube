@@ -27,6 +27,7 @@ namespace Eccube\Entity;
 use Eccube\Common\Constant;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
+use Eccube\Entity\Master\OrderItemType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -123,6 +124,24 @@ class Order extends \Eccube\Entity\AbstractEntity
         }
 
         return $tax;
+    }
+
+    /**
+     * この注文にかかる送料の合計を返す.
+     *
+     * @return integer
+     */
+    public function calculateDeliveryFeeTotal()
+    {
+        // TODO filter を外出ししたい
+        return array_reduce(
+            array_filter($this->getShipmentItems()->toArray(),
+                         function($ShipmentItem) {
+                             return $ShipmentItem->isDeliveryFee();
+                         }),
+            function($total, $ShipmentItem) {
+                return $total + $ShipmentItem->getPriceIncTax();
+            }, 0);
     }
 
     /**

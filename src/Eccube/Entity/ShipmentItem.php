@@ -25,6 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Util\EntityUtil;
+use Eccube\Entity\Master\OrderItemType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,6 +70,66 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     public function getTotalPrice()
     {
         return $this->getPriceIncTax() * $this->getQuantity();
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOrderItemTypeId()
+    {
+        if (is_object($this->getOrderItemType())) {
+            return $this->getOrderItemType()->getId();
+        }
+        return null;
+    }
+    /**
+     * 商品明細かどうか.
+     *
+     * @return boolean 商品明細の場合 true
+     */
+    public function isProduct()
+    {
+        return ($this->getOrderItemTypeId() === OrderItemType::PRODUCT);
+    }
+
+    /**
+     * 送料明細かどうか.
+     *
+     * @return boolean 送料明細の場合 true
+     */
+    public function isDeliveryFee()
+    {
+        return ($this->getOrderItemTypeId() === OrderItemType::DELIVERY_FEE);
+    }
+
+    /**
+     * 手数料明細かどうか.
+     *
+     * @return boolean 手数料明細の場合 true
+     */
+    public function isCharge()
+    {
+        return ($this->getOrderItemTypeId() === OrderItemType::CHARGE);
+    }
+
+    /**
+     * 値引き明細かどうか.
+     *
+     * @return boolean 値引き明細の場合 true
+     */
+    public function isDiscount()
+    {
+        return ($this->getOrderItemTypeId() === OrderItemType::DISCOUNT);
+    }
+
+    /**
+     * 税額明細かどうか.
+     *
+     * @return boolean 税額明細の場合 true
+     */
+    public function isTax()
+    {
+        return ($this->getOrderItemTypeId() === OrderItemType::TAX);
     }
 
     /**
