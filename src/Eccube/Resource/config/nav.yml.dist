@@ -66,6 +66,9 @@
       - id: file
         name: ファイル管理
         url: admin_content_file
+      - id: layout
+        name: レイアウト管理
+        url: admin_content_layout
       - id: page
         name: ページ管理
         url: admin_content_page

@@ -76,7 +76,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testCategoryFound()
     {
         $client = $this->client;
-        $message = '商品がみつかりました';
+        $message = '商品が見つかりました';
         $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => '6')));
         $this->assertContains($message, $crawler->html());
     }
@@ -111,7 +111,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         // Case 1: render check
-        $html = $crawler->filter('#detail_cart_box')->html();
+        $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertContains('ただいま品切れ中です', $html);
         $this->assertContains('お気に入りに追加', $html);
 
@@ -122,7 +122,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         // Case 2: after add favorite check
-        $html = $crawler->filter('#detail_cart_box')->html();
+        $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertContains('ただいま品切れ中です', $html);
         $this->assertContains('お気に入りに追加済みです', $html);
     }
@@ -150,7 +150,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         // Case 3: render check when 商品在庫>0
-        $html = $crawler->filter('#detail_cart_box')->html();
+        $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertContains('カートに入れる', $html);
         $this->assertContains('お気に入りに追加', $html);
 
@@ -161,7 +161,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         // Case 4: after add favorite when 商品在庫>0
-        $html = $crawler->filter('#detail_cart_box')->html();
+        $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertContains('カートに入れる', $html);
         $this->assertContains('お気に入りに追加済みです', $html);
     }

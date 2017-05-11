@@ -177,7 +177,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="shipping_delivery_date", type="datetime", nullable=true)
+     * @ORM\Column(name="shipping_delivery_date", type="datetimetz", nullable=true)
      */
     private $shipping_delivery_date;
 
@@ -191,7 +191,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="shipping_commit_date", type="datetime", nullable=true)
+     * @ORM\Column(name="shipping_commit_date", type="datetimetz", nullable=true)
      */
     private $shipping_commit_date;
 
@@ -219,14 +219,14 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetimetz")
      */
     private $create_date;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetimetz")
      */
     private $update_date;
 

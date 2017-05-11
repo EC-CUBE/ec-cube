@@ -27,7 +27,7 @@
             .children('input.target-id').val(sortable.id.replace('position_', '')).end()
             .each(function(){
                 var top = $(this).prevAll().length + 1;
-                $(this).children('input.top').val(top);
+                $(this).children('input.block-row').val(top);
             });
     };
 

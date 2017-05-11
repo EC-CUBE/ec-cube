@@ -302,7 +302,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="order_birth", type="datetime", nullable=true)
+     * @ORM\Column(name="order_birth", type="datetimetz", nullable=true)
      */
     private $birth;
 
@@ -372,35 +372,35 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetimetz")
      */
     private $create_date;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetimetz")
      */
     private $update_date;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="order_date", type="datetime", nullable=true)
+     * @ORM\Column(name="order_date", type="datetimetz", nullable=true)
      */
     private $order_date;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="commit_date", type="datetime", nullable=true)
+     * @ORM\Column(name="commit_date", type="datetimetz", nullable=true)
      */
     private $commit_date;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="payment_date", type="datetime", nullable=true)
+     * @ORM\Column(name="payment_date", type="datetimetz", nullable=true)
      */
     private $payment_date;
 

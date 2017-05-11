@@ -43,28 +43,25 @@
                         <div class="tableish">
                             <div class="item_box tr" style="background-color: #F9F9F9;">
                                 <div class="item_pattern td"><strong>ページ名</strong></div>
-                                <div class="item_pattern td"><strong>ルーティング名</strong></div>
-                                <div class="item_pattern td"><strong>ファイル名</strong></div>
+                                <div class="item_pattern td"><strong>レイアウト名</strong></div>
                                 <div class="item_pattern td"></div>
                             </div>
                             {% for PageLayout in PageLayouts %}
                                 <div id="sortable_list_box__item--{{ PageLayout.id }}" class="item_box tr">
                                     <div id="sortable_list_box__name--{{ PageLayout.id }}" class="item_pattern td">
-                                        {{ PageLayout.name }}
+                                        <a href="{{ url('admin_content_page_edit', {id : PageLayout.id } ) }}">{{ PageLayout.name }}</a>
                                     </div>
-                                    <div id="sortable_list_box__url--{{ PageLayout.id }}" class="td">
-                                        {{ PageLayout.url }}
-                                    </div>
-                                    <div id="sortable_list_box__file_name--{{ PageLayout.id }}" class="td">
-                                        {% if PageLayout.file_name %}{{ PageLayout.file_name }}.twig{% endif %}
+                                    <div id="sortable_list_box__layout--{{ PageLayout.id }}" class="td">
+                                        <ul class="">
+                                        {% for Layout in PageLayout.layouts %}
+                                            <li>{{ Layout.device_type.name }}：{{ Layout.name }}</li>
+                                        {% endfor %}
+                                        </ul>
                                     </div>
                                     <div id="sortable_list_box__menu_box--{{ PageLayout.id }}" class="icon_edit td">
                                         <div id="sortable_list_box__menu_box_toggle--{{ PageLayout.id }}" class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                             <ul id="sortable_list_box__menu--{{ PageLayout.id }}" class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="{{ url('admin_content_layout_edit', { id : PageLayout.id } ) }}" >レイアウト編集</a>
-                                                </li>
                                                 <li>
                                                     {% if PageLayout.filename|length >= 1 %}
                                                         <a href="{{ url('admin_content_page_edit', {id : PageLayout.id } ) }}">ページ編集</a>

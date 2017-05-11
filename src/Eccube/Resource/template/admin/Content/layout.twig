@@ -26,8 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}レイアウト管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme list_form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
 
 {% block javascript %}
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.core.min.js"></script>
@@ -35,47 +34,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/layout_design.js"></script>
-    <script>
-        $(function() {
-            var page_id = '{{ TargetPageLayout.id }}';
-            if (page_id != '1') {
-                $('.anywhere').attr('disabled', true);
-                $('.anywhere:checked').each(function() {
-                    $(this).parents('.sort').children('input[type=hidden]').each(function() {
-                        $(this).remove();
-                    });
-                });
-            }
-
-            $("#{{ list_form.layout.vars.id }}").on("change", function() {
-                var url = '{{ url('admin_content_layout_edit', { id : 9999 }) }}';
-                location.href = url.replace(9999, $(this).val());
-            });
-        });
-        function doPreview() {
-            document.form1.action = "{{ url('admin_content_layout_preview', {id: TargetPageLayout.id}) }}";
-            document.form1.target = "_blank";
-            document.form1.submit();
-            return false;
-        }
-        function doRegister() {
-            document.form1.action = "{{ url('admin_content_layout_edit', {id: TargetPageLayout.id}) }}";
-            document.form1.target = "_self";
-            document.form1.submit();
-            return false;
-        }
-    </script>
 {% endblock javascript %}
 
 {% block main %}
- <div class="row" id="aside_wrap">
-    <form name="form1" id="form1" method="post" action="{{ url('admin_content_layout_edit', {id: TargetPageLayout.id}) }}">
-        {{ form_widget(form._token) }}
+    <div class="row" id="aside_wrap">
+        <form name="form1" id="form1" method="post" action="{% if Layout.id -%}
+            {{ url('admin_content_layout_edit', {id: Layout.id}) }}
+        {%- else -%}
+            {{ url('admin_content_layout_new') }}
+        {%- endif %}">
+            {{ form_widget(form._token) }}
             <div id="detail_wrap" class="col-md-9">
                 {# ▼レイアウトここから #}
                 <div id="detail_box" class="box">
                     <div id="detail_box__menu" class="box-header">
-                        {{ form_widget(list_form.layout) }}
+                        {{ form_widget(form) }}
                     </div>
                     <div id="detail_box__body" class="box-body no-border row">
                         <div id="detail_box__layout_box--left_column" class="col-md-8">
@@ -84,18 +57,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tbody>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEAD') }}" class="ui-sortable" colspan="3">
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEAD') }}"
+                                            class="ui-sortable" colspan="3">
                                             {% set loop_index = 0 %}
-                                            {% for BlockPosition in TargetPageLayout.HeadPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEAD')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -103,17 +82,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tr>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEADER') }}" class="ui-sortable" colspan="3">
-                                            {% for BlockPosition in TargetPageLayout.HeaderPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEADER') }}"
+                                            class="ui-sortable" colspan="3">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEADER')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -121,17 +106,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tr>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_TOP') }}" class="ui-sortable" colspan="3">
-                                            {% for BlockPosition in TargetPageLayout.ContentsTopPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_TOP') }}"
+                                            class="ui-sortable" colspan="3">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_TOP')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -139,47 +130,64 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tr>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_LEFT') }}" class="ui-sortable" rowspan="3">
-                                            {% for BlockPosition in TargetPageLayout.SideLeftPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_LEFT') }}"
+                                            class="ui-sortable" rowspan="3">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_LEFT')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
                                         </td>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_TOP') }}" class="ui-sortable">
-                                            {% for BlockPosition in TargetPageLayout.MainTopPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
-                                                    {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_TOP') }}"
+                                            class="ui-sortable">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_TOP')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
                                         </td>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_RIGHT') }}" class="ui-sortable" rowspan="3">
-                                            {% for BlockPosition in TargetPageLayout.SideRightPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_RIGHT') }}"
+                                            class="ui-sortable" rowspan="3">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_RIGHT')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -193,17 +201,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tr>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_BOTTOM') }}" class="ui-sortable">
-                                            {% for BlockPosition in TargetPageLayout.MainBottomPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_BOTTOM') }}"
+                                            class="ui-sortable">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_BOTTOM')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -211,17 +225,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tr>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_BOTTOM') }}" class="ui-sortable" colspan="3">
-                                            {% for BlockPosition in TargetPageLayout.ContentsBottomPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_BOTTOM') }}"
+                                            class="ui-sortable" colspan="3">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_BOTTOM')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="block-id"
+                                                           name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -229,17 +249,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </tr>
 
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_FOOTER') }}" class="ui-sortable" colspan="3">
-                                            {% for BlockPosition in TargetPageLayout.FooterPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_FOOTER') }}"
+                                            class="ui-sortable" colspan="3">
+                                            {% for BlockPosition in Layout.getBlockPositionsBy(constant('Eccube\\Entity\\PageLayout::TARGET_ID_FOOTER')) %}
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.name }}"/>
+                                                    <input type="hidden" class="id" name="block_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.Block.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ BlockPosition.target_id }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ BlockPosition.block_row }}"/>
                                                     {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -256,17 +281,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <table class="table table-bordered text-center design-layout">
                                     <tbody>
                                     <tr>
-                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_UNUSED') }}" class="ui-sortable">
-                                            {% for BlockPosition in TargetPageLayout.UnusedPosition %}
-                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
-                                                    <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
-                                                    <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
-                                                    <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
-                                                    <input type="hidden" class="top" name="top_{{ loop_index }}" value="{{ BlockPosition.block_row }}" />
-                                                    {{ BlockPosition.Block.name }}
-                                                    <label class="anywherecheck">
-                                                        (<input type="checkbox" class="anywhere" name="anywhere_{{ loop_index }}" value="1" {% if BlockPosition.anywhere == 1 %} checked="checked"{% endif %} />全ページ)
-                                                    </label>
+                                        <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_UNUSED') }}"
+                                            class="ui-sortable">
+                                            {% for UnusedBlock in UnusedBlocks %}
+                                                <div id="detail_box__layout_item--{{ UnusedBlock.id }}"
+                                                     class="sort{% if loop.first %} first{% endif %}">
+                                                    <input type="hidden" class="name" name="name_{{ loop_index }}"
+                                                           value="{{ UnusedBlock.name }}"/>
+                                                    <input type="hidden" class="id" name="block_id_{{ loop_index }}"
+                                                           value="{{ UnusedBlock.id }}"/>
+                                                    <input type="hidden" class="target-id"
+                                                           name="target_id_{{ loop_index }}"
+                                                           value="{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_UNUSED') }}"/>
+                                                    <input type="hidden" class="block-row"
+                                                           name="block_row_{{ loop_index }}"
+                                                           value="{{ UnusedBlock.id }}"/>
+                                                    {{ UnusedBlock.name }}
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -278,7 +308,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div><!-- /.col -->
                     </div>
                     <div id="detail_box__footer" class="row">
-                        <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area2">
+                        <div id="detail_box__back_button"
+                             class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area2">
                             <p><a href="{{ url('admin_content_page') }}">戻る</a></p>
                         </div>
                     </div>
@@ -290,36 +321,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" onclick="return doRegister();">登録</button>
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">登録</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                     <div id="preview_box" class="box">
                         <div id="preview_box__preview_button" class="box-header">
-                            {% set disabled = true %}
-                            {%  if TargetPageLayout.url != 'entry_activate' and 
-                                   TargetPageLayout.url != 'shopping' and
-                                   TargetPageLayout.url != 'shopping_shipping' and
-                                   TargetPageLayout.url != 'shopping_shipping_multiple' and
-                                   TargetPageLayout.url != 'shopping_complete' and
-                                   TargetPageLayout.url != 'shopping_login' and 
-                                   TargetPageLayout.url != 'shopping_nonmember' and
-                                   TargetPageLayout.url != 'shopping_shipping_edit' and
-                                   TargetPageLayout.url != 'shopping_shipping_multiple_edit' and
-                                   TargetPageLayout.url != 'shopping_error' and
-                                   TargetPageLayout.url != 'forgot_reset'
-                            %}
-                            {% set disabled = false %}
-                            {% endif %}
-                            <button  class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="return doPreview();">
-                                プレビュー
+                            <button class="btn btn-default btn-block btn-sm">
+                                プレビュー(未実装)
                             </button>
                         </div><!-- /.box-header -->
                     </div>
 
                 </div>
             </div><!-- /.col -->
-    </form>
-</div>
+        </form>
+    </div>
 {% endblock %}

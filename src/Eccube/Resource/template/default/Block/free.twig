@@ -19,12 +19,20 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<div class="col-sm-3 txt_bnr_area">
-    <div class="txt_bnr">
-        {%- if BaseInfo.delivery_free_amount -%}
-            <strong>{{ BaseInfo.delivery_free_amount|number_format }}円以上の購入で<br><strong>配送料無料</strong></strong><br>一部地域は除く
-        {%- else -%}
-            <strong>0円以上の購入で<br><strong>配送料無料</strong></strong><br>一部地域は除く
-        {%- endif -%}
+<div class="ec-role">
+    <div class="ec-grid2">
+        <div class="ec-grid2__cell">
+            <div class="ec-banner">
+                {%- if BaseInfo.delivery_free_amount -%}
+                    <div class="ec-banner__intro">5000円以上の購入で</div>
+                    <div class="ec-banner__title">配送料無料</div>
+                    <div>一部地域は除く</div>
+                {%- else -%}
+                    <div class="ec-banner__intro">購入された方へ</div>
+                    <div class="ec-banner__title">配送料は一律500円</div>
+                    <div>一部地域は除く</div>
+                {%- endif -%}
+            </div>
+        </div>
     </div>
 </div>

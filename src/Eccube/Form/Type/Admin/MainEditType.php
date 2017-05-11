@@ -24,6 +24,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Layout;
+use Eccube\Entity\Master\DeviceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -31,6 +34,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -135,6 +139,50 @@ class MainEditType extends AbstractType
                 'choice_label' => 'id',
             ))
             ->add('id', HiddenType::class)
+            ->add('PcLayout', EntityType::class, [
+                'mapped' => false,
+                'placeholder' => '---',
+                'required' => false,
+                'label' => 'PC',
+                'class' => Layout::class,
+                'query_builder' => function(EntityRepository $er) use ($app) {
+                    $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+                    return $er->createQueryBuilder('l')
+                        ->where('l.DeviceType = :DeviceType')
+                        ->setParameter('DeviceType', $DeviceType)
+                        ->orderBy('l.id', 'DESC');
+                },
+            ])
+            ->add('SpLayout', EntityType::class, [
+                'mapped' => false,
+                'placeholder' => '---',
+                'required' => false,
+                'label' => 'スマホ',
+                'class' => Layout::class,
+                'query_builder' => function(EntityRepository $er) use ($app) {
+                    $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_SP);
+                    return $er->createQueryBuilder('l')
+                        ->where('l.DeviceType = :DeviceType')
+                        ->setParameter('DeviceType', $DeviceType)
+                        ->orderBy('l.id', 'DESC');
+                },
+            ])
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+                $PageLayout = $event->getData();
+                if (is_null($PageLayout->getId())) {
+                    return;
+                }
+                $form = $event->getForm();
+                $Layouts = $PageLayout->getLayouts();
+                foreach ($Layouts as $Layout) {
+                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_PC) {
+                        $form['PcLayout']->setData($Layout);
+                    }
+                    if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_SP) {
+                        $form['SpLayout']->setData($Layout);
+                    }
+                }
+            })
             ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $url = $form['url']->getData();

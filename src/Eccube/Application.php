@@ -27,30 +27,20 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Types\Type;
-use Eccube\Application\ApplicationTrait;
-use Eccube\Common\Constant;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
+use Eccube\Doctrine\EventSubscriber\InitSubscriber;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
-use Eccube\EventListener\TransactionListener;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
-use Sergiors\Silex\Provider\AnnotationsServiceProvider;
-use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
-use Sergiors\Silex\Provider\RoutingServiceProvider;
-use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
-use Sergiors\Silex\Provider\TemplatingServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
 
@@ -413,6 +403,14 @@ class Application extends \Silex\Application
                 $paths[] = __DIR__.'/../../app/Plugin';
                 $cacheDir =  __DIR__.'/../../app/cache/twig/admin';
             } else {
+                // モバイル端末時、smartphoneディレクトリを探索パスに追加する.
+                if ($app['mobile_detect.device_type'] == \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP) {
+                    if (file_exists(__DIR__.'/../../app/template/smartphone')) {
+                        $paths[] = __DIR__.'/../../app/template/smartphone';
+                    }
+                    $paths[] = __DIR__.'/Resource/template/smartphone';
+                }
+
                 if (file_exists($app['config']['template_realdir'])) {
                     $paths[] = $app['config']['template_realdir'];
                 }
@@ -482,9 +480,28 @@ class Application extends \Silex\Application
                 }
 
                 try {
+                    $device_type_id = $this['mobile_detect.device_type'];
+
+                    // TODO デバッグ用
+                    if ($request->query->has('device_type_id')) {
+                        $device_type_id = $request->get('device_type_id', \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                    }
+
                     $DeviceType = $this['eccube.repository.master.device_type']
-                        ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $this['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                        ->find($device_type_id);
+                    $qb = $this['eccube.repository.page_layout']->createQueryBuilder('p');
+                    $PageLayout = $qb->select('p, pll,l, bp, b')
+                        ->leftJoin('p.PageLayoutLayouts', 'pll')
+                        ->leftJoin('pll.Layout', 'l')
+                        ->leftJoin('l.BlockPositions', 'bp')
+                        ->leftJoin('bp.Block', 'b')
+                        ->where('p.url = :route')
+                        ->andWhere('l.DeviceType = :DeviceType')
+                        ->orderBy('bp.block_row', 'ASC')
+                        ->setParameter('route', $route)
+                        ->setParameter('DeviceType', $DeviceType)
+                        ->getQuery()
+                        ->getSingleResult();
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $this['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
@@ -537,10 +554,20 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
 
+        $app = $this;
+        $this->extend('db.event_manager', function ($evm) use ($app) {
+            $initSubscriber = new InitSubscriber($app);
+            $evm->addEventSubscriber($initSubscriber);
+
+            return $evm;
+        });
+
         // UTCで保存
         // @see http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
+        UTCDateTimeType::setTimeZone($this['config']['timezone']);
+        UTCDateTimeTzType::setTimeZone($this['config']['timezone']);
         Type::overrideType('datetime', UTCDateTimeType::class);
-        Type::overrideType('datetimetz', UTCDateTimeType::class);
+        Type::overrideType('datetimetz', UTCDateTimeTzType::class);
 
         // プラグインのmetadata定義を合わせて行う.
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($this['debug']);
@@ -655,10 +682,6 @@ class Application extends \Silex\Application
             // save
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
-
-            // timezone
-            $timezoneSubscriber = new \Eccube\Doctrine\EventSubscriber\TimeZoneSubscriber($app);
-            $em->getEventManager()->addEventSubscriber($timezoneSubscriber);
 
             // clear cache
             $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);

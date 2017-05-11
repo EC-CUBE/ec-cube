@@ -172,7 +172,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="birth", type="datetime", nullable=true)
+     * @ORM\Column(name="birth", type="datetimetz", nullable=true)
      */
     private $birth;
 
@@ -200,14 +200,14 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="first_buy_date", type="datetime", nullable=true)
+     * @ORM\Column(name="first_buy_date", type="datetimetz", nullable=true)
      */
     private $first_buy_date;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_buy_date", type="datetime", nullable=true)
+     * @ORM\Column(name="last_buy_date", type="datetimetz", nullable=true)
      */
     private $last_buy_date;
 
@@ -242,7 +242,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="reset_expire", type="datetime", nullable=true)
+     * @ORM\Column(name="reset_expire", type="datetimetz", nullable=true)
      */
     private $reset_expire;
 
@@ -256,14 +256,14 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime")
+     * @ORM\Column(name="create_date", type="datetimetz")
      */
     private $create_date;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_date", type="datetime")
+     * @ORM\Column(name="update_date", type="datetimetz")
      */
     private $update_date;
 

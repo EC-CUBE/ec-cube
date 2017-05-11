@@ -25,21 +25,16 @@
 namespace Eccube\Doctrine\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
+use Doctrine\DBAL\Event\ConnectionEventArgs;
+use Doctrine\DBAL\Events;
 use Eccube\Application;
 
-class TimeZoneSubscriber implements EventSubscriber
+class InitSubscriber implements EventSubscriber
 {
     /**
      * @var Application
      */
     protected $app;
-
-    /**
-     * @var
-     */
-    protected static $timezone;
 
     /**
      * @param Application $app
@@ -49,29 +44,26 @@ class TimeZoneSubscriber implements EventSubscriber
         $this->app = $app;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
-        return array(
-            Events::postLoad,
-        );
+        return array(Events::postConnect);
     }
 
-    public function postLoad(LifecycleEventArgs $args)
+    /**
+     * @param ConnectionEventArgs $args
+     */
+    public function postConnect(ConnectionEventArgs $args)
     {
-        $entity = $args->getObject();
-
-        $refl = new \ReflectionObject($entity);
-        foreach ($refl->getProperties() as $prop) {
-            if (!$prop->isStatic()) {
-                $prop->setAccessible(true);
-                $value = $prop->getValue($entity);
-                if (!is_null($value) && $value instanceof \DateTime) {
-                    $timezone = is_null(self::$timezone)
-                        ? self::$timezone = new \DateTimeZone($this->app['config']['timezone'])
-                        : self::$timezone;
-                    $value->setTimezone($timezone);
-                }
-            }
+        $db = $args->getConnection();
+        $platform = $args->getDatabasePlatform()->getName();
+        
+        if ($platform === 'mysql') {
+            $db->executeQuery("SET SESSION time_zone = '+00:00'");
+        } elseif ($platform === 'postgresql') {
+            $db->executeQuery("SET TIME ZONE 'UTC'");
         }
     }
 }
