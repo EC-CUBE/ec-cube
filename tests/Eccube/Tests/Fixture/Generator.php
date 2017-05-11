@@ -555,7 +555,8 @@ class Generator {
 
         $charge = $Order->getCharge() + $add_charge;
         $ShipmentItemCharge = new ShipmentItem();
-        $ShipmentItemCharge->setShipping($Shipping)
+        $ShipmentItemCharge
+            // ->setShipping($Shipping) // Shipping には登録しない
             ->setOrder($Order)
             ->setProductName('手数料')
             ->setPrice($charge)
@@ -564,14 +565,15 @@ class Generator {
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
-        $Shipping->addShipmentItem($ShipmentItemCharge);
+        // $Shipping->addShipmentItem($ShipmentItemCharge); // Shipping には登録しない
         $Order->addShipmentItem($ShipmentItemCharge);
         $this->app['orm.em']->persist($ShipmentItemCharge);
         $this->app['orm.em']->flush($ShipmentItemCharge);
 
         $discount = $Order->getDiscount() + $add_discount;
         $ShipmentItemDiscount = new ShipmentItem();
-        $ShipmentItemDiscount->setShipping($Shipping)
+        $ShipmentItemDiscount
+            // ->setShipping($Shipping) // Shipping には登録しない
             ->setOrder($Order)
             ->setProductName('値引き')
             ->setPrice($discount * -1)
@@ -580,7 +582,7 @@ class Generator {
             ->setTaxType($NonTaxable) // 不課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDiscount); // 値引き明細
-        $Shipping->addShipmentItem($ShipmentItemDiscount);
+        // $Shipping->addShipmentItem($ShipmentItemDiscount); // Shipping には登録しない
         $Order->addShipmentItem($ShipmentItemDiscount);
         $this->app['orm.em']->persist($ShipmentItemDiscount);
         $this->app['orm.em']->flush($ShipmentItemDiscount);
