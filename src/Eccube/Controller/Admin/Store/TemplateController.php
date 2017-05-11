@@ -114,11 +114,23 @@ class TemplateController extends AbstractController
             throw new NotFoundHttpException();
         }
 
+        //ファイル・システムオブジェクト作成
+        $fs = new Filesystem();
+
         // 該当テンプレートのディレクトリ
         $config = $app['config'];
         $templateCode = $Template->getCode();
         $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
         $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+
+        //ファイルの存在確認
+        $finder = new Finder();
+        $finds = $finder->files()->in($targetRealDir);
+
+        //ダミーファイル作成
+        if(empty($finds->count())){
+            $fs->touch($targetRealDir . '/dummy');
+        }
 
         // 一時ディレクトリ
         $uniqId = sha1(Str::random(32));
@@ -132,7 +144,6 @@ class TemplateController extends AbstractController
         $downloadFileName = $Template->getCode() . '.tar.gz';
 
         // 該当テンプレートを一時ディレクトリへコピーする.
-        $fs = new Filesystem();
         $fs->mkdir(array($appDir, $htmlDir));
         $fs->mirror($targetRealDir, $appDir);
         $fs->mirror($targetHtmlRealDir, $htmlDir);
