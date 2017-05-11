@@ -270,7 +270,7 @@ class OrderType extends AbstractType
                 return !(isset($v['quantity']) && preg_match('/^0+$/', trim($v['quantity'])));
             };
 
-            $shippings = &$data['Shippings'];
+            // $shippings = &$data['Shippings'];
 
             // 数量を抽出
             $getQuantity = function ($v) {
@@ -279,12 +279,13 @@ class OrderType extends AbstractType
                     0;
             };
 
-            foreach ($shippings as &$shipping) {
-                if (!empty($shipping['ShipmentItems'])) {
-                    $shipping['ShipmentItems'] = array_filter($shipping['ShipmentItems'], $quantityFilter);
-                }
-            }
+            // foreach ($shippings as &$shipping) {
+            //     if (!empty($shipping['ShipmentItems'])) {
+            //         $shipping['ShipmentItems'] = array_filter($shipping['ShipmentItems'], $quantityFilter);
+            //     }
+            // }
 
+            // FIXME 実際は ShipmentItem
             if (!empty($orderDetails)) {
 
                 foreach ($orderDetails as &$orderDetail) {

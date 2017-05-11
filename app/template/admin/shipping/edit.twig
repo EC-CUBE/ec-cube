@@ -123,7 +123,8 @@ $(function() {
     // 受注明細行の行数カウンタ.
     // 受注登録・編集画面上でグローバルな変数.
     // search_product.twig/order_detail_prototype.twigで利用しています.
-    
+
+    {#
     var shipping_details_count = [];
     {% if BaseInfo.optionMultipleShipping %}
         {% for shippingKey, shippingForm in form.Shippings %}
@@ -134,6 +135,7 @@ $(function() {
             {% endif %}
         {% endfor %}
     {% endif %}
+        #}
 
     // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
     $("input").on("keydown", function(e) {
