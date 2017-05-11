@@ -55,7 +55,7 @@ class ShippingItemType extends AbstractType
                 $form = $event->getForm();
 
                 // お届け日を取得
-                $deliveryDates = $app['eccube.service.shopping']->getFormDeliveryDates($data->getOrder());
+                $deliveryDates = $app['eccube.service.shopping']->getFormDeliveryDates($data->getOrder(), $data);
 
                 // 配送業者
                 // 商品種別に紐づく配送業者を取得
