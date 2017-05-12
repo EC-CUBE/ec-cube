@@ -70,15 +70,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endif %}
 
     <div class="ec-layoutRole__contents">
-        <div class="ec-layoutRole__main">
+        {# Layout: SIDE_LEFT #}
+        {% if PageLayout.SideLeft %}
+            <div class="ec-ec-layoutRole__left">
+                {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
+            </div>
+        {% endif %}
 
-            {# Layout: SIDE_LEFT #}
-            {% if PageLayout.SideLeft %}
-                <div class="ec-layoutRole__mainLeft">
-                    {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
-                </div>
-            {% endif %}
+        {% set layoutRoleMain = PageLayout.ColumnNum 'ec-layoutRole__main' %}
+        {% if PageLayout.ColumnNum == 2 %}
+            {% set layoutRoleMain = 'ec-layoutRole__mainWithColumn' %}
+        {% elseif PageLayout.ColumnNum == 3 %}
+            {% set layoutRoleMain = 'ec-layoutRole__mainBetweenColumn' %}
+        {% endif %}
 
+        <div class="{{ layoutRoleMain }}">
             {# Layout: MAIN_TOP #}
             {% if PageLayout.MainTop %}
                 <div class="ec-layoutRole__mainTop">
@@ -95,15 +101,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
                 </div>
             {% endif %}
-
-            {# Layout: SIDE_RIGHT #}
-            {% if PageLayout.SideRight %}
-                <div class="ec-layoutRole__mainRight">
-                    {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
-                </div>
-            {% endif %}
-
         </div>
+
+        {# Layout: SIDE_RIGHT #}
+        {% if PageLayout.SideRight %}
+            <div class="ec-layoutRole__mainRight">
+                {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
+            </div>
+        {% endif %}
     </div>
 
     {# Layout: CONTENTS_BOTTOM #}
