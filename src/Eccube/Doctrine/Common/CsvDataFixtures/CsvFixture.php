@@ -28,7 +28,7 @@ class CsvFixture implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         // CSV Reader に設定
-        $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
+        $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY |\SplFileObject::DROP_NEW_LINE);
 
         // ヘッダ行を取得
         $headers = $this->file->current();
@@ -48,8 +48,7 @@ class CsvFixture implements FixtureInterface
 
         // TODO エラーハンドリング
         $prepare = $Connection->prepare($sql);
-        while (!$this->file->eof()) {
-            $rows = $this->file->current();
+        while ($rows = $this->file->current()) {
             $index = 1;
             // データ行をバインド
             foreach ($rows as $col) {
