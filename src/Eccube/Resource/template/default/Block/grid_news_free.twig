@@ -22,10 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="ec-role">
     <div class="ec-grid3">
         <div class="ec-grid3__cell3">
-            {{ render(path('block_news')) }}
+            {{ include('Block/news.twig') }}
         </div>
         <div class="ec-grid3__cell">
-            {{ include('Block/free.twig', ignore_missing = false) }}
+            {{ include('Block/free.twig') }}
         </div>
     </div>
 </div>
