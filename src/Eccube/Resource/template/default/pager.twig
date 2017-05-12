@@ -1,0 +1,57 @@
+{% if pages.pageCount > 1 %}
+    <ul class="ec-pager">
+        {# 最初へ #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request_stack.currentrequest.attributes.get('_route'),
+                app.request_stack.currentrequest.query.all|merge({'pageno': pages.first})) }}">最初へ</a></li>
+        {% endif %}
+
+        {# 前へ #}
+        {% if pages.previous is defined %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request_stack.currentrequest.attributes.get('_route'),
+                app.request_stack.currentrequest.query.all|merge({'pageno': pages.previous})) }}">前へ</a></li>
+        {% endif %}
+
+        {# 1ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.firstPageInRange != 1 %}
+            <li class="ec-pager__item">...</li>
+        {% endif %}
+
+        {% for page in pages.pagesInRange %}
+            {% if page == pages.current %}
+                <li class="ec-pager__item--active"><a href="{{ path(
+                    app.request_stack.currentrequest.attributes.get('_route'),
+                    app.request_stack.currentrequest.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+            {% else %}
+                <li class="ec-pager__item"><a href="{{ path(
+                    app.request_stack.currentrequest.attributes.get('_route'),
+                    app.request_stack.currentrequest.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+            {% endif %}
+        {% endfor %}
+
+        {# 最終ページリンクが表示されない場合、「...」を表示 #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="ec-pager__item">...</li>
+        {% endif %}
+
+        {# 次へ #}
+        {% if pages.next is defined %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request_stack.currentrequest.attributes.get('_route'),
+                app.request_stack.currentrequest.query.all|merge({'pageno': pages.next})) }}">次へ</a></li>
+        {% endif %}
+
+        {# 最後へ #}
+        {% if pages.last != pages.lastPageInRange %}
+            <li class="ec-pager__item">
+                <a href="{{ path(
+                app.request_stack.currentrequest.attributes.get('_route'),
+                app.request_stack.currentrequest.query.all|merge({'pageno': pages.last})) }}">最後へ</a></li>
+        {% endif %}
+    </ul>
+{% endif %}

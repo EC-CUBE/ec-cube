@@ -39,120 +39,82 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             eccube.submitForm();
         }
         // 商品表示BOXの高さを揃える
-        $(window).load(function() {
+        $(window).load(function () {
             $('.product_item').matchHeight();
         });
     </script>
 {% endblock %}
 
 {% block main %}
-    {% if search_form.category_id.vars.errors|length == 0 %}
-    <div class="ec-layoutRole__contentTop">
-        <form name="form1" id="form1" method="get" action="?">
-            {{ form_widget(search_form) }}
-        </form>
+    {% if search_form.category_id.vars.errors|length > 0 %}
         <div class="ec-searchnavRole">
-            <div class="ec-searchnavRole__topicpath"></div>
-            <ol class="ec-topicpath">
-                <li class="ec-topicpath__item"><a href="{{ url('product_list') }}">全商品</a></li>
-                {% if Category is not null %}
-                    {% for Path in Category.path %}
-                        <li class="ec-topicpath__item"><a href="{{ url('product_list') }}?category_id={{ Path.id }}">{{ Path.name }}</a></li>
-                    {% endfor %}
-                {% endif %}
-                {% if search_form.vars.value.name %}
-                    <li class="ec-topicpath__item">「{{ search_form.vars.value.name }}」の検索結果</li>
-                {% endif %}
-            </ol>
+            <p class="errormsg text-danger">ご指定のカテゴリは存在しません</p>
         </div>
-    </div>
-
-    <div class="ec-layoutRole__contents">
-        <div class="ec-layoutRole__main">
-            <div class="ec-layoutRole__mainTop">
+    {% else %}
+        <div class="ec-searchnavRole">
+            <div class="ec-searchnavRole__topicpath">
+                <ol class="ec-topicpath">
+                    <li class="ec-topicpath__item"><a href="{{ url('product_list') }}">全て</a>
+                    </li>
+                    {% if Category is not null %}
+                        {% for Path in Category.path %}
+                            <li class="ec-topicpath__divider">|</li>
+                            <li class="ec-topicpath__item{% if loop.last %}--active{% endif %}"><a
+                                        href="{{ url('product_list') }}?category_id={{ Path.id }}">{{ Path.name }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if search_form.vars.value.name %}
+                        <li class="ec-topicpath__item">「{{ search_form.vars.value.name }}」の検索結果</li>
+                    {% endif %}
+                </ol>
             </div>
-
-            <form name="page_navi_top" id="page_navi_top" action="?">
+            <div class="ec-searchnavRole__infos">
+                <div class="ec-searchnavRole__counter">
+                    {% if pagination.totalItemCount > 0 %}
+                        <span class="ec-font-bold">{{ pagination.totalItemCount }}件</span><span>の商品が見つかりました</span>
+                    {% else %}
+                        <span>お探しの商品は見つかりませんでした</span>
+                    {% endif %}
+                </div>
                 {% if pagination.totalItemCount > 0 %}
-
-                    <div class="ec-searchnavRole">
-                        <div class="ec-searchnavRole__infos">
-                            <div class="ec-searchnavRole__counter"><span class="ec-font-bold">{{ pagination.totalItemCount }}件</span><span>の商品が見つかりました</span>
-                            </div>
-                            <div class="ec-searchnavRole__actions">
-                                <div class="ec-select">
-                                {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-                                {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
-                                </div>
-                            </div>
+                    <div class="ec-searchnavRole__actions">
+                        <div class="ec-select">
+                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+                            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
                         </div>
                     </div>
-
-                    {% for f in disp_number_form.getIterator %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            {{ form_label(f) }}
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for f in order_by_form.getIterator %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            {{ form_label(f) }}
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <p id="result_info_box__item_count" class="intro col-sm-6"><strong style="display: none;"><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>お探しの商品は見つかりませんでした。</p>
                 {% endif %}
-
-                <div class="ec-shelfRole">
-                    <ul class="ec-shelfGrid">
-                        {% for Product in pagination %}
-                        <li class="ec-shelfGrid__item">
-                            <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                                <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
+            </div>
+        </div>
+        {% if pagination.totalItemCount > 0 %}
+            <div class="ec-shelfRole">
+                <ul class="ec-shelfGrid">
+                    {% for Product in pagination %}
+                        <li class="ec-shelfGrid__item"><a href="{{ url('product_detail', {'id': Product.id}) }}"><img
+                                        src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
                                 <p>{{ Product.name }}</p>
                                 {% if Product.description_list %}
                                     <p>{{ Product.description_list|raw|nl2br }}</p>
                                 {% endif %}
                                 <p>
-                                {% if Product.hasProductClass %}
-                                    {% if Product.getPrice02Min == Product.getPrice02Max %}
-                                        {{ Product.getPrice02IncTaxMin|price }}
+                                    {% if Product.hasProductClass %}
+                                        {% if Product.getPrice02Min == Product.getPrice02Max %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                        {% else %}
+                                            {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                        {% endif %}
                                     {% else %}
-                                        {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                        {{ Product.getPrice02IncTaxMin|price }}
                                     {% endif %}
-                                {% else %}
-                                    {{ Product.getPrice02IncTaxMin|price }}
-                                {% endif %}
-                                </p>
-                            </a>
+                                </p></a>
                         </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="ec-pagerRole">
-                    <ul class="ec-pager">
-                        <li class="ec-pager__item"><a href="#">前へ</a></li>
-                        <li class="ec-pager__item"><a href="#">1</a></li>
-                        <li class="ec-pager__item--active"><a href="#">2</a></li>
-                        <li class="ec-pager__item"><a href="#">3</a></li>
-                        <li class="ec-pager__item"><a href="#">次へ</a></li>
-                    </ul>
-                </div>
-            </form>
-            <div class="ec-layoutRole__mainBottom">
+                    {% endfor %}
+                </ul>
             </div>
-        </div>
-            <!-- ▲item_list▲ -->
-    </div>
-
-    {% if pagination.totalItemCount > 0 %}
-        {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
-    {% endif %}
-    {% else %}
-        <p class="errormsg text-danger">ご指定のカテゴリは存在しません。</p>
+            <div class="ec-pagerRole">
+                {% include "pager.twig" with {'pages': pagination.paginationData} %}
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}
