@@ -34,6 +34,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/layout_design.js"></script>
+    <script>
+        $(function(){
+            $('#blockModal').on('show.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                var modal = $(this);
+                modal.find('#blockModalLabel').text(target.data('name'));
+
+                $.ajax({
+                    url: '{{ url('admin_content_layout_view_block') }}',
+                    type: 'POST',
+                    data: {
+                        id: target.data('id')
+                    }
+                }).done(function(data) {
+                    $('#blockModalContent').val(data.source);
+                }).fail(function(data) {
+                    alert('err');
+                });
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -74,7 +95,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -98,7 +122,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -122,7 +149,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -146,7 +176,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -167,6 +200,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -187,7 +224,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -217,7 +257,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -241,7 +284,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -264,7 +310,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ BlockPosition.block_row }}"/>
-                                                    {{ BlockPosition.Block.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ BlockPosition.Block.id }}"
+                                                       data-name="{{ BlockPosition.Block.name }}">{{ BlockPosition.Block.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -296,7 +345,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <input type="hidden" class="block-row"
                                                            name="block_row_{{ loop_index }}"
                                                            value="{{ UnusedBlock.id }}"/>
-                                                    {{ UnusedBlock.name }}
+                                                    <a href="#" class="view_readme" data-toggle="modal"
+                                                       data-target="#blockModal"
+                                                       data-id="{{ UnusedBlock.id }}"
+                                                       data-name="{{ UnusedBlock.name }}">{{ UnusedBlock.name }}</a>
                                                 </div>
                                                 {% set loop_index = loop_index + 1 %}
                                             {% endfor %}
@@ -337,5 +389,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div><!-- /.col -->
         </form>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
+                    <h4 class="modal-title" id="blockModalLabel">{# ブロック名 #}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <textarea class="form-control" id="blockModalContent" rows="20"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -32,6 +32,7 @@ use Eccube\Entity\Layout;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -186,5 +187,33 @@ class LayoutController extends AbstractController
                 'UnusedBlocks' => $UnusedBlocks,
             )
         );
+    }
+
+    public function viewBlock(Application $app, Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $id = $request->get('id');
+
+        if (is_null($id)) {
+            throw new BadRequestHttpException();
+        }
+
+        $Block = $app['eccube.repository.block']->find($id);
+
+        if (is_null($Block)) {
+            return $app->json('みつかりませんでした');
+        }
+
+        // ブロックのソースコードの取得.
+        $file = $app['eccube.repository.block']->getReadTemplateFile($Block->getFileName());
+        $source = $file['tpl_data'];
+
+        return $app->json([
+            'id' => $Block->getId(),
+            'source' => $source,
+        ]);
     }
 }
