@@ -123,28 +123,28 @@ $(function(){
 
 // Slick Slide
 // TODO FIX CLASS NAME
-$(function(){
-    $('.item_visual').slick({
-        dots: false,
-        arrows: false,
-        responsive: [
-            {
-                breakpoint: 768,
-                settings: {
-                    dots: true
-                }
-            }]
-    })
-});
-$(function(){
-    $('.item_nav').slick({//サムネイル画像
-        dots: false,
-        arrows:false,
-        slidesToShow: 3,
-        focusOnSelect: true,
-        asNavFor: '.item_visual',//スライダー部分の要素を記述
-    })
-});
+// $(function(){
+//     $('.item_visual').slick({
+//         dots: false,
+//         arrows: false,
+//         responsive: [
+//             {
+//                 breakpoint: 768,
+//                 settings: {
+//                     dots: true
+//                 }
+//             }]
+//     })
+// });
+// $(function(){
+//     $('.item_nav').slick({//サムネイル画像
+//         dots: false,
+//         arrows:false,
+//         slidesToShow: 3,
+//         focusOnSelect: true,
+//         asNavFor: '.item_visual',//スライダー部分の要素を記述
+//     })
+// });
 
 /***/ })
 /******/ ]);
