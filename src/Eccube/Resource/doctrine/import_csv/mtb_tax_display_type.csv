@@ -1,0 +1,3 @@
+id,name,rank,discriminator_type
+"1","税抜","0","taxdisplaytype"
+"2","税込","1","taxdisplaytype"
