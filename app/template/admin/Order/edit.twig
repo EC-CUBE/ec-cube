@@ -402,6 +402,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_widget(orderDetailForm.class_category_name1) }}
                                     {{ form_widget(orderDetailForm.class_category_name2) }}
                                     {{ form_widget(orderDetailForm.tax_rule) }}
+                                    {{ form_widget(orderDetailForm.tax_type) }}
+                                    {{ form_widget(orderDetailForm.tax_display_type) }}
+                                    {{ form_widget(orderDetailForm.order_item_type) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
@@ -448,7 +451,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
-                                                <span>小計：</span> {{ orderDetailForm.vars.value.total_price|price }}
+                                                <span>小計：</span> {{ orderDetailForm.vars.value.total_price|price }} ({{ orderDetailForm.vars.value.tax_display_type }}) <!-- ({{ orderDetailForm.vars.value.tax_type }}) -->
                                             </div>
                                         </div>
                                         {% if orderDetailForm.vars.value.Shipping.id is defined %}

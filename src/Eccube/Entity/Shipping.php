@@ -204,6 +204,20 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $tracking_number;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="commit_date", type="datetimetz", nullable=true)
+     */
+    private $commit_date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="note", type="string", length=4000, nullable=true)
+     */
+    private $note;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="rank", type="smallint", nullable=true, options={"unsigned":true})
@@ -976,6 +990,30 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set commitDate.
+     *
+     * @param \DateTime|null $commitDate
+     *
+     * @return Order
+     */
+    public function setCommitDate($commitDate = null)
+    {
+        $this->commit_date = $commitDate;
+
+        return $this;
+    }
+
+    /**
+     * Get commitDate.
+     *
+     * @return \DateTime|null
+     */
+    public function getCommitDate()
+    {
+        return $this->commit_date;
+    }
+
+    /**
      * Add shipmentItem.
      *
      * @param \Eccube\Entity\ShipmentItem $shipmentItem
@@ -1203,5 +1241,29 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getTrackingNumber()
     {
         return $this->tracking_number;
+    }
+
+    /**
+     * Set note.
+     *
+     * @param string|null $note
+     *
+     * @return Order
+     */
+    public function setNote($note = null)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note.
+     *
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->note;
     }
 }

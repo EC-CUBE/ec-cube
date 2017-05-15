@@ -224,26 +224,24 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     <div id="number_info_box__body" class="box-body">
                         <div class="row">
                             <div id="number_info_box__order_status" class="col-sm-4">
-                                <h4>配送番号 <span class="number">{{ Shipping.id }}</span></h4>
+                                <h4>出荷番号 <span class="number">{{ Shipping.id }}</span></h4>
                                 <div class="form-group">
                                     配送業者 <span class="number">{{ Shipping.ShippingDeliveryName }}</span>
                                 </div>
-                                <div class="form-group">
-                                    配送伝票番号 <span class="number">{{ Shipping.TrackingNumber|default('未登録') }}</span></h4>
-                                </div>
-                                <div class="form-group">
-                                    配達予定日 <span class="number">{{ Shipping.ShippingDeliveryDate }}</span>
-                                </div>
-                                <div class="form-group">
-                                    出荷日 <span class="number">{#{ Shipping.ShippingDeliveryDate }#}</span>
-                                </div>
-
                                 <div class="form-group">
                                     注文番号 {% for Order in Shipping.Orders  %}<span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span> {% endfor %}
                                 </div>
 
                             </div>
-
+                            <div class="col-sm-6 col-sm-offset-2">
+                                <p id="number_info_box__delivery_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>配達予定日：{{ Shipping.ShippingDeliveryDate ? Shipping.ShippingDeliveryDate |date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>出荷日：{{ Shipping.commit_date ? Shipping.commit_date|date("Y/m/d H:i:s") : '' }}</p>
+                                <div class="form-group">
+                                    出荷伝票番号
+                                    {{ form_widget(form.tracking_number) }}
+                                    {{ form_errors(form.tracking_number) }}
+                                </div>
+                            </div>
                         </div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
@@ -348,9 +346,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     <div id="product_info_list" class="order_list">
                         <div class="btn_area">
                             <ul id="product_info_list__search_menu">
-                                {% if BaseInfo.optionMultipleShipping != 1 %}
                                 <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">注文から商品の追加</a></li>
-                                {% endif %}
                                 <li><button type="submit" class="btn btn-default" name="mode" value="calc">送料の更新</button></li>
                             </ul>
                         </div>
@@ -395,35 +391,35 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
                                                     単価：&yen; {{ orderDetailForm.vars.value.price }}
                                                     {#
-                                                    {{ form_widget(orderDetailForm.price) }}
-                                                    {{ form_errors(orderDetailForm.price) }}
-                                                    #}
+                                                        {{ form_widget(orderDetailForm.price) }}
+                                                        {{ form_errors(orderDetailForm.price) }}
+                                                        #}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
                                                     数量：{{ orderDetailForm.vars.value.quantity }}
                                                     {#
-                                                    {% if BaseInfo.optionMultipleShipping %}
+                                                        {% if BaseInfo.optionMultipleShipping %}
                                                         数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
-                                                    {% else %}
+                                                        {% else %}
                                                         数量：{{ form_widget(orderDetailForm.quantity) }}
-                                                    {% endif %}
-                                                    {{ form_errors(orderDetailForm.quantity) }}
-                                                    #}
+                                                        {% endif %}
+                                                        {{ form_errors(orderDetailForm.quantity) }}
+                                                        #}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
-                                                    税率：8%
+                                                    税率：{{ orderDetailForm.vars.value.tax_rate }}%
                                                     {#
-                                                    <span class="input-group">
+                                                        <span class="input-group">
 
                                                         {{ form_widget(orderDetailForm.tax_rate) }}
                                                         {{ form_errors(orderDetailForm.tax_rate) }}
                                                         <span class="input-group-addon">%</span>
-                                                    </span>
-                                                    #}
+                                                        </span>
+                                                        #}
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
@@ -450,7 +446,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 <div id="shop_info_box__header" class="box-header">
                     <h3 class="box-title">配達用メモ欄</h3>
                 </div><!-- /.box-header -->
-
+                <div id="shop_info_box__note" class="box-body">{{ form_widget(form.note) }}</div>
             </div><!-- /.box -->
 
             <div id="detail__insert_button" class="row btn_area">

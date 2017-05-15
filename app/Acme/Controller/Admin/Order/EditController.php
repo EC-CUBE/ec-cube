@@ -157,7 +157,6 @@ class EditController extends AbstractController
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
-
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
@@ -234,7 +233,10 @@ class EditController extends AbstractController
                         //     $TargetOrder->removeOrderDetail($OrderDetail);
                         //     $app['orm.em']->remove($OrderDetail);
                         // }
-                        dump($TargetOrder->calculateDeliveryFeeTotal());
+                        foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
+                            $ShipmentItem->setOrder($TargetOrder);
+                        }
+
                         $TargetOrder->setDeliveryFeeTotal($TargetOrder->calculateDeliveryFeeTotal()); // FIXME
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
