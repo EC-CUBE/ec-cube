@@ -349,7 +349,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="tableish"
                              id="order_detail_list"
-                             data-prototype=""
+                             data-prototype="
+                                    {% filter escape %}
+                                        {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': form.ShipmentItems.vars.prototype }) }}
+                                    {% endfilter %}"
                         >
                             {#{ form_errors(form.OrderDetailsErrors) }#}
 
@@ -449,7 +452,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="detail__back_button" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     {% if id is not null %}
-                        <p><a href="{{ url('admin/shipping', { page_no: app.session.get('eccube.admin.Shipping.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
+                        <p><a href="{{ url('admin/shipping/page', { page_no: app.session.get('eccube.admin.Shipping.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
                     {% endif %}
                 </div>
             </div>
