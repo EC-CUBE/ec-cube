@@ -65,7 +65,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testCategoryNotFound()
     {
         $client = $this->client;
-        $message = 'ご指定のカテゴリは存在しません。';
+        $message = 'ご指定のカテゴリは存在しません';
         $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => 'XXX')));
         $this->assertContains($message, $crawler->html());
     }

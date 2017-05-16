@@ -47,106 +47,84 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="{{ app.config.front_urlpath }}/js/vendor/jquery-1.11.3.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"><\/script>')</script>
 
-    {# ▼Head COLUMN #}
+    {# Layout: HEAD #}
     {% if PageLayout.Head %}
-        {# ▼上ナビ #}
         {{ include('block.twig', {'Blocks': PageLayout.Head}) }}
-        {# ▲上ナビ #}
     {% endif %}
-    {# ▲Head COLUMN #}
 
 </head>
 <body id="page_{{ app.request_stack.currentrequest.get('_route') }}" class="{{ body_class|default('other_page') }}">
 <div class="ec-layoutRole">
-    <div class="ec-layoutRole__header">
-        <div class="ec-headerRole">
-            {# ▼HeaderInternal COLUMN #}
-            {% if PageLayout.Header %}
-                {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocks': PageLayout.Header}) }}
-                {# ▲上ナビ #}
-            {% endif %}
-            {# ▲HeaderInternal COLUMN #}
+    {# Layout: HEADER #}
+    {% if PageLayout.Header %}
+        <div class="ec-layoutRole__header">
+            {{ include('block.twig', {'Blocks': PageLayout.Header}) }}
         </div>
-    </div>
+    {% endif %}
 
-    {# ▼TOP COLUMN #}
+    {# Layout: CONTENTS_TOP #}
     {% if PageLayout.ContentsTop %}
-        {# ▼上ナビ #}
         <div class="ec-layoutRole__contentTop">
             {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
         </div>
-        {# ▲上ナビ #}
     {% endif %}
-    {# ▲TOP COLUMN #}
 
     <div class="ec-layoutRole__contents">
-        <div class="ec-layoutRole__main">
+        {# Layout: SIDE_LEFT #}
+        {% if PageLayout.SideLeft %}
+            <div class="ec-ec-layoutRole__left">
+                {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
+            </div>
+        {% endif %}
 
-            {# ▼LEFT COLUMN #}
-            {% if PageLayout.SideLeft %}
-                {# ▼左ナビ #}
-                <div class="ec-layoutRole__mainLeft">
-                    {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
-                </div>
-                {# ▲左ナビ #}
-            {% endif %}
-            {# ▲LEFT COLUMN #}
+        {% set layoutRoleMain = 'ec-layoutRole__main' %}
+        {% if PageLayout.ColumnNum == 2 %}
+            {% set layoutRoleMain = 'ec-layoutRole__mainWithColumn' %}
+        {% elseif PageLayout.ColumnNum == 3 %}
+            {% set layoutRoleMain = 'ec-layoutRole__mainBetweenColumn' %}
+        {% endif %}
 
-            {# ▼メイン上部 #}
+        <div class="{{ layoutRoleMain }}">
+            {# Layout: MAIN_TOP #}
             {% if PageLayout.MainTop %}
                 <div class="ec-layoutRole__mainTop">
                     {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
                 </div>
             {% endif %}
-            {# ▲メイン上部 #}
 
-            {# ▼コンテンツメイン #}
+            {# MAIN AREA #}
             {% block main %}{% endblock %}
-            {# ▲コンテンツメイン #}
 
-            {# ▼メイン下部 #}
+            {# Layout: MAIN_Bottom #}
             {% if PageLayout.MainBottom %}
                 <div class="ec-layoutRole__mainBottom">
                     {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
                 </div>
             {% endif %}
-            {# ▲メイン下部 #}
-
-            {# ▼RIGHT COLUMN #}
-            {% if PageLayout.SideRight %}
-                <div class="ec-layoutRole__mainRight">
-                    {# ▼右ナビ #}
-                    {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
-                    {# ▲右ナビ #}
-                </div>
-            {% endif %}
-            {# ▲RIGHT COLUMN #}
-
         </div>
+
+        {# Layout: SIDE_RIGHT #}
+        {% if PageLayout.SideRight %}
+            <div class="ec-layoutRole__mainRight">
+                {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
+            </div>
+        {% endif %}
     </div>
 
-    {# ▼BOTTOM COLUMN #}
+    {# Layout: CONTENTS_BOTTOM #}
     {% if PageLayout.ContentsBottom %}
-        {# ▼下ナビ #}
         <div class="ec-layoutRole__contentBottom">
             {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
         </div>
-        {# ▲下ナビ #}
     {% endif %}
-    {# ▲BOTTOM COLUMN #}
 
-
-    {# ▼Footer COLUMN#}
+    {# Layout: CONTENTS_FOOTER #}
     {% if PageLayout.Footer %}
-        {# ▼上ナビ #}
-        {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
-        {# ▲上ナビ #}
+        <div class="ec-layoutRole__footer">
+            {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
+        </div>
     {% endif %}
-    {# ▲Footer COLUMN#}
-
 </div><!-- ec-layoutRole -->
-
 
 {# TODO display:none
 <div class="ec-overlayRole"></div> #}
