@@ -105,7 +105,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $this->app['url_generator']->generate('entry'));
 
         $this->expected = '新規会員登録';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -124,7 +124,7 @@ class EntryControllerTest extends AbstractWebTestCase
         );
 
         $this->expected = '新規会員登録確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -143,7 +143,7 @@ class EntryControllerTest extends AbstractWebTestCase
         );
 
         $this->expected = '新規会員登録';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -162,7 +162,7 @@ class EntryControllerTest extends AbstractWebTestCase
         );
 
         $this->expected = '新規会員登録';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
