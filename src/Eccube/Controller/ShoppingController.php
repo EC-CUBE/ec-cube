@@ -546,11 +546,11 @@ class ShoppingController extends AbstractController
         if ($form->isSubmitted()) {
             // お届け先変更の時フォームバーリデトしない
             // お問い合わせ内容を保存する
-                $data = $form->getData();
-                $message = $data['message'];
-                $Order->setMessage($message);
-                // 受注情報を更新
-                $app['orm.em']->flush();
+            $data = $form->getData();
+            $message = $data['message'];
+            $Order->setMessage($message);
+            // 受注情報を更新
+            $app['orm.em']->flush();
             // お届け先設定一覧へリダイレクト
             return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
         }
