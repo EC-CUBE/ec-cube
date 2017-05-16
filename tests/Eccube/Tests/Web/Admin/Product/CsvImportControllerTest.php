@@ -483,10 +483,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         /** @var $faker \Faker\Generator */
         $faker = $this->getFaker();
         $categoryName = 'CategoryNameTest';
-        $rank = $faker->randomNumber(5);
         $csv = array(
-            array('カテゴリ名','カテゴリID','表示ランク'),
-            array($categoryName,'',$rank),
+            array('カテゴリ名','カテゴリID'),
+            array($categoryName,''),
         );
         $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
 
@@ -498,11 +497,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
-
-        $category = array_shift($arrCategory);
-        $this->actual = $category->getRank();
-        $this->expected = $rank;
-        $this->verify();
     }
 
 //======================================================================
