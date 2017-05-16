@@ -342,4 +342,69 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         // Header
         $this->assertContains('お届け先の変更', $crawler->filter('title')->html());
     }
+
+    /**
+    * 購入確認画面→お届け先の設定(非会員)→お届け先変更→お問い合わせ確認
+    */
+   public function testShippingEditWithMessageOverLength()
+   {
+        $faker = $this->getFaker();
+        $client = $this->createClient();
+
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+        $crawler = $this->scenarioConfirm($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        // お届け先設定画面への遷移前チェック
+        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
+        // お問合せ内容はエラーなるように桁数を設定する
+        $message = str_repeat('a', 5000);
+        $crawler = $client->request(
+                'POST',
+                $shipping_edit_change_url,
+                array('shopping' =>
+                          array(
+                                  'shippings' => array(
+                                          array(
+                                                  'delivery' => 1,
+                                                  'deliveryTime' => 1
+                                          )
+                                  ),
+                                  'payment' => 3,
+                                  'message' => $message,
+                                  '_token' => 'dummy'
+                          )
+                )
+        );
+
+        // お届け先設定画面へ遷移し POST 送信
+        $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
+        $formData = $this->createNonmemberFormData();
+        $formData['fax'] = array(
+                'fax01' => 111,
+                'fax02' => 111,
+                'fax03' => 111,
+        );
+        unset($formData['email']);
+
+        $crawler = $client->request(
+                'POST',
+                $shipping_edit_url,
+                array('shopping_shipping' => $formData)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        $crawler = $client->followRedirect();
+        // お届け編集の後にお問合せ内容が残ってる確認
+        $this->expected = $message;
+        $this->actual = $crawler->filter('#shopping_message')->html();
+        $this->verify();
+   }
+
 }
