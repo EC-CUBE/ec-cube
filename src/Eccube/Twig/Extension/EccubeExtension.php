@@ -28,6 +28,7 @@ use Eccube\Common\Constant;
 use Eccube\Util\Str;
 use Silex\Application;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class EccubeExtension extends \Twig_Extension
@@ -50,6 +51,7 @@ class EccubeExtension extends \Twig_Extension
 
         $app = $this->app;
         return array(
+            new \Twig_SimpleFunction('has_errors', array($this, 'hasErrors')),
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
@@ -269,5 +271,28 @@ class EccubeExtension extends \Twig_Extension
     public function isObject($value)
     {
         return is_object($value);
+    }
+
+    /**
+     * FormView にエラーが含まれるかを返す.
+     *
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        $hasErrors = false;
+
+        $views = func_get_args();
+        foreach ($views as $view) {
+            if (!$view instanceof FormView) {
+                throw new \InvalidArgumentException();
+            }
+            if (count($view->vars['errors'])) {
+                $hasErrors = true;
+                break;
+            };
+        }
+
+        return $hasErrors;
     }
 }
