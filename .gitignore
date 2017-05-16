@@ -34,3 +34,4 @@ composer.phar
 /reports/*
 .idea
 *.php~
+.env
