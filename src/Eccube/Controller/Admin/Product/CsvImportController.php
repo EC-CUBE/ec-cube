@@ -470,15 +470,6 @@ class CsvImportController
                             }
                         }
 
-                        // Rank
-                        if (isset($row['表示ランク']) && strlen($row['表示ランク']) > 0) {
-                            $Category->setRank(Str::trimAll($row['表示ランク']));
-                        } else {
-                            if (!$Category->getRank()) {
-                                $Category->setRank(1);
-                            }
-                        }
-
                         if (!isset($row['カテゴリ名']) || Str::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリ名が設定されていません。');
                             return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -503,6 +494,7 @@ class CsvImportController
                             }
                         }
                         $Category->setParent($ParentCategory);
+
                         // Level
                         if (isset($row['階層']) && Str::isNotBlank($row['階層'])) {
                             if ($ParentCategory == null && $row['階層'] != 1) {
@@ -557,10 +549,9 @@ class CsvImportController
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
-                        $this->em->persist($Category);
+                        $app['eccube.repository.category']->save($Category);
                     }
 
-                    $this->em->flush();
                     $this->em->getConnection()->commit();
 
                     log_info('カテゴリCSV登録完了');
