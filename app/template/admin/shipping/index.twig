@@ -332,7 +332,7 @@
                                                         <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber|default('未登録') }} </td>
                                                         <td id="result_list_main__name--{{ Shipping.id }}">{{ Shipping.name01 }} {{ Shipping.name02 }}</td>
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
-                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate }}</td>
+                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{#{ Shipping.ShippingDeliveryDate }#}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{#{ Shipping.payment_total|number_format }#}</td>
 
                                                     </tr>
@@ -344,7 +344,7 @@
                             </form>
                         </div><!-- /.box-body -->
                         {% if pagination.totalItemCount > 0 %}
-                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
+                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin/shipping/page' } %}
                         {% endif %}
                     {% else %}
                         <div class="box-header with-arrow">

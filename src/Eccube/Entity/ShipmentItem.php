@@ -557,7 +557,10 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
 
     public function getOrderId()
     {
-        return $this->getOrder()->getId();
+        if (is_object($this->getOrder())) {
+            return $this->getOrder()->getId();
+        }
+        return null;
     }
 
     /**

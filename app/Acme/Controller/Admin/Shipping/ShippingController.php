@@ -15,10 +15,12 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Form\Type\Admin\ShipmentItemType;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -29,6 +31,8 @@ class ShippingController
 {
     /**
      * @Route("/", name="admin/shipping")
+     * @Route("/page/{page_no}", name="admin/shipping/page")
+     *
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("shipping/index.twig")
      *
@@ -265,7 +269,7 @@ class ShippingController
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
-            $OrderDetails = $TargetOrder->getOrderDetails();
+            $OrderDetails = $TargetOrder->getShipmentItems();
             $taxtotal = 0;
             foreach ($OrderDetails as $OrderDetail) {
                 $tax = $app['eccube.service.tax_rule']
@@ -274,37 +278,25 @@ class ShippingController
 
                 $taxtotal += $tax * $OrderDetail->getQuantity();
             }
-            $TargetOrder->setTax($taxtotal);
-
-            // 入力情報にもとづいて再計算.
-            // TODO 購入フローのように、明細の自動生成をどこまで行うか検討する. 単純集計でよいような気がする
-            // 集計は,この1行でいけるはず
-            // プラグインで Strategy をセットしたりする
-            // TODO 編集前のOrder情報が必要かもしれない
-            $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
 
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
 
                     log_info('受注登録開始', array($TargetOrder->getId()));
-
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                    if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
-                        log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
-                        $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
-                    } elseif ($form->isValid()) {
+                    if ($form->isValid()) {
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
                         // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
                         // 受注日/発送日/入金日の更新.
-                        $this->updateDate($app, $TargetOrder, $OriginOrder);
+                        // $this->updateDate($app, $TargetOrder, $OriginOrder);
 
-                        // 画面上で削除された明細は、受注明細で削除されているものをremove
+                        // 画面上で削除された明細をremove
                         foreach ($OriginalOrderDetails as $OrderDetail) {
-                            if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
-                                $app['orm.em']->remove($OrderDetail);
+                            if (false === $TargetOrder->getShipmentItems()->contains($OrderDetail)) {
+                                $OrderDetail->setShipping(null);
                             }
                         }
 
@@ -339,22 +331,24 @@ class ShippingController
                         } else {
                             // 単一配送の場合, ShippimentItemsはOrderDetailの内容をコピーし、delete/insertで作り直す.
                             // TODO あまり本質的な処理ではないので簡略化したい.
-                            $Shipping = $TargetOrder->getShippings()->first();
-                            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
-                                $Shipping->removeShipmentItem($ShipmentItem);
-                                $app['orm.em']->remove($ShipmentItem);
-                            }
-                            foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                $OrderDetail->setOrder($TargetOrder);
-                                if ($OrderDetail->getProduct()) {
-                                    $ShipmentItem = new ShipmentItem();
-                                    $ShipmentItem->copyProperties($OrderDetail);
-                                    $ShipmentItem->setShipping($Shipping);
-                                    $Shipping->addShipmentItem($ShipmentItem);
-                                }
-                            }
+                            // $Shipping = $TargetOrder->getShippings()->first();
+                            // foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
+                            //     $Shipping->removeShipmentItem($ShipmentItem);
+                            //     $app['orm.em']->remove($ShipmentItem);
+                            // }
+                            // foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                            //     $OrderDetail->setOrder($TargetOrder);
+                            //     if ($OrderDetail->getProduct()) {
+                            //         $ShipmentItem = new ShipmentItem();
+                            //         $ShipmentItem->copyProperties($OrderDetail);
+                            //         $ShipmentItem->setShipping($Shipping);
+                            //         $Shipping->addShipmentItem($ShipmentItem);
+                            //     }
+                            // }
                         }
-
+                        foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
+                            $ShipmentItem->setShipping($TargetOrder);
+                        }
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
@@ -380,7 +374,7 @@ class ShippingController
 
                         log_info('受注登録完了', array($TargetOrder->getId()));
 
-                        return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
+                        return $app->redirect($app->url('admin/shipping/edit', array('id' => $TargetOrder->getId())));
                     }
 
                     break;
@@ -458,5 +452,97 @@ class ShippingController
             'id' => $id,
             'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
         ];
+    }
+
+    /**
+     * @Route("/search/product", name="admin_shipping_search_product")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Template("shipping/search_product.twig")
+     *
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function searchProduct(Application $app, Request $request, $page_no = null)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search product start.');
+            $page_count = $app['config']['default_page_count'];
+            $session = $app['session'];
+
+            if ('POST' === $request->getMethod()) {
+
+                $page_no = 1;
+
+                $searchData = array(
+                    'id' => $request->get('id'),
+                );
+
+                if ($categoryId = $request->get('category_id')) {
+                    $Category = $app['eccube.repository.category']->find($categoryId);
+                    $searchData['category_id'] = $Category;
+                }
+
+                $session->set('eccube.admin.order.product.search', $searchData);
+                $session->set('eccube.admin.order.product.search.page_no', $page_no);
+            } else {
+                $searchData = (array)$session->get('eccube.admin.order.product.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.product.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.product.search.page_no', $page_no);
+                }
+            }
+            // TODO ShipmentItemRepository に移動
+            $qb = $app['eccube.repository.shipment_item']->createQueryBuilder('s')
+                ->where('s.Shipping is null AND s.Order is not null')
+                ->andWhere('s.OrderItemType in (1, 2)');
+
+            $event = new EventArgs(
+                array(
+                    'qb' => $qb,
+                    'searchData' => $searchData,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
+
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                array('wrap-queries' => true)
+            );
+
+            $ShipmentItems = $pagination->getItems();
+
+            if (empty($ShipmentItems)) {
+                $app['monolog']->addDebug('search product not found.');
+            }
+
+            $forms = array();
+            foreach ($ShipmentItems as $ShipmentItem) {
+                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+                $builder = $app['form.factory']->createNamedBuilder('', ShipmentItemType::class, $ShipmentItem);
+                $addCartForm = $builder->getForm();
+                $forms[$ShipmentItem->getId()] = $addCartForm->createView();
+            }
+
+            $event = new EventArgs(
+                array(
+                    'forms' => $forms,
+                    'ShipmentItems' => $ShipmentItems,
+                    'pagination' => $pagination,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
+
+            return [
+                'forms' => $forms,
+                'ShipmentItems' => $ShipmentItems,
+                'pagination' => $pagination,
+            ];
+        }
     }
 }

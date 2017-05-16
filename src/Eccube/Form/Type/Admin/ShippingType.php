@@ -220,7 +220,7 @@ class ShippingType extends AbstractType
                     return;
                 }
 
-                $value = $data['Delivery'];
+                $value = array_key_exists('Delivery', $data) ? $data['Delivery'] : null;
                 if (empty($value)) {
                     $value = 0;
                 }

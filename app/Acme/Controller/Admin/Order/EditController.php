@@ -174,7 +174,7 @@ class EditController extends AbstractController
                         // 画面上で削除された明細をremove
                         foreach ($OriginalShipmentItems as $ShipmentItem) {
                             if (false === $TargetOrder->getShipmentItems()->contains($ShipmentItem)) {
-                                $app['orm.em']->remove($ShipmentItem);
+                                $ShipmentItem->setOrder(null);
                             }
                         }
 
