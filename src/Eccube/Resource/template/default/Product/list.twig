@@ -52,6 +52,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     {% else %}
         <div class="ec-searchnavRole">
+            <form name="form1" id="form1" method="get" action="?">
+                {{ form_widget(search_form) }}
+            </form>
             <div class="ec-searchnavRole__topicpath">
                 <ol class="ec-topicpath">
                     <li class="ec-topicpath__item"><a href="{{ url('product_list') }}">全て</a>
