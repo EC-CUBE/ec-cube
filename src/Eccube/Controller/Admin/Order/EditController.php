@@ -48,6 +48,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class EditController extends AbstractController
 {
+
     /**
      * 受注登録/編集画面.
      *
@@ -81,25 +82,29 @@ class EditController extends AbstractController
 
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
-        $OriginalOrderDetails = new ArrayCollection();
+        // $OriginalOrderDetails = new ArrayCollection();
         // 編集前のお届け先情報を保持
         $OriginalShippings = new ArrayCollection();
         // 編集前のお届け先のアイテム情報を保持
         $OriginalShipmentItems = new ArrayCollection();
 
-        foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-            $OriginalOrderDetails->add($OrderDetail);
-        }
+        // foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+        //     $OriginalOrderDetails->add($OrderDetail);
+        // }
 
         // 編集前の情報を保持
-        foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
-            foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
-                // アイテム情報
-                $OriginalShipmentItems->add($tmpOriginalShipmentItem);
-            }
-            // お届け先情報
-            $OriginalShippings->add($tmpOriginalShippings);
+        foreach ($TargetOrder->getShipmentItems() as $tmpShipmentItem) {
+            $OriginalShipmentItems->add($tmpShipmentItem);
         }
+        
+        // foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
+        //     foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
+        //         // アイテム情報
+        //         $OriginalShipmentItems->add($tmpOriginalShipmentItem);
+        //     }
+        //     // お届け先情報
+        //     $OriginalShippings->add($tmpOriginalShippings);
+        // }
 
         $builder = $app['form.factory']
             ->createBuilder(OrderType::class, $TargetOrder);
@@ -109,7 +114,7 @@ class EditController extends AbstractController
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                // 'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -124,7 +129,7 @@ class EditController extends AbstractController
                     'builder' => $builder,
                     'OriginOrder' => $OriginOrder,
                     'TargetOrder' => $TargetOrder,
-                    'OriginOrderDetails' => $OriginalOrderDetails,
+                    // 'OriginOrderDetails' => $OriginalOrderDetails,
                 ),
                 $request
             );
@@ -132,16 +137,16 @@ class EditController extends AbstractController
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
-            $OrderDetails = $TargetOrder->getOrderDetails();
-            $taxtotal = 0;
-            foreach ($OrderDetails as $OrderDetail) {
-                $tax = $app['eccube.service.tax_rule']
-                    ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-                $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+            // $OrderDetails = $TargetOrder->getOrderDetails();
+            // $taxtotal = 0;
+            // foreach ($OrderDetails as $OrderDetail) {
+            //     $tax = $app['eccube.service.tax_rule']
+            //         ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
+            //     $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
-                $taxtotal += $tax * $OrderDetail->getQuantity();
-            }
-            $TargetOrder->setTax($taxtotal);
+            //     $taxtotal += $tax * $OrderDetail->getQuantity();
+            // }
+            // $TargetOrder->setTax($taxtotal);
 
             // 入力情報にもとづいて再計算.
             // TODO 購入フローのように、明細の自動生成をどこまで行うか検討する. 単純集計でよいような気がする
@@ -153,7 +158,6 @@ class EditController extends AbstractController
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
-
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
@@ -168,10 +172,10 @@ class EditController extends AbstractController
                         // 受注日/発送日/入金日の更新.
                         $this->updateDate($app, $TargetOrder, $OriginOrder);
 
-                        // 画面上で削除された明細は、受注明細で削除されているものをremove
-                        foreach ($OriginalOrderDetails as $OrderDetail) {
-                            if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
-                                $app['orm.em']->remove($OrderDetail);
+                        // 画面上で削除された明細をremove
+                        foreach ($OriginalShipmentItems as $ShipmentItem) {
+                            if (false === $TargetOrder->getShipmentItems()->contains($ShipmentItem)) {
+                                $ShipmentItem->setOrder(null);
                             }
                         }
 
@@ -207,21 +211,34 @@ class EditController extends AbstractController
                             // 単一配送の場合, ShippimentItemsはOrderDetailの内容をコピーし、delete/insertで作り直す.
                             // TODO あまり本質的な処理ではないので簡略化したい.
                             $Shipping = $TargetOrder->getShippings()->first();
-                            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
-                                $Shipping->removeShipmentItem($ShipmentItem);
-                                $app['orm.em']->remove($ShipmentItem);
-                            }
-                            foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                $OrderDetail->setOrder($TargetOrder);
-                                if ($OrderDetail->getProduct()) {
-                                    $ShipmentItem = new ShipmentItem();
-                                    $ShipmentItem->copyProperties($OrderDetail);
-                                    $ShipmentItem->setShipping($Shipping);
-                                    $Shipping->addShipmentItem($ShipmentItem);
+                            /*
+                            if (is_object($Shipping)) {
+                                foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
+                                    $Shipping->removeShipmentItem($ShipmentItem);
+                                    $app['orm.em']->remove($ShipmentItem);
+                                }
+                                foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                                    $OrderDetail->setOrder($TargetOrder);
+                                    if ($OrderDetail->getProduct()) {
+                                        $ShipmentItem = new ShipmentItem();
+                                        $ShipmentItem->copyProperties($OrderDetail);
+                                        $ShipmentItem->setShipping($Shipping);
+                                        $Shipping->addShipmentItem($ShipmentItem);
+                                    }
                                 }
                             }
+                            */
+                        }
+                        // foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                        //     // XXX OrderDetail は使用しないため削除
+                        //     $TargetOrder->removeOrderDetail($OrderDetail);
+                        //     $app['orm.em']->remove($OrderDetail);
+                        // }
+                        foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
+                            $ShipmentItem->setOrder($TargetOrder);
                         }
 
+                        $TargetOrder->setDeliveryFeeTotal($TargetOrder->calculateDeliveryFeeTotal()); // FIXME
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
@@ -236,7 +253,7 @@ class EditController extends AbstractController
                                 'form' => $form,
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
-                                'OriginOrderDetails' => $OriginalOrderDetails,
+                                // 'OriginOrderDetails' => $OriginalOrderDetails,
                                 //'Customer' => $Customer,
                             ),
                             $request
@@ -280,7 +297,7 @@ class EditController extends AbstractController
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                // 'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -297,7 +314,7 @@ class EditController extends AbstractController
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                // 'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
