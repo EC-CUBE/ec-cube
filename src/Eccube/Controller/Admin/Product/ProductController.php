@@ -203,7 +203,7 @@ class ProductController extends AbstractController
                     }
 
                     $extension = $image->getClientOriginalExtension();
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
@@ -306,180 +306,176 @@ class ProductController extends AbstractController
         }
         $form['Tag']->setData($Tags);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                log_info('商品登録開始', array($id));
-                $Product = $form->getData();
+        $form->handleRequest($request);
 
-                if (!$has_class) {
-                    $ProductClass = $form['class']->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            log_info('商品登録開始', array($id));
+            $Product = $form->getData();
 
-                    // 個別消費税
-                    $BaseInfo = $app['eccube.repository.base_info']->get();
-                    if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
-                        if ($ProductClass->getTaxRate() !== null) {
-                            if ($ProductClass->getTaxRule()) {
-                                if ($ProductClass->getTaxRule()->getDelFlg() == Constant::ENABLED) {
-                                    $ProductClass->getTaxRule()->setDelFlg(Constant::DISABLED);
-                                }
+            if (!$has_class) {
+                $ProductClass = $form['class']->getData();
 
-                                $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
-                            } else {
-                                $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
-                                $taxrule->setTaxRate($ProductClass->getTaxRate());
-                                $taxrule->setApplyDate(new \DateTime());
-                                $taxrule->setProduct($Product);
-                                $taxrule->setProductClass($ProductClass);
-                                $ProductClass->setTaxRule($taxrule);
+                // 個別消費税
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+                if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+                    if ($ProductClass->getTaxRate() !== null) {
+                        if ($ProductClass->getTaxRule()) {
+                            if ($ProductClass->getTaxRule()->getDelFlg() == Constant::ENABLED) {
+                                $ProductClass->getTaxRule()->setDelFlg(Constant::DISABLED);
                             }
+
+                            $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
                         } else {
-                            if ($ProductClass->getTaxRule()) {
-                                $ProductClass->getTaxRule()->setDelFlg(Constant::ENABLED);
-                            }
+                            $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
+                            $taxrule->setTaxRate($ProductClass->getTaxRate());
+                            $taxrule->setApplyDate(new \DateTime());
+                            $taxrule->setProduct($Product);
+                            $taxrule->setProductClass($ProductClass);
+                            $ProductClass->setTaxRule($taxrule);
                         }
-                    }
-                    $app['orm.em']->persist($ProductClass);
-
-                    // 在庫情報を作成
-                    if (!$ProductClass->getStockUnlimited()) {
-                        $ProductStock->setStock($ProductClass->getStock());
                     } else {
-                        // 在庫無制限時はnullを設定
-                        $ProductStock->setStock(null);
-                    }
-                    $app['orm.em']->persist($ProductStock);
-                }
-
-                // カテゴリの登録
-                // 一度クリア
-                /* @var $Product \Eccube\Entity\Product */
-                foreach ($Product->getProductCategories() as $ProductCategory) {
-                    $Product->removeProductCategory($ProductCategory);
-                    $app['orm.em']->remove($ProductCategory);
-                }
-                $app['orm.em']->persist($Product);
-                $app['orm.em']->flush();
-
-                $count = 1;
-                $Categories = $form->get('Category')->getData();
-                $categoriesIdList = array();
-                foreach ($Categories as $Category) {
-                    foreach($Category->getPath() as $ParentCategory){
-                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
-                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
-                            $app['orm.em']->persist($ProductCategory);
-                            $count++;
-                            /* @var $Product \Eccube\Entity\Product */
-                            $Product->addProductCategory($ProductCategory);
-                            $categoriesIdList[$ParentCategory->getId()] = true;
+                        if ($ProductClass->getTaxRule()) {
+                            $ProductClass->getTaxRule()->setDelFlg(Constant::ENABLED);
                         }
                     }
-                    if (!isset($categoriesIdList[$Category->getId()])){
-                        $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                }
+                $app['orm.em']->persist($ProductClass);
+
+                // 在庫情報を作成
+                if (!$ProductClass->getStockUnlimited()) {
+                    $ProductStock->setStock($ProductClass->getStock());
+                } else {
+                    // 在庫無制限時はnullを設定
+                    $ProductStock->setStock(null);
+                }
+                $app['orm.em']->persist($ProductStock);
+            }
+
+            // カテゴリの登録
+            // 一度クリア
+            /* @var $Product \Eccube\Entity\Product */
+            foreach ($Product->getProductCategories() as $ProductCategory) {
+                $Product->removeProductCategory($ProductCategory);
+                $app['orm.em']->remove($ProductCategory);
+            }
+            $app['orm.em']->persist($Product);
+            $app['orm.em']->flush();
+
+            $count = 1;
+            $Categories = $form->get('Category')->getData();
+            $categoriesIdList = array();
+            foreach ($Categories as $Category) {
+                foreach ($Category->getPath() as $ParentCategory) {
+                    if (!isset($categoriesIdList[$ParentCategory->getId()])) {
+                        $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                         $app['orm.em']->persist($ProductCategory);
                         $count++;
                         /* @var $Product \Eccube\Entity\Product */
                         $Product->addProductCategory($ProductCategory);
-                        $categoriesIdList[$Category->getId()] = true;
+                        $categoriesIdList[$ParentCategory->getId()] = true;
                     }
                 }
-
-                // 画像の登録
-                $add_images = $form->get('add_images')->getData();
-                foreach ($add_images as $add_image) {
-                    $ProductImage = new \Eccube\Entity\ProductImage();
-                    $ProductImage
-                        ->setFileName($add_image)
-                        ->setProduct($Product)
-                        ->setRank(1);
-                    $Product->addProductImage($ProductImage);
-                    $app['orm.em']->persist($ProductImage);
-
-                    // 移動
-                    $file = new File($app['config']['image_temp_realdir'] . '/' . $add_image);
-                    $file->move($app['config']['image_save_realdir']);
+                if (!isset($categoriesIdList[$Category->getId()])) {
+                    $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                    $app['orm.em']->persist($ProductCategory);
+                    $count++;
+                    /* @var $Product \Eccube\Entity\Product */
+                    $Product->addProductCategory($ProductCategory);
+                    $categoriesIdList[$Category->getId()] = true;
                 }
+            }
 
-                // 画像の削除
-                $delete_images = $form->get('delete_images')->getData();
-                foreach ($delete_images as $delete_image) {
-                    $ProductImage = $app['eccube.repository.product_image']
-                        ->findOneBy(array('file_name' => $delete_image));
+            // 画像の登録
+            $add_images = $form->get('add_images')->getData();
+            foreach ($add_images as $add_image) {
+                $ProductImage = new \Eccube\Entity\ProductImage();
+                $ProductImage
+                    ->setFileName($add_image)
+                    ->setProduct($Product)
+                    ->setRank(1);
+                $Product->addProductImage($ProductImage);
+                $app['orm.em']->persist($ProductImage);
 
-                    // 追加してすぐに削除した画像は、Entityに追加されない
-                    if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
-                        $Product->removeProductImage($ProductImage);
-                        $app['orm.em']->remove($ProductImage);
+                // 移動
+                $file = new File($app['config']['image_temp_realdir'].'/'.$add_image);
+                $file->move($app['config']['image_save_realdir']);
+            }
 
-                    }
-                    $app['orm.em']->persist($Product);
+            // 画像の削除
+            $delete_images = $form->get('delete_images')->getData();
+            foreach ($delete_images as $delete_image) {
+                $ProductImage = $app['eccube.repository.product_image']
+                    ->findOneBy(array('file_name' => $delete_image));
 
-                    // 削除
-                    if (!empty($delete_image)) {
-                        $fs = new Filesystem();
-                        $fs->remove($app['config']['image_save_realdir'].'/'.$delete_image);
-                    }
+                // 追加してすぐに削除した画像は、Entityに追加されない
+                if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
+                    $Product->removeProductImage($ProductImage);
+                    $app['orm.em']->remove($ProductImage);
+
                 }
                 $app['orm.em']->persist($Product);
-                $app['orm.em']->flush();
 
-
-                $ranks = $request->get('rank_images');
-                if ($ranks) {
-                    foreach ($ranks as $rank) {
-                        list($filename, $rank_val) = explode('//', $rank);
-                        $ProductImage = $app['eccube.repository.product_image']
-                            ->findOneBy(array(
-                                'file_name' => $filename,
-                                'Product' => $Product,
-                            ));
-                        $ProductImage->setRank($rank_val);
-                        $app['orm.em']->persist($ProductImage);
-                    }
+                // 削除
+                if (!empty($delete_image)) {
+                    $fs = new Filesystem();
+                    $fs->remove($app['config']['image_save_realdir'].'/'.$delete_image);
                 }
-                $app['orm.em']->flush();
-
-                // 商品タグの登録
-                // 商品タグを一度クリア
-                $ProductTags = $Product->getProductTag();
-                foreach ($ProductTags as $ProductTag) {
-                    $Product->removeProductTag($ProductTag);
-                    $app['orm.em']->remove($ProductTag);
-                }
-
-                // 商品タグの登録
-                $Tags = $form->get('Tag')->getData();
-                foreach ($Tags as $Tag) {
-                    $ProductTag = new ProductTag();
-                    $ProductTag
-                        ->setProduct($Product)
-                        ->setTag($Tag);
-                    $Product->addProductTag($ProductTag);
-                    $app['orm.em']->persist($ProductTag);
-                }
-
-                $Product->setUpdateDate(new \DateTime());
-                $app['orm.em']->flush();
-
-                log_info('商品登録完了', array($id));
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Product' => $Product,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
-
-                $app->addSuccess('admin.register.complete', 'admin');
-
-                return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
-            } else {
-                log_info('商品登録チェックエラー', array($id));
-                $app->addError('admin.register.failed', 'admin');
             }
+            $app['orm.em']->persist($Product);
+            $app['orm.em']->flush();
+
+
+            $ranks = $request->get('rank_images');
+            if ($ranks) {
+                foreach ($ranks as $rank) {
+                    list($filename, $rank_val) = explode('//', $rank);
+                    $ProductImage = $app['eccube.repository.product_image']
+                        ->findOneBy(array(
+                            'file_name' => $filename,
+                            'Product' => $Product,
+                        ));
+                    $ProductImage->setRank($rank_val);
+                    $app['orm.em']->persist($ProductImage);
+                }
+            }
+            $app['orm.em']->flush();
+
+            // 商品タグの登録
+            // 商品タグを一度クリア
+            $ProductTags = $Product->getProductTag();
+            foreach ($ProductTags as $ProductTag) {
+                $Product->removeProductTag($ProductTag);
+                $app['orm.em']->remove($ProductTag);
+            }
+
+            // 商品タグの登録
+            $Tags = $form->get('Tag')->getData();
+            foreach ($Tags as $Tag) {
+                $ProductTag = new ProductTag();
+                $ProductTag
+                    ->setProduct($Product)
+                    ->setTag($Tag);
+                $Product->addProductTag($ProductTag);
+                $app['orm.em']->persist($ProductTag);
+            }
+
+            $Product->setUpdateDate(new \DateTime());
+            $app['orm.em']->flush();
+
+            log_info('商品登録完了', array($id));
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Product' => $Product,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
+
+            $app->addSuccess('admin.register.complete', 'admin');
+
+            return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
         }
 
         // 検索結果の保持
@@ -522,6 +518,7 @@ class ProductController extends AbstractController
             $Product = $app['eccube.repository.product']->find($id);
             if (!$Product) {
                 $app->deleteMessage();
+
                 return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
             }
 
@@ -651,10 +648,10 @@ class ProductController extends AbstractController
 
                     // 画像ファイルを新規作成
                     $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($app['config']['image_save_realdir'] . '/' . $Image->getFileName(), $app['config']['image_save_realdir'] . '/' . $filename);
+                        $fs->copy($app['config']['image_save_realdir'].'/'.$Image->getFileName(), $app['config']['image_save_realdir'].'/'.$filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
@@ -717,6 +714,7 @@ class ProductController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function export(Application $app, Request $request)
@@ -812,20 +810,22 @@ class ProductController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'product_' . $now->format('YmdHis') . '.csv';
+        $filename = 'product_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('商品CSV出力ファイル名', array($filename));
 
         return $response;
     }
-    
+
     /**
      * ProductCategory作成
+     *
      * @param \Eccube\Entity\Product $Product
      * @param \Eccube\Entity\Category $Category
+     *
      * @return \Eccube\Entity\ProductCategory
      */
     private function createProductCategory($Product, $Category, $count)
@@ -836,7 +836,7 @@ class ProductController extends AbstractController
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
         $ProductCategory->setRank($count);
-        
+
         return $ProductCategory;
     }
 }
