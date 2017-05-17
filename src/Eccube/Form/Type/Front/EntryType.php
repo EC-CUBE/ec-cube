@@ -100,8 +100,7 @@ class EntryType extends AbstractType
             ))
             ->add('job', JobType::class, array(
                 'required' => false,
-            ))
-            ->add('save', SubmitType::class, array('label' => 'この内容で登録する'));
+            ));
     }
 
     /**

@@ -45,7 +45,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="ec-off1Grid__cell">
                 <form method="post" action="{{ url('entry') }}" novalidate>
                     {{ form_widget(form._token) }}
-                    <input type="hidden" name="mode" value="confirm">
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
@@ -229,7 +228,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <p>
                                     <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">利用規約</a><span>に同意してお進みください。</span>
                                 </p>
-                                <button class="ec-blockBtn--action" type="submit">同意する</button>
+                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">同意する</button>
                                 <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">同意しない</a>
                             </div>
                         </div>
