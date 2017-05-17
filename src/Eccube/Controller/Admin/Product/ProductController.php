@@ -96,8 +96,9 @@ class ProductController extends AbstractController
                     array('wrap-queries' => true)
                 );
 
-                // sessionのデータ保持
-                $session->set('eccube.admin.product.search', $searchData);
+                // sessionに検索条件を保持
+                $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.product.search', $viewData);
                 $session->set('eccube.admin.product.search.page_no', $page_no);
             }
         } else {
@@ -107,33 +108,44 @@ class ProductController extends AbstractController
                 $session->remove('eccube.admin.product.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.product.search');
                 if (is_null($page_no)) {
                     $page_no = intval($session->get('eccube.admin.product.search.page_no'));
                 } else {
                     $session->set('eccube.admin.product.search.page_no', $page_no);
                 }
-                if (!is_null($searchData)) {
+                $viewData  = $session->get('eccube.admin.product.search');
+                if (!is_null($viewData)) {
                     // 公開ステータス
                     // 1:公開, 2:非公開, 3:在庫なし
-                    $status = $request->get('status');
-                    if (empty($status)) {
-                        $searchData['link_status'] = null;
-                        $searchData['stock_status'] = null;
-                    } else {
-                        $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
-                        $searchData['stock_status'] = null;
-                        if ($status == $app['config']['admin_product_stock_status']) {
-                            // 在庫なし
-                            $searchData['link_status'] = null;
-                            $searchData['stock_status'] = Constant::DISABLED;
+                    $linkStatus = $request->get('status');
+                    if (!empty($linkStatus)) {
+                        // リンクステータスは在庫なし:3 以外場合
+                        if ($linkStatus != $app['config']['admin_product_stock_status']) {
+                            $viewData['link_status'] = $linkStatus;
+                            $viewData['stock_status'] = null;
+                            $viewData['status'] = null;
+                        }else{
+                            // リンクステータスは在庫なし:3です
+                            $viewData['link_status'] = null;
+                            $viewData['stock_status'] = Constant::DISABLED;
+                            $viewData['status'] = null;
                         }
-                        $page_status = $status;
+                        // ページステータスを設定します（リンクステータスAタグ表示のために）
+                        $page_status = $linkStatus;
                     }
-                    $session->set('eccube.admin.product.search', $searchData);
 
                     // 表示件数
                     $page_count = $request->get('page_count', $page_count);
+                    $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
+                    if($viewData['link_status']){
+                        $searchData['link_status'] = $app['eccube.repository.master.disp']->find($viewData['link_status']);
+                    }
+                    // リンクステータス[在庫なし]設定されている場合は検索パラメター設定する
+                    if(isset($viewData['stock_status'])){
+                        $searchData['stock_status'] = $viewData['stock_status'];
+                    }
+
+                    $session->set('eccube.admin.product.search', $viewData);
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
 
@@ -147,30 +159,16 @@ class ProductController extends AbstractController
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
                     $searchData = $event->getArgument('searchData');
 
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
                         $page_count,
                         array('wrap-queries' => true)
                     );
-
-                    // セッションから検索条件を復元(カテゴリ)
-                    if (!empty($searchData['category_id'])) {
-                        $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
                     }
-
-                    // セッションから検索条件を復元(スーテタス)
-                    if (isset($searchData['status']) && count($searchData['status']) > 0) {
-                        $status_ids = array();
-                        foreach ($searchData['status'] as $Status) {
-                            $status_ids[] = $Status->getId();
                         }
-                        $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                     }
-                    $searchForm->setData($searchData);
-                }
-            }
-        }
 
         return $app->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
