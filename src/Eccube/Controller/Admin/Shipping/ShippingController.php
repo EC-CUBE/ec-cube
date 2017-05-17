@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\Controller\Admin\Shipping;
+namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
