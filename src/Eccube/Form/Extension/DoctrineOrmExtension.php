@@ -20,15 +20,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace Eccube\Form\Extension;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DoctrineOrmExtension extends AbstractTypeExtension
 {
@@ -67,17 +70,41 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 $names = $meta->getFieldNames();
                 foreach ($names as $name) {
                     $mapping = $meta->getFieldMapping($name);
-                    // eccube_form_renderがtrueのときに実行
-                    // -> @ORM\Column(..., options={"eccube_form_render": true})
-                    if (isset($mapping['options']['eccube_form_render']) && $mapping['options']['eccube_form_render']) {
-                        $fieldName = $mapping['fieldName'];
-                        if (!isset($form[$fieldName])) {
-                            $form->add($mapping['fieldName']);
+                    if (isset($mapping['options']['eccube_form_options'])) {
+                        $options = $mapping['options']['eccube_form_options'];
+                        if (isset($options['auto_render']) && true === $options['auto_render']) {
+                            $fieldName = $mapping['fieldName'];
+                            if (!isset($form[$fieldName])) {
+                                $form->add(
+                                    $mapping['fieldName'],
+                                    null,
+                                    [
+                                        'eccube_form_options' => $options,
+                                    ]
+                                );
+                            }
                         }
                     }
                 }
                 // TODO Assosiationも対応する
             }
+        );
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $options = $form->getConfig()->getOption('eccube_form_options');
+        $view->vars['eccube_form_options'] = $options;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault(
+            'eccube_form_options',
+            [
+                'auto_render' => false,
+                'form_theme' => null,
+            ]
         );
     }
 
