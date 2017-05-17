@@ -91,21 +91,21 @@ class ShippingController
                 );
 
                 // sessionのデータ保持
-                $session->set('eccube.admin.order.search', $searchData);
-                $session->set('eccube.admin.order.search.page_no', $page_no);
+                $session->set('eccube.admin.shipping.search', $searchData);
+                $session->set('eccube.admin.shipping.search.page_no', $page_no);
             }
         } else {
             if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
-                $session->remove('eccube.admin.order.search');
-                $session->remove('eccube.admin.order.search.page_no');
+                $session->remove('eccube.admin.shipping.search');
+                $session->remove('eccube.admin.shipping.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.order.search');
+                $searchData = $session->get('eccube.admin.shipping.search');
                 if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.order.search.page_no'));
+                    $page_no = intval($session->get('eccube.admin.shipping.search.page_no'));
                 } else {
-                    $session->set('eccube.admin.order.search.page_no', $page_no);
+                    $session->set('eccube.admin.shipping.search.page_no', $page_no);
                 }
 
                 if (!is_null($searchData)) {
@@ -126,7 +126,7 @@ class ShippingController
 
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
-                    $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+                    $qb = $app['eccube.repository.shipping']->getQueryBuilderBySearchDataForAdmin($searchData);
 
                     $event = new EventArgs(
                         array(

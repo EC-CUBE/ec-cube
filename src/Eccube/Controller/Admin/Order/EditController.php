@@ -88,23 +88,10 @@ class EditController extends AbstractController
         // 編集前のお届け先のアイテム情報を保持
         $OriginalShipmentItems = new ArrayCollection();
 
-        // foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-        //     $OriginalOrderDetails->add($OrderDetail);
-        // }
-
         // 編集前の情報を保持
         foreach ($TargetOrder->getShipmentItems() as $tmpShipmentItem) {
             $OriginalShipmentItems->add($tmpShipmentItem);
         }
-        
-        // foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
-        //     foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
-        //         // アイテム情報
-        //         $OriginalShipmentItems->add($tmpOriginalShipmentItem);
-        //     }
-        //     // お届け先情報
-        //     $OriginalShippings->add($tmpOriginalShippings);
-        // }
 
         $builder = $app['form.factory']
             ->createBuilder(OrderType::class, $TargetOrder);
@@ -179,61 +166,6 @@ class EditController extends AbstractController
                             }
                         }
 
-                        // 複数配送の場合,
-                        if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-                            foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                $OrderDetail->setOrder($TargetOrder);
-                            }
-                            $Shippings = $TargetOrder->getShippings();
-                            foreach ($Shippings as $Shipping) {
-                                $shipmentItems = $Shipping->getShipmentItems();
-                                foreach ($shipmentItems as $ShipmentItem) {
-                                    // 削除予定から商品アイテムを外す
-                                    $OriginalShipmentItems->removeElement($ShipmentItem);
-                                    $ShipmentItem->setOrder($TargetOrder);
-                                    $ShipmentItem->setShipping($Shipping);
-                                    $app['orm.em']->persist($ShipmentItem);
-                                }
-                                // 削除予定からお届け先情報を外す
-                                $OriginalShippings->removeElement($Shipping);
-                                $Shipping->setOrder($TargetOrder);
-                                $app['orm.em']->persist($Shipping);
-                            }
-                            // 商品アイテムを削除する
-                            foreach ($OriginalShipmentItems as $OriginalShipmentItem) {
-                                $app['orm.em']->remove($OriginalShipmentItem);
-                            }
-                            // お届け先情報削除する
-                            foreach ($OriginalShippings as $OriginalShipping) {
-                                $app['orm.em']->remove($OriginalShipping);
-                            }
-                        } else {
-                            // 単一配送の場合, ShippimentItemsはOrderDetailの内容をコピーし、delete/insertで作り直す.
-                            // TODO あまり本質的な処理ではないので簡略化したい.
-                            $Shipping = $TargetOrder->getShippings()->first();
-                            /*
-                            if (is_object($Shipping)) {
-                                foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
-                                    $Shipping->removeShipmentItem($ShipmentItem);
-                                    $app['orm.em']->remove($ShipmentItem);
-                                }
-                                foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                    $OrderDetail->setOrder($TargetOrder);
-                                    if ($OrderDetail->getProduct()) {
-                                        $ShipmentItem = new ShipmentItem();
-                                        $ShipmentItem->copyProperties($OrderDetail);
-                                        $ShipmentItem->setShipping($Shipping);
-                                        $Shipping->addShipmentItem($ShipmentItem);
-                                    }
-                                }
-                            }
-                            */
-                        }
-                        // foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                        //     // XXX OrderDetail は使用しないため削除
-                        //     $TargetOrder->removeOrderDetail($OrderDetail);
-                        //     $app['orm.em']->remove($OrderDetail);
-                        // }
                         foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
                             $ShipmentItem->setOrder($TargetOrder);
                         }

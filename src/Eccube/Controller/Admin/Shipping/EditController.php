@@ -126,17 +126,20 @@ class EditController
 
             // 登録ボタン押下
             switch ($request->get('mode')) {
+                case 'register_and_commit':
+                    if ($form->isValid()) {
+                        $TargetOrder->setCommitDate(new \DateTime());
+                    }
+                    // no break
                 case 'register':
 
-                    log_info('受注登録開始', array($TargetOrder->getId()));
+                    log_info('出荷登録開始', array($TargetOrder->getId()));
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                     if ($form->isValid()) {
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
                         // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
-                        // 受注日/発送日/入金日の更新.
-                        // $this->updateDate($app, $TargetOrder, $OriginOrder);
 
                         // 画面上で削除された明細をremove
                         foreach ($OriginalOrderDetails as $OrderDetail) {
@@ -145,63 +148,11 @@ class EditController
                             }
                         }
 
-                        // 複数配送の場合,
-                        if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-                            foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                $OrderDetail->setOrder($TargetOrder);
-                            }
-                            $Shippings = $TargetOrder->getShippings();
-                            foreach ($Shippings as $Shipping) {
-                                $shipmentItems = $Shipping->getShipmentItems();
-                                foreach ($shipmentItems as $ShipmentItem) {
-                                    // 削除予定から商品アイテムを外す
-                                    $OriginalShipmentItems->removeElement($ShipmentItem);
-                                    $ShipmentItem->setOrder($TargetOrder);
-                                    $ShipmentItem->setShipping($Shipping);
-                                    $app['orm.em']->persist($ShipmentItem);
-                                }
-                                // 削除予定からお届け先情報を外す
-                                $OriginalShippings->removeElement($Shipping);
-                                $Shipping->setOrder($TargetOrder);
-                                $app['orm.em']->persist($Shipping);
-                            }
-                            // 商品アイテムを削除する
-                            foreach ($OriginalShipmentItems as $OriginalShipmentItem) {
-                                $app['orm.em']->remove($OriginalShipmentItem);
-                            }
-                            // お届け先情報削除する
-                            foreach ($OriginalShippings as $OriginalShipping) {
-                                $app['orm.em']->remove($OriginalShipping);
-                            }
-                        } else {
-                            // 単一配送の場合, ShippimentItemsはOrderDetailの内容をコピーし、delete/insertで作り直す.
-                            // TODO あまり本質的な処理ではないので簡略化したい.
-                            // $Shipping = $TargetOrder->getShippings()->first();
-                            // foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
-                            //     $Shipping->removeShipmentItem($ShipmentItem);
-                            //     $app['orm.em']->remove($ShipmentItem);
-                            // }
-                            // foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                            //     $OrderDetail->setOrder($TargetOrder);
-                            //     if ($OrderDetail->getProduct()) {
-                            //         $ShipmentItem = new ShipmentItem();
-                            //         $ShipmentItem->copyProperties($OrderDetail);
-                            //         $ShipmentItem->setShipping($Shipping);
-                            //         $Shipping->addShipmentItem($ShipmentItem);
-                            //     }
-                            // }
-                        }
                         foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
                             $ShipmentItem->setShipping($TargetOrder);
                         }
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
-
-                        // TODO 集計系に移動
-//                        if ($Customer) {
-//                            // 会員の場合、購入回数、購入金額などを更新
-//                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
-//                        }
 
                         $event = new EventArgs(
                             array(

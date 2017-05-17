@@ -231,7 +231,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
-                                <p id="number_info_box__delivery_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>配達予定日：{{ Shipping.ShippingDeliveryDate ? Shipping.ShippingDeliveryDate |date("Y/m/d H:i:s") : '' }}</p>
+                                <div class="form-group">
+                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>お届け予定日
+                                    {{ form_widget(shippingForm.shipping_delivery_date) }}
+                                </div>
+                                <div class="form-group">
+                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>お届け時間
+                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'class': 'form-control'}}) }}
+                                </div>
                                 <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>出荷日：{{ Shipping.commit_date ? Shipping.commit_date|date("Y/m/d H:i:s") : '' }}</p>
                                 <div class="form-group">
                                     出荷伝票番号
@@ -446,6 +453,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">出荷情報を登録</button>
                 </p>
+                <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register_and_commit">出荷済みとして出荷情報を登録</button>
+                </p>
+
                 <!-- /.col -->
             </div>
 

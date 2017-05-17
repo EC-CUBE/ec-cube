@@ -24,6 +24,8 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Util\Str;
+
 /**
  * ShippingRepository
  *

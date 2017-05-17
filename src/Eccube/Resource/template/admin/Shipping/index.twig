@@ -126,6 +126,7 @@
                     <div id="search_box_main__body_toggle" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
                         <div class="row">
                             <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
+                                ※ 詳細検索機能は準備中です
 
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -293,17 +294,15 @@
                                         <li id="result_list_main__csv_menu" class="dropdown">
                                             <a id="result_list_main__csv_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ url('admin_order_export_order') }}">受注CSVダウンロード</a></li>
-                                                <li><a href="{{ url('admin_order_export_shipping') }}">配送CSVダウンロード</a></li>
-                                                <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}">受注CSV出力項目設定</a></li>
-                                                <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}">配送CSV出力項目設定</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">出荷CSVダウンロード</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">出荷CSV出力項目設定</a></li>
                                             </ul>
                                         </li>
                                         <li id="dropmenu" class="dropdown">
                                             <a id="result_list_main__other_menu_toggle"class="dropdown-toggle" data-toggle="dropdown">その他<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ url('admin_order_mail_all') }}">出荷済みに更新</a></li>
-                                                <li><a href="{{ url('admin_order_mail_all') }}">メール一括通知</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">出荷済みに更新</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">メール一括通知</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -317,7 +316,7 @@
                                                 <tr id="result_list_main__header">
                                                     <th class="text-center"><input type="checkbox" id="check-all"></th>
                                                     <th id="result_list_main__header_id">配送番号</th>
-                                                    <th id="result_list_main__header_order_date">伝票番号</th>
+                                                    <th id="result_list_main__header_order_date">出荷伝票番号</th>
                                                     <th id="result_list_main__header_name">お届け先名</th>
                                                     <th id="result_list_main__header_payment_method">お届け先住所</th>
                                                     <th id="result_list_main__header_delivery_date">お届け予定日</th>
@@ -332,8 +331,8 @@
                                                         <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber|default('未登録') }} </td>
                                                         <td id="result_list_main__name--{{ Shipping.id }}">{{ Shipping.name01 }} {{ Shipping.name02 }}</td>
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
-                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{#{ Shipping.ShippingDeliveryDate }#}</td>
-                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{#{ Shipping.payment_total|number_format }#}</td>
+                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate|date_format }}</td>
+                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.commit_date|date_format }}</td>
 
                                                     </tr>
                                                 {% endfor %}
