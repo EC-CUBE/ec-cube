@@ -140,6 +140,7 @@ class EditController extends AbstractController
             // 集計は,この1行でいけるはず
             // プラグインで Strategy をセットしたりする
             // TODO 編集前のOrder情報が必要かもしれない
+            // TODO 手数料, 値引きの集計は未実装
             $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
 
             // 登録ボタン押下
@@ -170,6 +171,7 @@ class EditController extends AbstractController
                             $ShipmentItem->setOrder($TargetOrder);
                         }
 
+                        // TODO 手数料, 値引きの集計は CalculateService で
                         $TargetOrder->setDeliveryFeeTotal($TargetOrder->calculateDeliveryFeeTotal()); // FIXME
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();

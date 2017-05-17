@@ -288,6 +288,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.repository.shipping'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Shipping');
         };
+        $app['eccube.repository.shipment_item'] = function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ShipmentItem');
+        };
         $app['eccube.repository.customer_status'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus');
         };

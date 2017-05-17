@@ -150,7 +150,7 @@ class ShipmentItemType extends AbstractType
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {
                     // 受注済み明細の場合
-                    if (array_key_exists('Order', $data) && isset($data['Order'])) {
+                    if (array_key_exists('id', $data) && isset($data['id'])) {
                         /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
                         $ShipmentItem = $app['eccube.repository.shipment_item']
                             ->find($data['id']);
