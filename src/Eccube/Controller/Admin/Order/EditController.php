@@ -651,10 +651,6 @@ class EditController extends AbstractController
     protected function newOrder(Application $app)
     {
         $Order = new \Eccube\Entity\Order();
-        $Shipping = new \Eccube\Entity\Shipping();
-        $Order->addShipping($Shipping);
-        $Shipping->setOrder($Order);
-
         // device type
         $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_ADMIN);
         $Order->setDeviceType($DeviceType);

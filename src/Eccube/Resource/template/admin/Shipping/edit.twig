@@ -373,7 +373,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(orderDetailForm.order_item_type) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
-                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ orderDetailForm.vars.value.order_id }}</a></span><br>
+                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : orderDetailForm.vars.value.order_id }) }}">{{ orderDetailForm.vars.value.order_id }}</a></span><br>
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
                                             <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">

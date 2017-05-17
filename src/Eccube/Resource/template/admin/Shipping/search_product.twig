@@ -2,7 +2,7 @@
 
     // 受注明細行を追加する.
     // 受注明細行のレコード数カウンタ(order_details_count)は, edit.twig側で定義している.
-    function fnAddOrderDetail($row, shipment_item_id, type) {
+    function fnAddOrderDetail($row, shipment_item_id, order_id, type) {
 
         type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
 
@@ -29,6 +29,7 @@
             newWidget = newWidget.replace(/__name__/g, order_details_count);
             // フォーム入力値をセットm
             $newWidget = $(newWidget);
+            $newWidget.find('#shipping_ShipmentItems_' + order_details_count + '_Order').val(order_id);
             $newWidget.find('#shipping_ShipmentItems_' + order_details_count + '_id').val(shipment_item_id);
             $newWidget.find('#shipping_ShipmentItems_' + order_details_count + '_order_item_type').val(type);
 
@@ -107,7 +108,7 @@
                             {% endfor %}
                         </div>
                         <td class="text-right">
-                            <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ ShipmentItem.id }}, {{ ShipmentItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                            <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ ShipmentItem.id }}, {{ ShipmentItem.Order.id }}, {{ ShipmentItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                                 決定
                             </button>
                         </td>
