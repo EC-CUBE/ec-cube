@@ -42,7 +42,7 @@
         url: admin/shipping
       - id: shipping_edit
         name: 出荷登録
-        url: admin_order_new
+        url: admin/shipping/new
 - id: customer
   name: 会員管理
   has_child: true

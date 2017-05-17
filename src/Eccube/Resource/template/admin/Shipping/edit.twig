@@ -223,7 +223,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div id="number_info_box__order_status" class="col-sm-4">
                                 <h4>出荷番号 <span class="number">{{ Shipping.id }}</span></h4>
                                 <div class="form-group">
-                                    配送業者 <span class="number">{{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': 0}}) }}</span>
+                                    配送業者 <span class="number">{{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': 0}}) }}{{ form_errors(form.Delivery) }}</span>
                                 </div>
                                 <div class="form-group">
                                     注文番号 {% for Order in Shipping.Orders  %}<span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span> {% endfor %}
@@ -351,7 +351,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                              id="order_detail_list"
                              data-prototype="
                                     {% filter escape %}
-                                        {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': form.ShipmentItems.vars.prototype }) }}
+                                    {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': form.ShipmentItems.vars.prototype }) }}
                                     {% endfilter %}"
                         >
                             {#{ form_errors(form.OrderDetailsErrors) }#}
