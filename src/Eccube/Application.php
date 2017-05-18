@@ -37,6 +37,7 @@ use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,6 +109,12 @@ class Application extends \Silex\Application
 
     public function initConfig()
     {
+        // load .env
+        $envFile = __DIR__.'/../../.env';
+        if (file_exists($envFile)) {
+            (new Dotenv())->load($envFile);
+        }
+
         // load config
         $this['config'] = function() {
             $configAll = array();
