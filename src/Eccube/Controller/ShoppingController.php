@@ -34,6 +34,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -209,7 +210,7 @@ class ShoppingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->isValidPayment($app, $form)) {
             $data = $form->getData();
 
             log_info('購入処理開始', array($Order->getId()));
@@ -301,6 +302,33 @@ class ShoppingController extends AbstractController
         ));
     }
 
+    /**
+     * 支払方法バーリデト
+     */
+    private function isValidPayment(Application $app, $form)
+    {
+        $data = $form->getData();
+        $paymentId = $data['payment']->getId();
+        $shippings = $data['shippings'];
+        $validCount = count($shippings);
+        foreach ($shippings as $Shipping) {
+            $payments = $app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
+            if($payments == null){
+                continue;
+            }
+            foreach($payments as $payment){
+                if($payment['id'] == $paymentId){
+                    $validCount--;
+                    continue;
+                }
+            }
+        }
+        if($validCount == 0){
+            return true;
+        }
+        $form->get('payment')->addError(new FormError('front.shopping.payment.error'));
+        return false;
+    }
 
     /**
      * 購入完了画面表示
@@ -375,7 +403,7 @@ class ShoppingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->isValidPayment($app, $form)) {
             log_info('配送業者変更処理開始', array($Order->getId()));
 
             $data = $form->getData();
@@ -473,7 +501,7 @@ class ShoppingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->isValidPayment($app, $form)) {
 
             log_info('支払い方法変更処理開始', array("id" => $Order->getId()));
 
