@@ -1,17 +1,43 @@
+{#
+ - form_div_layout.html.twig
+ - https://github.com/symfony/symfony/blob/master/src/Symfony/Bridge/Twig/Resources/views/Form/form_div_layout.html.twig
+#}
 {%- extends 'form_div_layout.html.twig' -%}
 
-{% block form_errors %}
-    {% if errors|length > 0 %}
-        {% for error in errors %}
-            <p class="errormsg text-danger">{{ error.message|trans }}</p>
-        {% endfor %}
-    {% endif -%}
-{% endblock %}
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            {# TODO エラーメッセージの見直し #}
+            <p class="errormsg text-danger">{{ error.message|trans({}, translation_domain) }}</p>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock form_errors -%}
 
-{% block form_label %}
-    {{ parent() }}
-    {% if required %}<span class="required">必須</span>{% endif %}
-{% endblock %}
+{%- block form_label -%}
+    {%- if label is not same as(false) -%}
+        {%- if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {#{% if required -%}#}
+            {#{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}#}
+        {#{%- endif -%}#}
+        {%- if required -%}
+            {# TODO label の出力位置の見直し #}
+            {% set required_label = '<span class="ec-required">必須</span>' %}
+        {%- endif -%}
+        {%- if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}{{ required ? required_label|raw }}</label>
+    {%- endif -%}
+{%- endblock form_label -%}
 
 {% block choice_widget %}
     {% if type is defined and type == 'hidden' %}
@@ -20,3 +46,7 @@
         {{ parent() }}
     {% endif %}
 {% endblock %}
+
+{%- block radio_widget -%}
+    <label>{{- parent() -}}<span>{{ label }}</span></label>
+{%- endblock radio_widget -%}

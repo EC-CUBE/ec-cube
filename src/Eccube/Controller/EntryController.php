@@ -76,9 +76,6 @@ class EntryController extends AbstractController
             switch ($request->get('mode')) {
                 case 'confirm':
                     log_info('会員登録確認開始');
-                    $builder->setAttribute('freeze', true);
-                    $form = $builder->getForm();
-                    $form->handleRequest($request);
                     log_info('会員登録確認完了');
 
                     return $app->render('Entry/confirm.twig', array(
