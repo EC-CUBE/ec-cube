@@ -44,7 +44,7 @@
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
+    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}" novalidate>
         {{ form_widget(form._token) }}
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box accordion">
@@ -189,6 +189,17 @@
                                 </div>
                             </div>
                         </div>
+                        {# エンティティ拡張の自動出力 #}
+                        {% for f in form %}
+                            {# auto_render有効時に出力 #}
+                            {% if f.vars.eccube_form_options.auto_render %}
+                                {# form_themeが設定されている場合にthemeを適用 #}
+                                {% if f.vars.eccube_form_options.form_theme %}
+                                    {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                {% endif %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
                         <div class="extra-form">
                             {% for f in form.getIterator %}
                                 {% if f.vars.name matches '[^plg*]' %}

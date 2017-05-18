@@ -1,0 +1,22 @@
+{%- extends 'Form/form_div_layout.twig' -%}
+
+{%- block _entry_company_name_vn_row -%}
+    <dl>
+        <dt>
+            {{ form_label(form, '会社名(VN)', {'label_attr': {'class': 'ec-label'}}) }}
+        </dt>
+        <dd>
+            {# 確認画面での表示 #}
+            {% if type is defined and type == 'hidden' %}
+                {{ form.vars.data }}
+                {{ form_widget(form, {type: 'hidden'}) }}
+            {% else %}
+                {# 入力画面での表示 #}
+                <div class="ec-select{{ has_errors(form) ? ' error' }}">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+        </dd>
+    </dl>
+{%- endblock _entry_company_name_vn_row -%}
