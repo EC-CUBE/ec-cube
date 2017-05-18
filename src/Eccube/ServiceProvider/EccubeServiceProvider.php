@@ -178,6 +178,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.repository.master.csv_type'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\CsvType');
         };
+        $app['eccube.repository.master.order_item_type'] = function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderItemType');
+        };
 
         $app['eccube.repository.delivery'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
@@ -284,6 +287,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
         $app['eccube.repository.shipping'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Shipping');
+        };
+        $app['eccube.repository.shipment_item'] = function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ShipmentItem');
         };
         $app['eccube.repository.customer_status'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus');

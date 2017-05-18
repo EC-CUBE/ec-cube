@@ -4,6 +4,7 @@ namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
+use Eccube\Entity\ShipmentItem;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
@@ -65,6 +66,7 @@ class OrderType extends AbstractType
                 CollectionType::class,
                 [
                     'entry_type' => ShippingType::class,
+                    'by_reference' => false
                 ]
             )->add(
                 'mode',
@@ -84,23 +86,22 @@ class OrderType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
+                /** @var Order $Order */
                 $Order = $event->getData();
                 if (is_null($Order) || !$Order->getId()) {
                     return;
                 }
-                $OrderDetails = $Order->getOrderDetails();
 
                 // 受注明細に含まれる商品種別を抽出.
-                $ProductTypes = [];
-                foreach ($OrderDetails as $OrderDetail) {
-                    $ProductClass = $OrderDetail->getProductClass();
-                    if (is_null($ProductClass)) {
-                        // 商品明細のみ対象とする. 送料明細等はスキップする.
-                        continue;
+                $ProductTypes = array_reduce($Order->getShipmentItems()->toArray(), function($results, $ShipmentItem) {
+                    /* @var ShipmentItem $ShipmentItem */
+                    $ProductClass = $ShipmentItem->getProductClass();
+                    if (!is_null($ProductClass)) {
+                        $ProductType = $ProductClass->getProductType();
+                        $results[$ProductType->getId()] = $ProductType;
                     }
-                    $ProductType = $ProductClass->getProductType();
-                    $ProductTypes[$ProductType->getId()] = $ProductType;
-                }
+                    return $results;
+                }, []);
 
                 // 商品種別に紐づく配送業者を抽出
                 $Deliveries = $this->deliveryRepository->getDeliveries($ProductTypes);

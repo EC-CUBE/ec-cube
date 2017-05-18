@@ -3,6 +3,7 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -59,13 +60,14 @@ class ShippingType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
+                /* @var Shipping $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
                 }
 
                 // 配送商品に含まれる商品種別を抽出.
-                $ShipmentItems = $Shipping->getShipmentItems();
+                $ShipmentItems = $Shipping->getProductOrderItems();
                 $ProductTypes = array();
                 foreach ($ShipmentItems as $ShipmentItem) {
                     $ProductClass = $ShipmentItem->getProductClass();
@@ -105,14 +107,12 @@ class ShippingType extends AbstractType
                     return;
                 }
 
-                $Order = $Shipping->getOrder();
-
                 // お届け日の設定
                 $minDate = 0;
                 $deliveryDateFlag = false;
 
                 // 配送時に最大となる商品日数を取得
-                foreach ($Order->getOrderDetails() as $detail) {
+                foreach ($Shipping->getShipmentItems() as $detail) {
                     $ProductClass = $detail->getProductClass();
                     if (is_null($ProductClass)) {
                         continue;

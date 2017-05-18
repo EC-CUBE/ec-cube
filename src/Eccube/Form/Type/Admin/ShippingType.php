@@ -37,6 +37,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -129,7 +130,7 @@ class ShippingType extends AbstractType
                     ),
                 ),
             ))
-            ->add('fax', TelTYpe::class, array(
+            ->add('fax', TelType::class, array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
@@ -149,6 +150,31 @@ class ShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
+            ->add('tracking_number', TextType::class, array(
+                'label' => '配送伝票番号',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['mtext_len'],
+                    )),
+                ),
+            ))
+            ->add('note', TextareaType::class, array(
+                'label' => '配送用メモ欄',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['ltext_len'],
+                    )),
+                ),
+            ))
+            ->add('ShipmentItems', CollectionType::class, array(
+                'entry_type' => ShipmentItemType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+            ))
+
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
@@ -194,7 +220,7 @@ class ShippingType extends AbstractType
                     return;
                 }
 
-                $value = $data['Delivery'];
+                $value = array_key_exists('Delivery', $data) ? $data['Delivery'] : null;
                 if (empty($value)) {
                     $value = 0;
                 }

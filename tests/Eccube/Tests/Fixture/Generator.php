@@ -24,6 +24,9 @@ use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Member;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\OrderItemType;
 use Faker\Factory as Faker;
 
 /**
@@ -477,8 +480,7 @@ class Generator {
             ->setDeliveryFee($DeliveryFee)
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $Order->addShipping($Shipping);
-        $Shipping->setOrder($Order);
+
         $this->app['orm.em']->persist($Shipping);
         $this->app['orm.em']->flush($Shipping);
 
@@ -486,7 +488,14 @@ class Generator {
             $Product = $this->createProduct();
             $ProductClasses = $Product->getProductClasses();
         }
-
+        $Taxion = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::TAXATION);
+        $NonTaxable = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::NON_TAXABLE);
+        $TaxExclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $TaxInclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::INCLUDED);
+        $ItemProduct = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::PRODUCT);
+        $ItemDeliveryFee = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::DELIVERY_FEE);
+        $ItemCharge = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::CHARGE);
+        $ItemDiscount = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::DISCOUNT);
         foreach ($ProductClasses as $ProductClass) {
             $Product = $ProductClass->getProduct();
             $OrderDetail = new OrderDetail();
@@ -512,19 +521,76 @@ class Generator {
                 ->setProductName($Product->getName())
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($quantity);
+                ->setQuantity($quantity)
+                ->setTaxRule($TaxRule->getCalcRule()->getId())
+                ->setTaxRate($TaxRule->getTaxRate())
+                ->setTaxType($Taxion) // 課税
+                ->setTaxDisplayType($TaxExclude) // 税別
+                ->setOrderItemType($ItemProduct) // 商品明細
+            ;
             $Shipping->addShipmentItem($ShipmentItem);
+            $Order->addShipmentItem($ShipmentItem);
             $this->app['orm.em']->persist($ShipmentItem);
             $this->app['orm.em']->flush($ShipmentItem);
         }
 
         $subTotal = $Order->calculateSubTotal();
-        // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
-        $Order->setDeliveryFeeTotal($Shipping->getShippingDeliveryFee());
-        $Order->setSubTotal($subTotal);
 
-        $Order->setCharge($Order->getCharge() + $add_charge);
-        $Order->setDiscount($Order->getDiscount() + $add_discount);
+        // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
+        $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
+        $ShipmentItemDeliveryFee = new ShipmentItem();
+        $ShipmentItemDeliveryFee->setShipping($Shipping)
+            ->setOrder($Order)
+            ->setProductName('送料')
+            ->setPrice($shipment_delivery_fee)
+            ->setQuantity(1)
+            ->setTaxRate(8)
+            ->setTaxType($Taxion) // 課税
+            ->setTaxDisplayType($TaxInclude) // 税込
+            ->setOrderItemType($ItemDeliveryFee); // 送料明細
+        $Shipping->addShipmentItem($ShipmentItemDeliveryFee);
+        $Order->addShipmentItem($ShipmentItemDeliveryFee);
+        $this->app['orm.em']->persist($ShipmentItemDeliveryFee);
+        $this->app['orm.em']->flush($ShipmentItemDeliveryFee);
+
+        $charge = $Order->getCharge() + $add_charge;
+        $ShipmentItemCharge = new ShipmentItem();
+        $ShipmentItemCharge
+            // ->setShipping($Shipping) // Shipping には登録しない
+            ->setOrder($Order)
+            ->setProductName('手数料')
+            ->setPrice($charge)
+            ->setQuantity(1)
+            ->setTaxRate(8)
+            ->setTaxType($Taxion) // 課税
+            ->setTaxDisplayType($TaxInclude) // 税込
+            ->setOrderItemType($ItemCharge); // 手数料明細
+        // $Shipping->addShipmentItem($ShipmentItemCharge); // Shipping には登録しない
+        $Order->addShipmentItem($ShipmentItemCharge);
+        $this->app['orm.em']->persist($ShipmentItemCharge);
+        $this->app['orm.em']->flush($ShipmentItemCharge);
+
+        $discount = $Order->getDiscount() + $add_discount;
+        $ShipmentItemDiscount = new ShipmentItem();
+        $ShipmentItemDiscount
+            // ->setShipping($Shipping) // Shipping には登録しない
+            ->setOrder($Order)
+            ->setProductName('値引き')
+            ->setPrice($discount * -1)
+            ->setQuantity(1)
+            ->setTaxRate(0)
+            ->setTaxType($NonTaxable) // 不課税
+            ->setTaxDisplayType($TaxInclude) // 税込
+            ->setOrderItemType($ItemDiscount); // 値引き明細
+        // $Shipping->addShipmentItem($ShipmentItemDiscount); // Shipping には登録しない
+        $Order->addShipmentItem($ShipmentItemDiscount);
+        $this->app['orm.em']->persist($ShipmentItemDiscount);
+        $this->app['orm.em']->flush($ShipmentItemDiscount);
+
+        $Order->setDeliveryFeeTotal($shipment_delivery_fee);
+        $Order->setSubTotal($subTotal);
+        $Order->setCharge($charge);
+        $Order->setDiscount($discount);
 
         $total = $Order->getTotalPrice();
         $Order->setTotal($total);
@@ -533,6 +599,7 @@ class Generator {
         $tax = $Order->calculateTotalTax();
         $Order->setTax($tax);
 
+        $this->app['orm.em']->flush($Shipping);
         $this->app['orm.em']->flush($Order);
         return $Order;
     }

@@ -25,7 +25,9 @@
 namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
+use Eccube\Entity\Master\OrderItemType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -104,12 +106,9 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function calculateSubTotal()
     {
-        $subTotal = 0;
-        foreach ($this->getOrderDetails() as $OrderDetail) {
-            $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
-        }
-
-        return $subTotal;
+        return array_reduce($this->getProductOrderItems(), function($total, $ShipmentItem) {
+            return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+        }, 0);
     }
 
     /**
@@ -125,6 +124,24 @@ class Order extends \Eccube\Entity\AbstractEntity
         }
 
         return $tax;
+    }
+
+    /**
+     * この注文にかかる送料の合計を返す.
+     *
+     * @return integer
+     */
+    public function calculateDeliveryFeeTotal()
+    {
+        // TODO filter を外出ししたい
+        return array_reduce(
+            array_filter($this->getShipmentItems()->toArray(),
+                         function($ShipmentItem) {
+                             return $ShipmentItem->isDeliveryFee();
+                         }),
+            function($total, $ShipmentItem) {
+                return $total + $ShipmentItem->getPriceIncTax();
+            }, 0);
     }
 
     /**
@@ -152,8 +169,8 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getTotalPrice() {
 
-        // return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
-        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
+         return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
+//        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
     }
 
 
@@ -424,12 +441,9 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\Shipping", mappedBy="Order", cascade={"persist"})
-     * @ORM\OrderBy({
-     *     "id"="ASC"
-     * })
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ShipmentItem", mappedBy="Order", cascade={"persist","remove"})
      */
-    private $Shippings;
+    private $ShipmentItems;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -557,7 +571,7 @@ class Order extends \Eccube\Entity\AbstractEntity
             ->setDelFlg(Constant::DISABLED);
 
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1448,29 +1462,49 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add shipping.
-     *
-     * @param \Eccube\Entity\Shipping $shipping
-     *
-     * @return Order
+     * 商品の受注明細を取得
+     * @return ShipmentItem[]
      */
-    public function addShipping(\Eccube\Entity\Shipping $shipping)
+    public function getProductOrderItems()
     {
-        $this->Shippings[] = $shipping;
+        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        return $sio->getProductClasses()->getArrayCopy();
+    }
+
+    /**
+     * Add shipmentItem.
+     *
+     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     *
+     * @return Shipping
+     */
+    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    {
+        $this->ShipmentItems[] = $shipmentItem;
 
         return $this;
     }
 
     /**
-     * Remove shipping.
+     * Remove shipmentItem.
      *
-     * @param \Eccube\Entity\Shipping $shipping
+     * @param \Eccube\Entity\ShipmentItem $shipmentItem
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeShipping(\Eccube\Entity\Shipping $shipping)
+    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
     {
-        return $this->Shippings->removeElement($shipping);
+        return $this->ShipmentItems->removeElement($shipmentItem);
+    }
+
+    /**
+     * Get shipmentItems.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShipmentItems()
+    {
+        return $this->ShipmentItems;
     }
 
     /**
@@ -1480,7 +1514,27 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getShippings()
     {
-        return $this->Shippings;
+        $Shippings = [];
+        foreach ($this->getShipmentItems() as $ShipmentItem) {
+            $Shipping = $ShipmentItem->getShipping();
+            if (is_object($Shipping)) {
+                $name = $Shipping->getName01(); // XXX lazy loading
+                $Shippings[$Shipping->getId()] = $Shipping;
+            }
+        }
+        $Result = new \Doctrine\Common\Collections\ArrayCollection();
+        foreach ($Shippings as $Shipping) {
+            $Result->add($Shipping);
+        }
+        return $Result;
+        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
+        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Shippings));
+    }
+
+    public function setShippings($dummy)
+    {
+        // XXX これが無いと Eccube\Form\Type\Shopping\OrderType がエラーになる
+        return $this;
     }
 
     /**

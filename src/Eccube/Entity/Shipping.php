@@ -25,6 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
+use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -196,6 +197,27 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $shipping_commit_date;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="tracking_number", type="string", length=255, nullable=true)
+     */
+    private $tracking_number;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="commit_date", type="datetimetz", nullable=true)
+     */
+    private $commit_date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="note", type="string", length=4000, nullable=true)
+     */
+    private $note;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="rank", type="smallint", nullable=true, options={"unsigned":true})
@@ -251,16 +273,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Pref;
 
     /**
-     * @var \Eccube\Entity\Order
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="Shippings")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
-     * })
-     */
-    private $Order;
-
-    /**
      * @var \Eccube\Entity\Delivery
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery")
@@ -289,6 +301,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $DeliveryFee;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Orders;
 
     /**
      * @var \Eccube\Entity\ProductClass
@@ -973,6 +990,30 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set commitDate.
+     *
+     * @param \DateTime|null $commitDate
+     *
+     * @return Order
+     */
+    public function setCommitDate($commitDate = null)
+    {
+        $this->commit_date = $commitDate;
+
+        return $this;
+    }
+
+    /**
+     * Get commitDate.
+     *
+     * @return \DateTime|null
+     */
+    public function getCommitDate()
+    {
+        return $this->commit_date;
+    }
+
+    /**
      * Add shipmentItem.
      *
      * @param \Eccube\Entity\ShipmentItem $shipmentItem
@@ -1006,6 +1047,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getShipmentItems()
     {
         return $this->ShipmentItems;
+    }
+
+    /**
+     * 商品の受注明細を取得
+     * @return ShipmentItem[]
+     */
+    public function getProductOrderItems()
+    {
+        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        return $sio->getProductClasses()->getArrayCopy();
     }
 
     /**
@@ -1054,30 +1105,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getPref()
     {
         return $this->Pref;
-    }
-
-    /**
-     * Set order.
-     *
-     * @param \Eccube\Entity\Order|null $order
-     *
-     * @return Shipping
-     */
-    public function setOrder(\Eccube\Entity\Order $order = null)
-    {
-        $this->Order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get order.
-     *
-     * @return \Eccube\Entity\Order|null
-     */
-    public function getOrder()
-    {
-        return $this->Order;
     }
 
     /**
@@ -1175,5 +1202,77 @@ class Shipping extends \Eccube\Entity\AbstractEntity
         $this->ProductClassOfTemp = $ProductClassOfTemp;
 
         return $this;
+    }
+
+    /**
+     * Get orders.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrders()
+    {
+        $Orders = [];
+        foreach ($this->getShipmentItems() as $ShipmentItem) {
+            $Order = $ShipmentItem->getOrder();
+            if (is_object($Order)) {
+                $name = $Order->getName01(); // XXX lazy loading
+                $Orders[$Order->getId()] = $Order;
+            }
+        }
+        $Result = new \Doctrine\Common\Collections\ArrayCollection();
+        foreach ($Orders as $Order) {
+            $Result->add($Order);
+        }
+        return $Result;
+        // XXX 以下のロジックだと何故か空の Collection になってしまう場合がある
+        // return new \Doctrine\Common\Collections\ArrayCollection(array_values($Orders));
+    }
+
+    /**
+     * Set trackingNumber
+     *
+     * @param string $trackingNumber
+     *
+     * @return Shipping
+     */
+    public function setTrackingNumber($trackingNumber)
+    {
+        $this->tracking_number = $trackingNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get trackingNumber
+     *
+     * @return string
+     */
+    public function getTrackingNumber()
+    {
+        return $this->tracking_number;
+    }
+
+    /**
+     * Set note.
+     *
+     * @param string|null $note
+     *
+     * @return Order
+     */
+    public function setNote($note = null)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note.
+     *
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->note;
     }
 }

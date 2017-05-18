@@ -319,6 +319,10 @@ class Application extends \Silex\Application
             return new ChainUrlGenerator($generators, $app['request_context']);
         });
 
+        // TODO この設定が正しいか要確認
+        $this->extend('routes_factory', function ($routes, $app ) {
+            return $this['sensio_framework_extra.routing.loader.annot_dir']->load($this['config']['root_dir'].'/src/Eccube/Controller');
+        });
         // init http cache
         $this->initCacheRequest();
 
@@ -850,6 +854,13 @@ class Application extends \Silex\Application
             return;
         }
         $this->register(new ServiceProvider\EccubePluginServiceProvider());
+
+        // TODO Acme\ServiceProvider の初期化はここで OK?
+        if (array_key_exists('service',$this['config'])) {
+            foreach ($this['config']['service'] as $service) {
+                $this->register(new $service);
+            }
+        }
         $this->initializedPlugin = true;
     }
 

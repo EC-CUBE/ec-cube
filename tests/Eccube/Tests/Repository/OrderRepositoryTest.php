@@ -98,4 +98,10 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->actual = count($Orders);
         $this->verify();
     }
+
+    public function testGetShippings()
+    {
+        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->Order->getShippings());
+        $this->assertEquals(1, $this->Order->getShippings()->count());
+    }
 }
