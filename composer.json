@@ -10,6 +10,7 @@
     "support": {
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
+    "minimum-stability": "RC",
     "require": {
         "php": ">=5.5.9",
         "silex/silex": "*",
