@@ -448,12 +448,12 @@ class InstallController
 
             $ormMappings = array(
                 array(
-                    'type' => 'yml',
+                    'type' => 'annotation',
                     'namespace' => 'Eccube\Entity',
                     'path' => array(
-                        __DIR__ . '/../../Resource/doctrine',
-                        __DIR__ . '/../../Resource/doctrine/master',
+                        __DIR__ . '/../../Entity',
                     ),
+                    'use_simple_annotation_reader' => false,
                 ),
                 array(  // TODO 暫定
                     'type' => 'annotation',
