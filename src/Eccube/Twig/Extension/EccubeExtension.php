@@ -25,6 +25,7 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Master\Disp;
 use Eccube\Entity\Product;
 use Eccube\Util\Str;
 use Silex\Application;
@@ -184,7 +185,8 @@ class EccubeExtension extends \Twig_Extension
 
     /**
      * product_idで指定したProductを取得
-     * Productが取得できない場合、デバッグ環境以外は無視される
+     * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
+     * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させずに無視される。
      *
      * @param $id
      * @return Product|null
@@ -193,11 +195,15 @@ class EccubeExtension extends \Twig_Extension
     {
         try {
             $Product = $this->app['eccube.repository.product']->get($id);
+            if ($Product->getStatus()->getId() == Disp::DISPLAY_SHOW) {
+                return $Product;
+            }
 
-            return $Product;
         } catch (\Exception $e) {
             return null;
         }
+
+        return null;
     }
 
     /**
