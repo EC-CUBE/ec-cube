@@ -139,7 +139,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
         $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
-        $this->expected = '32 件';
+        $this->expected = '13 件';
         $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
