@@ -260,7 +260,6 @@ class CartService
             // 商品種別が存在しなければエラー
             $this->removeProduct($ProductClass->getId());
             $this->addError('cart.product.not.producttype', $productName);
-            // throw new CartException('cart.product.not.producttype');
             throw new CartException($this->app->trans('cart.product.not.producttype', array('%product%' => $productName)));
         }
 
@@ -290,7 +289,6 @@ class CartService
         for ($i = 0; $i < $quantity; $i++) {
             $tmp_subtotal += $ProductClass->getPrice02IncTax();
             if ($tmp_subtotal > $this->app['config']['max_total_fee']) {
-                //$this->setError('cart.over.price_limit');
                 $this->addError('cart.over.price_limit');
                 break;
             }
@@ -403,7 +401,6 @@ class CartService
 
             if ($ProductClass->getDelFlg()) {
                 // 商品情報が削除されていたらエラー
-                // $this->setError('cart.product.delete');
                 $this->addError('cart.product.delete');
                 // カートから削除
                 $this->removeProduct($ProductClass->getId());
@@ -437,7 +434,6 @@ class CartService
                 $productName = $this->getProductName($ProductClass);
 
                 if (!$this->isProductDisplay($ProductClass)) {
-                    // $this->setError('cart.product.not.status');
                     $this->addError('cart.product.not.status', $productName);
                 } else {
 
@@ -454,7 +450,6 @@ class CartService
 
             } else {
                 // 商品情報が削除されていたらエラー
-                // $this->setError('cart.product.delete');
                 $this->addError('cart.product.delete');
                 // カートから削除
                 $this->removeProduct($ProductClass->getId());
@@ -504,17 +499,11 @@ class CartService
     {
         $error = $this->app->trans($error, array('%product%' => $productName));
 
-        $productNames = $this->session->getFlashBag()->get('eccube.front.request.product');
+        $errors = $this->session->getFlashBag()->peek('eccube.front.request.error');
 
         // 同一商品に対するエラーが既にセットされていればエラー表示させない
-        if (!in_array($productName, $productNames)) {
-            $this->errors[] = $error;
+        if (!in_array($error, $errors)) {
             $this->session->getFlashBag()->add('eccube.front.request.error', $error);
-        }
-
-        if (!is_null($productName)) {
-            // エラー表示制御用に商品名をセットしておく
-            $this->session->getFlashBag()->add('eccube.front.request.product', $productName);
         }
 
         return $this;
@@ -565,6 +554,8 @@ class CartService
 
     /**
      * @return string[]
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getErrors()
     {
@@ -573,6 +564,8 @@ class CartService
 
     /**
      * @return string[]
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getMessages()
     {
@@ -582,6 +575,8 @@ class CartService
     /**
      * @param  string $message
      * @return \Eccube\Service\CartService
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function setMessage($message)
     {
@@ -592,6 +587,8 @@ class CartService
 
     /**
      * @return string
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getError()
     {
@@ -601,6 +598,8 @@ class CartService
     /**
      * @param  string $error
      * @return \Eccube\Service\CartService
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function setError($error = null)
     {
@@ -619,17 +618,22 @@ class CartService
     private function getProductName(ProductClass $ProductClass)
     {
 
-        $productName = $ProductClass->getProduct()->getName();
+        $Product = $ProductClass->getProduct();
 
-        if ($ProductClass->hasClassCategory1()) {
-            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+        if ($Product) {
+            $productName = $Product->getName();
+
+            if ($ProductClass->hasClassCategory1()) {
+                $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+            }
+
+            if ($ProductClass->hasClassCategory2()) {
+                $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+            }
+
+            return $productName;
         }
-
-        if ($ProductClass->hasClassCategory2()) {
-            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
-        }
-
-        return $productName;
+        return null;
     }
 
 
@@ -641,12 +645,15 @@ class CartService
      */
     private function isProductDisplay(ProductClass $ProductClass)
     {
+        $Product = $ProductClass->getProduct();
 
-        if ($ProductClass->getProduct()->getStatus()->getId() !== Disp::DISPLAY_SHOW) {
-            // 非公開の商品はカートから削除
-            $this->removeProduct($ProductClass->getId());
+        if ($Product) {
+            if ($Product->getStatus()->getId() !== Disp::DISPLAY_SHOW) {
+                // 非公開の商品はカートから削除
+                $this->removeProduct($ProductClass->getId());
 
-            return false;
+                return false;
+            }
         }
 
         return true;
