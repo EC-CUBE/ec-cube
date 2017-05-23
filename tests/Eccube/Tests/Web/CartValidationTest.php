@@ -2239,7 +2239,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__message--1')->text();
-        $this->assertContains('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
+        $this->assertContains('現時点で購入できない商品('.$this->getProductName($ProductClass).')が含まれておりました。該当商品をカートから削除しました。', $message);
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
         $message = $crawler->filter('#cart_box__message')->text();
         $this->assertContains('現在カート内に商品はございません。', $message);

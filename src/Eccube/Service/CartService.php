@@ -503,6 +503,7 @@ class CartService
 
         // 同一商品に対するエラーが既にセットされていればエラー表示させない
         if (!in_array($error, $errors)) {
+            $this->errors[] = $error;
             $this->session->getFlashBag()->add('eccube.front.request.error', $error);
         }
 
@@ -554,8 +555,6 @@ class CartService
 
     /**
      * @return string[]
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getErrors()
     {
