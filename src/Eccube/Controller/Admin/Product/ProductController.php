@@ -64,7 +64,24 @@ class ProductController extends AbstractController
 
         $disps = $app['eccube.repository.master.disp']->findAll();
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
-        $page_count = $app['config']['default_page_count'];
+
+        // 表示件数は順番で取得する、1.SESSION 2.設定ファイル
+        $page_count = $session->get('eccube.admin.product.search.page_count', $app['config']['default_page_count']);
+        // 表示件数
+
+        $page_count_param = $request->get('page_count');
+        // 表示件数はURLパラメターから取得する
+        if($page_count_param && is_numeric($page_count_param)){
+            foreach($pageMaxis as $pageMax){
+                if($page_count_param == $pageMax->getName()){
+                    $page_count = $pageMax->getName();
+                    // 表示件数入力値正し場合はSESSIONに保存する
+                    $session->set('eccube.admin.product.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
+
         $page_status = null;
         $active = false;
 
@@ -106,6 +123,7 @@ class ProductController extends AbstractController
                 // sessionを削除
                 $session->remove('eccube.admin.product.search');
                 $session->remove('eccube.admin.product.search.page_no');
+                $session->remove('eccube.admin.product.search.page_count');
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
