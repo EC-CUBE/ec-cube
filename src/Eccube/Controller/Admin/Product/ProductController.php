@@ -137,6 +137,8 @@ class ProductController extends AbstractController
                     // 1:公開, 2:非公開, 3:在庫なし
                     $linkStatus = $request->get('status');
                     if (!empty($linkStatus)) {
+                        // ステータスリクエストされてる時にページNoリセットする
++                        $page_no = 1;
                         // リンクステータスは在庫なし:3 以外場合
                         if ($linkStatus != $app['config']['admin_product_stock_status']) {
                             $viewData['link_status'] = $linkStatus;
