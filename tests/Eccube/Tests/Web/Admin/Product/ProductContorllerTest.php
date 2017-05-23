@@ -139,8 +139,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
         $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
-        $this->expected = '20件';
-        $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
+        $this->expected = '32 件';
+        $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
@@ -185,8 +185,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
         $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
-        $this->expected = '40件';
-        $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
+        $this->expected = '1 件';
+        $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
@@ -229,8 +229,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
         $crawler = $this->client->request('GET', $this->app->url('admin_product_page', array('page_no' => 1)), array('page_count' => 999999));
-        $this->expected = '30件';
-        $this->actual = $crawler->filter('li#result_list__pagemax_menu a')->text();
+        $this->expected = '1 件';
+        $this->actual = $crawler->filter('#result_list__header h3 span strong')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
