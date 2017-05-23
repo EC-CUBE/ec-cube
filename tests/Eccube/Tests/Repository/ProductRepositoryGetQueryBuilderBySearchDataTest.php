@@ -191,6 +191,34 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->verify();
     }
 
+    public function testOrderByNewerSameCreateDate()
+    {
+        $date = new \DateTime();
+        $Products = $this->app['eccube.repository.product']->findBy(array(), array('id' => 'DESC'));
+        $Products[0]->setName('りんご');
+        $Products[0]->setCreateDate($date);
+        $Products[1]->setName('アイス');
+        $Products[1]->setCreateDate($date);
+        $Products[2]->setName('お鍋');
+        $Products[2]->setCreateDate($date);
+        $this->app['orm.em']->flush();
+
+        // 新着順
+        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(2);
+        $this->searchData = array(
+            'orderby' => $ProductListOrderBy
+        );
+
+        $this->scenario();
+
+        $this->expected = array('りんご', 'アイス', 'お鍋');
+        $this->actual = array($this->Results[0]->getName(),
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName());
+
+        $this->verify();
+    }
+
     public function testProductImage()
     {
         $this->searchData = array();
