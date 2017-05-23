@@ -16,7 +16,7 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
-use Eccube\Form\Type\Admin\SearchOrderType;
+use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
@@ -44,7 +44,7 @@ class ShippingController
         $session = $request->getSession();
 
         $builder = $app['form.factory']
-            ->createBuilder(SearchOrderType::class);
+            ->createBuilder(SearchShippingType::class);
 
         $event = new EventArgs(
             array(

@@ -41,46 +41,81 @@ class ShippingRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('s');
 
+        $qb->leftJoin('s.ShipmentItems', 'si')
+            ->leftJoin('si.Order', 'o');
         // order_id_start
-        if (isset($searchData['order_id_start']) && Str::isNotBlank($searchData['order_id_start'])) {
+        if (isset($searchData['shipping_id_start']) && Str::isNotBlank($searchData['shipping_id_start'])) {
             $qb
-                ->andWhere('o.id >= :order_id_start')
-                ->setParameter('order_id_start', $searchData['order_id_start']);
+                ->andWhere('s.id >= :shipping_id_start')
+                ->setParameter('shipping_id_start', $searchData['shipping_id_start']);
         }
         // multi
         if (isset( $searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
-                ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
-                           'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti')
+                ->andWhere('s.id = :multi OR s.name01 LIKE :likemulti OR s.name02 LIKE :likemulti OR ' .
+                           's.kana01 LIKE :likemulti OR s.kana02 LIKE :likemulti OR s.company_name LIKE :likemulti')
                 ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%' . $searchData['multi'] . '%');
         }
 
-        // order_id_end
-        if (isset($searchData['order_id_end']) && Str::isNotBlank($searchData['order_id_end'])) {
+        // shipping_id_end
+        if (isset($searchData['shipping_id_end']) && Str::isNotBlank($searchData['shipping_id_end'])) {
             $qb
-                ->andWhere('o.id <= :order_id_end')
-                ->setParameter('order_id_end', $searchData['order_id_end']);
+                ->andWhere('s.id <= :shipping_id_end')
+                ->setParameter('shipping_id_end', $searchData['shipping_id_end']);
         }
 
+        // order_id
+        if (isset($searchData['order_id']) && Str::isNotBlank($searchData['order_id'])) {
+            $qb
+                ->andWhere('o.id = :order_id')
+                ->setParameter('order_id', $searchData['order_id']);
+        }
+
+        // status
+        if (!empty($searchData['status']) && $searchData['status']) {
+            $qb
+                ->andWhere('o.OrderStatus = :status')
+                ->setParameter('status', $searchData['status']);
+        }
+        if (!empty($searchData['multi_status']) && count($searchData['multi_status'])) {
+            $qb
+                ->andWhere($qb->expr()->in('o.OrderStatus', ':multi_status'))
+                ->setParameter('multi_status', $searchData['multi_status']->toArray());
+            $filterStatus = true;
+        }
         // name
         if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $qb
-                ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
+                ->andWhere('CONCAT(s.name01, s.name02) LIKE :name')
                 ->setParameter('name', '%' . $searchData['name'] . '%');
         }
 
         // kana
         if (isset($searchData['kana']) && Str::isNotBlank($searchData['kana'])) {
             $qb
-                ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
+                ->andWhere('CONCAT(s.kana01, s.kana02) LIKE :kana')
                 ->setParameter('kana', '%' . $searchData['kana'] . '%');
         }
 
-        // email
+        // order_name
+        if (isset($searchData['order_name']) && Str::isNotBlank($searchData['order_name'])) {
+            $qb
+                ->andWhere('CONCAT(o.name01, o.name02) LIKE :order_name')
+                ->setParameter('order_name', '%' . $searchData['order_name'] . '%');
+        }
+
+        // order_kana
+        if (isset($searchData['order_kana']) && Str::isNotBlank($searchData['order_kana'])) {
+            $qb
+                ->andWhere('CONCAT(o.kana01, s.kana02) LIKE :order_kana')
+                ->setParameter('kana', '%' . $searchData['order_kana'] . '%');
+        }
+
+        // order_email
         if (isset($searchData['email']) && Str::isNotBlank($searchData['email'])) {
             $qb
                 ->andWhere('o.email like :email')
@@ -90,15 +125,8 @@ class ShippingRepository extends AbstractRepository
         // tel
         if (isset($searchData['tel']) && Str::isNotBlank($searchData['tel'])) {
             $qb
-                ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
+                ->andWhere('CONCAT(s.tel01, s.tel02, s.tel03) LIKE :tel')
                 ->setParameter('tel', '%' . $searchData['tel'] . '%');
-        }
-
-        // sex
-        if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
-            $qb
-                ->andWhere($qb->expr()->in('o.Sex', ':sex'))
-                ->setParameter('sex', $searchData['sex']->toArray());
         }
 
         // payment
@@ -129,27 +157,27 @@ class ShippingRepository extends AbstractRepository
                 ->setParameter('order_date_end', $date);
         }
 
-        // payment_date
-        if (!empty($searchData['payment_date_start']) && $searchData['payment_date_start']) {
-            $date = $searchData['payment_date_start'];
+        // shipping_delivery_date
+        if (!empty($searchData['shipping_delivery_date_start']) && $searchData['shipping_delivery_date_start']) {
+            $date = $searchData['shipping_delivery_date_start'];
             $qb
-                ->andWhere('o.payment_date >= :payment_date_start')
-                ->setParameter('payment_date_start', $date);
+                ->andWhere('s.shipping_delivery_date >= :shipping_delivery_date_start')
+                ->setParameter('shipping_delivery_date_start', $date);
         }
-        if (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
-            $date = clone $searchData['payment_date_end'];
+        if (!empty($searchData['shipping_delivery_date_end']) && $searchData['shipping_delivery_date_end']) {
+            $date = clone $searchData['shipping_delivery_date_end'];
             $date = $date
                 ->modify('+1 days');
             $qb
-                ->andWhere('o.payment_date < :payment_date_end')
-                ->setParameter('payment_date_end', $date);
+                ->andWhere('s.shipping_delivery_date < :shipping_delivery_date_end')
+                ->setParameter('shipping_delivery_date_end', $date);
         }
 
         // commit_date
         if (!empty($searchData['commit_date_start']) && $searchData['commit_date_start']) {
             $date = $searchData['commit_date_start'];
             $qb
-                ->andWhere('o.commit_date >= :commit_date_start')
+                ->andWhere('s.commit_date >= :commit_date_start')
                 ->setParameter('commit_date_start', $date);
         }
         if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
@@ -157,7 +185,7 @@ class ShippingRepository extends AbstractRepository
             $date = $date
                 ->modify('+1 days');
             $qb
-                ->andWhere('o.commit_date < :commit_date_end')
+                ->andWhere('s.commit_date < :commit_date_end')
                 ->setParameter('commit_date_end', $date);
         }
 
@@ -166,7 +194,7 @@ class ShippingRepository extends AbstractRepository
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start'];
             $qb
-                ->andWhere('o.update_date >= :update_date_start')
+                ->andWhere('s.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
@@ -174,7 +202,7 @@ class ShippingRepository extends AbstractRepository
             $date = $date
                 ->modify('+1 days');
             $qb
-                ->andWhere('o.update_date < :update_date_end')
+                ->andWhere('s.update_date < :update_date_end')
                 ->setParameter('update_date_end', $date);
         }
 
@@ -193,14 +221,13 @@ class ShippingRepository extends AbstractRepository
         // buy_product_name
         if (isset($searchData['buy_product_name']) && Str::isNotBlank($searchData['buy_product_name'])) {
             $qb
-                ->leftJoin('o.OrderDetails', 'od')
-                ->andWhere('od.product_name LIKE :buy_product_name')
+                ->andWhere('si.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
         }
 
         // Order By
-        $qb->orderBy('o.update_date', 'DESC');
-        $qb->addorderBy('o.id', 'DESC');
+        $qb->orderBy('s.update_date', 'DESC');
+        $qb->addorderBy('s.id', 'DESC');
 
         return $qb;
     }
