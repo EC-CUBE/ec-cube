@@ -288,7 +288,7 @@
                                                 <ul class="dropdown-menu">
                                             {% endfor %}
                                             {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                                <li><a href="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                                <li><a href="{{ path('admin/shipping/page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
                                             {% endfor %}
                                                 </ul>
                                         </li>
