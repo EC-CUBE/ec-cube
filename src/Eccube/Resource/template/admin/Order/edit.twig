@@ -132,18 +132,6 @@ $(function() {
     {% endif %}
     order_details_count = '{{ maxIndex }}';
 
-{#
-    var shipping_details_count = [];
-    {% if BaseInfo.optionMultipleShipping %}
-        {% for shippingKey, shippingForm in form.Shippings %}
-            {% if shippingForm.ShipmentItems is empty %}
-                shipping_details_count.push({idx:{{ shippingKey }}, cnt:0});
-            {% else %}
-                shipping_details_count.push({idx:{{ shippingKey }}, cnt:{{ max(shippingForm.ShipmentItems|keys) + 1 }} });
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-#}
     // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
     $("input").on("keydown", function(e) {
         if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
@@ -392,40 +380,40 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              id="order_detail_list"
                              data-prototype="
                                 {% filter escape %}
-                                     {{ include('Order/order_detail_prototype.twig', { 'orderDetailForm': form.ShipmentItems.vars.prototype }) }}
+                                     {{ include('Order/order_detail_prototype.twig', { 'shipmentItemForm': form.ShipmentItems.vars.prototype }) }}
                                 {% endfilter %}">
 
                             {{ form_errors(form.OrderDetailsErrors) }}
 
-                            {% for orderDetailForm in form.ShipmentItems %}
+                            {% for shipmentItemForm in form.ShipmentItems %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
-                                    {{ form_widget(orderDetailForm.Order) }}
-                                    {{ form_widget(orderDetailForm.Shipping) }}
-                                    {{ form_widget(orderDetailForm.Product) }}
-                                    {{ form_widget(orderDetailForm.ProductClass) }}
-                                    {{ form_widget(orderDetailForm.product_name) }}
-                                    {{ form_widget(orderDetailForm.product_code) }}
-                                    {{ form_widget(orderDetailForm.class_name1) }}
-                                    {{ form_widget(orderDetailForm.class_name2) }}
-                                    {{ form_widget(orderDetailForm.class_category_name1) }}
-                                    {{ form_widget(orderDetailForm.class_category_name2) }}
-                                    {{ form_widget(orderDetailForm.tax_rule) }}
-                                    {{ form_widget(orderDetailForm.tax_type) }}
-                                    {{ form_widget(orderDetailForm.tax_display_type) }}
-                                    {{ form_widget(orderDetailForm.order_item_type) }}
+                                    {{ form_widget(shipmentItemForm.Order) }}
+                                    {{ form_widget(shipmentItemForm.Shipping) }}
+                                    {{ form_widget(shipmentItemForm.Product) }}
+                                    {{ form_widget(shipmentItemForm.ProductClass) }}
+                                    {{ form_widget(shipmentItemForm.product_name) }}
+                                    {{ form_widget(shipmentItemForm.product_code) }}
+                                    {{ form_widget(shipmentItemForm.class_name1) }}
+                                    {{ form_widget(shipmentItemForm.class_name2) }}
+                                    {{ form_widget(shipmentItemForm.class_category_name1) }}
+                                    {{ form_widget(shipmentItemForm.class_category_name2) }}
+                                    {{ form_widget(shipmentItemForm.tax_rule) }}
+                                    {{ form_widget(shipmentItemForm.tax_type) }}
+                                    {{ form_widget(shipmentItemForm.tax_display_type) }}
+                                    {{ form_widget(shipmentItemForm.order_item_type) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
-                                            <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
-                                            <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
+                                            <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
+                                            <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
-                                                {% if orderDetailForm.vars.value.class_category_name1 is not empty %}
+                                                {% if shipmentItemForm.vars.value.class_category_name1 is not empty %}
                                                 / (
-                                                    {{ orderDetailForm.vars.value.class_name1 }}：
-                                                    {{ orderDetailForm.vars.value.class_category_name1 }}
-                                                    {% if orderDetailForm.vars.value.class_category_name2 is not empty %}
+                                                    {{ shipmentItemForm.vars.value.class_name1 }}：
+                                                    {{ shipmentItemForm.vars.value.class_category_name1 }}
+                                                    {% if shipmentItemForm.vars.value.class_category_name2 is not empty %}
                                                         /
-                                                        {{ orderDetailForm.vars.value.class_name2 }}：
-                                                        {{ orderDetailForm.vars.value.class_category_name2 }}
+                                                        {{ shipmentItemForm.vars.value.class_name2 }}：
+                                                        {{ shipmentItemForm.vars.value.class_category_name2 }}
                                                     {% endif %}
                                                     )
                                                 {% endif %}
@@ -434,45 +422,38 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                         <div class="row">
                                             <div id="product_info_list__price--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
-                                                    {{ form_widget(orderDetailForm.price) }}
-                                                    {{ form_errors(orderDetailForm.price) }}
+                                                    {{ form_widget(shipmentItemForm.price) }}
+                                                    {{ form_errors(shipmentItemForm.price) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
                                                     {% if BaseInfo.optionMultipleShipping %}
-                                                        数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
+                                                        数量：{{ form_widget(shipmentItemForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
-                                                        数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                        数量：{{ form_widget(shipmentItemForm.quantity) }}
                                                     {% endif %}
-                                                    {{ form_errors(orderDetailForm.quantity) }}
+                                                    {{ form_errors(shipmentItemForm.quantity) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
                                                     税率：
                                                     <span class="input-group">
-                                                    {{ form_widget(orderDetailForm.tax_rate) }}
-                                                    {{ form_errors(orderDetailForm.tax_rate) }}
+                                                    {{ form_widget(shipmentItemForm.tax_rate) }}
+                                                    {{ form_errors(shipmentItemForm.tax_rate) }}
                                                     <span class="input-group-addon">%</span>
                                                     </span>
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
-                                                <span>小計：</span> {{ orderDetailForm.vars.value.total_price|price }} ({{ orderDetailForm.vars.value.tax_display_type }}) <!-- ({{ orderDetailForm.vars.value.tax_type }}) -->
+                                                <span>小計：</span> {{ shipmentItemForm.vars.value.total_price|price }} ({{ shipmentItemForm.vars.value.tax_display_type }}) <!-- ({{ shipmentItemForm.vars.value.tax_type }}) -->
                                             </div>
                                         </div>
-                                        {% if orderDetailForm.vars.value.Shipping.id is defined %}
-                                        出荷情報 <a href="{{ url('admin/shipping/edit', { id : orderDetailForm.vars.value.Shipping.id }) }}">{{ orderDetailForm.vars.value.Shipping.id }}</a><br>
+                                        {% if shipmentItemForm.vars.value.Shipping.id is defined %}
+                                        出荷情報 <a href="{{ url('admin/shipping/edit', { id : shipmentItemForm.vars.value.Shipping.id }) }}">{{ shipmentItemForm.vars.value.Shipping.id }}</a><br>
                                         {% endif %}
-                                        {#
-                                        {{ orderDetailForm.vars.value.Shipping.name01 }}
-                                        {{ orderDetailForm.vars.value.Shipping.name02 }}
-                                        {{ orderDetailForm.vars.value.Shipping.zip01 }}-
-                                        {{ orderDetailForm.vars.value.Shipping.zip02 }}
-                                        {{ orderDetailForm.vars.value.Shipping.addr01 }}
-                                        {{ orderDetailForm.vars.value.Shipping.addr02 }}
-                                        #}
+
                                     </div>
                                     {% if BaseInfo.optionMultipleShipping %}
                                     {% else %}

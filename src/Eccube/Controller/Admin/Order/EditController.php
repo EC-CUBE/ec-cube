@@ -82,10 +82,6 @@ class EditController extends AbstractController
 
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
-        // $OriginalOrderDetails = new ArrayCollection();
-        // 編集前のお届け先情報を保持
-        $OriginalShippings = new ArrayCollection();
-        // 編集前のお届け先のアイテム情報を保持
         $OriginalShipmentItems = new ArrayCollection();
 
         // 編集前の情報を保持
@@ -101,7 +97,6 @@ class EditController extends AbstractController
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-                // 'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -116,7 +111,6 @@ class EditController extends AbstractController
                     'builder' => $builder,
                     'OriginOrder' => $OriginOrder,
                     'TargetOrder' => $TargetOrder,
-                    // 'OriginOrderDetails' => $OriginalOrderDetails,
                 ),
                 $request
             );
