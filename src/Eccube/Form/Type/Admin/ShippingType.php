@@ -95,6 +95,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
+                    'attr' => array('class' => 'p-postal-code')
                 ),
             ))
             ->add('address', AddressType::class, array(
@@ -103,6 +104,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
+                    'attr' => array('class' => 'p-region-id')
                 ),
                 'addr01_options' => array(
                     'constraints' => array(
@@ -111,6 +113,7 @@ class ShippingType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
+                    'attr' => array('class' => 'p-locality')
                 ),
                 'addr02_options' => array(
                     'required' => false,
@@ -120,6 +123,7 @@ class ShippingType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
+                    'attr' => array('class' => 'p-street-address')
                 ),
             ))
             ->add('tel', TelType::class, array(
