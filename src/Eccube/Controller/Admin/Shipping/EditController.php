@@ -48,50 +48,37 @@ class EditController
             'Eccube\Entity\Product',
         ));
 
-        $TargetOrder = null;
-        $OriginOrder = null;
+        $TargetShipping = null;
+        $OriginShipping = null;
 
         if (is_null($id)) {
             // 空のエンティティを作成.
-            $TargetOrder = new Shipping();
+            $TargetShipping = new Shipping();
         } else {
-            $TargetOrder = $app['eccube.repository.shipping']->find($id);
-            if (is_null($TargetOrder)) {
+            $TargetShipping = $app['eccube.repository.shipping']->find($id);
+            if (is_null($TargetShipping)) {
                 throw new NotFoundHttpException();
             }
         }
 
         // 編集前の受注情報を保持
-        $OriginOrder = clone $TargetOrder;
-        $OriginalOrderDetails = new ArrayCollection();
-        // 編集前のお届け先情報を保持
-        $OriginalShippings = new ArrayCollection();
+        $OriginShipping = clone $TargetShipping;
         // 編集前のお届け先のアイテム情報を保持
         $OriginalShipmentItems = new ArrayCollection();
 
-        foreach ($TargetOrder->getShipmentItems() as $OrderDetail) {
-            $OriginalOrderDetails->add($OrderDetail);
+        foreach ($TargetShipping->getShipmentItems() as $ShipmentItem) {
+            $OriginalShipmentItems->add($ShipmentItem);
         }
 
-        // // 編集前の情報を保持
-        // foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
-        //     foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
-        //         // アイテム情報
-        //         $OriginalShipmentItems->add($tmpOriginalShipmentItem);
-        //     }
-        //     // お届け先情報
-        //     $OriginalShippings->add($tmpOriginalShippings);
-        // }
-
         $builder = $app['form.factory']
-            ->createBuilder(ShippingType::class, $TargetOrder);
+            ->createBuilder(ShippingType::class, $TargetShipping);
 
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'OriginOrder' => $OriginOrder,
-                'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                'OriginShipping' => $OriginShipping,
+                'TargetShipping' => $TargetShipping,
+                'OriginalShipmentItems' => $OriginalShipmentItems,
             ),
             $request
         );
@@ -104,9 +91,9 @@ class EditController
             $event = new EventArgs(
                 array(
                     'builder' => $builder,
-                    'OriginOrder' => $OriginOrder,
-                    'TargetOrder' => $TargetOrder,
-                    'OriginOrderDetails' => $OriginalOrderDetails,
+                    'OriginShipping' => $OriginShipping,
+                    'TargetShipping' => $TargetShipping,
+                    'OriginalShipmentItems' => $OriginalShipmentItems,
                 ),
                 $request
             );
@@ -114,26 +101,26 @@ class EditController
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
-            $OrderDetails = $TargetOrder->getShipmentItems();
+            $ShipmentItems = $TargetShipping->getShipmentItems();
             $taxtotal = 0;
-            foreach ($OrderDetails as $OrderDetail) {
+            foreach ($ShipmentItems as $ShipmentItem) {
                 $tax = $app['eccube.service.tax_rule']
-                    ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-                $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+                    ->calcTax($ShipmentItem->getPrice(), $ShipmentItem->getTaxRate(), $ShipmentItem->getTaxRule());
+                $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice() + $tax);
 
-                $taxtotal += $tax * $OrderDetail->getQuantity();
+                $taxtotal += $tax * $ShipmentItem->getQuantity();
             }
 
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register_and_commit':
                     if ($form->isValid()) {
-                        $TargetOrder->setCommitDate(new \DateTime());
+                        $TargetShipping->setCommitDate(new \DateTime());
                     }
                     // no break
                 case 'register':
 
-                    log_info('出荷登録開始', array($TargetOrder->getId()));
+                    log_info('出荷登録開始', array($TargetShipping->getId()));
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                     if ($form->isValid()) {
 
@@ -142,24 +129,24 @@ class EditController
                         // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
 
                         // 画面上で削除された明細をremove
-                        foreach ($OriginalOrderDetails as $OrderDetail) {
-                            if (false === $TargetOrder->getShipmentItems()->contains($OrderDetail)) {
-                                $OrderDetail->setShipping(null);
+                        foreach ($OriginalShipmentItems as $ShipmentItem) {
+                            if (false === $TargetShipping->getShipmentItems()->contains($ShipmentItem)) {
+                                $ShipmentItem->setShipping(null);
                             }
                         }
 
-                        foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
-                            $ShipmentItem->setShipping($TargetOrder);
+                        foreach ($TargetShipping->getShipmentItems() as $ShipmentItem) {
+                            $ShipmentItem->setShipping($TargetShipping);
                         }
-                        $app['orm.em']->persist($TargetOrder);
+                        $app['orm.em']->persist($TargetShipping);
                         $app['orm.em']->flush();
 
                         $event = new EventArgs(
                             array(
                                 'form' => $form,
-                                'OriginOrder' => $OriginOrder,
-                                'TargetOrder' => $TargetOrder,
-                                'OriginOrderDetails' => $OriginalOrderDetails,
+                                'OriginShipping' => $OriginShipping,
+                                'TargetShipping' => $TargetShipping,
+                                'OriginalShipmentItems' => $OriginalShipmentItems,
                                 //'Customer' => $Customer,
                             ),
                             $request
@@ -168,24 +155,10 @@ class EditController
 
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
-                        log_info('受注登録完了', array($TargetOrder->getId()));
+                        log_info('出荷登録完了', array($TargetShipping->getId()));
 
-                        return $app->redirect($app->url('admin/shipping/edit', array('id' => $TargetOrder->getId())));
+                        return $app->redirect($app->url('admin/shipping/edit', array('id' => $TargetShipping->getId())));
                     }
-
-                    break;
-
-                case 'add_delivery':
-                    // お届け先情報の新規追加
-
-                    $form = $builder->getForm();
-
-                    $Shipping = new \Eccube\Entity\Shipping();
-                    $TargetOrder->addShipping($Shipping);
-
-                    $Shipping->setOrder($TargetOrder);
-
-                    $form->setData($TargetOrder);
 
                     break;
 
@@ -201,9 +174,9 @@ class EditController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'OriginOrder' => $OriginOrder,
-                'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                'OriginShipping' => $OriginShipping,
+                'TargetShipping' => $TargetShipping,
+                'OriginalShipmentItems' => $OriginalShipmentItems,
             ),
             $request
         );
@@ -218,9 +191,9 @@ class EditController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'OriginOrder' => $OriginOrder,
-                'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                'OriginShipping' => $OriginShipping,
+                'TargetShipping' => $TargetShipping,
+                'OriginalShipmentItems' => $OriginalShipmentItems,
             ),
             $request
         );
@@ -243,8 +216,7 @@ class EditController
             'shippingForm' => $form->createView(),
             'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
-            'Order' => $TargetOrder, // Deprecated
-            'Shipping' => $TargetOrder,
+            'Shipping' => $TargetShipping,
             'id' => $id,
             'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
         ];

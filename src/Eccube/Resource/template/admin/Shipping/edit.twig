@@ -366,40 +366,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                              id="order_detail_list"
                              data-prototype="
                                     {% filter escape %}
-                                    {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': form.ShipmentItems.vars.prototype }) }}
+                                    {{ include('Shipping/shipment_item_prototype.twig', { 'shipmentItemForm': form.ShipmentItems.vars.prototype }) }}
                                     {% endfilter %}"
                         >
-                            {#{ form_errors(form.OrderDetailsErrors) }#}
 
-                            {% for orderDetailForm in form.ShipmentItems %}
+                            {% for shipmentItemForm in form.ShipmentItems %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
-                                    {{ form_widget(orderDetailForm.Order) }}
-                                    {{ form_widget(orderDetailForm.Product) }}
-                                    {{ form_widget(orderDetailForm.ProductClass) }}
-                                    {{ form_widget(orderDetailForm.product_name) }}
-                                    {{ form_widget(orderDetailForm.product_code) }}
-                                    {{ form_widget(orderDetailForm.class_name1) }}
-                                    {{ form_widget(orderDetailForm.class_name2) }}
-                                    {{ form_widget(orderDetailForm.class_category_name1) }}
-                                    {{ form_widget(orderDetailForm.class_category_name2) }}
-                                    {{ form_widget(orderDetailForm.tax_rule) }}
-                                    {{ form_widget(orderDetailForm.tax_type) }}
-                                    {{ form_widget(orderDetailForm.tax_display_type) }}
-                                    {{ form_widget(orderDetailForm.order_item_type) }}
+                                    {{ form_widget(shipmentItemForm.Order) }}
+                                    {{ form_widget(shipmentItemForm.Product) }}
+                                    {{ form_widget(shipmentItemForm.ProductClass) }}
+                                    {{ form_widget(shipmentItemForm.product_name) }}
+                                    {{ form_widget(shipmentItemForm.product_code) }}
+                                    {{ form_widget(shipmentItemForm.class_name1) }}
+                                    {{ form_widget(shipmentItemForm.class_name2) }}
+                                    {{ form_widget(shipmentItemForm.class_category_name1) }}
+                                    {{ form_widget(shipmentItemForm.class_category_name2) }}
+                                    {{ form_widget(shipmentItemForm.tax_rule) }}
+                                    {{ form_widget(shipmentItemForm.tax_type) }}
+                                    {{ form_widget(shipmentItemForm.tax_display_type) }}
+                                    {{ form_widget(shipmentItemForm.order_item_type) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
-                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : orderDetailForm.vars.value.order_id }) }}">{{ orderDetailForm.vars.value.order_id }}</a></span><br>
-                                            <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
-                                            <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
+                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : shipmentItemForm.vars.value.order_id }) }}">{{ shipmentItemForm.vars.value.order_id }}</a></span><br>
+                                            <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
+                                            <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
-                                                {% if orderDetailForm.vars.value.class_category_name1 is not empty %}
+                                                {% if shipmentItemForm.vars.value.class_category_name1 is not empty %}
                                                     / (
-                                                    {{ orderDetailForm.vars.value.class_name1 }}：
-                                                    {{ orderDetailForm.vars.value.class_category_name1 }}
-                                                    {% if orderDetailForm.vars.value.class_category_name2 is not empty %}
+                                                    {{ shipmentItemForm.vars.value.class_name1 }}：
+                                                    {{ shipmentItemForm.vars.value.class_category_name1 }}
+                                                    {% if shipmentItemForm.vars.value.class_category_name2 is not empty %}
                                                         /
-                                                        {{ orderDetailForm.vars.value.class_name2 }}：
-                                                        {{ orderDetailForm.vars.value.class_category_name2 }}
+                                                        {{ shipmentItemForm.vars.value.class_name2 }}：
+                                                        {{ shipmentItemForm.vars.value.class_category_name2 }}
                                                     {% endif %}
                                                     )
                                                 {% endif %}
@@ -408,30 +407,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row">
                                             <div id="product_info_list__price--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
-                                                    単価： {{ orderDetailForm.vars.value.price|price }}
+                                                    単価： {{ shipmentItemForm.vars.value.price|price }}
 
-                                                        {{ form_widget(orderDetailForm.price, { type: 'hidden', attr: { class: 'notmoney' } } ) }}
-                                                        {{ form_errors(orderDetailForm.price) }}
+                                                        {{ form_widget(shipmentItemForm.price, { type: 'hidden', attr: { class: 'notmoney' } } ) }}
+                                                        {{ form_errors(shipmentItemForm.price) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
-                                                    数量：{{ orderDetailForm.vars.value.quantity }}
-                                                    {{ form_widget(orderDetailForm.quantity, { type: 'hidden' } ) }}
-                                                        {{ form_errors(orderDetailForm.quantity) }}
+                                                    数量：{{ shipmentItemForm.vars.value.quantity }}
+                                                    {{ form_widget(shipmentItemForm.quantity, { type: 'hidden' } ) }}
+                                                        {{ form_errors(shipmentItemForm.quantity) }}
 
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
-                                                    税率：{{ orderDetailForm.vars.value.tax_rate }}%
+                                                    税率：{{ shipmentItemForm.vars.value.tax_rate }}%
 
-                                                    {{ form_widget(orderDetailForm.tax_rate, { type: 'hidden' } ) }}
-                                                    {{ form_errors(orderDetailForm.tax_rate) }}
+                                                    {{ form_widget(shipmentItemForm.tax_rate, { type: 'hidden' } ) }}
+                                                    {{ form_errors(shipmentItemForm.tax_rate) }}
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
-                                                <span>小計：</span> {{ orderDetailForm.vars.value.total_price|price }}
+                                                <span>小計：</span> {{ shipmentItemForm.vars.value.total_price|price }}
                                             </div>
                                         </div>
 
