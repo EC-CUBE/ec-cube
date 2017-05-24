@@ -118,7 +118,7 @@
             {{ form_widget(searchForm._token) }}
             <div id="search_box_main" class="row">
                 <div id="search_box_main__body" class="col-md-12 accordion">
-                    {{ form_widget(searchForm.multi, { attr: { placeholder: '受注ID・注文者名・注文者会社名', class : 'input_search' } } ) }}
+                    {{ form_widget(searchForm.multi, { attr: { placeholder: '配送番号・お届け先名・お届け先会社名', class : 'input_search' } } ) }}
 
                     <a href="#" class="toggle{% if active %} active{% endif %}">
                         <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>
@@ -126,7 +126,6 @@
                     <div id="search_box_main__body_toggle" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
                         <div class="row">
                             <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
-                                ※ 詳細検索機能は準備中です
 
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -141,77 +140,66 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div id="search_box_main__name" class="form-group">
-                                            <label>お名前</label>
+                                            <label>お届け先 お名前</label>
                                             {{ form_widget(searchForm.name) }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div id="search_box_main__kana" class="form-group">
-                                            <label>お名前(フリガナ)</label>
+                                            <label>お届け先 お名前(フリガナ)</label>
                                             {{ form_widget(searchForm.kana) }}
                                             {{ form_errors(searchForm.kana) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div id="search_box_main__name" class="form-group">
+                                            <label>ご注文者 お名前</label>
+                                            {{ form_widget(searchForm.order_name) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="search_box_main__kana" class="form-group">
+                                            <label>ご注文者 お名前(フリガナ)</label>
+                                            {{ form_widget(searchForm.order_kana) }}
+                                            {{ form_errors(searchForm.order_kana) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div id="search_box_main__order_id" class="form-group">
+                                            <label>注文番号</label>
+                                            {{ form_widget(searchForm.order_id) }}
+                                            {{ form_errors(searchForm.order_id) }}
+                                        </div>
+                                    </div>
                                     <div class="col-sm-6">
                                         <div id="search_box_main__tel" class="form-group">
-                                            <label>電話番号</label>
+                                            <label>お届け先 電話番号</label>
                                             {{ form_widget(searchForm.tel) }}
                                             {{ form_errors(searchForm.tel) }}
-                                        </div>
-                                    </div>
-                                    <div id="search_box_main__email" class="col-sm-6">
-                                        <label>メールアドレス</label>
-                                        <div class="form-group">
-                                            {{ form_widget(searchForm.email) }}
-                                            {{ form_errors(searchForm.email) }}
-                                        </div>
-                                    </div>
-                                </div><!-- /.row -->
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div id="search_box_main__sex" class="form-group">
-                                            <label>性別</label>
-                                            {{ form_widget(searchForm.sex) }}
-                                        </div>
-                                    </div>
-                                </div><!-- /.row -->
-
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div id="search_box_main__payment" class="form-group">
-                                            <label>支払方法</label>
-                                            <div>
-                                                {{ form_widget(searchForm.payment) }}
-                                            </div>
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
 
                                 <div class="row">
                                     <div id="search_box_main__order_date" class="col-sm-6">
-                                        <label>受注日</label>
+                                        <label>お届け予定日</label>
                                         <div class="form-group range">
-                                            {{ form_widget(searchForm.order_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.order_date_end, {'attr': {'class': 'input_cal'}}) }}
+                                            {{ form_widget(searchForm.shipping_delivery_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.shipping_delivery_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                     <div id="search_box_main__payment_date" class="col-sm-6">
-                                        <label>入金日</label>
+                                        <label>出荷日</label>
                                         <div class="form-group range">
-                                            {{ form_widget(searchForm.payment_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.payment_date_end, {'attr': {'class': 'input_cal'}}) }}
+                                            {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
 
                                 <div class="row">
-                                    <div id="search_box_main__commit_date" class="col-sm-6">
-                                        <label>発送日</label>
-                                        <div class="form-group range">
-                                            {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
-                                        </div>
-                                    </div>
                                     <div id="search_box_main__update_date" class="col-sm-6">
                                         <label>更新日</label>
                                         <div class="form-group range">
@@ -233,6 +221,19 @@
                                             {{ form_widget(searchForm.buy_product_name) }}
                                         </div>
                                     </div>
+                                    <div class="extra-form col-md-12">
+                                        {% for f in searchForm.getIterator %}
+                                            {% if f.vars.name matches '[^plg*]' %}
+                                                <div class="form-group">
+                                                    {{ form_label(f) }}
+                                                    {{ form_widget(f) }}
+                                                    {{ form_errors(f) }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div><!-- /.row -->
+                                <div class="row">
                                     <div class="extra-form col-md-12">
                                         {% for f in searchForm.getIterator %}
                                             {% if f.vars.name matches '[^plg*]' %}
@@ -287,7 +288,7 @@
                                                 <ul class="dropdown-menu">
                                             {% endfor %}
                                             {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                                <li><a href="{{ path('admin_order_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                                <li><a href="{{ path('admin/shipping/page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
                                             {% endfor %}
                                                 </ul>
                                         </li>
