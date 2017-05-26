@@ -140,7 +140,43 @@ class Order extends \Eccube\Entity\AbstractEntity
                              return $ShipmentItem->isDeliveryFee();
                          }),
             function($total, $ShipmentItem) {
-                return $total + $ShipmentItem->getPriceIncTax();
+                return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+            }, 0);
+    }
+
+    /**
+     * この注文にかかる値引きの合計を返す.
+     *
+     * @return integer
+     */
+    public function calculateDiscountTotal()
+    {
+        // TODO filter を外出ししたい
+        return array_reduce(
+            array_filter($this->getShipmentItems()->toArray(),
+                         function($ShipmentItem) {
+                             return $ShipmentItem->isDiscount();
+                         }),
+            function($total, $ShipmentItem) {
+                return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+            }, 0);
+    }
+
+    /**
+     * この注文にかかる手数料の合計を返す.
+     *
+     * @return integer
+     */
+    public function calculateChargeTotal()
+    {
+        // TODO filter を外出ししたい
+        return array_reduce(
+            array_filter($this->getShipmentItems()->toArray(),
+                         function($ShipmentItem) {
+                             return $ShipmentItem->isCharge();
+                         }),
+            function($total, $ShipmentItem) {
+                return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
             }, 0);
     }
 
