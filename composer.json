@@ -95,8 +95,7 @@
     },
     "scripts": {
         "compile": [
-            "php eccube_install.php pgsql none --skip-createdb -V",
-            "sed -i -e \"s|${PWD}|/app|\" ${PWD}/app/config/eccube/path.yml"
+            "php eccube_install.php pgsql none --skip-createdb -V"
         ]
     },
     "config": {
