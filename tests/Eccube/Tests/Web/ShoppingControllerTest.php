@@ -208,7 +208,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->expected = '有効な値ではありません。';
-        $this->actual = $crawler->filter('p.errormsg')->text();
+        $this->actual = $crawler->filter('p.ec-errorMessage')->text();
         $this->verify();
     }
 
@@ -285,7 +285,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->expected = '有効な値ではありません。';
-        $this->actual = $crawler->filter('p.errormsg')->text();
+        $this->actual = $crawler->filter('p.ec-errorMessage')->text();
         $this->verify();
     }
 
