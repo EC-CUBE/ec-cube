@@ -472,18 +472,15 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     <dd>{{ Order.subtotal|price }}</dd>
                                     <dt id="product_info_result_box__discount">内値引き：</dt>
                                     <dd class="form-group form-inline">
-                                        {{ form_widget(form.discount) }}
-                                        {{ form_errors(form.discount) }}
+                                        ▲{{ Order.discount|price }}
                                     </dd>
                                     <dt id="product_info_result_box__delivery_fee_total">内送料：</dt>
                                     <dd class="form-group form-inline">
-                                        {{ form_widget(form.delivery_fee_total) }}
-                                        {{ form_errors(form.delivery_fee_total) }}
+                                        {{ Order.delivery_fee_total|price }}
                                     </dd>
                                     <dt id="product_info_result_box__charge">内手数料：</dt>
                                     <dd class="form-group form-inline">
-                                        {{ form_widget(form.charge) }}
-                                        {{ form_errors(form.charge) }}
+                                        {{ Order.charge|price }}
                                     </dd>
                                 </dl>
                             </div>

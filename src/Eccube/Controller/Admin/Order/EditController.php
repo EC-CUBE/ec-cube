@@ -165,8 +165,6 @@ class EditController extends AbstractController
                             $ShipmentItem->setOrder($TargetOrder);
                         }
 
-                        // TODO 手数料, 値引きの集計は CalculateService で
-                        $TargetOrder->setDeliveryFeeTotal($TargetOrder->calculateDeliveryFeeTotal()); // FIXME
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 

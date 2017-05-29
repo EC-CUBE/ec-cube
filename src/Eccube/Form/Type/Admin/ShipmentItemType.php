@@ -143,6 +143,26 @@ class ShipmentItemType extends AbstractType
                 )));
 
         $app = $this->app;
+        // XXX price を priceIncTax にセットし直す
+        // どこか一箇所にまとめたい
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
+                /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
+                $ShipmentItem = $event->getData();
+                $TaxDisplayType = $ShipmentItem->getTaxDisplayType();
+                switch ($TaxDisplayType->getId()) {
+                    // 税込価格
+                    case TaxDisplayType::INCLUDED:
+                        $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice());
+                        break;
+                    // 税別価格の場合は税額を加算する
+                    case TaxDisplayType::EXCLUDED:
+                        // TODO 課税規則を考慮する
+                        $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice() + $ShipmentItem->getPrice() * $ShipmentItem->getTaxRate() / 100);
+                        break;
+                }
+
+                $event->setData($ShipmentItem);
+        });
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
             if ('modal' === $app['request_stack']->getCurrentRequest()->get('modal')) {
