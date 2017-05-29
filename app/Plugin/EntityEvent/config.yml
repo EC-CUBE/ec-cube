@@ -1,0 +1,5 @@
+name: Entityイベント拡張のサンプル
+code: EntityEvent
+version: 1.0.0
+service:
+    - EntityEventServiceProvider
