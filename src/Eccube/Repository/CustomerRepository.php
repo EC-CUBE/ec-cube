@@ -447,14 +447,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == $app['config']['order_cancel'] ||
-                    $orderStatusId == $app['config']['order_pending'] ||
-                    $orderStatusId == $app['config']['order_processing']) {
-                // キャンセル、決済処理中、購入処理中は購入時間は更新しない
-            } else {
-                $Customer->setLastBuyDate($now);
-            }
-
             $Customer->setBuyTimes($data['buy_times']);
             $Customer->setBuyTotal($data['buy_total']);
 
