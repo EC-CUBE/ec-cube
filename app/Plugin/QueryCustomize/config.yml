@@ -1,0 +1,5 @@
+name: クエリビルダ拡張のサンプル
+code: QueryCustomize
+version: 1.0.0
+service:
+    - QueryCustomizeServiceProvider
