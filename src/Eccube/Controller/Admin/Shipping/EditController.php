@@ -25,8 +25,7 @@ use Eccube\Form\Type\Admin\ShipmentItemType;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * // FIXME UrlGenerator で {_admin} を認識しない問題あり
- * @Route("/admin/shipping")
+ * @Route("/{_admin}/shipping")
  */
 class EditController
 {
