@@ -23,81 +23,65 @@
 
 namespace Eccube\Command;
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\TableHelper;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Routing\Route;
 
 
 class RouterCommand extends \Knp\Command\Command
 {
-
-    protected $app;
-
-    protected function configure() {
+    protected function configure()
+    {
         $this
             ->setName('router:debug')
-            ->setDefinition(array(
-                new InputArgument('name', InputArgument::OPTIONAL, 'A route name'),
-            ))
-            ->addOption('sort', null, InputOption::VALUE_OPTIONAL, '[null/ASC/DESC]. If argument orderby set, Default is ASC.')
-            ->addOption('orderby', null, InputOption::VALUE_OPTIONAL, '[null/name/path]. If argument sort set, Default is name.')
+            ->setDefinition(
+                [
+                    new InputArgument('name', InputArgument::OPTIONAL, 'A route name'),
+                ]
+            )
+            ->addOption(
+                'sort',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                '[null/ASC/DESC]. If argument orderby set, Default is ASC.'
+            )
+            ->addOption(
+                'orderby',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                '[null/name/path]. If argument sort set, Default is name.'
+            )
             ->setDescription('Displays current routes for an application')
-            ->setHelp(<<<EOF
+            ->setHelp(
+                <<<EOF
 The <info>%command.name%</info> displays the configured routes:
-  <info>php %command.full_name%</info>
+<info>php %command.full_name%</info>
 EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $app = $this->getSilexApplication();
 
-        $this->app = $this->getSilexApplication();
-        $this->app->initialize();
-        $this->app->boot();
-
-        $console = new Application();
-
-        $filtername = $input->getArgument('name');
+        $filter = $input->getArgument('name');
         $sort = $input->getOption('sort');
         $orderby = $input->getOption('orderby');
 
-        $table = $console->getHelperSet()->get('table');
-        $table->setHeaders(array('Name', 'Path', 'Pattern'));
-        $table->setLayout(TableHelper::LAYOUT_DEFAULT);
+        $table = new Table($output);
+        $table->setHeaders(['Name', 'Path', 'Method', 'Controller']);
 
-        $controllers    = $this->app['controllers'];
-        $collection     = $controllers->flush();
-
-        foreach ($collection as $name => $route) {
-            if (!empty($filtername) && !preg_match("/$filtername/", $name)) {
-                continue;
-            }
-
-            $requirements = array();
-            foreach ($route->getRequirements() as $key => $requirement) {
-                // $requirements[] = $key . ' => ' . $requirement;
-                $requirements[] = $requirement;
-            }
-
-            $table->addRow(array(
-                $name,
-                $route->getPath(),
-                join(', ', $requirements)
-            ));
-        }
-
-
-        $routes = $this->app['routes']->all();
+        $routes = $app['routes']->all();
 
         // 引数で並び替える。
         if (!empty($sort)) {
-            $orderby = (!empty($orderby)) ? $orderby : "name";
+            $orderby = !empty($orderby) ? $orderby : "name";
         }
         if (!empty($orderby)) {
-            $sort = (!empty($sort)) ? $sort : "ASC";
+            $sort = !empty($sort) ? $sort : "ASC";
         }
 
         if (strtoupper($orderby) === "NAME") {
@@ -106,49 +90,42 @@ EOF
             } else {
                 ksort($routes);
             }
-        } else if (strtoupper($orderby) === "PATH") {
-            uasort($routes, function($a, $b) {
-                return strcmp($a->getPattern(), $b->getPattern());
-            });
+        } else {
+            if (strtoupper($orderby) === "PATH") {
+                uasort(
+                    $routes,
+                    function ($a, $b) {
+                        return strcmp($a->getPath(), $b->getPath());
+                    }
+                );
+            }
         }
 
-        $maxName = 4;
-        $maxMethod = 6;
+        // filterで指定した条件以外を除外
         foreach ($routes as $name => $route) {
-            if (!empty($filtername) && !preg_match("/$filtername/", $name)) {
+            if (!empty($filter) && !preg_match("/$filter/", $name)) {
                 unset($routes[$name]);
                 continue;
             }
-
-            $requirements = $route->getRequirements();
-            $method = isset($requirements['_method'])
-                ? strtoupper(is_array($requirements['_method'])
-                    ? implode(', ', $requirements['_method']) : $requirements['_method']
-                )
-                : 'ANY';
-
-            if (strlen($name) > $maxName) {
-                $maxName = strlen($name);
-            }
-
-            if (strlen($method) > $maxMethod) {
-                $maxMethod = strlen($method);
-            }
         }
 
         foreach ($routes as $name => $route) {
-            $requirements = $route->getRequirements();
-            $method = isset($requirements['_method'])
-                ? strtoupper(is_array($requirements['_method'])
-                    ? implode(', ', $requirements['_method']) : $requirements['_method']
-                )
-                : 'ANY';
+            /** @var Route $route */
+            $path = $route->getPath();
+            $methods = $route->getMethods();
+            $methods = empty($methods)
+                ? 'ANY'
+                : implode(',', $methods);
+            $controller = $route->getDefault('_controller');
 
-            $table->addRow(array(
-                $name,
-                $route->getPattern(),
-                $method,
-            ));
+            $table->addRow(
+                [
+                    $name,
+                    $path,
+                    $methods,
+                    $controller,
+                ]
+            );
         }
 
         $table->render($output);

@@ -42,9 +42,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * TODO 管理画面のルーティングは動的に行う.おそらくコントローラのディレクトリをフロント/管理で分ける必要がある
- *
- * @Route("/admin/order")
+ * @Route("/{_admin}/order")
  */
 class EditController extends AbstractController
 {

@@ -319,10 +319,17 @@ class Application extends \Silex\Application
             return new ChainUrlGenerator($generators, $app['request_context']);
         });
 
-        // TODO この設定が正しいか要確認
-        $this->extend('routes_factory', function ($routes, $app ) {
-            return $this['sensio_framework_extra.routing.loader.annot_dir']->load($this['config']['root_dir'].'/src/Eccube/Controller');
+        // Route CollectionにEC-CUBEで定義したルーティングを追加(debug tool barに出力するため)
+        $this->extend('routes', function ($routes, $app) {
+            $routes->addCollection($app['eccube.router.extend']->getRouteCollection());
+            foreach ($app['eccube.routers.plugin'] as $router) {
+                $routes->addCollection($router->getRouteCollection());
+            };
+            $routes->addCollection($app['eccube.router.origin']->getRouteCollection());
+
+            return $routes;
         });
+
         // init http cache
         $this->initCacheRequest();
 

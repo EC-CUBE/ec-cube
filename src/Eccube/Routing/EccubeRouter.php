@@ -42,6 +42,13 @@ class EccubeRouter extends Router
             ]
         );
 
+        $collection->addDefaults(
+            [
+                '_admin' => $this->adminPrefix,
+                '_user_data' => $this->userDataPrefix,
+            ]
+        );
+
         return $collection;
     }
 }
