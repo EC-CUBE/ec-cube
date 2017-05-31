@@ -7,7 +7,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Eccube\Entity\PageLayout;
 
-class Version20170222120000 extends AbstractMigration
+class Version20170225120000 extends AbstractMigration
 {
 
     /**
