@@ -54,6 +54,14 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // Then
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // 商品登録画面に移動する確認
+        $crawler = $this->client->followRedirect();
+        $csvExportUrl = $crawler->filter('div#edit_box__footer div p a')->selectLink('商品登録に戻る')->link()->getUri();
+
+        $crawler = $this->client->request('GET', $csvExportUrl);
+        $panelName = $crawler->filter('div#main h1 span')->text();
+        $this->assertContains('商品登録', $panelName);
     }
 
     /**
