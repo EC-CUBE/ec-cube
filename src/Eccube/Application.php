@@ -37,7 +37,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
-
 class Application extends ApplicationTrait
 {
     protected static $instance;
@@ -150,13 +149,35 @@ class Application extends ApplicationTrait
             if ($app['debug']) {
                 return;
             }
-
             switch ($code) {
                 case 403:
                     $title = 'アクセスできません。';
                     $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
                     break;
                 case 404:
+                    // 404ページを表示する
+                    // 問題が発生した場合は、他エラーと同じ汎用エラーページを表示する
+                    try {
+                        if ($app['twig']->getLoader()->exists('404.twig')) {
+                            $globals = $app['twig']->getGlobals();
+                            if (is_null($globals['PageLayout'])) {
+                                $DeviceType = $app['eccube.repository.master.device_type']->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                                $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, '404');
+                                $app['twig']->addGlobal('PageLayout', $PageLayout);
+                                $app['twig']->addGlobal('title', $PageLayout->getName());
+                            }
+                            if (is_null($globals['BaseInfo'])) {
+                                $BaseInfo = $app['eccube.repository.base_info']->get();
+                                $app['twig']->addGlobal('BaseInfo', $BaseInfo);
+                            }
+
+                            return $app->render('404.twig');
+                        }
+                    } catch (\Exception $e) {
+                        // 問題があった場合は汎用のエラーページを表示するので、例外は無視する
+                        $this['monolog']->error('Failure rendering "404 page".', array('message' => $e->getMessage()));
+                    }
+                    
                     $title = 'ページがみつかりません。';
                     $message = 'URLに間違いがないかご確認ください。';
                     break;
