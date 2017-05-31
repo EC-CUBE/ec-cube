@@ -137,19 +137,24 @@ class ProductController extends AbstractController
                     // 1:公開, 2:非公開, 3:在庫なし
                     $linkStatus = $request->get('status');
                     if (!empty($linkStatus)) {
-                        // リンクステータスは在庫なし:3 以外場合
+                        // リンクステータスは在庫なし:3以外
                         if ($linkStatus != $app['config']['admin_product_stock_status']) {
                             $viewData['link_status'] = $linkStatus;
                             $viewData['stock_status'] = null;
                             $viewData['status'] = null;
                         } else {
-                            // リンクステータスは在庫なし:3です
+                            // リンクステータスは在庫なし:3
                             $viewData['link_status'] = null;
                             $viewData['stock_status'] = Constant::DISABLED;
                             $viewData['status'] = null;
                         }
                         // ページステータスを設定します（リンクステータスAタグ表示のために）
                         $page_status = $linkStatus;
+                    } else {
+                        // すべてを選択
+                        $viewData['link_status'] = null;
+                        $viewData['stock_status'] = null;
+                        $viewData['status'] = array();
                     }
 
                     // 表示件数
