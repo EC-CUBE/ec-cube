@@ -32,6 +32,7 @@ use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Service\CsvExportService;
+use Eccube\Util\FormUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,7 +115,7 @@ class ProductController extends AbstractController
                 );
 
                 // sessionに検索条件を保持
-                $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
+                $viewData = FormUtil::getViewData($searchForm);
                 $session->set('eccube.admin.product.search', $viewData);
                 $session->set('eccube.admin.product.search.page_no', $page_no);
             }
@@ -154,12 +155,14 @@ class ProductController extends AbstractController
                         // すべてを選択
                         $viewData['link_status'] = null;
                         $viewData['stock_status'] = null;
-                        $viewData['status'] = array();
+                        if (!$viewData['status']) {
+                            $viewData['status'] = array();
+                        }
                     }
 
                     // 表示件数
                     $page_count = $request->get('page_count', $page_count);
-                    $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
+                    $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
                     if ($viewData['link_status']) {
                         $searchData['link_status'] = $app['eccube.repository.master.disp']->find($viewData['link_status']);
                     }
