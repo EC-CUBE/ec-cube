@@ -107,10 +107,7 @@ class CsvImportController
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
 
-                        if (isset($row['商品ID']) || Str::isNotBlank($row['商品ID'])) {
-                            $Product = new Product();
-                            $this->em->persist($Product);
-                        } else {
+                        if (isset($row['商品ID']) && Str::isNotBlank($row['商品ID'])) {
                             if (preg_match('/^\d+$/', $row['商品ID'])) {
                                 $Product = $app['eccube.repository.product']->find($row['商品ID']);
                                 if (!$Product) {
@@ -123,10 +120,12 @@ class CsvImportController
 
                                 return $this->render($app, $form, $headers, $this->productTwig);
                             }
-
+                        } else {
+                            $Product = new Product();
+                            $this->em->persist($Product);
                         }
 
-                        if (Str::isBlank($row['商品ID'])) {
+                        if (Str::isBlank($row['公開ステータス(ID)'])) {
                             $this->addErrors(($data->key() + 1).'行目の公開ステータス(ID)が設定されていません。');
                         } else {
                             if (preg_match('/^\d+$/', $row['公開ステータス(ID)'])) {
@@ -224,7 +223,7 @@ class CsvImportController
                                     $this->addErrors(($data->key() + 1).'行目の規格分類1(ID)と規格分類2(ID)には同じ値を使用できません。');
                                 } else {
                                     // 商品規格あり
-                                    // 企画分類あり商品を作成
+                                    // 規格分類あり商品を作成
                                     $ProductClass = clone $ProductClassOrg;
                                     $ProductStock = clone $ProductClassOrg->getProductStock();
 
