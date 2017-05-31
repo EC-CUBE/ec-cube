@@ -150,6 +150,10 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         $c->match('/content/cache', '\Eccube\Controller\Admin\Content\CacheController::index')->bind('admin_content_cache');
 
+        $c->match('/content/mail', '\Eccube\Controller\Admin\Content\MailTemplateController::index')->bind('admin_content_mail');
+        $c->match('/content/mail/{name}/edit', '\Eccube\Controller\Admin\Content\MailTemplateController::edit')->bind('admin_content_mail_edit');
+        $c->put('/content/mail/{name}/reedit', '\Eccube\Controller\Admin\Content\MailTemplateController::reedit')->bind('admin_content_mail_reedit');
+
         // shop
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 

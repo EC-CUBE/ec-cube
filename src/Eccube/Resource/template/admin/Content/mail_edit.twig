@@ -1,0 +1,70 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['content', 'mail'] %}
+
+{% block title %}コンテンツ管理{% endblock %}
+{% block sub_title %}メール管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <form class="form-horizontal" method="post" action="{{ url('admin_content_mail_edit', {'name': name}) }}">
+        {{ form_widget(form._token) }}
+        <div class="row" id="aside_wrap">
+            <div class="col-md-9">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">メール編集</h3>
+                        <p>修正時にはtwigタグの取り扱いにご注意ください。</p>
+                    </div>
+                    <div class="box-body">
+                        {{ form_row(form.tpl_data, {'attr': {'rows': '15'}}) }}
+                        <p class="text-right"><a class="btn btn-default" href="{{ url('admin_content_mail_reedit', { 'name': name}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="本当に初期設定に戻しますか？入力されている内容は失われます。">初期値に戻す</a></p>
+                    </div>
+                </div>
+
+                <div id="detail_box__footer" class="row">
+                    <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                        <p><a href="{{ url('admin_content_mail') }}">戻る</a></p>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-3" id="aside_column">
+                <div id="common_box" class="col_inner">
+                    <div id="common_button_box" class="box no-header">
+                        <div id="common_button_box__body" class="box-body">
+                            <div id="common_button_box__edit_button" class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">設定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
