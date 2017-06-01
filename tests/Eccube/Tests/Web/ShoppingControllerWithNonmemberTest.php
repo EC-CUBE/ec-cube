@@ -24,7 +24,9 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\DomCrawler\Crawler;
+use Eccube\Application;
+use Faker\Generator;
+use Symfony\Component\HttpKernel\Client;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
@@ -302,6 +304,165 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1696
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1267
+     */
+    public function testEditCustomerNotAjaxRequest()
+    {
+        /** @var $app Application*/
+        $app = $this->app;
+        /** @var $client Client*/
+        $client = $this->client;
+
+        $crawler = $this->scenarioShoppingConfirmPage($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $data = $this->createCustomerAjaxForm();
+        $app['eccube.service.cart']->clear();
+        $client->request('POST', $app->url('shopping_customer'), $data, array());
+
+        $response = $client->getResponse();
+        // Test if response is OK
+        $this->assertSame(400, $client->getResponse()->getStatusCode());
+        // Test if Content-Type is valid application/json
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        // Test content
+        $this->assertEquals('{"status":"NG"}', $response->getContent());
+        // Test that response is not empty
+        $this->assertNotEmpty($client->getResponse()->getContent());
+    }
+
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1696
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1267
+     */
+    public function testEditCustomerByAjaxRequestInvalidKana()
+    {
+        /** @var $app Application*/
+        $app = $this->app;
+        /** @var $client Client*/
+        $client = $this->client;
+
+        $crawler = $this->scenarioShoppingConfirmPage($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $data = $this->createCustomerAjaxForm();
+        $data['customer_kana01'] = 'test';
+        $client->request('POST', $app->url('shopping_customer'), $data, array(), array(
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ));
+
+        $response = $client->getResponse();
+        // Test if response is OK
+        $this->assertSame(400, $client->getResponse()->getStatusCode());
+        // Test if Content-Type is valid application/json
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        // Test content
+        $this->assertEquals('{"status":"NG"}', $response->getContent());
+        // Test that response is not empty
+        $this->assertNotEmpty($client->getResponse()->getContent());
+    }
+
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1696
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1267
+     */
+    public function testEditCustomerByAjaxRequestInvalidPref()
+    {
+        /** @var $app Application*/
+        $app = $this->app;
+        /** @var $client Client*/
+        $client = $this->client;
+
+        $crawler = $this->scenarioShoppingConfirmPage($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $data = $this->createCustomerAjaxForm();
+        $data['customer_pref'] = 'test';
+        $client->request('POST', $app->url('shopping_customer'), $data, array(), array(
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ));
+
+        $response = $client->getResponse();
+        // Test if response is OK
+        $this->assertSame(400, $client->getResponse()->getStatusCode());
+        // Test if Content-Type is valid application/json
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        // Test content
+        $this->assertEquals('{"status":"NG"}', $response->getContent());
+        // Test that response is not empty
+        $this->assertNotEmpty($client->getResponse()->getContent());
+    }
+
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1696
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1267
+     */
+    public function testEditCustomerByAjaxRequestOrderCannotFound()
+    {
+        /** @var $app Application*/
+        $app = $this->app;
+        /** @var $client Client*/
+        $client = $this->client;
+
+        $crawler = $this->scenarioShoppingConfirmPage($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $data = $this->createCustomerAjaxForm();
+        $app['eccube.service.cart']->clear();
+        $client->request('POST', $app->url('shopping_customer'), $data, array(), array(
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ));
+
+        $this->assertTrue($client->getResponse()->isRedirect($app->url('shopping_error')));
+    }
+
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1696
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1267
+     */
+    public function testEditCustomerByAjaxRequestSuccess()
+    {
+        /** @var $app Application*/
+        $app = $this->app;
+        /** @var $client Client*/
+        $client = $this->client;
+
+        $crawler = $this->scenarioShoppingConfirmPage($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $data = $this->createCustomerAjaxForm();
+        $client->request('POST', $app->url('shopping_customer'), $data, array(), array(
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ));
+
+        $response = $client->getResponse();
+        // Test if response is OK
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
+        // Test if Content-Type is valid application/json
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        // Test content
+        $this->assertContains('"status":"OK"', $response->getContent());
+        // Test that response is not empty
+        $this->assertNotEmpty($client->getResponse()->getContent());
+    }
+
     public function createNonmemberFormData()
     {
         $faker = $this->getFaker();
@@ -341,5 +502,51 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertContains('お届け先の変更', $crawler->html());
         // Header
         $this->assertContains('お届け先の変更', $crawler->filter('title')->html());
+    }
+
+    /**
+     * @return array
+     */
+    private function createCustomerAjaxForm()
+    {
+        /** @var $faker Generator */
+        $faker = $this->getFaker();
+        $tel = explode('-', $faker->phoneNumber);
+        $data = array(
+            'customer_name01' => $faker->firstName,
+            'customer_name02' => $faker->lastName,
+            'customer_kana01' => $faker->firstKanaName,
+            'customer_kana02' => $faker->lastKanaName,
+
+            'customer_zip01' => $faker->numberBetween(100, 999),
+            'customer_zip02' => $faker->numberBetween(1000, 9999),
+
+            'customer_pref' => '福井県',
+            'customer_addr01' => $faker->city,
+            'customer_addr02' => $faker->streetAddress,
+
+            'customer_tel01' => $tel[0],
+            'customer_tel02' => $tel[1],
+            'customer_tel03' => $tel[2],
+
+            'customer_email' => $faker->safeEmail,
+            'customer_company_name' => $faker->word,
+        );
+
+        return $data;
+    }
+
+    /**
+     * @param $client
+     * @return mixed
+     */
+    private function scenarioShoppingConfirmPage($client)
+    {
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+        $crawler = $this->scenarioConfirm($client);
+
+        return $crawler;
     }
 }

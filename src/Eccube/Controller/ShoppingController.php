@@ -824,7 +824,7 @@ class ShoppingController extends AbstractController
             foreach ($errors as $error) {
                 if ($error->count() != 0) {
                     log_info('非会員お客様情報変更入力チェックエラー');
-                    $response = new Response(json_encode('NG'), 400);
+                    $response = new Response(json_encode(array('status' => 'NG')), 400);
                     $response->headers->set('Content-Type', 'application/json');
 
                     return $response;
@@ -834,7 +834,7 @@ class ShoppingController extends AbstractController
             $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
             if (!$pref) {
                 log_info('非会員お客様情報変更入力チェックエラー');
-                $response = new Response(json_encode('NG'), 400);
+                $response = new Response(json_encode(array('status' => 'NG')), 400);
                 $response->headers->set('Content-Type', 'application/json');
 
                 return $response;
