@@ -144,7 +144,7 @@ class ShipmentItemType extends AbstractType
 
         $app = $this->app;
         // XXX price を priceIncTax にセットし直す
-        // どこか一箇所にまとめたい
+        // ShipmentItem::getTotalPrice でもやっているので、どこか一箇所にまとめたい
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
                 /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
                 $ShipmentItem = $event->getData();
