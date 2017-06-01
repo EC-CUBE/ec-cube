@@ -851,6 +851,8 @@ class ShoppingController extends AbstractController
             $Order
                 ->setName01($data['customer_name01'])
                 ->setName02($data['customer_name02'])
+                ->setKana01($data['customer_kana01'])
+                ->setKana02($data['customer_kana02'])
                 ->setCompanyName($data['customer_company_name'])
                 ->setTel01($data['customer_tel01'])
                 ->setTel02($data['customer_tel02'])
