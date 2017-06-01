@@ -50,10 +50,13 @@ class EditController extends AbstractController
 
         $TargetOrder = null;
         $OriginOrder = null;
+        $isNewOrder = false;
 
         if (is_null($id)) {
             // 空のエンティティを作成.
             $TargetOrder = $this->newOrder($app);
+            $isNewOrder = true;
+
         } else {
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
@@ -246,7 +249,7 @@ class EditController extends AbstractController
 
                         if ($Customer) {
                             // 会員の場合、購入回数、購入金額などを更新
-                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $isNewOrder);
                         }
 
                         $event = new EventArgs(

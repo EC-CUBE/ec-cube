@@ -422,9 +422,9 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      *
      * @param $app
      * @param  Customer $Customer
-     * @param  $orderStatusId
+     * @param  $isNewOrder
      */
-    public function updateBuyData($app, Customer $Customer, $orderStatusId)
+    public function updateBuyData($app, Customer $Customer, $isNewOrder = false)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
@@ -445,6 +445,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             $firstBuyDate = $Customer->getFirstBuyDate();
             if (empty($firstBuyDate)) {
                 $Customer->setFirstBuyDate($now);
+            }
+
+            if($isNewOrder) {
+                $Customer->setLastBuyDate($now);
             }
 
             $Customer->setBuyTimes($data['buy_times']);
