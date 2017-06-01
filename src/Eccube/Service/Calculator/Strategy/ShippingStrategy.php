@@ -3,6 +3,8 @@ namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
@@ -24,6 +26,9 @@ class ShippingStrategy implements CalculateStrategyInterface
     {
         // 送料の受注明細区分
         $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
+        // TODO
+        $TaxExclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $Taxion = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
         // 配送ごとに送料の明細を作成
         foreach ($this->Order->getShippings() as $Shipping) {
@@ -37,7 +42,9 @@ class ShippingStrategy implements CalculateStrategyInterface
                     ->setTaxRate(0)
                     ->setQuantity(1)
                     ->setOrderItemType($DeliveryFeeType)
-                    ->setShipping($Shipping);
+                    ->setShipping($Shipping)
+                    ->setTaxDisplayType($TaxExclude)
+                    ->setTaxType($Taxion);
                 $ShipmentItems->append($ShipmentItem);
                 $Shipping->addShipmentItem($ShipmentItem);
             }

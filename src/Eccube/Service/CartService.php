@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\Disp;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\ProductClass;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Session\Session;

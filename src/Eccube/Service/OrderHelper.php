@@ -10,6 +10,8 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
@@ -154,8 +156,11 @@ class OrderHelper
     private function createShipmentItemsFromCartItems($CartItems)
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
+        // TODO
+        $TaxExclude = $this->em->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $Taxion = $this->em->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
-        return array_map(function($item) use ($ProductItemType) {
+        return array_map(function($item) use ($ProductItemType, $TaxExclude, $Taxion) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getObject();
@@ -173,7 +178,9 @@ class OrderHelper
                 ->setQuantity($item->getQuantity())
                 ->setTaxRule($TaxRule->getId())
                 ->setTaxRate($TaxRule->getTaxRate())
-                ->setOrderItemType($ProductItemType);
+                ->setOrderItemType($ProductItemType)
+                ->setTaxDisplayType($TaxExclude)
+                ->setTaxType($Taxion);
 
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
