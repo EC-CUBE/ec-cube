@@ -72,7 +72,8 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.service.calculate'] = $app->protect(function ($Order, $Customer) use ($app) {
                 $Service = new \Eccube\Service\CalculateService($Order, $Customer);
                 $Context = $app['eccube.calculate.context'];
-                $Context->setCalculateStrategies($app['eccube.calculate.strategies']($Order));
+                $app['eccube.calculate.strategies']->setOrder($Order);
+                $Context->setCalculateStrategies($app['eccube.calculate.strategies']);
                 $Context->setOrder($Order);
                 $Service->setContext($Context);
                 return $Service;
@@ -84,25 +85,25 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
                 return $Service;
         });
 
-        $app['eccube.calculate.strategies'] = $app->protect(function ($Order) use ($app) {
-            $Strategies = new \Doctrine\Common\Collections\ArrayCollection(); // TODO 暫定的に ArrayCollection とする. 専用クラスにしたい
+        $app['eccube.calculate.strategies'] = function () use ($app) {
+            $Collection = new \Eccube\Service\Calculator\CalculateStrategyCollection();
+            $Collection->setApplication($app);
+            //$Collection->setOrder($Order);
             // デフォルトのストラテジーをセットしておく
-            $Strategies->add($app['eccube.calculate.strategy.shipping']($Order));
-            $Strategies->add($app['eccube.calculate.strategy.tax']($Order));
-            return $Strategies;
-        });
-        $app['eccube.calculate.strategy.shipping'] = $app->protect(function ($Order) use ($app) {
+            $Collection->add($app['eccube.calculate.strategy.shipping']);
+            $Collection->add($app['eccube.calculate.strategy.tax']);
+            return $Collection;
+        };
+        $app['eccube.calculate.strategy.shipping'] = function () use ($app) {
                 $Strategy = new \Eccube\Service\Calculator\Strategy\ShippingStrategy();
                 $Strategy->setApplication($app);
-                $Strategy->setOrder($Order);
                 return $Strategy;
-        });
-        $app['eccube.calculate.strategy.tax'] = $app->protect(function ($Order) use ($app) {
+        };
+        $app['eccube.calculate.strategy.tax'] = function () use ($app) {
                 $Strategy = new \Eccube\Service\Calculator\Strategy\TaxStrategy();
                 $Strategy->setApplication($app);
-                $Strategy->setOrder($Order);
                 return $Strategy;
-        });
+        };
 
         $app['payment.method'] = $app->protect(function ($clazz, $form) use ($app) {
                 $PaymentMethod = new $clazz;

@@ -48,7 +48,7 @@ class CalculateContext
         return $Order;
     }
 
-    public function setCalculateStrategies(\Doctrine\Common\Collections\ArrayCollection $strategies)
+    public function setCalculateStrategies(\Eccube\Service\Calculator\CalculateStrategyCollection $strategies)
     {
         $this->CalculateStrategies = $strategies;
     }
