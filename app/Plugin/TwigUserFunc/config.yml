@@ -1,0 +1,5 @@
+name: Twigユーザ定義関数のサンプル
+code: TwigUserFunc
+version: 1.0.0
+service:
+    - TwigUserFuncServiceProvider
