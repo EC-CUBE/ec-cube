@@ -26,6 +26,7 @@ namespace Eccube\Entity;
 
 use Eccube\Util\EntityUtil;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,6 +70,21 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      */
     public function getTotalPrice()
     {
+        $TaxDisplayType = $this->getTaxDisplayType();
+        if (is_object($TaxDisplayType)) {
+            switch ($TaxDisplayType->getId()) {
+                // 税込価格
+                case TaxDisplayType::INCLUDED:
+                    $this->setPriceIncTax($this->getPrice());
+                    break;
+                    // 税別価格の場合は税額を加算する
+                case TaxDisplayType::EXCLUDED:
+                    // TODO 課税規則を考慮する
+                    $this->setPriceIncTax($this->getPrice() + $this->getPrice() * $this->getTaxRate() / 100);
+                    break;
+            }
+        }
+
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 

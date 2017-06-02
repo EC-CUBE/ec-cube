@@ -170,7 +170,6 @@ class OrderType extends AbstractType
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
@@ -182,7 +181,6 @@ class OrderType extends AbstractType
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
@@ -194,7 +192,6 @@ class OrderType extends AbstractType
                 'scale' => 0,
                 'grouping' => true,
                 'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
