@@ -702,7 +702,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div id="shipment_item_detail__shipping_delivery_date--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.shipping_delivery_date) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    {% if arrOldOrder.Shippings[shippingIndex].shipping_delivery_date is not empty %}
+                                    {% if arrOldOrder.Shippings[shippingIndex].shipping_delivery_date is defined and  arrOldOrder.Shippings[shippingIndex].shipping_delivery_date is not empty %}
                                         {{ arrOldOrder.Shippings[shippingIndex].shipping_delivery_date|date('Y-m-d') }}<br/>
                                     {% else %}
                                         指定なし
