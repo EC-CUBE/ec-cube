@@ -1242,6 +1242,9 @@ class ShoppingController extends AbstractController
     public function calculateOrder(Application $app, Request $request)
     {
         $Order = $app['request_scope']->get('Order');
+
+        $app['eccube.calculate.strategies']->setOrder($Order);
+
         // 構築したOrderを集計する.
         $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
         return new Response();
