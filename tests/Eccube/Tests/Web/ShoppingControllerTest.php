@@ -515,4 +515,93 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Title
         $this->assertContains('お届け先の追加', $crawler->html());
     }
+
+    /**
+     * 購入確認画面→お届け先の設定→お届け先追加→お問合せ内容確認
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1305
+     */
+    public function testShippingWithMessageOverLength()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($client);
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+        // お届け先の設定
+        $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
+        // お問合せ内容はエラーなるように桁数を設定する
+	$message = str_repeat('a', 5000);
+	$crawler = $client->request(
+		'POST',
+		$shipping_url,
+		array('shopping' =>
+			  array(
+				  'shippings' => array(
+					  array(
+						  'delivery' => 1,
+						  'deliveryTime' => 1
+					  )
+				  ),
+				  'payment' => 3,
+				  'message' => $message,
+				  '_token' => 'dummy'
+			  )
+		)
+	);
+
+        // お届け先一覧
+        $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
+
+        $crawler = $client->request(
+            'GET',
+            $shipping_url
+        );
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $this->expected = 'お届け先の指定';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $shipping_edit_url = $crawler->filter('a.btn-default')->attr('href');
+
+        // お届け先入力画面
+        $crawler = $client->request(
+            'GET',
+            $shipping_edit_url
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        // お届け先設定画面へ遷移し POST 送信
+        $formData = $this->createShippingFormData();
+        $formData['tel'] = array(
+            'tel01' => 222,
+            'tel02' => 222,
+            'tel03' => 222,
+        );
+        $formData['fax'] = array(
+            'fax01' => 111,
+            'fax02' => 111,
+            'fax03' => 111,
+        );
+
+        $crawler = $client->request(
+            'POST',
+            $shipping_edit_url,
+            array('shopping_shipping' => $formData)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        // お届け編集の後にお問合せ内容が残ってる確認
+        $crawler = $client->followRedirect();
+	$this->expected = $message;
+	$this->actual = $crawler->filter('#shopping_message')->html();
+	$this->verify();
+
+    }
 }
