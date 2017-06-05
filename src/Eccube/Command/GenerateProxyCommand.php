@@ -62,6 +62,7 @@ class GenerateProxyCommand extends Command
             ->in(
                 [
                     $app['config']['root_dir'].'/app/Acme/Entity',
+                    $app['config']['root_dir'].'/app/Plugin/*/Entity',
                 ]
             )
             ->name('*.php')

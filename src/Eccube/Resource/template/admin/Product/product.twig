@@ -317,6 +317,18 @@ function fnClass(action) {
                                 {% endfor %}
                             </div>
 
+                            {# エンティティ拡張の自動出力 #}
+                            {% for f in form %}
+                                {# auto_render有効時に出力 #}
+                                {% if f.vars.eccube_form_options.auto_render %}
+                                    {# form_themeが設定されている場合にthemeを適用 #}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                    {% endif %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
 
