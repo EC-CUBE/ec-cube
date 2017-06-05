@@ -26,6 +26,7 @@ use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/arc")
@@ -55,8 +56,8 @@ class AnnotatedRoutingController
      * @Route("/form")
      * @Method("POST")
      */
-    public function submit(Application $app)
+    public function submit(Application $app, Request $request)
     {
-        return 'Hello, '.$_REQUEST['value'];
+        return $app->escape('Hello, '.$request->get('value'));
     }
 }
