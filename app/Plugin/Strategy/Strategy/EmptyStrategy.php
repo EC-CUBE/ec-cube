@@ -21,17 +21,17 @@ class EmptyStrategy implements CalculateStrategyInterface
 
     public function __construct()
     {
-        error_log(__METHOD__.' called');
+        log_info(__METHOD__.' called');
     }
 
     public function execute(ShipmentItemCollection $ShipmentItems)
     {
-        error_log(__METHOD__.' called');
+        log_info(__METHOD__.' called');
     }
 
     public function setOrder(Order $Order)
     {
-        error_log(__METHOD__.' called');
+        log_info(__METHOD__.' called');
 
         // XXX 明細のみ必要な場合もOrderをセットする必要がある
         $this->Order = $Order;
@@ -39,6 +39,6 @@ class EmptyStrategy implements CalculateStrategyInterface
 
     public function setApplication(Application $app)
     {
-        error_log(__METHOD__.' called');
+        log_info(__METHOD__.' called');
     }
 }
