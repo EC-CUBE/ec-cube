@@ -200,7 +200,8 @@ class ShoppingService
         $tax = $this->orderService->getTotalTax($Order);
 
         // 配送料合計金額
-        $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($Order->getShippings()));
+        // TODO CalculateDeliveryFeeStrategy でセットする
+        // $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($Order->getShippings()));
 
         // 小計
         $Order->setSubTotal($subTotal);
@@ -641,7 +642,8 @@ class ShoppingService
         $shippings = $Order->getShippings();
 
         // 配送料合計金額
-        $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
+        // TODO CalculateDeliveryFeeStrategy でセットする
+        // $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
 
         // 配送料無料条件(合計金額)
         $this->setDeliveryFreeAmount($Order);
@@ -1146,7 +1148,8 @@ class ShoppingService
         $shippings = $Order->getShippings();
 
         // 配送料合計金額
-        $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
+        // TODO CalculateDeliveryFeeStrategy でセットする
+        // $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
 
         // 配送料無料条件(合計金額)
         $this->setDeliveryFreeAmount($Order);

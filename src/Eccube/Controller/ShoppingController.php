@@ -1243,7 +1243,13 @@ class ShoppingController extends AbstractController
     {
         $Order = $app['request_scope']->get('Order');
 
-        $app['eccube.calculate.strategies']->setOrder($Order);
+        // $app['eccube.calculate.strategies']->setOrder($Order);
+        // $app['eccube.calculate.strategies']->add(new \Eccube\Service\Calculator\Strategy\DiscountStrategy($Order));
+
+
+        //                 foreach ($Strategies as $stg) {
+        //     dump($stg);
+        // }
 
         // 構築したOrderを集計する.
         $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();

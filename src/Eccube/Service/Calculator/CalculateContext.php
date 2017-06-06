@@ -14,14 +14,12 @@ class CalculateContext
     protected $ShipmentItems = []; // Collection になってる？
 
     // $app['eccube.calculate.strategies'] に DI する
-    /* @var CalculateStrategyInterface[] $CalculateStrategies */
+    /* @var \Eccube\Service\Calculator\CalculateStrategyCollection CalculateStrategies */
     protected $CalculateStrategies;
 
     public function executeCalculator()
     {
-        foreach ($this->CalculateStrategies as $Strategy) {
-            $Strategy->execute($this->ShipmentItems);
-        }
+        $this->buildCalculator($this->CalculateStrategies);
 
         /** @var ShipmentItem $ShipmentItem */
         foreach($this->ShipmentItems as $ShipmentItem) {
@@ -34,6 +32,19 @@ class CalculateContext
         return $this->calculateOrder($this->Order);
     }
 
+    public function buildCalculator(\Eccube\Service\Calculator\CalculateStrategyCollection $strategies)
+    {
+        foreach ($strategies as $Strategy) {
+            $Strategy->execute($this->ShipmentItems);
+        }
+    }
+
+    /**
+     * TODO
+     * 集計は全部ここでやる. 明細を加算するのみ.
+     * 計算結果を Order にセットし直すのもここでやる.
+     * DI で別クラスにした方がいいかも
+     */
     public function calculateOrder(Order $Order)
     {
         // OrderDetails の計算結果を Order にセットする

@@ -27,7 +27,7 @@ class ShippingStrategy implements CalculateStrategyInterface
         // 送料の受注明細区分
         $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
         // TODO
-        $TaxExclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $TaxInclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::INCLUDED);
         $Taxion = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
         // 配送ごとに送料の明細を作成
@@ -39,23 +39,16 @@ class ShippingStrategy implements CalculateStrategyInterface
                 $ShipmentItem->setProductName("送料")
                     ->setPrice($Shipping->getShippingDeliveryFee())
                     ->setPriceIncTax($Shipping->getShippingDeliveryFee())
-                    ->setTaxRate(0)
+                    ->setTaxRate(8)
                     ->setQuantity(1)
                     ->setOrderItemType($DeliveryFeeType)
                     ->setShipping($Shipping)
-                    ->setTaxDisplayType($TaxExclude)
+                    ->setTaxDisplayType($TaxInclude)
                     ->setTaxType($Taxion);
-                $ShipmentItems->append($ShipmentItem);
+                $ShipmentItems->add($ShipmentItem);
                 $Shipping->addShipmentItem($ShipmentItem);
             }
         }
-
-        // 合計送料の計算
-        $deliveryFeeTotal = array_reduce($ShipmentItems->getDeliveryFees()->getArrayCopy(), function($total, $ShipmentItem) {
-            /* @var ShipmentItem $ShipmentItem */
-            return $total + $ShipmentItem->getPriceIncTax();
-        }, 0);
-        $this->Order->setDeliveryFeeTotal($deliveryFeeTotal);
     }
 
     public function setApplication(Application $app)
