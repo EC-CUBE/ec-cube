@@ -448,6 +448,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function setUpdateDate($updateDate)
     {
         $this->update_date = $updateDate;
+        if($this->getProduct()){
+           $this->getProduct()->setUpdateDate($updateDate);
+        }
 
         return $this;
     }
