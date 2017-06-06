@@ -138,7 +138,8 @@ class OrderType extends AbstractType
                 $Order = $event->getData();
                 $Payment = $Order->getPayment();
                 $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
-                $Order->setCharge($Payment ? $Payment->getCharge() : null);
+                // TODO CalculateChargeStrategy でセットする
+                // $Order->setCharge($Payment ? $Payment->getCharge() : null);
             }
         );
     }

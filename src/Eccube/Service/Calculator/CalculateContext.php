@@ -72,7 +72,6 @@ class CalculateContext
     public function setOrder(Order $Order)
     {
         $this->Order = $Order;
-        // ArrayIterator のラップしたクラスを作って明細種別ごとに管理したい
         $this->ShipmentItems = new ShipmentItemCollection($Order->getShipmentItems()->toArray());
     }
 }

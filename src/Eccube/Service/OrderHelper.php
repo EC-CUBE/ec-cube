@@ -339,7 +339,8 @@ class OrderHelper
         $Payment = current($Payments);
         $Order->setPayment($Payment);
         $Order->setPaymentMethod($Payment->getMethod());
-        $Order->setCharge($Payment->getCharge());
+        // TODO CalculateChargeStrategy でセットする
+        // $Order->setCharge($Payment->getCharge());
     }
 
     /**

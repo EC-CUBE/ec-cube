@@ -342,7 +342,7 @@ class OrderType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Order = $event->getData();
             $Order->setDiscount($Order->calculateDiscountTotal());
-            $Order->setCharge($Order->calculateChargeTotal());
+            // $Order->setCharge($Order->calculateChargeTotal());
             // $Order->setDeliveryFeeTotal($Order->calculateDeliveryFeeTotal());
             $event->setData($Order);
         });

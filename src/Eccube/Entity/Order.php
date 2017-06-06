@@ -136,7 +136,7 @@ class Order extends \Eccube\Entity\AbstractEntity
      * この注文にかかる送料の合計を返す.
      *
      * @return integer
-     * @deprecated
+     * @deprecated \Eccube\Service\Calculator\Strategy\CalculateDeliveryFeeStrategy を使用してください
      */
     public function calculateDeliveryFeeTotal()
     {
