@@ -216,7 +216,7 @@ $(function() {
                                     <li id="result_list__csv_menu" class="dropdown">
                                         <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="{{ url('admin_product_export') }}">CSVダウンロード</a></li>
+                                            <li><a href="{{ url('admin_product_export', {'status' : page_status}) }}">CSVダウンロード</a></li>
                                             <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_PRODUCT') }) }}">出力項目設定</a></li>
                                         </ul>
                                     </li>
