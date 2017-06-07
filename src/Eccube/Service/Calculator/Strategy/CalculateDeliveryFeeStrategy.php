@@ -27,11 +27,11 @@ class CalculateDeliveryFeeStrategy implements CalculateStrategyInterface
 
     public function execute(ShipmentItemCollection $ShipmentItems)
     {
-        $delivery_fee = array_reduce(
-            $ShipmentItems->getDeliveryFees()->toArray(),
+        $delivery_fee = $ShipmentItems->getDeliveryFees()->reduce(
             function($total, $ShipmentItem) {
                 return $total + $ShipmentItem->getPrice() * $ShipmentItem->getQuantity();
-            }, 0);
+            }, 0
+        );
         $this->Order->setDeliveryFeeTotal($delivery_fee);
     }
 

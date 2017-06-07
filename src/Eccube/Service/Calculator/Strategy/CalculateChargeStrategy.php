@@ -27,11 +27,11 @@ class CalculateChargeStrategy implements CalculateStrategyInterface
 
     public function execute(ShipmentItemCollection $ShipmentItems)
     {
-        $charge = array_reduce(
-            $ShipmentItems->getCharges()->toArray(),
+        $charge = $ShipmentItems->getCharges()->reduce(
             function($total, $ShipmentItem) {
                 return $total + $ShipmentItem->getPrice() * $ShipmentItem->getQuantity();
-            }, 0);
+            }, 0
+        );
         $this->Order->setCharge($charge);
     }
 

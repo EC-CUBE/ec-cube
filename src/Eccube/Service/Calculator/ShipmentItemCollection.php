@@ -13,6 +13,11 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
         parent::__construct($ShipmentItems);
     }
 
+    public function reduce(\Closure $func, $initial = null)
+    {
+        return array_reduce($this->toArray(), $func, $initial);
+    }
+
     // 明細種別ごとに返すメソッド作る
     public function getProductClasses()
     {
@@ -58,7 +63,7 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
                 /* @var ShipmentItem $ShipmentItem */
                 return $ShipmentItem->getProductName() == $productName;
             });
-        return !$this->isEmpty();
+        return !$ShipmentItems->isEmpty();
     }
     // map, filter, reduce も実装したい
 
