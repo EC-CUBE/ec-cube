@@ -17,7 +17,7 @@ class StrategyServiceProvider implements ServiceProviderInterface
         };
 
         // 空Strategyを追加.
-        $app['eccube.calculate.strategies'] = $app->extend(
+        $app->extend(
             'eccube.calculate.strategies',
             function (CalculateStrategyCollection $Collection, Container $app) {
                 $Collection->add($app['eccube.calculate.strategy.empty']);
