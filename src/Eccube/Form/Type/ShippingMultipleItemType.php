@@ -104,7 +104,7 @@ class ShippingMultipleItemType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($app)  {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
@@ -124,6 +124,33 @@ class ShippingMultipleItemType extends AbstractType
                 }
                 $form['quantity']->setData($quantity);
 
+                // デフォルトアドレス設定する
+                // 会員場合はこちら
+                if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+                    $Customer = $app->user();
+                    foreach($Customer->getCustomerAddresses() as $CustomerAddress){
+                        if($data->hasCustomerAddress($CustomerAddress) === true){
+                            $form['customer_address']->setData($CustomerAddress);
+                            break;
+                        }
+                    }
+                } else {
+                    // 　ゲストユーザーこちらです
+                    if ($app['session']->has('eccube.front.shopping.nonmember.customeraddress')) {
+                        $customerAddresses = $app['session']->get('eccube.front.shopping.nonmember.customeraddress');
+                        $customerAddresses = unserialize($customerAddresses);
+
+                        /** @var \Eccube\Entity\CustomerAddress $CustomerAddress */
+                        $i = 0;
+                        foreach ($customerAddresses as $CustomerAddress) {
+                            if($data->hasCustomerAddress($CustomerAddress) === true){
+                                $form['customer_address']->setData($i);
+                                break;
+                            }
+                            $i++;
+                        }
+                    }
+                }
             });
 
     }
