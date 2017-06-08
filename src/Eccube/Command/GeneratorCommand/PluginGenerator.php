@@ -24,7 +24,6 @@
 
 namespace Eccube\Command\GeneratorCommand;
 
-use Eccube\Command\PluginCommand\AbstractPluginGenerator;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
