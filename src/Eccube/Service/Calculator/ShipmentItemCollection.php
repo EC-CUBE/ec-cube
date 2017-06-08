@@ -3,13 +3,17 @@
 namespace Eccube\Service\Calculator;
 
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Order;
 
 class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
-    public function __construct($ShipmentItems)
+    protected $type;
+
+    public function __construct($ShipmentItems, $type = null)
     {
         // $ShipmentItems が Collection だったら toArray(); する
+        $this->type = is_null($type) ? Order::class : $type;
         parent::__construct($ShipmentItems);
     }
 
@@ -22,7 +26,7 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
     public function getProductClasses()
     {
         return $this->filter(
-            function($ShipmentItem) {
+            function(ItemInterface $ShipmentItem) {
                 return $ShipmentItem->isProduct();
             });
     }
@@ -30,7 +34,7 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
     public function getDeliveryFees()
     {
         return $this->filter(
-            function($ShipmentItem) {
+            function(ItemInterface $ShipmentItem) {
                 return $ShipmentItem->isDeliveryFee();
             });
     }
@@ -38,7 +42,7 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
     public function getCharges()
     {
         return $this->filter(
-            function($ShipmentItem) {
+            function(ItemInterface $ShipmentItem) {
                 return $ShipmentItem->isCharge();
             });
     }
@@ -46,7 +50,7 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
     public function getDiscounts()
     {
         return $this->filter(
-            function($ShipmentItem) {
+            function(ItemInterface $ShipmentItem) {
                 return $ShipmentItem->isDiscount();
             });
     }
@@ -59,13 +63,12 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
     public function hasProductByName($productName)
     {
         $ShipmentItems = $this->filter(
-            function ($ShipmentItem) use ($productName) {
+            function (ItemInterface $ShipmentItem) use ($productName) {
                 /* @var ShipmentItem $ShipmentItem */
                 return $ShipmentItem->getProductName() == $productName;
             });
         return !$ShipmentItems->isEmpty();
     }
-    // map, filter, reduce も実装したい
 
     /**
      * 指定した受注明細区分の明細が存在するかどうか
@@ -74,10 +77,15 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
-        $filteredItems = $this->filter(function($ShipmentItem) use ($OrderItemType) {
+        $filteredItems = $this->filter(function(ItemInterface $ShipmentItem) use ($OrderItemType) {
             /* @var ShipmentItem $ShipmentItem */
             return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $OrderItemType->getId();
         });
         return !$filteredItems->isEmpty();
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

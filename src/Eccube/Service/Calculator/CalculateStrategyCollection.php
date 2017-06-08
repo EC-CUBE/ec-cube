@@ -4,6 +4,7 @@ namespace Eccube\Service\Calculator;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
+use Eccube\Entity\PurchaseInterface;
 use Eccube\Service\Calculator\CalculateStrategyInterface;
 class CalculateStrategyCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
@@ -14,7 +15,7 @@ class CalculateStrategyCollection extends \Doctrine\Common\Collections\ArrayColl
         $this->app = $app;
     }
 
-    public function setOrder(Order $Order) {
+    public function setOrder(Purchaseinterface $Order) {
         $this->Order = $Order;
         // TODO DI の定義で宣言的にセットしたい
         foreach ($this as $Strategy) {

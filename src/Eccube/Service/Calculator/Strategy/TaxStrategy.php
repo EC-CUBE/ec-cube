@@ -4,6 +4,7 @@ namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
+use Eccube\Entity\PurchaseInterface;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 
@@ -34,9 +35,14 @@ class TaxStrategy implements CalculateStrategyInterface
         return $this;
     }
 
-    public function setOrder(Order $Order)
+    public function setOrder(PurchaseInterface $Order)
     {
         $this->Order = $Order;
         return $this;
+    }
+
+    public function getTargetTypes()
+    {
+        return [Order::class];
     }
 }

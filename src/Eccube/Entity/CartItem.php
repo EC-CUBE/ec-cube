@@ -24,7 +24,7 @@
 
 namespace Eccube\Entity;
 
-class CartItem extends \Eccube\Entity\AbstractEntity
+class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
 
     private $class_name;
@@ -143,5 +143,62 @@ class CartItem extends \Eccube\Entity\AbstractEntity
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * 商品明細かどうか.
+     *
+     * @return boolean 商品明細の場合 true
+     */
+    public function isProduct()
+    {
+        return true;
+    }
+
+    /**
+     * 送料明細かどうか.
+     *
+     * @return boolean 送料明細の場合 true
+     */
+    public function isDeliveryFee()
+    {
+        return false;
+    }
+
+    /**
+     * 手数料明細かどうか.
+     *
+     * @return boolean 手数料明細の場合 true
+     */
+    public function isCharge()
+    {
+        return false;
+    }
+
+    /**
+     * 値引き明細かどうか.
+     *
+     * @return boolean 値引き明細の場合 true
+     */
+    public function isDiscount()
+    {
+        return false;
+    }
+
+    /**
+     * 税額明細かどうか.
+     *
+     * @return boolean 税額明細の場合 true
+     */
+    public function isTax()
+    {
+        return false;
+    }
+
+    public function getOrderItemType()
+    {
+        // TODO OrderItemType::PRODUCT
+        $ItemType = new \Eccube\Entity\Master\OrderItemType();
+        return $ItemType;
     }
 }

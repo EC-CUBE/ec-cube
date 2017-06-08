@@ -39,7 +39,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\OrderRepository")
  */
-class Order extends \Eccube\Entity\AbstractEntity
+class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
 {
     /**
      * isMultiple
@@ -1555,6 +1555,14 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getShipmentItems()
     {
         return $this->ShipmentItems;
+    }
+
+    /**
+     * Alias of getShipmentItems()
+     */
+    public function getItems()
+    {
+        return $this->getShipmentItems();
     }
 
     /**

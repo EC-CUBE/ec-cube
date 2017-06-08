@@ -5,6 +5,7 @@ use Eccube\Application;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
 use Eccube\Entity\PurchaseInterface;
 use Eccube\Entity\ShipmentItem;
@@ -13,9 +14,9 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 
 /**
- * 手数料の合計を集計して Order にセットする.
+ * 明細の合計を集計して Order にセットする.
  */
-class CalculateChargeStrategy implements CalculateStrategyInterface
+class CalculateTotalStrategy implements CalculateStrategyInterface
 {
     /* @var Application $app */
     protected $app;
@@ -28,12 +29,12 @@ class CalculateChargeStrategy implements CalculateStrategyInterface
 
     public function execute(ShipmentItemCollection $ShipmentItems)
     {
-        $charge = $ShipmentItems->getCharges()->reduce(
+        $total = $ShipmentItems->reduce(
             function($total, $ShipmentItem) {
                 return $total + $ShipmentItem->getPrice() * $ShipmentItem->getQuantity();
             }, 0
         );
-        $this->Order->setCharge($charge);
+        $this->Order->setTotal($total);
     }
 
     public function setApplication(Application $app)
@@ -50,6 +51,6 @@ class CalculateChargeStrategy implements CalculateStrategyInterface
 
     public function getTargetTypes()
     {
-        return [Order::class];
+        return [Order::class, Cart::class];
     }
 }

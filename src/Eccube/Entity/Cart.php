@@ -24,7 +24,7 @@
 
 namespace Eccube\Entity;
 
-class Cart extends \Eccube\Entity\AbstractEntity
+class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
 {
     /**
      * @var bool
@@ -40,6 +40,12 @@ class Cart extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $pre_order_id = null;
+
+
+    /**
+     * @var integer
+     */
+    private $total_price;
 
     /**
      * @var array
@@ -169,6 +175,14 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Alias of getCartItems()
+     */
+    public function getItems()
+    {
+        return $this->getCartItems();
+    }
+
+    /**
      * @param  CartItem[]          $CartItems
      * @return \Eccube\Entity\Cart
      */
@@ -180,16 +194,40 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set total.
+     *
+     * @param integer $total_price
+     *
+     * @return Cart
+     */
+    public function setTotalPrice($total_price)
+    {
+        $this->total_price = $total_price;
+
+        return $this;
+    }
+    /**
      * @return integer
      */
     public function getTotalPrice()
     {
-        $totalPrice = 0;
-        foreach ($this->CartItems as $CartItem) {
-            $totalPrice += $CartItem->getTotalPrice();
-        }
+        return $this->total_price;
+    }
 
-        return $totalPrice;
+    /**
+     * Alias of setTotalPrice.
+     */
+    public function setTotal($total)
+    {
+        return $this->setTotalPrice($total);
+    }
+
+    /**
+     * Alias of getTotalPrice
+     */
+    public function getTotal()
+    {
+        return $this->getTotalPrice();
     }
 
     /**

@@ -6,6 +6,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
+use Eccube\Entity\PurchaseInterface;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderItemTypeRepository;
@@ -53,9 +54,14 @@ class ChargeStrategy implements CalculateStrategyInterface
         return $this;
     }
 
-    public function setOrder(Order $Order)
+    public function setOrder(PurchaseInterface $Order)
     {
         $this->Order = $Order;
         return $this;
+    }
+
+    public function getTargetTypes()
+    {
+        return [Order::class];
     }
 }

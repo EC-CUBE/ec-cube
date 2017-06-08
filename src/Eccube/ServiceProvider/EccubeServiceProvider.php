@@ -95,6 +95,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $Collection->add($app['eccube.calculate.strategy.tax']);
             $Collection->add($app['eccube.calculate.strategy.calculate_delivery_fee']);
             $Collection->add($app['eccube.calculate.strategy.calculate_charge']);
+            $Collection->add($app['eccube.calculate.strategy.calculate_total']);
             return $Collection;
         };
         $app['eccube.calculate.strategy.shipping'] = function () use ($app) {
@@ -121,6 +122,11 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
         $app['eccube.calculate.strategy.calculate_charge'] = function () use ($app) {
             $Strategy = new \Eccube\Service\Calculator\Strategy\CalculateChargeStrategy();
+            $Strategy->setApplication($app);
+            return $Strategy;
+        };
+        $app['eccube.calculate.strategy.calculate_total'] = function () use ($app) {
+            $Strategy = new \Eccube\Service\Calculator\Strategy\CalculateTotalStrategy();
             $Strategy->setApplication($app);
             return $Strategy;
         };
