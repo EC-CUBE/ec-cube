@@ -24,7 +24,7 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Application;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,36 +34,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SearchProductType extends AbstractType
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * SearchProductType constructor.
-     *
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $Categories = $this->app['eccube.repository.category']
-            ->getList(null, true);
-
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
         ));
         $builder->add('category_id', 'entity', array(
             'class' => 'Eccube\Entity\Category',
             'property' => 'NameWithLevel',
-            'choices' => $Categories,
+            'query_builder' => function (EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('c')
+                    ->orderBy('c.rank', 'DESC');
+            },
             'empty_value' => '全ての商品',
             'empty_data' => null,
             'required' => false,
