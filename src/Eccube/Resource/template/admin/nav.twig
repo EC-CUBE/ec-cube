@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% else %}
                     <li class="{% if active_menus(menus)[1] == level2.id %}active{% endif %}">
                         {% if level2.has_child is defined and level2.has_child == true %}
+                            {% if app.user.authority.id == 0 or (app.user.authority.id == 1 and level2.id != 'system')  %}
                             <a class="toggle">
                                 {{ level2.name }}
                                 <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
@@ -50,6 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
                                 {% endfor %}
                             </ul>
+                            {% endif %}
                         {% else %}
                             <a href="{{ url(level2.url) }}">
                                 {{ level2.name }}
