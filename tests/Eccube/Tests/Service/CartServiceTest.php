@@ -355,6 +355,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testSetProductQuantityWithMultipleShipping()
     {
+        $this->markTestIncomplete('multiple shipping is not implemented.');
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
