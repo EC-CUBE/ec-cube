@@ -423,12 +423,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
                                                     {% set detail_id = orderDetailForm.vars.value.id %}
                                                     {% if arrOldOrder.OrderDetails[detail_id] is defined %}
-                                                        {{ arrOldOrder.OrderDetails[detail_id].quantity }}<br/>
+                                                        {% set prev_quantity = arrOldOrder.OrderDetails[detail_id].quantity ~ ' ' %}
+                                                    {% else %}
+                                                        {% set prev_quantity = '' %}
                                                     {% endif %}
                                                     {% if BaseInfo.optionMultipleShipping %}
-                                                        数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
+                                                        数量：{{ prev_quantity }}{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
-                                                        数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                        数量：{{ prev_quantity }}{{ form_widget(orderDetailForm.quantity) }}
                                                     {% endif %}
                                                     {{ form_errors(orderDetailForm.quantity) }}
                                                 </span>
@@ -585,9 +587,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             <span class="item_quantity">
                                                 {% set item_id = shipmentItemForm.vars.value.id %}
                                                 {% if arrOldOrder.Shippings[shippingIndex].ShipmentItems[item_id] is defined %}
-                                                    {{ arrOldOrder.Shippings[shippingIndex].ShipmentItems[item_id].quantity }}<br/>
+                                                    {% set prev_quantity = arrOldOrder.Shippings[shippingIndex].ShipmentItems[item_id].quantity ~ ' ' %}
+                                                {% else %}
+                                                    {% set prev_quantity = '' %}
                                                 {% endif %}
-                                                数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
+                                                数量：{{ prev_quantity }}{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
                                                 {{ form_errors(shipmentItemForm.quantity) }}
                                             </span>
                                         </div>
