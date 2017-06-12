@@ -55,7 +55,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h2 class="heading01">ご注文ありがとうございました</h2>
                     <p>ただいま、ご注文の確認メールをお送りさせていただきました。<br />
                         万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br />
-                        今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+                        今後ともご愛顧賜りますようよろしくお願い申し上げます。{% if orderId %}<br /><br /><strong>ご注文番号：{{ orderId }}</strong>{% endif %}</p>
                 </div>
                 <div id="deliveradd_input_box__top_button" class="row no-padding">
                     <div class="btn_group col-sm-offset-4 col-sm-4">

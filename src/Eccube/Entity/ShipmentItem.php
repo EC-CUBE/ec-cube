@@ -123,7 +123,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -133,7 +133,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_name
      *
-     * @param string $productName
+     * @param  string       $productName
      * @return ShipmentItem
      */
     public function setProductName($productName)
@@ -146,7 +146,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_name
      *
-     * @return string 
+     * @return string
      */
     public function getProductName()
     {
@@ -156,7 +156,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_code
      *
-     * @param string $productCode
+     * @param  string       $productCode
      * @return ShipmentItem
      */
     public function setProductCode($productCode)
@@ -169,7 +169,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_code
      *
-     * @return string 
+     * @return string
      */
     public function getProductCode()
     {
@@ -179,7 +179,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set class_category_name1
      *
-     * @param string $classCategoryName1
+     * @param  string       $classCategoryName1
      * @return ShipmentItem
      */
     public function setClassCategoryName1($classCategoryName1)
@@ -192,7 +192,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_category_name1
      *
-     * @return string 
+     * @return string
      */
     public function getClassCategoryName1()
     {
@@ -202,7 +202,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set class_category_name2
      *
-     * @param string $classCategoryName2
+     * @param  string       $classCategoryName2
      * @return ShipmentItem
      */
     public function setClassCategoryName2($classCategoryName2)
@@ -215,7 +215,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_category_name2
      *
-     * @return string 
+     * @return string
      */
     public function getClassCategoryName2()
     {
@@ -225,7 +225,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set price
      *
-     * @param string $price
+     * @param  string       $price
      * @return ShipmentItem
      */
     public function setPrice($price)
@@ -238,7 +238,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get price
      *
-     * @return string 
+     * @return string
      */
     public function getPrice()
     {
@@ -248,7 +248,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set quantity
      *
-     * @param string $quantity
+     * @param  string       $quantity
      * @return ShipmentItem
      */
     public function setQuantity($quantity)
@@ -261,7 +261,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get quantity
      *
-     * @return string 
+     * @return string
      */
     public function getQuantity()
     {
@@ -271,7 +271,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set Order
      *
-     * @param \Eccube\Entity\Order $order
+     * @param  \Eccube\Entity\Order $order
      * @return ShipmentItem
      */
     public function setOrder(\Eccube\Entity\Order $order)
@@ -284,7 +284,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get Order
      *
-     * @return \Eccube\Entity\Order 
+     * @return \Eccube\Entity\Order
      */
     public function getOrder()
     {
@@ -294,7 +294,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set Product
      *
-     * @param \Eccube\Entity\Product $product
+     * @param  \Eccube\Entity\Product $product
      * @return ShipmentItem
      */
     public function setProduct(\Eccube\Entity\Product $product)
@@ -307,7 +307,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -320,7 +320,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set ProductClass
      *
-     * @param \Eccube\Entity\ProductClass $productClass
+     * @param  \Eccube\Entity\ProductClass $productClass
      * @return ShipmentItem
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass)
@@ -333,17 +333,20 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClass
      *
-     * @return \Eccube\Entity\ProductClass 
+     * @return \Eccube\Entity\ProductClass
      */
     public function getProductClass()
     {
+        if (EntityUtil::isEmpty($this->ProductClass)) {
+            return null;
+        }
         return $this->ProductClass;
     }
 
     /**
      * Set Shipping
      *
-     * @param \Eccube\Entity\Shipping $shipping
+     * @param  \Eccube\Entity\Shipping $shipping
      * @return ShipmentItem
      */
     public function setShipping(\Eccube\Entity\Shipping $shipping)
@@ -356,7 +359,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get Shipping
      *
-     * @return \Eccube\Entity\Shipping 
+     * @return \Eccube\Entity\Shipping
      */
     public function getShipping()
     {
@@ -376,7 +379,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set class_name1
      *
-     * @param string $className1
+     * @param  string       $className1
      * @return ShipmentItem
      */
     public function setClassName1($className1)
@@ -389,7 +392,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_name1
      *
-     * @return string 
+     * @return string
      */
     public function getClassName1()
     {
@@ -399,7 +402,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set class_name2
      *
-     * @param string $className2
+     * @param  string       $className2
      * @return ShipmentItem
      */
     public function setClassName2($className2)
@@ -412,7 +415,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_name2
      *
-     * @return string 
+     * @return string
      */
     public function getClassName2()
     {

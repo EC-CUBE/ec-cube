@@ -94,7 +94,7 @@ $(function() {
 
         var data = $(this).data();
         shipment_idx = data.idx;
-        
+
         shipmentItem_idx = 0;
         for(i = 0; i < shipping_details_count.length; i++) { 
             if (shipping_details_count[i].idx == shipment_idx) {
@@ -421,6 +421,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
+                                                    {% if arrOldOrder.OrderDetails[loop.index0] is defined %}
+                                                        {{ arrOldOrder.OrderDetails[loop.index0].quantity }}<br/>
+                                                    {% endif %}
                                                     {% if BaseInfo.optionMultipleShipping %}
                                                         数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
@@ -516,7 +519,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div id="shipping_info__button_new"><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
             {% endif %}
             {% for shippingForm in form.Shippings %}
-            {% set shippingIndex = loop.index0 %}
+            {% set shippingIndex = shippingForm.vars.name %}
             <div id="shipping_info_box--{{ shippingIndex }}" class="box accordion">
                 <div id="shipping_info_box__toggle--{{ shippingIndex }}" class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
@@ -579,6 +582,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                         </div>
                                         <div id="shipment_item__quantity--{{ shippingIndex }}--{{ shippingItemkey }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             <span class="item_quantity">
+                                                {% if arrOldOrder.Shippings[shippingIndex].ShipmentItems[loop.index0] is defined %}
+                                                    {{ arrOldOrder.Shippings[shippingIndex].ShipmentItems[loop.index0].quantity }}<br/>
+                                                {% endif %}
                                                 数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
                                                 {{ form_errors(shipmentItemForm.quantity) }}
                                             </span>
@@ -696,6 +702,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div id="shipment_item_detail__shipping_delivery_date--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.shipping_delivery_date) }}
                                 <div class="col-sm-9 col-lg-10">
+                                    {% if arrOldOrder.Shippings[shippingIndex].shipping_delivery_date is defined and  arrOldOrder.Shippings[shippingIndex].shipping_delivery_date is not empty %}
+                                        {{ arrOldOrder.Shippings[shippingIndex].shipping_delivery_date|date('Y-m-d') }}<br/>
+                                    {% else %}
+                                        指定なし
+                                    {% endif %}
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                     {{ form_errors(shippingForm.shipping_delivery_date) }}
                                 </div>

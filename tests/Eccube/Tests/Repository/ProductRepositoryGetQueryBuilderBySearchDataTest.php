@@ -191,6 +191,34 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->verify();
     }
 
+    public function testOrderByNewerSameCreateDate()
+    {
+        $date = new \DateTime();
+        $Products = $this->app['eccube.repository.product']->findBy(array(), array('id' => 'DESC'));
+        $Products[0]->setName('りんご');
+        $Products[0]->setCreateDate($date);
+        $Products[1]->setName('アイス');
+        $Products[1]->setCreateDate($date);
+        $Products[2]->setName('お鍋');
+        $Products[2]->setCreateDate($date);
+        $this->app['orm.em']->flush();
+
+        // 新着順
+        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(2);
+        $this->searchData = array(
+            'orderby' => $ProductListOrderBy
+        );
+
+        $this->scenario();
+
+        $this->expected = array('りんご', 'アイス', 'お鍋');
+        $this->actual = array($this->Results[0]->getName(),
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName());
+
+        $this->verify();
+    }
+
     public function testProductImage()
     {
         $this->searchData = array();
@@ -273,6 +301,52 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->expected = count($pagination);
         $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function test300ProductsList()
+    {
+        $tables = array(
+            'dtb_product_image',
+            'dtb_product_stock',
+            'dtb_product_class',
+            'dtb_product_category',
+            'dtb_product'
+        );
+        $this->deleteAllRows($tables);
+        $productList = array();
+        for ($i = 1; $i <= 300; $i++) {
+            $classNo = mt_rand(1, 3);
+            $productName = 'BIG商品-' . $i;
+            $this->createProduct($productName, $classNo);
+            $productList[] = $productName;
+        }
+        $productList = array_reverse($productList);
+
+        // 商品作成時間同じにする
+        $QueryBuilder = $this->app['orm.em']->createQueryBuilder();
+        $QueryBuilder->update('Eccube\Entity\Product','p');
+        $QueryBuilder->set('p.create_date',':createDate');
+        $QueryBuilder->setParameter(':createDate',new \DateTime());
+        $QueryBuilder->getQuery()->execute();
+
+        // 新着順
+        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(2);
+        $this->searchData = array(
+            'name' => 'BIG商品-',
+            'orderby' => $ProductListOrderBy
+        );
+
+        $this->scenario();
+        $this->expected = array();
+        foreach($productList as $productName){
+            $this->expected[] = $productName;
+        }
+
+        $this->actual = array();
+        foreach($this->Results as $row){
+            $this->actual[] = $row->getName();
+        }
         $this->verify();
     }
 }

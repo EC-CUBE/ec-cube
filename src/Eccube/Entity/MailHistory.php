@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Entity;
+use Eccube\Util\EntityUtil;
 
 /**
  * MailHistory
@@ -217,6 +218,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 }
