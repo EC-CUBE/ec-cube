@@ -26,14 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/form_div_layout.twig' %}
 
 {% block javascript %}
-    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-    <script>
-        $(function () {
-            $('.ec-zipAuto').click(function () {
-                AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
-            });
-        });
-    </script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
@@ -43,7 +36,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
-                <form method="post" action="{{ url('entry') }}" novalidate>
+                <form method="post" action="{{ url('entry') }}" novalidate class="h-adr">
+                    <span class="p-country-name" style="display:none;">Japan</span>
                     {{ form_widget(form._token) }}
                     <div class="ec-borderedDefs">
                         <dl>
@@ -105,7 +99,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                         </div>
                                         <span>郵便番号検索</span></a></div>
-                                <div class="ec-zipAuto"><a class="ec-inlineBtn">郵便番号から自動入力</a></div>
                                 <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
                                     {{ form_widget(form.address.pref) }}
                                     {{ form_errors(form.address.pref) }}

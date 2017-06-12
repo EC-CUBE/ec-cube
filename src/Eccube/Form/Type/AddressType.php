@@ -100,16 +100,18 @@ class AddressType extends AbstractType
         $resolver->setDefaults(array(
             'options' => array(),
             'help' => 'form.contact.address.help',
-            'pref_options' => array('constraints' => array()),
+            'pref_options' => array('constraints' => array(), 'attr' => array('class' => ' p-region-id')),
             'addr01_options' => array(
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['address1_len'])),
                 ),
+                'attr' => array('class' => 'p-locality')
             ),
             'addr02_options' => array(
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['address2_len'])),
                 ),
+                'attr' => array('class' => 'p-street-address')
             ),
             'pref_name' => 'pref',
             'addr01_name' => 'addr01',
