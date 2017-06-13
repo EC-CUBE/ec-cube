@@ -35,7 +35,10 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-\Symfony\Component\Debug\ErrorHandler::register();
+$errorHandler = \Symfony\Component\Debug\ErrorHandler::register();
+//@deprecated since 3.0.0, to be considered in 3.1 .
+$errorLevel = E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_WARNING & E_USER_WARNING & ~E_STRICT & ~E_DEPRECATED & ~E_USER_DEPRECATED;
+$errorHandler->throwAt($errorLevel, true);
 \Eccube\Exception\EccubeExceptionHandler::register(false);
 
 // output_config_php = true に設定することで、Config Yaml ファイルを元に Config PHP ファイルが出力されます。
