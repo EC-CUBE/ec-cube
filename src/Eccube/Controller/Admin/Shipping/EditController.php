@@ -34,7 +34,7 @@ class EditController
      *
      * @Route("/edit", name="admin/shipping/new")
      * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
-     * @Template("shipping/edit.twig")
+     * @Template("Shipping/edit.twig")
      *
      * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
      */

@@ -33,7 +33,7 @@ class ShippingController
      * @Route("/page/{page_no}", name="admin/shipping/page")
      *
      * @Security("has_role('ROLE_ADMIN')")
-     * @Template("shipping/index.twig")
+     * @Template("Shipping/index.twig")
      *
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\Response
