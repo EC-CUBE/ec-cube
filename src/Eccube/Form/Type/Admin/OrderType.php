@@ -346,8 +346,8 @@ class OrderType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Order = $event->getData();
             $Order->setDiscount($Order->calculateDiscountTotal());
-            $Order->setCharge($Order->calculateChargeTotal());
-            $Order->setDeliveryFeeTotal($Order->calculateDeliveryFeeTotal());
+            // $Order->setCharge($Order->calculateChargeTotal());
+            // $Order->setDeliveryFeeTotal($Order->calculateDeliveryFeeTotal());
             $event->setData($Order);
         });
         // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする

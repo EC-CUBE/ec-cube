@@ -4,6 +4,7 @@ namespace Plugin\Strategy\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
+use Eccube\Entity\PurchaseInterface;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Service\Calculator\Strategy\CalculateStrategyInterface;
 
@@ -29,7 +30,7 @@ class EmptyStrategy implements CalculateStrategyInterface
         log_info(__METHOD__.' called');
     }
 
-    public function setOrder(Order $Order)
+    public function setOrder(PurchaseInterface $Order)
     {
         log_info(__METHOD__.' called');
 
@@ -40,5 +41,10 @@ class EmptyStrategy implements CalculateStrategyInterface
     public function setApplication(Application $app)
     {
         log_info(__METHOD__.' called');
+    }
+
+    public function getTargetTypes()
+    {
+        return [Order::class];
     }
 }

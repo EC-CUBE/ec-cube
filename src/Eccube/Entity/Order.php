@@ -39,7 +39,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\OrderRepository")
  */
-class Order extends \Eccube\Entity\AbstractEntity
+class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
 {
     /**
      * isMultiple
@@ -88,9 +88,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * Calculate quantity of total.
      *
      * @return integer
+     * @deprecated
      */
     public function calculateTotalQuantity()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $totalQuantity = 0;
         foreach ($this->getOrderDetails() as $OrderDetail) {
             $totalQuantity += $OrderDetail->getQuantity();
@@ -103,9 +105,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * Calculate SubTotal.
      *
      * @return integer
+     * @deprecated
      */
     public function calculateSubTotal()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         return array_reduce($this->getProductOrderItems(), function($total, $ShipmentItem) {
             return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
         }, 0);
@@ -115,9 +119,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * Calculate tax of total.
      *
      * @return integer
+     * @deprecated
      */
     public function calculateTotalTax()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         $tax = 0;
         foreach ($this->getOrderDetails() as $OrderDetail) {
             $tax += ($OrderDetail->getPriceIncTax() - $OrderDetail->getPrice()) * $OrderDetail->getQuantity();
@@ -130,9 +136,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * この注文にかかる送料の合計を返す.
      *
      * @return integer
+     * @deprecated \Eccube\Service\Calculator\Strategy\CalculateDeliveryFeeStrategy を使用してください
      */
     public function calculateDeliveryFeeTotal()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         // TODO filter を外出ししたい
         return array_reduce(
             array_filter($this->getShipmentItems()->toArray(),
@@ -148,9 +156,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * この注文にかかる値引きの合計を返す.
      *
      * @return integer
+     * @deprecated
      */
     public function calculateDiscountTotal()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         // TODO filter を外出ししたい
         return array_reduce(
             array_filter($this->getShipmentItems()->toArray(),
@@ -166,9 +176,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * この注文にかかる手数料の合計を返す.
      *
      * @return integer
+     * @deprecated
      */
     public function calculateChargeTotal()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         // TODO filter を外出ししたい
         return array_reduce(
             array_filter($this->getShipmentItems()->toArray(),
@@ -202,9 +214,11 @@ class Order extends \Eccube\Entity\AbstractEntity
      * 合計金額を計算
      *
      * @return string
+     * @deprecated
      */
     public function getTotalPrice() {
 
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
          return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
 //        return $this->getSubtotal() + $this->getCharge() - $this->getDiscount();
     }
@@ -1504,7 +1518,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getProductOrderItems()
     {
         $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
-        return $sio->getProductClasses()->getArrayCopy();
+        return $sio->getProductClasses()->toArray();
     }
 
     /**
@@ -1541,6 +1555,14 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getShipmentItems()
     {
         return $this->ShipmentItems;
+    }
+
+    /**
+     * Alias of getShipmentItems()
+     */
+    public function getItems()
+    {
+        return $this->getShipmentItems();
     }
 
     /**

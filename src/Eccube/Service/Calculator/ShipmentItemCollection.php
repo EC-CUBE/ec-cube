@@ -3,38 +3,56 @@
 namespace Eccube\Service\Calculator;
 
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Order;
 
-class ShipmentItemCollection extends \ArrayIterator
+class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
-    public function __construct($ShipmentItems, $flags = 0)
+    protected $type;
+
+    public function __construct($ShipmentItems, $type = null)
     {
         // $ShipmentItems が Collection だったら toArray(); する
-        parent::__construct($ShipmentItems, $flags);
+        $this->type = is_null($type) ? Order::class : $type;
+        parent::__construct($ShipmentItems);
+    }
+
+    public function reduce(\Closure $func, $initial = null)
+    {
+        return array_reduce($this->toArray(), $func, $initial);
     }
 
     // 明細種別ごとに返すメソッド作る
     public function getProductClasses()
     {
-        return $this->subCollection(OrderItemType::PRODUCT);
+        return $this->filter(
+            function(ItemInterface $ShipmentItem) {
+                return $ShipmentItem->isProduct();
+            });
     }
 
     public function getDeliveryFees()
     {
-        return $this->subCollection(OrderItemType::DELIVERY_FEE);
+        return $this->filter(
+            function(ItemInterface $ShipmentItem) {
+                return $ShipmentItem->isDeliveryFee();
+            });
     }
 
-    /**
-     * 指定した受注明細区分だけの明細を取得.
-     * @param int $orderItemTypeId 受注明細区分ID
-     * @return ShipmentItemCollection
-     */
-    private function subCollection($orderItemTypeId)
+    public function getCharges()
     {
-        return new self(array_filter($this->getArrayCopy(), function($ShipmentItem) use ($orderItemTypeId) {
-            /* @var ShipmentItem $ShipmentItem */
-            return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $orderItemTypeId;
-        }));
+        return $this->filter(
+            function(ItemInterface $ShipmentItem) {
+                return $ShipmentItem->isCharge();
+            });
+    }
+
+    public function getDiscounts()
+    {
+        return $this->filter(
+            function(ItemInterface $ShipmentItem) {
+                return $ShipmentItem->isDiscount();
+            });
     }
 
     /**
@@ -44,14 +62,13 @@ class ShipmentItemCollection extends \ArrayIterator
      */
     public function hasProductByName($productName)
     {
-        $ShipmentItems = array_filter($this->getArrayCopy(),
-                                     function ($ShipmentItem) use ($productName) {
-                                         /* @var ShipmentItem $ShipmentItem */
-                                         return $ShipmentItem->getProductName() == $productName;
-                                     });
-        return !empty($ShipmentItems);
+        $ShipmentItems = $this->filter(
+            function (ItemInterface $ShipmentItem) use ($productName) {
+                /* @var ShipmentItem $ShipmentItem */
+                return $ShipmentItem->getProductName() == $productName;
+            });
+        return !$ShipmentItems->isEmpty();
     }
-    // map, filter, reduce も実装したい
 
     /**
      * 指定した受注明細区分の明細が存在するかどうか
@@ -60,10 +77,15 @@ class ShipmentItemCollection extends \ArrayIterator
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
-        $filteredItems = array_filter($this->getArrayCopy(), function($ShipmentItem) use ($OrderItemType) {
+        $filteredItems = $this->filter(function(ItemInterface $ShipmentItem) use ($OrderItemType) {
             /* @var ShipmentItem $ShipmentItem */
             return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $OrderItemType->getId();
         });
-        return !empty($filteredItems);
+        return !$filteredItems->isEmpty();
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

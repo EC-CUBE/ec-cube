@@ -1056,7 +1056,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getProductOrderItems()
     {
         $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
-        return $sio->getProductClasses()->getArrayCopy();
+        return $sio->getProductClasses()->toArray();
     }
 
     /**

@@ -38,7 +38,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\ShipmentItemRepository")
  */
-class ShipmentItem extends \Eccube\Entity\AbstractEntity
+class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     private $price_inc_tax = null;
 

@@ -4,6 +4,7 @@ namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
+use Eccube\Entity\PurchaseInterface;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 
 interface CalculateStrategyInterface
@@ -12,5 +13,7 @@ interface CalculateStrategyInterface
 
     public function setApplication(Application $app);
 
-    public function setOrder(Order $Order);
+    public function setOrder(PurchaseInterface $Order);
+
+    public function getTargetTypes();
 }
