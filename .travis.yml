@@ -3,6 +3,8 @@
 git:
   submodules: false
 
+sudo: false
+
 language: php
 
 cache:
