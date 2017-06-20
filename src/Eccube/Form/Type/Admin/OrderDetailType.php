@@ -49,6 +49,10 @@ class OrderDetailType extends AbstractType
         $config = $this->app['config'];
 
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+                'mapped' => false
+            ))
             ->add('new', 'hidden', array(
                 'required' => false,
                 'mapped' => false,
