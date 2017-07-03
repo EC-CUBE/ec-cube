@@ -24,7 +24,7 @@
 
 namespace Eccube\Entity;
 
-class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
+class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     /**
      * @var bool
@@ -266,4 +266,8 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
         return $this;
     }
 
+    public function addError($error)
+    {
+        // TODO: Implement addError() method.
+    }
 }
