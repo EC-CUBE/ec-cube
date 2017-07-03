@@ -21,6 +21,15 @@ class PurchaseFlow
                     $itemHolder->addError($exception);
                 }
             }
+
+        }
+
+        foreach ($this->itemHolderProsessors as $holderProcessor) {
+            try {
+                $holderProcessor->process($itemHolder);
+            } catch (ItemValidateException $exception) {
+                $itemHolder->addError($exception);
+            }
         }
         return $itemHolder;
     }
