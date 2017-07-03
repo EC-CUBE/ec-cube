@@ -13,6 +13,15 @@ class PurchaseFlow
     protected $itemProsessors = [];
 
     public function execute(ItemHolderInterface $itemHolder) {
+        foreach ($itemHolder->getItems() as $item) {
+            foreach ($this->itemProsessors as $itemProsessor) {
+                try {
+                    $itemProsessor->process($item);
+                } catch (ItemValidateException $exception) {
+                    $itemHolder->addError($exception);
+                }
+            }
+        }
         return $itemHolder;
     }
 

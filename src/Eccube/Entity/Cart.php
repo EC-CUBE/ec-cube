@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Service\ItemValidateException;
+
 class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     /**
@@ -51,6 +53,11 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      * @var array
      */
     private $Payments = array();
+
+    /**
+     * @var ItemValidateException[]
+     */
+    private $errors = [];
 
     public function __construct()
     {
@@ -266,8 +273,19 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
         return $this;
     }
 
-    public function addError($error)
+    /**
+     * @param $error
+     */
+    public function addError(ItemValidateException $error)
     {
-        // TODO: Implement addError() method.
+        $this->errors[] = $error;
+    }
+
+    /**
+     * @return ItemValidateException[]
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

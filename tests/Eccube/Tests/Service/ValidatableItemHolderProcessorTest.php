@@ -9,7 +9,7 @@
 namespace Eccube\Tests\Service;
 
 
-class ValidatablelderProcessorTest extends \PHPUnit_Framework_TestCase
+class ValidatableItemHolderProcessorTest extends \PHPUnit_Framework_TestCase
 {
     public function testHoge()
     {
