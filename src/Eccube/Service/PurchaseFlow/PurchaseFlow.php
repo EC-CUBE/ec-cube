@@ -19,6 +19,9 @@ class PurchaseFlow
     protected $itemProsessors = [];
 
     public function execute(ItemHolderInterface $itemHolder) {
+
+        // TODO 集計する
+
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemProsessors as $itemProsessor) {
                 $result = $itemProsessor->process($item);

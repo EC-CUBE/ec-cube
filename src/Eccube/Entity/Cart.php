@@ -288,4 +288,5 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     {
         return $this->errors;
     }
+
 }

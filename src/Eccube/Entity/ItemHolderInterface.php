@@ -19,4 +19,10 @@ interface ItemHolderInterface
      * @return ItemValidateException[]
      */
     public function getErrors();
+
+    /**
+     * 合計金額を返します。
+     * @return int
+     */
+    public function getTotal();
 }
