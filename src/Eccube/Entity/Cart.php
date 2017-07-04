@@ -276,7 +276,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     /**
      * @param $error
      */
-    public function addError(ItemValidateException $error)
+    public function addError($error)
     {
         $this->errors[] = $error;
     }

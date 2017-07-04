@@ -9,6 +9,7 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Service\ItemHolderProcessor;
 use Eccube\Service\ItemProcessor;
 use Eccube\Service\ItemValidateException;
+use Eccube\Service\ProcessResult;
 use Eccube\Service\PurchaseFlow;
 use Eccube\Service\ValidatableItemProcessor;
 use Eccube\Service\ValidatableItemHolderProcessor;
@@ -70,7 +71,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         self::assertEquals($itemHolder, $this->flow->execute($itemHolder));
-        self::assertEquals(['error 1'], array_map(function($exception) { return $exception->getMessage(); }, $itemHolder->getErrors()));
+        self::assertEquals(['error 1'], $itemHolder->getErrors());
     }
 
     public function testProcessItemProcessors_validationErrors()
@@ -84,7 +85,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
         self::assertEquals([
             "error 1", "error 2"
-        ], array_map(function($exception) { return $exception->getMessage(); }, $itemHolder->getErrors()));
+        ], $itemHolder->getErrors());
     }
 
     public function testProcessItemProcessors_validationErrors_with_multi_items()
@@ -99,7 +100,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
         self::assertEquals([
             "error 1", "error 2", "error 1", "error 2"
-        ], array_map(function($exception) { return $exception->getMessage(); }, $itemHolder->getErrors()));
+        ], $itemHolder->getErrors());
     }
 
 }
@@ -108,6 +109,7 @@ class PurchaseFlowTest_ItemHolderProcessor implements ItemHolderProcessor
 {
     public function process(ItemHolderInterface $itemHolder)
     {
+        return ProcessResult::success();
     }
 }
 
@@ -116,6 +118,7 @@ class PurchaseFlowTest_ItemProcessor implements ItemProcessor
 
     public function process(ItemInterface $item)
     {
+        return ProcessResult::success();
     }
 }
 

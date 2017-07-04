@@ -8,27 +8,30 @@ use Eccube\Entity\ItemHolderInterface;
 class PurchaseFlow
 {
     // TODO collection?
+    /**
+     * @var ItemHolderProcessor[]
+     */
     protected $itemHolderProsessors = [];
 
+    /**
+     * @var ItemProcessor[]
+     */
     protected $itemProsessors = [];
 
     public function execute(ItemHolderInterface $itemHolder) {
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemProsessors as $itemProsessor) {
-                try {
-                    $itemProsessor->process($item);
-                } catch (ItemValidateException $exception) {
-                    $itemHolder->addError($exception);
+                $result = $itemProsessor->process($item);
+                if ($result->isError()) {
+                    $itemHolder->addError($result->getErrorMessage());
                 }
             }
-
         }
 
         foreach ($this->itemHolderProsessors as $holderProcessor) {
-            try {
-                $holderProcessor->process($itemHolder);
-            } catch (ItemValidateException $exception) {
-                $itemHolder->addError($exception);
+            $result = $holderProcessor->process($itemHolder);
+            if ($result->isError()) {
+                $itemHolder->addError($result->getErrorMessage());
             }
         }
         return $itemHolder;

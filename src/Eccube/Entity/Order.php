@@ -1873,10 +1873,10 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * @param ItemValidateException $error
+     * @param string $error
      * @return void
      */
-    public function addError(ItemValidateException $error)
+    public function addError($error)
     {
         // TODO: Implement addError() method.
     }

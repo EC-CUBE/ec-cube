@@ -37,15 +37,20 @@ abstract class ValidatableItemProcessor implements ItemProcessor
     {
         try {
             $this->validate($item);
+
+            return ProcessResult::success();
         } catch (ItemValidateException $e) {
             if ($item instanceof CartItem) {
                 $this->handle($item);
             }
-            throw $e;
+
+            return ProcessResult::fail($e->getMessage());
         }
     }
 
     protected abstract function validate(ItemInterface $item);
 
-    protected function handle(ItemInterface $item) {}
+    protected function handle(ItemInterface $item)
+    {
+    }
 }

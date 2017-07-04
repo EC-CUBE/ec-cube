@@ -11,11 +11,14 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
     {
         try {
             $this->validate($itemHolder);
+
+            return ProcessResult::success();
         } catch (ItemValidateException $e) {
             if ($itemHolder instanceof Cart) {
                 $this->handle($itemHolder);
             }
-            throw $e;
+
+            return ProcessResult::fail($e->getMessage());
         }
     }
 

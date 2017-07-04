@@ -8,10 +8,10 @@ use Eccube\Service\ItemValidateException;
 interface ItemHolderInterface
 {
     /**
-     * @param ItemValidateException $error
+     * @param string $error
      * @return void
      */
-    public function addError(ItemValidateException $error);
+    public function addError($error);
 
     public function getItems();
 
