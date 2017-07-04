@@ -55,8 +55,12 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ValidatableItemProcessorTest_FailValidator();
         $item = new CartItem();
 
-        $validator->process($item);
-        $this->assertTrue($validator->handleCalled);
+        try {
+            $validator->process($item);
+            self::fail();
+        } catch (ItemValidateException $e) {
+            $this->assertTrue($validator->handleCalled);
+        }
     }
 
     public function testValidateOrderSuccess()
@@ -73,8 +77,12 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ValidatableItemProcessorTest_FailValidator();
         $item = new ShipmentItem();
 
-        $validator->process($item);
-        $this->assertFalse($validator->handleCalled);
+        try {
+            $validator->process($item);
+            self::fail();
+        } catch (ItemValidateException $e) {
+            $this->assertFalse($validator->handleCalled);
+        }
     }
 }
 
@@ -83,7 +91,9 @@ class ValidatableItemProcessorTest_NormalValidator extends ValidatableItemProces
 
     public $handleCalled = false;
 
-    protected function validate(ItemInterface $item) {}
+    protected function validate(ItemInterface $item)
+    {
+    }
 
     protected function handle(ItemInterface $item)
     {
