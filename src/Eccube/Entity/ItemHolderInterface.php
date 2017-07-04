@@ -13,6 +13,9 @@ interface ItemHolderInterface
      */
     public function addError($error);
 
+    /**
+     * @return ItemInterface[]
+     */
     public function getItems();
 
     /**
@@ -25,4 +28,9 @@ interface ItemHolderInterface
      * @return int
      */
     public function getTotal();
+
+    /**
+     * @param ItemInterface $item
+     */
+    public function addItem(ItemInterface $item);
 }

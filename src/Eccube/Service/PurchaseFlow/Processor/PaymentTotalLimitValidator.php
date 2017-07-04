@@ -28,6 +28,9 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 
+/**
+ * 購入金額上限チェック.
+ */
 class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
 {
     /**

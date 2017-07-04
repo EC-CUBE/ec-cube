@@ -1888,4 +1888,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     {
         // TODO: Implement getErrors() method.
     }
+
+    /**
+     * @param ItemInterface $item
+     */
+    public function addItem(ItemInterface $item)
+    {
+        $this->ShipmentItems->add($item);
+    }
 }
