@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Entity\CartItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -110,6 +111,8 @@ class CartController extends AbstractController
     {
         $productClassId = $request->get('product_class_id');
         $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
 
         // FRONT_CART_ADD_INITIALIZE
         $event = new EventArgs(
@@ -128,7 +131,23 @@ class CartController extends AbstractController
 
             log_info('カート追加処理開始', array('product_class_id' => $productClassId, 'quantity' => $quantity));
 
-            $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
+            $Cart = $app['eccube.service.cart']->getCart();
+            $CartItem = new CartItem();
+            $CartItem
+                ->setClassName('Eccube\Entity\ProductClass')
+                ->setClassId($productClassId)
+                ->setPrice($ProductClass->getPrice02IncTax())
+                ->setQuantity($quantity);
+            $Cart->setCartItem($CartItem);
+            $app['eccube.purchase.flow.cart']->execute($Cart);
+
+            $errors = $Cart->getErrors();
+            if (!empty($errors)) {
+                foreach($errors as $error) {
+                    $app->addRequestError($error);
+                }
+            }
+            // $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
 
             log_info('カート追加処理完了', array('product_class_id' => $productClassId, 'quantity' => $quantity));
 
@@ -196,7 +215,27 @@ class CartController extends AbstractController
 
             $productClassId = $event->getArgument('productClassId');
 
-            $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
+            /** @var ProductClass $ProductClass */
+            $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
+            $Cart = $app['eccube.service.cart']->getCart();
+            $CartItem = new CartItem();
+            $CartItem
+                ->setClassName('Eccube\Entity\ProductClass')
+                ->setClassId($productClassId)
+                ->setPrice($ProductClass->getPrice02IncTax())
+                ->setQuantity(6);
+            $Cart->setCartItem($CartItem);
+            $app['eccube.purchase.flow.cart']->execute($Cart);
+
+            $errors = $Cart->getErrors();
+            if (!empty($errors)) {
+                foreach($errors as $error) {
+                    $app->addRequestError($error);
+                }
+            } else {
+                $app['eccube.service.cart']->save();
+            }
+            //$app['eccube.service.cart']->upProductQuantity($productClassId)->save();
 
             // FRONT_CART_UP_COMPLETE
             $event = new EventArgs(

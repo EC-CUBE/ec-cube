@@ -56,7 +56,7 @@ class PurchaseFlow
      */
     private function calculateTotal(ItemHolderInterface $itemHolder)
     {
-        $total = array_reduce($itemHolder->getItems(), function ($sum, ItemInterface $item) {
+        $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
             $sum += $item->getPrice() * $item->getQuantity();
             return $sum;
         }, 0);
