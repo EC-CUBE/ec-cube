@@ -39,4 +39,9 @@ interface ItemInterface
     public function isTax();
 
     public function getOrderItemType();
+
+    /**
+     * @return ProductClass
+     */
+    public function getProductClass();
 }

@@ -2,38 +2,36 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
-use Eccube\Entity\ItemHolderInterface;
-use Eccube\Entity\ItemInterface;
-use Eccube\Service\ItemHolderProcessor;
-use Eccube\Service\ItemProcessor;
 use Eccube\Service\ItemValidateException;
-use Eccube\Service\PurchaseFlow;
 use Eccube\Service\StockValidator;
-use Eccube\Service\ValidatableItemProcessor;
-use Eccube\Service\ValidatableItemHolderProcessor;
 use Eccube\Tests\EccubeTestCase;
 
 class StockValidatorTest extends EccubeTestCase
 {
+    /**
+     * @var StockValidator
+     */
     protected $validator;
     protected $cartItem;
     protected $Product;
+    protected $ProductClass;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->Product = $this->createProduct('テスト商品', 1);
+        $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = new StockValidator();
         $this->cartItem = new CartItem();
-        $this->cartItem->setObject($this->Product->getProductClasses()[0]);
+        $this->cartItem->setObject($this->ProductClass);
     }
 
     public function testInstance()
     {
         self::assertInstanceOf(StockValidator::class, $this->validator);
-        self::assertSame($this->Product->getProductClasses()[0], $this->cartItem->getObject());
+        self::assertSame($this->ProductClass, $this->cartItem->getObject());
     }
 
     public function testValidStock()
@@ -50,7 +48,21 @@ class StockValidatorTest extends EccubeTestCase
             $this->validator->process($this->cartItem);
             self::fail('エラーチェックに失敗しました');
         } catch (ItemValidateException $e) {
-            self::assertEquals($this->Product->getProductClasses()[0]->getStock(), $this->cartItem->getQuantity());
+            self::assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
         }
+    }
+    
+    public function testValidStockOrder()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->app['eccube.fixture.generator']->createOrder($Customer, array($this->ProductClass));
+
+        self::assertEquals($Order->getShipmentItems()[0]->getProductClass(), $this->ProductClass);
+
+        $Order->getShipmentItems()[0]->setQuantity(1);
+        $this->ProductClass->setStock(100);
+
+        $this->validator->process($Order->getShipmentItems()[0]);
+        self::assertEquals(1, $Order->getShipmentItems()[0]->getQuantity());
     }
 }

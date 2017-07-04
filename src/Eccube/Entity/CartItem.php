@@ -201,4 +201,12 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
         $ItemType = new \Eccube\Entity\Master\OrderItemType();
         return $ItemType;
     }
+
+    /**
+     * @return ProductClass
+     */
+    public function getProductClass()
+    {
+        return $this->getObject();
+    }
 }

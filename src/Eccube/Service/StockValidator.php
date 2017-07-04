@@ -8,7 +8,7 @@ class StockValidator extends ValidatableItemProcessor
 {
     protected function validate(ItemInterface $item)
     {
-        $stock = $item->getObject()->getStock();
+        $stock = $item->getProductClass()->getStock();
         $quantity = $item->getQuantity();
         if ($stock < $quantity) {
             throw new ItemValidateException();
@@ -16,7 +16,7 @@ class StockValidator extends ValidatableItemProcessor
     }
 
     protected function handle(ItemInterface $item) {
-        $stock = $item->getObject()->getStock();
+        $stock = $item->getProductClass()->getStock();
         $item->setQuantity($stock);
     }
 }

@@ -26,6 +26,7 @@ namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
 use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\ItemValidateException;
 use Eccube\Util\EntityUtil;
 use Eccube\Entity\Master\OrderItemType;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +40,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\OrderRepository")
  */
-class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
+class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     /**
      * isMultiple
@@ -1869,5 +1870,22 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     public function getOrderStatus()
     {
         return $this->OrderStatus;
+    }
+
+    /**
+     * @param ItemValidateException $error
+     * @return void
+     */
+    public function addError(ItemValidateException $error)
+    {
+        // TODO: Implement addError() method.
+    }
+
+    /**
+     * @return ItemValidateException[]
+     */
+    public function getErrors()
+    {
+        // TODO: Implement getErrors() method.
     }
 }
