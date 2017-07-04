@@ -42,7 +42,8 @@ class CartController extends AbstractController
     public function index(Application $app, Request $request)
     {
         // カートの集計結果を取得
-        $Cart = $app['eccube.service.calculate']($app['eccube.service.cart']->getCart(), $app->user())->calculate();
+        $Cart = $app['eccube.service.cart']->getCart();
+        $app['eccube.purchase.flow.cart']->execute($Cart);
 
         // FRONT_CART_INDEX_INITIALIZE
         $event = new EventArgs(

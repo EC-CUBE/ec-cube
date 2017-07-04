@@ -44,4 +44,8 @@ interface ItemInterface
      * @return ProductClass
      */
     public function getProductClass();
+
+    public function getPrice();
+
+    public function getQuantity();
 }

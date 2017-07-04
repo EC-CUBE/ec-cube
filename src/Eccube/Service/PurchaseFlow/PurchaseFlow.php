@@ -4,6 +4,7 @@ namespace Eccube\Service\PurchaseFlow;
 
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\ItemInterface;
 
 class PurchaseFlow
 {
@@ -20,7 +21,7 @@ class PurchaseFlow
 
     public function execute(ItemHolderInterface $itemHolder) {
 
-        // TODO 集計する
+        $this->calculateTotal($itemHolder);
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemProsessors as $itemProsessor) {
@@ -48,5 +49,17 @@ class PurchaseFlow
     public function addItemProcessor(ItemProcessor $prosessor)
     {
         $this->itemProsessors[] = $prosessor;
+    }
+
+    /**
+     * @param ItemHolderInterface $itemHolder
+     */
+    private function calculateTotal(ItemHolderInterface $itemHolder)
+    {
+        $total = array_reduce($itemHolder->getItems(), function ($sum, ItemInterface $item) {
+            $sum += $item->getPrice() * $item->getQuantity();
+            return $sum;
+        }, 0);
+        $itemHolder->setTotal($total);
     }
 }

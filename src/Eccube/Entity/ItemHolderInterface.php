@@ -30,6 +30,12 @@ interface ItemHolderInterface
     public function getTotal();
 
     /**
+     * 合計金額を設定します。
+     * @param $total|int
+     */
+    public function setTotal($total);
+
+    /**
      * @param ItemInterface $item
      */
     public function addItem(ItemInterface $item);

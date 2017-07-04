@@ -26,6 +26,10 @@ namespace Eccube\ServiceProvider;
 
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\StockValidator;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -522,6 +526,21 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
         // TODO QueryCustomizerの追加方法は要検討
         $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
+
+        $app['eccube.purchase.flow.cart'] = function () use ($app) {
+            $flow = new PurchaseFlow();
+            $flow->addItemProcessor(new StockValidator());
+            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            return $flow;
+        };
+
+        $app['eccube.purchase.flow.shopping'] = function () use ($app) {
+            $flow = new PurchaseFlow();
+            $flow->addItemProcessor(new StockValidator());
+            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            $flow->addItemHolderProcessor(new DeliveryFeeProcessor($app));
+            return $flow;
+        };
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
