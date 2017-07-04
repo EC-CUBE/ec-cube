@@ -21,36 +21,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Service;
+namespace Eccube\Service\PurchaseFlow;
 
 
-use Eccube\Entity\CartItem;
-use Eccube\Entity\ItemInterface;
-
-abstract class ValidatableItemProcessor implements ItemProcessor
+class ItemValidateException extends \Exception
 {
-    /**
-     * @param ItemInterface $item
-     * @throws ItemValidateException
-     */
-    public function process(ItemInterface $item)
-    {
-        try {
-            $this->validate($item);
 
-            return ProcessResult::success();
-        } catch (ItemValidateException $e) {
-            if ($item instanceof CartItem) {
-                $this->handle($item);
-            }
-
-            return ProcessResult::fail($e->getMessage());
-        }
-    }
-
-    protected abstract function validate(ItemInterface $item);
-
-    protected function handle(ItemInterface $item)
-    {
-    }
 }

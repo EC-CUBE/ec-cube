@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Service;
+namespace Eccube\Service\PurchaseFlow;
 
 
 use Eccube\Entity\ItemHolderInterface;

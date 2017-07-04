@@ -1,18 +1,18 @@
 <?php
 
-namespace Eccube\Tests\Service;
+namespace Eccube\Tests\Service\PurchaseFlow;
 
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\ItemHolderProcessor;
-use Eccube\Service\ItemProcessor;
-use Eccube\Service\ItemValidateException;
-use Eccube\Service\ProcessResult;
-use Eccube\Service\PurchaseFlow;
-use Eccube\Service\ValidatableItemProcessor;
-use Eccube\Service\ValidatableItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ItemProcessor;
+use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 use Eccube\Tests\EccubeTestCase;
 
 class PurchaseFlowTest extends EccubeTestCase

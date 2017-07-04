@@ -3,8 +3,7 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
-use Eccube\Service\ItemValidateException;
-use Eccube\Service\StockValidator;
+use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Tests\EccubeTestCase;
 
 class StockValidatorTest extends EccubeTestCase

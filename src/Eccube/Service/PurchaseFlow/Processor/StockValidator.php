@@ -1,8 +1,10 @@
 <?php
 
-namespace Eccube\Service;
+namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
+use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 class StockValidator extends ValidatableItemProcessor
 {
