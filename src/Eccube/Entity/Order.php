@@ -1896,4 +1896,14 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     {
         $this->ShipmentItems->add($item);
     }
+
+    public function getQuantity()
+    {
+        $quantity = 0;
+        foreach($this->getItems() as $item) {
+            $quantity += $item->getQuantity();
+        }
+
+        return $quantity;
+    }
 }

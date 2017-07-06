@@ -54,31 +54,6 @@ class CartController extends AbstractController
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_INDEX_INITIALIZE, $event);
 
-        /* @var $BaseInfo \Eccube\Entity\BaseInfo */
-        /* @var $Cart \Eccube\Entity\Cart */
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-        $isDeliveryFree = false;
-        $least = 0;
-        $quantity = 0;
-        if ($BaseInfo->getDeliveryFreeAmount()) {
-            if ($BaseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
-                // 送料無料（金額）を超えている
-                $isDeliveryFree = true;
-            } else {
-                $least = $BaseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
-            }
-        }
-
-        if ($BaseInfo->getDeliveryFreeQuantity()) {
-            if ($BaseInfo->getDeliveryFreeQuantity() <= $Cart->getTotalQuantity()) {
-                // 送料無料（個数）を超えている
-                $isDeliveryFree = true;
-            } else {
-                $quantity = $BaseInfo->getDeliveryFreeQuantity() - $Cart->getTotalQuantity();
-            }
-        }
-
         // FRONT_CART_INDEX_COMPLETE
         $event = new EventArgs(
             array(),

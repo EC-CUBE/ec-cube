@@ -296,4 +296,14 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     {
         $this->CartItems->add($item);
     }
+
+    /**
+     * 個数の合計を返します。
+     *
+     * @return mixed
+     */
+    public function getQuantity()
+    {
+        return $this->getTotalQuantity();
+    }
 }

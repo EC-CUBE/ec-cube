@@ -36,6 +36,13 @@ interface ItemHolderInterface
     public function setTotal($total);
 
     /**
+     * 個数の合計を返します。
+     *
+     * @return mixed
+     */
+    public function getQuantity();
+
+    /**
      * @param ItemInterface $item
      */
     public function addItem(ItemInterface $item);
