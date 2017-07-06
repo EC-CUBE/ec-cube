@@ -541,6 +541,13 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow->addItemHolderProcessor(new DeliveryFeeProcessor($app));
             return $flow;
         };
+
+        $app['eccube.purchase.flow.order'] = function () use ($app) {
+            $flow = new PurchaseFlow();
+            $flow->addItemProcessor(new StockValidator());
+            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            return $flow;
+        };
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)

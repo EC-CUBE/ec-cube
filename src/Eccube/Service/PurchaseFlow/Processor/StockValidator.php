@@ -13,6 +13,9 @@ class StockValidator extends ValidatableItemProcessor
 {
     protected function validate(ItemInterface $item)
     {
+        if (!$item->isProduct()) {
+            return;
+        }
         $stock = $item->getProductClass()->getStock();
         $quantity = $item->getQuantity();
         if ($stock < $quantity) {

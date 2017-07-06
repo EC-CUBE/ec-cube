@@ -133,8 +133,8 @@ class EditController extends AbstractController
             // プラグインで Strategy をセットしたりする
             // TODO 編集前のOrder情報が必要かもしれない
             // TODO 手数料, 値引きの集計は未実装
-            $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
-
+            // $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
+            $app['eccube.purchase.flow.order']->execute($TargetOrder);
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
