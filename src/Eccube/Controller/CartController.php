@@ -101,94 +101,6 @@ class CartController extends AbstractController
     }
 
     /**
-     * カートに商品を追加する.
-     *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function add(Application $app, Request $request)
-    {
-        $productClassId = $request->get('product_class_id');
-        $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
-        /** @var ProductClass $ProductClass */
-        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
-
-        // FRONT_CART_ADD_INITIALIZE
-        $event = new EventArgs(
-            array(
-                'productClassId' => $productClassId,
-                'quantity' => $quantity,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_INITIALIZE, $event);
-
-        try {
-
-            $productClassId = $event->getArgument('productClassId');
-            $quantity = $event->getArgument('quantity');
-
-            log_info('カート追加処理開始', array('product_class_id' => $productClassId, 'quantity' => $quantity));
-
-            $Cart = $app['eccube.service.cart']->getCart();
-            $CartItem = new CartItem();
-            $CartItem
-                ->setClassName('Eccube\Entity\ProductClass')
-                ->setClassId($productClassId)
-                ->setPrice($ProductClass->getPrice02IncTax())
-                ->setQuantity($quantity);
-            $Cart->setCartItem($CartItem);
-            $app['eccube.purchase.flow.cart']->execute($Cart);
-
-            $errors = $Cart->getErrors();
-            if (!empty($errors)) {
-                foreach($errors as $error) {
-                    $app->addRequestError($error);
-                }
-            }
-            // $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
-
-            log_info('カート追加処理完了', array('product_class_id' => $productClassId, 'quantity' => $quantity));
-
-            // FRONT_CART_ADD_COMPLETE
-            $event = new EventArgs(
-                array(
-                    'productClassId' => $productClassId,
-                    'quantity' => $quantity,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_COMPLETE, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-        } catch (CartException $e) {
-
-            log_info('カート追加エラー', array($e->getMessage()));
-
-            // FRONT_CART_ADD_EXCEPTION
-            $event = new EventArgs(
-                array(
-                    'exception' => $e,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_EXCEPTION, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $app->addRequestError($e->getMessage());
-        }
-
-        return $app->redirect($app->url('cart'));
-    }
-
-    /**
      * カートに入っている商品の個数を1増やす.
      *
      * @param Application $app
@@ -381,27 +293,6 @@ class CartController extends AbstractController
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
-
-        return $app->redirect($app->url('cart'));
-    }
-
-    /**
-     * カートに商品を個数を指定して設定する.
-     *
-     * @param Application $app
-     * @param Request $request
-     * @param $productClassId
-     * @param $quantity
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws CartException
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function setQuantity(Application $app, Request $request, $productClassId, $quantity)
-    {
-        $this->isTokenValid($app);
-
-        $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
 
         return $app->redirect($app->url('cart'));
     }
