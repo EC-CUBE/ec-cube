@@ -25,11 +25,9 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends AbstractController
@@ -46,24 +44,16 @@ class CartController extends AbstractController
         // カートの集計結果を取得
         $Cart = $app['eccube.service.cart']->getCart();
         $app['eccube.purchase.flow.cart']->execute($Cart);
+        $app['eccube.service.cart']->save();
 
-        // FRONT_CART_INDEX_INITIALIZE
-        $event = new EventArgs(
-            array(),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_INDEX_INITIALIZE, $event);
-
-        // FRONT_CART_INDEX_COMPLETE
-        $event = new EventArgs(
-            array(),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_INDEX_COMPLETE, $event);
-
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        foreach ($Cart->getErrors() as $error) {
+            $app->addRequestError($error);
         }
+
+        // TODO purchaseFlow/itemHolderから取得できるように
+        $least = 0;
+        $quantity = 0;
+        $isDeliveryFree = false;
 
         return $app->render(
             'Cart/index.twig',
@@ -97,51 +87,18 @@ class CartController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        // FRONT_CART_UP_INITIALIZE
-        $event = new EventArgs(
-            array(
-                'ProductClass' => $ProductClass
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_INITIALIZE, $event);
-
         $Cart = $app['eccube.service.cart']->getCart();
-
         $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
 
         if ($Exists) {
             $Exists->setQuantity($Exists->getQuantity() + 1);
-        } else {
-            $CartItem = new CartItem();
-            $CartItem
-                ->setClassName(ProductClass::class)
-                ->setClassId($productClassId)
-                ->setObject($ProductClass)
-                ->setPrice($ProductClass->getPrice02IncTax())
-                ->setQuantity(1);
-            $Cart->addItem($CartItem);
         }
 
         $app['eccube.purchase.flow.cart']->execute($Cart);
+        $app['eccube.service.cart']->save();
 
-        // FRONT_CART_UP_COMPLETE
-        $event = new EventArgs(
-            array(
-                'productClassId' => $productClassId,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_COMPLETE, $event);
-
-        $errors = $Cart->getErrors();
-
-        if (empty($errors)) {
-            $app['eccube.service.cart']->save();
-        } else {
-            foreach($errors as $error) {
-                $app->addRequestError($error);
-            }
+        foreach ($Cart->getErrors() as $error) {
+            $app->addRequestError($error);
         }
 
         log_info('カート加算処理終了', array('product_class_id' => $productClassId));
@@ -162,55 +119,32 @@ class CartController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        // FRONT_CART_DOWN_INITIALIZE
-        $event = new EventArgs(
-            array(
-                'productClassId' => $productClassId,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_INITIALIZE, $event);
+        log_info('カート減算処理開始', array('product_class_id' => $productClassId));
 
-        try {
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
 
-            log_info('カート減算処理開始', array('product_class_id' => $productClassId));
-
-            $productClassId = $event->getArgument('productClassId');
-            $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
-
-            // FRONT_CART_UP_COMPLETE
-            $event = new EventArgs(
-                array(
-                    'productClassId' => $productClassId,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_COMPLETE, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            log_info('カート減算処理完了', array('product_class_id' => $productClassId));
-
-        } catch (CartException $e) {
-            log_info('カート減算エラー', array($e->getMessage()));
-
-            // FRONT_CART_DOWN_EXCEPTION
-            $event = new EventArgs(
-                array(
-                    'exception' => $e,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_EXCEPTION, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $app->addRequestError($e->getMessage());
+        if (is_null($ProductClass)) {
+            return $app->redirect($app->url('cart'));
         }
+
+        $Cart = $app['eccube.service.cart']->getCart();
+        $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+
+        if ($Exists) {
+            // 個数の減算
+            // 個数が0以下になる場合は、PurchaseFlowで削除されるため、ここではハンドリングしない.
+            $Exists->setQuantity($Exists->getQuantity() - 1);
+        }
+
+        $app['eccube.purchase.flow.cart']->execute($Cart);
+        $app['eccube.service.cart']->save();
+
+        foreach ($Cart->getErrors() as $error) {
+            $app->addRequestError($error);
+        }
+
+        log_info('カート減算処理完了', array('product_class_id' => $productClassId));
 
         return $app->redirect($app->url('cart'));
     }
@@ -227,46 +161,34 @@ class CartController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Cart = Cart::restore();
-        $Cart->remove($productClassId);
-        $Regi->execute($Cart);
-
-        if ($Regi->hasError()) {
-            $errors = $Regi->getErrors();
-            foreach ($errors as $error) {
-                $app->addRequestError($error);
-            }
-        }
-
+        $this->isTokenValid($app);
 
         log_info('カート削除処理開始', array('product_class_id' => $productClassId));
 
-        // FRONT_CART_REMOVE_INITIALIZE
-        $event = new EventArgs(
-            array(
-                'productClassId' => $productClassId,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_INITIALIZE, $event);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
 
-        $productClassId = $event->getArgument('productClassId');
-        $app['eccube.service.cart']->removeProduct($productClassId)->save();
-
-        log_info('カート削除処理完了', array('product_class_id' => $productClassId));
-
-        // FRONT_CART_REMOVE_COMPLETE
-        $event = new EventArgs(
-            array(
-                'productClassId' => $productClassId,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_COMPLETE, $event);
-
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        if (is_null($ProductClass)) {
+            return $app->redirect($app->url('cart'));
         }
+
+        $Cart = $app['eccube.service.cart']->getCart();
+        $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+
+        if ($Exists) {
+            // 明細の削除
+            // PurchaseFlowに削除させるため、0を設定.
+            $Exists->setQuantity(0);
+        }
+
+        $app['eccube.purchase.flow.cart']->execute($Cart);
+        $app['eccube.service.cart']->save();
+
+        foreach ($Cart->getErrors() as $error) {
+            $app->addRequestError($error);
+        }
+
+        log_info('カート削除処理開始', array('product_class_id' => $productClassId));
 
         return $app->redirect($app->url('cart'));
     }
