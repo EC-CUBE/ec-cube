@@ -27,6 +27,7 @@ namespace Eccube\ServiceProvider;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -530,6 +531,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.purchase.flow.cart'] = function () use ($app) {
             $flow = new PurchaseFlow();
             $flow->addItemProcessor(new StockValidator());
+            $flow->addItemProcessor(new DisplayStatusValidator());
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
             return $flow;
         };
@@ -537,6 +539,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.purchase.flow.shopping'] = function () use ($app) {
             $flow = new PurchaseFlow();
             $flow->addItemProcessor(new StockValidator());
+            $flow->addItemProcessor(new DisplayStatusValidator());
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
             $flow->addItemHolderProcessor(new DeliveryFeeProcessor($app));
             return $flow;

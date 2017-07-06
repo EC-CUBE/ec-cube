@@ -48,4 +48,6 @@ interface ItemInterface
     public function getPrice();
 
     public function getQuantity();
+
+    public function setQuantity($quantity);
 }
