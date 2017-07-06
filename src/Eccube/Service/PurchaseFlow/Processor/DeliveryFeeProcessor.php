@@ -57,15 +57,32 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
      */
     public function process(ItemHolderInterface $itemHolder)
     {
-        /**
-         * @var ShipmentItem $ShipmentItem
-         */
-        foreach ($itemHolder->getItems() as $ShipmentItem) {
-            if ($ShipmentItem->isDeliveryFee()) {
-                return;
+        if ($this->containsDeliveryFeeItem($itemHolder) == false) {
+            $this->addDeliveryFeeItem($itemHolder);
+        }
+        return ProcessResult::success();
+    }
+
+    /**
+     * @param ItemHolderInterface $itemHolder
+     * @return bool
+     */
+    private function containsDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    {
+        foreach ($itemHolder->getItems() as $item) {
+            if ($item->isDeliveryFee()) {
+                return true;
             }
         }
+        return false;
+    }
 
+    /**
+     * TODO 送料無料計算
+     * @param ItemHolderInterface $itemHolder
+     */
+    private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    {
         $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
         // TODO
         $TaxInclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::INCLUDED);

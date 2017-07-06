@@ -1173,14 +1173,15 @@ class ShoppingService
 
         $em = $this->app['orm.em'];
 
-        // 合計金額の再計算
-        $this->calculatePrice($Order);
-
-        // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
-        $check = $this->isOrderProduct($em, $Order);
-        if (!$check) {
-            throw new ShoppingException('front.shopping.stock.error');
-        }
+        // TODO PurchaseFlowでやる
+//        // 合計金額の再計算
+//        $this->calculatePrice($Order);
+//
+//        // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
+//        $check = $this->isOrderProduct($em, $Order);
+//        if (!$check) {
+//            throw new ShoppingException('front.shopping.stock.error');
+//        }
 
         // 受注情報、配送情報を更新
         $Order = $this->calculateDeliveryFee($Order);

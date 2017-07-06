@@ -43,6 +43,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     /**
+     * @var ItemValidateException[]
+     */
+    private $errors = [];
+
+    /**
      * isMultiple
      * 
      * @return boolean
@@ -1878,7 +1883,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      */
     public function addError($error)
     {
-        // TODO: Implement addError() method.
+        $this->errors[] = $error;
     }
 
     /**
@@ -1886,7 +1891,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      */
     public function getErrors()
     {
-        // TODO: Implement getErrors() method.
+        return $this->errors;
     }
 
     /**
