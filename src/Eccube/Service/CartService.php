@@ -652,6 +652,7 @@ class CartService
      */
     private function setProductLimit(ProductClass $ProductClass, $productName, $quantity)
     {
+        return;
 
         /**
          * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
