@@ -43,6 +43,36 @@ interface ItemHolderInterface
     public function getQuantity();
 
     /**
+     * 送料合計を設定します。
+     * @param $total|int
+     */
+    public function setDeliveryFeeTotal($total);
+
+    /**
+     * 送料合計を返します。
+     * @return int
+     */
+    public function getDeliveryFeeTotal();
+
+    /**
+     * 値引き合計を設定します。
+     * @param $total|int
+     */
+    public function setDiscount($total);
+
+    /**
+     * 手数料合計を設定します。
+     * @param $total|int
+     */
+    public function setCharge($total);
+
+    /**
+     * 税額合計を設定します。
+     * @param $total|int
+     */
+    public function setTax($total);
+
+    /**
      * @param ItemInterface $item
      */
     public function addItem(ItemInterface $item);

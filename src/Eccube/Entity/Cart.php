@@ -50,6 +50,11 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     private $total_price;
 
     /**
+     * @var integer
+     */
+    private $delivery_fee_total;
+
+    /**
      * @var array
      */
     private $Payments = array();
@@ -310,5 +315,43 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     public function getQuantity()
     {
         return $this->getTotalQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDeliveryFeeTotal($total) {
+        $this->delivery_fee_total = $total;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDeliveryFeeTotal()
+    {
+        return $this->delivery_fee_total;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscount($total) {
+        // TODO quiet
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCharge($total) {
+        // TODO quiet
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTax($total) {
+        // TODO quiet
     }
 }
