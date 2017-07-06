@@ -60,13 +60,16 @@ class PurchaseFlow
      */
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
-        // TODO 後方互換のため discount は減算する必要がある？
-        // Order::getTotalPrice() の依存をどうにかしなければ
         $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
-            $sum += $item->getPrice() * $item->getQuantity();
+            $sum += $item->getPriceIncTax() * $item->getQuantity();
             return $sum;
         }, 0);
         $itemHolder->setTotal($total);
+        // TODO
+        if ($itemHolder instanceof \Eccube\Entity\Order) {
+            // Order には PaymentTotal もセットする
+            $itemHolder->setPaymentTotal($total);
+        }
     }
 
     /**
@@ -78,7 +81,7 @@ class PurchaseFlow
             function (ItemInterface $item) {
                 return $item->isDeliveryFee();
             })->toArray(), function ($sum, ItemInterface $item) {
-                $sum += $item->getPrice() * $item->getQuantity();
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
                 return $sum;
             }, 0);
         $itemHolder->setDeliveryFeeTotal($total);
@@ -93,10 +96,11 @@ class PurchaseFlow
             function (ItemInterface $item) {
                 return $item->isDiscount();
             })->toArray(), function ($sum, ItemInterface $item) {
-                $sum += $item->getPrice() * $item->getQuantity();
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
                 return $sum;
             }, 0);
-        $itemHolder->setDiscount($total);
+        // TODO 後方互換のため discount には正の整数を代入する
+        $itemHolder->setDiscount($total * -1);
     }
 
     /**
@@ -108,7 +112,7 @@ class PurchaseFlow
             function (ItemInterface $item) {
                 return $item->isCharge();
             })->toArray(), function ($sum, ItemInterface $item) {
-                $sum += $item->getPrice() * $item->getQuantity();
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
                 return $sum;
             }, 0);
         $itemHolder->setCharge($total);

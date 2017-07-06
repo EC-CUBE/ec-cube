@@ -342,14 +342,6 @@ class OrderType extends AbstractType
                 $Order->setPaymentMethod($Payment->getMethod());
             }
         });
-        // TODO 手数料, 値引きの集計は CalculateService で
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $Order = $event->getData();
-            $Order->setDiscount($Order->calculateDiscountTotal());
-            // $Order->setCharge($Order->calculateChargeTotal());
-            // $Order->setDeliveryFeeTotal($Order->calculateDeliveryFeeTotal());
-            $event->setData($Order);
-        });
         // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Order = $event->getData();
