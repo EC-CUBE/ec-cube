@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -112,77 +113,63 @@ class CartController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        log_info('カート加算処理開始', array('product_class_id' => $productClassId));
+
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
+
+        if (is_null($ProductClass)) {
+            return $app->redirect($app->url('cart'));
+        }
+
         // FRONT_CART_UP_INITIALIZE
+        $event = new EventArgs(
+            array(
+                'ProductClass' => $ProductClass
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_INITIALIZE, $event);
+
+        $Cart = $app['eccube.service.cart']->getCart();
+
+        $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+
+        if ($Exists) {
+            $Exists->setQuantity($Exists->getQuantity() + 1);
+        } else {
+            $CartItem = new CartItem();
+            $CartItem
+                ->setClassName(ProductClass::class)
+                ->setClassId($productClassId)
+                ->setObject($ProductClass)
+                ->setPrice($ProductClass->getPrice02IncTax())
+                ->setQuantity(1);
+            $Cart->addItem($CartItem);
+        }
+
+        $app['eccube.purchase.flow.cart']->execute($Cart);
+
+        // FRONT_CART_UP_COMPLETE
         $event = new EventArgs(
             array(
                 'productClassId' => $productClassId,
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_COMPLETE, $event);
 
-        try {
+        $errors = $Cart->getErrors();
 
-            log_info('カート加算処理開始', array('product_class_id' => $productClassId));
-
-            $productClassId = $event->getArgument('productClassId');
-
-            /** @var ProductClass $ProductClass */
-            $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
-            $Cart = $app['eccube.service.cart']->getCart();
-            $CartItem = new CartItem();
-            $CartItem
-                ->setClassName('Eccube\Entity\ProductClass')
-                ->setClassId($productClassId)
-                ->setPrice($ProductClass->getPrice02IncTax())
-                ->setQuantity(6);
-            $Cart->setCartItem($CartItem);
-            $app['eccube.purchase.flow.cart']->execute($Cart);
-
-            $errors = $Cart->getErrors();
-            if (!empty($errors)) {
-                foreach($errors as $error) {
-                    $app->addRequestError($error);
-                }
-            } else {
-                $app['eccube.service.cart']->save();
+        if (empty($errors)) {
+            $app['eccube.service.cart']->save();
+        } else {
+            foreach($errors as $error) {
+                $app->addRequestError($error);
             }
-            //$app['eccube.service.cart']->upProductQuantity($productClassId)->save();
-
-            // FRONT_CART_UP_COMPLETE
-            $event = new EventArgs(
-                array(
-                    'productClassId' => $productClassId,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_COMPLETE, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            log_info('カート加算処理完了', array('product_class_id' => $productClassId));
-
-        } catch (CartException $e) {
-
-            log_info('カート加算エラー', array($e->getMessage()));
-
-            // FRONT_CART_UP_EXCEPTION
-            $event = new EventArgs(
-                array(
-                    'exception' => $e,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_EXCEPTION, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $app->addRequestError($e->getMessage());
         }
+
+        log_info('カート加算処理終了', array('product_class_id' => $productClassId));
 
         return $app->redirect($app->url('cart'));
     }
@@ -264,6 +251,18 @@ class CartController extends AbstractController
     public function remove(Application $app, Request $request, $productClassId)
     {
         $this->isTokenValid($app);
+
+        $Cart = Cart::restore();
+        $Cart->remove($productClassId);
+        $Regi->execute($Cart);
+
+        if ($Regi->hasError()) {
+            $errors = $Regi->getErrors();
+            foreach ($errors as $error) {
+                $app->addRequestError($error);
+            }
+        }
+
 
         log_info('カート削除処理開始', array('product_class_id' => $productClassId));
 
