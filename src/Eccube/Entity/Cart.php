@@ -59,6 +59,11 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      */
     private $errors = [];
 
+    public function __wakeup()
+    {
+        $this->errors = [];
+    }
+
     public function __construct()
     {
         $this->CartItems = new \Doctrine\Common\Collections\ArrayCollection();
