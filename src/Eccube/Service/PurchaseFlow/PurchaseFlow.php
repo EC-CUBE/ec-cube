@@ -24,6 +24,7 @@ class PurchaseFlow
         $this->calculateDeliveryFeeTotal($itemHolder);
         $this->calculateCharge($itemHolder);
         $this->calculateDiscount($itemHolder);
+        $this->calculateSubTotal($itemHolder); // Order の場合のみ
         $this->calculateTax($itemHolder);
         $this->calculateTotal($itemHolder);
 
@@ -72,6 +73,21 @@ class PurchaseFlow
         }
     }
 
+    protected function calculateSubTotal(ItemHolderInterface $itemHolder)
+    {
+        $total = array_reduce($itemHolder->getItems()->filter(
+            function (ItemInterface $item) {
+                return $item->isProduct();
+            })->toArray(), function ($sum, ItemInterface $item) {
+                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                return $sum;
+            }, 0);
+        // TODO
+        if ($itemHolder instanceof \Eccube\Entity\Order) {
+            // Order の場合は SubTotal をセットする
+            $itemHolder->setSubTotal($total);
+        }
+    }
     /**
      * @param ItemHolderInterface $itemHolder
      */
