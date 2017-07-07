@@ -28,10 +28,27 @@ use Eccube\Application;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends AbstractController
 {
+    /**
+     * 商品追加用コントローラ(デバッグ用)
+     *
+     * @Route("/cart/test")
+     * @param Application $app
+     */
+    public function addTestProduct(Application $app)
+    {
+        $ProductClass = $app['eccube.repository.product_class']->find(10);
+        $app['eccube.service.cart']->setProductQuantity($ProductClass, 1);
+        $app['eccube.service.cart']->save();
+
+        return $app->redirect($app->url('cart'));
+    }
+
     /**
      * カート画面.
      *
@@ -67,31 +84,61 @@ class CartController extends AbstractController
     }
 
     /**
-     * カートに入っている商品の個数を1増やす.
+     * カート明細の加算/減算/削除を行う.
      *
+     * - 加算
+     *      - 明細の個数を1増やす
+     * - 減算
+     *      - 明細の個数を1減らす
+     *      - 個数が0になる場合は、明細を削除する
+     * - 削除
+     *      - 明細を削除する
+     *
+     * @Method("PUT")
+     * @Route(
+     *     path="/cart/{operation}/{productClassId}",
+     *     name="cart_handle_item",
+     *     requirements={
+     *          "operation": "up|down|remove",
+     *          "productClassId": "\d+"
+     *     }
+     * )
      * @param Application $app
      * @param Request $request
+     * @param $operation
      * @param $productClassId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function up(Application $app, Request $request, $productClassId)
+    public function handleCartItem(Application $app, Request $request, $operation, $productClassId)
     {
-        $this->isTokenValid($app);
+        log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
-        log_info('カート加算処理開始', array('product_class_id' => $productClassId));
+        $this->isTokenValid($app);
 
         /** @var ProductClass $ProductClass */
         $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
 
         if (is_null($ProductClass)) {
+            log_info('商品が存在しないため、カート画面へredirect', ['operation' => $operation, 'product_class_id' => $productClassId]);
+
             return $app->redirect($app->url('cart'));
         }
 
         $Cart = $app['eccube.service.cart']->getCart();
-        $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+        $CartItem = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
 
-        if ($Exists) {
-            $Exists->setQuantity($Exists->getQuantity() + 1);
+        if ($CartItem) {
+            switch ($operation) {
+                case 'up':
+                    $CartItem->setQuantity($CartItem->getQuantity() + 1);
+                    break;
+                case 'down':
+                    $CartItem->setQuantity($CartItem->getQuantity() - 1);
+                    break;
+                case 'remove':
+                    $Cart->getItems()->removeElement($CartItem);
+                    break;
+            }
         }
 
         $app['eccube.purchase.flow.cart']->execute($Cart);
@@ -101,94 +148,7 @@ class CartController extends AbstractController
             $app->addRequestError($error);
         }
 
-        log_info('カート加算処理終了', array('product_class_id' => $productClassId));
-
-        return $app->redirect($app->url('cart'));
-    }
-
-    /**
-     * カートに入っている商品の個数を1減らす.
-     * マイナスになる場合は, 商品をカートから削除する.
-     *
-     * @param Application $app
-     * @param Request $request
-     * @param $productClassId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function down(Application $app, Request $request, $productClassId)
-    {
-        $this->isTokenValid($app);
-
-        log_info('カート減算処理開始', array('product_class_id' => $productClassId));
-
-        /** @var ProductClass $ProductClass */
-        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
-
-        if (is_null($ProductClass)) {
-            return $app->redirect($app->url('cart'));
-        }
-
-        $Cart = $app['eccube.service.cart']->getCart();
-        $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
-
-        if ($Exists) {
-            // 個数の減算
-            // 個数が0以下になる場合は、PurchaseFlowで削除されるため、ここではハンドリングしない.
-            $Exists->setQuantity($Exists->getQuantity() - 1);
-        }
-
-        $app['eccube.purchase.flow.cart']->execute($Cart);
-        $app['eccube.service.cart']->save();
-
-        foreach ($Cart->getErrors() as $error) {
-            $app->addRequestError($error);
-        }
-
-        log_info('カート減算処理完了', array('product_class_id' => $productClassId));
-
-        return $app->redirect($app->url('cart'));
-    }
-
-    /**
-     * カートに入っている商品を削除する.
-     *
-     * @param Application $app
-     * @param Request $request
-     * @param $productClassId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function remove(Application $app, Request $request, $productClassId)
-    {
-        $this->isTokenValid($app);
-
-        $this->isTokenValid($app);
-
-        log_info('カート削除処理開始', array('product_class_id' => $productClassId));
-
-        /** @var ProductClass $ProductClass */
-        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
-
-        if (is_null($ProductClass)) {
-            return $app->redirect($app->url('cart'));
-        }
-
-        $Cart = $app['eccube.service.cart']->getCart();
-        $Exists = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
-
-        if ($Exists) {
-            // 明細の削除
-            // PurchaseFlowに削除させるため、0を設定.
-            $Exists->setQuantity(0);
-        }
-
-        $app['eccube.purchase.flow.cart']->execute($Cart);
-        $app['eccube.service.cart']->save();
-
-        foreach ($Cart->getErrors() as $error) {
-            $app->addRequestError($error);
-        }
-
-        log_info('カート削除処理開始', array('product_class_id' => $productClassId));
+        log_info('カート演算処理終了', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
         return $app->redirect($app->url('cart'));
     }

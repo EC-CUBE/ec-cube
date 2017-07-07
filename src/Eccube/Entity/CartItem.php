@@ -209,4 +209,10 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     {
         return $this->getObject();
     }
+
+    public function getPriceIncTax()
+    {
+        // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
+        return $this->price;
+    }
 }

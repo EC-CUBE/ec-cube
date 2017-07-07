@@ -116,7 +116,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <div id="cart_item_list__item" class="item_box tr">
                                     <div id="cart_item_list__cart_remove" class="icon_edit td">
-                                        <a href="{{ url('cart_remove', {'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="カートから商品を削除してもよろしいですか?">
+                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="カートから商品を削除してもよろしいですか?">
                                             <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
                                         </a>
                                     </div>
@@ -147,13 +147,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <ul id="cart_item_list__quantity_edit">
                                             <li>
                                                 {% if CartItem.quantity > 1 %}
-                                                    <a id="cart_item_list__down" href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
+                                                    <a id="cart_item_list__down" href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
                                                 {% else %}
                                                     <span><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></span>
                                                 {% endif %}
                                             </li>
                                             <li>
-                                                <a id="cart_item_list__up" href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
+                                                <a id="cart_item_list__up" href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
                                             </li>
                                         </ul>
                                     </div>

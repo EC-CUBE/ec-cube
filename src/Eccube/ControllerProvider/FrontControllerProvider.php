@@ -48,9 +48,6 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // cart
         $c->match('/cart', '\Eccube\Controller\CartController::index')->bind('cart');
-        $c->put('/cart/up/{productClassId}', '\Eccube\Controller\CartController::up')->bind('cart_up')->assert('productClassId', '\d+');
-        $c->put('/cart/down/{productClassId}', '\Eccube\Controller\CartController::down')->bind('cart_down')->assert('productClassId', '\d+');
-        $c->put('/cart/remove/{productClassId}', '\Eccube\Controller\CartController::remove')->bind('cart_remove')->assert('productClassId', '\d+');
         $c->match('/cart/buystep', '\Eccube\Controller\CartController::buystep')->bind('cart_buystep');
 
         // contact
