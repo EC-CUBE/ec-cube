@@ -13,6 +13,9 @@ class SaleLimitValidator extends ValidatableItemProcessor
 {
     protected function validate(ItemInterface $item)
     {
+        if (!$item->isProduct()) {
+            return;
+        }
         $limit = $item->getProductClass()->getSaleLimit();
         $quantity = $item->getQuantity();
         if ($limit < $quantity) {
