@@ -3,72 +3,63 @@
 git:
   submodules: false
 
+sudo: false
+
 language: php
 
 cache:
   directories:
     - vendor
     - $HOME/.composer/cache
+
 php:
   - 7.1
   - 7.0
   - 5.6
   - 5.5
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.0.12 # for coverrage
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-      sudo: required
-      dist: trusty
-  exclude:
-    - php: 5.5
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-    - php: 5.6
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-    - php: 7.0
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-    - php: 7.1
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-  allow_failures:
-    - env: DB=sqlite
-    - php: 7.0.12 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-
 env:
-  global:
-    - SYMFONY_DEPRECATIONS_HELPER=weak
   matrix:
     - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
     - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
-    - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - DB=sqlite
+    # カバレッジレポート用
+    - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+
+matrix:
+  fast_finish: true
+  exclude:
+    # php7.1以外のカバレッジレポート用matrixは除外
+    - php: 5.5
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+    - php: 5.6
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+    - php: 7.0
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+  allow_failures:
+    # sqlite
+    - env: DB=sqlite
+    # カバレッジレポートはphp7.1のmatrixで実行
+    - php: 7.1
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
 
 install:
-  - gem install mime-types -v 2.99.1
-  - gem install mailcatcher
+  # @see https://github.com/sj26/mailcatcher/issues/277
+  - gem install mime-types --version "< 3"
+  - gem install --conservative mailcatcher
 
 before_script:
-  - CODENAME=$(lsb_release -c -s)
-  - if [[ $PHP_SAPI != 'phpdbg' ]] || [[ $CODENAME = 'trusty' ]]; then phpenv config-rm xdebug.ini ; fi
+  - phpenv config-rm xdebug.ini
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - composer self-update || true
   - composer install --dev --no-interaction -o
   - php ./eccube_install.php $DB none
   - mailcatcher
 
-script: # PHP7 + precise のテストは実行されない
-  - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'trusty' ]]; then phpdbg -qrr ./vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
-  - if [[ $PHP_SAPI != 'phpdbg' ]]; then ./vendor/bin/phpunit --exclude-group=plugin; fi
+script:
+  - if [ $COVERAGE ]  ; then phpdbg -qrr vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
+  - if [ ! $COVERAGE ]; then vendor/bin/phpunit; fi
 
 after_script:
-  - if [[ $PHP_SAPI = 'phpdbg' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
-  - if [[ $PHP_SAPI = 'phpdbg' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
-  - if [[ $PHP_SAPI = 'phpdbg' ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
-
-#after_success:
-#  - if [[ $PHP_SAPI = 'phpdbg' ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
-
-  # after_failure:
-#   - 'cat app/log/site_`date +"%Y-%m-%d"`.log'
+  - if [ $COVERAGE ]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
+  - if [ $COVERAGE ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
+  - if [ $COVERAGE ]; then php vendor/bin/coveralls -v -x coverage.clover ; fi

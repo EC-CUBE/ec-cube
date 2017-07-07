@@ -15,6 +15,9 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
     public function setUp()
     {
         parent::setUp();
+
+        $this->markTestIncomplete();
+
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');
         }
