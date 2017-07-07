@@ -10,7 +10,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
 use Eccube\Tests\EccubeTestCase;
 
-class StockValidatorTest extends EccubeTestCase
+class DisplayStatusValidatorTest extends EccubeTestCase
 {
     /**
      * @var DisplayStatusValidator
