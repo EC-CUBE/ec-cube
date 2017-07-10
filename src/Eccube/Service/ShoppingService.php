@@ -631,7 +631,7 @@ class ShoppingService
 
     /**
      * 住所などの情報が変更された時に金額の再計算を行う
-     *
+     * @deprecated PurchaseFlowで行う
      * @param Order $Order
      * @return Order
      */

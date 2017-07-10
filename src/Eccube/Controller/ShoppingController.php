@@ -113,8 +113,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_error'));
         }
 
-        // TODO 複数配送エラーどうする?
-        // // 複数配送の場合、エラーメッセージを一度だけ表示
+        // 複数配送の場合、エラーメッセージを一度だけ表示
         $app->forward($app->path("shopping/handleMultipleErrors"));
         $form = $app['request_scope']->get(OrderType::class);
 
@@ -363,6 +362,7 @@ class ShoppingController extends AbstractController
             return $response;
         }
 
+        /** @var Order $Order */
         $Order = $app['request_scope']->get('Order');
 
         $Shipping = $Order->findShipping($id);
@@ -416,7 +416,10 @@ class ShoppingController extends AbstractController
             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
-            $app['eccube.service.shopping']->getAmount($Order);
+            $this->executePurchaseFlow($app, $Order);
+            if (!empty($Order->getErrors())) {
+                return $app->redirect($app->url('shopping_error'));
+            }
 
             // 配送先を更新
             $app['orm.em']->flush();
@@ -932,8 +935,6 @@ class ShoppingController extends AbstractController
             }
 
             // 合計金額の再計算
-            $Order = $app['eccube.service.shopping']->getAmount($Order);
-
             $this->executePurchaseFlow($app, $Order);
             if (!empty($Order->getErrors())) {
                 return $app->redirect($app->url('shopping_error'));
@@ -1416,19 +1417,14 @@ class ShoppingController extends AbstractController
                 // FormTypeで更新されるため不要
                 //$app['eccube.service.shopping']->setFormData($Order, $data);
 
-                // 購入処理
-                $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
-
-                // 集計は,この1行でいけるはず
-                // プラグインで Strategy をセットしたりする
-                // 集計はステートレスな実装とし、再計算時に状態を考慮しなくても良いようにする
-//                $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
                 $this->executePurchaseFlow($app, $Order);
                 if (!empty($Order->getErrors())) {
                     // TODO エラーメッセージ
                     throw new ShoppingException();
                 }
 
+                // 購入処理
+                $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
                 // Order も引数で渡すのがベスト??
                 $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
