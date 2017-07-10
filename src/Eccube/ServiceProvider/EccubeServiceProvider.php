@@ -26,6 +26,7 @@ namespace Eccube\ServiceProvider;
 
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
+use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
@@ -533,6 +534,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
         $app['eccube.purchase.flow.cart'] = function () use ($app) {
             $flow = new PurchaseFlow();
+            $flow->addItemProcessor(new DeletedProductValidator());
             $flow->addItemProcessor(new DisplayStatusValidator());
             $flow->addItemProcessor(new StockValidator());
             $flow->addItemProcessor(new SaleLimitValidator());
