@@ -2,7 +2,6 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-use Eccube\Entity\Cart;
 use Eccube\Entity\ItemHolderInterface;
 
 abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
@@ -14,11 +13,7 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
 
             return ProcessResult::success();
         } catch (ItemValidateException $e) {
-            if ($itemHolder instanceof Cart) {
-                $this->handle($itemHolder);
-            }
-
-            return ProcessResult::fail($e->getMessage());
+            return ProcessResult::error($e->getMessage());
         }
     }
 

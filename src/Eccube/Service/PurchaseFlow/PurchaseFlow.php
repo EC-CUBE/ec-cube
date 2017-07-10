@@ -12,12 +12,12 @@ class PurchaseFlow
     /**
      * @var ItemHolderProcessor[]
      */
-    protected $itemHolderProsessors = [];
+    protected $itemHolderProcessors = [];
 
     /**
      * @var ItemProcessor[]
      */
-    protected $itemProsessors = [];
+    protected $itemProcessors = [];
 
     public function execute(ItemHolderInterface $itemHolder) {
 
@@ -28,32 +28,31 @@ class PurchaseFlow
         $this->calculateTax($itemHolder);
         $this->calculateTotal($itemHolder);
 
+        $flowResult = new PurchaseFlowResult($itemHolder);
+
         foreach ($itemHolder->getItems() as $item) {
-            foreach ($this->itemProsessors as $itemProsessor) {
+            foreach ($this->itemProcessors as $itemProsessor) {
                 $result = $itemProsessor->process($item);
-                if ($result->isError()) {
-                    $itemHolder->addError($result->getErrorMessage());
-                }
+                $flowResult->addProcessResult($result);
             }
         }
 
-        foreach ($this->itemHolderProsessors as $holderProcessor) {
+        foreach ($this->itemHolderProcessors as $holderProcessor) {
             $result = $holderProcessor->process($itemHolder);
-            if ($result->isError()) {
-                $itemHolder->addError($result->getErrorMessage());
-            }
+            $flowResult->addProcessResult($result);
         }
-        return $itemHolder;
+
+        return $flowResult;
     }
 
     public function addItemHolderProcessor(ItemHolderProcessor $prosessor)
     {
-        $this->itemHolderProsessors[] = $prosessor;
+        $this->itemHolderProcessors[] = $prosessor;
     }
 
     public function addItemProcessor(ItemProcessor $prosessor)
     {
-        $this->itemProsessors[] = $prosessor;
+        $this->itemProcessors[] = $prosessor;
     }
 
     /**

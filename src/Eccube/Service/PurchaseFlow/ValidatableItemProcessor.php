@@ -44,7 +44,7 @@ abstract class ValidatableItemProcessor implements ItemProcessor
                 $this->handle($item);
             }
 
-            return ProcessResult::fail($e->getMessage());
+            return ProcessResult::warn($e->getMessage());
         }
     }
 
