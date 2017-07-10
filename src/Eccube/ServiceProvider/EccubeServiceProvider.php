@@ -32,6 +32,7 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
 use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
+use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
@@ -541,6 +542,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow->addItemProcessor(new SaleLimitValidator());
             $flow->addItemProcessor(new DeliverySettingValidator($app['eccube.repository.delivery']));
 
+            $flow->addItemHolderProcessor(new PaymentProcessor($app));
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
             $flow->addItemHolderProcessor(new DeliveryFeeFreeProcessor($app));
             $flow->addItemHolderProcessor(new PaymentTotalNegativeValidator());

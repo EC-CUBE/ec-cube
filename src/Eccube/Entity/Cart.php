@@ -60,6 +60,11 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     private $Payments = array();
 
     /**
+     * @var ItemInterface
+     */
+    private $lastAddedItem;
+
+    /**
      * @var ItemValidateException[]
      */
     private $errors = [];
@@ -67,6 +72,14 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     public function __wakeup()
     {
         $this->errors = [];
+    }
+
+    /**
+     * @return ItemInterface
+     */
+    public function getLastAddedItem()
+    {
+        return $this->lastAddedItem;
     }
 
     public function __construct()
@@ -304,6 +317,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      */
     public function addItem(ItemInterface $item)
     {
+        $this->lastAddedItem = $item;
         $this->CartItems->add($item);
     }
 

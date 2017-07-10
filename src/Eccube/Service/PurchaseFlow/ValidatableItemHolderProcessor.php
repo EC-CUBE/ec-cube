@@ -22,7 +22,7 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
         }
     }
 
-    protected abstract function validate(ItemHolderInterface $item);
+    protected abstract function validate(ItemHolderInterface $itemHolder);
 
-    protected function handle(ItemHolderInterface $item) {}
+    protected function handle(ItemHolderInterface $itemHolder) {}
 }
