@@ -46,7 +46,7 @@ class StockValidatorTest extends EccubeTestCase
         $result = $this->validator->process($this->cartItem);
 
         self::assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
-        self::assertTrue($result->isError());
+        self::assertTrue($result->isWarning());
     }
 
     public function testValidStockOrder()

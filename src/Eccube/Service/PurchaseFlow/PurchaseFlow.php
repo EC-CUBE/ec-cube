@@ -127,9 +127,9 @@ class PurchaseFlow
             function (ItemInterface $item) {
                 return $item->isCharge();
             })->toArray(), function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
-                return $sum;
-            }, 0);
+            $sum += $item->getPriceIncTax() * $item->getQuantity();
+            return $sum;
+        }, 0);
         $itemHolder->setCharge($total);
     }
 

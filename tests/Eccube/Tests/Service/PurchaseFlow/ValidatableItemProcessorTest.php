@@ -75,7 +75,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
 
         $result = $validator->process($item);
         self::assertFalse($validator->handleCalled);
-        self::assertTrue($result->isError());
+        self::assertTrue($result->isWarning());
     }
 }
 
