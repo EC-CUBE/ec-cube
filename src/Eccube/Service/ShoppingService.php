@@ -1266,6 +1266,8 @@ class ShoppingService
         // メール送信
         $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
 
+        $this->app['eccube.service.mail']->convertMessage($message);
+
         // 送信履歴を保存.
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
 
