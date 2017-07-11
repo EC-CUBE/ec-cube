@@ -271,11 +271,26 @@ class ProductController
 
                     log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
-                    try {
-                        $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
-                    } catch (CartException $e) {
-                        log_info('カート追加エラー', array($e->getMessage()));
-                        $app->addRequestError($e->getMessage());
+                    // カートを取得
+                    $Cart = $app['eccube.service.cart']->getCart();
+
+                    // カートへ追加
+                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+
+                    // 明細の正規化
+                    $Result = $app['eccube.purchase.flow.cart']->execute($Cart);
+
+                    // 復旧不可のエラーが発生した場合はsaveしない.
+                    if ($Result->hasError()) {
+                        foreach ($Result->getErrors() as $error) {
+                            $app->addRequestError($error);
+                        }
+                    } else {
+                        foreach ($Result->getWarning() as $warning) {
+                            $app->addRequestError($warning);
+                        }
+                        // エラーがなければsave
+                        $app['eccube.service.cart']->save();
                     }
 
                     log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
