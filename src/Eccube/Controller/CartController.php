@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -42,8 +43,14 @@ class CartController extends AbstractController
      */
     public function addTestProduct(Application $app)
     {
-        $ProductClass = $app['eccube.repository.product_class']->find(10);
-        $app['eccube.service.cart']->setProductQuantity($ProductClass, 1);
+        $CartItem = new CartItem();
+        $CartItem
+            ->setClassName(ProductClass::class)
+            ->setClassId(10)
+            ->setPrice(1000)
+            ->setQuantity(1);
+
+        $app['eccube.service.cart']->getCart()->addItem($CartItem);
         $app['eccube.service.cart']->save();
 
         return $app->redirect($app->url('cart'));
@@ -58,13 +65,25 @@ class CartController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        // カートの集計結果を取得
+        // カートを取得して明細の正規化を実行
         $Cart = $app['eccube.service.cart']->getCart();
-        $app['eccube.purchase.flow.cart']->execute($Cart);
+        $Result = $app['eccube.purchase.flow.cart']->execute($Cart);
+
+        // 復旧不可のエラーが発生した場合はカートをクリアして再描画
+        if ($Result->hasError()) {
+            foreach ($Result->getErrors() as $error) {
+                $app->addRequestError($error);
+            }
+            $app['eccube.service.cart']->clear();
+            $app['eccube.service.cart']->save();
+
+            return $app->redirect($app->url('cart'));
+        }
+
         $app['eccube.service.cart']->save();
 
-        foreach ($Cart->getErrors() as $error) {
-            $app->addRequestError($error);
+        foreach ($Result->getWarning() as $warning) {
+            $app->addRequestError($warning);
         }
 
         // TODO purchaseFlow/itemHolderから取得できるように
@@ -124,9 +143,25 @@ class CartController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        // カートを取得して明細の正規化を実行
         $Cart = $app['eccube.service.cart']->getCart();
+        $Result = $app['eccube.purchase.flow.cart']->execute($Cart);
+
+        // 復旧不可のエラーが発生した場合はカートをクリアしてカート一覧へ
+        if ($Result->hasError()) {
+            foreach ($Result->getErrors() as $error) {
+                $app->addRequestError($error);
+            }
+            $app['eccube.service.cart']->clear();
+            $app['eccube.service.cart']->save();
+
+            return $app->redirect($app->url('cart'));
+        }
+
+        // 明細の取得
         $CartItem = $Cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
 
+        // 明細が見つかった場合のみ増減・削除処理を行う
         if ($CartItem) {
             switch ($operation) {
                 case 'up':
@@ -139,13 +174,25 @@ class CartController extends AbstractController
                     $Cart->getItems()->removeElement($CartItem);
                     break;
             }
-        }
 
-        $app['eccube.purchase.flow.cart']->execute($Cart);
-        $app['eccube.service.cart']->save();
+            $Result = $app['eccube.purchase.flow.cart']->execute($Cart);
 
-        foreach ($Cart->getErrors() as $error) {
-            $app->addRequestError($error);
+            // 復旧不可のエラーが発生した場合はカートをクリアしてカート一覧へ
+            if ($Result->hasError()) {
+                foreach ($Result->getErrors() as $error) {
+                    $app->addRequestError($error);
+                }
+                $app['eccube.service.cart']->clear();
+                $app['eccube.service.cart']->save();
+
+                return $app->redirect($app->url('cart'));
+            }
+
+            $app['eccube.service.cart']->save();
+
+            foreach ($Result->getWarning() as $warning) {
+                $app->addRequestError($warning);
+            }
         }
 
         log_info('カート演算処理終了', ['operation' => $operation, 'product_class_id' => $productClassId]);
