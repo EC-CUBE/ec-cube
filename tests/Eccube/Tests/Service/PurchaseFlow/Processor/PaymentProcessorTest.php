@@ -70,6 +70,7 @@ class PaymentProcessorTest extends EccubeTestCase
 
         $Payment = new Payment();
         $Payment->setMethod('テスト支払');
+        $Payment->setDelFlg(0);
         $this->app['orm.em']->persist($Payment);
         $this->app['orm.em']->flush($Payment);
 
@@ -78,8 +79,10 @@ class PaymentProcessorTest extends EccubeTestCase
         $PaymentOption->setDelivery($Delivery);
         $PaymentOption->setPaymentId($Payment->getId());
         $PaymentOption->setPayment($Payment);
+        $Delivery->addPaymentOption($PaymentOption);
+        $Payment->addPaymentOption($PaymentOption);
         $this->app['orm.em']->persist($PaymentOption);
-        $this->app['orm.em']->flush($PaymentOption);
+        $this->app['orm.em']->flush();
 
         $this->Product = $this->createProduct('テスト商品', 3);
         $this->ProductClass1 = $this->Product->getProductClasses()[0];
@@ -155,6 +158,6 @@ class PaymentProcessorTest extends EccubeTestCase
         $result = $this->validator->process($cart);
 
         self::assertTrue($result->isError());
-        self::assertCount(2, $cart->getItems());
+        self::assertCount(3, $cart->getItems());
     }
 }

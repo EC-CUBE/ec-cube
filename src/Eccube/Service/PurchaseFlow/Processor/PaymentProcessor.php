@@ -59,48 +59,33 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
         if (count($itemHolder->getItems()) <= 1) {
             return;
         }
-        // 最後に追加した明細がない場合はOK
-        $lastAddedItem = $itemHolder->getLastAddedItem();
-        if (is_null($lastAddedItem)) {
-            return;
-        }
 
-        $lastAddedItemDeliveries = $this->getDeliveries($lastAddedItem->getProductClass()->getProductType());
-        $lastAddedItemPayments = $this->getPayments($lastAddedItemDeliveries);
-
-        $paymentExists = false;
+        // a, ab, c
+        $i = 0;
+        $paymentIds = [];
         foreach ($itemHolder->getItems() as $item) {
             if (false === $item->isProduct()) {
                 continue;
             }
-            if ($item->getProductClass()->getId() === $lastAddedItem->getProductClass()->getId()) {
-                continue;
-            }
             $Deliveries = $this->getDeliveries($item->getProductClass()->getProductType());
             $Payments = $this->getPayments($Deliveries);
+
+            $ids = [];
             foreach ($Payments as $Payment) {
-                foreach ($lastAddedItemPayments as $lastAddedItemPayment) {
-                    if ($Payment->getId() === $lastAddedItemPayment->getId()) {
-                        $paymentExists = true;
-                        break;
-                    }
-                }
+                $ids[] = $Payment->getId();
             }
+            if ($i === 0) {
+                $paymentIds = $ids;
+                $i++;
+                continue;
+            }
+
+            $paymentIds = array_intersect($paymentIds, $ids);
         }
 
-        if (false === $paymentExists) {
+        // 共通項がなければエラー
+        if (empty($paymentIds)) {
             throw new ItemValidateException();
-        }
-    }
-
-    public function handle(ItemHolderInterface $itemHolder)
-    {
-        if ($itemHolder instanceof Cart) {
-            $lastAddedItem = $itemHolder->getLastAddedItem();
-            $itemHolder->removeCartItemByIdentifier(
-                ProductClass::class,
-                $lastAddedItem->getProductClass()->getId()
-            );
         }
     }
 
