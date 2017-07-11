@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Service\ItemValidateException;
 
 class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
@@ -196,7 +197,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      */
     public function getItems()
     {
-        return $this->getCartItems();
+        return new ItemCollection($this->getCartItems());
     }
 
     /**

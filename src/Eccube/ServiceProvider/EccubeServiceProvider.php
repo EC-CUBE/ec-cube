@@ -35,6 +35,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Pimple\Container;
@@ -559,10 +560,17 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $flow;
         };
 
-        $app['eccube.purchase.flow.order'] = function () use ($app) {
+        $app['eccube.purchase.flow.order.get'] = function () use ($app) {
+            $flow = new PurchaseFlow();
+            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            return $flow;
+        };
+
+        $app['eccube.purchase.flow.order.post'] = function () use ($app) {
             $flow = new PurchaseFlow();
             $flow->addItemProcessor(new StockValidator());
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            $flow->addItemProcessor(new StockReduceProcessor($app)); // 参考実装
             return $flow;
         };
     }

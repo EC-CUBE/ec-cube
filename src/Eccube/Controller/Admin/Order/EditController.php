@@ -134,17 +134,23 @@ class EditController extends AbstractController
             // TODO 編集前のOrder情報が必要かもしれない
             // TODO 手数料, 値引きの集計は未実装
             // $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
-            $app['eccube.purchase.flow.order']->execute($TargetOrder);
+            if ('GET' === $request->getMethod()) {
+                $app['eccube.purchase.flow.order.get']->execute($TargetOrder);
+            }
+
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                    if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
-                        log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
-                        $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
-                    } elseif ($form->isValid()) {
+                    if ($form->isValid()) {
+                        $app['eccube.purchase.flow.order.post']->execute($TargetOrder);
+                        // TODO hasError でチェックしたい
+                        foreach ($TargetOrder->getErrors() as $error) {
+                            $app->addError($error, 'admin');
+                            break 2;
+                        }
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 

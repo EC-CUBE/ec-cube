@@ -27,6 +27,7 @@ namespace Eccube\Entity;
 use Eccube\Common\Constant;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Service\ItemValidateException;
+use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Util\EntityUtil;
 use Eccube\Entity\Master\OrderItemType;
 use Doctrine\ORM\Mapping as ORM;
@@ -627,7 +628,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
             ->setDelFlg(Constant::DISABLED);
 
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ShipmentItems = new \Eccube\Service\Calculator\ShipmentItemCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1565,10 +1566,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
     /**
      * Alias of getShipmentItems()
+     *
+     * @return ItemCollection
      */
     public function getItems()
     {
-        return $this->getShipmentItems();
+        return new ItemCollection($this->getShipmentItems());
     }
 
     /**
@@ -1911,4 +1914,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         return $quantity;
     }
+
+    protected $errors = [];
 }
