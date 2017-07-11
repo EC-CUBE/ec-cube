@@ -42,6 +42,7 @@ use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -85,7 +86,7 @@ class ShoppingController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
-     * @return array
+     * @return mixed
      */
     public function index(Application $app, Request $request)
     {
@@ -101,16 +102,17 @@ class ShoppingController extends AbstractController
             return $response;
         }
 
-        // 単価集計し, フォームを生成する
-        $app->forwardChain($app->path("shopping/calculateOrder"))
-            ->forwardChain($app->path("shopping/createForm"));
-
-
         /** @var Order $Order */
         $Order = $app['request_scope']->get('Order');
 
-        if (!empty($Order->getErrors())) {
-            return $app->redirect($app->url('shopping_error'));
+        // 単価集計
+        $flowResult = $this->executePurchaseFlow($app, $Order);
+
+        // フォームを生成する
+        $app->forward($app->path("shopping/createForm"));
+
+        if ($flowResult->hasWarning() || $flowResult->hasError()) {
+            return $app->redirect($app->url('cart'));
         }
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
@@ -129,7 +131,7 @@ class ShoppingController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return mixed
      */
     public function redirectTo(Application $app, Request $request)
     {
@@ -304,8 +306,8 @@ class ShoppingController extends AbstractController
 
 
             // 合計金額の再計算
-            $this->executePurchaseFlow($app, $Order);
-            if (!empty($Order->getErrors())) {
+            $flowResult = $this->executePurchaseFlow($app, $Order);
+            if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $app->redirect($app->url('shopping_error'));
             }
 
@@ -416,8 +418,8 @@ class ShoppingController extends AbstractController
             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
-            $this->executePurchaseFlow($app, $Order);
-            if (!empty($Order->getErrors())) {
+            $flowResult = $this->executePurchaseFlow($app, $Order);
+            if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $app->redirect($app->url('shopping_error'));
             }
 
@@ -663,11 +665,8 @@ class ShoppingController extends AbstractController
                 }
             }
 
-            $this->executePurchaseFlow($app, $Order);
-            if (!empty($Order->getErrors())) {
-                foreach ($Order->getErrors() as $error) {
-                    $app->addRequestError($error);
-                }
+            $flowResult = $this->executePurchaseFlow($app, $Order);
+            if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $app->redirect($app->url('cart'));
             }
 
@@ -935,8 +934,8 @@ class ShoppingController extends AbstractController
             }
 
             // 合計金額の再計算
-            $this->executePurchaseFlow($app, $Order);
-            if (!empty($Order->getErrors())) {
+            $flowResult = $this->executePurchaseFlow($app, $Order);
+            if ($flowResult->hasWarning() || $flowResult->hasError()) {
                 return $app->redirect($app->url('shopping_error'));
             }
 
@@ -1244,24 +1243,6 @@ class ShoppingController extends AbstractController
     }
 
     /**
-     * 受注の単価集計をする
-     *
-     * @Route("/calculateOrder", name="shopping/calculateOrder")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     */
-    public function calculateOrder(Application $app, Request $request)
-    {
-        $Order = $app['request_scope']->get('Order');
-
-        // 構築したOrderを集計する.
-        $this->executePurchaseFlow($app, $Order);
-
-        return new Response();
-    }
-
-    /**
      * フォームを作成し, イベントハンドラを設定する
      *
      * @Route("/createForm", name="shopping/createForm")
@@ -1399,9 +1380,6 @@ class ShoppingController extends AbstractController
     {
         $form = $app['request_scope']->get(OrderType::class);
 
-        // requestのバインド後、再集計
-        $app->forward($app->path("shopping/calculateOrder"));
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Order $Order */
@@ -1417,8 +1395,8 @@ class ShoppingController extends AbstractController
                 // FormTypeで更新されるため不要
                 //$app['eccube.service.shopping']->setFormData($Order, $data);
 
-                $this->executePurchaseFlow($app, $Order);
-                if (!empty($Order->getErrors())) {
+                $flowResult = $this->executePurchaseFlow($app, $Order);
+                if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
                     throw new ShoppingException();
                 }
@@ -1537,11 +1515,21 @@ class ShoppingController extends AbstractController
         return $app->redirect($app->url('shopping_complete'));
     }
 
+    /**
+     * @param Application $app
+     * @param ItemHolderInterface $itemHolder
+     * @return PurchaseFlowResult
+     */
     private function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
     {
-        $app['eccube.purchase.flow.shopping']->execute($itemHolder);
+        /** @var PurchaseFlowResult $flowResult */
+        $flowResult = $app['eccube.purchase.flow.shopping']->execute($itemHolder);
+        foreach ($flowResult->getWarning() as $warning) {
+            $app->addRequestError($warning);
+        }
         foreach ($itemHolder->getErrors() as $error) {
             $app->addRequestError($error);
         }
+        return $flowResult;
     }
 }
