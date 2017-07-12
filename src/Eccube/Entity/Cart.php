@@ -197,7 +197,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      */
     public function getItems()
     {
-        return new ItemCollection($this->getCartItems());
+        return (new ItemCollection($this->getCartItems()))->sort();
     }
 
     /**

@@ -93,4 +93,36 @@ class ItemCollection extends ArrayCollection
     {
         return $this->type;
     }
+
+    public function sort()
+    {
+        $Items = $this->toArray();
+        usort($Items, function (ItemInterface $a, ItemInterface $b) {
+            if ($a->getOrderItemType() === $b->getOrderItemType()) {
+                return ($a->getId() < $b->getId()) ? -1 : 1;
+            } elseif ($a->isProduct()) {
+                return -1;
+            } elseif ($a->isDeliveryFee()) {
+                if ($b->isProduct()) {
+                    return 1;
+                }
+                return -1;
+            } elseif ($a->isCharge()) {
+                if ($b->isDeliveryFee() || $b->isProduct()) {
+                    return 1;
+                }
+                return -1;
+            } elseif ($a->isDiscount()) {
+                if (!$b->isTax()) {
+                    return 1;
+                }
+                return -1;
+            } elseif ($a->isTax()) {
+                return 1;
+            }
+
+            return 0;
+        });
+        return new self($Items);
+    }
 }
