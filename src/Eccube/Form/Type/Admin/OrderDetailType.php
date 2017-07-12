@@ -70,15 +70,11 @@ class OrderDetailType extends AbstractType
                     )),
                 ),
             ))
-            ->add('quantity', 'text', array(
+            ->add('quantity', 'integer', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['int_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
                     )),
                 ),
             ))
