@@ -1525,10 +1525,10 @@ class ShoppingController extends AbstractController
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $app['eccube.purchase.flow.shopping']->execute($itemHolder);
         foreach ($flowResult->getWarning() as $warning) {
-            $app->addRequestError($warning);
+            $app->addRequestError($warning->getMessage());
         }
-        foreach ($itemHolder->getErrors() as $error) {
-            $app->addRequestError($error);
+        foreach ($flowResult->getErrors() as $error) {
+            $app->addRequestError($error->getMessage());
         }
         return $flowResult;
     }

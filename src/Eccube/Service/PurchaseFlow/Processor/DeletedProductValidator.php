@@ -14,7 +14,7 @@ class DeletedProductValidator extends ValidatableItemProcessor
         $ProductClass = $item->getProductClass();
         $Product = $ProductClass->getProduct();
         if ($Product->getDelFlg()) {
-            throw new ItemValidateException();
+            throw new ItemValidateException('cart.product.delete');
         }
     }
 

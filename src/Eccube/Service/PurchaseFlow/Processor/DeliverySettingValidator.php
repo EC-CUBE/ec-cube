@@ -32,7 +32,7 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType]);
 
         if (empty($Deliveries)) {
-            throw new ItemValidateException('配送準備ができていないエラー');
+            throw new ItemValidateException('cart.product.not.producttype', ['%product%' => $item->getProductClass()->getProduct()->getName()]);
         }
     }
 

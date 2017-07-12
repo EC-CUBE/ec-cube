@@ -49,6 +49,9 @@ class PurchaseFlowResult
         $this->processResults[] = $processResult;
     }
 
+    /**
+     * @return array|ProcessResult[]
+     */
     public function getErrors()
     {
         return array_filter($this->processResults, function(ProcessResult $processResult) {
@@ -56,6 +59,9 @@ class PurchaseFlowResult
         });
     }
 
+    /**
+     * @return array|ProcessResult[]
+     */
     public function getWarning()
     {
         return array_filter($this->processResults, function(ProcessResult $processResult) {

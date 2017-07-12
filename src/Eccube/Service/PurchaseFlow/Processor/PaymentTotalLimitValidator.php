@@ -51,7 +51,7 @@ class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
     {
         $totalPrice = $item->getTotal();
         if ($totalPrice > $this->maxTotalFee) {
-            throw new ItemValidateException();
+            throw new ItemValidateException('cart.over.price_limit');
         }
     }
 }

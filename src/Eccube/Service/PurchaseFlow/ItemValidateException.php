@@ -27,4 +27,19 @@ namespace Eccube\Service\PurchaseFlow;
 class ItemValidateException extends \Exception
 {
 
+    private $messageArgs = [];
+
+    function __construct($message = null, $messageArgs = [])
+    {
+        parent::__construct($message);
+        $this->messageArgs = $messageArgs;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMessageArgs(): array
+    {
+        return $this->messageArgs;
+    }
 }

@@ -3,6 +3,8 @@
 namespace Eccube\Service\PurchaseFlow;
 
 
+use Eccube\Application;
+
 class ProcessResult
 {
 
@@ -13,25 +15,25 @@ class ProcessResult
     protected $type;
     protected $message;
 
-    private function __construct($type, $message = null)
+    private function __construct($type, $message = null, $messageArgs)
     {
         $this->type = $type;
-        $this->message = $message;
+        $this->message = Application::getInstance()->trans($message, $messageArgs);
     }
 
-    public static function warn($message)
+    public static function warn($message, $messageArgs = [])
     {
-        return new self(self::WARNING, $message);
+        return new self(self::WARNING, $message, $messageArgs);
     }
 
-    public static function error($message)
+    public static function error($message, $messageArgs = [])
     {
-        return new self(self::ERROR, $message);
+        return new self(self::ERROR, $message, $messageArgs);
     }
 
     public static function success()
     {
-        return new self(self::SUCCESS);
+        return new self(self::SUCCESS, null, []);
     }
 
     public function isError()
