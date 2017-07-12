@@ -1914,6 +1914,4 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         return $quantity;
     }
-
-    protected $errors = [];
 }
