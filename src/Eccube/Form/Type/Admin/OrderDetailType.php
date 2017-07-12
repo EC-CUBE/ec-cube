@@ -76,6 +76,9 @@ class OrderDetailType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 0,
+                    )),
                 ),
             ))
             ->add('tax_rate', 'text', array(
