@@ -18,6 +18,11 @@ class PurchaseFlow
      */
     protected $itemProcessors = [];
 
+    /**
+     * @var PurchaseProcessor[]
+     */
+    protected $purchaseProcessors = [];
+
     public function execute(ItemHolderInterface $itemHolder)
     {
         $this->calculateDeliveryFeeTotal($itemHolder);
@@ -42,6 +47,23 @@ class PurchaseFlow
         }
 
         return $flowResult;
+    }
+
+    /**
+     * @param ItemHolderInterface $target
+     * @param ItemHolderInterface $origin
+     * @throws PurchaseException
+     */
+    public function purchase(ItemHolderInterface $target, ItemHolderInterface $origin)
+    {
+        foreach ($this->purchaseProcessors as $processor) {
+            $processor->process($target, $origin);
+        }
+    }
+
+    public function addPurchaseProcessort(PurchaseProcessor $processor)
+    {
+        $this->purchaseProcessors[] = $processor;
     }
 
     public function addItemHolderProcessor(ItemHolderProcessor $prosessor)
