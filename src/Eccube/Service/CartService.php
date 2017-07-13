@@ -57,6 +57,9 @@ class CartService
         $this->loadItems();
     }
 
+    /**
+     * @return ItemHolderInterface|Cart
+     */
     public function getCart()
     {
         return $this->cart;

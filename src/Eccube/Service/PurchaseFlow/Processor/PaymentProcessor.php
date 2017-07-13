@@ -85,7 +85,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
 
         // 共通項がなければエラー
         if (empty($paymentIds)) {
-            throw new ItemValidateException();
+            throw new ItemValidateException('支払い方法が異なる');
         }
     }
 

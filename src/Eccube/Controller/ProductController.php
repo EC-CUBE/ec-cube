@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -278,20 +279,21 @@ class ProductController
                     $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
 
                     // 明細の正規化
-                    $Result = $app['eccube.purchase.flow.cart']->execute($Cart);
+                    $result = $app['eccube.purchase.flow.cart']->execute($Cart);
 
-                    // 復旧不可のエラーが発生した場合はsaveしない.
-                    if ($Result->hasError()) {
-                        foreach ($Result->getErrors() as $error) {
+                    // 復旧不可のエラーが発生した場合は追加した明細を削除.
+                    if ($result->hasError()) {
+                        $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
+                        foreach ($result->getErrors() as $error) {
                             $app->addRequestError($error);
                         }
-                    } else {
-                        foreach ($Result->getWarning() as $warning) {
-                            $app->addRequestError($warning);
-                        }
-                        // エラーがなければsave
-                        $app['eccube.service.cart']->save();
                     }
+
+                    foreach ($result->getWarning() as $warning) {
+                        $app->addRequestError($warning);
+                    }
+
+                    $app['eccube.service.cart']->save();
 
                     log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
