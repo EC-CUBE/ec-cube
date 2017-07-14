@@ -76,6 +76,9 @@ class ShipmentItemType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 0,
+                    )),
                 ),
             ))
             ->add('product_name', 'hidden')
