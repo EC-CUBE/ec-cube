@@ -24,6 +24,7 @@
 
 namespace Eccube\ServiceProvider;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
@@ -535,18 +536,39 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         // TODO QueryCustomizerの追加方法は要検討
         $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
 
-        $app['eccube.purchase.flow.cart'] = function () use ($app) {
-            $flow = new PurchaseFlow();
-            $flow->addItemProcessor(new DeletedProductValidator());
-            $flow->addItemProcessor(new DisplayStatusValidator());
-            $flow->addItemProcessor(new StockValidator());
-            $flow->addItemProcessor(new SaleLimitValidator());
-            $flow->addItemProcessor(new DeliverySettingValidator($app['eccube.repository.delivery']));
+        $app['eccube.purchase.flow.cart.item_processors'] = function ($app) {
+            $processors = new ArrayCollection();
+            $processors->add(new DeletedProductValidator());
+            $processors->add(new DisplayStatusValidator());
+            $processors->add(new SaleLimitValidator());
+            $processors->add(new DeliverySettingValidator($app['eccube.repository.delivery']));
 
-            $flow->addItemHolderProcessor(new PaymentProcessor($app));
-            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $flow->addItemHolderProcessor(new DeliveryFeeFreeProcessor($app));
-            $flow->addItemHolderProcessor(new PaymentTotalNegativeValidator());
+            return $processors;
+        };
+
+        $app['eccube.purchase.flow.cart.holder_processors'] = function ($app) {
+            $processors = new ArrayCollection();
+            $processors->add(new PaymentProcessor($app));
+            $processors->add(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            $processors->add(new DeliveryFeeFreeProcessor($app));
+            $processors->add(new PaymentTotalNegativeValidator());
+
+            return $processors;
+        };
+
+        // example
+        $app->extend('eccube.purchase.flow.cart.item_processors', function ($processors, $app) {
+
+            $processors->add(new StockValidator());
+
+            return $processors;
+        });
+
+        $app['eccube.purchase.flow.cart'] = function ($app) {
+            $flow = new PurchaseFlow();
+            $flow->setItemProcessors($app['eccube.purchase.flow.cart.item_processors']);
+            $flow->setItemHolderProcessors($app['eccube.purchase.flow.cart.holder_processors']);
+
             return $flow;
         };
 
