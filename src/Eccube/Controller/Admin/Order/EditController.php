@@ -35,6 +35,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Service\PurchaseFlow\PurchageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
@@ -134,8 +135,16 @@ class EditController extends AbstractController
             // TODO 編集前のOrder情報が必要かもしれない
             // TODO 手数料, 値引きの集計は未実装
             // $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
-            if ('GET' === $request->getMethod()) {
-                $app['eccube.purchase.flow.order.get']->execute($TargetOrder);
+            $flowResult = $app['eccube.purchase.flow.order']->execute($TargetOrder);
+            if ($flowResult->hasWarning()) {
+                foreach ($flowResult->getWarning() as $warning) {
+                    $app->addWarning($warning->getMessage(), 'admin');
+                }
+            }
+            if ($flowResult->hasError()) {
+                foreach ($flowResult->getErrors() as $error) {
+                    $app->addError($error->getMessage(), 'admin');
+                }
             }
 
             // 登録ボタン押下
@@ -143,30 +152,12 @@ class EditController extends AbstractController
                 case 'register':
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
-                    // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                    if ($form->isValid()) {
-                        $app['eccube.purchase.flow.order.post']->execute($TargetOrder);
-                        // TODO hasError でチェックしたい
-                        foreach ($TargetOrder->getErrors() as $error) {
-                            $app->addError($error, 'admin');
-                            break 2;
-                        }
-
-                        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-                        // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
-                        // 受注日/発送日/入金日の更新.
-                        $this->updateDate($app, $TargetOrder, $OriginOrder);
-
-                        // 画面上で削除された明細をremove
-                        foreach ($OriginalShipmentItems as $ShipmentItem) {
-                            if (false === $TargetOrder->getShipmentItems()->contains($ShipmentItem)) {
-                                $ShipmentItem->setOrder(null);
-                            }
-                        }
-
-                        foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
-                            $ShipmentItem->setOrder($TargetOrder);
+                    if ($flowResult->hasError() === false && $form->isValid()) {
+                        try {
+                            $app['eccube.purchase.flow.order']->purchase($TargetOrder, $OriginOrder);
+                        } catch (PurchageException $e) {
+                            $app->addError($e->getMessage(), 'admin');
+                            break;
                         }
 
                         $app['orm.em']->persist($TargetOrder);

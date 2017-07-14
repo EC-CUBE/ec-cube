@@ -27,6 +27,7 @@ namespace Eccube\ServiceProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
+use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
@@ -36,8 +37,8 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
-use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
+use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -582,17 +583,12 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $flow;
         };
 
-        $app['eccube.purchase.flow.order.get'] = function () use ($app) {
-            $flow = new PurchaseFlow();
-            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            return $flow;
-        };
-
-        $app['eccube.purchase.flow.order.post'] = function () use ($app) {
+        $app['eccube.purchase.flow.order'] = function () use ($app) {
             $flow = new PurchaseFlow();
             $flow->addItemProcessor(new StockValidator());
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $flow->addItemProcessor(new StockReduceProcessor($app)); // 参考実装
+            $flow->addPurchaseProcessor(new UpdateDatePurchaseProcessor($app));
+            $flow->addPurchaseProcessor(new AdminOrderRegisterPurchaseProcessor($app));
             return $flow;
         };
     }
