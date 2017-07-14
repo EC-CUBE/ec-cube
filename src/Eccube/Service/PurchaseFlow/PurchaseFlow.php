@@ -83,7 +83,7 @@ class PurchaseFlow
         }
     }
 
-    public function addPurchaseProcessort(PurchaseProcessor $processor)
+    public function addPurchaseProcessor(PurchaseProcessor $processor)
     {
         $this->purchaseProcessors[] = $processor;
     }
