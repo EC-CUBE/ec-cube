@@ -2,26 +2,48 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 
 class PurchaseFlow
 {
-    // TODO collection?
     /**
-     * @var ItemHolderProcessor[]
+     * @var ArrayCollection|ItemHolderProcessor[]
      */
-    protected $itemHolderProcessors = [];
+    protected $itemHolderProcessors;
 
     /**
-     * @var ItemProcessor[]
+     * @var ArrayCollection|ItemProcessor[]
      */
-    protected $itemProcessors = [];
+    protected $itemProcessors;
 
     /**
-     * @var PurchaseProcessor[]
+     * @var ArrayCollection|PurchaseProcessor[]
      */
-    protected $purchaseProcessors = [];
+    protected $purchaseProcessors;
+
+    public function __construct()
+    {
+        $this->itemProcessors = new ArrayCollection();
+        $this->itemHolderProcessors = new ArrayCollection();
+        $this->purchaseProcessors = new ArrayCollection();
+    }
+
+    public function setItemProcessors(ArrayCollection $processors)
+    {
+        $this->itemProcessors = $processors;
+    }
+
+    public function setItemHolderProcessors(ArrayCollection $processors)
+    {
+        $this->itemHolderProcessors = $processors;
+    }
+
+    public function setPurchaseProcessors(ArrayCollection $processors)
+    {
+        $this->purchaseProcessors = $processors;
+    }
 
     public function execute(ItemHolderInterface $itemHolder)
     {
