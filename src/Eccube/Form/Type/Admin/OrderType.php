@@ -292,6 +292,9 @@ class OrderType extends AbstractType
 
                                 // 数量適用
                                 $relatedShipmentItems = array_filter($shipping['ShipmentItems'], $productClassFilter);
+                                if ($relatedShipmentItems['quantity'] <= 0) {
+                                    return;
+                                }
                                 $quantities = array_map($getQuantity, $relatedShipmentItems);
                                 $orderDetail['quantity'] += array_sum($quantities);
                             }
