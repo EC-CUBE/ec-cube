@@ -70,7 +70,7 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('quantity', 'text', array(
+            ->add('quantity', 'integer', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
