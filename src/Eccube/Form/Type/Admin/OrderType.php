@@ -254,7 +254,7 @@ class OrderType extends AbstractType
 
                 // 数量を抽出
                 $getQuantity = function ($v) {
-                    return $v['quantity'];
+                    return isset($v['quantity']) ? $v['quantity'] : 0;
                 };
 
                 foreach ($shippings as &$shipping) {
@@ -284,6 +284,11 @@ class OrderType extends AbstractType
                                 // 数量適用
                                 $relatedShipmentItems = array_filter($shipping['ShipmentItems'], $productClassFilter);
                                 $quantities = array_map($getQuantity, $relatedShipmentItems);
+                                foreach ($quantities as &$quantity) {
+                                    if (is_numeric($quantity) && $quantity < 0) {
+                                        $quantity = 0;
+                                    }
+                                }
 
                                 $orderDetail['quantity'] += array_sum($quantities);
                             }
