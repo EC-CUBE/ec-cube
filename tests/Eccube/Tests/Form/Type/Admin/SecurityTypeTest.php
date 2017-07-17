@@ -76,4 +76,10 @@ class SecurityTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testValidAdminAllowHost_MaxLength()
+    {
+        $this->formData['admin_allow_host'] = str_repeat("127.0.0.1\n", 100);
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }
