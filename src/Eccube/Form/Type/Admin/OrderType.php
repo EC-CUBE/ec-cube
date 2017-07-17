@@ -241,7 +241,6 @@ class OrderType extends AbstractType
                 )));
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
-
             $data = $event->getData();
             $orderDetails = &$data['OrderDetails'];
 
@@ -251,14 +250,11 @@ class OrderType extends AbstractType
             };
 
             if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-
                 $shippings = &$data['Shippings'];
 
                 // 数量を抽出
                 $getQuantity = function ($v) {
-                    return (isset($v['quantity']) && preg_match('/^\d+$/', trim($v['quantity']))) ?
-                        trim($v['quantity']) :
-                        0;
+                    return $v['quantity'];
                 };
 
                 foreach ($shippings as &$shipping) {
@@ -266,11 +262,8 @@ class OrderType extends AbstractType
                         $shipping['ShipmentItems'] = array_filter($shipping['ShipmentItems'], $quantityFilter);
                     }
                 }
-
                 if (!empty($orderDetails)) {
-
                     foreach ($orderDetails as &$orderDetail) {
-
                         $orderDetail['quantity'] = 0;
 
                         // 受注詳細と同じ商品規格のみ抽出
@@ -279,9 +272,7 @@ class OrderType extends AbstractType
                         };
 
                         foreach ($shippings as &$shipping) {
-
                             if (!empty($shipping['ShipmentItems'])) {
-
                                 // 同じ商品規格の受注詳細の価格を適用
                                 $applyPrice = function (&$v) use ($orderDetail) {
                                     $v['price'] = ($v['ProductClass'] === $orderDetail['ProductClass']) ?
@@ -292,17 +283,14 @@ class OrderType extends AbstractType
 
                                 // 数量適用
                                 $relatedShipmentItems = array_filter($shipping['ShipmentItems'], $productClassFilter);
-                                if ($relatedShipmentItems['quantity'] <= 0) {
-                                    return;
-                                }
                                 $quantities = array_map($getQuantity, $relatedShipmentItems);
+
                                 $orderDetail['quantity'] += array_sum($quantities);
                             }
                         }
                     }
                 }
             }
-
             if (!empty($orderDetails)) {
                 $data['OrderDetails'] = array_filter($orderDetails, $quantityFilter);
             }
