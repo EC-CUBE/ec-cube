@@ -76,7 +76,7 @@ class CartService
         }
     }
 
-    public function addProduct($ProductClass, $quantity)
+    public function addProduct($ProductClass, $quantity = 1)
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;

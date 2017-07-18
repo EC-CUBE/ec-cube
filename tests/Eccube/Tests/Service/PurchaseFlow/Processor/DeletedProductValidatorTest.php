@@ -66,6 +66,6 @@ class DeletedProductValidatorTest extends EccubeTestCase
         $result = $this->validator->process($this->cartItem);
 
         self::assertEquals(0, $this->cartItem->getQuantity());
-        self::assertTrue($result->isError());
+        self::assertTrue($result->isWarning());
     }
 }
