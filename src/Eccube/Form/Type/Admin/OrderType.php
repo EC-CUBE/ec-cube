@@ -241,7 +241,13 @@ class OrderType extends AbstractType
                 'entry_type' => ShipmentItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype' => true,
+                'prototype' => true
+            ))
+            ->add('Items', CollectionType::class, array(
+                'entry_type' => ShipmentItemType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true
             ))
             ->add('OrderDetailsErrors', TextType::class, [
                 'mapped' => false,

@@ -1565,13 +1565,23 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Alias of getShipmentItems()
+     * Sorted to getShipmentItems()
      *
      * @return ItemCollection
      */
     public function getItems()
     {
         return (new ItemCollection($this->getShipmentItems()->toArray()))->sort();
+    }
+
+    /**
+     * Alias of removeItem()
+     *
+     * @return boolean
+     */
+    public function removeItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    {
+        return $this->removeShipmentItem($shipmentItem);
     }
 
     /**

@@ -381,7 +381,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
                             {{ form_errors(form.OrderDetailsErrors) }}
 
-                            {% for shipmentItemForm in form.ShipmentItems %}
+                            {% for shipmentItemForm in form.Items %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(shipmentItemForm.Order) }}
                                     {{ form_widget(shipmentItemForm.Shipping) }}
