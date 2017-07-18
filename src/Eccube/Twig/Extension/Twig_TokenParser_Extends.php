@@ -28,21 +28,29 @@ use \Twig_Node_Include;
 use Eccube\Event\TemplateEvent;
 use Monolog\Logger;
 
-class Twig_TokenParser_Include extends \Twig_TokenParser
+class Twig_TokenParser_Extends extends \Twig_TokenParser
 {
     public function __construct($app)
     {
         $this->app = $app;
     }
-    
-    public function parse(Twig_Token $token)
-    {   
-        $expr = $this->parser->getExpressionParser()->parseExpression();
 
-        list($variables, $only, $ignoreMissing) = $this->parseArguments();
-        
-        // Begin create event for include
-        $view = $expr->getAttribute('value');
+    public function parse(Twig_Token $token)
+    {
+        $stream = $this->parser->getStream();
+
+        if (!$this->parser->isMainScope()) {
+            throw new Twig_Error_Syntax('Cannot extend from a block.', $token->getLine(), $stream->getSourceContext());
+        }
+
+        if (null !== $this->parser->getParent()) {
+            throw new Twig_Error_Syntax('Multiple extends tags are forbidden.', $token->getLine(), $stream->getSourceContext());
+        }
+
+        // Begin create event for extend
+        $expr = $this->parser->getExpressionParser()->parseExpression();
+        $view = $expr->getAttribute('value'); 
+
         $source = $this->app['twig']->getLoader()->getSource($view);
 
         $event = new TemplateEvent($view, $source);
@@ -51,42 +59,19 @@ class Twig_TokenParser_Include extends \Twig_TokenParser
             // 管理画面の場合、event名に「Admin/」を付ける
             $eventName = 'Admin/' . $view;
         }
+
         $this->app['monolog']->debug('Template Event Name : ' . $eventName);
 
         $this->app['eccube.event.dispatcher']->dispatch($eventName, $event);
-        // Begin create event for include
+        // Begin create event for extend
 
-        return new Twig_Node_Include($expr, $variables, $only, $ignoreMissing, $token->getLine(), $this->getTag());
-    }
-
-    protected function parseArguments()
-    {
-        $stream = $this->parser->getStream();
-
-        $ignoreMissing = false;
-        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'ignore')) {
-            $stream->expect(Twig_Token::NAME_TYPE, 'missing');
-
-            $ignoreMissing = true;
-        }
-
-        $variables = null;
-        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'with')) {
-            $variables = $this->parser->getExpressionParser()->parseExpression();
-        }
-
-        $only = false;
-        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'only')) {
-            $only = true;
-        }
+        $this->parser->setParent($expr);
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
-
-        return array($variables, $only, $ignoreMissing);
     }
 
     public function getTag()
     {
-        return 'include';
+        return 'extends';
     }
 }
