@@ -11,6 +11,9 @@ class DisplayStatusValidator extends ValidatableItemProcessor
 {
     protected function validate(ItemInterface $item)
     {
+        if (!$item->isProduct()) {
+            return;
+        }
         $ProductClass = $item->getProductClass();
         if (!$ProductClass->isEnable()) {
             throw new ItemValidateException('cart.product.not.status');

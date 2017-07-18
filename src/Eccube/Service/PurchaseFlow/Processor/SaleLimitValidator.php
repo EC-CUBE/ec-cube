@@ -16,7 +16,12 @@ class SaleLimitValidator extends ValidatableItemProcessor
         if (!$item->isProduct()) {
             return;
         }
+
         $limit = $item->getProductClass()->getSaleLimit();
+        if (is_null($limit)) {
+            return;
+        }
+
         $quantity = $item->getQuantity();
         if ($limit < $quantity) {
             throw new ItemValidateException('cart.over.sale_limit', ['%product%' => $item->getProductClass()->getProduct()->getName()]);

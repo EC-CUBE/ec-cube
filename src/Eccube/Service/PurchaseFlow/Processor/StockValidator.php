@@ -16,6 +16,9 @@ class StockValidator extends ValidatableItemProcessor
         if (!$item->isProduct()) {
             return;
         }
+        if ($item->getProductClass()->getStockUnlimited()) {
+            return;
+        }
         $stock = $item->getProductClass()->getStock();
         $quantity = $item->getQuantity();
         if ($stock == 0) {
