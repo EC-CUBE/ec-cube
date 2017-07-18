@@ -231,23 +231,12 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            // ->add('OrderDetails', CollectionType::class, array(
-            //     'entry_type' => OrderDetailType::class,
-            //     'allow_add' => true,
-            //     'allow_delete' => true,
-            //     'prototype' => true,
-            // ))
             ->add('ShipmentItems', CollectionType::class, array(
                 'entry_type' => ShipmentItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype' => true
-            ))
-            ->add('Items', CollectionType::class, array(
-                'entry_type' => ShipmentItemType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true
+                'prototype' => true,
+                'data' => $options['SortedItems']
             ))
             ->add('OrderDetailsErrors', TextType::class, [
                 'mapped' => false,
@@ -368,6 +357,7 @@ class OrderType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Order',
             'orign_order' => null,
+            'SortedItems' => null
         ));
     }
 

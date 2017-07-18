@@ -89,7 +89,11 @@ class EditController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder(OrderType::class, $TargetOrder);
+            ->createBuilder(OrderType::class, $TargetOrder,
+                            [
+                                'SortedItems' => $TargetOrder->getItems()
+                            ]
+            );
 
         $event = new EventArgs(
             array(

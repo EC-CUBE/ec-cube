@@ -1575,16 +1575,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Alias of removeItem()
-     *
-     * @return boolean
-     */
-    public function removeItem(\Eccube\Entity\ShipmentItem $shipmentItem)
-    {
-        return $this->removeShipmentItem($shipmentItem);
-    }
-
-    /**
      * Get shippings.
      *
      * @return \Doctrine\Common\Collections\Collection
