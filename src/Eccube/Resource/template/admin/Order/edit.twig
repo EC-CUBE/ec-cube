@@ -215,8 +215,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form name="form1" method="post" action="?" class="h-adr">
-        <span class="p-country-name" style="display:none;">Japan</span>
+    <form name="form1" method="post" action="?">
     <input type="hidden" name="modal" value="">
     {{ form_widget(form._token) }}
         <div id="detail_wrap" class="col-md-12">
@@ -242,7 +241,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div>
-            <div id="customer_info_box"  class="box accordion">
+            <div id="customer_info_box"  class="box accordion h-adr">
+                <span class="p-country-name" style="display:none;">Japan</span>
                 <div id="customer_info_box__toggle" class="box-header toggle active">
                     <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
@@ -602,7 +602,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {% endif %}
 
                         <hr>
-                        <div id="shipment_item_detail--{{ shippingIndex }}" class="form-horizontal">
+                        <div id="shipment_item_detail--{{ shippingIndex }}" class="form-horizontal h-adr">
+                            <span class="p-country-name" style="display:none;">Japan</span>
                             <div id="shipment_item_detail__name--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.name) }}
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
