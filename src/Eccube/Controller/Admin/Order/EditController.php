@@ -28,17 +28,16 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -107,6 +106,7 @@ class EditController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
+        $purchaseContext = PurchaseContext::create($app, $OriginOrder);
 
         if ($form->isSubmitted()) {
             $event = new EventArgs(
@@ -114,13 +114,14 @@ class EditController extends AbstractController
                     'builder' => $builder,
                     'OriginOrder' => $OriginOrder,
                     'TargetOrder' => $TargetOrder,
+                    'PurchaseContext' => $purchaseContext,
                 ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
 
-            $flowResult = $app['eccube.purchase.flow.order']->execute($TargetOrder);
+            $flowResult = $app['eccube.purchase.flow.order']->calculate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
                     // TODO Warning の場合の処理
@@ -140,7 +141,7 @@ class EditController extends AbstractController
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
-                            $app['eccube.purchase.flow.order']->purchase($TargetOrder, $OriginOrder);
+                            $app['eccube.purchase.flow.order']->purchase($TargetOrder, $purchaseContext);
                         } catch (PurchageException $e) {
                             $app->addError($e->getMessage(), 'admin');
                             break;

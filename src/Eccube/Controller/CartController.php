@@ -62,7 +62,7 @@ class CartController extends AbstractController
         // カートを取得して明細の正規化を実行
         $Cart = $app['eccube.service.cart']->getCart();
         /** @var PurchaseFlowResult $result */
-        $result = $app['eccube.purchase.flow.cart']->execute($Cart);
+        $result = $app['eccube.purchase.flow.cart']->calculate($Cart, PurchaseContext::create($app));
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
         if ($result->hasError()) {
@@ -155,7 +155,7 @@ class CartController extends AbstractController
         $Cart = $app['eccube.service.cart']->getCart();
         /** @var PurchaseFlowResult $result */
 
-        $result = $app['eccube.purchase.flow.cart']->execute($Cart, PurchaseContext::create($app));
+        $result = $app['eccube.purchase.flow.cart']->calculate($Cart, PurchaseContext::create($app));
 
         // 復旧不可のエラーが発生した場合はカートをクリアしてカート一覧へ
         if ($result->hasError()) {

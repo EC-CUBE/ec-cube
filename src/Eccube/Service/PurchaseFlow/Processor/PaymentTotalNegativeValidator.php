@@ -33,7 +33,7 @@ use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
  */
 class PaymentTotalNegativeValidator extends ValidatableItemHolderProcessor
 {
-    protected function validate(ItemHolderInterface $item)
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         if ($item->getTotal() < 0) {
             throw new ItemValidateException('shopping.total.price');
