@@ -7,6 +7,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DeletedProductValidatorTest extends EccubeTestCase
@@ -52,7 +53,7 @@ class DeletedProductValidatorTest extends EccubeTestCase
      */
     public function testProductIsValid()
     {
-        $result = $this->validator->process($this->cartItem);
+        $result = $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertFalse($result->isError());
     }
@@ -63,7 +64,7 @@ class DeletedProductValidatorTest extends EccubeTestCase
     public function testDisplayStatusWithClosed()
     {
         $this->Product->setDelFlg(1);
-        $result = $this->validator->process($this->cartItem);
+        $result = $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertEquals(0, $this->cartItem->getQuantity());
         self::assertTrue($result->isWarning());

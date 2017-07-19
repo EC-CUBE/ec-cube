@@ -50,9 +50,10 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 
     /**
      * @param ItemHolderInterface $itemHolder
+     * @param PurchaseContext $context
      * @return ProcessResult
      */
-    public function process(ItemHolderInterface $itemHolder)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         /* @var $BaseInfo \Eccube\Entity\BaseInfo */
         $BaseInfo = $this->app['eccube.repository.base_info']->get();

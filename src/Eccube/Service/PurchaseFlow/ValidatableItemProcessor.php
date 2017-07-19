@@ -26,14 +26,16 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 
 abstract class ValidatableItemProcessor implements ItemProcessor
 {
     /**
      * @param ItemInterface $item
-     * @throws ItemValidateException
+     * @param PurchaseContext $context
+     * @return ProcessResult
      */
-    public function process(ItemInterface $item)
+    public function process(ItemInterface $item, PurchaseContext $context)
     {
         try {
             $this->validate($item);

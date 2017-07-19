@@ -26,11 +26,9 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
-use Eccube\Entity\Cart;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\ProductType;
-use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 

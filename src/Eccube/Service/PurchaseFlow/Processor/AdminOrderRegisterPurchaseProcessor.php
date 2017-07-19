@@ -3,7 +3,6 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 
 /**
@@ -14,10 +13,10 @@ class AdminOrderRegisterPurchaseProcessor implements PurchaseProcessor
     /**
      * {@inheritdoc}
      */
-    public function process(ItemHolderInterface $target, ItemHolderInterface $origin)
+    public function process(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 画面上で削除された明細をremove
-        foreach ($origin->getItems() as $ShipmentItem) {
+        foreach ($context->getOriginHolder()->getItems() as $ShipmentItem) {
             if (false === $target->getShipmentItems()->contains($ShipmentItem)) {
                 $ShipmentItem->setOrder(null);
             }

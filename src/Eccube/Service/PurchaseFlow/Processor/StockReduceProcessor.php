@@ -2,17 +2,12 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
+use Doctrine\DBAL\LockMode;
 use Eccube\Common\Constant;
 use Eccube\Entity\ItemInterface;
-use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\TaxType;
-use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
-use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
-use Doctrine\DBAL\LockMode;
 
 /**
  * 在庫制御.
@@ -32,12 +27,14 @@ class StockReduceProcessor implements ItemProcessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
      * @return ProcessResult
+     * @internal param ItemHolderInterface $itemHolder
      */
-    public function process(ItemInterface $item)
+    public function process(ItemInterface $item, PurchaseContext $context)
     {
-        if (!$item instanceof \Eccube\Entity\ShipmentItem) {
+        if (!$item instanceof ShipmentItem) {
             // ShipmentItem 以外の場合は何もしない
             return ProcessResult::success();
         }

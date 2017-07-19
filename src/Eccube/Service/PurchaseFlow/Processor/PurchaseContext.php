@@ -18,7 +18,7 @@ class PurchaseContext extends \SplObjectStorage
         return new self($app->user(), $originHolder);
     }
 
-    protected function __construct(Customer $user, ItemHolderInterface $originHolder = null)
+    protected function __construct(Customer $user = null, ItemHolderInterface $originHolder = null)
     {
         $this->user = $user;
         $this->originHolder = $originHolder;

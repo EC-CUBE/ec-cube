@@ -3,7 +3,6 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 
 /**
@@ -19,9 +18,10 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
     /**
      * {@inheritdoc}
      */
-    public function process(ItemHolderInterface $TargetOrder, ItemHolderInterface $OriginOrder)
+    public function process(ItemHolderInterface $TargetOrder, PurchaseContext $context)
     {
         $dateTime = new \DateTime();
+        $OriginOrder = $context->getOriginHolder();
 
         // 編集
         if ($TargetOrder->getId()) {

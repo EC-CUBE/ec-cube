@@ -53,9 +53,10 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
 
     /**
      * @param ItemHolderInterface $itemHolder
+     * @param PurchaseContext $context
      * @return ProcessResult
      */
-    public function process(ItemHolderInterface $itemHolder)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         if ($this->containsDeliveryFeeItem($itemHolder) == false) {
             $this->addDeliveryFeeItem($itemHolder);

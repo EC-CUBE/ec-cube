@@ -27,6 +27,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Tests\EccubeTestCase;
 
@@ -60,7 +61,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
      */
     public function testProcess()
     {
-        $result = $this->processor->process($this->Order);
+        $result = $this->processor->process($this->Order, PurchaseContext::create($this->app));
         self::assertInstanceOf(ProcessResult::class, $result);
         self::assertFalse($result->isError());
 
@@ -79,7 +80,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setDeliveryFreeAmount(1); // 1円以上で送料無料
 
-        $result = $this->processor->process($this->Order);
+        $result = $this->processor->process($this->Order, PurchaseContext::create($this->app));
         self::assertInstanceOf(ProcessResult::class, $result);
         self::assertFalse($result->isError());
 
@@ -98,7 +99,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setDeliveryFreeQuantity(1); // 1個以上で送料無料
 
-        $result = $this->processor->process($this->Order);
+        $result = $this->processor->process($this->Order, PurchaseContext::create($this->app));
         self::assertInstanceOf(ProcessResult::class, $result);
         self::assertFalse($result->isError());
 
