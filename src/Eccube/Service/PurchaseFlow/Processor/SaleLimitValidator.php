@@ -28,7 +28,7 @@ class SaleLimitValidator extends ValidatableItemProcessor
         }
     }
 
-    protected function handle(ItemInterface $item)
+    protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $limit = $item->getProductClass()->getSaleLimit();
         $item->setQuantity($limit);
