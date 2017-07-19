@@ -5,6 +5,7 @@ namespace Eccube\Service\PurchaseFlow;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 
 class PurchaseFlow
 {
@@ -45,7 +46,7 @@ class PurchaseFlow
         $this->purchaseProcessors = $processors;
     }
 
-    public function execute(ItemHolderInterface $itemHolder)
+    public function calculate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         $this->calculateDeliveryFeeTotal($itemHolder);
         $this->calculateCharge($itemHolder);
@@ -58,13 +59,13 @@ class PurchaseFlow
 
         foreach ($itemHolder->getItems() as $item) {
             foreach ($this->itemProcessors as $itemProsessor) {
-                $result = $itemProsessor->process($item);
+                $result = $itemProsessor->process($item, $context);
                 $flowResult->addProcessResult($result);
             }
         }
 
         foreach ($this->itemHolderProcessors as $holderProcessor) {
-            $result = $holderProcessor->process($itemHolder);
+            $result = $holderProcessor->process($itemHolder, $context);
             $flowResult->addProcessResult($result);
         }
 
@@ -73,13 +74,13 @@ class PurchaseFlow
 
     /**
      * @param ItemHolderInterface $target
-     * @param ItemHolderInterface $origin
+     * @param PurchaseContext $context
      * @throws PurchaseException
      */
-    public function purchase(ItemHolderInterface $target, ItemHolderInterface $origin)
+    public function purchase(ItemHolderInterface $target, PurchaseContext $context)
     {
         foreach ($this->purchaseProcessors as $processor) {
-            $processor->process($target, $origin);
+            $processor->process($target, $context);
         }
     }
 

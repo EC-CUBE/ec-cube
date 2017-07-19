@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -153,7 +154,8 @@ class CartController extends AbstractController
         // カートを取得して明細の正規化を実行
         $Cart = $app['eccube.service.cart']->getCart();
         /** @var PurchaseFlowResult $result */
-        $result = $app['eccube.purchase.flow.cart']->execute($Cart);
+
+        $result = $app['eccube.purchase.flow.cart']->execute($Cart, PurchaseContext::create($app));
 
         // 復旧不可のエラーが発生した場合はカートをクリアしてカート一覧へ
         if ($result->hasError()) {

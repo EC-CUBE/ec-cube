@@ -4,13 +4,14 @@ namespace Eccube\Service\PurchaseFlow;
 
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 
 interface PurchaseProcessor
 {
     /**
      * @param ItemHolderInterface $target
-     * @param ItemHolderInterface $origin
+     * @param PurchaseContext $context
      * @throws PurchaseException
      */
-    public function process(ItemHolderInterface $target, ItemHolderInterface $origin);
+    public function process(ItemHolderInterface $target, PurchaseContext $context);
 }
