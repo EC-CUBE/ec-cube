@@ -38,7 +38,7 @@ class ItemValidateException extends \Exception
     /**
      * @return array
      */
-    public function getMessageArgs(): array
+    public function getMessageArgs()
     {
         return $this->messageArgs;
     }
