@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Tests\EccubeTestCase;
 
@@ -36,14 +37,14 @@ class StockValidatorTest extends EccubeTestCase
     public function testValidStock()
     {
         $this->cartItem->setQuantity(1);
-        $this->validator->process($this->cartItem);
+        $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
         self::assertEquals(1, $this->cartItem->getQuantity());
     }
 
     public function testValidStockFail()
     {
         $this->cartItem->setQuantity(PHP_INT_MAX);
-        $result = $this->validator->process($this->cartItem);
+        $result = $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
         self::assertTrue($result->isWarning());
@@ -59,7 +60,7 @@ class StockValidatorTest extends EccubeTestCase
         $Order->getShipmentItems()[0]->setQuantity(1);
         $this->ProductClass->setStock(100);
 
-        $this->validator->process($Order->getShipmentItems()[0]);
+        $this->validator->process($Order->getShipmentItems()[0], PurchaseContext::create($this->app));
         self::assertEquals(1, $Order->getShipmentItems()[0]->getQuantity());
     }
 }

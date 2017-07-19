@@ -11,6 +11,7 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentProcessorTest extends EccubeTestCase
@@ -101,7 +102,7 @@ class PaymentProcessorTest extends EccubeTestCase
     public function testCartNoItems()
     {
         $cart = new Cart();
-        $result = $this->validator->process($cart);
+        $result = $this->validator->process($cart, PurchaseContext::create($this->app));
 
         self::assertFalse($result->isError());
     }
@@ -113,7 +114,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $item->setObject($this->ProductClass1);
         $cart->addItem($item);
 
-        $result = $this->validator->process($cart);
+        $result = $this->validator->process($cart, PurchaseContext::create($this->app));
 
         self::assertFalse($result->isError());
     }
@@ -129,7 +130,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $item2->setObject($this->ProductClass2);
         $cart->addItem($item2);
 
-        $result = $this->validator->process($cart);
+        $result = $this->validator->process($cart, PurchaseContext::create($this->app));
 
         self::assertFalse($result->isError());
     }
@@ -155,7 +156,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $item3->setObject($this->ProductClass3);
         $cart->addItem($item3);
 
-        $result = $this->validator->process($cart);
+        $result = $this->validator->process($cart, PurchaseContext::create($this->app));
 
         self::assertTrue($result->isError());
         self::assertCount(3, $cart->getItems());

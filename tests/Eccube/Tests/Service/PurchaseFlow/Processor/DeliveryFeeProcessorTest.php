@@ -28,6 +28,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DeliveryFeeProcessorTest extends EccubeTestCase
@@ -44,7 +45,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
                 $Order->getShipmentItems()->removeElement($ShipmentItem);
             }
         }
-        $processor->process($Order);
+        $processor->process($Order, PurchaseContext::create($this->app));
         self::assertNotEmpty($this->getDeliveryFees($Order));
     }
 
@@ -70,7 +71,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $DeliveryFee->setOrderItemType($OrderItemType);
         $Order->addItem($DeliveryFee);
 
-        $processor->process($Order);
+        $processor->process($Order, PurchaseContext::create($this->app));
 
         $DeliveryFeeList = $this->getDeliveryFees($Order);
         self::assertCount(1, $DeliveryFeeList);

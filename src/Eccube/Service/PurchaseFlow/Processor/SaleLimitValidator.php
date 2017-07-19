@@ -11,7 +11,7 @@ use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
  */
 class SaleLimitValidator extends ValidatableItemProcessor
 {
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
             return;

@@ -7,6 +7,7 @@ use Eccube\Entity\Master\ProductType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DeliverySettingValidatorTest extends EccubeTestCase
@@ -52,7 +53,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
      */
     public function testDeliverySettingIsValid()
     {
-        $result = $this->validator->process($this->cartItem);
+        $result = $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertFalse($result->isError());
     }
@@ -66,7 +67,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
         $ProductType->setId(10000);
         $this->ProductClass->setProductType($ProductType);
 
-        $this->validator->process($this->cartItem);
+        $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }

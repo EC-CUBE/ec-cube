@@ -26,6 +26,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase
@@ -37,7 +38,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart = new Cart();
         $cart->setTotal(100);
 
-        $result = $validator->process($cart);
+        $result = $validator->process($cart, PurchaseContext::create($this->app));
         self::assertFalse($result->isError());
     }
 
@@ -48,7 +49,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart = new Cart();
         $cart->setTotal(1001);
 
-        $result = $validator->process($cart);
+        $result = $validator->process($cart, PurchaseContext::create($this->app));
         self::assertTrue($result->isError());
     }
 
@@ -59,7 +60,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order = new Order();
         $order->setTotal(100);
 
-        $result = $validator->process($order);
+        $result = $validator->process($order, PurchaseContext::create($this->app));
         self::assertFalse($result->isError());
     }
 
@@ -70,7 +71,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order = new Order();
         $order->setTotal(1001);
 
-        $result = $validator->process($order);
+        $result = $validator->process($order, PurchaseContext::create($this->app));
         self::assertTrue($result->isError());
     }
 }

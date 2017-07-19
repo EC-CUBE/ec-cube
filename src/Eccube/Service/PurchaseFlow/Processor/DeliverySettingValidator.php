@@ -22,7 +22,7 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         $this->deliveryRepository = $deliveryRepository;
     }
 
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
             return;
@@ -36,7 +36,7 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         }
     }
 
-    protected function handle(ItemInterface $item)
+    protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $item->setQuantity(0);
     }

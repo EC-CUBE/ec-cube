@@ -8,6 +8,7 @@ use Eccube\Entity\Master\Disp;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DisplayStatusValidatorTest extends EccubeTestCase
@@ -59,7 +60,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $Disp = $app['eccube.repository.master.disp']->find(Disp::DISPLAY_SHOW);
         $this->Product->setStatus($Disp);
 
-        $this->validator->process($this->cartItem);
+        $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertEquals(10, $this->cartItem->getQuantity());
     }
@@ -74,7 +75,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $Disp = $app['eccube.repository.master.disp']->find(Disp::DISPLAY_HIDE);
         $this->Product->setStatus($Disp);
 
-        $this->validator->process($this->cartItem);
+        $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }

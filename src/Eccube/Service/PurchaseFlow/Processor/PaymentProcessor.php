@@ -51,7 +51,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
         $this->app = $app;
     }
 
-    protected function validate(ItemHolderInterface $itemHolder)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         // 明細の個数が1以下の場合はOK
         if (count($itemHolder->getItems()) <= 1) {

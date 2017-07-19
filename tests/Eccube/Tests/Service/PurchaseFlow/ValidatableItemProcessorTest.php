@@ -27,6 +27,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 use Eccube\Tests\EccubeTestCase;
 
@@ -46,7 +47,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ValidatableItemProcessorTest_NormalValidator();
         $item = new CartItem();
 
-        $validator->process($item);
+        $validator->process($item, PurchaseContext::create($this->app));
         $this->assertFalse($validator->handleCalled);
     }
 
@@ -55,7 +56,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ValidatableItemProcessorTest_FailValidator();
         $item = new CartItem();
 
-        $validator->process($item);
+        $validator->process($item, PurchaseContext::create($this->app));
     }
 
     public function testValidateOrderSuccess()
@@ -63,7 +64,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ValidatableItemProcessorTest_NormalValidator();
         $item = new ShipmentItem();
 
-        $result = $validator->process($item);
+        $result = $validator->process($item, PurchaseContext::create($this->app));
         self::assertFalse($validator->handleCalled);
         self::assertFalse($result->isError());
     }
@@ -73,7 +74,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $validator = new ValidatableItemProcessorTest_FailValidator();
         $item = new ShipmentItem();
 
-        $result = $validator->process($item);
+        $result = $validator->process($item, PurchaseContext::create($this->app));
         self::assertFalse($validator->handleCalled);
         self::assertTrue($result->isWarning());
     }
@@ -84,11 +85,11 @@ class ValidatableItemProcessorTest_NormalValidator extends ValidatableItemProces
 
     public $handleCalled = false;
 
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
     }
 
-    protected function handle(ItemInterface $item)
+    protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $this->handleCalled = true;
     }
@@ -99,12 +100,12 @@ class ValidatableItemProcessorTest_FailValidator extends ValidatableItemProcesso
 
     public $handleCalled = false;
 
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         throw new ItemValidateException();
     }
 
-    protected function handle(ItemInterface $item)
+    protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $this->handleCalled = true;
     }

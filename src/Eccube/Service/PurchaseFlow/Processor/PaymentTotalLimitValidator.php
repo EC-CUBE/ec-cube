@@ -47,7 +47,7 @@ class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
         $this->maxTotalFee = $maxTotalFee;
     }
 
-    protected function validate(ItemHolderInterface $item)
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         $totalPrice = $item->getTotal();
         if ($totalPrice > $this->maxTotalFee) {

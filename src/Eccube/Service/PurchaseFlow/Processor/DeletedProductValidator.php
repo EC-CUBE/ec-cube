@@ -9,7 +9,7 @@ use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 class DeletedProductValidator extends ValidatableItemProcessor
 {
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         $ProductClass = $item->getProductClass();
         $Product = $ProductClass->getProduct();
@@ -18,7 +18,7 @@ class DeletedProductValidator extends ValidatableItemProcessor
         }
     }
 
-    protected function handle(ItemInterface $item)
+    protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         if ($item instanceof CartItem) {
             $item->setQuantity(0);

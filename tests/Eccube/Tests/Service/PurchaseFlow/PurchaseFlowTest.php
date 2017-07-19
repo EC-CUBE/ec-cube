@@ -144,7 +144,7 @@ class PurchaseFlowTest_FailProcessor extends ValidatableItemProcessor
         $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         throw new ItemValidateException($this->errorMessage);
     }
@@ -163,7 +163,7 @@ class PurchaseFlowTest_FailItemHolderProcessor extends ValidatableItemHolderProc
         $this->errorMessage = $errorMessage;
     }
 
-    protected function validate(ItemHolderInterface $item)
+    protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         // TODO ItemHolerValidateException が必要か検討
         throw new ItemValidateException($this->errorMessage);

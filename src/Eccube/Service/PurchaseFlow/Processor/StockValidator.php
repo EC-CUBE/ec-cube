@@ -11,7 +11,7 @@ use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
  */
 class StockValidator extends ValidatableItemProcessor
 {
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
             return;
@@ -29,7 +29,7 @@ class StockValidator extends ValidatableItemProcessor
         }
     }
 
-    protected function handle(ItemInterface $item) {
+    protected function handle(ItemInterface $item, PurchaseContext $context) {
         $stock = $item->getProductClass()->getStock();
         $item->setQuantity($stock);
     }
