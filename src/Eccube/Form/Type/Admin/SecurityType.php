@@ -62,7 +62,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->config['mtext_len'])),
+                    new Assert\Length(array('max' => $this->config['ltext_len'])),
                 ),
             ))
             ->add('force_ssl', 'checkbox', array(
