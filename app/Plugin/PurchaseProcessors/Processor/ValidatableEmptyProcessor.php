@@ -4,11 +4,12 @@ namespace Plugin\PurchaseProcessors\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 class ValidatableEmptyProcessor extends ValidatableItemProcessor
 {
-    protected function validate(ItemInterface $item)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         $error = false;
         if ($error) {
@@ -16,7 +17,7 @@ class ValidatableEmptyProcessor extends ValidatableItemProcessor
         }
     }
 
-    protected function handle(ItemInterface $item)
+    protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $item->setQuantity(100);
     }
