@@ -1571,7 +1571,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      */
     public function getItems()
     {
-        return (new ItemCollection($this->getShipmentItems()->toArray()))->sort();
+        return (new ItemCollection($this->getShipmentItems()))->sort();
     }
 
     /**
