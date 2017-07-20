@@ -4,7 +4,7 @@ namespace Plugin\PurchaseProcessors\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 class ValidatableEmptyProcessor extends ValidatableItemProcessor
