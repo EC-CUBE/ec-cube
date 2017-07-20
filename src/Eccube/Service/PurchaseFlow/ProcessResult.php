@@ -2,12 +2,10 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-
 use Eccube\Application;
 
 class ProcessResult
 {
-
     const ERROR = 'ERROR';
     const WARNING = 'WARNING';
     const SUCCESS = 'SUCCESS';

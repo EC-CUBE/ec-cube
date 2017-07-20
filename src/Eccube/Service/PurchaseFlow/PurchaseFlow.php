@@ -73,7 +73,8 @@ class PurchaseFlow
 
     /**
      * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
+     * @param PurchaseContext     $context
+     *
      * @throws PurchaseException
      */
     public function purchase(ItemHolderInterface $target, PurchaseContext $context)
@@ -105,6 +106,7 @@ class PurchaseFlow
     {
         $total = $itemHolder->getItems()->reduce(function ($sum, ItemInterface $item) {
             $sum += $item->getPriceIncTax() * $item->getQuantity();
+
             return $sum;
         }, 0);
         $itemHolder->setTotal($total);
@@ -121,6 +123,7 @@ class PurchaseFlow
             ->getProductClasses()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += $item->getPriceIncTax() * $item->getQuantity();
+
                 return $sum;
             }, 0);
         // TODO
@@ -129,6 +132,7 @@ class PurchaseFlow
             $itemHolder->setSubTotal($total);
         }
     }
+
     /**
      * @param ItemHolderInterface $itemHolder
      */
@@ -138,6 +142,7 @@ class PurchaseFlow
             ->getDeliveryFees()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += $item->getPriceIncTax() * $item->getQuantity();
+
                 return $sum;
             }, 0);
         $itemHolder->setDeliveryFeeTotal($total);
@@ -152,6 +157,7 @@ class PurchaseFlow
             ->getDiscounts()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += $item->getPriceIncTax() * $item->getQuantity();
+
                 return $sum;
             }, 0);
         // TODO 後方互換のため discount には正の整数を代入する
@@ -167,6 +173,7 @@ class PurchaseFlow
             ->getCharges()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += $item->getPriceIncTax() * $item->getQuantity();
+
                 return $sum;
             }, 0);
         $itemHolder->setCharge($total);
@@ -180,6 +187,7 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->reduce(function ($sum, ItemInterface $item) {
                 $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
+
                 return $sum;
             }, 0);
         $itemHolder->setTax($total);

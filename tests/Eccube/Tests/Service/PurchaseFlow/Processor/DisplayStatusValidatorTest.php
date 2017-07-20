@@ -51,7 +51,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
     }
 
     /**
-     * 公開商品の場合はなにもしない
+     * 公開商品の場合はなにもしない.
      */
     public function testDisplayStatusWithShow()
     {
@@ -66,7 +66,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
     }
 
     /**
-     * 非公開商品の場合は明細の個数を0に設定する
+     * 非公開商品の場合は明細の個数を0に設定する.
      */
     public function testDisplayStatusWithClosed()
     {

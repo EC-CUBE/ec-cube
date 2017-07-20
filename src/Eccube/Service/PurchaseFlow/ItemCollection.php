@@ -72,13 +72,16 @@ class ItemCollection extends ArrayCollection
                 /* @var ShipmentItem $ShipmentItem */
                 return $ShipmentItem->getProductName() == $productName;
             });
+
         return !$ShipmentItems->isEmpty();
     }
 
     /**
-     * 指定した受注明細区分の明細が存在するかどうか
+     * 指定した受注明細区分の明細が存在するかどうか.
+     *
      * @param OrderItemType $OrderItemType 受注区分
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
@@ -86,6 +89,7 @@ class ItemCollection extends ArrayCollection
             /* @var ShipmentItem $ShipmentItem */
             return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $OrderItemType->getId();
         });
+
         return !$filteredItems->isEmpty();
     }
 
@@ -106,16 +110,19 @@ class ItemCollection extends ArrayCollection
                 if ($b->isProduct()) {
                     return 1;
                 }
+
                 return -1;
             } elseif ($a->isCharge()) {
                 if ($b->isDeliveryFee() || $b->isProduct()) {
                     return 1;
                 }
+
                 return -1;
             } elseif ($a->isDiscount()) {
                 if (!$b->isTax()) {
                     return 1;
                 }
+
                 return -1;
             } elseif ($a->isTax()) {
                 return 1;
@@ -123,6 +130,7 @@ class ItemCollection extends ArrayCollection
 
             return 0;
         });
+
         return new self($Items);
     }
 }

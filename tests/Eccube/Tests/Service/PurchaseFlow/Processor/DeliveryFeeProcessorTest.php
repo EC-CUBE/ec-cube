@@ -23,7 +23,6 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
-
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
@@ -38,7 +37,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $processor = new DeliveryFeeProcessor($this->app);
         $Order = $this->createOrder($this->createCustomer());
         /**
-         * @var ShipmentItem $ShipmentItem
+         * @var ShipmentItem
          */
         foreach ($Order->getShipmentItems() as $ShipmentItem) {
             if ($ShipmentItem->isDeliveryFee()) {
@@ -50,14 +49,14 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
     }
 
     /**
-     * すでに送料がある場合は送料を追加しない
+     * すでに送料がある場合は送料を追加しない.
      */
     public function testProcessWithDeliveryFee()
     {
         $processor = new DeliveryFeeProcessor($this->app);
         $Order = $this->createOrder($this->createCustomer());
         /**
-         * @var ShipmentItem $ShipmentItem
+         * @var ShipmentItem
          */
         foreach ($Order->getShipmentItems() as $ShipmentItem) {
             if ($ShipmentItem->isDeliveryFee()) {
@@ -80,7 +79,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 
     private function getDeliveryFees(Order $Order)
     {
-        return array_filter($Order->getShipmentItems()->toArray(), function($ShipmentItem) {
+        return array_filter($Order->getShipmentItems()->toArray(), function ($ShipmentItem) {
             return $ShipmentItem->isDeliveryFee();
         });
     }

@@ -33,7 +33,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class ValidatableItemProcessorTest extends EccubeTestCase
 {
-
     /*
      * カートの場合
      *      エラーなら明細丸め処理 ＆ カート画面にエラー表示¨
@@ -82,7 +81,6 @@ class ValidatableItemProcessorTest extends EccubeTestCase
 
 class ValidatableItemProcessorTest_NormalValidator extends ValidatableItemProcessor
 {
-
     public $handleCalled = false;
 
     protected function validate(ItemInterface $item, PurchaseContext $context)
@@ -97,7 +95,6 @@ class ValidatableItemProcessorTest_NormalValidator extends ValidatableItemProces
 
 class ValidatableItemProcessorTest_FailValidator extends ValidatableItemProcessor
 {
-
     public $handleCalled = false;
 
     protected function validate(ItemInterface $item, PurchaseContext $context)
@@ -109,5 +106,4 @@ class ValidatableItemProcessorTest_FailValidator extends ValidatableItemProcesso
     {
         $this->handleCalled = true;
     }
-
 }

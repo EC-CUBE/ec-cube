@@ -7,15 +7,17 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
- * 受注情報の日付更新
+ * 受注情報の日付更新.
  */
 class UpdateDatePurchaseProcessor implements PurchaseProcessor
 {
     protected $app;
+
     public function __construct($app)
     {
         $this->app = $app;
     }
+
     /**
      * {@inheritdoc}
      */

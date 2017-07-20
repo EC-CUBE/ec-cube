@@ -21,7 +21,7 @@ use Eccube\Tests\EccubeTestCase;
 class PurchaseFlowTest extends EccubeTestCase
 {
     /**
-     * @var PurchaseFlow $flow
+     * @var PurchaseFlow
      */
     protected $flow;
 
@@ -36,7 +36,6 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testExecute()
     {
-
         $this->assertInstanceOf(PurchaseFlow::class, $this->flow);
 
         $itemHolder = new Cart();
@@ -85,8 +84,8 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors_validationErrors()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor("error 1"));
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor("error 2"));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 1'));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 2'));
         $itemHolder = new Order();
         $itemHolder->addShipmentItem(new ShipmentItem());
 
@@ -98,8 +97,8 @@ class PurchaseFlowTest extends EccubeTestCase
 
     public function testProcessItemProcessors_validationErrors_with_multi_items()
     {
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor("error 1"));
-        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor("error 2"));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 1'));
+        $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 2'));
         $itemHolder = new Order();
         $itemHolder->addShipmentItem(new ShipmentItem());
         $itemHolder->addShipmentItem(new ShipmentItem());
@@ -111,7 +110,6 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected->addProcessResult(ProcessResult::warn('error 2'));
         self::assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
     }
-
 }
 
 class PurchaseFlowTest_ItemHolderProcessor implements ItemHolderProcessor
@@ -124,7 +122,6 @@ class PurchaseFlowTest_ItemHolderProcessor implements ItemHolderProcessor
 
 class PurchaseFlowTest_ItemProcessor implements ItemProcessor
 {
-
     public function process(ItemInterface $item, PurchaseContext $context)
     {
         return ProcessResult::success();
@@ -137,6 +134,7 @@ class PurchaseFlowTest_FailProcessor extends ValidatableItemProcessor
 
     /**
      * PurchaseFlowTest_FailProcessor constructor.
+     *
      * @param $errorMessage
      */
     public function __construct($errorMessage)
@@ -156,6 +154,7 @@ class PurchaseFlowTest_FailItemHolderProcessor extends ValidatableItemHolderProc
 
     /**
      * PurchaseFlowTest_FailProcessor constructor.
+     *
      * @param $errorMessage
      */
     public function __construct($errorMessage)
@@ -169,4 +168,3 @@ class PurchaseFlowTest_FailItemHolderProcessor extends ValidatableItemHolderProc
         throw new ItemValidateException($this->errorMessage);
     }
 }
-

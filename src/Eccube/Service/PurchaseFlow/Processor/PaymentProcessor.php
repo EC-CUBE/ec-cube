@@ -23,7 +23,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
 use Eccube\Entity\Delivery;
@@ -45,6 +44,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
 
     /**
      * DeliveryFeeProcessor constructor.
+     *
      * @param Application $app
      */
     public function __construct(Application $app)
@@ -75,7 +75,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
             }
             if ($i === 0) {
                 $paymentIds = $ids;
-                $i++;
+                ++$i;
                 continue;
             }
 

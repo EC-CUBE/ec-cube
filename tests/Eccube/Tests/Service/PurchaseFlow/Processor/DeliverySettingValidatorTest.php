@@ -49,7 +49,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
     }
 
     /**
-     * 配送業者が適切に設定されていれば何もしない
+     * 配送業者が適切に設定されていれば何もしない.
      */
     public function testDeliverySettingIsValid()
     {
@@ -59,7 +59,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
     }
 
     /**
-     * 配送業者が設定できていない商品の場合は明細の個数を0に設定する
+     * 配送業者が設定できていない商品の場合は明細の個数を0に設定する.
      */
     public function testDisplayStatusWithClosed()
     {

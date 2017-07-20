@@ -15,11 +15,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class StockReduceProcessor implements ItemProcessor
 {
-
     private $app;
 
     /**
      * DeliveryFeeProcessor constructor.
+     *
      * @param $app
      */
     public function __construct($app)
@@ -28,9 +28,11 @@ class StockReduceProcessor implements ItemProcessor
     }
 
     /**
-     * @param ItemInterface $item
+     * @param ItemInterface   $item
      * @param PurchaseContext $context
+     *
      * @return ProcessResult
+     *
      * @internal param ItemHolderInterface $itemHolder
      */
     public function process(ItemInterface $item, PurchaseContext $context)
@@ -60,6 +62,7 @@ class StockReduceProcessor implements ItemProcessor
                 return ProcessResult::fail('在庫エラー');
             }
         }
+
         return ProcessResult::success();
     }
 }

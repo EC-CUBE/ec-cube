@@ -2,9 +2,6 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-
-use Eccube\Application;
-use Eccube\Entity\Customer;
 use Eccube\Entity\ItemHolderInterface;
 
 class PurchaseContext extends \SplObjectStorage

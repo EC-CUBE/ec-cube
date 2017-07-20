@@ -23,7 +23,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-
 use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
@@ -42,6 +41,7 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 
     /**
      * DeliveryFeeProcessor constructor.
+     *
      * @param Application $app
      */
     public function __construct(Application $app)
@@ -51,7 +51,8 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param PurchaseContext     $context
+     *
      * @return ProcessResult
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)

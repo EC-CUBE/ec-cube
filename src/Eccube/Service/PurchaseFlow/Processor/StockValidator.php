@@ -30,7 +30,8 @@ class StockValidator extends ValidatableItemProcessor
         }
     }
 
-    protected function handle(ItemInterface $item, PurchaseContext $context) {
+    protected function handle(ItemInterface $item, PurchaseContext $context)
+    {
         $stock = $item->getProductClass()->getStock();
         $item->setQuantity($stock);
     }

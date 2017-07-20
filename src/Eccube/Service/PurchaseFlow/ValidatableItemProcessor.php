@@ -23,15 +23,15 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 
 abstract class ValidatableItemProcessor implements ItemProcessor
 {
     /**
-     * @param ItemInterface $item
+     * @param ItemInterface   $item
      * @param PurchaseContext $context
+     *
      * @return ProcessResult
      */
     public function process(ItemInterface $item, PurchaseContext $context)
@@ -49,7 +49,7 @@ abstract class ValidatableItemProcessor implements ItemProcessor
         }
     }
 
-    protected abstract function validate(ItemInterface $item, PurchaseContext $context);
+    abstract protected function validate(ItemInterface $item, PurchaseContext $context);
 
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {

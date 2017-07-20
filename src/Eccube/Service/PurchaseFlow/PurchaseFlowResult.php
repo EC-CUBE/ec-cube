@@ -23,20 +23,19 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-
 use Eccube\Entity\ItemHolderInterface;
 
 class PurchaseFlowResult
 {
-
-    /** @var  ItemHolderInterface */
+    /** @var ItemHolderInterface */
     private $itemHolder;
 
-    /** @var  ProcessResult[] */
+    /** @var ProcessResult[] */
     private $processResults = [];
 
     /**
      * PurcahseFlowResult constructor.
+     *
      * @param ItemHolderInterface $itemHolder
      */
     public function __construct(ItemHolderInterface $itemHolder)
@@ -54,7 +53,7 @@ class PurchaseFlowResult
      */
     public function getErrors()
     {
-        return array_filter($this->processResults, function(ProcessResult $processResult) {
+        return array_filter($this->processResults, function (ProcessResult $processResult) {
             return $processResult->isError();
         });
     }
@@ -64,7 +63,7 @@ class PurchaseFlowResult
      */
     public function getWarning()
     {
-        return array_filter($this->processResults, function(ProcessResult $processResult) {
+        return array_filter($this->processResults, function (ProcessResult $processResult) {
             return $processResult->isWarning();
         });
     }

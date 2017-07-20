@@ -38,7 +38,9 @@ class ItemCollectionTest extends EccubeTestCase
     public function testReduce()
     {
         $reducer = function ($sum, ItemInterface $item) {
-            return $sum =+ $item->getPrice() * $item->getQuantity();
+            $sum += $item->getPrice() * $item->getQuantity();
+
+            return $sum;
         };
 
         $this->expected = array_reduce($this->Items, $reducer, 0);
@@ -97,7 +99,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         shuffle($this->Items);
 
-        $this->expected = [ 1 => '商品', 2 => '送料', 3 => '手数料', 4 => '割引'];
+        $this->expected = [1 => '商品', 2 => '送料', 3 => '手数料', 4 => '割引'];
         $this->actual = [];
         $Items = (new ItemCollection($this->Items))->sort();
         foreach ($Items as $Item) {

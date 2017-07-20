@@ -8,10 +8,11 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
 {
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param PurchaseContext     $context
+     *
      * @return ProcessResult
      */
-    public final function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    final public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         try {
             $this->validate($itemHolder, $context);
@@ -22,7 +23,9 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
         }
     }
 
-    protected abstract function validate(ItemHolderInterface $itemHolder, PurchaseContext $context);
+    abstract protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context);
 
-    protected function handle(ItemHolderInterface $itemHolder) {}
+    protected function handle(ItemHolderInterface $itemHolder)
+    {
+    }
 }

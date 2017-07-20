@@ -23,7 +23,6 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
-
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
@@ -57,7 +56,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     }
 
     /**
-     * 送料無料条件に合致しない場合
+     * 送料無料条件に合致しない場合.
      */
     public function testProcess()
     {
@@ -72,7 +71,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     }
 
     /**
-     * 送料無料条件(金額)に合致する場合, 送料明細の個数は0になる
+     * 送料無料条件(金額)に合致する場合, 送料明細の個数は0になる.
      */
     public function testProcessWithAmount()
     {
@@ -91,7 +90,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     }
 
     /**
-     * 送料無料条件(個数)に合致する場合, 送料明細の個数は0になる
+     * 送料無料条件(個数)に合致する場合, 送料明細の個数は0になる.
      */
     public function testProcessWithQuantity()
     {

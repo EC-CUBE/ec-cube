@@ -23,7 +23,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -40,11 +39,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeeProcessor implements ItemHolderProcessor
 {
-
     private $app;
 
     /**
      * DeliveryFeeProcessor constructor.
+     *
      * @param $app
      */
     public function __construct($app)
@@ -54,7 +53,8 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
 
     /**
      * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param PurchaseContext     $context
+     *
      * @return ProcessResult
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -62,11 +62,13 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
         if ($this->containsDeliveryFeeItem($itemHolder) == false) {
             $this->addDeliveryFeeItem($itemHolder);
         }
+
         return ProcessResult::success();
     }
 
     /**
      * @param ItemHolderInterface $itemHolder
+     *
      * @return bool
      */
     private function containsDeliveryFeeItem(ItemHolderInterface $itemHolder)
@@ -76,11 +78,13 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * TODO 送料無料計算
+     * TODO 送料無料計算.
+     *
      * @param ItemHolderInterface $itemHolder
      */
     private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
@@ -95,7 +99,7 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
             $ShipmentItem = new ShipmentItem();
-            $ShipmentItem->setProductName("送料")
+            $ShipmentItem->setProductName('送料')
                 ->setPrice($Shipping->getShippingDeliveryFee())
                 ->setPriceIncTax($Shipping->getShippingDeliveryFee())
                 ->setTaxRate(8)

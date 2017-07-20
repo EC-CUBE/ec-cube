@@ -6,7 +6,6 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
-use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
@@ -49,7 +48,7 @@ class DeletedProductValidatorTest extends EccubeTestCase
     }
 
     /**
-     * 削除フラグ(スタータス)が立っていなければ何もしない
+     * 削除フラグ(スタータス)が立っていなければ何もしない.
      */
     public function testProductIsValid()
     {
@@ -59,7 +58,7 @@ class DeletedProductValidatorTest extends EccubeTestCase
     }
 
     /**
-     * 削除済商品の場合は明細の個数を0に設定する
+     * 削除済商品の場合は明細の個数を0に設定する.
      */
     public function testDisplayStatusWithClosed()
     {
