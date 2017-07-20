@@ -31,6 +31,7 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\ProductType;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.

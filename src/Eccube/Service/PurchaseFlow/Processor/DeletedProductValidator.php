@@ -6,6 +6,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class DeletedProductValidator extends ValidatableItemProcessor
 {

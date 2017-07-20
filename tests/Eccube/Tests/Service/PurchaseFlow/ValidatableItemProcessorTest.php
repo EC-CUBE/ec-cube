@@ -27,7 +27,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 use Eccube\Tests\EccubeTestCase;
 

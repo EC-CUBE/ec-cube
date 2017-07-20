@@ -3,7 +3,7 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Tests\EccubeTestCase;
 

@@ -34,7 +34,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

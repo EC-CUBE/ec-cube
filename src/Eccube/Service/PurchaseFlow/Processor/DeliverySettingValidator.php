@@ -6,6 +6,7 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 商品種別に配送業者が設定されているかどうか.

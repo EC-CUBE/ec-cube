@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 送料無料条件.

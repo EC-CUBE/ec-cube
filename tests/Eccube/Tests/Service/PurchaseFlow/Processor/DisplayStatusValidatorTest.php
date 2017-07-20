@@ -8,7 +8,7 @@ use Eccube\Entity\Master\Disp;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DisplayStatusValidatorTest extends EccubeTestCase

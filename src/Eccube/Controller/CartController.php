@@ -28,7 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

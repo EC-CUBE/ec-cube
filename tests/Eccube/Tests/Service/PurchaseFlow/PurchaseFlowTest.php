@@ -10,7 +10,7 @@ use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;

@@ -28,7 +28,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DeliveryFeeProcessorTest extends EccubeTestCase

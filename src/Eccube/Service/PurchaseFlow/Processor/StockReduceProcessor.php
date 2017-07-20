@@ -8,6 +8,7 @@ use Eccube\Entity\ItemInterface;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 在庫制御.

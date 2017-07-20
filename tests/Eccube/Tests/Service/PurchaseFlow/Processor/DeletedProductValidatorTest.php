@@ -7,7 +7,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class DeletedProductValidatorTest extends EccubeTestCase

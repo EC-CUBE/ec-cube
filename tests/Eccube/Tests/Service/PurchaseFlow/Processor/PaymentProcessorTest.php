@@ -11,7 +11,7 @@ use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentProcessorTest extends EccubeTestCase

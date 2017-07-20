@@ -34,7 +34,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

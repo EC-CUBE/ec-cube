@@ -26,7 +26,6 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 
 abstract class ValidatableItemProcessor implements ItemProcessor
 {

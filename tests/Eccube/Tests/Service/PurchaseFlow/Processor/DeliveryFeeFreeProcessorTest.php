@@ -27,7 +27,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Tests\EccubeTestCase;
 

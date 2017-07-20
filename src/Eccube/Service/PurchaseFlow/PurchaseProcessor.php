@@ -4,7 +4,6 @@ namespace Eccube\Service\PurchaseFlow;
 
 
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
 
 interface PurchaseProcessor
 {

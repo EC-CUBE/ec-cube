@@ -33,6 +33,7 @@ use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 送料明細追加.

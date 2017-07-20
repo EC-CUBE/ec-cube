@@ -27,6 +27,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 合計金額のマイナスチェック.

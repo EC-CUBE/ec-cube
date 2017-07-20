@@ -26,7 +26,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase

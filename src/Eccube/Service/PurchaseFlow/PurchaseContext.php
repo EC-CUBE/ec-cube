@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Service\PurchaseFlow\Processor;
+namespace Eccube\Service\PurchaseFlow;
 
 
 use Eccube\Application;

@@ -26,7 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\Processor\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 
 class AbstractShoppingController extends AbstractController

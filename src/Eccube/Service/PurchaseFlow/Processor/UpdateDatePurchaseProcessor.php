@@ -4,6 +4,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 受注情報の日付更新
