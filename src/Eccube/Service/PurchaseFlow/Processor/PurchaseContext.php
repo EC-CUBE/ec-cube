@@ -13,19 +13,13 @@ class PurchaseContext extends \SplObjectStorage
 
     private $originHolder;
 
-    public static function create(Application $app, ItemHolderInterface $originHolder = null)
+    public static function create(ItemHolderInterface $originHolder = null)
     {
-        $user = $app->user();
-        if ($user instanceof Customer) {
-            return new self($app->user(), $originHolder);
-        } else {
-            return new self(null, $originHolder);
-        }
+        return new self($originHolder);
     }
 
-    protected function __construct(Customer $user = null, ItemHolderInterface $originHolder = null)
+    protected function __construct(ItemHolderInterface $originHolder = null)
     {
-        $this->user = $user;
         $this->originHolder = $originHolder;
     }
 

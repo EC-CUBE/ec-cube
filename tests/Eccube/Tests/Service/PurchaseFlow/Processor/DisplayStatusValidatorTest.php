@@ -60,7 +60,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $Disp = $app['eccube.repository.master.disp']->find(Disp::DISPLAY_SHOW);
         $this->Product->setStatus($Disp);
 
-        $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
+        $this->validator->process($this->cartItem, PurchaseContext::create());
 
         self::assertEquals(10, $this->cartItem->getQuantity());
     }
@@ -75,7 +75,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $Disp = $app['eccube.repository.master.disp']->find(Disp::DISPLAY_HIDE);
         $this->Product->setStatus($Disp);
 
-        $this->validator->process($this->cartItem, PurchaseContext::create($this->app));
+        $this->validator->process($this->cartItem, PurchaseContext::create());
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }

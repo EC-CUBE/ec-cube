@@ -281,7 +281,7 @@ class ProductController
 
                     // 明細の正規化
                     $flow = $app['eccube.purchase.flow.cart'];
-                    $result = $flow->calculate($Cart, PurchaseContext::create($app));
+                    $result = $flow->calculate($Cart, PurchaseContext::create());
 
                     // 復旧不可のエラーが発生した場合は追加した明細を削除.
                     if ($result->hasError()) {

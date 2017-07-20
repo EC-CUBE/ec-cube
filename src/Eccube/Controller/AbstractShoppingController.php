@@ -60,7 +60,7 @@ class AbstractShoppingController extends AbstractController
     protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $app['eccube.purchase.flow.shopping']->calculate($itemHolder, PurchaseContext::create($app));
+        $flowResult = $app['eccube.purchase.flow.shopping']->calculate($itemHolder, PurchaseContext::create());
         foreach ($flowResult->getWarning() as $warning) {
             $app->addRequestError($warning->getMessage());
         }

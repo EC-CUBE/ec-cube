@@ -106,7 +106,7 @@ class EditController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
-        $purchaseContext = PurchaseContext::create($app, $OriginOrder);
+        $purchaseContext = PurchaseContext::create($OriginOrder);
 
         if ($form->isSubmitted()) {
             $event = new EventArgs(
