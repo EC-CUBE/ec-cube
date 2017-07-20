@@ -204,6 +204,195 @@ class CartService
     }
 
     /**
+     * @param ProductClass|integer $ProductClass 商品規格エンティティ、またはそのID
+     * @return CartItem
+     * @throws CartException
+     */
+    public function generateCartItem($ProductClass)
+    {
+        if (!$ProductClass instanceof ProductClass) {
+            $ProductClass = $this->entityManager
+                ->getRepository('Eccube\Entity\ProductClass')
+                ->find($ProductClass);
+            if (!$ProductClass) {
+                throw new CartException('cart.product.delete');
+            }
+        }
+        $CartItem = new CartItem();
+        $CartItem
+            ->setClassName('Eccube\Entity\ProductClass')
+            ->setObject($ProductClass)
+            ->setClassId((string)$ProductClass->getId())
+            ->setPrice($ProductClass->getPrice02IncTax())
+            ->setQuantity(1);
+        return $CartItem;
+    }
+
+    /**
+     * カート商品を追加する
+     *
+     * @param  CartItem $CartItem
+     * @return \Eccube\Service\CartService
+     */
+    public function addCartItem($CartItem)
+    {
+        $quantity = $CartItem->getQuantity() + $this->getCartItemQuantity($CartItem);
+        $this->setCartItemQuantity($CartItem, $quantity);
+
+        return $this;
+    }
+
+    /**
+     * カート商品の数量を取得する
+     *
+     * @param CartItem $CartItem
+     * @return int
+     */
+    public function getCartItemQuantity($CartItem)
+    {
+        $compareService = $this->generateCartCompareService();
+        $ExistsCartItem = $compareService->getExistsCartItem($CartItem);
+        return $ExistsCartItem ?
+            $ExistsCartItem->getQuantity() :
+            0;
+    }
+
+    /**
+     * @param  CartItem $CartItem
+     * @param  integer $quantity
+     * @return \Eccube\Service\CartService
+     * @throws CartException
+     */
+    public function setCartItemQuantity($CartItem, $quantity)
+    {
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $CartItem->getObject();
+
+        if (!$this->isProductDisplay($ProductClass)) {
+            throw new CartException('cart.product.not.status');
+        }
+
+        $productName = $this->getProductName($ProductClass);
+
+        // 商品種別に紐づく配送業者を取得
+        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($ProductClass->getProductType());
+
+        if (count($deliveries) == 0) {
+            // 商品種別が存在しなければエラー
+            $this->removeProduct($ProductClass->getId());
+            $this->addError('cart.product.not.producttype', $productName);
+            throw new CartException('cart.product.not.producttype');
+        }
+
+        $this->setCanAddProductType($ProductClass->getProductType());
+
+        if ($this->BaseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
+            if (!$this->canAddProduct($ProductClass->getId())) {
+                // 複数配送対応でなく、かつ商品種別が異なればエラー
+                throw new CartException('cart.product.type.kind');
+            }
+        } else {
+            // 複数配送対応で、かつ同一支払方法がなければエラー
+            if (!$this->canAddProductPayment($ProductClass->getProductType())) {
+                throw new CartException('cart.product.payment.kind');
+            }
+        }
+
+        $compareService = $this->generateCartCompareService();
+        $ExistsCartItem = $compareService->getExistsCartItem($CartItem);
+        $subtotal = 0;
+        $productClassQuantity = 0;
+
+        foreach ($this->getCartObj()->getCartItems() as $CurrentCartItem) {
+
+            $CurrentProductClass = $CurrentCartItem->getObject();
+
+            // 同じ商品規格IDの数量を集計
+            if ($CurrentProductClass->getId() == $ProductClass->getId()) {
+                $productClassQuantity += $CurrentCartItem->getQuantity();
+            }
+
+            // 小計を集計
+            $subtotal += $CurrentCartItem->getTotalPrice();
+        }
+
+        // 既存カートの数量と小計を除外
+        if ($ExistsCartItem) {
+            $subtotal -= $CurrentCartItem->getTotalPrice();
+            $productClassQuantity -= $CurrentCartItem->getQuantity();
+        }
+
+        for ($newQuantity = 0; $newQuantity < $quantity; $newQuantity++) {
+            // TODO 単価をProductClassではなくCartItemから取得する
+            $subtotal += $ProductClass->getPrice02IncTax();
+            if ($subtotal > $this->app['config']['max_total_fee']) {
+                $this->setError('cart.over.price_limit');
+                break;
+            }
+        }
+
+        // 数量が0の場合、エラー
+        if ($newQuantity == 0) {
+            throw new CartException('cart.over.price_limit');
+        }
+
+        $totalQuantity = $productClassQuantity + $newQuantity;
+        // 制限数チェック(在庫不足の場合は、処理の中でカート内商品を削除している)
+        $newTotalQuantity = $this->setProductLimit($ProductClass, $productName, $totalQuantity);
+        $quantity = min($quantity, $newTotalQuantity - $productClassQuantity);
+
+        // 新しい数量でカート内商品を登録する
+        if (0 < $quantity) {
+            $CartItem->setQuantity($quantity);
+            $this->cart->setCartItem($CartItem, $compareService);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $cart_no
+     * @return \Eccube\Service\CartService
+     */
+    public function removeCartNo($cart_no)
+    {
+        $this->cart->removeCartItemByCartNo($cart_no);
+        $this->resetPayment();
+
+        return $this;
+    }
+
+    /**
+     * 支払い方法を再設定する
+     *
+     * @return $this
+     */
+    protected function resetPayment()
+    {
+        // 支払方法の再設定
+        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+
+            // 複数配送対応
+            $productTypes = array();
+            foreach ($this->getCart()->getCartItems() as $item) {
+                /* @var $ProductClass \Eccube\Entity\ProductClass */
+                $ProductClass = $item->getObject();
+                $productTypes[] = $ProductClass->getProductType();
+            }
+
+            // 配送業者を取得
+            $deliveries = $this->entityManager->getRepository('Eccube\Entity\Delivery')->getDeliveries($productTypes);
+
+            // 支払方法を取得
+            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayments($deliveries);
+
+            $this->getCart()->setPayments($payments);
+        }
+
+        return $this;
+    }
+
+    /**
      *
      * @param  string $productClassId
      * @param  integer $quantity
@@ -312,7 +501,7 @@ class CartService
                 ->setPrice($ProductClass->getPrice02IncTax())
                 ->setQuantity($quantity);
 
-            $this->cart->setCartItem($CartItem);
+            $this->cart->setCartItem($CartItem, $this->generateCartCompareService());
         }
 
         return $this;
@@ -419,6 +608,7 @@ class CartService
      */
     public function getCart()
     {
+        $productClassQuantities = [];
         foreach ($this->cart->getCartItems() as $CartItem) {
 
             /** @var \Eccube\Entity\ProductClass $ProductClass */
@@ -437,18 +627,23 @@ class CartService
                 } else {
 
                     $productName = $this->getProductName($ProductClass);
+                    $productClassId = $ProductClass->getId();
 
-                    // 制限数チェック(在庫不足の場合は、処理の中でカート内商品を削除している)
-                    $quantity = $this->setProductLimit($ProductClass, $productName, $CartItem->getQuantity());
+                    $quantity = $CartItem->getQuantity();
+                    $productClassQuantity = isset($productClassQuantities[$productClassId]) ?
+                        $productClassQuantities[$productClassId] :
+                        0;
+                    $totalQuantity = $productClassQuantity + $quantity;
+                    $newTotalQuantity = $this->setProductLimit($ProductClass, $productName, $totalQuantity);
+                    $newQuantity = min($quantity, $newTotalQuantity - $productClassQuantity);
+                    $productClassQuantities[$productClassId] = $newTotalQuantity;
 
                     /// 個数が異なれば、新しい数量でカート内商品を更新する
-                    if ((0 < $quantity) && ($CartItem->getQuantity() != $quantity)) {
+                    if ((0 < $newQuantity) && ($quantity != $newQuantity)) {
                         // 個数が異なれば更新
-                        $CartItem->setQuantity($quantity);
-                        $this->cart->setCartItem($CartItem);
+                        $CartItem->setQuantity($newQuantity);
                     }
                 }
-
             } else {
                 // 商品情報が削除されていたらエラー
                 $this->setError('cart.product.delete');
@@ -467,26 +662,7 @@ class CartService
     public function removeProduct($productClassId)
     {
         $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
-
-        // 支払方法の再設定
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-
-            // 複数配送対応
-            $productTypes = array();
-            foreach ($this->getCart()->getCartItems() as $item) {
-                /* @var $ProductClass \Eccube\Entity\ProductClass */
-                $ProductClass = $item->getObject();
-                $productTypes[] = $ProductClass->getProductType();
-            }
-
-            // 配送業者を取得
-            $deliveries = $this->entityManager->getRepository('Eccube\Entity\Delivery')->getDeliveries($productTypes);
-
-            // 支払方法を取得
-            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayments($deliveries);
-
-            $this->getCart()->setPayments($payments);
-        }
+        $this->resetPayment();
 
         return $this;
     }
@@ -528,6 +704,37 @@ class CartService
         $quantity = $this->getProductQuantity($productClassId) - 1;
         if ($quantity > 0) {
             $this->setProductQuantity($productClassId, $quantity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $cart_no
+     * @return \Eccube\Service\CartService
+     */
+    public function upCartNoQuantity($cart_no)
+    {
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+        if ($CartItem) {
+            $this->setCartItemQuantity($CartItem, $CartItem->getQuantity() + 1);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $cart_no
+     * @return \Eccube\Service\CartService
+     */
+    public function downCartNoQuantity($cart_no)
+    {
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+        if ($CartItem) {
+            $quantity = $CartItem->getQuantity() - 1;
+            if ($quantity > 0) {
+                $this->setCartItemQuantity($CartItem, $quantity);
+            }
         }
 
         return $this;
@@ -713,4 +920,11 @@ class CartService
         return $quantity;
     }
 
+    /**
+     * @return \Eccube\Service\CartCompareService
+     */
+    public function generateCartCompareService()
+    {
+        return $this->app['eccube.service.cart.compare']($this->getCart());
+    }
 }

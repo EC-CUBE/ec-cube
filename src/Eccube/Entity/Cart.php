@@ -48,6 +48,11 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     private $total_price;
 
     /**
+     * @var int
+     */
+    private $current_cart_no = 0;
+
+    /**
      * @var array
      */
     private $Payments = array();
@@ -96,23 +101,26 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     }
 
     /**
-     * @param  \Eccube\Entity\CartItem $AddCartItem
+     * @param  \Eccube\Entity\CartItem $AddCartItem カート商品インスタンス
+     * インスタンスがカート内に
+     *      - 存在する場合：何もしない
+     *      - 存在せず、かつCartCompareServiceで同一と判定されたカート商品が
+     *          - 存在する場合：そのインスタンスの数量を変更する
+     *          - 存在しない場合：新しいカート商品を追加する
+     * @param  \Eccube\Service\CartCompareService $compareService
      * @return \Eccube\Entity\Cart
      */
-    public function setCartItem(\Eccube\Entity\CartItem $AddCartItem)
+    public function setCartItem(\Eccube\Entity\CartItem $AddCartItem, $compareService)
     {
-        $find = false;
-        foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
-                $find = true;
-                $CartItem
+        if (!$this->CartItems->contains($AddCartItem)) {
+            $ExistsCartItem = $compareService->getExistsCartItem($AddCartItem);
+            if ($ExistsCartItem) {
+                $ExistsCartItem
                     ->setPrice($AddCartItem->getPrice())
                     ->setQuantity($AddCartItem->getQuantity());
+            } else {
+                $this->addCartItem($AddCartItem);
             }
-        }
-
-        if (!$find) {
-            $this->addCartItem($AddCartItem);
         }
 
         return $this;
@@ -124,6 +132,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
      */
     public function addCartItem(CartItem $CartItem)
     {
+        $CartItem->setCartNo($this->getNextCartNo());
         $this->CartItems[] = $CartItem;
 
         return $this;
@@ -145,6 +154,21 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
         return null;
     }
 
+    /**
+     * @param int $cart_no
+     * @return CartItem|null
+     */
+    public function getCartItemByCartNo($cart_no)
+    {
+        $CartItem = $this->CartItems->filter(function ($CartItem) use ($cart_no) {
+            return $cart_no == $CartItem->getCartNo();
+        })->first();
+        // 配列が空白の場合falseを返すため、明示的にnullを返す
+        return $CartItem ?
+            $CartItem :
+            null;
+    }
+
     public function removeCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
@@ -152,6 +176,23 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
                 $this->CartItems->removeElement($CartItem);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * カート商品をcart_noから削除する
+     *
+     * @param int $cart_no
+     * @return $this
+     */
+    public function removeCartItemByCartNo($cart_no)
+    {
+        $this->CartItems->map(function ($CartItem) use ($cart_no) {
+            if ($CartItem->getCartNo() == $cart_no) {
+                $this->CartItems->removeElement($CartItem);
+            }
+        });
 
         return $this;
     }
@@ -266,4 +307,8 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
         return $this;
     }
 
+    public function getNextCartNo()
+    {
+        return $this->current_cart_no++;
+    }
 }

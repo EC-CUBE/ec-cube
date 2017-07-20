@@ -433,6 +433,7 @@ final class EccubeEvents
 
     // order
     const FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE = 'front.mypage.mypage.order.initialize';
+    const FRONT_MYPAGE_MYPAGE_ORDER_ADD_CART = 'front.mypage.mypage.order.add_cart';
     const FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE = 'front.mypage.mypage.order.complete';
 
     // favorite
@@ -473,6 +474,20 @@ final class EccubeEvents
     // remove
     const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
     const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
+
+    // up_cart_no
+    const FRONT_CART_UP_CART_NO_INITIALIZE = 'front.cart.up_cart_no.initialize';
+    const FRONT_CART_UP_CART_NO_COMPLETE = 'front.cart.up_cart_no.complete';
+    const FRONT_CART_UP_CART_NO_EXCEPTION = 'front.cart.up_cart_no.exception';
+
+    // down_cart_no
+    const FRONT_CART_DOWN_CART_NO_INITIALIZE = 'front.cart.down_cart_no.initialize';
+    const FRONT_CART_DOWN_CART_NO_COMPLETE = 'front.cart.down_cart_no.complete';
+    const FRONT_CART_DOWN_CART_NO_EXCEPTION = 'front.cart.down_cart_no.exception';
+
+    // remove_cart_no
+    const FRONT_CART_REMOVE_CART_NO_INITIALIZE = 'front.cart.remove_cart_no.initialize';
+    const FRONT_CART_REMOVE_CART_NO_COMPLETE = 'front.cart.remove_cart_no.complete';
 
     // buystep
     const FRONT_CART_BUYSTEP_INITIALIZE = 'front.cart.buystep.initialize';
@@ -517,6 +532,7 @@ final class EccubeEvents
     // detail
     const FRONT_PRODUCT_DETAIL_INITIALIZE = 'front.product.detail.initialize';
     const FRONT_PRODUCT_DETAIL_FAVORITE = 'front.product.detail.favorite';
+    const FRONT_PRODUCT_DETAIL_ADD_CART = 'front.product.detail.add_cart';
     const FRONT_PRODUCT_DETAIL_COMPLETE = 'front.product.detail.complete';
 
 

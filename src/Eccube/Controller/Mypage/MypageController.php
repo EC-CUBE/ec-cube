@@ -204,7 +204,21 @@ class MypageController extends AbstractController
             try {
                 if ($OrderDetail->getProduct() &&
                     $OrderDetail->getProductClass()) {
-                    $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
+                    $CartItem = $app['eccube.service.cart']->generateCartItem($OrderDetail->getProductClass());
+                    $CartItem->setQuantity($OrderDetail->getQuantity());
+
+                    $event = new EventArgs(
+                        array(
+                            'Order' => $Order,
+                            'OrderDetail' => $OrderDetail,
+                            'Customer' => $Customer,
+                            'CartItem' => $CartItem,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_ADD_CART, $event);
+
+                    $app['eccube.service.cart']->addCartItem($CartItem)->save();
                 } else {
                     log_info($app->trans('cart.product.delete'), array($id));
                     $app->addRequestError('cart.product.delete');

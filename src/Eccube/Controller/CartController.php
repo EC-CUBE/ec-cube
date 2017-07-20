@@ -346,6 +346,184 @@ class CartController extends AbstractController
     }
 
     /**
+     * カートに入っている商品の個数を1増やす.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $cart_no
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function upCartNo(Application $app, Request $request, $cart_no)
+    {
+        $this->isTokenValid($app);
+
+        // FRONT_CART_UP_INITIALIZE
+        $event = new EventArgs(
+            array(
+                'cart_no' => $cart_no,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_CART_NO_INITIALIZE, $event);
+
+        try {
+
+            log_info('カート加算処理開始', array('cart_no' => $cart_no));
+
+            $cart_no = $event->getArgument('cart_no');
+
+            $app['eccube.service.cart']->upCartNoQuantity($cart_no)->save();
+
+            // FRONT_CART_UP_COMPLETE
+            $event = new EventArgs(
+                array(
+                    'cart_no' => $cart_no,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_CART_NO_COMPLETE, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            log_info('カート加算処理完了', array('cart_no' => $cart_no));
+
+        } catch (CartException $e) {
+
+            log_info('カート加算エラー', array($e->getMessage()));
+
+            // FRONT_CART_UP_EXCEPTION
+            $event = new EventArgs(
+                array(
+                    'exception' => $e,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_CART_NO_EXCEPTION, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            $app->addRequestError($e->getMessage());
+        }
+
+        return $app->redirect($app->url('cart'));
+    }
+
+    /**
+     * カートに入っている商品の個数を1減らす.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $cart_no
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function downCartNo(Application $app, Request $request, $cart_no)
+    {
+        $this->isTokenValid($app);
+
+        // FRONT_CART_DOWN_INITIALIZE
+        $event = new EventArgs(
+            array(
+                'cart_no' => $cart_no,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_CART_NO_INITIALIZE, $event);
+
+        try {
+
+            log_info('カート減算処理開始', array('cart_no' => $cart_no));
+
+            $cart_no = $event->getArgument('cart_no');
+
+            $app['eccube.service.cart']->downCartNoQuantity($cart_no)->save();
+
+            // FRONT_CART_DOWN_COMPLETE
+            $event = new EventArgs(
+                array(
+                    'cart_no' => $cart_no,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_CART_NO_COMPLETE, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            log_info('カート減算処理完了', array('cart_no' => $cart_no));
+
+        } catch (CartException $e) {
+
+            log_info('カート減算エラー', array($e->getMessage()));
+
+            // FRONT_CART_DOWN_EXCEPTION
+            $event = new EventArgs(
+                array(
+                    'exception' => $e,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_CART_NO_EXCEPTION, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            $app->addRequestError($e->getMessage());
+        }
+
+        return $app->redirect($app->url('cart'));
+    }
+
+    /**
+     * カートに入っている商品を削除する.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $cart_no
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function removeCartNo(Application $app, Request $request, $cart_no)
+    {
+        $this->isTokenValid($app);
+
+        log_info('カート削除処理開始', array('cart_no' => $cart_no));
+
+        // FRONT_CART_REMOVE_INITIALIZE
+        $event = new EventArgs(
+            array(
+                'cart_no' => $cart_no,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_INITIALIZE, $event);
+
+        $cart_no = $event->getArgument('cart_no');
+        $app['eccube.service.cart']->removeCartNo($cart_no)->save();
+
+        log_info('カート削除処理完了', array('cart_no' => $cart_no));
+
+        // FRONT_CART_REMOVE_COMPLETE
+        $event = new EventArgs(
+            array(
+                'cart_no' => $cart_no,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_COMPLETE, $event);
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
+
+        return $app->redirect($app->url('cart'));
+    }
+
+    /**
      * カートに商品を個数を指定して設定する.
      *
      * @param Application $app
