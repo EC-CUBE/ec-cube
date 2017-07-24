@@ -26,6 +26,8 @@ namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
 use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\ItemValidateException;
+use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Util\EntityUtil;
 use Eccube\Entity\Master\OrderItemType;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,8 +41,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\OrderRepository")
  */
-class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
+class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
+    /**
+     * @var ItemValidateException[]
+     */
+    private $errors = [];
+
     /**
      * isMultiple
      * 
@@ -1558,11 +1565,13 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     }
 
     /**
-     * Alias of getShipmentItems()
+     * Sorted to getShipmentItems()
+     *
+     * @return ItemCollection
      */
     public function getItems()
     {
-        return $this->getShipmentItems();
+        return (new ItemCollection($this->getShipmentItems()))->sort();
     }
 
     /**
@@ -1869,5 +1878,40 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     public function getOrderStatus()
     {
         return $this->OrderStatus;
+    }
+
+    /**
+     * @param string $error
+     * @return void
+     */
+    public function addError($error)
+    {
+        $this->errors[] = $error;
+    }
+
+    /**
+     * @return ItemValidateException[]
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @param ItemInterface $item
+     */
+    public function addItem(ItemInterface $item)
+    {
+        $this->ShipmentItems->add($item);
+    }
+
+    public function getQuantity()
+    {
+        $quantity = 0;
+        foreach($this->getItems() as $item) {
+            $quantity += $item->getQuantity();
+        }
+
+        return $quantity;
     }
 }

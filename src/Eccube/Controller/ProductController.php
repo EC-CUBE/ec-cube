@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -33,6 +34,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -271,12 +273,29 @@ class ProductController
 
                     log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
-                    try {
-                        $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
-                    } catch (CartException $e) {
-                        log_info('カート追加エラー', array($e->getMessage()));
-                        $app->addRequestError($e->getMessage());
+                    // カートを取得
+                    $Cart = $app['eccube.service.cart']->getCart();
+
+                    // カートへ追加
+                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+
+                    // 明細の正規化
+                    $flow = $app['eccube.purchase.flow.cart'];
+                    $result = $flow->calculate($Cart, PurchaseContext::create());
+
+                    // 復旧不可のエラーが発生した場合は追加した明細を削除.
+                    if ($result->hasError()) {
+                        $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
+                        foreach ($result->getErrors() as $error) {
+                            $app->addRequestError($error);
+                        }
                     }
+
+                    foreach ($result->getWarning() as $warning) {
+                        $app->addRequestError($warning);
+                    }
+
+                    $app['eccube.service.cart']->save();
 
                     log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 

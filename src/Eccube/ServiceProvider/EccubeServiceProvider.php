@@ -24,8 +24,22 @@
 
 namespace Eccube\ServiceProvider;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
+use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
+use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
+use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
+use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
+use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
+use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\StockValidator;
+use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -52,7 +66,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['twig'];
         };
         $app['eccube.service.cart'] = function () use ($app) {
-            return new \Eccube\Service\CartService($app);
+            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
         };
         $app['eccube.service.order'] = function () use ($app) {
             return new \Eccube\Service\OrderService($app);
@@ -522,6 +536,61 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
         // TODO QueryCustomizerの追加方法は要検討
         $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
+
+        $app['eccube.purchase.flow.cart.item_processors'] = function ($app) {
+            $processors = new ArrayCollection();
+            $processors->add(new DeletedProductValidator());
+            $processors->add(new DisplayStatusValidator());
+            $processors->add(new SaleLimitValidator());
+            $processors->add(new DeliverySettingValidator($app['eccube.repository.delivery']));
+
+            return $processors;
+        };
+
+        $app['eccube.purchase.flow.cart.holder_processors'] = function ($app) {
+            $processors = new ArrayCollection();
+            $processors->add(new PaymentProcessor($app));
+            $processors->add(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            $processors->add(new DeliveryFeeFreeProcessor($app));
+            $processors->add(new PaymentTotalNegativeValidator());
+
+            return $processors;
+        };
+
+        // example
+        $app->extend('eccube.purchase.flow.cart.item_processors', function ($processors, $app) {
+
+            $processors->add(new StockValidator());
+
+            return $processors;
+        });
+
+        $app['eccube.purchase.flow.cart'] = function ($app) {
+            $flow = new PurchaseFlow();
+            $flow->setItemProcessors($app['eccube.purchase.flow.cart.item_processors']);
+            $flow->setItemHolderProcessors($app['eccube.purchase.flow.cart.holder_processors']);
+
+            return $flow;
+        };
+
+        $app['eccube.purchase.flow.shopping'] = function () use ($app) {
+            $flow = new PurchaseFlow();
+            $flow->addItemProcessor(new StockValidator());
+            $flow->addItemProcessor(new DisplayStatusValidator());
+            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            $flow->addItemHolderProcessor(new DeliveryFeeProcessor($app));
+            $flow->addItemHolderProcessor(new PaymentTotalNegativeValidator());
+            return $flow;
+        };
+
+        $app['eccube.purchase.flow.order'] = function () use ($app) {
+            $flow = new PurchaseFlow();
+            $flow->addItemProcessor(new StockValidator());
+            $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
+            $flow->addPurchaseProcessor(new UpdateDatePurchaseProcessor($app));
+            $flow->addPurchaseProcessor(new AdminOrderRegisterPurchaseProcessor($app));
+            return $flow;
+        };
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)

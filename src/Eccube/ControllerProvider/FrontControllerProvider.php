@@ -48,12 +48,6 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // cart
         $c->match('/cart', '\Eccube\Controller\CartController::index')->bind('cart');
-        $c->post('/cart/add', '\Eccube\Controller\CartController::add')->bind('cart_add');
-        $c->put('/cart/up/{productClassId}', '\Eccube\Controller\CartController::up')->bind('cart_up')->assert('productClassId', '\d+');
-        $c->put('/cart/down/{productClassId}', '\Eccube\Controller\CartController::down')->bind('cart_down')->assert('productClassId', '\d+');
-        // setquantity deprecated since 3.0.0, to be removed in 3.1
-        $c->put('/cart/setQuantity/{productClassId}/{quantity}', '\Eccube\Controller\CartController::setQuantity')->bind('cart_set_quantity')->assert('productClassId', '\d+')->assert('quantity', '\d+');
-        $c->put('/cart/remove/{productClassId}', '\Eccube\Controller\CartController::remove')->bind('cart_remove')->assert('productClassId', '\d+');
         $c->match('/cart/buystep', '\Eccube\Controller\CartController::buystep')->bind('cart_buystep');
 
         // contact
@@ -118,11 +112,11 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/shipping_edit/{id}', '\Eccube\Controller\ShoppingController::shippingEdit')->assert('id', '\d+')->bind('shopping_shipping_edit');
         $c->match('/shopping/complete', '\Eccube\Controller\ShoppingController::complete')->bind('shopping_complete');
         $c->match('/shopping/login', '\Eccube\Controller\ShoppingController::login')->bind('shopping_login');
-        $c->match('/shopping/nonmember', '\Eccube\Controller\ShoppingController::nonmember')->bind('shopping_nonmember');
-        $c->match('/shopping/customer', '\Eccube\Controller\ShoppingController::customer')->bind('shopping_customer');
+        $c->match('/shopping/nonmember', '\Eccube\Controller\NonMemberShoppingController::index')->bind('shopping_nonmember');
+        $c->match('/shopping/customer', '\Eccube\Controller\NonMemberShoppingController::customer')->bind('shopping_customer');
         $c->match('/shopping/shopping_error', '\Eccube\Controller\ShoppingController::shoppingError')->bind('shopping_error');
         $c->match('/shopping/shipping_multiple_change', '\Eccube\Controller\ShoppingController::shippingMultipleChange')->bind('shopping_shipping_multiple_change');
-        $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
+        $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShippingMultipleController::index')->bind('shopping_shipping_multiple');
         $c->match('/shopping/shipping_multiple_edit', '\Eccube\Controller\ShoppingController::shippingMultipleEdit')->bind('shopping_shipping_multiple_edit');
 
         return $c;

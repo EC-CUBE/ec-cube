@@ -27,8 +27,9 @@ class ShoppingServiceTest extends AbstractServiceTestCase
             )
         );
         $this->CartService = $this->app['eccube.service.cart'];
-        $this->CartService->setProductQuantity(1, 1)
-            ->save();
+        $this->CartService->clear();
+        $this->CartService->addProduct(1, 1);
+        $this->CartService->save();
 
         $this->ProductType1 = $this->app['eccube.repository.master.product_type']->find(1);
         $this->ProductType2 = $this->app['eccube.repository.master.product_type']->find(2);

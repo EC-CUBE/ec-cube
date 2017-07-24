@@ -231,17 +231,12 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            // ->add('OrderDetails', CollectionType::class, array(
-            //     'entry_type' => OrderDetailType::class,
-            //     'allow_add' => true,
-            //     'allow_delete' => true,
-            //     'prototype' => true,
-            // ))
             ->add('ShipmentItems', CollectionType::class, array(
                 'entry_type' => ShipmentItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
+                'data' => $options['SortedItems']
             ))
             ->add('OrderDetailsErrors', TextType::class, [
                 'mapped' => false,
@@ -342,14 +337,6 @@ class OrderType extends AbstractType
                 $Order->setPaymentMethod($Payment->getMethod());
             }
         });
-        // TODO 手数料, 値引きの集計は CalculateService で
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $Order = $event->getData();
-            $Order->setDiscount($Order->calculateDiscountTotal());
-            // $Order->setCharge($Order->calculateChargeTotal());
-            // $Order->setDeliveryFeeTotal($Order->calculateDeliveryFeeTotal());
-            $event->setData($Order);
-        });
         // 会員受注の場合、会員の性別/職業/誕生日をエンティティにコピーする
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Order = $event->getData();
@@ -370,6 +357,7 @@ class OrderType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Order',
             'orign_order' => null,
+            'SortedItems' => null
         ));
     }
 

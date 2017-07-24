@@ -61,8 +61,18 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
     protected function scenarioCartIn($client, $product_class_id = 1)
     {
-        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => $product_class_id));
+        $crawler = $client->request(
+            'PUT',
+            $this->app->path(
+                'cart_handle_item',
+                [
+                    'operation' => 'up',
+                    'productClassId' => $product_class_id,
+                ]
+            )
+        );
         $this->app['eccube.service.cart']->lock();
+
         return $crawler;
     }
 

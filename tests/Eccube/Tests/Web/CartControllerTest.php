@@ -33,13 +33,6 @@ class CartControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingCartAdd()
-    {
-        $this->client->request('POST', '/cart/add', array('product_class_id' => 1));
-
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-    }
-
     public function testRoutingCartUp()
     {
         $this->client->request('PUT', '/cart/up/1');
@@ -49,12 +42,6 @@ class CartControllerTest extends AbstractWebTestCase
     public function testRoutingCartDown()
     {
         $this->client->request('PUT', '/cart/down/1');
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-    }
-
-    public function testRoutingCartSetQuantity()
-    {
-        $this->client->request('PUT', '/cart/setQuantity/2/1');
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 

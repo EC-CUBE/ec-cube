@@ -24,7 +24,10 @@
 
 namespace Eccube\Entity;
 
-class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
+use Eccube\Service\PurchaseFlow\ItemCollection;
+use Eccube\Service\ItemValidateException;
+
+class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     /**
      * @var bool
@@ -48,9 +51,24 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     private $total_price;
 
     /**
+     * @var integer
+     */
+    private $delivery_fee_total;
+
+    /**
      * @var array
      */
     private $Payments = array();
+
+    /**
+     * @var ItemValidateException[]
+     */
+    private $errors = [];
+
+    public function __wakeup()
+    {
+        $this->errors = [];
+    }
 
     public function __construct()
     {
@@ -137,7 +155,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     public function getCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() === $class_id) {
+            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
                 return $CartItem;
             }
         }
@@ -148,7 +166,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
     public function removeCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() === $class_id) {
+            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
                 $this->CartItems->removeElement($CartItem);
             }
         }
@@ -179,7 +197,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
      */
     public function getItems()
     {
-        return $this->getCartItems();
+        return (new ItemCollection($this->getCartItems()))->sort();
     }
 
     /**
@@ -266,4 +284,59 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface
         return $this;
     }
 
+    /**
+     * @param ItemInterface $item
+     */
+    public function addItem(ItemInterface $item)
+    {
+        $this->CartItems->add($item);
+    }
+
+    /**
+     * 個数の合計を返します。
+     *
+     * @return mixed
+     */
+    public function getQuantity()
+    {
+        return $this->getTotalQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDeliveryFeeTotal($total) {
+        $this->delivery_fee_total = $total;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDeliveryFeeTotal()
+    {
+        return $this->delivery_fee_total;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscount($total) {
+        // TODO quiet
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCharge($total) {
+        // TODO quiet
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTax($total) {
+        // TODO quiet
+    }
 }

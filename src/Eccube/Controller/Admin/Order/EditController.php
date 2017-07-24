@@ -28,16 +28,16 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -88,7 +88,11 @@ class EditController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder(OrderType::class, $TargetOrder);
+            ->createBuilder(OrderType::class, $TargetOrder,
+                            [
+                                'SortedItems' => $TargetOrder->getItems()
+                            ]
+            );
 
         $event = new EventArgs(
             array(
@@ -102,6 +106,7 @@ class EditController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
+        $purchaseContext = PurchaseContext::create($OriginOrder);
 
         if ($form->isSubmitted()) {
             $event = new EventArgs(
@@ -109,58 +114,37 @@ class EditController extends AbstractController
                     'builder' => $builder,
                     'OriginOrder' => $OriginOrder,
                     'TargetOrder' => $TargetOrder,
+                    'PurchaseContext' => $purchaseContext,
                 ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
-            // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
-            // see EditControllerTest::testOrderProcessingWithTax
-            // $OrderDetails = $TargetOrder->getOrderDetails();
-            // $taxtotal = 0;
-            // foreach ($OrderDetails as $OrderDetail) {
-            //     $tax = $app['eccube.service.tax_rule']
-            //         ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-            //     $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
-            //     $taxtotal += $tax * $OrderDetail->getQuantity();
-            // }
-            // $TargetOrder->setTax($taxtotal);
-
-            // 入力情報にもとづいて再計算.
-            // TODO 購入フローのように、明細の自動生成をどこまで行うか検討する. 単純集計でよいような気がする
-            // 集計は,この1行でいけるはず
-            // プラグインで Strategy をセットしたりする
-            // TODO 編集前のOrder情報が必要かもしれない
-            // TODO 手数料, 値引きの集計は未実装
-            $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
+            $flowResult = $app['eccube.purchase.flow.order']->calculate($TargetOrder, $purchaseContext);
+            if ($flowResult->hasWarning()) {
+                foreach ($flowResult->getWarning() as $warning) {
+                    // TODO Warning の場合の処理
+                    $app->addWarning($warning->getMessage(), 'admin');
+                }
+            }
+            if ($flowResult->hasError()) {
+                foreach ($flowResult->getErrors() as $error) {
+                    $app->addError($error->getMessage(), 'admin');
+                }
+            }
 
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
-                    // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
-                    if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
-                        log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
-                        $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
-                    } elseif ($form->isValid()) {
-
-                        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-                        // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
-                        // 受注日/発送日/入金日の更新.
-                        $this->updateDate($app, $TargetOrder, $OriginOrder);
-
-                        // 画面上で削除された明細をremove
-                        foreach ($OriginalShipmentItems as $ShipmentItem) {
-                            if (false === $TargetOrder->getShipmentItems()->contains($ShipmentItem)) {
-                                $ShipmentItem->setOrder(null);
-                            }
-                        }
-
-                        foreach ($TargetOrder->getShipmentItems() as $ShipmentItem) {
-                            $ShipmentItem->setOrder($TargetOrder);
+                    if ($flowResult->hasError() === false && $form->isValid()) {
+                        try {
+                            $app['eccube.purchase.flow.order']->purchase($TargetOrder, $purchaseContext);
+                        } catch (PurchageException $e) {
+                            $app->addError($e->getMessage(), 'admin');
+                            break;
                         }
 
                         $app['orm.em']->persist($TargetOrder);
