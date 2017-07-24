@@ -82,7 +82,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                     if ($anno) {
                         $options = is_null($anno->options) ? [] : $anno->options;
                         $options['eccube_form_options'] = [
-                            'auto_render' => $anno->auto_render,
+                            'auto_render' => (true === $anno->auto_render),
                             'form_theme' => $anno->form_theme,
                         ];
                         if (!isset($form[$prop->getName()])) {
