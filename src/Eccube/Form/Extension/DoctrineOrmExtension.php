@@ -23,7 +23,9 @@
 
 namespace Eccube\Form\Extension;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormAppend;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,9 +42,15 @@ class DoctrineOrmExtension extends AbstractTypeExtension
      */
     protected $em;
 
+    /**
+     * @var AnnotationReader
+     */
+    protected $reader;
+
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+        $this->reader = new AnnotationReader();
     }
 
     /**
@@ -66,27 +74,22 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 } catch (\Exception $e) {
                     return;
                 }
-                // フィールドからフォームへ定義
-                $names = $meta->getFieldNames();
-                foreach ($names as $name) {
-                    $mapping = $meta->getFieldMapping($name);
-                    if (isset($mapping['options']['eccube_form_options'])) {
-                        $options = $mapping['options']['eccube_form_options'];
-                        if (isset($options['auto_render']) && true === $options['auto_render']) {
-                            $fieldName = $mapping['fieldName'];
-                            if (!isset($form[$fieldName])) {
-                                $form->add(
-                                    $mapping['fieldName'],
-                                    null,
-                                    [
-                                        'eccube_form_options' => $options,
-                                    ]
-                                );
-                            }
+
+                /** @var \ReflectionProperty[] $props */
+                $props = $meta->getReflectionProperties();
+                foreach ($props as $prop) {
+                    $anno = $this->reader->getPropertyAnnotation($prop, FormAppend::class);
+                    if ($anno) {
+                        $options = is_null($anno->options) ? [] : $anno->options;
+                        $options['eccube_form_options'] = [
+                            'auto_render' => $anno->auto_render,
+                            'form_theme' => $anno->form_theme,
+                        ];
+                        if (!isset($form[$prop->getName()])) {
+                            $form->add($prop->getName(), $anno->type, $options);
                         }
                     }
                 }
-                // TODO Assosiationも対応する
             }
         );
     }
