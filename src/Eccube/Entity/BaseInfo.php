@@ -232,7 +232,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="delivery_free_amount", type="decimal", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="delivery_free_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $delivery_free_amount;
 

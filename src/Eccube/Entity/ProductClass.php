@@ -219,21 +219,21 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="price01", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="price01", type="decimal", precision=10, scale=2, nullable=true, options={"unsigned":true})
      */
     private $price01;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="price02", type="decimal", precision=10, scale=0, options={"unsigned":true})
+     * @ORM\Column(name="price02", type="decimal", precision=10, scale=2, options={"unsigned":true})
      */
     private $price02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="delivery_fee", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="delivery_fee", type="decimal", precision=10, scale=2, nullable=true, options={"unsigned":true})
      */
     private $delivery_fee;
 
