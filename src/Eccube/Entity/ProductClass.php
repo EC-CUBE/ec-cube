@@ -259,6 +259,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="currency_code", type="string", nullable=true)
+     */
+    private $currency_code;
+
+    /**
      * @var \Eccube\Entity\ProductStock
      *
      * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductStock", mappedBy="ProductClass", cascade={"persist","remove"})
@@ -585,6 +592,30 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Get currencyCode.
+     *
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency_code;
+    }
+
+    /**
+     * Set currencyCode.
+     *
+     * @param string|null $currencyCode
+     *
+     * @return $this
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
     }
 
     /**

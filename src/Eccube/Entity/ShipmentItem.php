@@ -228,6 +228,13 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     private $tax_rule;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="currency_code", type="string", nullable=true)
+     */
+    private $currency_code;
+
+    /**
      * @var \Eccube\Entity\Order
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="ShipmentItems")
@@ -545,6 +552,30 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     public function getTaxRule()
     {
         return $this->tax_rule;
+    }
+
+    /**
+     * Get currencyCode.
+     *
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency_code;
+    }
+
+    /**
+     * Set currencyCode.
+     *
+     * @param string|null $currencyCode
+     *
+     * @return ShipmentItem
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
     }
 
     /**

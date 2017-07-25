@@ -486,6 +486,13 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $del_flg = 0;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="currency_code", type="string", nullable=true)
+     */
+    private $currency_code;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderDetail", mappedBy="Order", cascade={"persist"})
@@ -1480,6 +1487,30 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getDelFlg()
     {
         return $this->del_flg;
+    }
+
+    /**
+     * Get currencyCode.
+     *
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency_code;
+    }
+
+    /**
+     * Set currencyCode.
+     *
+     * @param string|null $currencyCode
+     *
+     * @return $this
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
     }
 
     /**
