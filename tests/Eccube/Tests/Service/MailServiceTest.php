@@ -2,8 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Service\MailService;
-
 /**
  * MailService test cases.
  *
@@ -371,6 +369,72 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
 
         $this->assertLessThanOrEqual(1, count($Messages), 'Bccメールは送信しない');
+    }
+
+    public function testConvertMessageISO()
+    {
+
+        $config = $this->app['config'];
+        $config['mail']['charset_iso_2022_jp'] = true;
+        $this->app['config'] = $config;
+
+        $this->app->initMailer();
+
+        $Order = $this->createOrder($this->Customer);
+        // 戻り値はiso-2022-jpのmessage
+        $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
+
+        $this->expected = mb_strtolower($message->getCharset());
+        $this->actual = 'iso-2022-jp';
+        $this->verify();
+
+        $this->expected = $message->getBody();
+
+        // 文字コードがiso-2022-jpからUTF-8に変換されたものと比較
+        $this->app['eccube.service.mail']->convertMessage($message);
+        $this->actual = $message->getBody();
+        $this->assertNotEquals($this->expected, $this->actual);
+
+        // 文字コードがUTF-8からiso-2022-jpに変換されたものと比較
+        $this->app['eccube.service.mail']->convertMessageSend($message);
+        $this->actual = $message->getBody();
+        $this->assertEquals($this->expected, $this->actual);
+
+        $config = $this->app['config'];
+        $config['mail']['charset_iso_2022_jp'] = false;
+        $this->app['config'] = $config;
+
+    }
+
+    public function testConvertMessageUTF()
+    {
+
+        $config = $this->app['config'];
+        $config['mail']['charset_iso_2022_jp'] = false;
+        $this->app['config'] = $config;
+
+        $this->app->initMailer();
+
+        $Order = $this->createOrder($this->Customer);
+        // 戻り値はUTFのmessage
+        $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
+
+        $this->expected = mb_strtolower($message->getCharset());
+        $this->actual = 'utf-8';
+        $this->verify();
+
+        $this->expected = $message->getBody();
+
+        // 変換されない
+        $this->app['eccube.service.mail']->convertMessage($message);
+        $this->actual = $message->getBody();
+        $this->verify();
+
+        // 変換されない
+        $this->app['eccube.service.mail']->convertMessageSend($message);
+        $this->actual = $message->getBody();
+        $this->verify();
+
     }
 
     protected function getMessages()
