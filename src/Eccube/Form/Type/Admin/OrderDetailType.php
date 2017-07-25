@@ -58,7 +58,9 @@ class OrderDetailType extends AbstractType
                 'mapped' => false,
                 'data' => 1
             ))
-            ->add('price', PriceType::class)
+            ->add('price', PriceType::class, [
+                'accept_minus' => true,
+            ])
             ->add('quantity', TextType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
