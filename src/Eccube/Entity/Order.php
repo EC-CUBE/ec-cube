@@ -383,49 +383,49 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string
      *
-     * @ORM\Column(name="subtotal", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $subtotal = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="discount", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="discount", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $discount = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="delivery_fee_total", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $delivery_fee_total = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="charge", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $charge = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tax", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $tax = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $total = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_total", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="payment_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $payment_total = 0;
 

@@ -202,7 +202,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="decimal", precision=10, scale=2, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $price = 0;
 
