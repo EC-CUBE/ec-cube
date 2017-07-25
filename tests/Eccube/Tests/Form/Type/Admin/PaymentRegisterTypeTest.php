@@ -94,7 +94,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
     public function testInvalidCharge_TooLarge()
     {
         $this->app['request'] = new Request();
-        $this->formData['charge'] = '10000000000';
+        $this->formData['charge'] = PHP_INT_MAX + 1;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -121,8 +121,8 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
     public function testInvalidRuleMin_TooLarge()
     {
         $this->app['request'] = new Request();
-        $this->formData['rule_min'] = '10000000000';
-        $this->formData['rule_max'] = '10000000001';
+        $this->formData['rule_min'] = PHP_INT_MAX + 1;
+        $this->formData['rule_max'] = '100';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -149,7 +149,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
     public function testInvalidRuleMax_TooLarge()
     {
         $this->app['request'] = new Request();
-        $this->formData['rule_max'] = '10000000000';
+        $this->formData['rule_max'] = PHP_INT_MAX + 1;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
