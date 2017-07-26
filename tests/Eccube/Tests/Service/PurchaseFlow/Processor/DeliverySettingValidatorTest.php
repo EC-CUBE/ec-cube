@@ -53,7 +53,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
      */
     public function testDeliverySettingIsValid()
     {
-        $result = $this->validator->process($this->cartItem, PurchaseContext::create());
+        $result = $this->validator->process($this->cartItem, new PurchaseContext());
 
         self::assertFalse($result->isError());
     }
@@ -67,7 +67,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
         $ProductType->setId(10000);
         $this->ProductClass->setProductType($ProductType);
 
-        $this->validator->process($this->cartItem, PurchaseContext::create());
+        $this->validator->process($this->cartItem, new PurchaseContext());
 
         self::assertEquals(0, $this->cartItem->getQuantity());
     }

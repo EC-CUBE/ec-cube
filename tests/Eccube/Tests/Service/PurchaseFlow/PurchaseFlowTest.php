@@ -41,7 +41,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        $this->assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
+        $this->assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
     }
 
     public function testAddProcesser()
@@ -59,7 +59,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        self::assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
+        self::assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemHolderProcessor()
@@ -69,7 +69,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::success());
-        self::assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
+        self::assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemHolderProcessor_validationErrors()
@@ -79,7 +79,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::error('error 1'));
-        self::assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
+        self::assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemProcessors_validationErrors()
@@ -92,7 +92,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::warn('error 1'));
         $expected->addProcessResult(ProcessResult::warn('error 2'));
-        self::assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
+        self::assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemProcessors_validationErrors_with_multi_items()
@@ -108,7 +108,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected->addProcessResult(ProcessResult::warn('error 2'));
         $expected->addProcessResult(ProcessResult::warn('error 1'));
         $expected->addProcessResult(ProcessResult::warn('error 2'));
-        self::assertEquals($expected, $this->flow->calculate($itemHolder, PurchaseContext::create()));
+        self::assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
     }
 }
 

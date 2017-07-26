@@ -10,12 +10,7 @@ class PurchaseContext extends \SplObjectStorage
 
     private $originHolder;
 
-    public static function create(ItemHolderInterface $originHolder = null)
-    {
-        return new self($originHolder);
-    }
-
-    protected function __construct(ItemHolderInterface $originHolder = null)
+    public function __construct(ItemHolderInterface $originHolder = null)
     {
         $this->originHolder = $originHolder;
     }
