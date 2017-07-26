@@ -47,17 +47,13 @@ class PriceType extends AbstractType
     /**
      * @var int
      */
-    protected $acceptMinus;
-
-    /**
-     * @var int
-     */
     protected $max;
 
-    public function __construct($currency = 'JPY')
+    public function __construct($currency = 'JPY', $max = 2147483647)
     {
         $this->currency = $currency;
         $this->scale = Intl::getCurrencyBundle()->getFractionDigits($this->currency);
+        $this->max = $max;
     }
 
     /**
@@ -74,10 +70,12 @@ class PriceType extends AbstractType
             }
 
             if (isset($options['accept_minus']) && true === $options['accept_minus']) {
-                // マイナス値を許容する場合は最大値のみチェックする
-                $constraints[] = new Range(['max' => PHP_INT_MAX]);
+                $constraints[] = new Range([
+                    'min' => -$this->max,
+                    'max' => $this->max
+                ]);
             } else {
-                $constraints[] = new Range(['min' => 0, 'max' => PHP_INT_MAX]);
+                $constraints[] = new Range(['min' => 0, 'max' => $this->max]);
             }
 
             return $constraints;
