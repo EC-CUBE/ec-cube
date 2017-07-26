@@ -47,12 +47,7 @@ class PurchaseFlow
 
     public function calculate(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        $this->calculateDeliveryFeeTotal($itemHolder);
-        $this->calculateCharge($itemHolder);
-        $this->calculateDiscount($itemHolder);
-        $this->calculateSubTotal($itemHolder); // Order の場合のみ
-        $this->calculateTax($itemHolder);
-        $this->calculateTotal($itemHolder);
+        $this->calculateAll($itemHolder);
 
         $flowResult = new PurchaseFlowResult($itemHolder);
 
@@ -63,10 +58,14 @@ class PurchaseFlow
             }
         }
 
+        $this->calculateAll($itemHolder);
+
         foreach ($this->itemHolderProcessors as $holderProcessor) {
             $result = $holderProcessor->process($itemHolder, $context);
             $flowResult->addProcessResult($result);
         }
+
+        $this->calculateAll($itemHolder);
 
         return $flowResult;
     }
@@ -191,5 +190,18 @@ class PurchaseFlow
                 return $sum;
             }, 0);
         $itemHolder->setTax($total);
+    }
+
+    /**
+     * @param ItemHolderInterface $itemHolder
+     */
+    protected function calculateAll(ItemHolderInterface $itemHolder)
+    {
+        $this->calculateDeliveryFeeTotal($itemHolder);
+        $this->calculateCharge($itemHolder);
+        $this->calculateDiscount($itemHolder);
+        $this->calculateSubTotal($itemHolder); // Order の場合のみ
+        $this->calculateTax($itemHolder);
+        $this->calculateTotal($itemHolder);
     }
 }
