@@ -113,4 +113,35 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
+
+    public function __get($name)
+    {
+        return self::getConstantValue($name);
+    }
+
+    public function __set($name, $value)
+    {
+        throw new \InvalidArgumentException();
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        return self::getConstantValue($name);
+    }
+
+    protected static function getConstantValue($name)
+    {
+        // see also. http://qiita.com/Hiraku/items/71e385b56dcaa37629fe
+        $class = get_class(new static());
+        $ref = new \ReflectionClass($class);
+        // クラス定数が存在していれば, クラス定数から値を取得する
+        $constants = $ref->getConstants();
+        if (array_key_exists($name, $constants)) {
+            return $constants[$name];
+        }
+        // XXX $obj = new static(); とすると segmentation fault が発生するため, リフレクションで値を取得する
+        $refProperty = $ref->getProperty($name);
+        $refProperty->setAccessible(true);
+        return $refProperty->getValue(new $class);
+    }
 }
