@@ -134,4 +134,22 @@ trait ApplicationTrait
         $this->offsetUnset($key);
         $this[$key] = $service;
     }
+
+    /**
+     * プライマリーキーを使用してオブジェクトを取得する.
+     *
+     * 主に、マスタデータを取得するために使用する.
+     *
+     * @param string $class
+     * @param integer $id
+     * @throws \InvalidArgumentException $class が不正な場合
+     * @return object|null エンティティのインスタンス
+     */
+    public function find($class, $id)
+    {
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException();
+        }
+        return $this['orm.em']->getRepository($class)->find($id);
+    }
 }
