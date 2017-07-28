@@ -34,6 +34,29 @@ class AbstractMasterEntityTest extends EccubeTestCase
             self::assertInstanceOf(\InvalidArgumentException::class, $e);
         }
     }
+
+    public function testInvalidFields()
+    {
+        // id, name, rank は取得できない
+        try {
+            $c = TestSexDecorator::id();
+            self::fail();
+        } catch (\InvalidArgumentException $e) {
+            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+        }
+        try {
+            $c = TestSexDecorator::name();
+            self::fail();
+        } catch (\InvalidArgumentException $e) {
+            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+        }
+        try {
+            $c = TestSexDecorator::rank();
+            self::fail();
+        } catch (\InvalidArgumentException $e) {
+            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+        }
+    }
 }
 
 class TestSexDecorator extends Sex

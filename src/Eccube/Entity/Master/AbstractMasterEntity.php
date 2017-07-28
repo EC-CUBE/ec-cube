@@ -131,6 +131,9 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     protected static function getConstantValue($name)
     {
+        if (in_array($name, ['id', 'name', 'rank'])) {
+            throw new \InvalidArgumentException();
+        }
         // see also. http://qiita.com/Hiraku/items/71e385b56dcaa37629fe
         $class = get_class(new static());
         $ref = new \ReflectionClass($class);
