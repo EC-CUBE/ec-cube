@@ -1062,7 +1062,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Add Orders
      *
-     * @param  \Eccube\Entity\Orders $order
+     * @param  \Eccube\Entity\Order $order
      * @return Customer
      */
     public function addOrder(\Eccube\Entity\Order $order)
@@ -1075,7 +1075,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Remove Orders
      *
-     * @param \Eccube\Entity\Orders $order
+     * @param \Eccube\Entity\Order $order
      */
     public function removeOrder(\Eccube\Entity\Order $order)
     {
