@@ -29,6 +29,7 @@ use Eccube\Entity\Master\Disp;
 use Eccube\Entity\Product;
 use Eccube\Util\Str;
 use Silex\Application;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class EccubeExtension extends \Twig_Extension
@@ -59,6 +60,7 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('get_product', array($this, 'getProduct')),
+            new \Twig_SimpleFunction('has_errors', array($this, 'hasErrors')),
         );
     }
 
@@ -205,6 +207,28 @@ class EccubeExtension extends \Twig_Extension
 
         return null;
     }
+
+    /**
+     * FormView にエラーが含まれるかを返す.
+     *
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        $hasErrors = false;
+        $views = func_get_args();
+        foreach ($views as $view) {
+            if (!$view instanceof FormView) {
+                throw new \InvalidArgumentException();
+            }
+            if (count($view->vars['errors'])) {
+                $hasErrors = true;
+                break;
+            };
+        }
+        return $hasErrors;
+    }
+
 
     /**
      * return No Image filename
