@@ -395,7 +395,7 @@ class ShoppingController extends AbstractController
                     ));
 
                     // 商品ごとの配送料合計
-                    if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
+                    if ($BaseInfo->getOptionProductDeliveryFee() === Constant::ENABLED) {
                         $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
                     }
 
