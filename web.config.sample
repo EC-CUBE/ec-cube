@@ -31,6 +31,12 @@
     
     <security>
       <requestFiltering>
+        <hiddenSegments>
+          <add segment="app"/>
+          <add segment="src"/>
+          <add segment="vendor"/>
+          <add segment="tests"/>
+        </hiddenSegments>
         <denyUrlSequences>
           <add sequence="composer" />
           <add sequence="autoload" />
