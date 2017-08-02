@@ -26,7 +26,6 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 
 class AbstractShoppingController extends AbstractController
@@ -60,7 +59,7 @@ class AbstractShoppingController extends AbstractController
     protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $app['eccube.purchase.flow.shopping']->calculate($itemHolder, PurchaseContext::create());
+        $flowResult = $app['eccube.purchase.flow.shopping']->calculate($itemHolder, $app['eccube.purchase.context']());
         foreach ($flowResult->getWarning() as $warning) {
             $app->addRequestError($warning->getMessage());
         }

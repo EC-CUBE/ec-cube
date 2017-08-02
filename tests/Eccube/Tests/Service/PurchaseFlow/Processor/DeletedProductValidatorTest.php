@@ -52,7 +52,7 @@ class DeletedProductValidatorTest extends EccubeTestCase
      */
     public function testProductIsValid()
     {
-        $result = $this->validator->process($this->cartItem, PurchaseContext::create());
+        $result = $this->validator->process($this->cartItem, new PurchaseContext());
 
         self::assertFalse($result->isError());
     }
@@ -63,7 +63,7 @@ class DeletedProductValidatorTest extends EccubeTestCase
     public function testDisplayStatusWithClosed()
     {
         $this->Product->setDelFlg(1);
-        $result = $this->validator->process($this->cartItem, PurchaseContext::create());
+        $result = $this->validator->process($this->cartItem, new PurchaseContext());
 
         self::assertEquals(0, $this->cartItem->getQuantity());
         self::assertTrue($result->isWarning());

@@ -25,6 +25,7 @@
 namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
@@ -39,6 +40,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -536,6 +538,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
         // TODO QueryCustomizerの追加方法は要検討
         $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
+
+        $app['eccube.purchase.context'] = $app->protect(function (ItemHolderInterface $origin = null) {
+            return new PurchaseContext($origin);
+        });
 
         $app['eccube.purchase.flow.cart.item_processors'] = function ($app) {
             $processors = new ArrayCollection();
