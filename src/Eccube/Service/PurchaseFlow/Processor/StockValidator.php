@@ -23,10 +23,10 @@ class StockValidator extends ValidatableItemProcessor
         $stock = $item->getProductClass()->getStock();
         $quantity = $item->getQuantity();
         if ($stock == 0) {
-            throw new ItemValidateException('cart.zero.stock', ['%product%' => $item->getProductClass()->getProduct()->getName()]);
+            throw ItemValidateException::fromProductClass('cart.zero.stock', $item->getProductClass());
         }
         if ($stock < $quantity) {
-            throw new ItemValidateException('cart.over.stock', ['%product%' => $item->getProductClass()->getProduct()->getName()]);
+            throw ItemValidateException::fromProductClass('cart.over.stock', $item->getProductClass());
         }
     }
 

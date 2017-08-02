@@ -286,12 +286,12 @@ class ProductController
                     if ($result->hasError()) {
                         $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
                         foreach ($result->getErrors() as $error) {
-                            $app->addRequestError($error);
+                            $app->addRequestError($error->getMessage());
                         }
                     }
 
                     foreach ($result->getWarning() as $warning) {
-                        $app->addRequestError($warning);
+                        $app->addRequestError($warning->getMessage());
                     }
 
                     $app['eccube.service.cart']->save();

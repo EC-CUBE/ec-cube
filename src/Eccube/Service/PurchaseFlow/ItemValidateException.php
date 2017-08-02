@@ -23,6 +23,8 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
+use Eccube\Entity\ProductClass;
+
 class ItemValidateException extends \Exception
 {
     private $messageArgs = [];
@@ -39,5 +41,21 @@ class ItemValidateException extends \Exception
     public function getMessageArgs()
     {
         return $this->messageArgs;
+    }
+
+    /**
+     * @return ItemValidateException
+     */
+    public static function fromProductClass($errorCode, ProductClass $ProductClass)
+    {
+        $productName = $ProductClass->getProduct()->getName();
+        if ($ProductClass->hasClassCategory1()) {
+            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+        }
+        if ($ProductClass->hasClassCategory2()) {
+            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+        }
+
+        return new self($errorCode, ['%product%' => $productName]);
     }
 }
