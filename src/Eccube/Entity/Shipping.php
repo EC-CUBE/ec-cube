@@ -185,7 +185,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_delivery_fee", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="shipping_delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
      */
     private $shipping_delivery_fee = 0;
 

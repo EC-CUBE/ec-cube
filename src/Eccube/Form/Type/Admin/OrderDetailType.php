@@ -26,9 +26,9 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
+use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -58,17 +58,9 @@ class OrderDetailType extends AbstractType
                 'mapped' => false,
                 'data' => 1
             ))
-            ->add('price', MoneyType::class, array(
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $config['int_len'],
-                    )),
-                ),
-            ))
+            ->add('price', PriceType::class, [
+                'accept_minus' => true,
+            ])
             ->add('quantity', TextType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),

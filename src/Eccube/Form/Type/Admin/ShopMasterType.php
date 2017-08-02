@@ -25,13 +25,13 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -158,21 +158,9 @@ class ShopMasterType extends AbstractType
             ))
 
             // 送料設定
-            ->add('delivery_free_amount', MoneyType::class, array(
+            ->add('delivery_free_amount', PriceType::class, array(
                 'label' => '送料無料条件(金額)',
                 'required' => false,
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['price_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
             ))
             ->add('delivery_free_quantity', IntegerType::class, array(
                 'label' => '送料無料条件(数量)',

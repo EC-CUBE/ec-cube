@@ -25,17 +25,35 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class PriceType extends AbstractType
 {
-    public function __construct($config = array('price_len' => 8))
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
+     * @var int
+     */
+    protected $scale;
+
+    /**
+     * @var int
+     */
+    protected $max;
+
+    public function __construct($currency = 'JPY', $max = 2147483647)
     {
-        $this->config = $config;
+        $this->currency = $currency;
+        $this->scale = Intl::getCurrencyBundle()->getFractionDigits($this->currency);
+        $this->max = $max;
     }
 
     /**
@@ -43,25 +61,35 @@ class PriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $defaultValues = array(
-            new Assert\Length(array('max' => $this->config['price_len'])),
-            new Assert\GreaterThanOrEqual(array('value' => 0)),
-        );
+        $constraints = function (Options $options) {
+            $constraints = [];
 
-        $constraints = function (Options $options) use ($defaultValues) {
-            if (false !== $options['required']) {
-                return array_merge($defaultValues, array(new Assert\NotBlank()));
+            // requiredがtrueに指定されている場合, NotBlankを追加
+            if (isset($options['required']) && true === $options['required']) {
+                $constraints[] = new NotBlank();
             }
-            return $defaultValues;
+
+            if (isset($options['accept_minus']) && true === $options['accept_minus']) {
+                $constraints[] = new Range([
+                    'min' => -$this->max,
+                    'max' => $this->max
+                ]);
+            } else {
+                $constraints[] = new Range(['min' => 0, 'max' => $this->max]);
+            }
+
+            return $constraints;
         };
 
-        $resolver->setDefaults(array(
-            'currency' => 'JPY',
-            'scale' => 0,
-            'grouping' => true,
-            'constraints' => $constraints,
-            'invalid_message' => 'form.type.numeric.invalid'
-        ));
+        $resolver->setDefaults(
+            [
+                'currency' => $this->currency,
+                'scale' => $this->scale,
+                'grouping' => true,
+                'constraints' => $constraints,
+                'accept_minus' => false, // マイナス値を許容するかどうか
+            ]
+        );
     }
 
     /**

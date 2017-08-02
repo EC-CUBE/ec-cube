@@ -49,7 +49,7 @@ class DeliveryFee extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="fee", type="decimal", precision=10, scale=0, options={"unsigned":true})
+     * @ORM\Column(name="fee", type="decimal", precision=12, scale=2, options={"unsigned":true})
      */
     private $fee;
 

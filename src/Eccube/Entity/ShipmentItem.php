@@ -202,7 +202,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $price = 0;
 
@@ -226,6 +226,13 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      * @ORM\Column(name="tax_rule", type="smallint", nullable=true, options={"unsigned":true})
      */
     private $tax_rule;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="currency_code", type="string", nullable=true)
+     */
+    private $currency_code;
 
     /**
      * @var \Eccube\Entity\Order
@@ -545,6 +552,30 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     public function getTaxRule()
     {
         return $this->tax_rule;
+    }
+
+    /**
+     * Get currencyCode.
+     *
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency_code;
+    }
+
+    /**
+     * Set currencyCode.
+     *
+     * @param string|null $currencyCode
+     *
+     * @return ShipmentItem
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
     }
 
     /**

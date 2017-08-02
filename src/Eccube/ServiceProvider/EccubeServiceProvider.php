@@ -438,7 +438,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $types[] = new \Eccube\Form\Type\AddressType($app['config']);
             $types[] = new \Eccube\Form\Type\RepeatedEmailType();
             $types[] = new \Eccube\Form\Type\RepeatedPasswordType($app['config']);
-            $types[] = new \Eccube\Form\Type\PriceType($app['config']);
+            $types[] = new \Eccube\Form\Type\PriceType($app['config']['currency'], $app['config']['price_max']);
 
             $types[] = new \Eccube\Form\Type\MasterType();
             $types[] = new \Eccube\Form\Type\Master\JobType();

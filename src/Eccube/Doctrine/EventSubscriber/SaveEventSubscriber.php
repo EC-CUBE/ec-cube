@@ -62,6 +62,9 @@ class SaveEventSubscriber implements EventSubscriber
         if (method_exists($entity, 'setUpdateDate')) {
             $entity->setUpdateDate(new \DateTime());
         }
+        if (method_exists($entity, 'setCurrencyCode')) {
+            $entity->setCurrencyCode($this->app['config']['currency']);
+        }
 
         if ($this->app['security.token_storage']->getToken() && $this->app['security.authorization_checker']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
             $entity->setCreator($this->app->user());

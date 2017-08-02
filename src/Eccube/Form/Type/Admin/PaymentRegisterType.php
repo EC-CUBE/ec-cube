@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -60,36 +60,12 @@ class PaymentRegisterType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('rule_min', MoneyType::class, array(
+            ->add('rule_min', PriceType::class, array(
                 'label' => false,
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $app['config']['int_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
             ))
-            ->add('rule_max', MoneyType::class, array(
+            ->add('rule_max', PriceType::class, array(
                 'label' => false,
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $app['config']['int_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
             ))
             ->add('payment_image_file', FileType::class, array(
                 'label' => 'ロゴ画像',
@@ -114,21 +90,8 @@ class PaymentRegisterType extends AbstractType
                 /** @var \Eccube\Entity\Payment $Payment */
                 $Payment = $event->getData();
                 if (is_null($Payment) || $Payment->getChargeFlg() == 1) {
-                    $form->add('charge', MoneyType::class, array(
+                    $form->add('charge', PriceType::class, array(
                         'label' => '手数料',
-                        'currency' => 'JPY',
-                        'scale' => 0,
-                        'grouping' => true,
-                        'constraints' => array(
-                            new Assert\NotBlank(),
-                            new Assert\Length(array(
-                                'max' => $app['config']['int_len'],
-                            )),
-                            new Assert\Regex(array(
-                                'pattern' => "/^\d+$/u",
-                                'message' => 'form.type.numeric.invalid'
-                            )),
-                        ),
                     ));
                 } else {
                     $form->add('charge', HiddenType::class);
