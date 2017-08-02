@@ -413,11 +413,11 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $GenericTokenParsers;
         };
 
-        // TODO ServiceProvider から追加できるよう Collection にする
         $app['eccube.twig.block.templates'] = function () {
-            return [
-                'render_block.twig',
-            ];
+            $templates = new ArrayCollection();
+            $templates[] = 'render_block.twig';
+
+            return $templates;
         };
 
         // Form\Type
