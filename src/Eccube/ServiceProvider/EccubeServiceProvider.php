@@ -438,25 +438,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $types[] = new \Eccube\Form\Type\RepeatedPasswordType($app['config']);
             $types[] = new \Eccube\Form\Type\PriceType($app['config']);
 
-            $types[] = new \Eccube\Form\Type\MasterType();
-            $types[] = new \Eccube\Form\Type\Master\JobType();
-            $types[] = new \Eccube\Form\Type\Master\CustomerStatusType();
-            $types[] = new \Eccube\Form\Type\Master\OrderStatusType();
-            $types[] = new \Eccube\Form\Type\Master\CalcRuleType();
-            $types[] = new \Eccube\Form\Type\Master\SexType();
-            $types[] = new \Eccube\Form\Type\Master\DispType();
-            $types[] = new \Eccube\Form\Type\Master\PrefType();
-            $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
-            $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
-            $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
-            $types[] = new \Eccube\Form\Type\Master\PageMaxType();
-            $types[] = new \Eccube\Form\Type\Master\CsvType();
-            $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
-            $types[] = new \Eccube\Form\Type\Master\PaymentType();
-            $types[] = new \Eccube\Form\Type\Master\MailTemplateType();
-            $types[] = new \Eccube\Form\Type\Master\CategoryType();
-            $types[] = new \Eccube\Form\Type\Master\TagType();
-
             $types[] = new \Eccube\Form\Type\CustomerType($app); // 削除予定
 
             if (isset($app['security.token_storage']) && isset($app['eccube.repository.customer_favorite_product'])) {
@@ -505,7 +486,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShopMasterType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TradelawType($app['config']);
-            $types[] = new \Eccube\Form\Type\Admin\OrderType($app);
+            // $types[] = new \Eccube\Form\Type\Admin\OrderType($app);
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShipmentItemType($app);

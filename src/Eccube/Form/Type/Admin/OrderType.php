@@ -47,15 +47,20 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 
 class OrderType extends AbstractType
 {
 
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
     protected $app;
 
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
