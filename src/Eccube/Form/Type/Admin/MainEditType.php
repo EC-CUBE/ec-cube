@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -96,7 +97,9 @@ class MainEditType extends AbstractType
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
-                'constraints' => array()
+                'constraints' => [
+                    new TwigLint(),
+                ]
             ))
             ->add('author', TextType::class, array(
                 'label' => 'author',
