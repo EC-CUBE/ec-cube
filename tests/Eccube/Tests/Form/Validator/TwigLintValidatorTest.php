@@ -52,12 +52,12 @@ class TwigLintValidatorTest extends EccubeTestCase
         $errors = $validator->validate($value, $constraint);
         self::assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        self::assertSame('Twigのフォーマットが正しくありません。Unexpected "}" in "template" at line 1.', $message);
+        self::assertSame('Twigのフォーマットが正しくありません。Unexpected "}" at line 1.', $message);
 
         $value = '{% for product in products %}{% endfo %}';
         $errors = $validator->validate($value, $constraint);
         self::assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        self::assertSame('Twigのフォーマットが正しくありません。Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) in "template" at line 1.', $message);
+        self::assertSame('Twigのフォーマットが正しくありません。Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) at line 1.', $message);
     }
 }

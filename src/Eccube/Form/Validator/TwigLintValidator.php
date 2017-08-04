@@ -12,12 +12,11 @@ class TwigLintValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        $file = 'template';
 
         try {
-            $loader = new ArrayLoader([$file => $value]);
+            $loader = new ArrayLoader(['' => $value]);
             $twig = new \Twig_Environment($loader);
-            $nodeTree = $twig->parse($twig->tokenize(new Source($value, $file)));
+            $nodeTree = $twig->parse($twig->tokenize(new Source($value, '')));
             $twig->compile($nodeTree);
 
         } catch (Error $e) {
