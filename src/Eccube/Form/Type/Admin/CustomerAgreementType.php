@@ -32,11 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerAgreementType extends AbstractType
 {
-    public $app;
-
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -33,9 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PriceType extends AbstractType
 {
-    public function __construct($config = array('price_len' => 8))
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -44,7 +51,7 @@ class PriceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $defaultValues = array(
-            new Assert\Length(array('max' => $this->config['price_len'])),
+            new Assert\Length(array('max' => $this->app['config']['price_len'])),
             new Assert\GreaterThanOrEqual(array('value' => 0)),
         );
 

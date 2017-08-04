@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,11 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LoginType extends AbstractType
 {
-    public $session;
+    /**
+     * @var SessionInterface $session
+     * @Inject("session")
+     */
+    protected $session;
 
-    public function __construct(SessionInterface $session)
+    public function __construct()
     {
-        $this->session = $session;
     }
 
     /**

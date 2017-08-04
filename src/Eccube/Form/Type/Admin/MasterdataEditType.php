@@ -35,11 +35,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MasterdataEditType extends AbstractType
 {
-    protected $app;
-
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

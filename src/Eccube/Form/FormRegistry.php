@@ -2,31 +2,33 @@
 
 namespace Eccube\Form;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Symfony\Component\Form\Exception\ExceptionInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormRegistry as BaseFormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactoryInterface;
 
 class FormRegistry extends BaseFormRegistry
 {
     protected $app;
-    public function __construct(array $extensions, ResolvedFormTypeFactoryInterface $resolvedTypeFactory, $app)
+    protected $reader;
+
+    public function __construct(array $extensions, ResolvedFormTypeFactoryInterface $resolvedTypeFactory, Application $app)
     {
         parent::__construct($extensions, $resolvedTypeFactory);
+        $this->reader = new AnnotationReader();
         $this->app = $app;
     }
 
     public function getType($name)
     {
-        $reader = new AnnotationReader();
         $Type = parent::getType($name);
         $formType = $Type->getInnerType();
         $ReflectionClass = new \ReflectionClass($formType);
         $ReflectionProperties = $ReflectionClass->getProperties();
         foreach ($ReflectionProperties as $Property) {
-            $anno = $reader->getPropertyAnnotation($Property, \Eccube\Annotation\Inject::class);
+            // プロパティに @Inject アノテーションを適用する
+            $anno = $this->reader->getPropertyAnnotation($Property, Inject::class);
             if ($anno) {
                 if ($anno->value == 'Eccube\Application') {
                     $Property->setAccessible(true);
@@ -34,7 +36,7 @@ class FormRegistry extends BaseFormRegistry
                 } else {
                     if ($this->app->offsetExists($anno->value)) {
                         $Property->setAccessible(true);
-                        $Property->setValue($formType, $this[$anno->value]);
+                        $Property->setValue($formType, $this->app[$anno->value]);
                     }
                 }
             }

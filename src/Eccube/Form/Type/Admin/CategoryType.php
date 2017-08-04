@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,11 +34,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryType extends AbstractType
 {
-    private $config;
 
-    public function __construct($config)
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -50,7 +56,7 @@ class CategoryType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->config['stext_len'],
+                        'max' => $this->app['config']['stext_len'],
                     )),
                 ),
             ))

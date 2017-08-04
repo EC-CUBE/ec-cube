@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -39,18 +41,14 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 class AddCartType extends AbstractType
 {
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+    protected $Product = null;
 
-    public $config;
-    public $security;
-    public $customerFavoriteProductRepository;
-    public $Product = null;
-
-    public function __construct(
-        $config = null,
-        \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository = null
-    ) {
-        $this->config = $config;
-        $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
+    public function __construct() {
     }
 
     /**
@@ -87,7 +85,7 @@ class AddCartType extends AbstractType
                     'data' => 1,
                     'attr' => array(
                         'min' => 1,
-                        'maxlength' => $this->config['int_len'],
+                        'maxlength' => $this->app['config']['int_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),

@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxType;
@@ -40,11 +42,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShipmentItemType extends AbstractType
 {
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
     protected $app;
 
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -52,8 +57,6 @@ class ShipmentItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
-
         $builder
             ->add('new', HiddenType::class, array(
                 'required' => false,
@@ -71,7 +74,7 @@ class ShipmentItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $config['int_len'],
+                        'max' => $this->app['config']['int_len'],
                     )),
                 ),
             ))
@@ -79,7 +82,7 @@ class ShipmentItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $config['int_len'],
+                        'max' => $this->app['config']['int_len'],
                     )),
                 ),
             ))
@@ -87,7 +90,7 @@ class ShipmentItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $config['int_len'],
+                        'max' => $this->app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+(\.\d+)?$/u",

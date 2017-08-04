@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\Type\Master\CategoryType;
 use Eccube\Form\Type\Master\DispType;
 use Symfony\Component\Form\AbstractType;
@@ -36,11 +38,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

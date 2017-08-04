@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
@@ -38,11 +40,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchShippingType extends AbstractType
 {
-    private $config;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -50,14 +55,13 @@ class SearchShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
         $builder
             // 配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名
             ->add('multi', TextType::class, array(
                 'label' => '配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
             ->add('status', OrderStatusType::class, array(

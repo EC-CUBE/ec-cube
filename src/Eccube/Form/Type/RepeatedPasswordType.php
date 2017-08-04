@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,11 +35,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RepeatedPasswordType extends AbstractType
 {
     /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct($config = array('password_min_len' => 8, 'password_max_len' => '32'))
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -54,8 +61,8 @@ class RepeatedPasswordType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->config['password_min_len'],
-                        'max' => $this->config['password_max_len'],
+                        'min' => $this->app['config']['password_min_len'],
+                        'max' => $this->app['config']['password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -65,7 +72,7 @@ class RepeatedPasswordType extends AbstractType
             ),
             'first_options' => array(
                 'attr' => array(
-                    'placeholder' => '半角英数字記号'.$this->config['password_min_len'].'～'.$this->config['password_max_len'].'文字',
+                    'placeholder' => '半角英数字記号'.$this->app['config']['password_min_len'].'～'.$this->app['config']['password_max_len'].'文字',
                 ),
             ),
             'second_options' => array(
