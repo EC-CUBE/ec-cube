@@ -98,6 +98,7 @@ class MainEditType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new TwigLint(),
                 ]
             ))

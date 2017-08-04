@@ -30,6 +30,10 @@ class TwigLintValidatorTest extends EccubeTestCase
         $errors = $validator->validate($value, $constraint);
         self::assertCount(0, $errors);
 
+        $value = null;
+        $errors = $validator->validate($value, $constraint);
+        self::assertCount(0, $errors);
+
         $value = '<div class="btn-default"></div>';
         $errors = $validator->validate($value, $constraint);
         self::assertCount(0, $errors);
