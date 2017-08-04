@@ -383,49 +383,49 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string
      *
-     * @ORM\Column(name="subtotal", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $subtotal = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="discount", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="discount", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $discount = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="delivery_fee_total", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $delivery_fee_total = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="charge", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="charge", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $charge = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tax", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $tax = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $total = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_total", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="payment_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
      */
     private $payment_total = 0;
 
@@ -484,6 +484,13 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
      */
     private $del_flg = 0;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="currency_code", type="string", nullable=true)
+     */
+    private $currency_code;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -1480,6 +1487,30 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getDelFlg()
     {
         return $this->del_flg;
+    }
+
+    /**
+     * Get currencyCode.
+     *
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency_code;
+    }
+
+    /**
+     * Set currencyCode.
+     *
+     * @param string|null $currencyCode
+     *
+     * @return $this
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
     }
 
     /**

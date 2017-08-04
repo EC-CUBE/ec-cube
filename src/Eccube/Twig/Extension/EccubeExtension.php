@@ -190,10 +190,12 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
-        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '¥ ' . $price;
+        $locale = $this->app['config']['locale'];
+        $currency = $this->app['config']['currency'];
 
-        return $price;
+        $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+
+        return $formatter->formatCurrency($number, $currency);
     }
 
     /**

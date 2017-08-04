@@ -34,7 +34,6 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -281,18 +280,18 @@ class ProductController
 
                     // 明細の正規化
                     $flow = $app['eccube.purchase.flow.cart'];
-                    $result = $flow->calculate($Cart, PurchaseContext::create());
+                    $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
 
                     // 復旧不可のエラーが発生した場合は追加した明細を削除.
                     if ($result->hasError()) {
                         $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
                         foreach ($result->getErrors() as $error) {
-                            $app->addRequestError($error);
+                            $app->addRequestError($error->getMessage());
                         }
                     }
 
                     foreach ($result->getWarning() as $warning) {
-                        $app->addRequestError($warning);
+                        $app->addRequestError($warning->getMessage());
                     }
 
                     $app['eccube.service.cart']->save();

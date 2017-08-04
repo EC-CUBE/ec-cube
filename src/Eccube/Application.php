@@ -341,6 +341,10 @@ class Application extends \Silex\Application
 
     public function initLocale()
     {
+        // locale
+        if (!empty($this['config']['locale'])) {
+            \Locale::setDefault($this['config']['locale']);
+        };
 
         // timezone
         if (!empty($this['config']['timezone'])) {

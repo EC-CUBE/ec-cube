@@ -99,7 +99,7 @@ class PriceTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit(str_repeat('1', $this->config['price_len']+1));
+        $this->form->submit($this->app['config']['price_max'] + 1);
         $this->assertFalse($this->form->isValid());
     }
 

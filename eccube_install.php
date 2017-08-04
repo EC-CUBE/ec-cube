@@ -439,6 +439,7 @@ function getConfig()
         'cookie_lifetime' => 0,
         'locale' => 'ja',
         'timezone' => 'Asia/Tokyo',
+        'currency' => 'JPY',
         'eccube_install' => 1,
     );
     return $config;

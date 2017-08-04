@@ -31,6 +31,7 @@ use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -39,7 +40,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
@@ -171,38 +171,14 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('discount', MoneyType::class, array(
+            ->add('discount', PriceType::class, array(
                 'label' => '値引き',
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
-                    )),
-                ),
             ))
-            ->add('delivery_fee_total', MoneyType::class, array(
+            ->add('delivery_fee_total', PriceType::class, array(
                 'label' => '送料',
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
-                    )),
-                ),
             ))
-            ->add('charge', MoneyType::class, array(
+            ->add('charge', PriceType::class, array(
                 'label' => '手数料',
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
-                    )),
-                ),
             ))
             ->add('note', TextareaType::class, array(
                 'label' => 'SHOP用メモ欄',

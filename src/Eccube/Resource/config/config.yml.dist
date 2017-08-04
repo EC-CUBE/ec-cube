@@ -7,6 +7,7 @@ cookie_lifetime: 0
 cookie_name: eccube
 locale: ja
 timezone: Asia/Tokyo
+currency: JPY
 pageinrange: false
 trusted_proxies_connection_only: false
 trusted_proxies: {  }

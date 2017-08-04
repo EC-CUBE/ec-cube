@@ -29,7 +29,7 @@ use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\CS\Finder;
+use Symfony\Component\Finder\Finder;
 
 
 class GenerateProxyCommand extends Command

@@ -221,7 +221,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="buy_total", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="buy_total", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
      */
     private $buy_total = 0;
 

@@ -30,9 +30,9 @@ use Eccube\Form\DataTransformer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -67,16 +67,8 @@ class ShipmentItemType extends AbstractType
                 'required' => false,
                 'mapped' => false
             ))
-            ->add('price', MoneyType::class, array(
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
-                    )),
-                ),
+            ->add('price', PriceType::class, array(
+                'accept_minus' => true,
             ))
             ->add('quantity', TextType::class, array(
                 'constraints' => array(

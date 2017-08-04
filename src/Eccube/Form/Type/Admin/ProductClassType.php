@@ -29,11 +29,11 @@ use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDateType;
 use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -90,37 +90,12 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('price01', MoneyType::class, array(
+            ->add('price01', PriceType::class, array(
                 'label' => '通常価格',
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => 10,
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
             ))
-            ->add('price02', MoneyType::class, array(
+            ->add('price02', PriceType::class, array(
                 'label' => '販売価格',
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => 10,
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
             ))
             ->add('tax_rate', TextType::class, array(
                 'label' => '消費税率',
@@ -133,18 +108,9 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('delivery_fee', MoneyType::class, array(
+            ->add('delivery_fee', PriceType::class, array(
                 'label' => '商品送料',
-                'currency' => 'JPY',
-                'scale' => 0,
-                'grouping' => true,
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
             ))
             ->add('product_type', ProductTypeType::class, array(
                 'label' => '商品種別',

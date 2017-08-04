@@ -219,21 +219,21 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="price01", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="price01", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
      */
     private $price01;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="price02", type="decimal", precision=10, scale=0, options={"unsigned":true})
+     * @ORM\Column(name="price02", type="decimal", precision=12, scale=2, options={"unsigned":true})
      */
     private $price02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="delivery_fee", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
      */
     private $delivery_fee;
 
@@ -257,6 +257,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="update_date", type="datetimetz")
      */
     private $update_date;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="currency_code", type="string", nullable=true)
+     */
+    private $currency_code;
 
     /**
      * @var \Eccube\Entity\ProductStock
@@ -585,6 +592,30 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Get currencyCode.
+     *
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency_code;
+    }
+
+    /**
+     * Set currencyCode.
+     *
+     * @param string|null $currencyCode
+     *
+     * @return $this
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
     }
 
     /**

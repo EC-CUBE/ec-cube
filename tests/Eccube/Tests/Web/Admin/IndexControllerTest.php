@@ -92,7 +92,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        preg_match('/^¥ ([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.today_sale')->text()), $match);
+        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.today_sale')->text()), $match);
         $this->expected = $todaysSales;
         $this->actual = str_replace(',', '', $match[1]);
         $this->verify('本日の売上');
@@ -101,7 +101,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->actual = str_replace(',', '', $match[2]);
         $this->verify('本日の売上件数');
 
-        preg_match('/^¥ ([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.yesterday_sale')->text()), $match);
+        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.yesterday_sale')->text()), $match);
         $this->expected = $yesterdaysSales;
         $this->actual = str_replace(',', '', $match[1]);
         $this->verify('昨日の売上');
@@ -134,7 +134,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
             );
         $MonthlyOrders = $qb->getQuery()->getResult();
 
-        preg_match('/^¥ ([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.monthly_sale')->text()), $match);
+        preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('.monthly_sale')->text()), $match);
         $this->expected = array_reduce( // MonthlyOrders の payment_total をすべて足す
             array_map(
                 function ($Order) {
