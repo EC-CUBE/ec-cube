@@ -1079,4 +1079,29 @@ class Application extends \Silex\Application
 
         }, -1024);
     }
+
+    public function offsetGet($id)
+    {
+        $reader = new AnnotationReader();
+        $Instance = parent::offsetGet($id);
+
+        if (!is_object($Instance)) {
+            return $Instance;
+        }
+        $ReflectionClass = new \ReflectionClass($Instance);
+        $ReflectionProperties = $ReflectionClass->getProperties();
+        foreach ($ReflectionProperties as $Property) {
+            $anno = $reader->getPropertyAnnotation($Property, \Eccube\Annotation\Inject::class);
+            if ($anno) {
+                if ($anno->value == 'Eccube\Application') {
+                    $Property->setAccessible(true);
+                    $Property->setValue($Instance, $this);
+                } else {
+                    $Property->setAccessible(true);
+                    $Property->setValue($Instance, $this[$anno->value]);
+                }
+            }
+        }
+        return $Instance;
+    }
 }

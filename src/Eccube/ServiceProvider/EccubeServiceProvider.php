@@ -24,7 +24,9 @@
 
 namespace Eccube\ServiceProvider;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Annotation\Component;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
@@ -243,12 +245,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.repository.payment_option'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
         };
-        $app['eccube.repository.category'] = function () use ($app) {
-            $CategoryRepository = $app['orm.em']->getRepository('Eccube\Entity\Category');
-            $CategoryRepository->setApplication($app);
-
-            return $CategoryRepository;
-        };
         $app['eccube.repository.customer'] = function () use ($app) {
             $customerRepository = $app['orm.em']->getRepository('Eccube\Entity\Customer');
             $customerRepository->setApplication($app);
@@ -294,12 +290,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
         $app['eccube.repository.customer_favorite_product'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
-        };
-        $app['eccube.repository.base_info'] = function () use ($app) {
-            $BaseInfoRepository = $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
-            $BaseInfoRepository->setApplication($app);
-
-            return $BaseInfoRepository;
         };
         $app['eccube.repository.tax_rule'] = function () use ($app) {
             $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
@@ -352,6 +342,22 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.repository.authority_role'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
         };
+
+        $reader = new AnnotationReader();
+        $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
+        foreach ($classMetadatas as $Metadata) {
+            if (class_exists($Metadata->customRepositoryClassName)) {
+                $rc = new \ReflectionClass($Metadata->customRepositoryClassName);
+                $annotation = $reader->getClassAnnotation($rc, Component::class);
+                if ($annotation) {
+                    if (!$app->offsetExists($annotation->value)) {
+                        $app[$annotation->value] = function () use ($app, $Metadata) {
+                            return $app['orm.em']->getRepository($Metadata->name);
+                        };
+                    }
+                }
+            }
+        }
 
         $app['paginator'] = $app->protect(function () {
             $paginator = new \Knp\Component\Pager\Paginator();
