@@ -99,6 +99,8 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $templatePath = $this->app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
         $PageLayout = $this->app['eccube.repository.page_layout']->find(1);
 
+        $tplData = $this->app['eccube.repository.page_layout']->getReadTemplateFile($PageLayout->getFileName());
+
         $client->request(
             'POST',
             $this->app->url(
@@ -111,6 +113,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
                     'name' => 'testtest',
                     'url' => $PageLayout->getUrl(),
                     'file_name' => $PageLayout->getFileName(),
+                    'tpl_data' => $tplData['tpl_data'],
                     '_token' => 'dummy'
                 ),
                 'page_id' => $PageLayout->getId(),
