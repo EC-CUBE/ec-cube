@@ -26,7 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Form\Type\Master\CategoryType;
+use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
@@ -203,7 +203,7 @@ class SearchCustomerType extends AbstractType
                     new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
-            ->add('buy_category', CategoryType::class, array(
+            ->add('buy_category', MasterCategoryType::class, array(
                 'label' => '商品カテゴリ',
                 'required' => false,
             ))
