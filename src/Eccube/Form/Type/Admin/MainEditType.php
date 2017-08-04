@@ -30,7 +30,6 @@ use Eccube\Entity\Master\DeviceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -92,7 +91,7 @@ class MainEditType extends AbstractType
                     )),
                 )
             ))
-            ->add('tpl_data', TextareaType::class, array(
+            ->add('tpl_data', HiddenType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => true,
