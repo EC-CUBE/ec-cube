@@ -1093,7 +1093,7 @@ class Application extends \Silex\Application
         foreach ($ReflectionProperties as $Property) {
             $anno = $reader->getPropertyAnnotation($Property, \Eccube\Annotation\Inject::class);
             if ($anno) {
-                if ($anno->value == 'Eccube\Application') {
+                if ($anno->value == Application::class) {
                     $Property->setAccessible(true);
                     $Property->setValue($Instance, $this);
                 } else {
