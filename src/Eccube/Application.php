@@ -131,6 +131,11 @@ class Application extends \Silex\Application
 
             return $configAll;
         };
+
+        // annotation Cache Driver
+        $this['annotation.cache.driver'] = function () {
+            return new ArrayCache();
+        };
     }
 
     public function initLogger()
@@ -683,7 +688,7 @@ class Application extends \Silex\Application
                 foreach ($drivers as $namespace => $oldDriver) {
                     if ('Eccube\Entity' === $namespace) {
                         $newDriver = new AnnotationDriver(
-                            new CachedReader(new AnnotationReader(), new ArrayCache()),
+                            new CachedReader(new AnnotationReader(), $app['annotation.cache.driver']),
                             $oldDriver->getPaths());
                         $newDriver->setFileExtension($oldDriver->getFileExtension());
                         $newDriver->addExcludePaths($oldDriver->getExcludePaths());
@@ -1082,8 +1087,13 @@ class Application extends \Silex\Application
 
     public function offsetGet($id)
     {
-        $reader = new CachedReader(new AnnotationReader(), new ArrayCache());
         $Instance = parent::offsetGet($id);
+        // 今のところ repository のみを @Inject アノテーションの対象とする
+        if (strpos($id, 'eccube.repository') === false) {
+            return $Instance;
+        }
+
+        $reader = new CachedReader(new AnnotationReader(), $this['annotation.cache.driver']);
 
         if (!is_object($Instance)) {
             return $Instance;

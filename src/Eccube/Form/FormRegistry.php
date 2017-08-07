@@ -18,7 +18,7 @@ class FormRegistry extends BaseFormRegistry
     public function __construct(array $extensions, ResolvedFormTypeFactoryInterface $resolvedTypeFactory, Application $app)
     {
         parent::__construct($extensions, $resolvedTypeFactory);
-        $this->reader = new CachedReader(new AnnotationReader(), new ArrayCache());
+        $this->reader = new CachedReader(new AnnotationReader(), $app['annotation.cache.driver']);
         $this->app = $app;
     }
 

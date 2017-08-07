@@ -345,7 +345,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
         };
 
-        $reader = new CachedReader(new AnnotationReader(), new ArrayCache());
+        $reader = new CachedReader(new AnnotationReader(), $app['annotation.cache.driver']);
         $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
         foreach ($classMetadatas as $Metadata) {
             if (class_exists($Metadata->customRepositoryClassName)) {
