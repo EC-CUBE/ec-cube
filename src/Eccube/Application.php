@@ -1082,7 +1082,7 @@ class Application extends \Silex\Application
 
     public function offsetGet($id)
     {
-        $reader = new AnnotationReader();
+        $reader = new CachedReader(new AnnotationReader(), new ArrayCache());
         $Instance = parent::offsetGet($id);
 
         if (!is_object($Instance)) {

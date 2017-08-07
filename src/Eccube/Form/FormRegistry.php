@@ -5,6 +5,8 @@ namespace Eccube\Form;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\Form\FormRegistry as BaseFormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactoryInterface;
 
@@ -16,7 +18,7 @@ class FormRegistry extends BaseFormRegistry
     public function __construct(array $extensions, ResolvedFormTypeFactoryInterface $resolvedTypeFactory, Application $app)
     {
         parent::__construct($extensions, $resolvedTypeFactory);
-        $this->reader = new AnnotationReader();
+        $this->reader = new CachedReader(new AnnotationReader(), new ArrayCache());
         $this->app = $app;
     }
 

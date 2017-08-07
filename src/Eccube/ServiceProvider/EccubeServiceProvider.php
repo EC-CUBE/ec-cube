@@ -25,6 +25,8 @@
 namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Annotation\Component;
 use Eccube\Entity\ItemHolderInterface;
@@ -343,7 +345,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
         };
 
-        $reader = new AnnotationReader();
+        $reader = new CachedReader(new AnnotationReader(), new ArrayCache());
         $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
         foreach ($classMetadatas as $Metadata) {
             if (class_exists($Metadata->customRepositoryClassName)) {
