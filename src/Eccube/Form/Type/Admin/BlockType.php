@@ -29,7 +29,6 @@ use Eccube\Application;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -80,7 +79,7 @@ class BlockType extends AbstractType
                     )),
                 )
             ))
-            ->add('block_html', TextareaType::class, array(
+            ->add('block_html', HiddenType::class, array(
                 'label' => 'ブロックデータ',
                 'mapped' => false,
                 'required' => false,
