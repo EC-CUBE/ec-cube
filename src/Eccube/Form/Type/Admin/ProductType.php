@@ -29,6 +29,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\DispType;
 use Eccube\Form\Type\Master\TagType;
+use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -118,6 +119,9 @@ class ProductType extends AbstractType
             ->add('free_area', TextareaType::class, array(
                 'label' => 'サブ情報',
                 'required' => false,
+                'constraints' => [
+                    new TwigLint()
+                ]
             ))
 
             // 右ブロック

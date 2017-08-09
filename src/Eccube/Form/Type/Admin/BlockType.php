@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Validator\TwigLint;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -83,7 +84,10 @@ class BlockType extends AbstractType
                 'label' => 'ブロックデータ',
                 'mapped' => false,
                 'required' => false,
-                'constraints' => array()
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new TwigLint(),
+                ]
             ))
             ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
