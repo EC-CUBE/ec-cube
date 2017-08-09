@@ -25,10 +25,11 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\Validator\TwigLint;
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -38,11 +39,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class BlockType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -76,7 +80,7 @@ class BlockType extends AbstractType
                     )),
                 )
             ))
-            ->add('block_html', TextareaType::class, array(
+            ->add('block_html', HiddenType::class, array(
                 'label' => 'ブロックデータ',
                 'mapped' => false,
                 'required' => false,

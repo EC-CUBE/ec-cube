@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\DispType;
 use Eccube\Form\Type\Master\TagType;
@@ -46,18 +47,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductType extends AbstractType
 {
     /**
-     * @var Application
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
      */
-    public $app;
+    protected $app;
 
     /**
      * ProductType constructor.
-     *
-     * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

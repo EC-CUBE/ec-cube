@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Intl\Intl;
@@ -34,6 +36,13 @@ use Symfony\Component\Validator\Constraints\Range;
 
 class PriceType extends AbstractType
 {
+    
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
     /**
      * @var string
      */

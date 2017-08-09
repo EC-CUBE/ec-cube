@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
@@ -51,11 +53,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class OrderType extends AbstractType
 {
 
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
     protected $app;
 
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -63,9 +68,7 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-        $config = $app['config'];
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
 
         $builder
             ->add('name', NameType::class, array(
@@ -89,7 +92,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['stext_len'],
+                        'max' => $this->app['config']['stext_len'],
                     ))
                 ),
             ))
@@ -114,7 +117,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $config['mtext_len'],
+                            'max' => $this->app['config']['mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-locality')
@@ -124,7 +127,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $config['mtext_len'],
+                            'max' => $this->app['config']['mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-street-address')
@@ -155,7 +158,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['stext_len'],
+                        'max' => $this->app['config']['stext_len'],
                     ))
                 ),
             ))
@@ -164,7 +167,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['ltext_len'],
+                        'max' => $this->app['config']['ltext_len'],
                     )),
                 ),
             ))
@@ -182,7 +185,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['ltext_len'],
+                        'max' => $this->app['config']['ltext_len'],
                     )),
                 ),
             ))

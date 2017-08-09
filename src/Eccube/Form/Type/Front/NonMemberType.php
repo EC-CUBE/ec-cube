@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -41,14 +43,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class NonMemberType extends AbstractType
 {
-    public $config;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -56,8 +61,6 @@ class NonMemberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
-
         $builder
             ->add('name', NameType::class, array(
                 'required' => true,
@@ -69,7 +72,7 @@ class NonMemberType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['stext_len'],
+                        'max' => $this->app['config']['stext_len'],
                     )),
                 ),
             ))

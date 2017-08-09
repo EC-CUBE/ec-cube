@@ -21,6 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 namespace Eccube\Form\Type;
+
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,13 +37,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TelType extends AbstractType
 {
     /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct($config = array('tel_len' => 5, 'tel_len_min' => 2))
+    public function __construct()
     {
-        $this->config = $config;
     }
     /**
+
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -117,19 +126,19 @@ class TelType extends AbstractType
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->config['tel_len'], 'min' => $this->config['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->app['config']['tel_len'], 'min' => $this->app['config']['tel_len_min'])),
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->config['tel_len'], 'min' => $this->config['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->app['config']['tel_len'], 'min' => $this->app['config']['tel_len_min'])),
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->config['tel_len'], 'min' => $this->config['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->app['config']['tel_len'], 'min' => $this->app['config']['tel_len_min'])),
                 ),
             ),
             'tel01_name' => '',

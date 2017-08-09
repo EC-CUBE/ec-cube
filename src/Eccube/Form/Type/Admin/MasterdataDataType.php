@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -35,11 +36,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MasterdataDataType extends AbstractType
 {
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
     protected $app;
 
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

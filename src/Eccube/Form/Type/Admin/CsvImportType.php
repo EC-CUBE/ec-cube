@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -32,11 +34,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CsvImportType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -44,8 +49,6 @@ class CsvImportType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('import_file', FileType::class, array(
                 'label' => false,
@@ -54,8 +57,8 @@ class CsvImportType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
                     new Assert\File(array(
-                        'maxSize' => $app['config']['csv_size'] . 'M',
-                        'maxSizeMessage' => 'CSVファイルは' . $app['config']['csv_size'] . 'M以下でアップロードしてください。',
+                        'maxSize' => $this->app['config']['csv_size'] . 'M',
+                        'maxSizeMessage' => 'CSVファイルは' . $this->app['config']['csv_size'] . 'M以下でアップロードしてください。',
                     )),
                 ),
             ));

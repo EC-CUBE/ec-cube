@@ -30,6 +30,28 @@
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
+    <script>
+        ace.require("ace/ext/language_tools");
+        var editor = ace.edit("editor");
+        editor.session.setMode("ace/mode/twig");
+        editor.setTheme("ace/theme/tomorrow");
+        editor.setValue("{{ form.block_html.vars.value|escape('js') }}");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            showInvisibles: true
+        });
+
+        $('#content_block_form').on('submit', function (elem) {
+            $('#block_block_html').val(editor.getValue());
+        });
+    </script>
+{% endblock %}
+
 {% block main %}
 <div class="row" id="aside_wrap">
 <form name="content_block_form" id="content_block_form" method="post" action="
@@ -69,7 +91,8 @@
                     <div id="detail_box__block_html" class="form-group">
                         {{ form_label(form.block_html) }}
                         <div class="col-sm-9 col-lg-10">
-                            {{ form_widget(form.block_html, { attr : { 'rows' : 15, style : 'font-size:12px' } }) }}
+                            <div id="editor" style="height: 480px"></div>
+                            {{ form_widget(form.block_html) }}
                             {{ form_errors(form.block_html) }}
                         </div>
                     </div>

@@ -23,6 +23,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\CustomerStatusType;
@@ -44,11 +46,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerType extends AbstractType
 {
-    protected $config;
 
-    public function __construct($config)
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -56,8 +62,6 @@ class CustomerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
-
         $builder
             ->add('name', NameType::class, array(
                 'required' => true,
@@ -69,7 +73,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['stext_len'],
+                        'max' => $this->app['config']['stext_len'],
                     ))
                 ),
             ))
@@ -106,7 +110,7 @@ class CustomerType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->app['config']['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
@@ -137,7 +141,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['ltext_len'],
+                        'max' => $this->app['config']['ltext_len'],
                     )),
                 ),
             ));

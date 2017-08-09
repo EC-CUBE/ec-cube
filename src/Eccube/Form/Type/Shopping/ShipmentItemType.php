@@ -8,12 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShipmentItemType extends AbstractType
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    public function __construct(\Eccube\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

@@ -131,6 +131,11 @@ class Application extends \Silex\Application
 
             return $configAll;
         };
+
+        // annotation Cache Driver
+        $this['annotation.cache.driver'] = function () {
+            return new ArrayCache();
+        };
     }
 
     public function initLogger()
@@ -162,6 +167,9 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
+        $this['form.registry'] = function ($app) {
+            return new \Eccube\Form\FormRegistry($app['form.extensions'], $app['form.resolved_type_factory'], $app);
+        };
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
         $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());
@@ -680,7 +688,7 @@ class Application extends \Silex\Application
                 foreach ($drivers as $namespace => $oldDriver) {
                     if ('Eccube\Entity' === $namespace) {
                         $newDriver = new AnnotationDriver(
-                            new CachedReader(new AnnotationReader(), new ArrayCache()),
+                            new CachedReader(new AnnotationReader(), $app['annotation.cache.driver']),
                             $oldDriver->getPaths());
                         $newDriver->setFileExtension($oldDriver->getFileExtension());
                         $newDriver->addExcludePaths($oldDriver->getExcludePaths());
@@ -1075,5 +1083,35 @@ class Application extends \Silex\Application
             }
 
         }, -1024);
+    }
+
+    public function offsetGet($id)
+    {
+        $Instance = parent::offsetGet($id);
+        // 今のところ repository のみを @Inject アノテーションの対象とする
+        if (strpos($id, 'eccube.repository') === false) {
+            return $Instance;
+        }
+
+        $reader = new CachedReader(new AnnotationReader(), $this['annotation.cache.driver']);
+
+        if (!is_object($Instance)) {
+            return $Instance;
+        }
+        $ReflectionClass = new \ReflectionClass($Instance);
+        $ReflectionProperties = $ReflectionClass->getProperties();
+        foreach ($ReflectionProperties as $Property) {
+            $anno = $reader->getPropertyAnnotation($Property, \Eccube\Annotation\Inject::class);
+            if ($anno) {
+                if ($anno->value == Application::class) {
+                    $Property->setAccessible(true);
+                    $Property->setValue($Instance, $this);
+                } else {
+                    $Property->setAccessible(true);
+                    $Property->setValue($Instance, $this[$anno->value]);
+                }
+            }
+        }
+        return $Instance;
     }
 }

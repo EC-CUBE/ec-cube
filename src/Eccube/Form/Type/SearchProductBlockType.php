@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -35,6 +36,7 @@ class SearchProductBlockType extends AbstractType
 {
     /**
      * @var Application
+     * @Inject(Application::class)
      */
     protected $app;
 
@@ -43,9 +45,8 @@ class SearchProductBlockType extends AbstractType
      *
      * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
@@ -31,7 +33,6 @@ use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -42,11 +43,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MainEditType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -93,7 +97,7 @@ class MainEditType extends AbstractType
                     )),
                 )
             ))
-            ->add('tpl_data', TextareaType::class, array(
+            ->add('tpl_data', HiddenType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => true,

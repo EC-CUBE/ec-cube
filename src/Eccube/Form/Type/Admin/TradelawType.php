@@ -38,11 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TradelawType extends AbstractType
 {
-    protected $config;
-
-    public function __construct ($config)
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
