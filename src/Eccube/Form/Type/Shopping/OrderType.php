@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
@@ -22,27 +23,31 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class OrderType extends AbstractType
 {
-    /** @var  Application */
+    /**
+     * @var Application
+     * @Inject(Application::class)
+     */
     protected $app;
 
-    /** @var  OrderRepository */
+    /**
+     * @var OrderRepository
+     * @Inject("eccube.repository.order")
+     */
     protected $orderRepository;
 
-    /** @var  DeliveryRepository */
+    /**
+     * @var DeliveryRepository
+     * @Inject("eccube.repository.delivery")
+     */
     protected $deliveryRepository;
 
-    /** @var  PaymentRepository */
+    /**
+     * @var PaymentRepository
+     * @Inject("eccube.repository.payment")
+     */
     protected $paymentRepository;
 
-    public function __construct(
-        Application $app,
-        OrderRepository $orderRepository,
-        DeliveryRepository $deliveryRepository
-    ) {
-        $this->app = $app;
-        $this->orderRepository = $orderRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->paymentRepository = $app['eccube.repository.payment'];
+    public function __construct() {
     }
 
     /**

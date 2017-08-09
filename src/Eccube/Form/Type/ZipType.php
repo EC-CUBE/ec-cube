@@ -23,6 +23,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,12 +35,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ZipType extends AbstractType
 {
+
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
     /**
      * {@inheritdoc}
      */
-    public function __construct($config = array('zip01_len' => 3, 'zip02_len' => 4))
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -96,13 +104,13 @@ class ZipType extends AbstractType
             'zip01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->config['zip01_len'], 'max' => $this->config['zip01_len'])),
+                    new Assert\Length(array('min' => $this->app['config']['zip01_len'], 'max' => $this->app['config']['zip01_len'])),
                 ),
             ),
             'zip02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->config['zip02_len'], 'max' => $this->config['zip02_len'])),
+                    new Assert\Length(array('min' => $this->app['config']['zip02_len'], 'max' => $this->app['config']['zip02_len'])),
                 ),
             ),
             'zip01_name' => '',

@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,13 +37,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SecurityType extends AbstractType
 {
-    private $app;
-    private $config;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
-        $this->config = $app['config'];
     }
 
     /**
@@ -55,7 +58,7 @@ class SecurityType extends AbstractType
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                     new Assert\Regex(array(
                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
@@ -65,7 +68,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(

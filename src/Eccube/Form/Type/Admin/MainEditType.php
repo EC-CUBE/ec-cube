@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
@@ -41,11 +43,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MainEditType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Form\Type\Master\CategoryType;
+use Eccube\Annotation\Inject;
+use Eccube\Application;
+use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
@@ -39,11 +41,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchCustomerType extends AbstractType
 {
-    private $config;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -51,7 +56,6 @@ class SearchCustomerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
         $months = range(1, 12);
         $builder
             // 会員ID・メールアドレス・名前・名前(フリガナ)
@@ -59,14 +63,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '会員ID・メールアドレス・名前・名前(フリガナ)',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
             ->add('company_name', TextType::class, array(
                 'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
             ->add('pref', PrefType::class, array(
@@ -113,28 +117,28 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['price_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['price_len'])),
                 ),
             ))
             ->add('buy_total_end', IntegerType::class, array(
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['price_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['price_len'])),
                 ),
             ))
             ->add('buy_times_start', IntegerType::class, array(
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['int_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['int_len'])),
                 ),
             ))
             ->add('buy_times_end', IntegerType::class, array(
                 'label' => '購入回数',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['int_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['int_len'])),
                 ),
             ))
             ->add('create_date_start', DateType::class, array(
@@ -189,17 +193,17 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
             ->add('buy_product_code', TextType::class, array(
                 'label' => '購入商品コード',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $config['stext_len'])),
+                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
                 ),
             ))
-            ->add('buy_category', CategoryType::class, array(
+            ->add('buy_category', MasterCategoryType::class, array(
                 'label' => '商品カテゴリ',
                 'required' => false,
             ))

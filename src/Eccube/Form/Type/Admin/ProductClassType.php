@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDateType;
 use Eccube\Form\Type\Master\ProductTypeType;
@@ -42,11 +44,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductClassType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -54,8 +59,6 @@ class ProductClassType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('code', TextType::class, array(
                 'label' => '商品コード',
@@ -147,7 +150,7 @@ class ProductClassType extends AbstractType
 
 
         $transformer = new DataTransformer\EntityToIdTransformer(
-            $app['orm.em'],
+            $this->app['orm.em'],
             '\Eccube\Entity\ClassCategory'
         );
         $builder

@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\JobType;
@@ -45,11 +47,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 // deprecated 3.1で削除予定
 class CustomerType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -121,7 +126,7 @@ class CustomerType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->app['config']['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),

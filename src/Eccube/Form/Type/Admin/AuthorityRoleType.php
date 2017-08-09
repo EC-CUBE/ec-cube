@@ -36,11 +36,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthorityRoleType extends AbstractType
 {
-    private $config;
-
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**

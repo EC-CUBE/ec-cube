@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,9 +36,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NameType extends AbstractType
 {
-    public function __construct($config = array('name_len' => 50))
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -101,7 +108,7 @@ class NameType extends AbstractType
                 ),
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->config['name_len'],
+                        'max' => $this->app['config']['name_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',
@@ -115,7 +122,7 @@ class NameType extends AbstractType
                 ),
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->config['name_len'],
+                        'max' => $this->app['config']['name_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',

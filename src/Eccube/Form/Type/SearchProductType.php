@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
@@ -40,7 +41,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SearchProductType extends AbstractType
 {
     /**
-     * @var Application
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
      */
     protected $app;
 
@@ -49,9 +51,8 @@ class SearchProductType extends AbstractType
      *
      * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**

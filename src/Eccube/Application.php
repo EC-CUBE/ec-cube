@@ -162,6 +162,9 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
+        $this['form.registry'] = function ($app) {
+            return new \Eccube\Form\FormRegistry($app['form.extensions'], $app['form.resolved_type_factory'], $app);
+        };
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
         $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());

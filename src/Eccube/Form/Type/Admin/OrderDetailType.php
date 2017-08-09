@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\PriceType;
@@ -38,11 +39,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderDetailType extends AbstractType
 {
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
     protected $app;
 
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -50,8 +54,6 @@ class OrderDetailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
-
         $builder
             ->add('new', HiddenType::class, array(
                 'required' => false,
@@ -65,7 +67,7 @@ class OrderDetailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $config['int_len'],
+                        'max' => $this->app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
@@ -77,7 +79,7 @@ class OrderDetailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $config['int_len'],
+                        'max' => $this->app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+(\.\d+)?$/u",

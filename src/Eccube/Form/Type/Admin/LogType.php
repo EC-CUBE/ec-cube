@@ -23,6 +23,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -33,11 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LogType extends AbstractType
 {
-    protected $config;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
     }
 
     /**
@@ -45,13 +50,11 @@ class LogType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
-
         $files = array();
         $finder = new Finder();
         $finder->name('*.log')->depth('== 0');
 
-        foreach ($finder->in($config['root_dir'].'/app/log/') as $file) {
+        foreach ($finder->in($this->app['config']['root_dir'].'/app/log/') as $file) {
             $files[$file->getFilename()] = $file->getFilename();
         }
 

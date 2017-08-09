@@ -24,7 +24,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Form\Type\Master\CategoryType;
+use Eccube\Annotation\Inject;
+use Eccube\Application;
+use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;;
 use Eccube\Form\Type\Master\DispType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -36,11 +38,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
-    public $app;
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
     }
 
     /**
@@ -65,7 +70,7 @@ class SearchProductType extends AbstractType
                 'required' => false,
             ))
              */
-            ->add('category_id', CategoryType::class, array(
+            ->add('category_id', MasterCategoryType::class, array(
                 'label' => 'カテゴリ',
                 'placeholder' => '選択してください',
                 'required' => false,
