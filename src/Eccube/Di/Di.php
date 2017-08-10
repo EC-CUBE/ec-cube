@@ -24,6 +24,11 @@ class Di
 
     private $cacheClass = '\Eccube\ServiceProvider\ServiceProviderCache';
 
+    private $supportAnnotations = [
+        Component::class,
+        Repository::class
+    ];
+
     public function __construct(array $dirs, Reader $reader, $cacheDir, $debug = false)
     {
         $this->debug = $debug;
@@ -186,10 +191,6 @@ class Di
 
     protected function supports($annotation)
     {
-        if ($annotation instanceof Component) {
-            return true;
-        }
-
-        return false;
+        return in_array(get_class($annotation), $this->supportAnnotations);
     }
 }

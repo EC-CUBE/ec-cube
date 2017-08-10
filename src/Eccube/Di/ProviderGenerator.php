@@ -2,6 +2,9 @@
 
 namespace Eccube\Di;
 
+use Eccube\Annotation\Repository;
+use Eccube\Application;
+
 class ProviderGenerator
 {
     protected $template = '<?php
@@ -13,13 +16,17 @@ class ServiceProviderCache implements \Pimple\ServiceProviderInterface
     public function register(\Pimple\Container $app)
     {
         {% for component in components -%}
-        $container["{{ component.id }}"] = function (\Pimple\Container $app) {
+        $app["{{ component.id }}"] = function (\Pimple\Container $app) {
             $class = new \ReflectionClass(\{{ component.class_name }}::class);
+            {% if is_repository(component.anno) -%}
+            $instance = $app["orm.em"]->getRepository(\{{ component.class_name }}::class);
+            {%- else -%}
             $instance = $class->newInstanceWithoutConstructor();
+            {%- endif %}
             {% for inject in component.injects -%}
             $property = $class->getProperty("{{ inject.property_name }}");
             $property->setAccessible(true);
-            $property->setValue($instance, $app["{{ inject.id }}"]);
+            $property->setValue($instance, {% if is_app(inject.id) %}$app{% else %}$app["{{ inject.id }}"]{% endif %});
             {%- endfor %}
 
             return $instance;
@@ -49,6 +56,13 @@ class ServiceProviderCache implements \Pimple\ServiceProviderInterface
     public function generate($components)
     {
         $twig = new \Twig_Environment(new \Twig_Loader_Array());
+        $twig->addFunction(new \Twig_SimpleFunction('is_repository', function ($anno) {
+            return $anno instanceof Repository;
+        }));
+        $twig->addFunction(new \Twig_SimpleFunction('is_app', function ($class) {
+            error_log($class);
+            return $class === Application::class;
+        }));
         $template = $twig->createTemplate($this->template);
 
         return $template->render(

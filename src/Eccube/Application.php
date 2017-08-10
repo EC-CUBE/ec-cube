@@ -344,7 +344,8 @@ class Application extends \Silex\Application
 
         $this->register(new DiServiceProvider(), [
             'eccube.di.dirs' => [
-                $this['config']['root_dir'].'/app/Acme/Controller'
+                $this['config']['root_dir'].'/app/Acme/Controller',
+                $this['config']['root_dir'].'/src/Eccube/Repository'
             ],
             'eccube.di.cache_dir' => $this['config']['root_dir'].'/app/cache/eccube'
         ]);
