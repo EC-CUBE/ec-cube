@@ -222,6 +222,8 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['eccube.repository.master.order_status'];
         };
 
+        // Add event subscriber to TaxRuleEvent
+        $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app['eccube.service.tax_rule']));
 
         $app['paginator'] = $app->protect(function () {
             $paginator = new \Knp\Component\Pager\Paginator();

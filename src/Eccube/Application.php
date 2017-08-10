@@ -703,12 +703,6 @@ class Application extends \Silex\Application
         );
 
         $this->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
-            // tax_rule
-            $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-            $taxRuleRepository->setApplication($app);
-            $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
-            $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
-
             // save
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
