@@ -28,7 +28,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Annotation\Component;
+use Eccube\Annotation\Repository;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
@@ -345,22 +345,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
         };
 
-        $reader = new CachedReader(new AnnotationReader(), $app['annotation.cache.driver']);
-        $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
-        foreach ($classMetadatas as $Metadata) {
-            if (class_exists($Metadata->customRepositoryClassName)) {
-                $rc = new \ReflectionClass($Metadata->customRepositoryClassName);
-                $annotation = $reader->getClassAnnotation($rc, Component::class);
-                if ($annotation) {
-                    if (!$app->offsetExists($annotation->value)) {
-                        $app[$annotation->value] = function () use ($app, $Metadata) {
-                            return $app['orm.em']->getRepository($Metadata->name);
-                        };
-                    }
-                }
-            }
-        }
-
         $app['paginator'] = $app->protect(function () {
             $paginator = new \Knp\Component\Pager\Paginator();
             $paginator->subscribe(new \Eccube\EventListener\PaginatorListener());
@@ -380,6 +364,22 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.repository.layout'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Layout');
         };
+
+        $reader = $app['annotations'];
+        $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
+        foreach ($classMetadatas as $Metadata) {
+            if (class_exists($Metadata->customRepositoryClassName)) {
+                $rc = new \ReflectionClass($Metadata->customRepositoryClassName);
+                $annotation = $reader->getClassAnnotation($rc, Repository::class);
+                if ($annotation) {
+                    if (!$app->offsetExists($annotation->value)) {
+                        $app[$annotation->value] = function () use ($app, $Metadata) {
+                            return $app['orm.em']->getRepository($Metadata->name);
+                        };
+                    }
+                }
+            }
+        }
 
         $app['request_scope'] = function () {
             return new ParameterBag();

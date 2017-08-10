@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\Annotation;
  * @Annotation
  * @Target("CLASS")
  */
-final class Component implements Annotation
+final class Repository implements Annotation
 {
     /**
      * @var string
