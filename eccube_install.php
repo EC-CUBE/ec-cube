@@ -279,6 +279,7 @@ function createApplication()
     $app['debug'] = true;
     $app->initDoctrine();
     $app->initSecurity();
+    $app->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
     $app->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider());
     $app->register(new \Silex\Provider\FormServiceProvider());
     $app->register(new \Eccube\ServiceProvider\EccubeServiceProvider());
