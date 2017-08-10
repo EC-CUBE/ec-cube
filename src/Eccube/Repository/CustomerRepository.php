@@ -53,11 +53,6 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      */
     protected $app;
 
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
-
     public function newCustomer()
     {
         $Customer = new \Eccube\Entity\Customer();
