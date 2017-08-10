@@ -187,184 +187,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
 
         // Repository
-        $app['eccube.repository.master.authority'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Authority');
-        };
-        $app['eccube.repository.master.tag'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
-        };
-        $app['eccube.repository.master.pref'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Pref');
-        };
-        $app['eccube.repository.master.sex'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Sex');
-        };
-        $app['eccube.repository.master.disp'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Disp');
-        };
-        $app['eccube.repository.master.product_type'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductType');
-        };
-        $app['eccube.repository.master.page_max'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
-        };
-        $app['eccube.repository.master.order_status'] = function () use ($app) {
-        };
-        $app['eccube.repository.master.product_list_max'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListMax');
-        };
-        $app['eccube.repository.master.product_list_order_by'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
-        };
-        $app['eccube.repository.master.order_status'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
-        };
-        $app['eccube.repository.master.device_type'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\DeviceType');
-        };
-        $app['eccube.repository.master.csv_type'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\CsvType');
-        };
-        $app['eccube.repository.master.order_item_type'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderItemType');
-        };
-
-        $app['eccube.repository.delivery'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
-        };
-        $app['eccube.repository.delivery_date'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryDate');
-        };
-        $app['eccube.repository.delivery_fee'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryFee');
-        };
-        $app['eccube.repository.delivery_time'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryTime');
-        };
-        $app['eccube.repository.payment'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Payment');
-        };
-        $app['eccube.repository.payment_option'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
-        };
-        $app['eccube.repository.customer'] = function () use ($app) {
-            $customerRepository = $app['orm.em']->getRepository('Eccube\Entity\Customer');
-            $customerRepository->setApplication($app);
-            return $customerRepository;
-        };
-        $app['eccube.repository.news'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\News');
-        };
-        $app['eccube.repository.mail_history'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\MailHistory');
-        };
-        $app['eccube.repository.member'] = function () use ($app) {
-            $memberRepository = $app['orm.em']->getRepository('Eccube\Entity\Member');
-            $memberRepository->setEncoderFactorty($app['security.encoder_factory']);
-            return $memberRepository;
-        };
-        $app['eccube.repository.order'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Order');
-        };
-        $app['eccube.repository.product'] = function () use ($app) {
-            $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
-            $productRepository->setApplication($app);
-
-            return $productRepository;
-        };
-        $app['eccube.repository.product_image'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ProductImage');
-        };
-        $app['eccube.repository.product_class'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
-        };
-        $app['eccube.repository.product_stock'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ProductStock');
-        };
-        $app['eccube.repository.product_tag'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ProductTag');
-        };
-        $app['eccube.repository.class_name'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ClassName');
-        };
-        $app['eccube.repository.class_category'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ClassCategory');
-        };
-        $app['eccube.repository.customer_favorite_product'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
-        };
-        $app['eccube.repository.tax_rule'] = function () use ($app) {
-            $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
-            $taxRuleRepository->setApplication($app);
-
-            return $taxRuleRepository;
-        };
-        $app['eccube.repository.page_layout'] = function () use ($app) {
-            $pageLayoutRepository = $app['orm.em']->getRepository('Eccube\Entity\PageLayout');
-            $pageLayoutRepository->setApplication($app);
-
-            return $pageLayoutRepository;
-        };
-        $app['eccube.repository.block'] = function () use ($app) {
-            $blockRepository = $app['orm.em']->getRepository('Eccube\Entity\Block');
-            $blockRepository->setApplication($app);
-
-            return $blockRepository;
-        };
-        $app['eccube.repository.order'] = function () use ($app) {
-            $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
-            $orderRepository->setApplication($app);
-
-            return $orderRepository;
-        };
-        $app['eccube.repository.customer_address'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\CustomerAddress');
-        };
-        $app['eccube.repository.shipping'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Shipping');
-        };
-        $app['eccube.repository.shipment_item'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\ShipmentItem');
-        };
-        $app['eccube.repository.customer_status'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus');
-        };
-        $app['eccube.repository.order_status'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
-        };
-        $app['eccube.repository.mail_template'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\MailTemplate');
-        };
-        $app['eccube.repository.csv'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Csv');
-        };
-        $app['eccube.repository.template'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Template');
-        };
-        $app['eccube.repository.authority_role'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
-        };
-
-        $app['paginator'] = $app->protect(function () {
-            $paginator = new \Knp\Component\Pager\Paginator();
-            $paginator->subscribe(new \Eccube\EventListener\PaginatorListener());
-
-            return $paginator;
-        });
-
-        $app['eccube.repository.help'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Help');
-        };
-        $app['eccube.repository.plugin'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Plugin');
-        };
-        $app['eccube.repository.plugin_event_handler'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
-        };
-        $app['eccube.repository.layout'] = function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Layout');
-        };
-
         $reader = $app['annotations'];
         $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
         foreach ($classMetadatas as $Metadata) {
@@ -377,7 +199,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
                     if ($annotation->value) {
                         $component_id = $annotation->value;
                     } elseif (strpos($Metadata->table['name'], 'mtb_') !== false) {
-                        $component_id = 'eccube.repository.master'.str_replace('mtb_', '', $Metadata->table['name']);
+                        $component_id = 'eccube.repository.master.'.str_replace('mtb_', '', $Metadata->table['name']);
                     } elseif (strpos($Metadata->table['name'], 'dtb_') !== false) {
                         $component_id = 'eccube.repository.'.str_replace('dtb_', '', $Metadata->table['name']);
                     } else {
@@ -391,6 +213,22 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
                 }
             }
         }
+
+        // XXX alias
+        $app['eccube.repository.customer_status'] = function () use ($app) {
+            return $app['eccube.repository.master.customer_status'];
+        };
+        $app['eccube.repository.order_status'] = function () use ($app) {
+            return $app['eccube.repository.master.order_status'];
+        };
+
+
+        $app['paginator'] = $app->protect(function () {
+            $paginator = new \Knp\Component\Pager\Paginator();
+            $paginator->subscribe(new \Eccube\EventListener\PaginatorListener());
+
+            return $paginator;
+        });
 
         $app['request_scope'] = function () {
             return new ParameterBag();
