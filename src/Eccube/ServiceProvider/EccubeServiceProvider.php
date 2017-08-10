@@ -372,8 +372,19 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
                 $rc = new \ReflectionClass($Metadata->customRepositoryClassName);
                 $annotation = $reader->getClassAnnotation($rc, Repository::class);
                 if ($annotation) {
-                    if (!$app->offsetExists($annotation->value)) {
-                        $app[$annotation->value] = function () use ($app, $Metadata) {
+                    // XXX 暫定対応
+                    $component_id = '';
+                    if ($annotation->value) {
+                        $component_id = $annotation->value;
+                    } elseif (strpos($Metadata->table['name'], 'mtb_') !== false) {
+                        $component_id = 'eccube.repository.master'.str_replace('mtb_', '', $Metadata->table['name']);
+                    } elseif (strpos($Metadata->table['name'], 'dtb_') !== false) {
+                        $component_id = 'eccube.repository.'.str_replace('dtb_', '', $Metadata->table['name']);
+                    } else {
+                        continue;
+                    }
+                    if (!$app->offsetExists($component_id)) {
+                        $app[$component_id] = function () use ($app, $Metadata) {
                             return $app['orm.em']->getRepository($Metadata->name);
                         };
                     }
