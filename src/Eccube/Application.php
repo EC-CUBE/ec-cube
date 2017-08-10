@@ -33,6 +33,7 @@ use Eccube\Doctrine\EventSubscriber\InitSubscriber;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
+use Eccube\ServiceProvider\DiServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
@@ -340,6 +341,15 @@ class Application extends \Silex\Application
 
         // init http cache
         $this->initCacheRequest();
+
+        $this->register(new DiServiceProvider(), [
+            'eccube.di.dirs' => [
+                $this['config']['root_dir'].'/app/Acme/Controller'
+            ],
+            'eccube.di.cache_dir' => $this['config']['root_dir'].'/app/cache/eccube'
+        ]);
+
+        $this['eccube.di']->build($app);
 
         $this->initialized = true;
     }
