@@ -242,6 +242,7 @@ class Application extends \Silex\Application
                 $this['config']['root_dir'].'/src/Eccube/Repository',
                 $this['config']['root_dir'].'/src/Eccube/Form/Type',
                 $this['config']['root_dir'].'/src/Eccube/Form/Extension',
+                $this['config']['root_dir'].'/src/Eccube/Service',
             ],
             'eccube.di.cache_dir' => $this['config']['root_dir'].'/app/cache/eccube'
         ]);

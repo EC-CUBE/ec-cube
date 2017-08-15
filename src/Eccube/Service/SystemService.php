@@ -23,16 +23,20 @@
 
 namespace Eccube\Service;
 
-use Eccube\Application;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 
+/**
+ * @Service("eccube.service.system")
+ */
 class SystemService
 {
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+    /**
+     * @var EntityManager
+     * @Inject("orm.em")
+     */
+    protected $em;
 
     public function getDbversion()
     {
@@ -40,24 +44,25 @@ class SystemService
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
-        switch ($this->app['config']['database']['driver']) {
-            case 'pdo_sqlite':
+        $platform = $this->em->getConnection()->getDatabasePlatform()->getName();
+        switch ($platform) {
+            case 'sqlite':
                 $prefix = 'SQLite version ';
                 $func = 'sqlite_version()';
                 break;
 
-            case 'pdo_mysql':
+            case 'mysql':
                 $prefix = 'MySQL ';
                 $func = 'version()';
                 break;
 
-            case 'pdo_pgsql':
+            case 'pgsql':
             default:
                 $prefix = '';
                 $func = 'version()';
         }
 
-        $version = $this->app['orm.em']
+        $version = $this->em
             ->createNativeQuery('select '.$func.' as v', $rsm)
             ->getSingleScalarResult();
 

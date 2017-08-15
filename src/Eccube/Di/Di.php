@@ -8,6 +8,7 @@ use Eccube\Annotation\FormExtension;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
+use Eccube\Annotation\Service;
 use Eccube\Application;
 use Pimple\Container;
 use Symfony\Component\Finder\Finder;
@@ -31,6 +32,7 @@ class Di
         Repository::class,
         FormType::class,
         FormExtension::class,
+        Service::class,
     ];
 
     public function __construct(array $dirs, Reader $reader, $cacheDir, $debug = false)
