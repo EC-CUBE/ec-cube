@@ -17,7 +17,7 @@ trait CustomerTrait
      * @Eccube\FormAppend(
      *     auto_render=true,
      *     form_theme="Form/company_name_vn.twig",
-     *     type="\Symfony\Component\Form\Extension\Core\Type\TextAreaType",
+     *     type="\Symfony\Component\Form\Extension\Core\Type\TextareaType",
      *     options={
      *          "required": true,
      *          "label": "会社名(VN)"
