@@ -49,7 +49,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class CustomerRepository extends AbstractRepository implements UserProviderInterface
 {
     /**
-     * @Inject(Queries::class)
+     * @Inject("eccube.queries")
      * @var Queries
      */
     protected $queries;

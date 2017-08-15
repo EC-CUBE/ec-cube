@@ -43,7 +43,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductRepository extends AbstractRepository
 {
     /**
-     * @Inject(Queries::class)
+     * @Inject("eccube.queries")
      * @var Queries
      */
     protected $queries;

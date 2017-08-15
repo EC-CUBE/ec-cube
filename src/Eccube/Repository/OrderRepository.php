@@ -27,7 +27,6 @@ namespace Eccube\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
-use Eccube\Application;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Util\Str;
 
@@ -48,7 +47,7 @@ class OrderRepository extends AbstractRepository
     protected $appConfig;
 
     /**
-     * @Inject(Queries::class)
+     * @Inject("eccube.queries")
      * @var Queries
      */
     protected $queries;
