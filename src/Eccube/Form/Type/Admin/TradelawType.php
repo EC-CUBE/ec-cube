@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
@@ -36,6 +37,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
+/**
+ * @FormType
+ */
 class TradelawType extends AbstractType
 {
     public function __construct()

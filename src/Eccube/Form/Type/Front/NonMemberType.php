@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\AddressType;
@@ -40,9 +41,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ゲスト購入のお客様情報入力画面
+ * @FormType
  */
 class NonMemberType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -72,7 +80,7 @@ class NonMemberType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                 ),
             ))

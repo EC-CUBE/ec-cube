@@ -24,10 +24,14 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @FormType
+ */
 class MailTemplateType extends AbstractType
 {
     /**

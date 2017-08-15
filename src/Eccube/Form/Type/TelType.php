@@ -22,6 +22,7 @@
  */
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
@@ -34,8 +35,17 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class TelType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -126,19 +136,19 @@ class TelType extends AbstractType
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->app['config']['tel_len'], 'min' => $this->app['config']['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->app['config']['tel_len'], 'min' => $this->app['config']['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->app['config']['tel_len'], 'min' => $this->app['config']['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
                 ),
             ),
             'tel01_name' => '',

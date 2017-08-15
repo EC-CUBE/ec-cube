@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -34,6 +36,7 @@ use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -50,8 +53,29 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class OrderType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
 
     /**
      * @var \Eccube\Application $app
@@ -68,7 +92,7 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         $builder
             ->add('name', NameType::class, array(
@@ -92,7 +116,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 ),
             ))
@@ -117,7 +141,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->app['config']['mtext_len'],
+                            'max' => $this->appConfig['mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-locality')
@@ -127,7 +151,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->app['config']['mtext_len'],
+                            'max' => $this->appConfig['mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-street-address')
@@ -158,7 +182,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 ),
             ))
@@ -167,7 +191,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['ltext_len'],
+                        'max' => $this->appConfig['ltext_len'],
                     )),
                 ),
             ))
@@ -185,7 +209,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['ltext_len'],
+                        'max' => $this->appConfig['ltext_len'],
                     )),
                 ),
             ))
@@ -224,7 +248,7 @@ class OrderType extends AbstractType
         $builder
             ->add($builder->create('Customer', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Customer'
                 )));
 

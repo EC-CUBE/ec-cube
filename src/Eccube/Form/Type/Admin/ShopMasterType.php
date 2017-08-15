@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\AddressType;
@@ -41,8 +42,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ShopMasterType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -64,7 +74,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                 )
             ))
@@ -74,7 +84,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                 )
             ))
@@ -83,7 +93,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['mtext_len'],
+                        'max' => $this->appConfig['mtext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i'
@@ -107,7 +117,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -148,7 +158,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['lltext_len'],
+                        'max' => $this->appConfig['lltext_len'],
                     )),
                 ),
             ))
@@ -157,7 +167,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['lltext_len'],
+                        'max' => $this->appConfig['lltext_len'],
                     )),
                 ),
             ))
@@ -278,7 +288,7 @@ class ShopMasterType extends AbstractType
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
                         new Assert\Length(array(
-                            'max' => $this->app['config']['stext_len'],
+                            'max' => $this->appConfig['stext_len'],
                         )),
                     ),
                 ))
@@ -292,7 +302,7 @@ class ShopMasterType extends AbstractType
                     'required' => false,
                     'constraints' => array(
                         new Assert\Length(array(
-                            'max' => $this->app['config']['stext_len'],
+                            'max' => $this->appConfig['stext_len'],
                         )),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",

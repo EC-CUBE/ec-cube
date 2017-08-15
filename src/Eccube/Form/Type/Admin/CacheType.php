@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Finder\Finder;
@@ -32,8 +33,17 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class CacheType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
 
     /**
      * @var \Eccube\Application $app
@@ -54,7 +64,7 @@ class CacheType extends AbstractType
         // 対象となるキャッシュディレクトリを取得
         // eccubeディレクトリは削除対象外とする
         $finder = Finder::create()->notName('eccube')->depth(0);
-        $cacheDir = $this->app['config']['root_dir'].'/app/cache';
+        $cacheDir = $this->appConfig['root_dir'].'/app/cache';
 
         $cacheDirs = array();
         foreach ($finder->in($cacheDir) as $file) {

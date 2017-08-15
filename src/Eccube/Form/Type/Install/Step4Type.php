@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Eccube\Annotation\FormType;
+use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -31,11 +33,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * @FormType
+ */
 class Step4Type extends AbstractType
 {
+    /**
+     * @Inject("request_stack")
+     * @var RequestStack
+     */
+    protected $requestStack;
+
     public $app;
 
     public function __construct(\Silex\Application $app)
@@ -134,7 +146,7 @@ class Step4Type extends AbstractType
 
     public function validate($data, ExecutionContext $context, $param = null)
     {
-        $parameters = $this->app['request_stack']->getCurrentRequest()->get('install_step4');
+        $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
         if ($parameters['database'] != 'pdo_sqlite'){
             $context->getValidator()->validate($data, array(
                 new Assert\NotBlank()

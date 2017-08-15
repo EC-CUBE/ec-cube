@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
@@ -42,8 +44,17 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ProductClassType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -150,7 +161,7 @@ class ProductClassType extends AbstractType
 
 
         $transformer = new DataTransformer\EntityToIdTransformer(
-            $this->app['orm.em'],
+            $this->entityManager,
             '\Eccube\Entity\ClassCategory'
         );
         $builder

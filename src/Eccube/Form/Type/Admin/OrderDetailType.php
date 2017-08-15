@@ -24,21 +24,59 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\PriceType;
+use Eccube\Repository\ProductClassRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class OrderDetailType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(TaxRuleRepository::class)
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @Inject(ProductClassRepository::class)
+     * @var ProductClassRepository
+     */
+    protected $productClassRepository;
+
+    /**
+     * @Inject("request_stack")
+     * @var RequestStack
+     */
+    protected $requestStack;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -67,7 +105,7 @@ class OrderDetailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
+                        'max' => $this->appConfig['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
@@ -79,7 +117,7 @@ class OrderDetailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
+                        'max' => $this->appConfig['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+(\.\d+)?$/u",
@@ -99,29 +137,29 @@ class OrderDetailType extends AbstractType
         $builder
             ->add($builder->create('Product', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Product'
                 )))
             ->add($builder->create('ProductClass', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\ProductClass'
                 )));
 
         $app = $this->app;
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
-            if ('modal' === $app['request_stack']->getCurrentRequest()->get('modal')) {
+            if ('modal' === $this->requestStack->getCurrentRequest()->get('modal')) {
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {
                     /** @var \Eccube\Entity\ProductClass $ProductClass */
-                    $ProductClass = $app['eccube.repository.product_class']
+                    $ProductClass = $this->productClassRepository
                         ->find($data['ProductClass']);
                     /** @var \Eccube\Entity\Product $Product */
                     $Product = $ProductClass->getProduct();
                     /** @var \Eccube\Entity\TaxRule $TaxRule */
-                    $TaxRule = $app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
+                    $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
 
                     $data['product_name'] = $Product->getName();
                     $data['product_code'] = $ProductClass->getCode();

@@ -24,12 +24,15 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Validator\TwigLint;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -41,8 +44,29 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class MainEditType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(DeviceTypeRepository::class)
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -67,7 +91,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -77,7 +101,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
@@ -90,7 +114,7 @@ class MainEditType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
@@ -111,7 +135,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -120,7 +144,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -129,7 +153,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -138,7 +162,7 @@ class MainEditType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -154,7 +178,7 @@ class MainEditType extends AbstractType
                 'label' => 'PC',
                 'class' => Layout::class,
                 'query_builder' => function(EntityRepository $er) use ($app) {
-                    $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
                     return $er->createQueryBuilder('l')
                         ->where('l.DeviceType = :DeviceType')
                         ->setParameter('DeviceType', $DeviceType)
@@ -168,7 +192,7 @@ class MainEditType extends AbstractType
                 'label' => 'スマホ',
                 'class' => Layout::class,
                 'query_builder' => function(EntityRepository $er) use ($app) {
-                    $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_SP);
+                    $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_SP);
                     return $er->createQueryBuilder('l')
                         ->where('l.DeviceType = :DeviceType')
                         ->setParameter('DeviceType', $DeviceType)
@@ -197,7 +221,7 @@ class MainEditType extends AbstractType
                 $DeviceType = $form['DeviceType']->getData();
                 $page_id = $form['id']->getData();
 
-                $qb = $app['orm.em']->createQueryBuilder();
+                $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('p')
                     ->from('Eccube\\Entity\\PageLayout', 'p')
                     ->where('p.url = :url')

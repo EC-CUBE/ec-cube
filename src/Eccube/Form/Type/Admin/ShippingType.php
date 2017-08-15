@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -33,13 +34,15 @@ use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\DeliveryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -47,8 +50,29 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ShippingType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(DeliveryRepository::class)
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -65,7 +89,7 @@ class ShippingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $app = $this->app;
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         $builder
             ->add('name', NameType::class, array(
@@ -89,7 +113,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 ),
             ))
@@ -114,7 +138,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->app['config']['mtext_len'],
+                            'max' => $this->appConfig['mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-locality')
@@ -124,7 +148,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->app['config']['mtext_len'],
+                            'max' => $this->appConfig['mtext_len'],
                         )),
                     ),
                     'attr' => array('class' => 'p-street-address')
@@ -163,7 +187,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['mtext_len'],
+                        'max' => $this->appConfig['mtext_len'],
                     )),
                 ),
             ))
@@ -172,7 +196,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['ltext_len'],
+                        'max' => $this->appConfig['ltext_len'],
                     )),
                 ),
             ))
@@ -232,7 +256,7 @@ class ShippingType extends AbstractType
                 if (empty($value)) {
                     $value = 0;
                 }
-                $Delivery = $app['eccube.repository.delivery']->find($value);
+                $Delivery = $this->deliveryRepository->find($value);
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, array(

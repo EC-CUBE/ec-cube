@@ -24,9 +24,11 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Form\Validator\TwigLint;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -37,8 +39,23 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class BlockType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -63,7 +80,7 @@ class BlockType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     ))
                 )
             ))
@@ -73,7 +90,7 @@ class BlockType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[0-9a-zA-Z\/_]+$/',
@@ -100,7 +117,7 @@ class BlockType extends AbstractType
                 $DeviceType = $form['DeviceType']->getData();
                 $block_id = $form['id']->getData();
 
-                $qb = $app['orm.em']->createQueryBuilder();
+                $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('b')
                     ->from('Eccube\\Entity\\Block', 'b')
                     ->where('b.file_name = :file_name')

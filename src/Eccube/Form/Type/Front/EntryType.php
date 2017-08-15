@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\AddressType;
@@ -44,8 +45,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class EntryType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -72,7 +82,7 @@ class EntryType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                 ),
             ))
@@ -89,7 +99,7 @@ class EntryType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->app['config']['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->appConfig['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),

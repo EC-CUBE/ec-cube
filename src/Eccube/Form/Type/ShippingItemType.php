@@ -24,6 +24,9 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
+use Eccube\Annotation\Inject;
+use Eccube\Service\ShoppingService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -33,8 +36,17 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ShippingItemType extends AbstractType
 {
+    /**
+     * @Inject(ShoppingService::class)
+     * @var ShoppingService
+     */
+    protected $shoppingService;
+
     public $app;
 
     public function __construct(\Eccube\Application $app)
@@ -57,11 +69,11 @@ class ShippingItemType extends AbstractType
                 $form = $event->getForm();
 
                 // お届け日を取得
-                $deliveryDates = $app['eccube.service.shopping']->getFormDeliveryDates($data->getOrder());
+                $deliveryDates = $this->shoppingService->getFormDeliveryDates($data->getOrder());
 
                 // 配送業者
                 // 商品種別に紐づく配送業者を取得
-                $delives = $app['eccube.service.shopping']->getDeliveriesOrder($data->getOrder());
+                $delives = $this->shoppingService->getDeliveriesOrder($data->getOrder());
 
                 $deliveries = array();
                 foreach ($delives as $Delivery) {

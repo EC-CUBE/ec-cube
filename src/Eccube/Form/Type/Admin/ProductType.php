@@ -25,11 +25,13 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\DispType;
 use Eccube\Form\Type\Master\TagType;
 use Eccube\Form\Validator\TwigLint;
+use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -43,9 +45,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ProductType.
+ * @FormType
  */
 class ProductType extends AbstractType
 {
+    /**
+     * @Inject(CategoryRepository::class)
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -67,7 +76,7 @@ class ProductType extends AbstractType
         /**
          * @var ArrayCollection $arrCategory array of category
          */
-        $arrCategory = $this->app['eccube.repository.category']->getList(null, true);
+        $arrCategory = $this->categoryRepository->getList(null, true);
 
         $builder
             // 商品規格情報
