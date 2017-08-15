@@ -93,51 +93,6 @@ class Di
         return $classes;
     }
 
-    public function generateProvider($components)
-    {
-        $provider = '<?php'.PHP_EOL;
-        $provider .= 'namespace Eccube\ServiceProvider;'.PHP_EOL;
-        $provider .= 'class ServiceProviderCache implements \Pimple\ServiceProviderInterface'.PHP_EOL;
-        $provider .= '{'.PHP_EOL;
-        $provider .= '  public function register(\Pimple\Container $container)'.PHP_EOL;
-        $provider .= '  {'.PHP_EOL;
-
-        foreach ($components as $component) {
-            $provider .= sprintf(
-                    '    $container["%s"] = function(\Pimple\Container $container) {',
-                    $component['id']
-                ).PHP_EOL;
-
-            if ($component['anno'] instanceof Repository) {
-                $provider .= sprintf('').PHP_EOL;
-            } else {
-                $provider .= sprintf(
-                        '      $class = new \ReflectionClass(\\%s::class);',
-                        $component['class_name']
-                    ).PHP_EOL;
-                $provider .= '      $instance = $class->newInstanceWithoutConstructor();'.PHP_EOL;
-            }
-            foreach ($component['injects'] as $inject) {
-                $provider .= sprintf(
-                        '      $property = $class->getProperty("%s");',
-                        $inject['property_name']
-                    ).PHP_EOL;
-                $provider .= '      $property->setAccessible(true);'.PHP_EOL;
-                $provider .= sprintf(
-                        '      $property->setValue($instance, %s);',
-                        $inject['id'] === Application::class ? '$container' : '$container["'.$inject['id'].'"]'
-                    ).PHP_EOL;
-            }
-            $provider .= '      return $instance;'.PHP_EOL;
-            $provider .= '    };'.PHP_EOL;
-        }
-
-        $provider .= '  }'.PHP_EOL;
-        $provider .= '}'.PHP_EOL;
-
-        return $provider;
-    }
-
     public function register(Container $container, array $components)
     {
         foreach ($components as $component) {

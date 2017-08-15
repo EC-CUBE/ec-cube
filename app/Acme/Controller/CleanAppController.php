@@ -11,13 +11,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * @Component
- * @Route(path="/cleanapp", service="Acme\Controller\CleanAppController")
+ * @Route(path="/cleanapp", service=CleanAppController::class)
  */
 class CleanAppController
 {
     /**
-     * @Inject(BaseInfoRepository::class)
      * @var BaseInfoRepository
+     * @Inject(BaseInfoRepository::class)
      */
     protected $repository;
 
