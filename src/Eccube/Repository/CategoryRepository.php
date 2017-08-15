@@ -24,9 +24,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Annotation\Repository;
 use Eccube\Entity\Category;
 
 /**
@@ -40,10 +39,10 @@ use Eccube\Entity\Category;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @var Application $app
-     * @Inject(Application::class)
+     * @Inject("config")
+     * @var array
      */
-    protected $app;
+    protected $appConfig;
 
     /**
      * 全カテゴリの合計を取得する.
@@ -74,7 +73,7 @@ class CategoryRepository extends AbstractRepository
      */
     public function getList(Category $Parent = null, $flat = false)
     {
-        $options = $this->app['config']['doctrine_cache'];
+        $options = $this->appConfig['doctrine_cache'];
         $lifetime = $options['result_cache']['lifetime'];
 
         $qb = $this->createQueryBuilder('c1')

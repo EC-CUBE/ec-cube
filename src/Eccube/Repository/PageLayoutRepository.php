@@ -24,9 +24,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Annotation\Repository;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
 use Symfony\Component\Filesystem\Filesystem;
@@ -42,10 +41,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class PageLayoutRepository extends AbstractRepository
 {
     /**
-     * @var Application $app
-     * @Inject(Application::class)
+     * @Inject("config")
+     * @var array
      */
-    protected $app;
+    protected $appConfig;
 
     public function findUnusedBlocks(DeviceType $DeviceType, $pageId)
     {
@@ -119,7 +118,7 @@ class PageLayoutRepository extends AbstractRepository
 
     public function getByUrl(DeviceType $DeviceType, $url)
     {
-        $options = $this->app['config']['doctrine_cache'];
+        $options = $this->appConfig['doctrine_cache'];
         $lifetime = $options['result_cache']['lifetime'];
 
         $qb = $this->createQueryBuilder('p')
@@ -233,7 +232,7 @@ class PageLayoutRepository extends AbstractRepository
      */
     public function getWriteTemplatePath($isUser = false)
     {
-        return ($isUser) ? $this->app['config']['user_data_realdir'] : $this->app['config']['template_realdir'];
+        return ($isUser) ? $this->appConfig['user_data_realdir'] : $this->appConfig['template_realdir'];
     }
 
     /**
@@ -253,12 +252,12 @@ class PageLayoutRepository extends AbstractRepository
     {
         if ($isUser) {
             $readPaths = array(
-                $this->app['config']['user_data_realdir'],
+                $this->appConfig['user_data_realdir'],
             );
         } else {
             $readPaths = array(
-                $this->app['config']['template_realdir'],
-                $this->app['config']['template_default_realdir'],
+                $this->appConfig['template_realdir'],
+                $this->appConfig['template_default_realdir'],
             );
         }
 
