@@ -6,16 +6,18 @@ namespace Acme\Controller;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Repository\BaseInfoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * @Component(value="Acme\Controller\CleanAppController")
+ * @Component
  * @Route(path="/cleanapp", service="Acme\Controller\CleanAppController")
  */
 class CleanAppController
 {
     /**
-     * @Inject(value="eccube.repository.master.csv_type")
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
      */
     protected $repository;
 

@@ -186,45 +186,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return new \Eccube\Service\ShoppingService($app, $app['eccube.service.cart'], $app['eccube.service.order']);
         };
 
-        // Repository
-        $reader = $app['annotations'];
-        $classMetadatas = $app['orm.em']->getMetaDataFactory()->getAllMetaData();
-        foreach ($classMetadatas as $Metadata) {
-            if (class_exists($Metadata->customRepositoryClassName)) {
-                $rc = new \ReflectionClass($Metadata->customRepositoryClassName);
-                $annotation = $reader->getClassAnnotation($rc, Repository::class);
-                if ($annotation) {
-                    // XXX 暫定対応
-                    $component_id = '';
-                    if ($annotation->value) {
-                        $component_id = $annotation->value;
-                    } elseif (strpos($Metadata->table['name'], 'mtb_') !== false) {
-                        $component_id = 'eccube.repository.master.'.str_replace('mtb_', '', $Metadata->table['name']);
-                    } elseif (strpos($Metadata->table['name'], 'dtb_') !== false) {
-                        $component_id = 'eccube.repository.'.str_replace('dtb_', '', $Metadata->table['name']);
-                    } else {
-                        continue;
-                    }
-                    if (!$app->offsetExists($component_id)) {
-                        $app[$component_id] = function () use ($app, $Metadata) {
-                            return $app['orm.em']->getRepository($Metadata->name);
-                        };
-                    }
-                }
-            }
-        }
-
-        // XXX alias
-        $app['eccube.repository.customer_status'] = function () use ($app) {
-            return $app['eccube.repository.master.customer_status'];
-        };
-        $app['eccube.repository.order_status'] = function () use ($app) {
-            return $app['eccube.repository.master.order_status'];
-        };
-
-        // Add event subscriber to TaxRuleEvent
-        $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app['eccube.service.tax_rule']));
-
         $app['paginator'] = $app->protect(function () {
             $paginator = new \Knp\Component\Pager\Paginator();
             $paginator->subscribe(new \Eccube\EventListener\PaginatorListener());
@@ -358,6 +319,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
+        // Add event subscriber to TaxRuleEvent
+        $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app['eccube.service.tax_rule']));
+
         $dispatcher->addSubscriber(new TransactionListener($app));
     }
 }
