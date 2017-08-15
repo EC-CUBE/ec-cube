@@ -24,12 +24,14 @@
 namespace Eccube\Service;
 
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 
 /**
  * @deprecated since 3.0.0, to be removed in 3.1
+ * @Service
  */
 class OrderService
 {

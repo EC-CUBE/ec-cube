@@ -75,7 +75,7 @@ class ShoppingService
     protected $mailService;
 
     /**
-     * @Inject(EventDispatcher::class)
+     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;

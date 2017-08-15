@@ -1,9 +1,13 @@
 <?php
 namespace Eccube\Service;
 
+use Eccube\Annotation\Service;
 use Eccube\Service\Calculator\CalculateContext;
 use Eccube\Service\Calculator\Strategy\CalculateStrategyInterface;
 
+/**
+ * @Service
+ */
 class CalculateService
 {
     protected $Customer;

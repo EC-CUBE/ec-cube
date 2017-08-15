@@ -2,9 +2,13 @@
 namespace Eccube\Service;
 
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Service\Payment\PaymentMethod;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @Service
+ */
 class PaymentService
 {
     /**

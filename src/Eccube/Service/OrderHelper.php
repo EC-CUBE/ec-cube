@@ -5,6 +5,7 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
@@ -30,6 +31,7 @@ use Eccube\Util\Str;
  * namespaceやクラス名は要検討
  *
  * @package Eccube\Service
+ * @Service
  */
 class OrderHelper
 {

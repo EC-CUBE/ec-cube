@@ -26,6 +26,7 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
@@ -38,6 +39,9 @@ use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @Service
+ */
 class PluginService
 {
     /**

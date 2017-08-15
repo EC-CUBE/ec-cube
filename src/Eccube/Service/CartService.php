@@ -25,12 +25,16 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * @Service
+ */
 class CartService
 {
     /**

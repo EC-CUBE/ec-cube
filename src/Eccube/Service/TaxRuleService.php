@@ -23,23 +23,20 @@
 
 
 namespace Eccube\Service;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
+use Eccube\Repository\TaxRuleRepository;
 
+/**
+ * @Service
+ */
 class TaxRuleService
 {
     /**
-     * @var \Eccube\Repository\TaxRuleRepository
+     * @Inject(TaxRuleRepository::class)
+     * @var TaxRuleRepository
      */
-    private $taxRuleRepository;
-
-    /**
-     * __construct
-     *
-     * @param \Eccube\Repository\TaxRuleRepository $taxRuleRepository
-     */
-    public function __construct(\Eccube\Repository\TaxRuleRepository $taxRuleRepository)
-    {
-        $this->taxRuleRepository = $taxRuleRepository;
-    }
+    protected $taxRuleRepository;
 
     /**
      * 設定情報に基づいて税金の金額を返す

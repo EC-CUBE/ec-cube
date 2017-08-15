@@ -24,6 +24,7 @@
 namespace Eccube\Service;
 
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -31,6 +32,9 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @Service
+ */
 class MailService
 {
     /**
@@ -40,7 +44,7 @@ class MailService
     protected $mailTemplateRepository;
 
     /**
-     * @Inject(EventDispatcher::class)
+     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
