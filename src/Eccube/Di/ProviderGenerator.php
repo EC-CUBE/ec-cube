@@ -78,8 +78,6 @@ class ServiceProviderCache implements \Pimple\ServiceProviderInterface
                     } else {
                         $prefix = 'Eccube\\Entity\\';
                     }
-                error_log($class);
-                    error_log($prefix);
 
                     //\Eccube\Repository\TaxRuleRepository
                     $array = explode('\\',$class);
