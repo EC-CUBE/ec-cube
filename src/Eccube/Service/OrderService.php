@@ -23,7 +23,7 @@
 
 namespace Eccube\Service;
 
-use Eccube\Application;
+use Eccube\Annotation\Inject;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
@@ -33,13 +33,11 @@ use Eccube\Entity\Order;
  */
 class OrderService
 {
-    /** @var \Eccube\Application */
-    public $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+    /**
+     * @Inject(ShoppingService::class)
+     * @var ShoppingService
+     */
+    protected $shoppingService;
 
     /**
      * 合計数量を取得
@@ -100,7 +98,7 @@ class OrderService
      */
     public function newOrder()
     {
-        return $this->app['eccube.service.shopping']->newOrder();
+        return $this->shoppingService->newOrder();
     }
 
     /**
@@ -117,7 +115,7 @@ class OrderService
      */
     public function registerPreOrderFromCartItems($cartItems, Customer $Customer = null, $preOrderId)
     {
-        return $this->app['eccube.service.shopping']->createOrder($Customer);
+        return $this->shoppingService->createOrder($Customer);
     }
 
     /**
@@ -133,7 +131,7 @@ class OrderService
      */
     public function getAmount(Order $Order, Cart $Cart)
     {
-        return $this->app['eccube.service.shopping']->getAmount($Order);
+        return $this->shoppingService->getAmount($Order);
     }
 
     /**
@@ -149,7 +147,7 @@ class OrderService
      */
     public function isOrderProduct($em, Order $Order)
     {
-        return $this->app['eccube.service.shopping']->isOrderProduct($em, $Order);
+        return $this->shoppingService->isOrderProduct($em, $Order);
     }
 
     /**
@@ -165,7 +163,7 @@ class OrderService
      */
     public function setOrderUpdate($em, Order $Order, $formData)
     {
-        $this->app['eccube.service.shopping']->setOrderUpdate($Order, $formData);
+        $this->shoppingService->setOrderUpdate($Order, $formData);
     }
 
     /**
@@ -180,7 +178,7 @@ class OrderService
      */
     public function setStockUpdate($em, Order $Order)
     {
-        $this->app['eccube.service.shopping']->setStockUpdate($em, $Order);
+        $this->shoppingService->setStockUpdate($em, $Order);
     }
 
     /**
@@ -196,7 +194,7 @@ class OrderService
      */
     public function setCustomerUpdate($em, Order $Order, Customer $user)
     {
-        $this->app['eccube.service.shopping']->setCustomerUpdate($Order, $user);
+        $this->shoppingService->setCustomerUpdate($Order, $user);
     }
 
 

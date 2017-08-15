@@ -23,6 +23,8 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -30,6 +32,7 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -39,6 +42,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeeProcessor implements ItemHolderProcessor
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(OrderItemTypeRepository::class)
+     * @var OrderItemTypeRepository
+     */
+    protected $orderItemTypeRepository;
+
     private $app;
 
     /**
@@ -89,10 +104,10 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
      */
     private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
     {
-        $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
+        $DeliveryFeeType = $this->orderItemTypeRepository->find(OrderItemType::DELIVERY_FEE);
         // TODO
-        $TaxInclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::INCLUDED);
-        $Taxion = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::TAXATION);
+        $TaxInclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::INCLUDED);
+        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
         /** @var Order $Order */
         $Order = $itemHolder;

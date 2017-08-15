@@ -4,18 +4,19 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use Eccube\Application;
+use Eccube\Annotation\Inject;
 use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -32,45 +33,59 @@ use Eccube\Util\Str;
  */
 class OrderHelper
 {
-    /** @var array */
-    protected $config;
-
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var OrderRepository */
-    protected $orderRepository;
-
-    /** @var DeliveryRepository */
-    protected $deliveryRepository;
-
-    /** @var DeliveryFeeRepository */
-    protected $deliveryFeeRepository;
-
-    /** @var PaymentRepository */
-    protected $paymentRepository;
-
-    /** @var TaxruleRepository */
-    protected $taxRuleRepository;
-
-    /** @var  OrderStatusRepository */
-    protected $orderStatusRepository;
-
-    /** @var OrderItemTypeRepository */
+    /**
+     * @Inject(OrderItemTypeRepository::class)
+     * @var OrderItemTypeRepository
+     */
     protected $orderItemTypeRepository;
 
-    public function __construct(Application $app)
-    {
-        $this->config = $app['config'];
-        $this->em = $app['orm.em'];
-        $this->orderRepository = $app['eccube.repository.order'];
-        $this->paymentRepository = $app['eccube.repository.payment'];
-        $this->deliveryRepository = $app['eccube.repository.delivery'];
-        $this->deliveryFeeRepository = $app['eccube.repository.delivery_fee'];
-        $this->taxRuleRepository = $app['eccube.repository.tax_rule'];
-        $this->orderStatusRepository = $app['eccube.repository.order_status'];
-        $this->orderItemTypeRepository = $app['eccube.repository.master.order_item_type'];
-    }
+    /**
+     * @Inject(OrderStatusRepository::class)
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
+     * @Inject(TaxRuleRepository::class)
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @Inject(DeliveryFeeRepository::class)
+     * @var DeliveryFeeRepository
+     */
+    protected $deliveryFeeRepository;
+
+    /**
+     * @Inject(DeliveryRepository::class)
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
+    /**
+     * @Inject(PaymentRepository::class)
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
+     * @Inject(OrderRepository::class)
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
 
     /**
      * 購入処理中の受注データを生成する.
@@ -82,7 +97,7 @@ class OrderHelper
      */
     public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems)
     {
-        $OrderStatus = $this->orderStatusRepository->find($this->config['order_processing']);
+        $OrderStatus = $this->orderStatusRepository->find($this->appConfig['order_processing']);
         $Order = new Order($OrderStatus);
 
         // pre_order_idを生成
@@ -104,13 +119,13 @@ class OrderHelper
             $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
             $this->addShipmentItems($Order, $Shipping, $ShipmentItems);
             $this->setDefaultDelivery($Shipping);
-            $this->em->persist($Shipping);
+            $this->entityManager->persist($Shipping);
         }
 
         $this->setDefaultPayment($Order);
 
-        $this->em->persist($Order);
-        $this->em->flush();
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
 
         return $Order;
     }
@@ -124,7 +139,7 @@ class OrderHelper
             $Order = $this->orderRepository->findOneBy(
                 [
                     'pre_order_id' => $preOrderId,
-                    'OrderStatus' => $this->config['order_processing'],
+                    'OrderStatus' => $this->appConfig['order_processing'],
                 ]
             );
         } while ($Order);
@@ -157,8 +172,8 @@ class OrderHelper
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
         // TODO
-        $TaxExclude = $this->em->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
-        $Taxion = $this->em->getRepository(TaxType::class)->find(TaxType::TAXATION);
+        $TaxExclude = $this->entityManager->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
+        $Taxion = $this->entityManager->getRepository(TaxType::class)->find(TaxType::TAXATION);
 
         return array_map(function($item) use ($ProductItemType, $TaxExclude, $Taxion) {
             /* @var $item CartItem */

@@ -3,9 +3,11 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
+use Eccube\Annotation\Inject;
 use Eccube\Common\Constant;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\ShipmentItem;
+use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -15,6 +17,12 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class StockReduceProcessor implements ItemProcessor
 {
+    /**
+     * @Inject(ProductStockRepository::class)
+     * @var ProductStockRepository
+     */
+    protected $productStockRepository;
+
     private $app;
 
     /**
@@ -52,7 +60,7 @@ class StockReduceProcessor implements ItemProcessor
         if ($item->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
             // 在庫チェックあり
             // 在庫に対してロック(select ... for update)を実行
-            $productStock = $this->app['orm.em']->getRepository('Eccube\Entity\ProductStock')->find(
+            $productStock = $this->productStockRepository->find(
                 $item->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
             );
             // 購入数量と在庫数をチェックして在庫がなければエラー

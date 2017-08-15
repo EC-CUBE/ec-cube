@@ -1,19 +1,23 @@
 <?php
 namespace Eccube\Service;
 
-use Eccube\Application;
+use Eccube\Annotation\Inject;
 use Eccube\Service\Payment\PaymentMethod;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PaymentService
 {
-    /** @var \Eccube\Application */
-    protected $app;
+    /**
+     * @Inject("request_stack")
+     * @var RequestStack
+     */
+    protected $requestStack;
 
     public function dispatch(PaymentMethod $method)
     {
         // PaymentMethod->apply に処理を移譲する
         // 別のコントローラに forward など
-        $request = $this->app['request_stack']->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
         return $method->apply($request);
     }
 
@@ -23,11 +27,4 @@ class PaymentService
         $PaymentResult = $method->checkout();
         return $PaymentResult;
     }
-
-    public function setApplication(Application $app)
-    {
-        $this->app = $app;
-        return $this;
-    }
-
 }

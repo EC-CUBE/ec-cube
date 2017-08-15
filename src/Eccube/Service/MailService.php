@@ -23,25 +23,39 @@
 
 namespace Eccube\Service;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\MailTemplateRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class MailService
 {
-    /** @var \Eccube\Application */
-    public $app;
+    /**
+     * @Inject(MailTemplateRepository::class)
+     * @var MailTemplateRepository
+     */
+    protected $mailTemplateRepository;
 
+    /**
+     * @Inject(EventDispatcher::class)
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
 
-    /** @var \Eccube\Entity\BaseInfo */
-    public $BaseInfo;
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
 
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-        $this->BaseInfo = $app['eccube.repository.base_info']->get();
-    }
-
+    /**
+     * @Inject(Application::class)
+     * @var Application
+     */
+    protected $app;
 
     /**
      * Send customer confirm mail.
@@ -54,31 +68,32 @@ class MailService
 
         log_info('仮会員登録メール送信開始');
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
-            'BaseInfo' => $this->BaseInfo,
+            'BaseInfo' => $BaseInfo,
             'activateUrl' => $activateUrl,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'Customer' => $Customer,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
                 'activateUrl' => $activateUrl,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
 
         $count = $this->app->mail($message, $failures);
 
@@ -96,29 +111,30 @@ class MailService
     {
         log_info('会員登録完了メール送信開始');
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $body = $this->app->renderView('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
-            'BaseInfo' => $this->BaseInfo,
+            'BaseInfo' => $BaseInfo,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] 会員登録が完了しました。')
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'Customer' => $Customer,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
 
         $count = $this->app->mail($message);
 
@@ -138,30 +154,31 @@ class MailService
     {
         log_info('退会手続き完了メール送信開始');
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
-            'BaseInfo' => $this->BaseInfo,
+            'BaseInfo' => $BaseInfo,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] 退会手続きのご完了')
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($email))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'Customer' => $Customer,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
                 'email' => $email,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
 
         $count = $this->app->mail($message);
 
@@ -180,30 +197,31 @@ class MailService
     {
         log_info('お問い合わせ受付メール送信開始');
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
             'data' => $formData,
-            'BaseInfo' => $this->BaseInfo,
+            'BaseInfo' => $BaseInfo,
         ));
 
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
-            ->setFrom(array($this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
+            ->setFrom(array($BaseInfo->getEmail02() => $BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
-            ->setBcc($this->BaseInfo->getEmail02())
-            ->setReplyTo($this->BaseInfo->getEmail02())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail02())
+            ->setReplyTo($BaseInfo->getEmail02())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'formData' => $formData,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CONTACT, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CONTACT, $event);
 
         $count = $this->app->mail($message);
 
@@ -235,7 +253,7 @@ class MailService
     {
         log_info('受注メール送信開始');
 
-        $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
+        $MailTemplate = $this->mailTemplateRepository->find(1);
 
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getHeader(),
@@ -243,13 +261,14 @@ class MailService
             'Order' => $Order,
         ));
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
@@ -257,11 +276,11 @@ class MailService
                 'message' => $message,
                 'Order' => $Order,
                 'MailTemplate' => $MailTemplate,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ORDER, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ORDER, $event);
 
         $count = $this->app->mail($message);
 
@@ -287,25 +306,26 @@ class MailService
             'activateUrl' => $activateUrl,
         ));
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
-            ->setFrom(array($this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setFrom(array($BaseInfo->getEmail03() => $BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'Customer' => $Customer,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
                 'activateUrl' => $activateUrl,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
 
         $count = $this->app->mail($message);
 
@@ -325,6 +345,7 @@ class MailService
     {
         log_info('受注管理通知メール送信開始');
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $body = $this->app->renderView('Mail/order.twig', array(
             'header' => $formData['header'],
             'footer' => $formData['footer'],
@@ -332,12 +353,12 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['subject'])
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] ' . $formData['subject'])
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
@@ -345,11 +366,11 @@ class MailService
                 'message' => $message,
                 'Order' => $Order,
                 'formData' => $formData,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
 
         $count = $this->app->mail($message);
 
@@ -372,25 +393,26 @@ class MailService
             'reset_url' => $reset_url
         ));
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] パスワード変更のご確認')
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'Customer' => $Customer,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
                 'resetUrl' => $reset_url,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
 
         $count = $this->app->mail($message);
 
@@ -413,25 +435,26 @@ class MailService
             'password' => $password,
         ));
 
+        $BaseInfo = $this->baseInfoRepository->get();
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setSubject('[' . $BaseInfo->getShopName() . '] パスワード変更のお知らせ')
+            ->setFrom(array($BaseInfo->getEmail01() => $BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
-            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
         $event = new EventArgs(
             array(
                 'message' => $message,
                 'Customer' => $Customer,
-                'BaseInfo' => $this->BaseInfo,
+                'BaseInfo' => $BaseInfo,
                 'password' => $password,
             ),
             null
         );
-        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
 
         $count = $this->app->mail($message);
 

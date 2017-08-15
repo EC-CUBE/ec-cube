@@ -2,11 +2,11 @@
 
 namespace Eccube\Service\PurchaseFlow;
 
-use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\ItemInterface;
-use Eccube\Entity\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Order;
 
 class ItemCollection extends ArrayCollection
 {
