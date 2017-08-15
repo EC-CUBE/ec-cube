@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__.'/../autoload.php';
+
+set_time_limit(0);
+
+$app = new Silex\Application();
+
+$app->register(
+    new \Knp\Provider\ConsoleServiceProvider(),
+    array(
+        'console.name' => 'EC-CUBE',
+        'console.version' => \Eccube\Common\Constant::VERSION,
+        'console.project_directory' => __DIR__.'/..'
+    )
+);
+
+$console = $app['console'];
+
+$console->add(new Eccube\Command\DocumentRootCommand());
+
+$console->run();
