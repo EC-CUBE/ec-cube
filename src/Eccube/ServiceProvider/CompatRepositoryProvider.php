@@ -33,7 +33,7 @@ class CompatRepositoryProvider implements ServiceProviderInterface
             return $app['Eccube\Repository\Master\PageMaxRepository'];
         };
         $app['eccube.repository.master.order_status'] = function () use ($app) {
-            return $app['Eccube\Repository\Master\OrderSatusRepository'];
+            return $app['Eccube\Repository\Master\OrderStatusRepository'];
         };
         $app['eccube.repository.master.product_list_max'] = function () use ($app) {
             return $app['Eccube\Repository\Master\ProductListMaxRepository'];
@@ -149,6 +149,18 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         };
         $app['eccube.repository.category'] = function () use ($app) {
             return $app['Eccube\Repository\CategoryRepository'];
+        };
+        $app['eccube.repository.help'] = function () use ($app) {
+            return $app['Eccube\Repository\HelpRepository'];
+        };
+        $app['eccube.repository.plugin'] = function () use ($app) {
+            return $app['Eccube\Repository\PluginRepository'];
+        };
+        $app['eccube.repository.plugin_event_handler'] = function () use ($app) {
+            return $app['Eccube\Repository\PluginEventHandlerRepository'];
+        };
+        $app['eccube.repository.layout'] = function () use ($app) {
+            return $app['Eccube\Repository\LayoutRepository'];
         };
 
         // alias
