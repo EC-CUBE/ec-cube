@@ -25,6 +25,7 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\Constant;
+use Eccube\Service\TaxRuleService;
 use Eccube\Util\Str;
 use Silex\Application;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -129,7 +130,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getCalcIncTax($price, $tax_rate, $tax_rule)
     {
-        return $price + $this->app['eccube.service.tax_rule']->calcTax($price, $tax_rate, $tax_rule);
+        return $price + $this->app[TaxRuleService::class]->calcTax($price, $tax_rate, $tax_rule);
     }
 
     /**

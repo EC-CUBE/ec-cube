@@ -27,6 +27,7 @@ class MailServiceTest extends AbstractServiceTestCase
     protected $client;
     protected $Customer;
     protected $BaseInfo;
+    protected $mailService;
 
     public function setUp()
     {
@@ -36,6 +37,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
         $this->Customer = $this->createCustomer();
         $this->BaseInfo = $this->app['eccube.repository.base_info']->get(1);
+        $this->mailService = $this->app[MailService::class];
     }
 
     public function tearDown()
@@ -47,7 +49,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testSendCustomerConfirmMail()
     {
         $url = 'http://example.com/confirm';
-        $this->app['eccube.service.mail']->sendCustomerConfirmMail($this->Customer, $url);
+        $this->mailService->sendCustomerConfirmMail($this->Customer, $url);
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
@@ -72,7 +74,7 @@ class MailServiceTest extends AbstractServiceTestCase
 
     public function testSendCustomerCompleteMail()
     {
-        $this->app['eccube.service.mail']->sendCustomerCompleteMail($this->Customer);
+        $this->mailService->sendCustomerCompleteMail($this->Customer);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -96,7 +98,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testSendCustomerWithdrawMail()
     {
         $email = 'draw@example.com';
-        $this->app['eccube.service.mail']->sendCustomerWithdrawMail($this->Customer, $email);
+        $this->mailService->sendCustomerWithdrawMail($this->Customer, $email);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -157,7 +159,7 @@ class MailServiceTest extends AbstractServiceTestCase
             'contents' => 'お問い合わせ内容'
         );
 
-        $this->app['eccube.service.mail']->sendrContactMail($formData);
+        $this->mailService->sendrContactMail($formData);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -217,7 +219,7 @@ class MailServiceTest extends AbstractServiceTestCase
             'contents' => 'お問い合わせ内容'
         );
 
-        $this->app['eccube.service.mail']->sendContactMail($formData);
+        $this->mailService->sendContactMail($formData);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -244,7 +246,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function testSendOrderMail()
     {
         $Order = $this->createOrder($this->Customer);
-        $this->app['eccube.service.mail']->sendOrderMail($Order);
+        $this->mailService->sendOrderMail($Order);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -269,7 +271,7 @@ class MailServiceTest extends AbstractServiceTestCase
     {
         $this->app['twig']->addGlobal('BaseInfo', $this->BaseInfo);
         $url = 'http://example.com/confirm';
-        $this->app['eccube.service.mail']->sendAdminCustomerConfirmMail($this->Customer, $url);
+        $this->mailService->sendAdminCustomerConfirmMail($this->Customer, $url);
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
@@ -304,7 +306,7 @@ class MailServiceTest extends AbstractServiceTestCase
             'footer' => $footer,
             'subject' => $subject
         );
-        $this->app['eccube.service.mail']->sendAdminOrderMail($Order, $formData);
+        $this->mailService->sendAdminOrderMail($Order, $formData);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -329,7 +331,7 @@ class MailServiceTest extends AbstractServiceTestCase
     {
         $this->app['twig']->addGlobal('BaseInfo', $this->BaseInfo);
         $url = 'http://example.com/reset';
-        $this->app['eccube.service.mail']->sendPasswordResetNotificationMail($this->Customer, $url);
+        $this->mailService->sendPasswordResetNotificationMail($this->Customer, $url);
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
@@ -357,7 +359,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->app['twig']->addGlobal('BaseInfo', $this->BaseInfo);
         $faker = $this->getFaker();
         $password = $faker->password;
-        $this->app['eccube.service.mail']->sendPasswordResetCompleteMail($this->Customer, $password);
+        $this->mailService->sendPasswordResetCompleteMail($this->Customer, $password);
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 

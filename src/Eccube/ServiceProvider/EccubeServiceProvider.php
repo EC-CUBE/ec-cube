@@ -24,11 +24,7 @@
 
 namespace Eccube\ServiceProvider;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Annotation\Repository;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
@@ -38,14 +34,15 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
 use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
-use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\TaxRuleService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -68,39 +65,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['view'] = function () use ($app) {
             return $app['twig'];
         };
-        $app['eccube.service.cart'] = function () use ($app) {
-            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
-        };
-        $app['eccube.service.order'] = function () use ($app) {
-            return new \Eccube\Service\OrderService($app);
-        };
-        $app['eccube.service.tax_rule'] = function () use ($app) {
-            return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
-        };
-        $app['eccube.service.plugin'] = function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        };
-        $app['eccube.service.mail'] = function () use ($app) {
-            return new \Eccube\Service\MailService($app);
-        };
         $app['eccube.calculate.context'] = function () use ($app) {
                 return new \Eccube\Service\Calculator\CalculateContext();
         };
-        $app['eccube.service.calculate'] = $app->protect(function ($Order, $Customer) use ($app) {
-                $Service = new \Eccube\Service\CalculateService($Order, $Customer);
-                $Context = $app['eccube.calculate.context'];
-                $app['eccube.calculate.strategies']->setOrder($Order);
-                $Context->setCalculateStrategies($app['eccube.calculate.strategies']);
-                $Context->setOrder($Order);
-                $Service->setContext($Context);
-                return $Service;
-        });
-
-        $app['eccube.service.payment'] = $app->protect(function ($clazz) use ($app) {
-                $Service = new $clazz;
-                $Service->setApplication($app);
-                return $Service;
-        });
 
         $app['eccube.calculate.strategies'] = function () use ($app) {
             $Collection = new \Eccube\Service\Calculator\CalculateStrategyCollection();
@@ -162,26 +129,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
                 $PaymentMethod->setRequest($request);
                 return $PaymentMethod;
         });
-
-        $app['eccube.helper.order'] = function ($app) {
-            return new OrderHelper($app);
-        };
-
-        $app['eccube.service.csv.export'] = function () use ($app) {
-            $csvService = new \Eccube\Service\CsvExportService();
-            $csvService->setEntityManager($app['orm.em']);
-            $csvService->setConfig($app['config']);
-            $csvService->setCsvRepository($app['eccube.repository.csv']);
-            $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
-            $csvService->setOrderRepository($app['eccube.repository.order']);
-            $csvService->setCustomerRepository($app['eccube.repository.customer']);
-            $csvService->setProductRepository($app['eccube.repository.product']);
-
-            return $csvService;
-        };
-        $app['eccube.service.shopping'] = function () use ($app) {
-            return new \Eccube\Service\ShoppingService($app, $app['eccube.service.cart'], $app['eccube.service.order']);
-        };
 
         $app['paginator'] = $app->protect(function () {
             $paginator = new \Knp\Component\Pager\Paginator();
@@ -317,7 +264,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         // Add event subscriber to TaxRuleEvent
-        $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app['eccube.service.tax_rule']));
+        $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app[TaxRuleService::class]));
 
         $dispatcher->addSubscriber(new TransactionListener($app));
     }
