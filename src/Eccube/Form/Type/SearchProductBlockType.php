@@ -24,21 +24,26 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @FormType
+ */
 class SearchProductBlockType extends AbstractType
 {
     /**
-     * @var Application
-     * @Inject(Application::class)
+     * @var CategoryRepository
+     * @Inject(CategoryRepository::class)
      */
-    protected $app;
+    protected $categoryRepository;
 
     /**
      * SearchProductType constructor.
@@ -54,7 +59,7 @@ class SearchProductBlockType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $Categories = $this->app['eccube.repository.category']
+        $Categories = $this->categoryRepository
             ->getList(null, true);
 
         $builder->add('category_id', EntityType::class, array(

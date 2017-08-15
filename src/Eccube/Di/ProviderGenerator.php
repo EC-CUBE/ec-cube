@@ -2,6 +2,8 @@
 
 namespace Eccube\Di;
 
+use Eccube\Annotation\FormExtension;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
 
@@ -89,11 +91,17 @@ class ServiceProviderCache implements \Pimple\ServiceProviderInterface
 
         $template = $twig->createTemplate($this->template);
 
+        $formTypes = array_filter($components, function ($component) {
+            return get_class($component['anno']) === FormType::class;
+        });
+        $formExtensions = array_filter($components, function ($component) {
+            return get_class($component['anno']) === FormExtension::class;
+        });
         return $template->render(
             [
                 'components' => $components,
-                'form_types' => [],
-                'form_extensions' => [],
+                'form_types' => $formTypes,
+                'form_extensions' => $formExtensions,
             ]
         );
     }

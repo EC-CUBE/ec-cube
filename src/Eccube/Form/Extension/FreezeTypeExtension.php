@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Extension;
 
+use Eccube\Annotation\FormExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,7 +33,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * FreezeTypeExtension.
+ * @FormExtension
  */
 class FreezeTypeExtension extends AbstractTypeExtension
 {

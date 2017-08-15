@@ -4,6 +4,8 @@ namespace Eccube\Di;
 
 use Doctrine\Common\Annotations\Reader;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\FormExtension;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
@@ -26,7 +28,9 @@ class Di
 
     private $supportAnnotations = [
         Component::class,
-        Repository::class
+        Repository::class,
+        FormType::class,
+        FormExtension::class,
     ];
 
     public function __construct(array $dirs, Reader $reader, $cacheDir, $debug = false)
