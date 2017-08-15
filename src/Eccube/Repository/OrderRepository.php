@@ -24,9 +24,9 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Eccube\Util\Str;
 
 /**
  * OrderRepository
@@ -450,8 +450,11 @@ class OrderRepository extends EntityRepository
         }
 
         // Order By
-        $qb->orderBy('o.update_date', 'DESC');
-        $qb->addorderBy('o.id', 'DESC');
+        if (isset($searchData['sort']) && Str::isNotBlank($searchData['sort'])) {
+            $qb->orderBy('o.'.$searchData['sort'], $searchData['orderBy']);
+        }
+        $qb->addOrderBy('o.update_date', 'DESC');
+        $qb->addOrderBy('o.id', 'DESC');
 
         return $qb;
     }

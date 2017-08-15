@@ -24,8 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\DataTransformer\SortToColumnTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,14 +66,14 @@ class SearchOrderType extends AbstractType
             ))
             ->add(
                 $builder->create('tel', 'text', array(
-                        'required' => false,
-                        'constraints' => array(
-                            new Assert\Regex(array(
-                                'pattern' => "/^[\d-]+$/u",
-                                'message' => 'form.type.admin.nottelstyle',
-                            )),
-                        ),
-                    ))
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[\d-]+$/u",
+                            'message' => 'form.type.admin.nottelstyle',
+                        )),
+                    ),
+                ))
                     ->addEventSubscriber(new \Eccube\EventListener\ConvertTelListener())
             )
             ->add('sex', 'sex', array(
@@ -163,8 +163,7 @@ class SearchOrderType extends AbstractType
             ->add('buy_product_name', 'text', array(
                 'label' => '購入商品名',
                 'required' => false,
-            ))
-        ;
+            ));
 
         $builder->add(
             $builder
@@ -179,6 +178,12 @@ class SearchOrderType extends AbstractType
                 ))
                 ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
         );
+
+        $transformer = new SortToColumnTransformer();
+
+        $builder
+            ->add($builder->create('sort', 'hidden')->addModelTransformer($transformer))
+            ->add($builder->create('orderBy', 'hidden')->addModelTransformer($transformer));
     }
 
     /**
