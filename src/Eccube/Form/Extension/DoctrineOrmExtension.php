@@ -26,6 +26,8 @@ namespace Eccube\Form\Extension;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\FormAppend;
+use Eccube\Annotation\FormExtension;
+use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,23 +37,22 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @FormExtension
+ */
 class DoctrineOrmExtension extends AbstractTypeExtension
 {
     /**
      * @var EntityManager
+     * @Inject("orm.em")
      */
     protected $em;
 
     /**
      * @var AnnotationReader
+     * @Inject("annotations")
      */
     protected $reader;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-        $this->reader = new AnnotationReader();
-    }
 
     /**
      * {@inheritdoc}

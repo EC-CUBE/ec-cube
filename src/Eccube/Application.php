@@ -33,6 +33,8 @@ use Eccube\Doctrine\EventSubscriber\InitSubscriber;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
+use Eccube\ServiceProvider\CompatRepositoryProvider;
+use Eccube\ServiceProvider\DiServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
@@ -234,6 +236,20 @@ class Application extends \Silex\Application
         $this->initProxy();
 
         // init ec-cube service provider
+        $this->register(new DiServiceProvider(), [
+            'eccube.di.dirs' => [
+                $this['config']['root_dir'].'/app/Acme/Controller',
+                $this['config']['root_dir'].'/src/Eccube/Repository',
+                $this['config']['root_dir'].'/src/Eccube/Form/Type',
+                $this['config']['root_dir'].'/src/Eccube/Form/Extension',
+                $this['config']['root_dir'].'/src/Eccube/Service',
+            ],
+            'eccube.di.cache_dir' => $this['config']['root_dir'].'/app/cache/provider'
+        ]);
+
+        $this['eccube.di']->build($this);
+
+        $this->register(new CompatRepositoryProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
         // mount controllers
@@ -703,12 +719,6 @@ class Application extends \Silex\Application
         );
 
         $this->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
-            // tax_rule
-            $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-            $taxRuleRepository->setApplication($app);
-            $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
-            $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
-
             // save
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
@@ -1083,35 +1093,5 @@ class Application extends \Silex\Application
             }
 
         }, -1024);
-    }
-
-    public function offsetGet($id)
-    {
-        $Instance = parent::offsetGet($id);
-        // 今のところ repository のみを @Inject アノテーションの対象とする
-        if (strpos($id, 'eccube.repository') === false) {
-            return $Instance;
-        }
-
-        $reader = new CachedReader(new AnnotationReader(), $this['annotation.cache.driver']);
-
-        if (!is_object($Instance)) {
-            return $Instance;
-        }
-        $ReflectionClass = new \ReflectionClass($Instance);
-        $ReflectionProperties = $ReflectionClass->getProperties();
-        foreach ($ReflectionProperties as $Property) {
-            $anno = $reader->getPropertyAnnotation($Property, \Eccube\Annotation\Inject::class);
-            if ($anno) {
-                if ($anno->value == Application::class) {
-                    $Property->setAccessible(true);
-                    $Property->setValue($Instance, $this);
-                } else {
-                    $Property->setAccessible(true);
-                    $Property->setValue($Instance, $this[$anno->value]);
-                }
-            }
-        }
-        return $Instance;
     }
 }
