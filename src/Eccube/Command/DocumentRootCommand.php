@@ -34,6 +34,12 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\File\File;
 
 
+/**
+ * Class DocumentRootCommand
+ *
+ * @package Eccube\Command
+ * @deprecated since 3.0.16, to be removed in 3.1
+ */
 class DocumentRootCommand extends Command
 {
     protected function configure()

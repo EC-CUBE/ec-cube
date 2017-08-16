@@ -1,5 +1,9 @@
 #!/usr/bin/env php
 <?php
+/**
+ * @deprecated since 3.0.16, to be removed in 3.1
+ */
+
 require_once __DIR__.'/../autoload.php';
 
 set_time_limit(0);
