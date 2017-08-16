@@ -23,11 +23,15 @@ class PurchaseFlow
      */
     protected $purchaseProcessors;
 
+    /** @var ArrayCollection|ItemComparer[] */
+    protected $itemComparers;
+
     public function __construct()
     {
         $this->itemProcessors = new ArrayCollection();
         $this->itemHolderProcessors = new ArrayCollection();
         $this->purchaseProcessors = new ArrayCollection();
+        $this->itemComparers = new ArrayCollection();
     }
 
     public function setItemProcessors(ArrayCollection $processors)
@@ -43,6 +47,37 @@ class PurchaseFlow
     public function setPurchaseProcessors(ArrayCollection $processors)
     {
         $this->purchaseProcessors = $processors;
+    }
+
+    /**
+     * @param ArrayCollection|PurchaseProcessor[] $itemComparers
+     */
+    public function setItemComparers($itemComparers)
+    {
+        $this->itemComparers = $itemComparers;
+    }
+
+    /**
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     */
+    public function addItem(ItemInterface $item, PurchaseContext $context)
+    {
+        $originHolder = $context->getOriginHolder();
+        $flowResult = new PurchaseFlowResult($originHolder);
+
+        foreach ($this->itemComparers as $itemComparer) {
+
+            $flowResult->addProcessResult($itemComparer->process($item, $context));
+
+            if ($flowResult->hasError()) {
+                break;
+            }
+        }
+
+        if (!$flowResult->hasError()) {
+            $originHolder->addItem($item);
+        }
     }
 
     public function calculate(ItemHolderInterface $itemHolder, PurchaseContext $context)

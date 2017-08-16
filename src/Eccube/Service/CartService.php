@@ -76,6 +76,12 @@ class CartService
         }
     }
 
+    /**
+     * @param $ProductClass
+     * @param int $quantity
+     * @return bool
+     * @deprecated
+     */
     public function addProduct($ProductClass, $quantity = 1)
     {
         if (!$ProductClass instanceof ProductClass) {

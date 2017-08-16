@@ -41,6 +41,7 @@ use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
+use Eccube\Service\PurchaseFlow\Processor\ProductClassComparer;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
@@ -459,6 +460,13 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $processors;
         };
 
+        $app['eccube.purchase.flow.cart.item_comparers'] = function ($app) {
+            $comparers = new ArrayCollection();
+            $comparers->add(new ProductClassComparer());
+
+            return $comparers;
+        };
+
         $app['eccube.purchase.flow.cart.holder_processors'] = function ($app) {
             $processors = new ArrayCollection();
             $processors->add(new PaymentProcessor($app));
@@ -481,6 +489,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow = new PurchaseFlow();
             $flow->setItemProcessors($app['eccube.purchase.flow.cart.item_processors']);
             $flow->setItemHolderProcessors($app['eccube.purchase.flow.cart.holder_processors']);
+            $flow->setItemComparers($app['eccube.purchase.flow.cart.item_comparers']);
 
             return $flow;
         };
