@@ -218,12 +218,16 @@ class EccubeExtension extends \Twig_Extension
         $function = array_shift($arg_list);
 
         if (is_callable($function)) {
+            if (is_array($arg_list[0])) {
+                return call_user_func_array($function, array(&$arg_list));
+            }
+
             return call_user_func_array($function, $arg_list);
         }
 
         trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
 
-        return NULL;
+        return null;
     }
 
 
