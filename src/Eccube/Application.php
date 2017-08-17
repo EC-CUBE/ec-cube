@@ -34,6 +34,7 @@ use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
+use Eccube\ServiceProvider\CompatServiceProvider;
 use Eccube\ServiceProvider\DiServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
@@ -248,6 +249,7 @@ class Application extends \Silex\Application
         ]);
 
         $this->register(new CompatRepositoryProvider());
+        $this->register(new CompatServiceProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
         // mount controllers
