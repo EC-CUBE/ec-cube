@@ -27,7 +27,6 @@ namespace Eccube\ServiceProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
-use Eccube\Service\OrderHelper;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
@@ -130,6 +129,23 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
                 $PaymentMethod->setFormType($form);
                 $PaymentMethod->setRequest($request);
                 return $PaymentMethod;
+        });
+
+        $app['eccube.service.calculate'] = $app->protect(function ($Order, $Customer) use ($app) {
+            $Service = new \Eccube\Service\CalculateService($Order, $Customer);
+            $Context = $app['eccube.calculate.context'];
+            $app['eccube.calculate.strategies']->setOrder($Order);
+            $Context->setCalculateStrategies($app['eccube.calculate.strategies']);
+            $Context->setOrder($Order);
+            $Service->setContext($Context);
+
+            return $Service;
+        });
+
+        $app['eccube.service.payment'] = $app->protect(function ($clazz) use ($app) {
+            $Service = new $clazz($app['request_stack']);
+
+            return $Service;
         });
 
         $app['paginator'] = $app->protect(function () {
