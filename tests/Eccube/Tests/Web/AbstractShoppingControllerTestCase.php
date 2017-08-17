@@ -59,15 +59,23 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
+    /**
+     * @param \Symfony\Component\HttpKernel\Client $client
+     * @param int $product_class_id
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
     protected function scenarioCartIn($client, $product_class_id = 1)
     {
+        /** @var \Eccube\Entity\ProductClass $ProductClass */
+        $ProductClass = $this->app['eccube.repository.product_class']->find($product_class_id);
+
         $crawler = $client->request(
             'PUT',
-            $this->app->path(
-                'cart_handle_item',
+            $this->app->path('product_detail', ['id' => $ProductClass->getProduct()->getId()],
                 [
-                    'operation' => 'up',
-                    'productClassId' => $product_class_id,
+                    'mode' => 'add_cart',
+                    'ProductClass' => $ProductClass->getId(),
+                    'quantity' => 1,
                 ]
             )
         );
