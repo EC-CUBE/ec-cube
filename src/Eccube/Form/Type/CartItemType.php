@@ -58,9 +58,6 @@ class CartItemType extends AbstractType
                             $ProductClasses->first() :
                             null,
                         'data_class' => null,
-                        'constraints' => [
-                            new Assert\NotBlank(),
-                        ],
                     ])
                     ->addModelTransformer(new EntityToIdTransformer($this->app['orm.em'], 'Eccube\Entity\ProductClass'))
             )
