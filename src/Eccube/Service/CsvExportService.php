@@ -25,8 +25,14 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Common\Constant;
+use Eccube\Repository\CsvRepository;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\CsvTypeRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ProductRepository;
 use Eccube\Util\EntityUtil;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -51,6 +57,7 @@ class CsvExportService
     protected $convertEncodingCallBack;
 
     /**
+     * @Inject("orm.em")
      * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
@@ -61,6 +68,7 @@ class CsvExportService
     protected $qb;
 
     /**
+     * @Inject("config")
      * @var array
      */
     protected $config;
@@ -76,27 +84,32 @@ class CsvExportService
     protected $Csvs;
 
     /**
-     * @var \Eccube\Repository\CsvRepository
+     * @Inject(CsvRepository::class)
+     * @var CsvRepository
      */
     protected $csvRepository;
 
     /**
-     * @var \Eccube\Repository\Master\CsvTypeRepository
+     * @Inject(CsvTypeRepository::class)
+     * @var CsvTypeRepository
      */
     protected $csvTypeRepository;
 
     /**
-     * @var \Eccube\Repository\OrderRepository
+     * @Inject(OrderRepository::class)
+     * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @var \Eccube\Repository\CustomerRepository
+     * @Inject(CustomerRepository::class)
+     * @var CustomerRepository
      */
     protected $customerRepository;
 
     /**
-     * @var \Eccube\Repository\ProductRepository
+     * @Inject(ProductRepository::class)
+     * @var ProductRepository
      */
     protected $productRepository;
 
