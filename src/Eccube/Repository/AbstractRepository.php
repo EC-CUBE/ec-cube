@@ -11,17 +11,6 @@ use Eccube\Entity\AbstractEntity;
 
 class AbstractRepository extends EntityRepository
 {
-
-    protected $app;
-
-    /**
-     * @param Application $app
-     */
-    public function setApplication($app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * エンティティを削除します。
      * 物理削除ではなく、del_flgを利用した論理削除を行います。

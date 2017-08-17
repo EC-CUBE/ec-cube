@@ -24,10 +24,12 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
+use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -36,15 +38,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class SearchProductType to search product.
+ * @FormType
  */
 class SearchProductType extends AbstractType
 {
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * @var CategoryRepository
+     * @Inject(CategoryRepository::class)
      */
-    protected $app;
+    protected $categoryRepository;
 
     /**
      * SearchProductType constructor.
@@ -60,7 +62,7 @@ class SearchProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $Categories = $this->app['eccube.repository.category']
+        $Categories = $this->categoryRepository
             ->getList(null, true);
 
         $builder->add('mode', HiddenType::class, array(

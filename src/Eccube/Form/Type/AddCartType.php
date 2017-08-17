@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
@@ -41,14 +42,16 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 /**
  * @deprecated
+ * @FormType
  */
 class AddCartType extends AbstractType
 {
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * @var array
+     * @Inject("config")
      */
-    protected $app;
+    protected $congig;
+
     protected $Product = null;
 
     public function __construct() {
@@ -88,7 +91,7 @@ class AddCartType extends AbstractType
                     'data' => 1,
                     'attr' => array(
                         'min' => 1,
-                        'maxlength' => $this->app['config']['int_len'],
+                        'maxlength' => $this->congig['int_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),

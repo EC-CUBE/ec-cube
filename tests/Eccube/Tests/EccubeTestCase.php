@@ -287,6 +287,7 @@ abstract class EccubeTestCase extends WebTestCase
         Application::clearInstance();
         $app = Application::getInstance();
         $app['debug'] = true;
+        $app['eccube.di.debug'] = false;
 
         $app->initialize();
         $app->initializePlugin();
