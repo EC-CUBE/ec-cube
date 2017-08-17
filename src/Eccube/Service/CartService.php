@@ -167,9 +167,7 @@ class CartService
 
         $CartItem = new CartItem();
         $CartItem
-            ->setObject($ProductClass)
-            ->setClassName(get_class($ProductClass))
-            ->setClassId($ProductClass->getPrice02IncTax())
+            ->setProductClass($ProductClass)
             ->setQuantity($quantity)
             ->setPrice($ProductClass->getPrice02IncTax());
         return $CartItem;
