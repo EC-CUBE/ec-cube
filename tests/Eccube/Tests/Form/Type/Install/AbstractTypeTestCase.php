@@ -38,7 +38,7 @@ abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
         $this->app['csrf.token_manager'] = function () {
             return new CsrfTokenManagerMock();
         };
-        // $this->app->boot();
+        $this->app->boot();
     }
 
     protected function tearDown()

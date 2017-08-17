@@ -55,21 +55,13 @@ class Step3Type extends AbstractType
      * @Inject("validator")
      * @var RecursiveValidator
      */
-    protected $recursiveValidator;
-
-    public $app;
-
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
+    protected $validator;
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
         $builder
             ->add('shop_name', TextType::class, array(
                 'label' => 'あなたの店名',
@@ -146,11 +138,11 @@ class Step3Type extends AbstractType
             ))
             ->add('mail_backend', ChoiceType::class, array(
                 'label' => 'メーラーバックエンド',
-                'choices' => array_flip(array(
+                'choices' => array(
                     'mail（PHPの組み込み関数 mail() を使用してメールを送信）' => 'mail',
                     'SMTP（SMTPサーバに直接接続してメールを送信）' => 'smtp',
                     'sendmail（sendmailプログラムによりメールを送信）' => 'sendmail',
-                )),
+                ),
                 'expanded' => true,
                 'multiple' => false,
             ))
@@ -174,14 +166,14 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app)  {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $this->recursiveValidator->validate($ip, array(
+                    $errors = $this->validator->validate($ip, array(
                             new Assert\Ip(),
                         )
                     );

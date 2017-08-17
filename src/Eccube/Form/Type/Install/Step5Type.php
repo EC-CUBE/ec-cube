@@ -24,21 +24,18 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Eccube\Annotation\FormType;
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
+/**
+ * @FormType()
+ */
 class Step5Type extends AbstractType
 {
-    public $app;
-
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * {@inheritdoc}
      */
