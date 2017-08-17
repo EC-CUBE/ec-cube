@@ -24,6 +24,7 @@
 namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
+use Eccube\ServiceProvider\DiServiceProvider;
 use Symfony\Component\Yaml\Yaml;
 
 class InstallApplication extends \Silex\Application
@@ -129,5 +130,11 @@ class InstallApplication extends \Silex\Application
                 'error' => 'エラーが発生しました.',
             ));
         });
+
+        $app->register(new DiServiceProvider(), [
+            'eccube.di.dirs' => [__DIR__.'/Form/Type/Install'],
+            'eccube.di.generator.dir' => __DIR__.'/../../app/cache/provider',
+            'eccube.di.generator.class' => 'InstallServiceProviderCache'
+        ]);
     }
 }

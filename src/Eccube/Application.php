@@ -244,10 +244,8 @@ class Application extends \Silex\Application
                 $this['config']['root_dir'].'/src/Eccube/Form/Extension',
                 $this['config']['root_dir'].'/src/Eccube/Service',
             ],
-            'eccube.di.cache_dir' => $this['config']['root_dir'].'/app/cache/provider'
+            'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
         ]);
-
-        $this['eccube.di']->build($this);
 
         $this->register(new CompatRepositoryProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());

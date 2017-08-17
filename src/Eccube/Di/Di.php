@@ -9,23 +9,18 @@ use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Annotation\Service;
-use Eccube\Application;
 use Pimple\Container;
 use Symfony\Component\Finder\Finder;
 
 class Di
 {
-    private $debug;
-
     private $dirs;
 
     private $reader;
 
-    private $cacheDir;
+    private $generator;
 
-    private $cacheFileName = 'ServiceProviderCache.php';
-
-    private $cacheClass = '\Eccube\ServiceProvider\ServiceProviderCache';
+    private $debug;
 
     private $supportAnnotations = [
         Component::class,
@@ -35,34 +30,28 @@ class Di
         Service::class,
     ];
 
-    public function __construct(array $dirs, Reader $reader, $cacheDir, $debug = false)
+    public function __construct(array $dirs, Reader $reader, ProviderGenerator $generator, $debug = false)
     {
-        $this->debug = $debug;
         $this->dirs = $dirs;
         $this->reader = $reader;
-
-        if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true) && !is_dir($cacheDir)) {
-            throw new \RuntimeException(sprintf('Eccube Di was not able to create directory "%s"', $cacheDir));
-        }
-        $this->cacheDir = $cacheDir;
-        $this->generator = new ProviderGenerator();
+        $this->generator = $generator;
+        $this->debug = $debug;
     }
 
     public function build(Container $container)
     {
-        $classes = $this->findClasses($this->dirs);
-
-        $components = $this->findComponents($classes);
-
-        $cacheFile = $this->cacheDir.DIRECTORY_SEPARATOR.$this->cacheFileName;
-        if ($this->debug || false === file_exists($cacheFile)) {
-            $provider = $this->generator->generate($components);
-            file_put_contents($cacheFile, $provider);
+        if ($this->debug || false === $this->generator->providerExists()) {
+            $classes = $this->findClasses($this->dirs);
+            $components = $this->findComponents($classes);
+            $this->generator->dump($components);
         }
 
-        require_once $cacheFile;
+        $path = $this->generator->getProviderPath();
+        $class = $this->generator->getProviderClass();
 
-        $container->register(new $this->cacheClass());
+        require_once $path;
+
+        $container->register(new $class());
     }
 
     public function findClasses(array $dirs)
@@ -91,26 +80,6 @@ class Di
         }
 
         return $classes;
-    }
-
-    public function register(Container $container, array $components)
-    {
-        foreach ($components as $component) {
-            $container[$component['id']] = function () use ($component, $container) {
-                /** @var \ReflectionClass $class */
-                $class = $component['ref_class'];
-                $object = $class->newInstanceWithoutConstructor();
-
-                foreach ($component['injects'] as $inject) {
-                    /** @var \ReflectionProperty $property */
-                    $property = $inject['ref_property'];
-                    $property->setAccessible(true);
-                    $property->setValue($object, $container[$inject['id']]);
-                }
-
-                return $object;
-            };
-        }
     }
 
     public function findComponents(array $classes)
