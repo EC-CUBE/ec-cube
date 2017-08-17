@@ -70,12 +70,12 @@ class PurchaseFlow
 
             $flowResult->addProcessResult($itemComparer->process($item, $context));
 
-            if ($flowResult->hasError()) {
+            if ($flowResult->hasWarning()) {
                 break;
             }
         }
 
-        if (!$flowResult->hasError()) {
+        if (!$flowResult->hasWarning()) {
             $originHolder->addItem($item);
         }
     }

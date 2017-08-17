@@ -46,7 +46,7 @@ abstract class ItemComparer implements ItemProcessor
                 $this->handleCartItem($item, $context);
             }
 
-            return ProcessResult::error($e->getMessage(), $e->getMessageArgs());
+            return ProcessResult::warn($e->getMessage(), $e->getMessageArgs());
         }
     }
 
