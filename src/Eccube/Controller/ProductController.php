@@ -224,6 +224,7 @@ class ProductController
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createNamedBuilder('', ProductDetailCartItem::class, null, array(
             'Product' => $Product,
+            'id_add_product_id' => false,
         ));
 
         $event = new EventArgs(

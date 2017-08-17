@@ -118,6 +118,12 @@ class CartItemType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
+        if ($options['id_add_product_id']) {
+            foreach ($view->vars['form']->children as $child) {
+                $child->vars['id'] = sprintf('%s_%s', $child->vars['id'], $options['Product']->getId());
+            }
+        }
+
         if (is_object($view->vars['form']->children['ProductClass']->vars['value'])) {
             $view->vars['form']->children['ProductClass']->vars['value'] = $view->vars['form']->children['ProductClass']->vars['value']->getId();
         }
@@ -129,6 +135,10 @@ class CartItemType extends AbstractType
         $resolver->setDefaults([
             'id_add_product_id' => true,
             'data_class' => 'Eccube\Entity\CartItem',
+            'constraints' => array(
+                // FIXME AddCartType.phpからコメントアウトを踏襲
+                // new Assert\Callback(array($this, 'validate')),
+            ),
         ]);
     }
 
