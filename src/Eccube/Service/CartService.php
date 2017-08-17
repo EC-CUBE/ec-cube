@@ -113,23 +113,67 @@ class CartService
         return true;
     }
 
-    public function removeProduct($ProductClass)
+    /**
+     * @param int $cart_no
+     * @param int $quantity
+     * @return bool
+     */
+    public function addQuantity($cart_no, $quantity = 1)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+
+        if ($CartItem) {
+            $CartItem->setQuantity($CartItem->getQuantity() + $quantity);
+            return true;
         }
 
-        /** @var Cart $cart */
-        $cart = $this->cart;
-        $cart->removeCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+        return false;
+    }
 
+    /**
+     * @param integer $cart_no
+     * @return bool
+     */
+    public function removeProduct($cart_no)
+    {
+        $this->getCart()->removeCartItemByCartNo($cart_no);
         return true;
+    }
+
+    /**
+     * @param $cart_no
+     * @return CartItem|null
+     */
+    public function getCartItem($cart_no)
+    {
+        return $this->getCart()->getCartItemByCartNo($cart_no);
+    }
+
+    /**
+     * @param ProductClass|integer $ProductClass
+     * @param integer $quantity
+     * @return CartItem|null
+     */
+    public function createCartItem($ProductClass, $quantity = 1)
+    {
+        if (!($ProductClass instanceof ProductClass)) {
+            $ProductClass = $this->em
+                ->getRepository(ProductClass::class)
+                ->find($ProductClass);
+        }
+
+        if (is_null($ProductClass)) {
+            return null;
+        }
+
+        $CartItem = new CartItem();
+        $CartItem
+            ->setObject($ProductClass)
+            ->setClassName(get_class($ProductClass))
+            ->setClassId($ProductClass->getPrice02IncTax())
+            ->setQuantity($quantity)
+            ->setPrice($ProductClass->getPrice02IncTax());
+        return $CartItem;
     }
 
     public function save()

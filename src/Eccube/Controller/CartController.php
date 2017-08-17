@@ -109,30 +109,31 @@ class CartController extends AbstractController
      *
      * @Method("PUT")
      * @Route(
-     *     path="/cart/{operation}/{productClassId}",
+     *     path="/cart/{operation}/{cartNo}",
      *     name="cart_handle_item",
      *     requirements={
      *          "operation": "up|down|remove",
-     *          "productClassId": "\d+"
+     *          "cartNo": "\d+"
      *     }
      * )
+     *
      * @param Application $app
      * @param Request $request
      * @param $operation
-     * @param $productClassId
+     * @param $cartNo
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function handleCartItem(Application $app, Request $request, $operation, $productClassId)
+    public function handleCartItem(Application $app, Request $request, $operation, $cartNo)
     {
-        log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
+        log_info('カート明細操作開始', ['operation' => $operation, 'cart_no' => $cartNo]);
 
         $this->isTokenValid($app);
 
         /** @var ProductClass $ProductClass */
-        $ProductClass = $app['eccube.repository.product_class']->find($productClassId);
+        $ProductClass = $app['eccube.service.cart']->getCartItem($cartNo);
 
         if (is_null($ProductClass)) {
-            log_info('商品が存在しないため、カート画面へredirect', ['operation' => $operation, 'product_class_id' => $productClassId]);
+            log_info('商品が存在しないため、カート画面へredirect', ['operation' => $operation, 'cart_no' => $cartNo]);
 
             return $app->redirect($app->url('cart'));
         }
@@ -140,13 +141,13 @@ class CartController extends AbstractController
         // 明細の増減・削除
         switch ($operation) {
             case 'up':
-                $app['eccube.service.cart']->addProduct($ProductClass, 1);
+                $app['eccube.service.cart']->addQuantity($cartNo, 1);
                 break;
             case 'down':
-                $app['eccube.service.cart']->addProduct($ProductClass, -1);
+                $app['eccube.service.cart']->addQuantity($cartNo, -1);
                 break;
             case 'remove':
-                $app['eccube.service.cart']->removeProduct($ProductClass);
+                $app['eccube.service.cart']->removeProduct($cartNo);
                 break;
         }
 
@@ -173,7 +174,7 @@ class CartController extends AbstractController
             $app->addRequestError($warning->getMessage());
         }
 
-        log_info('カート演算処理終了', ['operation' => $operation, 'product_class_id' => $productClassId]);
+        log_info('カート演算処理終了', ['operation' => $operation, 'cart_no' => $cartNo]);
 
         return $app->redirect($app->url('cart'));
     }

@@ -204,6 +204,7 @@ class MypageController extends AbstractController
             try {
                 if ($OrderDetail->getProduct() &&
                     $OrderDetail->getProductClass()) {
+                    // TODO カート追加処理の変更
                     $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
                 } else {
                     log_info($app->trans('cart.product.delete'), array($id));
