@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
@@ -59,7 +60,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-
+/**
+ * @Service
+ */
 class ShoppingService
 {
     /**
@@ -177,8 +180,9 @@ class ShoppingService
     protected $cartService;
 
     /**
-     * @Inject(OrderService::class)
      * @var \Eccube\Service\OrderService
+     *
+     * @deprecated
      */
     protected $orderService;
 

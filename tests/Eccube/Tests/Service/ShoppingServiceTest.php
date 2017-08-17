@@ -208,6 +208,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     public function testSetDeliveryFreeQuantity()
     {
+        self::markTestIncomplete('PurchaseFlowで集計は実行するためスキップ');
+
         // 送料無料条件を 0 個に設定
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setDeliveryFreeQuantity(0);
@@ -519,6 +521,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
      */
     public function testGetFormPayments()
     {
+        self::markTestIncomplete('orderHelperで実行するためスキップ');
+
         $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
         $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);
         $Order->setSubTotal(2500);
@@ -540,6 +544,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     public function testGetFormPaymentsWithMultiple()
     {
+        self::markTestIncomplete('orderHelperで実行するためスキップ');
+
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
