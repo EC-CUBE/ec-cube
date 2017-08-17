@@ -70,7 +70,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $app['twig'];
         };
         $app['eccube.service.cart'] = function () use ($app) {
-            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
+            return new \Eccube\Service\CartService($app['session'], $app['eccube.repository.product_class']);
         };
         $app['eccube.service.order'] = function () use ($app) {
             return new \Eccube\Service\OrderService($app);

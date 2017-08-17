@@ -24,11 +24,12 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\AbstractRepository;
+use Eccube\Repository\ProductClassRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService
@@ -39,20 +40,20 @@ class CartService
     protected $session;
 
     /**
-     * @var EntityManager
+     * @var ProductClassRepository
      */
-    protected $em;
+    protected $productClassRepository;
 
     /**
      * @var ItemHolderInterface
      */
     protected $cart;
 
-    public function __construct(Session $session, EntityManager $em)
+    public function __construct(Session $session, AbstractRepository $productClassRepository)
     {
         $this->session = $session;
         $this->cart = $session->get('cart', new Cart());
-        $this->em = $em;
+        $this->productClassRepository = $productClassRepository;
 
         $this->loadItems();
     }
@@ -67,11 +68,9 @@ class CartService
 
     protected function loadItems()
     {
-        $repository = $this->em->getRepository('Eccube\Entity\ProductClass');
-
         /** @var CartItem $item */
         foreach ($this->cart->getItems() as $item) {
-            $ProductClass = $repository->find($item->getProductClassId());
+            $ProductClass = $this->productClassRepository->find($item->getProductClassId());
             $item->setProductClass($ProductClass);
         }
     }
@@ -86,9 +85,7 @@ class CartService
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
+            $ProductClass = $this->productClassRepository->find($ProductClassId);
             if (is_null($ProductClass)) {
                 return false;
             }
@@ -156,9 +153,7 @@ class CartService
     public function createCartItem($ProductClass, $quantity = 1)
     {
         if (!($ProductClass instanceof ProductClass)) {
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClass);
+            $ProductClass = $this->productClassRepository->find($ProductClass);
         }
 
         if (is_null($ProductClass)) {
