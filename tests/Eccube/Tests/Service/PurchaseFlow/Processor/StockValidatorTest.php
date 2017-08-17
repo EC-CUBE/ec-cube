@@ -25,13 +25,13 @@ class StockValidatorTest extends EccubeTestCase
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = new StockValidator();
         $this->cartItem = new CartItem();
-        $this->cartItem->setObject($this->ProductClass);
+        $this->cartItem->setProductClass($this->ProductClass);
     }
 
     public function testInstance()
     {
         self::assertInstanceOf(StockValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->cartItem->getObject());
+        self::assertSame($this->ProductClass, $this->cartItem->getProductClass());
     }
 
     public function testValidStock()

@@ -43,7 +43,7 @@ class CartItemType extends AbstractType
             ])
             ->add(
                 $builder
-                    ->create('object', HiddenType::class, [
+                    ->create('ProductClass', HiddenType::class, [
                         'data' => $ProductClasses->count() === 1 ?
                             $ProductClasses->first() :
                             null,
@@ -110,8 +110,8 @@ class CartItemType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        if (is_object($view->vars['form']->children['object']->vars['value'])) {
-            $view->vars['form']->children['object']->vars['value'] = $view->vars['form']->children['object']->vars['value']->getId();
+        if (is_object($view->vars['form']->children['ProductClass']->vars['value'])) {
+            $view->vars['form']->children['ProductClass']->vars['value'] = $view->vars['form']->children['ProductClass']->vars['value']->getId();
         }
     }
 

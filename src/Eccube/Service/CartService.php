@@ -67,12 +67,12 @@ class CartService
 
     protected function loadItems()
     {
+        $repository = $this->em->getRepository('Eccube\Entity\ProductClass');
+
         /** @var CartItem $item */
         foreach ($this->cart->getItems() as $item) {
-            $id = $item->getClassId();
-            $class = $item->getClassName();
-            $entity = $this->em->getRepository($class)->find($id);
-            $item->setObject($entity);
+            $ProductClass = $repository->find($item->getProductClassId());
+            $item->setProductClass($ProductClass);
         }
     }
 
@@ -102,11 +102,10 @@ class CartService
             $exists->setQuantity($exists->getQuantity() + $quantity);
         } else {
             $item = new CartItem();
-            $item->setQuantity($quantity);
-            $item->setPrice($ProductClass->getPrice01IncTax());
-            $item->setClassId($ProductClass->getId());
-            $item->setClassName(ProductClass::class);
-            $item->setObject($ProductClass);
+            $item
+                ->setQuantity($quantity)
+                ->setPrice($ProductClass->getPrice01IncTax())
+                ->setProductClass($ProductClass);
             $cart->addItem($item);
         }
 

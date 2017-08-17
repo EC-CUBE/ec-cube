@@ -278,10 +278,7 @@ class ProductController
                     log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $ProductClass->getId(), 'quantity' => $addCartData->getQuantity()));
 
                     // TODO 単価計算を外部へ出す
-                    $addCartData
-                        ->setPrice($ProductClass->getPrice01IncTax())
-                        ->setClassId($ProductClass->getId())
-                        ->setClassName(ProductClass::class);
+                    $addCartData->setPrice($ProductClass->getPrice02IncTax());
 
                     // カートを取得
                     $Cart = $app['eccube.service.cart']->getCart();

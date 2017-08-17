@@ -39,6 +39,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * @deprecated
+ */
 class AddCartType extends AbstractType
 {
     /**

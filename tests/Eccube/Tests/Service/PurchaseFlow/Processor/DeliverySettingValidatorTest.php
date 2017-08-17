@@ -40,7 +40,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = new DeliverySettingValidator($this->app['eccube.repository.delivery']);
         $this->cartItem = new CartItem();
-        $this->cartItem->setObject($this->ProductClass);
+        $this->cartItem->setProductClass($this->ProductClass);
     }
 
     public function testInstance()
