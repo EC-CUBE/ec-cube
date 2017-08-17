@@ -28,6 +28,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Service\OrderHelper;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
@@ -217,9 +219,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
         $app['eccube.purchase.flow.cart.holder_processors'] = function ($app) {
             $processors = new ArrayCollection();
-            $processors->add(new PaymentProcessor($app));
+            $processors->add(new PaymentProcessor($app[DeliveryRepository::class]));
             $processors->add(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $processors->add(new DeliveryFeeFreeProcessor($app));
+            $processors->add(new DeliveryFeeFreeProcessor($app[BaseInfoRepository::class]));
             $processors->add(new PaymentTotalNegativeValidator());
 
             return $processors;
@@ -246,7 +248,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow->addItemProcessor(new StockValidator());
             $flow->addItemProcessor(new DisplayStatusValidator());
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $flow->addItemHolderProcessor(new DeliveryFeeProcessor($app));
+            $flow->addItemHolderProcessor(new DeliveryFeeProcessor($app['orm.em']));
             $flow->addItemHolderProcessor(new PaymentTotalNegativeValidator());
             return $flow;
         };
@@ -255,7 +257,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow = new PurchaseFlow();
             $flow->addItemProcessor(new StockValidator());
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $flow->addPurchaseProcessor(new UpdateDatePurchaseProcessor($app));
+            $flow->addPurchaseProcessor(new UpdateDatePurchaseProcessor($app['config']));
             $flow->addPurchaseProcessor(new AdminOrderRegisterPurchaseProcessor($app));
             return $flow;
         };

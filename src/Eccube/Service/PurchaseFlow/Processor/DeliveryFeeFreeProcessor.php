@@ -37,24 +37,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 {
     /**
-     * @Inject(BaseInfoRepository::class)
      * @var BaseInfoRepository
      */
     protected $baseInfoRepository;
-
-    /**
-     * @var Application
-     */
-    private $app;
 
     /**
      * DeliveryFeeProcessor constructor.
      *
      * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct(BaseInfoRepository $baseInfoRepository)
     {
-        $this->app = $app;
+        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     /**

@@ -18,21 +18,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class StockReduceProcessor implements ItemProcessor
 {
     /**
-     * @Inject(ProductStockRepository::class)
      * @var ProductStockRepository
      */
     protected $productStockRepository;
 
-    private $app;
-
     /**
-     * DeliveryFeeProcessor constructor.
+     * StockReduceProcessor constructor.
      *
-     * @param $app
+     * @param ProductStockRepository $productStockRepository
      */
-    public function __construct($app)
+    public function __construct(ProductStockRepository $productStockRepository)
     {
-        $this->app = $app;
+        $this->productStockRepository = $productStockRepository;
     }
 
     /**

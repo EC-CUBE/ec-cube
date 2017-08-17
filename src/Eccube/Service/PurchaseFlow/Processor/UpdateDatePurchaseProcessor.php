@@ -13,16 +13,18 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 class UpdateDatePurchaseProcessor implements PurchaseProcessor
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-    protected $app;
-
-    public function __construct($app)
+    /**
+     * UpdateDatePurchaseProcessor constructor.
+     *
+     * @param array $appConfig
+     */
+    public function __construct(array $appConfig)
     {
-        $this->app = $app;
+        $this->appConfig = $appConfig;
     }
 
     /**
