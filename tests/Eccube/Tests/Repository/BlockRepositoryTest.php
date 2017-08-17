@@ -6,7 +6,9 @@ use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Util\ReflectionUtil;
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * BlockRepository test cases.
@@ -99,18 +101,18 @@ class BlockRepositoryTest extends EccubeTestCase
     {
         $fileName = 'example_block';
         $root = vfsStream::setup('rootDir');
-        vfsStream::newDirectory('default');
+        $root->addChild(vfsStream::newDirectory('default'));
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['block_realdir'] = vfsStream::url('rootDir');
-        $config['block_default_realdir'] = vfsStream::url('rootDir/default');
-        $this->app->overwrite('config', $config);
+        file_put_contents(vfsStream::url('rootDir').'/'.$fileName.'.twig', 'test');
 
-        file_put_contents($this->app['config']['block_realdir'].'/'.$fileName.'.twig', 'test');
+        $blockRepository = $this->app['eccube.repository.block'];
+        ReflectionUtil::setValue($blockRepository, 'appConfig', [
+            'block_realdir' =>  vfsStream::url('rootDir'),
+            'block_default_realdir' => vfsStream::url('rootDir/default'),
+        ]);
 
         // XXX 引数 isUser は使用していない
-        $data = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
+        $data = $blockRepository->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
@@ -121,18 +123,18 @@ class BlockRepositoryTest extends EccubeTestCase
     {
         $fileName = 'example_block';
         $root = vfsStream::setup('rootDir');
-        mkdir(vfsStream::url('rootDir').'/default', 0777, true);
+        $root->addChild(vfsStream::newDirectory('default'));
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['block_realdir'] = vfsStream::url('rootDir');
-        $config['block_default_realdir'] = vfsStream::url('rootDir').'/default';
-        $this->app->overwrite('config', $config);
+        file_put_contents(vfsStream::url('rootDir/default').'/'.$fileName.'.twig', 'test');
 
-        file_put_contents($this->app['config']['block_default_realdir'].'/'.$fileName.'.twig', 'test');
+        $blockRepository = $this->app['eccube.repository.block'];
+        ReflectionUtil::setValue($blockRepository, 'appConfig', [
+            'block_realdir' =>  vfsStream::url('rootDir'),
+            'block_default_realdir' => vfsStream::url('rootDir/default'),
+        ]);
 
         // XXX 引数 isUser は使用していない
-        $data = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
+        $data = $blockRepository->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
