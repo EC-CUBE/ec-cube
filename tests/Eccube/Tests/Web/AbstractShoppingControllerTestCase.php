@@ -70,14 +70,14 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         $ProductClass = $this->app['eccube.repository.product_class']->find($product_class_id);
 
         $crawler = $client->request(
-            'PUT',
-            $this->app->path('product_detail', ['id' => $ProductClass->getProduct()->getId()],
-                [
-                    'mode' => 'add_cart',
-                    'ProductClass' => $ProductClass->getId(),
-                    'quantity' => 1,
-                ]
-            )
+            'POST',
+            $this->app->path('product_detail', ['id' => $ProductClass->getProduct()->getId()]),
+            [
+                'mode' => 'add_cart',
+                'ProductClass' => $ProductClass->getId(),
+                'quantity' => 1,
+                '_token' => 'dummy',
+            ]
         );
         $this->app['eccube.service.cart']->lock();
 
