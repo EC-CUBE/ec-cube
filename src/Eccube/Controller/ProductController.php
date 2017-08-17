@@ -32,9 +32,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\AddCartType;
-use Eccube\Form\Type\CartItemType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
+use Eccube\Form\Type\ProductDetailCartItem;
 use Eccube\Form\Type\SearchProductType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -221,7 +221,7 @@ class ProductController
         }
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', CartItemType::class, null, array(
+        $builder = $app['form.factory']->createNamedBuilder('', ProductDetailCartItem::class, null, array(
             'Product' => $Product,
         ));
 
