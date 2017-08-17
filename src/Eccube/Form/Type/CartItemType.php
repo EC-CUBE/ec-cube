@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
@@ -18,8 +19,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * @FormType
+ */
 class CartItemType extends AbstractType
 {
+    /**
+     * @var array
+     * @Inject("config")
+     */
+    protected $config;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -58,6 +68,7 @@ class CartItemType extends AbstractType
                 'data' => 1,
                 'attr' => [
                     'min' => 1,
+                    'maxlength' => $this->config['int_len'],
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
