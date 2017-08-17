@@ -24,15 +24,44 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TradelawType;
+use Eccube\Repository\HelpRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class TradelawController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(HelpRepository::class)
+     * @var HelpRepository
+     */
+    protected $helpRepository;
+
     public $form;
 
     public function __construct()
@@ -41,9 +70,9 @@ class TradelawController extends AbstractController
 
     public function index(Application $app, Request $request)
     {
-        $Help = $app['eccube.repository.help']->get();
+        $Help = $this->helpRepository->get();
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(TradelawType::class, $Help);
 
         $event = new EventArgs(
@@ -53,7 +82,7 @@ class TradelawController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -61,9 +90,9 @@ class TradelawController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $Help = $form->getData();
-                $app['orm.em']->persist($Help);
+                $this->entityManager->persist($Help);
 
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -72,7 +101,7 @@ class TradelawController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.register.complete', 'admin');
 

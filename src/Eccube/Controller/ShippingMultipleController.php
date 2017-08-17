@@ -24,6 +24,8 @@
 namespace Eccube\Controller;
 
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\CustomerAddress;
@@ -33,11 +35,58 @@ use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\ShippingMultipleType;
+use Eccube\Repository\Master\OrderItemTypeRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Service\ShoppingService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
+    /**
+     * @Inject(PrefRepository::class)
+     * @var PrefRepository
+     */
+    protected $prefRepository;
+
+    /**
+     * @Inject("session")
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * @Inject(OrderItemTypeRepository::class)
+     * @var OrderItemTypeRepository
+     */
+    protected $orderItemTypeRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(ShoppingService::class)
+     * @var ShoppingService
+     */
+    protected $shoppingService;
+
 
     /**
      * 複数配送処理
@@ -51,7 +100,7 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         /** @var \Eccube\Entity\Order $Order */
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
@@ -106,7 +155,7 @@ class ShippingMultipleController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -172,7 +221,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // お届け先情報をすべて削除
             foreach ($Order->getShippings() as $Shipping) {
-                $app['orm.em']->remove($Shipping);
+                $this->entityManager->remove($Shipping);
             }
 
             // お届け先のリストを作成する
@@ -201,11 +250,11 @@ class ShippingMultipleController extends AbstractShoppingController
             // お届け先のリストを保存
             foreach ($ShippingList as $ShippingListByAddress) {
                 foreach ($ShippingListByAddress as $Shipping) {
-                    $app['orm.em']->persist($Shipping);
+                    $this->entityManager->persist($Shipping);
                 }
             }
 
-            $ProductOrderType = $app['eccube.repository.master.order_item_type']->find(OrderItemType::PRODUCT);
+            $ProductOrderType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
             // お届け先に、配送商品の情報(ShipmentItem)を関連付ける
             foreach ($data as $mulitples) {
@@ -255,7 +304,7 @@ class ShippingMultipleController extends AbstractShoppingController
                             $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
                         }
                         $Shipping->addShipmentItem($ShipmentItem);
-                        $app['orm.em']->persist($ShipmentItem);
+                        $this->entityManager->persist($ShipmentItem);
                     }
                 }
             }
@@ -265,7 +314,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 // data is product type => shipping
                 foreach ($data as $Shipping) {
                     // 配送料金の設定
-                    $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+                    $this->shoppingService->setShippingDeliveryFee($Shipping);
                 }
             }
 
@@ -276,7 +325,7 @@ class ShippingMultipleController extends AbstractShoppingController
             }
 
             // 配送先を更新
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
@@ -285,7 +334,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
 
             log_info('複数配送設定処理完了', array($Order->getId()));
             return $app->redirect($app->url('shopping'));
@@ -326,11 +375,11 @@ class ShippingMultipleController extends AbstractShoppingController
             return $CustomerAddressData;
         } else {
             $cusAddId = $CustomerAddressData;
-            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+            $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
             $customerAddresses = unserialize($customerAddresses);
 
             $CustomerAddress = $customerAddresses[$cusAddId];
-            $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
+            $pref = $this->prefRepository->find($CustomerAddress->getPref()->getId());
             $CustomerAddress->setPref($pref);
 
             return $CustomerAddress;

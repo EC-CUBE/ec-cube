@@ -3,32 +3,123 @@
 namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Shipping;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
+use Eccube\Form\Type\AddCartType;
+use Eccube\Form\Type\Admin\SearchCustomerType;
+use Eccube\Form\Type\Admin\SearchOrderType;
+use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Form\Type\Admin\ShipmentItemType;
+use Eccube\Form\Type\Admin\ShippingType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\ShipmentItemRepository;
+
+use Eccube\Repository\ShippingRepository;
+use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-
-use Eccube\Common\Constant;
-use Eccube\Controller\AbstractController;
-use Eccube\Entity\Shipping;
-use Eccube\Entity\Master\CsvType;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
-use Eccube\Form\Type\AddCartType;
-use Eccube\Form\Type\Admin\SearchOrderType;
-use Eccube\Form\Type\Admin\ShippingType;
-use Eccube\Form\Type\Admin\SearchCustomerType;
-use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Form\Type\Admin\ShipmentItemType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/{_admin}/shipping")
  */
 class EditController
 {
+    /**
+     * @Inject(ShipmentItemRepository::class)
+     * @var ShipmentItemRepository
+     */
+    protected $shipmentItemRepository;
+
+    /**
+     * @Inject(CategoryRepository::class)
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * @Inject("session")
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("monolog")
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @Inject("serializer")
+     * @var Serializer
+     */
+    protected $serializer;
+
+    /**
+     * @Inject(DeliveryRepository::class)
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject(TaxRuleService::class)
+     * @var TaxRuleService
+     */
+    protected $taxRuleService;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(ShippingRepository::class)
+     * @var ShippingRepository
+     */
+    protected $shippingRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
     /**
      * 出荷登録/編集画面.
      *
@@ -41,7 +132,7 @@ class EditController
     public function edit(Application $app, Request $request, $id = null)
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
             'Eccube\Entity\Product',
@@ -54,7 +145,7 @@ class EditController
             // 空のエンティティを作成.
             $TargetShipping = new Shipping();
         } else {
-            $TargetShipping = $app['eccube.repository.shipping']->find($id);
+            $TargetShipping = $this->shippingRepository->find($id);
             if (is_null($TargetShipping)) {
                 throw new NotFoundHttpException();
             }
@@ -69,7 +160,7 @@ class EditController
             $OriginalShipmentItems->add($ShipmentItem);
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(ShippingType::class, $TargetShipping);
 
         $event = new EventArgs(
@@ -81,7 +172,7 @@ class EditController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -96,14 +187,14 @@ class EditController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
             $ShipmentItems = $TargetShipping->getShipmentItems();
             $taxtotal = 0;
             foreach ($ShipmentItems as $ShipmentItem) {
-                $tax = $app['eccube.service.tax_rule']
+                $tax = $this->taxRuleService
                     ->calcTax($ShipmentItem->getPrice(), $ShipmentItem->getTaxRate(), $ShipmentItem->getTaxRule());
                 $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice() + $tax);
 
@@ -123,7 +214,7 @@ class EditController
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                     if ($form->isValid()) {
 
-                        $BaseInfo = $app['eccube.repository.base_info']->get();
+                        $BaseInfo = $this->baseInfoRepository->get();
 
                         // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
 
@@ -137,8 +228,8 @@ class EditController
                         foreach ($TargetShipping->getShipmentItems() as $ShipmentItem) {
                             $ShipmentItem->setShipping($TargetShipping);
                         }
-                        $app['orm.em']->persist($TargetShipping);
-                        $app['orm.em']->flush();
+                        $this->entityManager->persist($TargetShipping);
+                        $this->entityManager->flush();
 
                         $event = new EventArgs(
                             array(
@@ -150,7 +241,7 @@ class EditController
                             ),
                             $request
                         );
-                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
@@ -167,7 +258,7 @@ class EditController
         }
 
         // 会員検索フォーム
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
@@ -179,12 +270,12 @@ class EditController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
 
         $searchCustomerModalForm = $builder->getForm();
 
         // 商品検索フォーム
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
@@ -196,13 +287,13 @@ class EditController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
 
         $searchProductModalForm = $builder->getForm();
 
         // 配送業者のお届け時間
         $times = array();
-        $deliveries = $app['eccube.repository.delivery']->findAll();
+        $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
             $deliveryTiems = $Delivery->getDeliveryTimes();
             foreach ($deliveryTiems as $DeliveryTime) {
@@ -217,7 +308,7 @@ class EditController
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Shipping' => $TargetShipping,
             'id' => $id,
-            'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
+            'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
     }
 
@@ -232,9 +323,9 @@ class EditController
     public function searchProduct(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
-            $app['monolog']->addDebug('search product start.');
-            $page_count = $app['config']['default_page_count'];
-            $session = $app['session'];
+            $this->logger->addDebug('search product start.');
+            $page_count = $this->appConfig['default_page_count'];
+            $session = $this->session;
 
             if ('POST' === $request->getMethod()) {
 
@@ -245,7 +336,7 @@ class EditController
                 );
 
                 if ($categoryId = $request->get('category_id')) {
-                    $Category = $app['eccube.repository.category']->find($categoryId);
+                    $Category = $this->categoryRepository->find($categoryId);
                     $searchData['category_id'] = $Category;
                 }
 
@@ -260,7 +351,7 @@ class EditController
                 }
             }
             // TODO ShipmentItemRepository に移動
-            $qb = $app['eccube.repository.shipment_item']->createQueryBuilder('s')
+            $qb = $this->shipmentItemRepository->createQueryBuilder('s')
                 ->where('s.Shipping is null AND s.Order is not null')
                 ->andWhere('s.OrderItemType in (1, 2)');
 
@@ -271,7 +362,7 @@ class EditController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
 
             /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
             $pagination = $app['paginator']()->paginate(
@@ -284,13 +375,13 @@ class EditController
             $ShipmentItems = $pagination->getItems();
 
             if (empty($ShipmentItems)) {
-                $app['monolog']->addDebug('search product not found.');
+                $this->logger->addDebug('search product not found.');
             }
 
             $forms = array();
             foreach ($ShipmentItems as $ShipmentItem) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $app['form.factory']->createNamedBuilder('', ShipmentItemType::class, $ShipmentItem);
+                $builder = $this->formFactory->createNamedBuilder('', ShipmentItemType::class, $ShipmentItem);
                 $addCartForm = $builder->getForm();
                 $forms[$ShipmentItem->getId()] = $addCartForm->createView();
             }
@@ -303,7 +394,7 @@ class EditController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
 
             return [
                 'forms' => $forms,

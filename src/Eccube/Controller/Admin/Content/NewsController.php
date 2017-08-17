@@ -23,12 +23,16 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
+use Eccube\Repository\NewsRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -38,6 +42,24 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class NewsController extends AbstractController
 {
     /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject(NewsRepository::class)
+     * @var NewsRepository
+     */
+    protected $newsRepository;
+
+    /**
      * 新着情報一覧を表示する。
      *
      * @param Application $app
@@ -45,7 +67,7 @@ class NewsController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $NewsList = $app['eccube.repository.news']->findBy(array(), array('rank' => 'DESC'));
+        $NewsList = $this->newsRepository->findBy(array(), array('rank' => 'DESC'));
 
         $builder = $app->form();
 
@@ -56,7 +78,7 @@ class NewsController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -78,7 +100,7 @@ class NewsController extends AbstractController
     public function edit(Application $app, Request $request, $id = null)
     {
         if ($id) {
-            $News = $app['eccube.repository.news']->find($id);
+            $News = $this->newsRepository->find($id);
             if (!$News) {
                 throw new NotFoundHttpException();
             }
@@ -88,7 +110,7 @@ class NewsController extends AbstractController
 
         $News->setLinkMethod((bool) $News->getLinkMethod());
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(NewsType::class, $News);
 
         $event = new EventArgs(
@@ -98,7 +120,7 @@ class NewsController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -110,7 +132,7 @@ class NewsController extends AbstractController
                     $News->setLinkMethod(Constant::DISABLED);
                 }
 
-                $status = $app['eccube.repository.news']->save($News);
+                $status = $this->newsRepository->save($News);
 
                 if ($status) {
 
@@ -121,7 +143,7 @@ class NewsController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
 
                     $app->addSuccess('admin.news.save.complete', 'admin');
 
@@ -150,12 +172,12 @@ class NewsController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetNews = $app['eccube.repository.news']->find($id);
+        $TargetNews = $this->newsRepository->find($id);
         if (!$TargetNews) {
             throw new NotFoundHttpException();
         }
 
-        $status = $app['eccube.repository.news']->up($TargetNews);
+        $status = $this->newsRepository->up($TargetNews);
 
         if ($status) {
             $app->addSuccess('admin.news.up.complete', 'admin');
@@ -179,12 +201,12 @@ class NewsController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetNews = $app['eccube.repository.news']->find($id);
+        $TargetNews = $this->newsRepository->find($id);
         if (!$TargetNews) {
             throw new NotFoundHttpException();
         }
 
-        $status = $app['eccube.repository.news']->down($TargetNews);
+        $status = $this->newsRepository->down($TargetNews);
 
         if ($status) {
             $app->addSuccess('admin.news.down.complete', 'admin');
@@ -208,12 +230,12 @@ class NewsController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetNews = $app['eccube.repository.news']->find($id);
+        $TargetNews = $this->newsRepository->find($id);
         if (!$TargetNews) {
             throw new NotFoundHttpException();
         }
 
-        $status = $app['eccube.repository.news']->delete($TargetNews);
+        $status = $this->newsRepository->delete($TargetNews);
 
         $event = new EventArgs(
             array(
@@ -222,7 +244,7 @@ class NewsController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
         $status = $event->getArgument('status');
 
         if ($status) {

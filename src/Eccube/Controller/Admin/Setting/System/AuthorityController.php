@@ -24,22 +24,51 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\AuthorityRoleType;
+use Eccube\Repository\AuthorityRoleRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorityController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(AuthorityRoleRepository::class)
+     * @var AuthorityRoleRepository
+     */
+    protected $authorityRoleRepository;
+
 
     public function index(Application $app, Request $request)
     {
-        $AuthorityRoles = $app['eccube.repository.authority_role']->findAllSort();
+        $AuthorityRoles = $this->authorityRoleRepository->findAllSort();
 
-        $builder = $app['form.factory']->createBuilder();
+        $builder = $this->formFactory->createBuilder();
         $builder
             ->add('AuthorityRoles', CollectionType::class, array(
                 'entry_type' => AuthorityRoleType::class,
@@ -56,7 +85,7 @@ class AuthorityController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -74,26 +103,26 @@ class AuthorityController extends AbstractController
                 $data = $form->getData();
 
                 foreach ($AuthorityRoles as $AuthorityRole) {
-                    $app['orm.em']->remove($AuthorityRole);
+                    $this->entityManager->remove($AuthorityRole);
                 }
 
                 foreach ($data['AuthorityRoles'] as $AuthorityRole) {
                     $Authority = $AuthorityRole->getAuthority();
                     $denyUrl = $AuthorityRole->getDenyUrl();
                     if ($Authority && !empty($denyUrl)) {
-                        $app['orm.em']->persist($AuthorityRole);
+                        $this->entityManager->persist($AuthorityRole);
                     } else {
                         $id = $AuthorityRole->getId();
                         if (!empty($id)) {
-                            $role = $app['eccube.repository.authority_role']->find($id);
+                            $role = $this->authorityRoleRepository->find($id);
                             if ($role) {
                                 // 削除
-                                $app['orm.em']->remove($AuthorityRole);
+                                $this->entityManager->remove($AuthorityRole);
                             }
                         }
                     }
                 }
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -102,7 +131,7 @@ class AuthorityController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.system.authority.save.complete', 'admin');
 

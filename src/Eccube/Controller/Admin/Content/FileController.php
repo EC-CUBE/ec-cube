@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -31,12 +32,25 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FileController extends AbstractController
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     const SJIS = 'sjis-win';
     const UTF = 'UTF-8';
     private $error = null;
@@ -51,13 +65,13 @@ class FileController extends AbstractController
 
     public function index(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder(FormType::class)
+        $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
             ->add('create_file', TextType::class)
             ->getForm();
 
         // user_data_dir
-        $topDir = $this->normalizePath($app['config']['user_data_realdir']);
+        $topDir = $this->normalizePath($this->appConfig['user_data_realdir']);
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($topDir.'/../');
         // カレントディレクトリ
@@ -106,7 +120,7 @@ class FileController extends AbstractController
 
     public function view(Application $app, Request $request)
     {
-        $topDir = $app['config']['user_data_realdir'];
+        $topDir = $this->appConfig['user_data_realdir'];
         if ($this->checkDir($this->convertStrToServer($request->get('file')), $topDir)) {
             $file = $this->convertStrToServer($request->get('file'));
             setlocale(LC_ALL, "ja_JP.UTF-8");
@@ -119,7 +133,7 @@ class FileController extends AbstractController
     public function create(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder(FormType::class)
+        $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
             ->add('create_file', TextType::class)
             ->getForm();
@@ -140,7 +154,7 @@ class FileController extends AbstractController
             } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
                 $this->error = array('message' => '.から始まるフォルダ名は作成できません。');
             } else {
-                $topDir = $app['config']['user_data_realdir'];
+                $topDir = $this->appConfig['user_data_realdir'];
                 $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
                     ? $this->normalizePath($request->get('now_dir'))
                     : $topDir;
@@ -154,7 +168,7 @@ class FileController extends AbstractController
 
         $this->isTokenValid($app);
 
-        $topDir = $app['config']['user_data_realdir'];
+        $topDir = $this->appConfig['user_data_realdir'];
         if ($this->checkDir($this->convertStrToServer($request->get('select_file')), $topDir)) {
             $fs = new Filesystem();
             if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
@@ -167,7 +181,7 @@ class FileController extends AbstractController
 
     public function download(Application $app, Request $request)
     {
-        $topDir = $app['config']['user_data_realdir'];
+        $topDir = $this->appConfig['user_data_realdir'];
         $file = $this->convertStrToServer($request->get('select_file'));
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
@@ -197,7 +211,7 @@ class FileController extends AbstractController
 
     public function upload(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder(FormType::class)
+        $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
             ->add('create_file', TextType::class)
             ->getForm();
@@ -209,7 +223,7 @@ class FileController extends AbstractController
             if (empty($data['file'])) {
                 $this->error = array('message' => 'ファイルが選択されていません。');
             } else {
-                $topDir = $app['config']['user_data_realdir'];
+                $topDir = $this->appConfig['user_data_realdir'];
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {
                     $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
                     $data['file']->move($request->get('now_dir'), $filename);
@@ -272,7 +286,7 @@ class FileController extends AbstractController
 
     private function getFileList($app, $nowDir)
     {
-        $topDir = $app['config']['user_data_realdir'];
+        $topDir = $this->appConfig['user_data_realdir'];
         $filter = function (\SplFileInfo $file) use ($topDir) {
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();

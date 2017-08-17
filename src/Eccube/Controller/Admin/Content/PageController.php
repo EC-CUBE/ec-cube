@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
@@ -32,19 +34,59 @@ use Eccube\Entity\PageLayoutLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\PageLayoutRepository;
 use Eccube\Util\Str;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class PageController extends AbstractController
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject(PageLayoutRepository::class)
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
+     * @Inject(DeviceTypeRepository::class)
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
     public function index(Application $app, Request $request)
     {
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayouts = $app['eccube.repository.page_layout']->getPageList($DeviceType);
+        $PageLayouts = $this->pageLayoutRepository->getPageList($DeviceType);
 
         $event = new EventArgs(
             array(
@@ -53,7 +95,7 @@ class PageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
 
         return $app->render('Content/page.twig', array(
             'PageLayouts' => $PageLayouts,
@@ -62,15 +104,15 @@ class PageController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = null)
     {
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $app['eccube.repository.page_layout']
+        $PageLayout = $this->pageLayoutRepository
             ->findOrCreate($id, $DeviceType);
 
         $editable = true;
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(MainEditType::class, $PageLayout);
 
         $event = new EventArgs(
@@ -81,7 +123,7 @@ class PageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -94,7 +136,7 @@ class PageController extends AbstractController
                 $PrevPageLayout = clone $PageLayout;
             }
             // テンプレートファイルの取得
-            $file = $app['eccube.repository.page_layout']
+            $file = $this->pageLayoutRepository
                 ->getReadTemplateFile($PageLayout->getFileName(), $editable);
 
             $form->get('tpl_data')->setData($file['tpl_data']);
@@ -115,11 +157,11 @@ class PageController extends AbstractController
                     ->setName($PageLayout->getName());
             }
             // DB登録
-            $app['orm.em']->persist($PageLayout);
-            $app['orm.em']->flush();
+            $this->entityManager->persist($PageLayout);
+            $this->entityManager->flush();
 
             // ファイル生成・更新
-            $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
+            $templatePath = $this->pageLayoutRepository->getWriteTemplatePath($editable);
             $filePath = $templatePath.'/'.$PageLayout->getFileName().'.twig';
 
             $fs = new Filesystem();
@@ -137,8 +179,8 @@ class PageController extends AbstractController
 
             foreach ($PageLayout->getPageLayoutLayouts() as $PageLayoutLayout) {
                 $PageLayout->removePageLayoutLayout($PageLayoutLayout);
-                $app['orm.em']->remove($PageLayoutLayout);
-                $app['orm.em']->flush($PageLayoutLayout);
+                $this->entityManager->remove($PageLayoutLayout);
+                $this->entityManager->flush($PageLayoutLayout);
             }
 
             $Layout = $form['PcLayout']->getData();
@@ -149,8 +191,8 @@ class PageController extends AbstractController
                 $PageLayoutLayout->setPageId($PageLayout->getId());
                 $PageLayoutLayout->setPageLayout($PageLayout);
 
-                $app['orm.em']->persist($PageLayoutLayout);
-                $app['orm.em']->flush($PageLayoutLayout);
+                $this->entityManager->persist($PageLayoutLayout);
+                $this->entityManager->flush($PageLayoutLayout);
             }
 
             $Layout = $form['SpLayout']->getData();
@@ -161,8 +203,8 @@ class PageController extends AbstractController
                 $PageLayoutLayout->setPageId($PageLayout->getId());
                 $PageLayoutLayout->setPageLayout($PageLayout);
 
-                $app['orm.em']->persist($PageLayoutLayout);
-                $app['orm.em']->flush($PageLayoutLayout);
+                $this->entityManager->persist($PageLayoutLayout);
+                $this->entityManager->flush($PageLayoutLayout);
             }
 
             $event = new EventArgs(
@@ -174,18 +216,18 @@ class PageController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
 
             $app->addSuccess('admin.register.complete', 'admin');
 
             // twig キャッシュの削除.
-            $finder = Finder::create()->in($app['config']['root_dir'].'/app/cache/twig');
+            $finder = Finder::create()->in($this->appConfig['root_dir'].'/app/cache/twig');
             $fs->remove($finder);
 
             return $app->redirect($app->url('admin_content_page_edit', array('id' => $PageLayout->getId())));
         }
 
-        $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
+        $templatePath = $this->pageLayoutRepository->getWriteTemplatePath($editable);
 
         return $app->render('Content/page_edit.twig', array(
             'form' => $form->createView(),
@@ -199,10 +241,10 @@ class PageController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $app['eccube.repository.page_layout']
+        $PageLayout = $this->pageLayoutRepository
             ->findOneBy(array(
                 'id' => $id,
                 'DeviceType' => $DeviceType
@@ -216,14 +258,14 @@ class PageController extends AbstractController
 
         // ユーザーが作ったページのみ削除する
         if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_USER) {
-            $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath(true);
+            $templatePath = $this->pageLayoutRepository->getWriteTemplatePath(true);
             $file = $templatePath.'/'.$PageLayout->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
-            $app['orm.em']->remove($PageLayout);
-            $app['orm.em']->flush();
+            $this->entityManager->remove($PageLayout);
+            $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
@@ -232,7 +274,7 @@ class PageController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.delete.complete', 'admin');
         }

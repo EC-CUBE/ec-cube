@@ -24,21 +24,35 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Util\Str;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
 
 class SecurityController extends AbstractController
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     public function index(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder(SecurityType::class);
+        $builder = $this->formFactory->createBuilder(SecurityType::class);
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -49,9 +63,9 @@ class SecurityController extends AbstractController
                 $data = $form->getData();
 
                 // 現在のセキュリティ情報を更新
-                $adminRoot = $app['config']['admin_route'];
+                $adminRoot = $this->appConfig['admin_route'];
 
-                $configFile = $app['config']['root_dir'].'/app/config/eccube/config';
+                $configFile = $this->appConfig['root_dir'].'/app/config/eccube/config';
                 if (file_exists($configFile.'.php')) {
                     $config = require $configFile.'.php';
                 } elseif (file_exists($configFile.'.yml')) {
@@ -91,7 +105,7 @@ class SecurityController extends AbstractController
 
                 if ($adminRoot != $data['admin_route_dir']) {
                     // admin_routeが変更されればpath.(yml|php)を更新
-                    $pathFile = $app['config']['root_dir'].'/app/config/eccube/path';
+                    $pathFile = $this->appConfig['root_dir'].'/app/config/eccube/path';
 
                     if (file_exists($pathFile.'.php')) {
                         $config = require $pathFile.'.php';
@@ -122,12 +136,12 @@ class SecurityController extends AbstractController
             }
         } else {
             // セキュリティ情報の取得
-            $form->get('admin_route_dir')->setData($app['config']['admin_route']);
-            $allowHost = $app['config']['admin_allow_host'];
+            $form->get('admin_route_dir')->setData($this->appConfig['admin_route']);
+            $allowHost = $this->appConfig['admin_allow_host'];
             if (count($allowHost) > 0) {
                 $form->get('admin_allow_host')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
             }
-            $form->get('force_ssl')->setData((bool)$app['config']['force_ssl']);
+            $form->get('force_ssl')->setData((bool)$this->appConfig['force_ssl']);
         }
 
         return $app->render('Setting/System/security.twig', array(

@@ -24,11 +24,13 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Eccube\Annotation\Inject;
 use Eccube\Common\Constant;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -40,11 +42,37 @@ use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Twig_Environment;
 
 class InstallController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("db")
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     * @Inject("twig")
+     * @var Twig_Environment
+     */
+    protected $twigEnvironment;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
 
     const MCRYPT = 'mcrypt';
 
@@ -99,7 +127,7 @@ class InstallController
     // ようこそ
     public function step1(InstallApplication $app, Request $request)
     {
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step1Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
@@ -111,7 +139,7 @@ class InstallController
 
         $this->checkModules($app);
 
-        return $app['twig']->render('step1.twig', array(
+        return $this->twigEnvironment->render('step1.twig', array(
                 'form' => $form->createView(),
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
@@ -134,7 +162,7 @@ class InstallController
             $fs->remove($finder);
         }
 
-        return $app['twig']->render('step2.twig', array(
+        return $this->twigEnvironment->render('step2.twig', array(
                 'protectedDirs' => $protectedDirs,
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
@@ -143,7 +171,7 @@ class InstallController
     //    サイトの設定
     public function step3(InstallApplication $app, Request $request)
     {
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step3Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
@@ -209,7 +237,7 @@ class InstallController
             return $app->redirect($app->path('install_step4'));
         }
 
-        return $app['twig']->render('step3.twig', array(
+        return $this->twigEnvironment->render('step3.twig', array(
                 'form' => $form->createView(),
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
@@ -218,7 +246,7 @@ class InstallController
     //    データベースの設定
     public function step4(InstallApplication $app, Request $request)
     {
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step4Type::class)
             ->getForm();
 
@@ -252,7 +280,7 @@ class InstallController
             return $app->redirect($app->path('install_step5'));
         }
 
-        return $app['twig']->render('step4.twig', array(
+        return $this->twigEnvironment->render('step4.twig', array(
                 'form' => $form->createView(),
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
@@ -263,7 +291,7 @@ class InstallController
     {
         set_time_limit(0);
         $this->app = $app;
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step5Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
@@ -314,7 +342,7 @@ class InstallController
             return $app->redirect($app->path('install_complete'));
         }
 
-        return $app['twig']->render('step5.twig', array(
+        return $this->twigEnvironment->render('step5.twig', array(
                 'form' => $form->createView(),
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
@@ -342,7 +370,7 @@ class InstallController
 
         $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
 
-        return $app['twig']->render('complete.twig', array(
+        return $this->twigEnvironment->render('complete.twig', array(
                 'admin_url' => $adminUrl,
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
@@ -438,7 +466,7 @@ class InstallController
      */
     private function getEntityManager()
     {
-        if (!isset($this->app['orm.em'])) {
+        if (!isset($this->entityManager)) {
             $config_file = $this->config_path . '/database.yml';
             $database = Yaml::parse(file_get_contents($config_file));
 
@@ -492,7 +520,7 @@ class InstallController
 
         }
 
-        return $em = $this->app['orm.em'];
+        return $em = $this->entityManager;
     }
 
     private function createTables()
@@ -650,7 +678,7 @@ class InstallController
         $app->initialize();
         $app->boot();
 
-        $config = new Configuration($app['db']);
+        $config = new Configuration($this->connection);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
         $migrationDir = __DIR__ . '/../../Resource/doctrine/migration';
@@ -939,7 +967,7 @@ class InstallController
      */
     public function migration(InstallApplication $app, Request $request)
     {
-        return $app['twig']->render('migration.twig', array(
+        return $this->twigEnvironment->render('migration.twig', array(
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
@@ -966,7 +994,7 @@ class InstallController
             // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
             return $app->redirect($app->path('migration_end'));
         } else {
-            return $app['twig']->render('migration_plugin.twig', array(
+            return $this->twigEnvironment->render('migration_plugin.twig', array(
                     'Plugins' => $Plugins,
                     'version' => Constant::VERSION,
                     'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
@@ -991,7 +1019,7 @@ class InstallController
         $config_app->boot();
         \Eccube\Util\Cache::clear($config_app, true);
 
-        return $app['twig']->render('migration_end.twig', array(
+        return $this->twigEnvironment->render('migration_end.twig', array(
                 'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }

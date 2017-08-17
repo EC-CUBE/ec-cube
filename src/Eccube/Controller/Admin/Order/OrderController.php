@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -31,18 +33,100 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Repository\Master\PageMaxRepository;
+use Eccube\Repository\Master\SexRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Repository\PaymentRepository;
+use Eccube\Service\CsvExportService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController extends AbstractController
 {
+    /**
+     * @Inject(CsvExportService::class)
+     * @var CsvExportService
+     */
+    protected $csvExportService;
+
+    /**
+     * @Inject(CustomerRepository::class)
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(PaymentRepository::class)
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
+     * @Inject(SexRepository::class)
+     * @var SexRepository
+     */
+    protected $sexRepository;
+
+    /**
+     * @Inject(OrderStatusRepository::class)
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(PageMaxRepository::class)
+     * @var PageMaxRepository
+     */
+    protected $pageMaxRepository;
+
+    /**
+     * @Inject(DispRepository::class)
+     * @var DispRepository
+     */
+    protected $dispRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(OrderRepository::class)
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
 
     public function index(Application $app, Request $request, $page_no = null)
     {
 
         $session = $request->getSession();
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
 
         $event = new EventArgs(
@@ -51,15 +135,15 @@ class OrderController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
 
         $pagination = array();
 
-        $disps = $app['eccube.repository.master.disp']->findAll();
-        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
-        $page_count = $app['config']['default_page_count'];
+        $disps = $this->dispRepository->findAll();
+        $pageMaxis = $this->pageMaxRepository->findAll();
+        $page_count = $this->appConfig['default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -71,7 +155,7 @@ class OrderController extends AbstractController
                 $searchData = $searchForm->getData();
 
                 // paginator
-                $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+                $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                 $event = new EventArgs(
                     array(
@@ -80,7 +164,7 @@ class OrderController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
 
                 $page_no = 1;
                 $pagination = $app['paginator']()->paginate(
@@ -112,11 +196,11 @@ class OrderController extends AbstractController
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
-                        if ($status != $app['config']['admin_product_stock_status']) {
+                        if ($status != $this->appConfig['admin_product_stock_status']) {
                             $searchData['status']->clear();
                             $searchData['status']->add($status);
                         } else {
-                            $searchData['stock_status'] = $app['config']['disabled'];
+                            $searchData['stock_status'] = $this->appConfig['disabled'];
                         }
                         $page_status = $status;
                     }
@@ -125,7 +209,7 @@ class OrderController extends AbstractController
 
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
-                    $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+                    $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                     $event = new EventArgs(
                         array(
@@ -134,7 +218,7 @@ class OrderController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
 
                     $pagination = $app['paginator']()->paginate(
                         $qb,
@@ -144,28 +228,28 @@ class OrderController extends AbstractController
 
                     // セッションから検索条件を復元
                     if (!empty($searchData['status'])) {
-                        $searchData['status'] = $app['eccube.repository.master.order_status']->find($searchData['status']);
+                        $searchData['status'] = $this->orderStatusRepository->find($searchData['status']);
                     }
                     if (count($searchData['multi_status']) > 0) {
                         $statusIds = array();
                         foreach ($searchData['multi_status'] as $Status) {
                             $statusIds[] = $Status->getId();
                         }
-                        $searchData['multi_status'] = $app['eccube.repository.master.order_status']->findBy(array('id' => $statusIds));
+                        $searchData['multi_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
                     }
                     if (count($searchData['sex']) > 0) {
                         $sex_ids = array();
                         foreach ($searchData['sex'] as $Sex) {
                             $sex_ids[] = $Sex->getId();
                         }
-                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
+                        $searchData['sex'] = $this->sexRepository->findBy(array('id' => $sex_ids));
                     }
                     if (count($searchData['payment']) > 0) {
                         $payment_ids = array();
                         foreach ($searchData['payment'] as $Payment) {
                             $payment_ids[] = $Payment->getId();
                         }
-                        $searchData['payment'] = $app['eccube.repository.payment']->findBy(array('id' => $payment_ids));
+                        $searchData['payment'] = $this->paymentRepository->findBy(array('id' => $payment_ids));
                     }
                     $searchForm->setData($searchData);
                 }
@@ -192,7 +276,7 @@ class OrderController extends AbstractController
         $page_no = intval($session->get('eccube.admin.order.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
 
-        $Order = $app['orm.em']->getRepository('Eccube\Entity\Order')
+        $Order = $this->orderRepository
             ->find($id);
 
         if (!$Order) {
@@ -204,13 +288,13 @@ class OrderController extends AbstractController
 
         $Order->setDelFlg(Constant::ENABLED);
 
-        $app['orm.em']->persist($Order);
-        $app['orm.em']->flush();
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
 
         $Customer = $Order->getCustomer();
         if ($Customer) {
             // 会員の場合、購入回数、購入金額などを更新
-            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
+            $this->customerRepository->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
         }
 
         $event = new EventArgs(
@@ -220,7 +304,7 @@ class OrderController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.order.delete.complete', 'admin');
 
@@ -244,25 +328,25 @@ class OrderController extends AbstractController
         set_time_limit(0);
 
         // sql loggerを無効にする.
-        $em = $app['orm.em'];
+        $em = $this->entityManager;
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
 
             // CSV種別を元に初期化.
-            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_ORDER);
+            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
 
             // ヘッダ行の出力.
-            $app['eccube.service.csv.export']->exportHeader();
+            $this->csvExportService->exportHeader();
 
             // 受注データ検索用のクエリビルダを取得.
-            $qb = $app['eccube.service.csv.export']
+            $qb = $this->csvExportService
                 ->getOrderQueryBuilder($request);
 
             // データ行の出力.
-            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -290,7 +374,7 @@ class OrderController extends AbstractController
                             ),
                             $request
                         );
-                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
 
                         $ExportCsvRow->pushData();
                     }
@@ -326,25 +410,25 @@ class OrderController extends AbstractController
         set_time_limit(0);
 
         // sql loggerを無効にする.
-        $em = $app['orm.em'];
+        $em = $this->entityManager;
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
 
             // CSV種別を元に初期化.
-            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_SHIPPING);
+            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
 
             // ヘッダ行の出力.
-            $app['eccube.service.csv.export']->exportHeader();
+            $this->csvExportService->exportHeader();
 
             // 受注データ検索用のクエリビルダを取得.
-            $qb = $app['eccube.service.csv.export']
+            $qb = $this->csvExportService
                 ->getOrderQueryBuilder($request);
 
             // データ行の出力.
-            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -381,7 +465,7 @@ class OrderController extends AbstractController
                                 ),
                                 $request
                             );
-                            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
+                            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING, $event);
 
                             $ExportCsvRow->pushData();
                         }

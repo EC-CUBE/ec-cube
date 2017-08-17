@@ -24,14 +24,22 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Repository\HelpRepository;
 
 class HelpController extends AbstractController
 {
+    /**
+     * @Inject(HelpRepository::class)
+     * @var HelpRepository
+     */
+    protected $helpRepository;
+
 
     public function tradelaw(Application $app)
     {
-        $Help = $app['eccube.repository.help']->get();
+        $Help = $this->helpRepository->get();
 
         return $app->render('Help/tradelaw.twig', array(
             'help' => $Help,
@@ -55,7 +63,7 @@ class HelpController extends AbstractController
 
     public function agreement(Application $app)
     {
-        $Help = $app['eccube.repository.help']->get();
+        $Help = $this->helpRepository->get();
 
         return $app->render('Help/agreement.twig', array(
             'help' => $Help,

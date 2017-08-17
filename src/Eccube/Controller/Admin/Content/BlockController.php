@@ -24,27 +24,69 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\BlockType;
+use Eccube\Repository\BlockRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\Str;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlockController extends AbstractController
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject(BlockRepository::class)
+     * @var BlockRepository
+     */
+    protected $blockRepository;
+
+    /**
+     * @Inject(DeviceTypeRepository::class)
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
     public function index(Application $app, Request $request)
     {
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         // 登録されているブロック一覧の取得
-        $Blocks = $app['eccube.repository.block']->getList($DeviceType);
+        $Blocks = $this->blockRepository->getList($DeviceType);
 
         $event = new EventArgs(
             array(
@@ -53,7 +95,7 @@ class BlockController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE, $event);
 
         return $app->render('Content/block.twig', array(
             'Blocks' => $Blocks,
@@ -62,17 +104,17 @@ class BlockController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = null)
     {
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Block = $app['eccube.repository.block']
+        $Block = $this->blockRepository
             ->findOrCreate($id, $DeviceType);
 
         if (!$Block) {
             throw new NotFoundHttpException();
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(BlockType::class, $Block);
 
         $html = '';
@@ -82,7 +124,7 @@ class BlockController extends AbstractController
         if ($id) {
             // テンプレートファイルの取得
             $previous_filename = $Block->getFileName();
-            $file = $app['eccube.repository.block']
+            $file = $this->blockRepository
                 ->getReadTemplateFile($previous_filename, $deletable);
             $html = $file['tpl_data'];
         }
@@ -96,7 +138,7 @@ class BlockController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE, $event);
         $html = $event->getArgument('html');
 
         $form = $builder->getForm();
@@ -109,11 +151,11 @@ class BlockController extends AbstractController
                 $Block = $form->getData();
 
                 // DB登録
-                $app['orm.em']->persist($Block);
-                $app['orm.em']->flush();
+                $this->entityManager->persist($Block);
+                $this->entityManager->flush();
 
                 // ファイル生成・更新
-                $tplDir = $app['config']['block_realdir'];
+                $tplDir = $this->appConfig['block_realdir'];
 
                 $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
 
@@ -139,7 +181,7 @@ class BlockController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
@@ -159,10 +201,10 @@ class BlockController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Block = $app['eccube.repository.block']->findOneBy(array(
+        $Block = $this->blockRepository->findOneBy(array(
             'id' => $id,
             'DeviceType' => $DeviceType
         ));
@@ -175,14 +217,14 @@ class BlockController extends AbstractController
         // ユーザーが作ったブロックのみ削除する
         // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
         if ($Block->getDeletableFlg() > 0) {
-            $tplDir = $app['config']['block_realdir'];
+            $tplDir = $this->appConfig['block_realdir'];
             $file = $tplDir . '/' . $Block->getFileName() . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
-            $app['orm.em']->remove($Block);
-            $app['orm.em']->flush();
+            $this->entityManager->remove($Block);
+            $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
@@ -190,7 +232,7 @@ class BlockController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.delete.complete', 'admin');
             //twigテンプレートのみ削除

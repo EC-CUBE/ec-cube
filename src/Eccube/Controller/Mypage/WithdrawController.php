@@ -24,16 +24,38 @@
 
 namespace Eccube\Controller\Mypage;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Service\MailService;
 use Eccube\Util\Str;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
 class WithdrawController extends AbstractController
 {
+    /**
+     * @Inject(MailService::class)
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
     /**
      * 退会画面.
      *
@@ -51,7 +73,7 @@ class WithdrawController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -78,7 +100,7 @@ class WithdrawController extends AbstractController
                     $Customer->setEmail(Str::random(60) . '@dummy.dummy');
                     $Customer->setDelFlg(Constant::ENABLED);
 
-                    $app['orm.em']->flush();
+                    $this->entityManager->flush();
 
                     log_info('退会処理完了');
 
@@ -88,10 +110,10 @@ class WithdrawController extends AbstractController
                             'Customer' => $Customer,
                         ), $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
 
                     // メール送信
-                    $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
+                    $this->mailService->sendCustomerWithdrawMail($Customer, $email);
 
                     // ログアウト
                     $this->getSecurity($app)->setToken(null);

@@ -24,15 +24,57 @@
 
 namespace Eccube\Controller\Mypage;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
+use Eccube\Repository\CustomerRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class ChangeController extends AbstractController
 {
+    /**
+     * @Inject("security.token_storage")
+     * @var TokenStorage
+     */
+    protected $tokenStorage;
+
+    /**
+     * @Inject(CustomerRepository::class)
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
     /**
      * 会員情報編集画面.
      *
@@ -44,13 +86,13 @@ class ChangeController extends AbstractController
     {
         $Customer = $app->user();
         $LoginCustomer = clone $Customer;
-        $app['orm.em']->detach($LoginCustomer);
+        $this->entityManager->detach($LoginCustomer);
 
         $previous_password = $Customer->getPassword();
-        $Customer->setPassword($app['config']['default_password']);
+        $Customer->setPassword($this->appConfig['default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder(EntryType::class, $Customer);
+        $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
             array(
@@ -59,7 +101,7 @@ class ChangeController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -69,17 +111,17 @@ class ChangeController extends AbstractController
 
             log_info('会員編集開始');
 
-            if ($Customer->getPassword() === $app['config']['default_password']) {
+            if ($Customer->getPassword() === $this->appConfig['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
                 if ($Customer->getSalt() === null) {
-                    $Customer->setSalt($app['eccube.repository.customer']->createSalt(5));
+                    $Customer->setSalt($this->customerRepository->createSalt(5));
                 }
                 $Customer->setPassword(
-                    $app['eccube.repository.customer']->encryptPassword($app, $Customer)
+                    $this->customerRepository->encryptPassword($app, $Customer)
                 );
             }
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             log_info('会員編集完了');
 
@@ -90,12 +132,12 @@ class ChangeController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE, $event);
 
             return $app->redirect($app->url('mypage_change_complete'));
         }
 
-        $app['security.token_storage']->getToken()->setUser($LoginCustomer);
+        $this->tokenStorage->getToken()->setUser($LoginCustomer);
 
         return $app->render('Mypage/change.twig', array(
             'form' => $form->createView(),

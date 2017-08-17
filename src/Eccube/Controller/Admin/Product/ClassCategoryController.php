@@ -24,25 +24,68 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassCategoryType;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ClassNameRepository;
+use Eccube\Repository\ProductClassRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ClassCategoryController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(ProductClassRepository::class)
+     * @var ProductClassRepository
+     */
+    protected $productClassRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(ClassCategoryRepository::class)
+     * @var ClassCategoryRepository
+     */
+    protected $classCategoryRepository;
+
+    /**
+     * @Inject(ClassNameRepository::class)
+     * @var ClassNameRepository
+     */
+    protected $classNameRepository;
+
     public function index(Application $app, Request $request, $class_name_id, $id = null)
     {
         //
-        $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
+        $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
             throw new NotFoundHttpException('商品規格が存在しません');
         }
         if ($id) {
-            $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
+            $TargetClassCategory = $this->classCategoryRepository->find($id);
             if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
                 throw new NotFoundHttpException('商品規格が存在しません');
             }
@@ -52,7 +95,7 @@ class ClassCategoryController extends AbstractController
         }
 
         //
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(ClassCategoryType::class, $TargetClassCategory);
 
         $event = new EventArgs(
@@ -63,7 +106,7 @@ class ClassCategoryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -71,7 +114,7 @@ class ClassCategoryController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 log_info('規格分類登録開始', array($id));
-                $status = $app['eccube.repository.class_category']->save($TargetClassCategory);
+                $status = $this->classCategoryRepository->save($TargetClassCategory);
 
                 if ($status) {
 
@@ -85,7 +128,7 @@ class ClassCategoryController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
 
                     $app->addSuccess('admin.class_category.save.complete', 'admin');
 
@@ -97,7 +140,7 @@ class ClassCategoryController extends AbstractController
             }
         }
 
-        $ClassCategories = $app['eccube.repository.class_category']->getList($ClassName);
+        $ClassCategories = $this->classCategoryRepository->getList($ClassName);
 
         return $app->render('Product/class_category.twig', array(
             'form' => $form->createView(),
@@ -111,20 +154,20 @@ class ClassCategoryController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
+        $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
             throw new NotFoundHttpException('商品規格が存在しません');
         }
 
         log_info('規格分類削除開始', array($id));
 
-        $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
+        $TargetClassCategory = $this->classCategoryRepository->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
             $app->deleteMessage();
             return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
         }
 
-        $num = $app['eccube.repository.product_class']->createQueryBuilder('pc')
+        $num = $this->productClassRepository->createQueryBuilder('pc')
             ->select('count(pc.id)')
             ->where('pc.ClassCategory1 = :id OR pc.ClassCategory2 = :id')
             ->setParameter('id',$id)
@@ -133,7 +176,7 @@ class ClassCategoryController extends AbstractController
         if ($num > 0) {
             $app->addError('admin.class_category.delete.hasproduct', 'admin');
         } else {
-            $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
+            $status = $this->classCategoryRepository->delete($TargetClassCategory);
 
             if ($status === true) {
 
@@ -146,7 +189,7 @@ class ClassCategoryController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
                 $app->addSuccess('admin.class_category.delete.complete', 'admin');
             } else {
@@ -164,12 +207,12 @@ class ClassCategoryController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $ranks = $request->request->all();
             foreach ($ranks as $categoryId => $rank) {
-                $ClassCategory = $app['eccube.repository.class_category']
+                $ClassCategory = $this->classCategoryRepository
                     ->find($categoryId);
                 $ClassCategory->setRank($rank);
-                $app['orm.em']->persist($ClassCategory);
+                $this->entityManager->persist($ClassCategory);
             }
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
         }
         return true;
     }

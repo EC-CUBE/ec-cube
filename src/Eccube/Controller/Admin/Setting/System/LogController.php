@@ -24,14 +24,35 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class LogController
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     public function index(Application $app, Request $request)
     {
         $formData = array();
@@ -39,7 +60,7 @@ class LogController
         $formData['files'] = 'site_'.date('Y-m-d').'.log';
         $formData['line_max'] = '50';
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(LogType::class);
 
         $event = new EventArgs(
@@ -49,7 +70,7 @@ class LogController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE, $event);
         $formData = $event->getArgument('data');
 
         $form = $builder->getForm();
@@ -65,10 +86,10 @@ class LogController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
         }
 
-        $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];
+        $logFile = $this->appConfig['root_dir'].'/app/log/'.$formData['files'];
 
         return $app->render('Setting/System/log.twig', array(
             'form' => $form->createView(),

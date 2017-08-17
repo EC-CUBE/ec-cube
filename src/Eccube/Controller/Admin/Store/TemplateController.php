@@ -23,15 +23,21 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\TemplateRepository;
 use Eccube\Util\Str;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -40,6 +46,42 @@ use Symfony\Component\Yaml\Yaml;
 
 class TemplateController extends AbstractController
 {
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("monolog")
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(TemplateRepository::class)
+     * @var TemplateRepository
+     */
+    protected $templateRepository;
+
+    /**
+     * @Inject(DeviceTypeRepository::class)
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
 
     /**
      * テンプレート一覧画面
@@ -50,10 +92,10 @@ class TemplateController extends AbstractController
     public function index(Application $app, Request $request)
     {
 
-        $DeviceType = $app['eccube.repository.master.device_type']
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Templates = $app['eccube.repository.template']
+        $Templates = $this->templateRepository
             ->findBy(array('DeviceType' => $DeviceType));
 
         $form = $app->form()
@@ -63,11 +105,11 @@ class TemplateController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $Template = $app['eccube.repository.template']
+                $Template = $this->templateRepository
                     ->find($form['selected']->getData());
 
                 // path.(yml|php)の再構築
-                $file = $app['config']['root_dir'].'/app/config/eccube/path';
+                $file = $this->appConfig['root_dir'].'/app/config/eccube/path';
                 if (file_exists($file.'.php')) {
                     $config = require $file.'.php';
                 } elseif (file_exists($file.'.yml')) {
@@ -110,14 +152,14 @@ class TemplateController extends AbstractController
     public function download(Application $app, Request $request, $id)
     {
         /** @var $Template \Eccube\Entity\Template */
-        $Template = $app['eccube.repository.template']->find($id);
+        $Template = $this->templateRepository->find($id);
 
         if (!$Template) {
             throw new NotFoundHttpException();
         }
 
         // 該当テンプレートのディレクトリ
-        $config = $app['config'];
+        $config = $this->appConfig;
         $templateCode = $Template->getCode();
         $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
         $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
@@ -156,9 +198,9 @@ class TemplateController extends AbstractController
             $tarFile,
             $tarGzFile
         ) {
-            $app['monolog']->addDebug('remove temp file: ' . $tmpDir);
-            $app['monolog']->addDebug('remove temp file: ' . $tarFile);
-            $app['monolog']->addDebug('remove temp file: ' . $tarGzFile);
+            $this->logger->addDebug('remove temp file: ' . $tmpDir);
+            $this->logger->addDebug('remove temp file: ' . $tarFile);
+            $this->logger->addDebug('remove temp file: ' . $tarGzFile);
             $fs = new Filesystem();
             $fs->remove($tmpDir);
             $fs->remove($tarFile);
@@ -175,7 +217,7 @@ class TemplateController extends AbstractController
         $this->isTokenValid($app);
 
         /** @var $Template \Eccube\Entity\Template */
-        $Template = $app['eccube.repository.template']->find($id);
+        $Template = $this->templateRepository->find($id);
 
         if (!$Template) {
             $app->deleteMessage();
@@ -190,14 +232,14 @@ class TemplateController extends AbstractController
         }
 
         // 設定中のテンプレート
-        if ($app['config']['template_code'] === $Template->getCode()) {
+        if ($this->appConfig['template_code'] === $Template->getCode()) {
             $app->addError('admin.content.template.delete.current.error', 'admin');
 
             return $app->redirect($app->url('admin_store_template'));
         }
 
         // テンプレートディレクトリの削除
-        $config = $app['config'];
+        $config = $this->appConfig;
         $templateCode = $Template->getCode();
         $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
         $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
@@ -207,8 +249,8 @@ class TemplateController extends AbstractController
         $fs->remove($targetHtmlRealDir);
 
         // テーブルからも削除
-        $app['orm.em']->remove($Template);
-        $app['orm.em']->flush();
+        $this->entityManager->remove($Template);
+        $this->entityManager->flush();
 
         $app->addSuccess('admin.content.template.delete.complete', 'admin');
 
@@ -220,7 +262,7 @@ class TemplateController extends AbstractController
         /** @var $Template \Eccube\Entity\Template */
         $Template = new \Eccube\Entity\Template();
 
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(TemplateType::class, $Template)
             ->getForm();
 
@@ -230,7 +272,7 @@ class TemplateController extends AbstractController
             if ($form->isValid()) {
 
                 /** @var $Template \Eccube\Entity\Template */
-                $tem = $app['eccube.repository.template']
+                $tem = $this->templateRepository
                     ->findByCode($form['code']->getData());
 
                 // テンプレートコードの重複チェック.
@@ -241,7 +283,7 @@ class TemplateController extends AbstractController
                 }
 
                 // 該当テンプレートのディレクトリ
-                $config = $app['config'];
+                $config = $this->appConfig;
                 $templateCode = $Template->getCode();
                 $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
                 $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
@@ -297,13 +339,13 @@ class TemplateController extends AbstractController
                 // 一時ディレクトリを削除.
                 $fs->remove($tmpDir);
 
-                $DeviceType = $app['eccube.repository.master.device_type']
+                $DeviceType = $this->deviceTypeRepository
                     ->find(DeviceType::DEVICE_TYPE_PC);
 
                 $Template->setDeviceType($DeviceType);
 
-                $app['orm.em']->persist($Template);
-                $app['orm.em']->flush();
+                $this->entityManager->persist($Template);
+                $this->entityManager->flush();
 
                 $app->addSuccess('admin.content.template.add.complete', 'admin');
 

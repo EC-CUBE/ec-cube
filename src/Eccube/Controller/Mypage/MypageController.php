@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller\Mypage;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -31,11 +33,72 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\Front\CustomerLoginType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CustomerFavoriteProductRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Service\CartService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MypageController extends AbstractController
 {
+    /**
+     * @Inject(ProductRepository::class)
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @Inject(CustomerFavoriteProductRepository::class)
+     * @var CustomerFavoriteProductRepository
+     */
+    protected $customerFavoriteProductRepository;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject(CartService::class)
+     * @var CartService
+     */
+    protected $cartService;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(OrderRepository::class)
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     /**
      * ログイン画面.
      *
@@ -52,7 +115,7 @@ class MypageController extends AbstractController
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 
         if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -68,7 +131,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -90,18 +153,18 @@ class MypageController extends AbstractController
         $Customer = $app['user'];
 
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
         ));
 
         // 購入処理中/決済処理中ステータスの受注を非表示にする.
-        $app['orm.em']
+        $this->entityManager
             ->getFilters()
             ->enable('incomplete_order_status_hidden');
 
         // paginator
-        $qb = $app['eccube.repository.order']->getQueryBuilderByCustomer($Customer);
+        $qb = $this->orderRepository->getQueryBuilderByCustomer($Customer);
 
         $event = new EventArgs(
             array(
@@ -110,12 +173,12 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
 
         $pagination = $app['paginator']()->paginate(
             $qb,
             $request->get('pageno', 1),
-            $app['config']['search_pmax']
+            $this->appConfig['search_pmax']
         );
 
         return $app->render('Mypage/index.twig', array(
@@ -134,13 +197,13 @@ class MypageController extends AbstractController
     public function history(Application $app, Request $request, $id)
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
         ));
 
-        $app['orm.em']->getFilters()->enable('incomplete_order_status_hidden');
-        $Order = $app['eccube.repository.order']->findOneBy(array(
+        $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
+        $Order = $this->orderRepository->findOneBy(array(
             'id' => $id,
             'Customer' => $app->user(),
         ));
@@ -151,7 +214,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
 
         $Order = $event->getArgument('Order');
 
@@ -181,7 +244,7 @@ class MypageController extends AbstractController
         $Customer = $app->user();
 
         /* @var $Order \Eccube\Entity\Order */
-        $Order = $app['eccube.repository.order']->findOneBy(array(
+        $Order = $this->orderRepository->findOneBy(array(
             'id' => $id,
             'Customer' => $Customer,
         ));
@@ -193,7 +256,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
 
         if (!$Order) {
             log_info('対象の注文が見つかりません', array($id));
@@ -204,7 +267,7 @@ class MypageController extends AbstractController
             try {
                 if ($OrderDetail->getProduct() &&
                     $OrderDetail->getProductClass()) {
-                    $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
+                    $this->cartService->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
                 } else {
                     log_info($app->trans('cart.product.delete'), array($id));
                     $app->addRequestError('cart.product.delete');
@@ -222,7 +285,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
@@ -242,13 +305,13 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         if ($BaseInfo->getOptionFavoriteProduct() == Constant::ENABLED) {
             $Customer = $app->user();
 
             // paginator
-            $qb = $app['eccube.repository.customer_favorite_product']->getQueryBuilderByCustomer($Customer);
+            $qb = $this->customerFavoriteProductRepository->getQueryBuilderByCustomer($Customer);
 
             $event = new EventArgs(
                 array(
@@ -257,12 +320,12 @@ class MypageController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
 
             $pagination = $app['paginator']()->paginate(
                 $qb,
                 $request->get('pageno', 1),
-                $app['config']['search_pmax'],
+                $this->appConfig['search_pmax'],
                 array('wrap-queries' => true)
             );
 
@@ -288,7 +351,7 @@ class MypageController extends AbstractController
 
         $Customer = $app->user();
 
-        $Product = $app['eccube.repository.product']->find($id);
+        $Product = $this->productRepository->find($id);
 
         $event = new EventArgs(
             array(
@@ -296,12 +359,12 @@ class MypageController extends AbstractController
                 'Product' => $Product,
             ), $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
 
         if ($Product) {
             log_info('お気に入り商品削除開始');
 
-            $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
+            $this->customerFavoriteProductRepository->deleteFavorite($Customer, $Product);
 
             $event = new EventArgs(
                 array(
@@ -309,7 +372,7 @@ class MypageController extends AbstractController
                     'Product' => $Product,
                 ), $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
 
             log_info('お気に入り商品削除完了');
         }

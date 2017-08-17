@@ -24,12 +24,20 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Service\SystemService;
 use Symfony\Component\HttpFoundation\Request;
 
 class SystemController
 {
+    /**
+     * @Inject(SystemService::class)
+     * @var SystemService
+     */
+    protected $systemService;
+
     public function index(Application $app, Request $request)
     {
         switch ($request->get('mode')) {
@@ -55,7 +63,7 @@ class SystemController
 
      public function getSystemInfo(Application $app, Request $request)
      {
-        $system = $app['eccube.service.system'];
+        $system = $this->systemService;
 
         $arrSystemInfo = array(
             array('title' => 'EC-CUBE',     'value' => Constant::VERSION),

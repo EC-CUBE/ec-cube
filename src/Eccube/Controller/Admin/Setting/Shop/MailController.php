@@ -24,30 +24,58 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use \Eccube\Repository\MailTemplateRepository;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MailController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(MailTemplateRepository::class)
+     * @var MailTemplateRepository
+     */
+    protected $mailTemplateRepository;
+
     public function index(Application $app, Request $request, $id = null)
     {
         $Mail = null;
 
         if ($id) {
-            $Mail = $app['orm.em']
-                ->getRepository('\Eccube\Entity\MailTemplate')
+            $Mail = $this->mailTemplateRepository
                 ->find($id);
             if (is_null($Mail)) {
                 throw new NotFoundHttpException();
             }
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 
         $event = new EventArgs(
@@ -57,7 +85,7 @@ class MailController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -75,7 +103,7 @@ class MailController extends AbstractController
 
             if ($form->isValid()) {
 
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -84,7 +112,7 @@ class MailController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.mail.save.complete', 'admin');
 

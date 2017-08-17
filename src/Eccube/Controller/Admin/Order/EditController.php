@@ -24,6 +24,8 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -34,17 +36,120 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Repository\ProductRepository;
 use Eccube\Service\PurchaseFlow\PurchaseException;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/{_admin}/order")
  */
 class EditController extends AbstractController
 {
+    /**
+     * @Inject(TaxRuleService::class)
+     * @var TaxRuleService
+     */
+    protected $taxRuleService;
+
+    /**
+     * @Inject(DeviceTypeRepository::class)
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
+    /**
+     * @Inject(ProductRepository::class)
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @Inject(CategoryRepository::class)
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * @Inject("session")
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(CustomerRepository::class)
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * @Inject("monolog")
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @Inject("serializer")
+     * @var Serializer
+     */
+    protected $serializer;
+
+    /**
+     * @Inject(DeliveryRepository::class)
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
+    /**
+     * @Inject("eccube.purchase.flow.order")
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(OrderRepository::class)
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
 
     /**
      * 受注登録/編集画面.
@@ -58,7 +163,7 @@ class EditController extends AbstractController
     public function index(Application $app, Request $request, $id = null)
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
             'Eccube\Entity\Product',
@@ -71,7 +176,7 @@ class EditController extends AbstractController
             // 空のエンティティを作成.
             $TargetOrder = $this->newOrder($app);
         } else {
-            $TargetOrder = $app['eccube.repository.order']->find($id);
+            $TargetOrder = $this->orderRepository->find($id);
             if (is_null($TargetOrder)) {
                 throw new NotFoundHttpException();
             }
@@ -86,7 +191,7 @@ class EditController extends AbstractController
             $OriginalShipmentItems->add($tmpShipmentItem);
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(OrderType::class, $TargetOrder,
                             [
                                 'SortedItems' => $TargetOrder->getItems()
@@ -101,7 +206,7 @@ class EditController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -117,10 +222,10 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
 
-            $flowResult = $app['eccube.purchase.flow.order']->calculate($TargetOrder, $purchaseContext);
+            $flowResult = $this->purchaseFlow->calculate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
                     // TODO Warning の場合の処理
@@ -140,14 +245,14 @@ class EditController extends AbstractController
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
                         try {
-                            $app['eccube.purchase.flow.order']->purchase($TargetOrder, $purchaseContext);
+                            $this->purchaseFlow->purchase($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $app->addError($e->getMessage(), 'admin');
                             break;
                         }
 
-                        $app['orm.em']->persist($TargetOrder);
-                        $app['orm.em']->flush();
+                        $this->entityManager->persist($TargetOrder);
+                        $this->entityManager->flush();
 
                         // TODO 集計系に移動
 //                        if ($Customer) {
@@ -165,7 +270,7 @@ class EditController extends AbstractController
                             ),
                             $request
                         );
-                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
@@ -196,7 +301,7 @@ class EditController extends AbstractController
         }
 
         // 会員検索フォーム
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
@@ -208,12 +313,12 @@ class EditController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
 
         $searchCustomerModalForm = $builder->getForm();
 
         // 商品検索フォーム
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
@@ -225,13 +330,13 @@ class EditController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
 
         $searchProductModalForm = $builder->getForm();
 
         // 配送業者のお届け時間
         $times = array();
-        $deliveries = $app['eccube.repository.delivery']->findAll();
+        $deliveries = $this->deliveryRepository->findAll();
         foreach ($deliveries as $Delivery) {
             $deliveryTiems = $Delivery->getDeliveryTimes();
             foreach ($deliveryTiems as $DeliveryTime) {
@@ -245,7 +350,7 @@ class EditController extends AbstractController
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
             'id' => $id,
-            'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
+            'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
         ];
     }
 
@@ -259,13 +364,13 @@ class EditController extends AbstractController
     public function searchCustomer(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $app['monolog']->addDebug('search customer start.');
+            $this->logger->addDebug('search customer start.');
 
             $searchData = array(
                 'multi' => $request->get('search_word'),
             );
 
-            $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+            $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
             $event = new EventArgs(
                 array(
@@ -274,13 +379,13 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
             $Customers = $qb->getQuery()->getResult();
 
 
             if (empty($Customers)) {
-                $app['monolog']->addDebug('search customer not found.');
+                $this->logger->addDebug('search customer not found.');
             }
 
             $data = array();
@@ -304,7 +409,7 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
             $data = $event->getArgument('data');
 
             return $app->json($data);
@@ -322,9 +427,9 @@ class EditController extends AbstractController
     public function searchCustomerHtml(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
-            $app['monolog']->addDebug('search customer start.');
-            $page_count = $app['config']['default_page_count'];
-            $session = $app['session'];
+            $this->logger->addDebug('search customer start.');
+            $page_count = $this->appConfig['default_page_count'];
+            $session = $this->session;
 
             if ('POST' === $request->getMethod()) {
 
@@ -345,7 +450,7 @@ class EditController extends AbstractController
                 }
             }
 
-            $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+            $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
             $event = new EventArgs(
                 array(
@@ -354,7 +459,7 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
             /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
             $pagination = $app['paginator']()->paginate(
@@ -368,7 +473,7 @@ class EditController extends AbstractController
             $Customers = $pagination->getItems();
 
             if (empty($Customers)) {
-                $app['monolog']->addDebug('search customer not found.');
+                $this->logger->addDebug('search customer not found.');
             }
 
             $data = array();
@@ -392,7 +497,7 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
             $data = $event->getArgument('data');
 
             return $app->render('Order/search_customer.twig', array(
@@ -412,10 +517,10 @@ class EditController extends AbstractController
     public function searchCustomerById(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $app['monolog']->addDebug('search customer by id start.');
+            $this->logger->addDebug('search customer by id start.');
 
             /** @var $Customer \Eccube\Entity\Customer */
-            $Customer = $app['eccube.repository.customer']
+            $Customer = $this->customerRepository
                 ->find($request->get('id'));
 
             $event = new EventArgs(
@@ -424,15 +529,15 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE, $event);
 
             if (is_null($Customer)) {
-                $app['monolog']->addDebug('search customer by id not found.');
+                $this->logger->addDebug('search customer by id not found.');
 
                 return $app->json(array(), 404);
             }
 
-            $app['monolog']->addDebug('search customer by id found.');
+            $this->logger->addDebug('search customer by id found.');
 
             $data = array(
                 'id' => $Customer->getId(),
@@ -462,7 +567,7 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE, $event);
             $data = $event->getArgument('data');
 
             return $app->json($data);
@@ -472,9 +577,9 @@ class EditController extends AbstractController
     public function searchProduct(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
-            $app['monolog']->addDebug('search product start.');
-            $page_count = $app['config']['default_page_count'];
-            $session = $app['session'];
+            $this->logger->addDebug('search product start.');
+            $page_count = $this->appConfig['default_page_count'];
+            $session = $this->session;
 
             if ('POST' === $request->getMethod()) {
 
@@ -485,7 +590,7 @@ class EditController extends AbstractController
                 );
 
                 if ($categoryId = $request->get('category_id')) {
-                    $Category = $app['eccube.repository.category']->find($categoryId);
+                    $Category = $this->categoryRepository->find($categoryId);
                     $searchData['category_id'] = $Category;
                 }
 
@@ -500,7 +605,7 @@ class EditController extends AbstractController
                 }
             }
 
-            $qb = $app['eccube.repository.product']
+            $qb = $this->productRepository
                 ->getQueryBuilderBySearchDataForAdmin($searchData);
 
             $event = new EventArgs(
@@ -510,7 +615,7 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
 
             /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
             $pagination = $app['paginator']()->paginate(
@@ -524,13 +629,13 @@ class EditController extends AbstractController
             $Products = $pagination->getItems();
 
             if (empty($Products)) {
-                $app['monolog']->addDebug('search product not found.');
+                $this->logger->addDebug('search product not found.');
             }
 
             $forms = array();
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $app['form.factory']->createNamedBuilder('', AddCartType::class, null, array(
+                $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, array(
                     'product' => $Product,
                 ));
                 $addCartForm = $builder->getForm();
@@ -545,7 +650,7 @@ class EditController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
 
             return $app->render('Order/search_product.twig', array(
                 'forms' => $forms,
@@ -559,7 +664,7 @@ class EditController extends AbstractController
     {
         $Order = new \Eccube\Entity\Order();
         // device type
-        $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_ADMIN);
+        $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_ADMIN);
         $Order->setDeviceType($DeviceType);
 
         return $Order;
@@ -582,7 +687,7 @@ class EditController extends AbstractController
         foreach ($OrderDetails as $OrderDetail) {
 
             // 税
-            $tax = $app['eccube.service.tax_rule']
+            $tax = $this->taxRuleService
                 ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
             $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
@@ -636,7 +741,7 @@ class EditController extends AbstractController
         // 編集
         if ($TargetOrder->getId()) {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_deliv']) {
+            if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setCommitDate($dateTime);
@@ -647,7 +752,7 @@ class EditController extends AbstractController
                     }
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_pre_end']) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_pre_end']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setPaymentDate($dateTime);
@@ -656,7 +761,7 @@ class EditController extends AbstractController
             // 新規
         } else {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_deliv']) {
+            if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
                 $TargetOrder->setCommitDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
@@ -664,7 +769,7 @@ class EditController extends AbstractController
                     $Shipping->setShippingCommitDate($dateTime);
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_pre_end']) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_pre_end']) {
                 $TargetOrder->setPaymentDate($dateTime);
             }
             // 受注日時

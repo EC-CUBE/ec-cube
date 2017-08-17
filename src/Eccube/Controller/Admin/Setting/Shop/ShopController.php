@@ -24,24 +24,60 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
+use Eccube\Repository\BaseInfoRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 
 class ShopController extends AbstractController
 {
+    /**
+     * @Inject("twig")
+     * @var Twig_Environment
+     */
+    protected $twigEnvironment;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
     public function index(Application $app, Request $request)
     {
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(ShopMasterType::class, $BaseInfo);
 
         $CloneInfo = clone $BaseInfo;
-        $app['orm.em']->detach($CloneInfo);
+        $this->entityManager->detach($CloneInfo);
 
         $event = new EventArgs(
             array(
@@ -50,15 +86,15 @@ class ShopController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $app['orm.em']->persist($BaseInfo);
-                $app['orm.em']->flush();
+                $this->entityManager->persist($BaseInfo);
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -67,7 +103,7 @@ class ShopController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.save.complete', 'admin');
 
@@ -76,7 +112,7 @@ class ShopController extends AbstractController
             $app->addError('admin.shop.save.error', 'admin');
         }
 
-        $app['twig']->addGlobal('BaseInfo', $CloneInfo);
+        $this->twigEnvironment->addGlobal('BaseInfo', $CloneInfo);
 
         return $app->render('Setting/Shop/shop_master.twig', array(
             'form' => $form->createView(),

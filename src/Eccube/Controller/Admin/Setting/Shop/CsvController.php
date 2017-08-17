@@ -24,23 +24,52 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\CsvRepository;
+use Eccube\Repository\Master\CsvTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CsvController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject(CsvRepository::class)
+     * @var CsvRepository
+     */
+    protected $csvRepository;
+
+    /**
+     * @Inject(CsvTypeRepository::class)
+     * @var CsvTypeRepository
+     */
+    protected $csvTypeRepository;
+
     public function index(Application $app, Request $request, $id = CsvType::CSV_TYPE_ORDER)
     {
 
-        $CsvType = $app['eccube.repository.master.csv_type']->find($id);
+        $CsvType = $this->csvTypeRepository->find($id);
         if (is_null($CsvType)) {
             throw new NotFoundHttpException();
         }
@@ -56,7 +85,7 @@ class CsvController extends AbstractController
             'data' => $CsvType,
         ));
 
-        $CsvNotOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
+        $CsvNotOutput = $this->csvRepository->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
 
         $builder->add('csv_not_output', EntityType::class, array(
             'class' => 'Eccube\Entity\Csv',
@@ -67,7 +96,7 @@ class CsvController extends AbstractController
             'choices' => $CsvNotOutput,
         ));
 
-        $CsvOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED), array('rank' => 'ASC'));
+        $CsvOutput = $this->csvRepository->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED), array('rank' => 'ASC'));
 
         $builder->add('csv_output', EntityType::class, array(
             'class' => 'Eccube\Entity\Csv',
@@ -86,7 +115,7 @@ class CsvController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -97,7 +126,7 @@ class CsvController extends AbstractController
                 $Csvs = $data['csv_not_output'];
                 $rank = 1;
                 foreach ($Csvs as $csv) {
-                    $c = $app['eccube.repository.csv']->find($csv);
+                    $c = $this->csvRepository->find($csv);
                     $c->setRank($rank);
                     $c->setEnableFlg(Constant::DISABLED);
                     $rank++;
@@ -108,14 +137,14 @@ class CsvController extends AbstractController
                 $Csvs = $data['csv_output'];
                 $rank = 1;
                 foreach ($Csvs as $csv) {
-                    $c = $app['eccube.repository.csv']->find($csv);
+                    $c = $this->csvRepository->find($csv);
                     $c->setRank($rank);
                     $c->setEnableFlg(Constant::ENABLED);
                     $rank++;
                 }
             }
 
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
@@ -125,7 +154,7 @@ class CsvController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
 
             $app->addSuccess('admin.shop.csv.save.complete', 'admin');
 

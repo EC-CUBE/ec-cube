@@ -24,13 +24,21 @@
 
 namespace Eccube\Controller\Block;
 
+use \Eccube\Repository\NewsRepository;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 
 class NewsController
 {
+    /**
+     * @Inject(NewsRepository::class)
+     * @var NewsRepository
+     */
+    protected $newsRepository;
+
     public function index(Application $app)
     {
-        $NewsList = $app['orm.em']->getRepository('\Eccube\Entity\News')
+        $NewsList = $this->newsRepository
             ->findBy(
                 array(),
                 array('rank' => 'DESC')

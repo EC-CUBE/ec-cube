@@ -24,16 +24,58 @@
 
 namespace Eccube\Controller\Mypage;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CustomerAddressRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryController extends AbstractController
 {
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(CustomerAddressRepository::class)
+     * @var CustomerAddressRepository
+     */
+    protected $customerAddressRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * お届け先一覧画面.
      *
@@ -65,13 +107,13 @@ class DeliveryController extends AbstractController
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
         if (is_null($id)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
-            $addressMax = $app['config']['deliv_addr_max'];
+            $addressMax = $this->appConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }
         }
 
-        $CustomerAddress = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($Customer, $id);
+        $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $id);
 
         $parentPage = $request->get('parent_page', null);
 
@@ -87,7 +129,7 @@ class DeliveryController extends AbstractController
             $parentPage  = $app->url('mypage_delivery');
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(CustomerAddressType::class, $CustomerAddress);
 
         $event = new EventArgs(
@@ -98,7 +140,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -106,8 +148,8 @@ class DeliveryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             log_info('お届け先登録開始', array($id));
 
-            $app['orm.em']->persist($CustomerAddress);
-            $app['orm.em']->flush();
+            $this->entityManager->persist($CustomerAddress);
+            $this->entityManager->flush();
 
             log_info('お届け先登録完了', array($id));
 
@@ -119,14 +161,14 @@ class DeliveryController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
 
             $app->addSuccess('mypage.delivery.add.complete');
 
             return $app->redirect($app->url('mypage_delivery'));
         }
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         return $app->render('Mypage/delivery_edit.twig', array(
             'form' => $form->createView(),
@@ -150,7 +192,7 @@ class DeliveryController extends AbstractController
 
         $Customer = $app['user'];
 
-        $status = $app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id);
+        $status = $this->customerAddressRepository->deleteByCustomerAndId($Customer, $id);
 
         if ($status) {
             $event = new EventArgs(
@@ -159,7 +201,7 @@ class DeliveryController extends AbstractController
                     'Customer' => $Customer,
                 ), $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('mypage.address.delete.complete');
 

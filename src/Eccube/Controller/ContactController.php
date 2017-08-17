@@ -24,14 +24,36 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ContactType;
+use Eccube\Service\MailService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContactController
 {
+    /**
+     * @Inject(MailService::class)
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     /**
      * お問い合わせ画面.
      *
@@ -41,7 +63,7 @@ class ContactController
      */
     public function index(Application $app, Request $request)
     {
-        $builder = $app['form.factory']->createBuilder(ContactType::class);
+        $builder = $this->formFactory->createBuilder(ContactType::class);
 
         if ($app->isGranted('ROLE_USER')) {
             $user = $app['user'];
@@ -71,7 +93,7 @@ class ContactController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -100,12 +122,12 @@ class ContactController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE, $event);
 
                     $data = $event->getArgument('data');
 
                     // メール送信
-                    $app['eccube.service.mail']->sendContactMail($data);
+                    $this->mailService->sendContactMail($data);
 
                     return $app->redirect($app->url('contact_complete'));
             }
