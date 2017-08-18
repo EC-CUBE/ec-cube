@@ -100,7 +100,7 @@ class CartItemType extends AbstractType
 
             $data = $event->getData();
             $form = $event->getForm();
-            if (!is_null($Product->getClassName2())) {
+            if (isset($data['classcategory_id1']) && !is_null($Product->getClassName2())) {
                 $classcategory_id1 = $data['classcategory_id1'];
                 if ($classcategory_id1) {
                     $form->add('classcategory_id2', ChoiceType::class, [
