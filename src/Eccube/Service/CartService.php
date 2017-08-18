@@ -24,11 +24,12 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\AbstractRepository;
+use Eccube\Repository\ProductClassRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService
@@ -39,20 +40,20 @@ class CartService
     protected $session;
 
     /**
-     * @var EntityManager
+     * @var ProductClassRepository
      */
-    protected $em;
+    protected $productClassRepository;
 
     /**
      * @var ItemHolderInterface
      */
     protected $cart;
 
-    public function __construct(Session $session, EntityManager $em)
+    public function __construct(Session $session, AbstractRepository $productClassRepository)
     {
         $this->session = $session;
         $this->cart = $session->get('cart', new Cart());
-        $this->em = $em;
+        $this->productClassRepository = $productClassRepository;
 
         $this->loadItems();
     }
@@ -69,20 +70,22 @@ class CartService
     {
         /** @var CartItem $item */
         foreach ($this->cart->getItems() as $item) {
-            $id = $item->getClassId();
-            $class = $item->getClassName();
-            $entity = $this->em->getRepository($class)->find($id);
-            $item->setObject($entity);
+            $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+            $item->setProductClass($ProductClass);
         }
     }
 
+    /**
+     * @param $ProductClass
+     * @param int $quantity
+     * @return bool
+     * @deprecated
+     */
     public function addProduct($ProductClass, $quantity = 1)
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
+            $ProductClass = $this->productClassRepository->find($ProductClassId);
             if (is_null($ProductClass)) {
                 return false;
             }
@@ -96,34 +99,73 @@ class CartService
             $exists->setQuantity($exists->getQuantity() + $quantity);
         } else {
             $item = new CartItem();
-            $item->setQuantity($quantity);
-            $item->setPrice($ProductClass->getPrice01IncTax());
-            $item->setClassId($ProductClass->getId());
-            $item->setClassName(ProductClass::class);
-            $item->setObject($ProductClass);
+            $item
+                ->setQuantity($quantity)
+                ->setPrice($ProductClass->getPrice01IncTax())
+                ->setProductClass($ProductClass);
             $cart->addItem($item);
         }
 
         return true;
     }
 
-    public function removeProduct($ProductClass)
+    /**
+     * @param int $cart_no
+     * @param int $quantity
+     * @return bool
+     */
+    public function addQuantity($cart_no, $quantity = 1)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+
+        if ($CartItem) {
+            $CartItem->setQuantity($CartItem->getQuantity() + $quantity);
+            return true;
         }
 
-        /** @var Cart $cart */
-        $cart = $this->cart;
-        $cart->removeCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+        return false;
+    }
 
+    /**
+     * @param integer $cart_no
+     * @return bool
+     */
+    public function removeProduct($cart_no)
+    {
+        $this->getCart()->removeCartItemByCartNo($cart_no);
         return true;
+    }
+
+    /**
+     * @param $cart_no
+     * @return CartItem|null
+     */
+    public function getCartItem($cart_no)
+    {
+        return $this->getCart()->getCartItemByCartNo($cart_no);
+    }
+
+    /**
+     * @param ProductClass|integer $ProductClass
+     * @param integer $quantity
+     * @return CartItem|null
+     */
+    public function createCartItem($ProductClass, $quantity = 1)
+    {
+        if (!($ProductClass instanceof ProductClass)) {
+            $ProductClass = $this->productClassRepository->find($ProductClass);
+        }
+
+        if (is_null($ProductClass)) {
+            return null;
+        }
+
+        $CartItem = new CartItem();
+        $CartItem
+            ->setProductClass($ProductClass)
+            ->setQuantity($quantity)
+            ->setPrice($ProductClass->getPrice02IncTax());
+        return $CartItem;
     }
 
     public function save()

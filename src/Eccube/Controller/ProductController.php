@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\CartItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -33,6 +34,7 @@ use Eccube\Exception\CartException;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
+use Eccube\Form\Type\ProductDetailCartItem;
 use Eccube\Form\Type\SearchProductType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -120,6 +122,7 @@ class ProductController
                     $addCartData = $addCartForm->getData();
 
                     try {
+                        // TODO カート追加処理の変更
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
                     } catch (CartException $e) {
                         $app->addRequestError($e->getMessage());
@@ -219,8 +222,8 @@ class ProductController
         }
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', AddCartType::class, null, array(
-            'product' => $Product,
+        $builder = $app['form.factory']->createNamedBuilder('', ProductDetailCartItem::class, null, array(
+            'Product' => $Product,
             'id_add_product_id' => false,
         ));
 
@@ -240,8 +243,10 @@ class ProductController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                $mode = $form['mode']->getData();
+                /** @var CartItem $addCartData */
                 $addCartData = $form->getData();
-                if ($addCartData['mode'] === 'add_favorite') {
+                if ($mode == 'add_favorite') {
                     if ($app->isGranted('ROLE_USER')) {
                         $Customer = $app->user();
                         $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
@@ -268,23 +273,25 @@ class ProductController
                         $app['session']->getFlashBag()->set('eccube.add.favorite', true);
                         return $app->redirect($app->url('mypage_login'));
                     }
-                } elseif ($addCartData['mode'] === 'add_cart') {
+                } elseif ($mode == 'add_cart') {
 
-                    log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    $ProductClass = $addCartData->getProductClass();
+                    log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $ProductClass->getId(), 'quantity' => $addCartData->getQuantity()));
+
+                    // TODO 単価計算を外部へ出す
+                    $addCartData->setPrice($ProductClass->getPrice02IncTax());
 
                     // カートを取得
                     $Cart = $app['eccube.service.cart']->getCart();
 
-                    // カートへ追加
-                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
-
                     // 明細の正規化
                     $flow = $app['eccube.purchase.flow.cart'];
+                    $flow->addItem($addCartData, $app['eccube.purchase.context']($Cart));
                     $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
 
                     // 復旧不可のエラーが発生した場合は追加した明細を削除.
                     if ($result->hasError()) {
-                        $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
+                        $Cart->removeCartItemByCartNo($addCartData->getCartNo());
                         foreach ($result->getErrors() as $error) {
                             $app->addRequestError($error->getMessage());
                         }
@@ -296,7 +303,7 @@ class ProductController
 
                     $app['eccube.service.cart']->save();
 
-                    log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $ProductClass->getId(), 'quantity' => $addCartData->getQuantity()));
 
                     $event = new EventArgs(
                         array(

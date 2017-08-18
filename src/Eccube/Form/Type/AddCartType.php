@@ -41,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
 /**
+ * @deprecated
  * @FormType
  */
 class AddCartType extends AbstractType

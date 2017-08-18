@@ -475,7 +475,7 @@ class ShoppingService
         // 受注詳細, 配送商品
         foreach ($this->cartService->getCart()->getCartItems() as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $item->getObject();
+            $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
 

@@ -98,8 +98,8 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $CartItems = $cartService->getCart()->getCartItems();
 
-        $this->assertEquals('Eccube\Entity\ProductClass', $CartItems[0]->getClassName());
-        $this->assertEquals(1, $CartItems[0]->getClassId());
+        $this->assertInstanceOf('Eccube\Entity\ProductClass', $CartItems[0]->getProductClass());
+        $this->assertEquals(1, $CartItems[0]->getProductClassId());
     }
 
     public function testAddProducts_Quantity()
