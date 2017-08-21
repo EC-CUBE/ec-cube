@@ -40,9 +40,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         }
 
         // product
-        $c->match('/product/product/class/{id}', '\Eccube\Controller\Admin\Product\ProductClassController::index')->assert('id', '\d+')->bind('admin_product_product_class');
-
-        $c->post('/product/product/class/edit/{id}', '\Eccube\Controller\Admin\Product\ProductClassController::edit')->assert('id', '\d+')->bind('admin_product_product_class_edit');
 
         $c->match('/product/category', '\Eccube\Controller\Admin\Product\CategoryController::index')->bind('admin_product_category');
         $c->match('/product/category/export', '\Eccube\Controller\Admin\Product\CategoryController::export')->bind('admin_product_category_export');
