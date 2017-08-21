@@ -82,7 +82,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 完了画面
-        $crawler = $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
+        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -406,7 +406,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $Messages = $this->getMailCatcherMessages();
