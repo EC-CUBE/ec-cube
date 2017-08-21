@@ -24,13 +24,42 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 class AbstractController
 {
+    /**
+     * @Inject("csrf.token_manager")
+     * @var CsrfTokenManager
+     */
+    protected $csrfTokenManager;
+
+    /**
+     * @Inject("security.token_storage")
+     * @var TokenStorage
+     */
+    protected $tokenStorage;
+
+    /**
+     * @Inject("request_stack")
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     public function __construct()
     {
     }
@@ -44,24 +73,24 @@ class AbstractController
     {
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
 
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
             ->getForm();
-        $form->handleRequest($app['request_stack']->getCurrentRequest());
+        $form->handleRequest($this->requestStack->getCurrentRequest());
 
         return $form;
     }
 
     protected function getSecurity($app)
     {
-        return $app['security.token_storage'];
+        return $this->tokenStorage;
     }
 
     protected function isTokenValid($app)
     {
-        $csrf = $app['csrf.token_manager'];
+        $csrf = $this->csrfTokenManager;
         $name = Constant::TOKEN_NAME;
-        if (!$csrf->isTokenValid(new CsrfToken($name, $app['request_stack']->getCurrentRequest()->get($name)))) {
+        if (!$csrf->isTokenValid(new CsrfToken($name, $this->requestStack->getCurrentRequest()->get($name)))) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
 

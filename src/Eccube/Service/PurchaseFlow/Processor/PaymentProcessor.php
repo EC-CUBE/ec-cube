@@ -24,13 +24,12 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Application;
-use Eccube\Entity\Delivery;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\ProductType;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
-use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.
@@ -38,18 +37,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class PaymentProcessor extends ValidatableItemHolderProcessor
 {
     /**
-     * @var Application
+     * @var DeliveryRepository
      */
-    private $app;
+    protected $deliveryRepository;
 
     /**
-     * DeliveryFeeProcessor constructor.
+     * PaymentProcessor constructor.
      *
-     * @param Application $app
+     * @param DeliveryRepository $deliveryRepository
      */
-    public function __construct(Application $app)
+    public function __construct(DeliveryRepository $deliveryRepository)
     {
-        $this->app = $app;
+        $this->deliveryRepository = $deliveryRepository;
     }
 
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -90,12 +89,11 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
 
     private function getDeliveries(ProductType $ProductType)
     {
-        $Deliveries = $this->app['orm.em']->getRepository(Delivery::class)
-            ->findBy(
-                [
-                    'ProductType' => $ProductType,
-                ]
-            );
+        $Deliveries = $this->deliveryRepository->findBy(
+            [
+                'ProductType' => $ProductType,
+            ]
+        );
 
         return $Deliveries;
     }

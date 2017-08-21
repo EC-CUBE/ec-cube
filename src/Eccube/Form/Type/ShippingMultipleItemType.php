@@ -25,6 +25,8 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Annotation\FormType;
+use Eccube\Annotation\Inject;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,10 +34,26 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ShippingMultipleItemType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("session")
+     * @var Session
+     */
+    protected $session;
+
 
     public $app;
 
@@ -56,7 +74,7 @@ class ShippingMultipleItemType extends AbstractType
             ->add('quantity', IntegerType::class, array(
                 'attr' => array(
                     'min' => 1,
-                    'maxlength' => $this->app['config']['int_len'],
+                    'maxlength' => $this->appConfig['int_len'],
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -87,8 +105,8 @@ class ShippingMultipleItemType extends AbstractType
                     ));
                 } else {
                     // 非会員の場合、セッションに設定されたCustomerAddressを設定
-                    if ($app['session']->has('eccube.front.shopping.nonmember.customeraddress')) {
-                        $customerAddresses = $app['session']->get('eccube.front.shopping.nonmember.customeraddress');
+                    if ($this->session->has('eccube.front.shopping.nonmember.customeraddress')) {
+                        $customerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress');
                         $customerAddresses = unserialize($customerAddresses);
 
                         $addresses = array();

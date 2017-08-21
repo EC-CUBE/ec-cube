@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\PrefType;
@@ -34,6 +35,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class AddressType extends AbstractType
 {
     /**

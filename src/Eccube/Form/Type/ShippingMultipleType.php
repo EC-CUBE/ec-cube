@@ -24,15 +24,27 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
+use Eccube\Annotation\Inject;
 use Eccube\Form\Type\ShippingMultipleItemType;
+use Eccube\Repository\ShippingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ShippingMultipleType extends AbstractType
 {
+    /**
+     * @Inject(ShippingRepository::class)
+     * @var ShippingRepository
+     */
+    protected $shippingRepository;
+
 
     public $app;
 
@@ -59,7 +71,7 @@ class ShippingMultipleType extends AbstractType
                     return;
                 }
 
-                $shippings = $app['eccube.repository.shipping']->findShippingsProduct($data->getOrder(), $data->getProductClass());
+                $shippings = $this->shippingRepository->findShippingsProduct($data->getOrder(), $data->getProductClass());
 
                 // Add product class for each shipping on view
                 foreach ($shippings as $key => $shipping) {

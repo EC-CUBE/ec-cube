@@ -24,13 +24,15 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
+use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Annotation\Repository;
 use Eccube\Common\Constant;
+use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Util\Str;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -46,12 +48,35 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class CustomerRepository extends AbstractRepository implements UserProviderInterface
 {
+    /**
+     * @Inject("eccube.queries")
+     * @var Queries
+     */
+    protected $queries;
 
     /**
-     * @var Application $app
-     * @Inject(Application::class)
+     * @Inject("orm.em")
+     * @var EntityManager
      */
-    protected $app;
+    protected $entityManager;
+
+    /**
+     * @Inject(OrderRepository::class)
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactory
+     */
+    protected $encoderFactory;
 
     public function newCustomer()
     {
@@ -292,7 +317,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         // Order By
         $qb->addOrderBy('c.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(QueryKey::CUSTOMER_SEARCH, $qb, $searchData);
+        return $this->queries->customize(QueryKey::CUSTOMER_SEARCH, $qb, $searchData);
     }
 
     /**
@@ -303,7 +328,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function getUniqueSecretKey($app)
     {
         $unique = Str::random(32);
-        $Customer = $app['eccube.repository.customer']->findBy(array(
+        $Customer = $this->findBy(array(
             'secret_key' => $unique,
         ));
         if (count($Customer) == 0) {
@@ -321,7 +346,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function getUniqueResetKey($app)
     {
         $unique = Str::random(32);
-        $Customer = $app['eccube.repository.customer']->findBy(array(
+        $Customer = $this->findBy(array(
                         'reset_key' => $unique,
         ));
         if (count($Customer) == 0) {
@@ -351,7 +376,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      */
     public function encryptPassword($app, \Eccube\Entity\Customer $Customer)
     {
-        $encoder = $app['security.encoder_factory']->getEncoder($Customer);
+        $encoder = $this->encoderFactory->getEncoder($Customer);
 
         return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
     }
@@ -413,14 +438,14 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
-        $arr = array($app['config']['order_new'],
-                                $app['config']['order_pay_wait'],
-                                $app['config']['order_back_order'],
-                                $app['config']['order_deliv'],
-                                $app['config']['order_pre_end'],
+        $arr = array($this->appConfig['order_new'],
+                                $this->appConfig['order_pay_wait'],
+                                $this->appConfig['order_back_order'],
+                                $this->appConfig['order_deliv'],
+                                $this->appConfig['order_pre_end'],
                         );
 
-        $result = $app['eccube.repository.order']->getCustomerCount($Customer, $arr);
+        $result = $this->orderRepository->getCustomerCount($Customer, $arr);
 
         if (!empty($result)) {
             $data = $result[0];
@@ -432,9 +457,9 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == $app['config']['order_cancel'] ||
-                    $orderStatusId == $app['config']['order_pending'] ||
-                    $orderStatusId == $app['config']['order_processing']) {
+            if ($orderStatusId == $this->appConfig['order_cancel'] ||
+                    $orderStatusId == $this->appConfig['order_pending'] ||
+                    $orderStatusId == $this->appConfig['order_processing']) {
                 // キャンセル、決済処理中、購入処理中は購入時間は更新しない
             } else {
                 $Customer->setLastBuyDate($now);
@@ -451,7 +476,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
             $Customer->setBuyTotal(0);
         }
 
-        $app['orm.em']->persist($Customer);
-        $app['orm.em']->flush();
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
     }
 }

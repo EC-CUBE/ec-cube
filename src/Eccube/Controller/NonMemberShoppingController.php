@@ -24,6 +24,8 @@
 namespace Eccube\Controller;
 
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
@@ -34,19 +36,94 @@ use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
+use Eccube\Service\ShoppingService;
+use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 class NonMemberShoppingController extends AbstractShoppingController
 {
+    /**
+     * @Inject("validator")
+     * @var RecursiveValidator
+     */
+    protected $recursiveValidator;
+
+    /**
+     * @Inject("monolog")
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(PrefRepository::class)
+     * @var PrefRepository
+     */
+    protected $prefRepository;
+
+    /**
+     * @Inject("session")
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * @Inject(OrderHelper::class)
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(ShoppingService::class)
+     * @var ShoppingService
+     */
+    protected $shoppingService;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(CartService::class)
+     * @var CartService
+     */
+    protected $cartService;
+
 
     /**
      * 非会員処理
      */
     public function index(Application $app, Request $request)
     {
-        $cartService = $app['eccube.service.cart'];
+        $cartService = $this->cartService;
 
         // カートチェック
         $response = $app->forward($app->path("shopping/checkToCart"));
@@ -59,7 +136,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             return $app->redirect($app->url('shopping'));
         }
 
-        $builder = $app['form.factory']->createBuilder(NonMemberType::class);
+        $builder = $this->formFactory->createBuilder(NonMemberType::class);
 
         $event = new EventArgs(
             array(
@@ -67,7 +144,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -119,7 +196,7 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             // 受注情報を取得
             /** @var Order $Order */
-            $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+            $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
 
             // 初回アクセス(受注データがない)の場合は, 受注情報を作成
             if (is_null($Order)) {
@@ -127,7 +204,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 try {
                     // 受注情報を作成
 //                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
-                    $Order = $app['eccube.helper.order']->createProcessingOrder(
+                    $Order = $this->orderHelper->createProcessingOrder(
                         $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
                     $cartService->setPreOrderId($Order->getPreOrderId());
                     $cartService->save();
@@ -146,11 +223,11 @@ class NonMemberShoppingController extends AbstractShoppingController
             $nonMember = array();
             $nonMember['customer'] = $Customer;
             $nonMember['pref'] = $Customer->getPref()->getId();
-            $app['session']->set($this->sessionKey, $nonMember);
+            $this->session->set($this->sessionKey, $nonMember);
 
             $customerAddresses = array();
             $customerAddresses[] = $CustomerAddress;
-            $app['session']->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->session->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
 
             $event = new EventArgs(
                 array(
@@ -159,7 +236,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE, $event);
 
             if ($event->getResponse() !== null) {
                 return $event->getResponse();
@@ -187,12 +264,12 @@ class NonMemberShoppingController extends AbstractShoppingController
         }
 
         // 非会員用Customerを取得
-        $Customer = $app['eccube.service.shopping']->getNonMember($this->sessionKey);
+        $Customer = $this->shoppingService->getNonMember($this->sessionKey);
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress->setCustomer($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 
-        $builder = $app['form.factory']->createBuilder(ShoppingShippingType::class, $CustomerAddress);
+        $builder = $this->formFactory->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(
@@ -201,7 +278,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -212,10 +289,10 @@ class NonMemberShoppingController extends AbstractShoppingController
             log_info('非会員お届け先追加処理開始');
 
             // 非会員用のセッションに追加
-            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+            $customerAddresses = $this->session->get($this->sessionCustomerAddressKey);
             $customerAddresses = unserialize($customerAddresses);
             $customerAddresses[] = $CustomerAddress;
-            $app['session']->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->session->set($this->sessionCustomerAddressKey, serialize($customerAddresses));
 
             $event = new EventArgs(
                 array(
@@ -224,7 +301,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
 
             log_info('非会員お届け先追加処理完了');
 
@@ -260,7 +337,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                     }
                 }
 
-                $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
+                $pref = $this->prefRepository->findOneBy(array('name' => $data['customer_pref']));
                 if (!$pref) {
                     log_info('非会員お客様情報変更入力チェックエラー');
                     $response = new Response(json_encode('NG'), 400);
@@ -268,7 +345,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                     return $response;
                 }
 
-                $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+                $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
                 if (!$Order) {
                     log_info('カートが存在しません');
                     $app->addError('front.shopping.order.error');
@@ -291,10 +368,10 @@ class NonMemberShoppingController extends AbstractShoppingController
                     ->setEmail($data['customer_email']);
 
                 // 配送先を更新
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 // 受注関連情報を最新状態に更新
-                $app['orm.em']->refresh($Order);
+                $this->entityManager->refresh($Order);
 
                 $event = new EventArgs(
                     array(
@@ -303,14 +380,14 @@ class NonMemberShoppingController extends AbstractShoppingController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
 
                 log_info('非会員お客様情報変更処理完了', array($Order->getId()));
                 $response = new Response(json_encode('OK'));
                 $response->headers->set('Content-Type', 'application/json');
             } catch (\Exception $e) {
                 log_error('予期しないエラー', array($e->getMessage()));
-                $app['monolog']->error($e);
+                $this->logger->error($e);
 
                 $response = new Response(json_encode('NG'), 500);
                 $response->headers->set('Content-Type', 'application/json');
@@ -332,63 +409,63 @@ class NonMemberShoppingController extends AbstractShoppingController
         // 入力チェック
         $errors = array();
 
-        $errors[] = $app['validator']->validate($data['customer_name01'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_name01'], array(
             new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['name_len'],)),
+            new Assert\Length(array('max' => $this->appConfig['name_len'],)),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_name02'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_name02'], array(
             new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['name_len'],)),
+            new Assert\Length(array('max' => $this->appConfig['name_len'],)),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_company_name'], array(
-            new Assert\Length(array('max' => $app['config']['stext_len'])),
+        $errors[] = $this->recursiveValidator->validate($data['customer_company_name'], array(
+            new Assert\Length(array('max' => $this->appConfig['stext_len'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_tel01'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_tel01'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+            new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_tel02'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_tel02'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+            new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_tel03'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_tel03'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+            new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_zip01'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_zip01'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('min' => $app['config']['zip01_len'], 'max' => $app['config']['zip01_len'])),
+            new Assert\Length(array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_zip02'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_zip02'], array(
             new Assert\NotBlank(),
             new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('min' => $app['config']['zip02_len'], 'max' => $app['config']['zip02_len'])),
+            new Assert\Length(array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_addr01'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_addr01'], array(
             new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['address1_len'])),
+            new Assert\Length(array('max' => $this->appConfig['address1_len'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_addr02'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_addr02'], array(
             new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['address2_len'])),
+            new Assert\Length(array('max' => $this->appConfig['address2_len'])),
         ));
 
-        $errors[] = $app['validator']->validate($data['customer_email'], array(
+        $errors[] = $this->recursiveValidator->validate($data['customer_email'], array(
             new Assert\NotBlank(),
             new Assert\Email(array('strict' => true)),
         ));

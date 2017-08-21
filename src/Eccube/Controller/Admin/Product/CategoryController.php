@@ -24,12 +24,18 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CategoryType;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Service\CsvExportService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -37,10 +43,46 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends AbstractController
 {
+    /**
+     * @Inject(CsvExportService::class)
+     * @var CsvExportService
+     */
+    protected $csvExportService;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(CategoryRepository::class)
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
     public function index(Application $app, Request $request, $parent_id = null, $id = null)
     {
         if ($parent_id) {
-            $Parent = $app['eccube.repository.category']->find($parent_id);
+            $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
                 throw new NotFoundHttpException('親カテゴリが存在しません');
             }
@@ -48,7 +90,7 @@ class CategoryController extends AbstractController
             $Parent = null;
         }
         if ($id) {
-            $TargetCategory = $app['eccube.repository.category']->find($id);
+            $TargetCategory = $this->categoryRepository->find($id);
             if (!$TargetCategory) {
                 throw new NotFoundHttpException('カテゴリが存在しません');
             }
@@ -64,7 +106,7 @@ class CategoryController extends AbstractController
         }
 
         //
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(CategoryType::class, $TargetCategory);
 
         $event = new EventArgs(
@@ -75,7 +117,7 @@ class CategoryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -83,11 +125,11 @@ class CategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($app['config']['category_nest_level'] < $TargetCategory->getLevel()) {
+                if ($this->appConfig['category_nest_level'] < $TargetCategory->getLevel()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));
-                $status = $app['eccube.repository.category']->save($TargetCategory);
+                $status = $this->categoryRepository->save($TargetCategory);
 
                 if ($status) {
 
@@ -101,7 +143,7 @@ class CategoryController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
                     $app->addSuccess('admin.category.save.complete', 'admin');
 
@@ -117,10 +159,10 @@ class CategoryController extends AbstractController
             }
         }
 
-        $Categories = $app['eccube.repository.category']->getList($Parent);
+        $Categories = $this->categoryRepository->getList($Parent);
 
         // ツリー表示のため、ルートからのカテゴリを取得
-        $TopCategories = $app['eccube.repository.category']->getList(null);
+        $TopCategories = $this->categoryRepository->getList(null);
 
         return $app->render('Product/category.twig', array(
             'form' => $form->createView(),
@@ -135,7 +177,7 @@ class CategoryController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetCategory = $app['eccube.repository.category']->find($id);
+        $TargetCategory = $this->categoryRepository->find($id);
         if (!$TargetCategory) {
             $app->deleteMessage();
             return $app->redirect($app->url('admin_product_category'));
@@ -144,7 +186,7 @@ class CategoryController extends AbstractController
 
         log_info('カテゴリ削除開始', array($id));
 
-        $status = $app['eccube.repository.category']->delete($TargetCategory);
+        $status = $this->categoryRepository->delete($TargetCategory);
 
         if ($status === true) {
 
@@ -157,7 +199,7 @@ class CategoryController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.category.delete.complete', 'admin');
         } else {
@@ -178,12 +220,12 @@ class CategoryController extends AbstractController
             $ranks = $request->request->all();
             foreach ($ranks as $categoryId => $rank) {
                 /* @var $Category \Eccube\Entity\Category */
-                $Category = $app['eccube.repository.category']
+                $Category = $this->categoryRepository
                     ->find($categoryId);
                 $Category->setRank($rank);
-                $app['orm.em']->persist($Category);
+                $this->entityManager->persist($Category);
             }
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
         }
         return true;
     }
@@ -202,25 +244,25 @@ class CategoryController extends AbstractController
         set_time_limit(0);
 
         // sql loggerを無効にする.
-        $em = $app['orm.em'];
+        $em = $this->entityManager;
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
 
             // CSV種別を元に初期化.
-            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_CATEGORY);
+            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CATEGORY);
 
             // ヘッダ行の出力.
-            $app['eccube.service.csv.export']->exportHeader();
+            $this->csvExportService->exportHeader();
 
-            $qb = $app['eccube.repository.category']
+            $qb = $this->categoryRepository
                 ->createQueryBuilder('c')
                 ->orderBy('c.rank', 'DESC');
 
             // データ行の出力.
-            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -241,7 +283,7 @@ class CategoryController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT, $event);
 
                     $ExportCsvRow->pushData();
                 }

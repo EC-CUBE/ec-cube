@@ -25,21 +25,43 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class MasterdataController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     public function index(Application $app, Request $request, $entity = null)
     {
         $data = array();
 
-        $builder = $app['form.factory']->createBuilder(MasterdataType::class);
+        $builder = $this->formFactory->createBuilder(MasterdataType::class);
 
         $event = new EventArgs(
             array(
@@ -47,7 +69,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -60,7 +82,7 @@ class MasterdataController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -73,7 +95,7 @@ class MasterdataController extends AbstractController
             if ($form['masterdata']->isValid()) {
                 $entityName = str_replace('-', '\\', $entity);
                 try {
-                    $masterdata = $app['orm.em']->getRepository($entityName)->findBy(array(), array('rank' => 'ASC'));
+                    $masterdata = $this->entityManager->getRepository($entityName)->findBy(array(), array('rank' => 'ASC'));
                     $data['data'] = array();
                     $data['masterdata_name'] = $entity;
                     foreach ($masterdata as $value) {
@@ -89,7 +111,7 @@ class MasterdataController extends AbstractController
             }
         }
 
-        $builder2 = $app['form.factory']->createBuilder(MasterdataEditType::class, $data);
+        $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class, $data);
 
         $event = new EventArgs(
             array(
@@ -97,7 +119,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
 
         $form2 = $builder2->getForm();
 
@@ -109,7 +131,7 @@ class MasterdataController extends AbstractController
 
     public function edit(Application $app, Request $request)
     {
-        $builder2 = $app['form.factory']->createBuilder(MasterdataEditType::class);
+        $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);
 
         $event = new EventArgs(
             array(
@@ -117,7 +139,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE, $event);
 
         $form2 = $builder2->getForm();
 
@@ -136,18 +158,18 @@ class MasterdataController extends AbstractController
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
                         $entity->setRank($rank++);
-                        $app['orm.em']->merge($entity);
+                        $this->entityManager->merge($entity);
                     } elseif (!in_array($key, $ids)) {
                         // remove
-                        $delKey = $app['orm.em']->getRepository($entityName)->find($key);
+                        $delKey = $this->entityManager->getRepository($entityName)->find($key);
                         if ($delKey) {
-                            $app['orm.em']->remove($delKey);
+                            $this->entityManager->remove($delKey);
                         }
                     }
                 }
 
                 try {
-                    $app['orm.em']->flush();
+                    $this->entityManager->flush();
 
                     $event = new EventArgs(
                         array(
@@ -155,7 +177,7 @@ class MasterdataController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE, $event);
 
                     $app->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
@@ -167,7 +189,7 @@ class MasterdataController extends AbstractController
             }
         }
 
-        $builder = $app['form.factory']->createBuilder(MasterdataType::class);
+        $builder = $this->formFactory->createBuilder(MasterdataType::class);
 
         $event = new EventArgs(
             array(
@@ -175,7 +197,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $parameter = array_merge($request->request->all(), array('masterdata' => $form2['masterdata_name']->getData()));

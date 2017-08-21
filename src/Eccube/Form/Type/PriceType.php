@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
@@ -34,43 +35,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
+/**
+ * @FormType
+ */
 class PriceType extends AbstractType
 {
-    
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * @var array
+     * @Inject("config")
      */
-    protected $app;
-
-    /**
-     * @var string
-     */
-    protected $currency;
-
-    /**
-     * @var int
-     */
-    protected $scale;
-
-    /**
-     * @var int
-     */
-    protected $max;
-
-    public function __construct($currency = 'JPY', $max = 2147483647)
-    {
-        $this->currency = $currency;
-        $this->scale = Intl::getCurrencyBundle()->getFractionDigits($this->currency);
-        $this->max = $max;
-    }
+    protected $appConfig;
 
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $constraints = function (Options $options) {
+        $currency = $this->appConfig['currency'];
+        $scale = Intl::getCurrencyBundle()->getFractionDigits($currency);
+        $max = $this->appConfig['price_max'];
+        $min = -$max;
+
+        $constraints = function (Options $options) use ($max, $min){
             $constraints = [];
 
             // requiredがtrueに指定されている場合, NotBlankを追加
@@ -80,11 +66,11 @@ class PriceType extends AbstractType
 
             if (isset($options['accept_minus']) && true === $options['accept_minus']) {
                 $constraints[] = new Range([
-                    'min' => -$this->max,
-                    'max' => $this->max
+                    'min' => $min,
+                    'max' => $max
                 ]);
             } else {
-                $constraints[] = new Range(['min' => 0, 'max' => $this->max]);
+                $constraints[] = new Range(['min' => 0, 'max' => $max]);
             }
 
             return $constraints;
@@ -92,8 +78,8 @@ class PriceType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'currency' => $this->currency,
-                'scale' => $this->scale,
+                'currency' => $currency,
+                'scale' => $scale,
                 'grouping' => true,
                 'constraints' => $constraints,
                 'accept_minus' => false, // マイナス値を許容するかどうか

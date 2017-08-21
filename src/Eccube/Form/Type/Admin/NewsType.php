@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
@@ -35,8 +36,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class NewsType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -69,7 +79,7 @@ class NewsType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->app['config']['mtext_len'])),
+                    new Assert\Length(array('max' => $this->appConfig['mtext_len'])),
                 ),
             ))
             ->add('url', TextType::class, array(
@@ -77,7 +87,7 @@ class NewsType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
-                    new Assert\Length(array('max' => $this->app['config']['mtext_len'])),
+                    new Assert\Length(array('max' => $this->appConfig['mtext_len'])),
                 ),
             ))
             ->add('link_method', CheckboxType::class, array(
@@ -89,7 +99,7 @@ class NewsType extends AbstractType
                 'label' => '本文',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->app['config']['ltext_len'])),
+                    new Assert\Length(array('max' => $this->appConfig['ltext_len'])),
                 ),
             ))
             ->add('select', HiddenType::class, array(

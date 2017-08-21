@@ -24,24 +24,62 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Form\DataTransformer;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\PriceType;
+use Eccube\Repository\ProductClassRepository;
+use Eccube\Repository\ShipmentItemRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class ShipmentItemType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(ProductClassRepository::class)
+     * @var ProductClassRepository
+     */
+    protected $productClassRepository;
+
+    /**
+     * @Inject(ShipmentItemRepository::class)
+     * @var ShipmentItemRepository
+     */
+    protected $shipmentItemRepository;
+
+    /**
+     * @Inject("request_stack")
+     * @var RequestStack
+     */
+    protected $requestStack;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -74,7 +112,7 @@ class ShipmentItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
+                        'max' => $this->appConfig['int_len'],
                     )),
                 ),
             ))
@@ -82,7 +120,7 @@ class ShipmentItemType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->app['config']['int_len'],
+                        'max' => $this->appConfig['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+(\.\d+)?$/u",
@@ -103,37 +141,37 @@ class ShipmentItemType extends AbstractType
         $builder
             ->add($builder->create('order_item_type', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Master\OrderItemType'
                 )))
             ->add($builder->create('tax_type', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Master\TaxType'
                 )))
             ->add($builder->create('tax_display_type', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Master\TaxDisplayType'
                 )))
             ->add($builder->create('Product', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Product'
                 )))
             ->add($builder->create('ProductClass', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\ProductClass'
                 )))
             ->add($builder->create('Order', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Order'
                 )))
             ->add($builder->create('Shipping', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
+                    $this->entityManager,
                     '\Eccube\Entity\Shipping'
                 )));
 
@@ -160,14 +198,14 @@ class ShipmentItemType extends AbstractType
         });
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
-            if ('modal' === $app['request_stack']->getCurrentRequest()->get('modal')) {
+            if ('modal' === $this->requestStack->getCurrentRequest()->get('modal')) {
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {
                     // 受注済み明細の場合
                     if (array_key_exists('id', $data) && isset($data['id'])) {
                         /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-                        $ShipmentItem = $app['eccube.repository.shipment_item']
+                        $ShipmentItem = $this->shipmentItemRepository
                             ->find($data['id']);
                         $data = array_merge($data, $ShipmentItem->toArray(['Order', 'Product', 'ProductClass', 'Shipping', 'TaxType', 'TaxDisplayType', 'OrderItemType']));
 
@@ -221,7 +259,7 @@ class ShipmentItemType extends AbstractType
                             case OrderItemType::PRODUCT:
                             default:
                                 /** @var \Eccube\Entity\ProductClass $ProductClass */
-                                $ProductClass = $app['eccube.repository.product_class']
+                                $ProductClass = $this->productClassRepository
                                     ->find($data['ProductClass']);
                                 /** @var \Eccube\Entity\Product $Product */
                                 $Product = $ProductClass->getProduct();

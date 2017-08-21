@@ -25,6 +25,8 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
@@ -35,10 +37,18 @@ use Eccube\Entity\TaxRule;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductClassType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\Master\ProductTypeRepository;
+use Eccube\Repository\ProductClassRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,12 +57,72 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductClassController
 {
     /**
+     * @Inject(TaxRuleRepository::class)
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(ProductTypeRepository::class)
+     * @var ProductTypeRepository
+     */
+    protected $productTypeRepository;
+
+    /**
+     * @Inject(ClassCategoryRepository::class)
+     * @var ClassCategoryRepository
+     */
+    protected $classCategoryRepository;
+
+    /**
+     * @Inject(ProductClassRepository::class)
+     * @var ProductClassRepository
+     */
+    protected $productClassRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(ProductRepository::class)
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
      */
     public function index(Application $app, Request $request, $id)
     {
         /** @var $Product \Eccube\Entity\Product */
-        $Product = $app['eccube.repository.product']->find($id);
+        $Product = $this->productRepository->find($id);
         $hasClassCategoryFlg = false;
 
         if (!$Product) {
@@ -65,7 +135,7 @@ class ProductClassController
 
             log_info('商品規格新規登録表示', array($id));
 
-            $builder = $app['form.factory']->createBuilder();
+            $builder = $this->formFactory->createBuilder();
 
             $builder
                 ->add('class_name1', EntityType::class, array(
@@ -90,7 +160,7 @@ class ProductClassController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE, $event);
 
             $form = $builder->getForm();
 
@@ -134,7 +204,7 @@ class ProductClassController
                             $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
-                        $builder = $app['form.factory']->createBuilder();
+                        $builder = $this->formFactory->createBuilder();
 
                         $builder
                             ->add('product_classes', CollectionType::class, array(
@@ -152,7 +222,7 @@ class ProductClassController
                             ),
                             $request
                         );
-                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
 
                         $productClassForm = $builder->getForm()->createView();
 
@@ -191,7 +261,7 @@ class ProductClassController
             $mergeProductClasses = array();
 
             // 商品税率が設定されている場合、商品税率を項目に設定
-            $BaseInfo = $app['eccube.repository.base_info']->get();
+            $BaseInfo = $this->baseInfoRepository->get();
             if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                 foreach ($ProductClasses as $class) {
                     if ($class->getTaxRule() && !$class->getTaxRule()->getDelFlg()) {
@@ -228,7 +298,7 @@ class ProductClassController
                 $ProductClasses->add($mergeProductClass);
             }
 
-            $builder = $app['form.factory']->createBuilder();
+            $builder = $this->formFactory->createBuilder();
 
             $builder
                 ->add('product_classes', CollectionType::class, array(
@@ -246,7 +316,7 @@ class ProductClassController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
 
             $productClassForm = $builder->getForm()->createView();
 
@@ -274,20 +344,20 @@ class ProductClassController
     {
 
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\TaxRule',
         ));
 
         /** @var $Product \Eccube\Entity\Product */
-        $Product = $app['eccube.repository.product']->find($id);
+        $Product = $this->productRepository->find($id);
 
         if (!$Product) {
             throw new NotFoundHttpException('商品が存在しません');
         }
 
         /* @var FormBuilder $builder */
-        $builder = $app['form.factory']->createBuilder();
+        $builder = $this->formFactory->createBuilder();
         $builder->add('product_classes', CollectionType::class, array(
                     'entry_type' => ProductClassType::class,
                     'allow_add' => true,
@@ -301,7 +371,7 @@ class ProductClassController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -349,12 +419,12 @@ class ProductClassController
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
                     // デフォルトの商品規格を更新
-                    $defaultProductClass = $app['eccube.repository.product_class']
+                    $defaultProductClass = $this->productClassRepository
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
 
                     $defaultProductClass->setDelFlg(Constant::ENABLED);
 
-                    $app['orm.em']->flush();
+                    $this->entityManager->flush();
 
                     log_info('商品規格新規登録完了', array($id));
 
@@ -366,7 +436,7 @@ class ProductClassController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE, $event);
 
                     $app->addSuccess('admin.product.product_class.save.complete', 'admin');
 
@@ -458,7 +528,7 @@ class ProductClassController
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
-                    $app['orm.em']->flush();
+                    $this->entityManager->flush();
 
                     log_info('商品規格更新完了', array($id));
 
@@ -471,7 +541,7 @@ class ProductClassController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE, $event);
 
                     $app->addSuccess('admin.product.product_class.update.complete', 'admin');
 
@@ -493,18 +563,18 @@ class ProductClassController
                     }
 
                     /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-                    $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+                    $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
                     $softDeleteFilter->setExcludes(array(
                         'Eccube\Entity\ProductClass'
                     ));
 
                     // デフォルトの商品規格を更新
-                    $defaultProductClass = $app['eccube.repository.product_class']
+                    $defaultProductClass = $this->productClassRepository
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => Constant::ENABLED));
 
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
 
-                    $app['orm.em']->flush();
+                    $this->entityManager->flush();
                     log_info('商品規格削除完了', array($id));
 
                     $event = new EventArgs(
@@ -515,7 +585,7 @@ class ProductClassController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE, $event);
 
                     $app->addSuccess('admin.product.product_class.delete.complete', 'admin');
 
@@ -589,12 +659,12 @@ class ProductClassController
 
         $ClassCategories1 = array();
         if ($ClassName1) {
-            $ClassCategories1 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName1));
+            $ClassCategories1 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName1));
         }
 
         $ClassCategories2 = array();
         if ($ClassName2) {
-            $ClassCategories2 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName2));
+            $ClassCategories2 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName2));
         }
 
         $ProductClasses = array();
@@ -627,7 +697,7 @@ class ProductClassController
      */
     private function newProductClass(Application $app)
     {
-        $ProductType = $app['eccube.repository.master.product_type']->find($app['config']['product_type_normal']);
+        $ProductType = $this->productTypeRepository->find($this->appConfig['product_type_normal']);
 
         $ProductClass = new ProductClass();
         $ProductClass->setProductType($ProductType);
@@ -684,7 +754,7 @@ class ProductClassController
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
 
         // 個別消費税
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
             if ($productClassOrig->getTaxRate() !== false && $productClassOrig->getTaxRate() !== null) {
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
@@ -692,7 +762,7 @@ class ProductClassController
                     $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
                     $productClassDest->getTaxRule()->setDelFlg(Constant::DISABLED);
                 } else {
-                    $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
+                    $taxrule = $this->taxRuleRepository->newTaxRule();
                     $taxrule->setTaxRate($productClassOrig->getTaxRate());
                     $taxrule->setApplyDate(new \DateTime());
                     $taxrule->setProduct($productClassDest->getProduct());
@@ -717,14 +787,14 @@ class ProductClassController
      */
     private function insertProductClass($app, $Product, $ProductClasses) {
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         // 選択された商品を登録
         foreach ($ProductClasses as $ProductClass) {
 
             $ProductClass->setDelFlg(Constant::DISABLED);
             $ProductClass->setProduct($Product);
-            $app['orm.em']->persist($ProductClass);
+            $this->entityManager->persist($ProductClass);
 
             // 在庫情報を作成
             $ProductStock = new ProductStock();
@@ -736,14 +806,14 @@ class ProductClassController
                 // 在庫無制限時はnullを設定
                 $ProductStock->setStock(null);
             }
-            $app['orm.em']->persist($ProductStock);
+            $this->entityManager->persist($ProductStock);
 
         }
 
         // 商品税率が設定されている場合、商品税率をセット
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
             // 初期設定の税設定.
-            $TaxRule = $app['eccube.repository.tax_rule']->find(TaxRule::DEFAULT_TAX_RULE_ID);
+            $TaxRule = $this->taxRuleRepository->find(TaxRule::DEFAULT_TAX_RULE_ID);
             // 初期税率設定の計算方法を設定する
             $CalcRule = $TaxRule->getCalcRule();
             foreach ($ProductClasses as $ProductClass) {
@@ -756,7 +826,7 @@ class ProductClassController
                     $TaxRule->setTaxAdjust(0);
                     $TaxRule->setApplyDate(new \DateTime());
                     $TaxRule->setDelFlg(Constant::DISABLED);
-                    $app['orm.em']->persist($TaxRule);
+                    $this->entityManager->persist($TaxRule);
                 }
             }
         }

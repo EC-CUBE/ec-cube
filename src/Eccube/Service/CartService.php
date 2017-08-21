@@ -25,21 +25,28 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * @Service
+ */
 class CartService
 {
     /**
      * @var Session
+     * @Inject("session")
      */
     protected $session;
 
     /**
      * @var EntityManager
+     * @Inject("orm.em")
      */
     protected $em;
 
@@ -48,20 +55,16 @@ class CartService
      */
     protected $cart;
 
-    public function __construct(Session $session, EntityManager $em)
-    {
-        $this->session = $session;
-        $this->cart = $session->get('cart', new Cart());
-        $this->em = $em;
-
-        $this->loadItems();
-    }
-
     /**
      * @return ItemHolderInterface|Cart
      */
     public function getCart()
     {
+        if (is_null($this->cart)) {
+            $this->cart = $this->session->get('cart', new Cart());
+            $this->loadItems();
+        }
+
         return $this->cart;
     }
 
@@ -89,7 +92,7 @@ class CartService
         }
 
         /** @var Cart $cart */
-        $cart = $this->cart;
+        $cart = $this->getCart();
         $exists = $cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
 
         if ($exists) {
@@ -120,7 +123,7 @@ class CartService
         }
 
         /** @var Cart $cart */
-        $cart = $this->cart;
+        $cart = $this->getCart();
         $cart->removeCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
 
         return true;
@@ -128,19 +131,19 @@ class CartService
 
     public function save()
     {
-        return $this->session->set('cart', $this->cart);
+        return $this->session->set('cart', $this->getCart());
     }
 
     public function unlock()
     {
-        $this->cart
+        $this->getCart()
             ->setLock(false)
             ->setPreOrderId(null);
     }
 
     public function lock()
     {
-        $this->cart
+        $this->getCart()
             ->setLock(true)
             ->setPreOrderId(null);
     }
@@ -150,7 +153,7 @@ class CartService
      */
     public function isLocked()
     {
-        return $this->cart->getLock();
+        return $this->getCart()->getLock();
     }
 
     /**
@@ -159,7 +162,7 @@ class CartService
      */
     public function setPreOrderId($pre_order_id)
     {
-        $this->cart->setPreOrderId($pre_order_id);
+        $this->getCart()->setPreOrderId($pre_order_id);
 
         return $this;
     }
@@ -169,7 +172,7 @@ class CartService
      */
     public function getPreOrderId()
     {
-        return $this->cart->getPreOrderId();
+        return $this->getCart()->getPreOrderId();
     }
 
     /**
@@ -177,7 +180,7 @@ class CartService
      */
     public function clear()
     {
-        $this->cart
+        $this->getCart()
             ->setPreOrderId(null)
             ->setLock(false)
             ->clearCartItems();

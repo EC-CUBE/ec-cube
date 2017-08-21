@@ -28,7 +28,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 
 /**
- * @Service("eccube.service.system")
+ * @Service
  */
 class SystemService
 {

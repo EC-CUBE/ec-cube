@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\PriceType;
@@ -38,6 +39,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class PaymentRegisterType extends AbstractType
 {
     /**

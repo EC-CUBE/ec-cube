@@ -24,16 +24,66 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\DeliveryType;
+use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\PaymentOptionRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryController extends AbstractController
 {
+    /**
+     * @Inject(PaymentOptionRepository::class)
+     * @var PaymentOptionRepository
+     */
+    protected $paymentOptionRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(DeliveryFeeRepository::class)
+     * @var DeliveryFeeRepository
+     */
+    protected $deliveryFeeRepository;
+
+    /**
+     * @Inject(PrefRepository::class)
+     * @var PrefRepository
+     */
+    protected $prefRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject(DeliveryRepository::class)
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
     private $main_title;
     private $sub_title;
 
@@ -45,7 +95,7 @@ class DeliveryController extends AbstractController
 
     public function index(Application $app, Request $request)
     {
-        $Deliveries = $app['eccube.repository.delivery']
+        $Deliveries = $this->deliveryRepository
             ->findBy(
                 array('del_flg' => 0),
                 array('rank' => 'DESC')
@@ -57,7 +107,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
 
         return $app->render('Setting/Shop/delivery.twig', array(
             'Deliveries' => $Deliveries,
@@ -67,15 +117,15 @@ class DeliveryController extends AbstractController
     public function edit(Application $app, Request $request, $id = 0)
     {
         /* @var $Delivery \Eccube\Entity\Delivery */
-        $Delivery = $app['eccube.repository.delivery']
+        $Delivery = $this->deliveryRepository
             ->findOrCreate($id);
 
         // FormType: DeliveryFeeの生成
-        $Prefs = $app['eccube.repository.master.pref']
+        $Prefs = $this->prefRepository
             ->findAll();
 
         foreach ($Prefs as $Pref) {
-            $DeliveryFee = $app['eccube.repository.delivery_fee']
+            $DeliveryFee = $this->deliveryFeeRepository
                 ->findOrCreate(array(
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,
@@ -105,7 +155,7 @@ class DeliveryController extends AbstractController
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(DeliveryType::class, $Delivery);
 
         $event = new EventArgs(
@@ -117,7 +167,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -142,20 +192,20 @@ class DeliveryController extends AbstractController
                 foreach ($DeliveryTimes as $DeliveryTime) {
                     if (is_null($DeliveryTime->getDeliveryTime())) {
                         $Delivery->removeDeliveryTime($DeliveryTime);
-                        $app['orm.em']->remove($DeliveryTime);
+                        $this->entityManager->remove($DeliveryTime);
                     }
                 }
 
                 // お支払いの登録
-                $PaymentOptions = $app['eccube.repository.payment_option']
+                $PaymentOptions = $this->paymentOptionRepository
                     ->findBy(array('delivery_id' => $id));
                 // 消す
                 foreach ($PaymentOptions as $PaymentOption) {
                     $DeliveryData->removePaymentOption($PaymentOption);
-                    $app['orm.em']->remove($PaymentOption);
+                    $this->entityManager->remove($PaymentOption);
                 }
-                $app['orm.em']->persist($DeliveryData);
-                $app['orm.em']->flush();
+                $this->entityManager->persist($DeliveryData);
+                $this->entityManager->flush();
 
                 // いれる
                 $PaymentsData = $form->get('payments')->getData();
@@ -167,12 +217,12 @@ class DeliveryController extends AbstractController
                         ->setDeliveryId($DeliveryData->getId())
                         ->setDelivery($DeliveryData);
                     $DeliveryData->addPaymentOption($PaymentOption);
-                    $app['orm.em']->persist($DeliveryData);
+                    $this->entityManager->persist($DeliveryData);
                 }
 
-                $app['orm.em']->persist($DeliveryData);
+                $this->entityManager->persist($DeliveryData);
 
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -183,7 +233,7 @@ class DeliveryController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
@@ -200,7 +250,7 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $repo = $app['eccube.repository.delivery'];
+        $repo = $this->deliveryRepository;
         $Delivery = $repo->find($id);
         if (!$Delivery) {
             $app->deleteMessage();
@@ -211,7 +261,7 @@ class DeliveryController extends AbstractController
             ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
 
-        $app['orm.em']->persist($Delivery);
+        $this->entityManager->persist($Delivery);
 
         $rank = 1;
         $Delivs = $repo
@@ -226,7 +276,7 @@ class DeliveryController extends AbstractController
             }
         }
 
-        $app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $event = new EventArgs(
             array(
@@ -235,7 +285,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.delete.complete', 'admin');
 
@@ -247,12 +297,12 @@ class DeliveryController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $ranks = $request->request->all();
             foreach ($ranks as $deliveryId => $rank) {
-                $Delivery = $app['eccube.repository.delivery']
+                $Delivery = $this->deliveryRepository
                     ->find($deliveryId);
                 $Delivery->setRank($rank);
-                $app['orm.em']->persist($Delivery);
+                $this->entityManager->persist($Delivery);
             }
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
         }
 
         return true;

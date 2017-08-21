@@ -24,9 +24,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Annotation\Repository;
 use Eccube\Entity\Block;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -41,10 +40,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class BlockRepository extends AbstractRepository
 {
     /**
-     * @var Application $app
-     * @Inject(Application::class)
+     * @Inject("config")
+     * @var array
      */
-    protected $app;
+    protected $appConfig;
 
     /**
      * @deprecated 呼び出し元で制御する
@@ -175,7 +174,7 @@ class BlockRepository extends AbstractRepository
      */
     public function getWriteTemplatePath($isUser = false)
     {
-        return $this->app['config']['block_realdir'];
+        return $this->appConfig['block_realdir'];
     }
 
     /**
@@ -194,8 +193,8 @@ class BlockRepository extends AbstractRepository
     public function getReadTemplateFile($fileName, $isUser = false)
     {
         $readPaths = array(
-            $this->app['config']['block_realdir'],
-            $this->app['config']['block_default_realdir'],
+            $this->appConfig['block_realdir'],
+            $this->appConfig['block_default_realdir'],
         );
         foreach ($readPaths as $readPath) {
             $filePath = $readPath . '/' . $fileName . '.twig';

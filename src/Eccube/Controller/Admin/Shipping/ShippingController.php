@@ -3,24 +3,31 @@
 namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
-use Eccube\Form\Type\Admin\SearchShippingType;
-use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Form\Type\Admin\SearchShippingType;
 use Eccube\Form\Type\Admin\ShipmentItemType;
+use Eccube\Form\Type\Admin\ShippingType;
+
+use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Repository\Master\PageMaxRepository;
+use Eccube\Repository\ShippingRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -28,6 +35,48 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class ShippingController
 {
+    /**
+     * @Inject(OrderStatusRepository::class)
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
+
+    /**
+     * @Inject(ShippingRepository::class)
+     * @var ShippingRepository
+     */
+    protected $shippingRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(PageMaxRepository::class)
+     * @var PageMaxRepository
+     */
+    protected $pageMaxRepository;
+
+    /**
+     * @Inject(DispRepository::class)
+     * @var DispRepository
+     */
+    protected $dispRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     /**
      * @Route("/", name="admin/shipping")
      * @Route("/page/{page_no}", name="admin/shipping/page")
@@ -42,7 +91,7 @@ class ShippingController
     {
         $session = $request->getSession();
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchShippingType::class);
 
         $event = new EventArgs(
@@ -51,15 +100,15 @@ class ShippingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
 
         $pagination = array();
 
-        $disps = $app['eccube.repository.master.disp']->findAll();
-        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
-        $page_count = $app['config']['default_page_count'];
+        $disps = $this->dispRepository->findAll();
+        $pageMaxis = $this->pageMaxRepository->findAll();
+        $page_count = $this->appConfig['default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -71,7 +120,7 @@ class ShippingController
                 $searchData = $searchForm->getData();
 
                 // paginator
-                $qb = $app['eccube.repository.shipping']->getQueryBuilderBySearchDataForAdmin($searchData);
+                $qb = $this->shippingRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                 $event = new EventArgs(
                     array(
@@ -80,7 +129,7 @@ class ShippingController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
 
                 $page_no = 1;
                 $pagination = $app['paginator']()->paginate(
@@ -112,11 +161,11 @@ class ShippingController
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
-                        if ($status != $app['config']['admin_product_stock_status']) {
+                        if ($status != $this->appConfig['admin_product_stock_status']) {
                             $searchData['status']->clear();
                             $searchData['status']->add($status);
                         } else {
-                            $searchData['stock_status'] = $app['config']['disabled'];
+                            $searchData['stock_status'] = $this->appConfig['disabled'];
                         }
                         $page_status = $status;
                     }
@@ -125,7 +174,7 @@ class ShippingController
 
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
-                    $qb = $app['eccube.repository.shipping']->getQueryBuilderBySearchDataForAdmin($searchData);
+                    $qb = $this->shippingRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                     $event = new EventArgs(
                         array(
@@ -134,7 +183,7 @@ class ShippingController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
 
                     $pagination = $app['paginator']()->paginate(
                         $qb,
@@ -144,14 +193,14 @@ class ShippingController
 
                     // セッションから検索条件を復元
                     if (!empty($searchData['status'])) {
-                        $searchData['status'] = $app['eccube.repository.master.order_status']->find($searchData['status']);
+                        $searchData['status'] = $this->orderStatusRepository->find($searchData['status']);
                     }
                     if (count($searchData['multi_status']) > 0) {
                         $statusIds = array();
                         foreach ($searchData['multi_status'] as $Status) {
                             $statusIds[] = $Status->getId();
                         }
-                        $searchData['multi_status'] = $app['eccube.repository.master.order_status']->findBy(array('id' => $statusIds));
+                        $searchData['multi_status'] = $this->orderStatusRepository->findBy(array('id' => $statusIds));
                     }
                     $searchForm->setData($searchData);
                 }

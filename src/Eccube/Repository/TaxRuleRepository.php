@@ -24,11 +24,13 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Doctrine\ORM\NoResultException;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Repository;
+use Eccube\Application;
 use Eccube\Common\Constant;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * TaxRuleRepository
@@ -41,8 +43,32 @@ use Eccube\Common\Constant;
 class TaxRuleRepository extends AbstractRepository
 {
     /**
-     * @var Application $app
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject("security.authorization_checker")
+     * @var AuthorizationChecker
+     */
+    protected $authorizationChecker;
+
+    /**
+     * @Inject("security.token_storage")
+     * @var TokenStorage
+     */
+    protected $tokenStorage;
+
+    /**
      * @Inject(Application::class)
+     * @var Application
      */
     protected $app;
 
@@ -74,12 +100,8 @@ class TaxRuleRepository extends AbstractRepository
      */
     public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null)
     {
-        if (!$this->app) {
-            throw new \LogicException();
-        }
-
         // Pref Country 設定
-        if (!$Pref && !$Country && $this->app['security.token_storage']->getToken() && $this->app['security.authorization_checker']->isGranted('ROLE_USER')) {
+        if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
             /* @var $Customer \Eccube\Entity\Customer */
             $Customer = $this->app->user();
             $Pref = $Customer->getPref();
@@ -88,7 +110,7 @@ class TaxRuleRepository extends AbstractRepository
 
         // 商品単位税率設定がOFFの場合
         /** @var $BaseInfo \Eccube\Entity\BaseInfo */
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         if ($BaseInfo->getOptionProductTaxRule() !== Constant::ENABLED) {
             $Product = null;
             $ProductClass = null;
@@ -181,9 +203,9 @@ class TaxRuleRepository extends AbstractRepository
 
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
         // 後に書いてあるほど優先される
-        $priorityKeys = explode(',', $this->app['config']['tax_rule_priority']);
+        $priorityKeys = explode(',', $this->appConfig['tax_rule_priority']);
         $priorityKeys = array();
-        foreach (explode(',', $this->app['config']['tax_rule_priority']) as $key) {
+        foreach (explode(',', $this->appConfig['tax_rule_priority']) as $key) {
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }
 

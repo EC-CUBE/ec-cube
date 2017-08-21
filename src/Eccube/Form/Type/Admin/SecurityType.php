@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
@@ -34,9 +35,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
+/**
+ * @FormType
+ */
 class SecurityType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("validator")
+     * @var RecursiveValidator
+     */
+    protected $recursiveValidator;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -58,7 +75,7 @@ class SecurityType extends AbstractType
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
+                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
                     new Assert\Regex(array(
                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
@@ -68,7 +85,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->app['config']['stext_len'])),
+                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(
@@ -82,7 +99,7 @@ class SecurityType extends AbstractType
                 $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $app['validator']->validate($ip, array(
+                    $errors = $this->recursiveValidator->validate($ip, array(
                             new Assert\Ip(),
                         )
                     );

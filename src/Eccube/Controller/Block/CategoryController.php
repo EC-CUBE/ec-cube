@@ -24,13 +24,21 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Repository\CategoryRepository;
 
 class CategoryController
 {
+    /**
+     * @Inject(CategoryRepository::class)
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
     public function index(Application $app)
     {
-        $Categories = $app['eccube.repository.category']->getList();
+        $Categories = $this->categoryRepository->getList();
 
         return $app->render('Block/category.twig', array(
             'Categories' => $Categories

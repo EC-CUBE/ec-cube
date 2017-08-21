@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Order;
@@ -21,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @FormType
+ */
 class OrderType extends AbstractType
 {
     /**

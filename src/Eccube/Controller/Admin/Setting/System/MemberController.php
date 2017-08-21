@@ -23,25 +23,67 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
+use Eccube\Repository\MemberRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class MemberController extends AbstractController
 {
+    /**
+     * @Inject("security.token_storage")
+     * @var TokenStorage
+     */
+    protected $tokenStorage;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(MemberRepository::class)
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
     public function __construct()
     {
     }
 
     public function index(Application $app, Request $request)
     {
-        $Members = $app['eccube.repository.member']->findBy(array(), array('rank' => 'DESC'));
+        $Members = $this->memberRepository->findBy(array(), array('rank' => 'DESC'));
 
-        $builder = $app['form.factory']->createBuilder();
+        $builder = $this->formFactory->createBuilder();
 
         $event = new EventArgs(
             array(
@@ -50,7 +92,7 @@ class MemberController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -64,20 +106,20 @@ class MemberController extends AbstractController
     {
         $previous_password = null;
         if ($id) {
-            $Member = $app['eccube.repository.member']->find($id);
+            $Member = $this->memberRepository->find($id);
             if (!$Member) {
                 throw new NotFoundHttpException();
             }
             $previous_password = $Member->getPassword();
-            $Member->setPassword($app['config']['default_password']);
+            $Member->setPassword($this->appConfig['default_password']);
         } else {
             $Member = new \Eccube\Entity\Member();
         }
 
         $LoginMember = clone $app->user();
-        $app['orm.em']->detach($LoginMember);
+        $this->entityManager->detach($LoginMember);
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(MemberType::class, $Member);
 
         $event = new EventArgs(
@@ -87,7 +129,7 @@ class MemberController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -95,22 +137,22 @@ class MemberController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if (!is_null($previous_password)
-                    && $Member->getpassword() === $app['config']['default_password']) {
+                    && $Member->getpassword() === $this->appConfig['default_password']) {
                     // 編集時にPWを変更していなければ
                     // 変更前のパスワード(暗号化済み)をセット
                     $Member->setPassword($previous_password);
                 } else {
                     $salt = $Member->getSalt();
                     if (!isset($salt)) {
-                        $salt = $app['eccube.repository.member']->createSalt(5);
+                        $salt = $this->memberRepository->createSalt(5);
                         $Member->setSalt($salt);
                     }
 
                     // 入力されたPWを暗号化してセット
-                    $password = $app['eccube.repository.member']->encryptPassword($Member);
+                    $password = $this->memberRepository->encryptPassword($Member);
                     $Member->setPassword($password);
                 }
-                $status = $app['eccube.repository.member']->save($Member);
+                $status = $this->memberRepository->save($Member);
 
                 if ($status) {
                     $event = new EventArgs(
@@ -120,7 +162,7 @@ class MemberController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
                     $app->addSuccess('admin.member.save.complete', 'admin');
 
@@ -131,7 +173,7 @@ class MemberController extends AbstractController
             }
         }
 
-        $app['security.token_storage']->getToken()->setUser($LoginMember);
+        $this->tokenStorage->getToken()->setUser($LoginMember);
 
         return $app->render('Setting/System/member_edit.twig', array(
             'form' => $form->createView(),
@@ -144,7 +186,7 @@ class MemberController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetMember = $app['eccube.repository.member']->find($id);
+        $TargetMember = $this->memberRepository->find($id);
 
         if (!$TargetMember) {
             throw new NotFoundHttpException();
@@ -152,7 +194,7 @@ class MemberController extends AbstractController
 
         $status = false;
         if ('PUT' === $request->getMethod()) {
-            $status = $app['eccube.repository.member']->up($TargetMember);
+            $status = $this->memberRepository->up($TargetMember);
         }
 
         if ($status) {
@@ -168,7 +210,7 @@ class MemberController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetMember = $app['eccube.repository.member']->find($id);
+        $TargetMember = $this->memberRepository->find($id);
 
         if (!$TargetMember) {
             throw new NotFoundHttpException();
@@ -176,7 +218,7 @@ class MemberController extends AbstractController
 
         $status = false;
         if ('PUT' === $request->getMethod()) {
-            $status = $app['eccube.repository.member']->down($TargetMember);
+            $status = $this->memberRepository->down($TargetMember);
         }
 
         if ($status) {
@@ -192,7 +234,7 @@ class MemberController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetMember = $app['eccube.repository.member']->find($id);
+        $TargetMember = $this->memberRepository->find($id);
         if (!$TargetMember) {
             $app->deleteMessage();
             return $app->redirect($app->url('admin_setting_system_member'));
@@ -204,9 +246,9 @@ class MemberController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE, $event);
 
-        $status = $app['eccube.repository.member']->delete($TargetMember);
+        $status = $this->memberRepository->delete($TargetMember);
 
         if ($status) {
             $app->addSuccess('admin.member.delete.complete', 'admin');
@@ -214,7 +256,7 @@ class MemberController extends AbstractController
                 array(),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
         } else {
             $app->addError('admin.member.delete.error', 'admin');
         }

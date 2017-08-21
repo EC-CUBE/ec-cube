@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Eccube\Annotation\FormType;
+use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -36,29 +38,37 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
+/**
+ * @FormType
+ */
 class Step3Type extends AbstractType
 {
-    public $app;
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
 
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
+    /**
+     * @Inject("validator")
+     * @var RecursiveValidator
+     */
+    protected $validator;
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
         $builder
             ->add('shop_name', TextType::class, array(
                 'label' => 'あなたの店名',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->app['config']['stext_len'],
+                        'max' => $this->appConfig['stext_len'],
                     )),
                 ),
             ))
@@ -70,12 +80,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_id', TextType::class, array(
-                'label' => '管理画面ログインID（半角英数字'.$this->app['config']['id_min_len'].'～'.$this->app['config']['id_max_len'].'文字）',
+                'label' => '管理画面ログインID（半角英数字'.$this->appConfig['id_min_len'].'～'.$this->appConfig['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->app['config']['id_min_len'],
-                        'max' => $this->app['config']['id_max_len'],
+                        'min' => $this->appConfig['id_min_len'],
+                        'max' => $this->appConfig['id_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -84,12 +94,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_pass', PasswordType::class, array(
-                'label' => '管理画面パスワード（半角英数字'.$this->app['config']['password_min_len'].'～'.$this->app['config']['password_max_len'].'文字）',
+                'label' => '管理画面パスワード（半角英数字'.$this->appConfig['password_min_len'].'～'.$this->appConfig['password_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->app['config']['password_min_len'],
-                        'max' => $this->app['config']['password_max_len'],
+                        'min' => $this->appConfig['password_min_len'],
+                        'max' => $this->appConfig['password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -98,12 +108,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_dir', TextType::class, array(
-                'label' => '管理画面のディレクトリ名（半角英数字'.$this->app['config']['id_min_len'].'～'.$this->app['config']['id_max_len'].'文字）',
+                'label' => '管理画面のディレクトリ名（半角英数字'.$this->appConfig['id_min_len'].'～'.$this->appConfig['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->app['config']['id_min_len'],
-                        'max' => $this->app['config']['id_max_len'],
+                        'min' => $this->appConfig['id_min_len'],
+                        'max' => $this->appConfig['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/\A\w+\z/')),
                 ),
@@ -156,14 +166,14 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app)  {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $app['validator']->validate($ip, array(
+                    $errors = $this->validator->validate($ip, array(
                             new Assert\Ip(),
                         )
                     );

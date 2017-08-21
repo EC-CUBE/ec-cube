@@ -24,20 +24,49 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassNameType;
+use Eccube\Repository\ClassNameRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ClassNameController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(ClassNameRepository::class)
+     * @var ClassNameRepository
+     */
+    protected $classNameRepository;
+
     public function index(Application $app, Request $request, $id = null)
     {
         if ($id) {
-            $TargetClassName = $app['eccube.repository.class_name']->find($id);
+            $TargetClassName = $this->classNameRepository->find($id);
             if (!$TargetClassName) {
                 throw new NotFoundHttpException('商品規格が存在しません');
             }
@@ -45,7 +74,7 @@ class ClassNameController extends AbstractController
             $TargetClassName = new \Eccube\Entity\ClassName();
         }
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(ClassNameType::class, $TargetClassName);
 
         $event = new EventArgs(
@@ -55,7 +84,7 @@ class ClassNameController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -63,7 +92,7 @@ class ClassNameController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 log_info('商品規格登録開始', array($id));
-                $status = $app['eccube.repository.class_name']->save($TargetClassName);
+                $status = $this->classNameRepository->save($TargetClassName);
 
                 if ($status) {
                     log_info('商品規格登録完了', array($id));
@@ -75,7 +104,7 @@ class ClassNameController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
                     $app->addSuccess('admin.class_name.save.complete', 'admin');
 
@@ -87,7 +116,7 @@ class ClassNameController extends AbstractController
             }
         }
 
-        $ClassNames = $app['eccube.repository.class_name']->getList();
+        $ClassNames = $this->classNameRepository->getList();
 
         return $app->render('Product/class_name.twig', array(
             'form' => $form->createView(),
@@ -100,7 +129,7 @@ class ClassNameController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetClassName = $app['eccube.repository.class_name']->find($id);
+        $TargetClassName = $this->classNameRepository->find($id);
         if (!$TargetClassName) {
             $app->deleteMessage();
             return $app->redirect($app->url('admin_product_class_name'));
@@ -108,7 +137,7 @@ class ClassNameController extends AbstractController
 
         log_info('商品規格削除開始', array($id));
 
-        $status = $app['eccube.repository.class_name']->delete($TargetClassName);
+        $status = $this->classNameRepository->delete($TargetClassName);
 
         if ($status === true) {
             log_info('商品規格削除完了', array($id));
@@ -119,7 +148,7 @@ class ClassNameController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.class_name.delete.complete', 'admin');
         } else {
@@ -134,12 +163,12 @@ class ClassNameController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $ranks = $request->request->all();
             foreach ($ranks as $classNameId => $rank) {
-                $ClassName = $app['eccube.repository.class_name']
+                $ClassName = $this->classNameRepository
                     ->find($classNameId);
                 $ClassName->setRank($rank);
-                $app['orm.em']->persist($ClassName);
+                $this->entityManager->persist($ClassName);
             }
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
         }
         return true;
     }

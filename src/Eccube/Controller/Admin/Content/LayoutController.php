@@ -24,12 +24,16 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
 use Eccube\Form\Type\Master\DeviceTypeType;
+use Eccube\Repository\BlockRepository;
+use Eccube\Repository\LayoutRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -39,9 +43,27 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 // todo プレビュー実装
 class LayoutController extends AbstractController
 {
+    /**
+     * @Inject(BlockRepository::class)
+     * @var BlockRepository
+     */
+    protected $blockRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(LayoutRepository::class)
+     * @var LayoutRepository
+     */
+    protected $layoutRepository;
+
     public function index(Application $app, Request $request)
     {
-        $Layouts = $app['eccube.repository.layout']->findBy([], ['id' => 'DESC']);
+        $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
 
         return $app->render(
             'Content/layout_list.twig',
@@ -55,15 +77,15 @@ class LayoutController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Layout = $app['eccube.repository.layout']->find($id);
+        $Layout = $this->layoutRepository->find($id);
         if (!$Layout) {
             $app->deleteMessage();
 
             return $app->redirect($app->url('admin_content_layout'));
         }
 
-        $app['orm.em']->remove($Layout);
-        $app['orm.em']->flush($Layout);
+        $this->entityManager->remove($Layout);
+        $this->entityManager->flush($Layout);
 
 
         $app->addSuccess('admin.delete.complete', 'admin');
@@ -78,7 +100,7 @@ class LayoutController extends AbstractController
         } else {
             // todo レポジトリへ移動
             try {
-                $Layout = $app['eccube.repository.layout']->createQueryBuilder('l')
+                $Layout = $this->layoutRepository->createQueryBuilder('l')
                     ->select('l, bp, b')
                     ->leftJoin('l.BlockPositions', 'bp')
                     ->leftJoin('bp.Block', 'b')
@@ -96,9 +118,9 @@ class LayoutController extends AbstractController
         // 未使用ブロックの取得
         $Blocks = $Layout->getBlocks();
         if (empty($Blocks)) {
-            $UnusedBlocks = $app['eccube.repository.block']->findAll();
+            $UnusedBlocks = $this->blockRepository->findAll();
         } else {
-            $UnusedBlocks = $app['eccube.repository.block']
+            $UnusedBlocks = $this->blockRepository
                 ->createQueryBuilder('b')
                 ->select('b')
                 ->where('b not in (:blocks)')
@@ -136,16 +158,16 @@ class LayoutController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Layoutの更新
             $Layout = $form->getData();
-            $app['orm.em']->persist($Layout);
-            $app['orm.em']->flush($Layout);
+            $this->entityManager->persist($Layout);
+            $this->entityManager->flush($Layout);
 
             // BlockPositionの更新
             // delete/insertのため、一度削除する.
             $BlockPositions = $Layout->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
                 $Layout->removeBlockPosition($BlockPosition);
-                $app['orm.em']->remove($BlockPosition);
-                $app['orm.em']->flush($BlockPosition);
+                $this->entityManager->remove($BlockPosition);
+                $this->entityManager->flush($BlockPosition);
             }
 
             // ブロックの個数分登録を行う.
@@ -160,7 +182,7 @@ class LayoutController extends AbstractController
                 if ($data['target_id_'.$i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
                     continue;
                 }
-                $Block = $app['eccube.repository.block']->find($data['block_id_'.$i]);
+                $Block = $this->blockRepository->find($data['block_id_'.$i]);
                 $BlockPosition = new BlockPosition();
                 $BlockPosition
                     ->setBlockId($data['block_id_'.$i])
@@ -170,8 +192,8 @@ class LayoutController extends AbstractController
                     ->setBlock($Block)
                     ->setLayout($Layout);
                 $Layout->addBlockPosition($BlockPosition);
-                $app['orm.em']->persist($BlockPosition);
-                $app['orm.em']->flush($BlockPosition);
+                $this->entityManager->persist($BlockPosition);
+                $this->entityManager->flush($BlockPosition);
             }
 
             $app->addSuccess('admin.register.complete', 'admin');
@@ -201,14 +223,14 @@ class LayoutController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $Block = $app['eccube.repository.block']->find($id);
+        $Block = $this->blockRepository->find($id);
 
         if (is_null($Block)) {
             return $app->json('みつかりませんでした');
         }
 
         // ブロックのソースコードの取得.
-        $file = $app['eccube.repository.block']->getReadTemplateFile($Block->getFileName());
+        $file = $this->blockRepository->getReadTemplateFile($Block->getFileName());
         $source = $file['tpl_data'];
 
         return $app->json([

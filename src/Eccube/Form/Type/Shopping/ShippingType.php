@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\ProductClass;
@@ -18,8 +19,17 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @FormType
+ */
 class ShippingType extends AbstractType
 {
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -148,7 +158,7 @@ class ShippingType extends AbstractType
                     $period = new \DatePeriod (
                         new \DateTime($minDate.' day'),
                         new \DateInterval('P1D'),
-                        new \DateTime($minDate + $this->app['config']['deliv_date_end_max'].' day')
+                        new \DateTime($minDate + $this->appConfig['deliv_date_end_max'].' day')
                     );
 
                     foreach ($period as $day) {

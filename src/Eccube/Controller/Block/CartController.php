@@ -24,14 +24,22 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Service\CartService;
 
 class CartController
 {
+    /**
+     * @Inject(CartService::class)
+     * @var CartService
+     */
+    protected $cartService;
+
     public function index(Application $app)
     {
         /** @var $Cart \Eccube\Entity\Cart */
-        $Cart = $app['eccube.service.cart']->getCart();
+        $Cart = $this->cartService->getCart();
         return $app->render('Block/cart.twig', array(
             'Cart' => $Cart,
         ));

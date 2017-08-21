@@ -23,8 +23,10 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -35,18 +37,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 {
     /**
-     * @var Application
+     * @var BaseInfoRepository
      */
-    private $app;
+    protected $baseInfoRepository;
 
     /**
      * DeliveryFeeProcessor constructor.
      *
      * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct(BaseInfoRepository $baseInfoRepository)
     {
-        $this->app = $app;
+        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     /**
@@ -58,7 +60,7 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
         /* @var $BaseInfo \Eccube\Entity\BaseInfo */
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         $isDeliveryFree = false;
 

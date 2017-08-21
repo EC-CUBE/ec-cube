@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Annotation\FormType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\ProductTypeType;
 use Eccube\Form\Type\PriceType;
@@ -39,6 +40,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class DeliveryType extends AbstractType
 {
     /**

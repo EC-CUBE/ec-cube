@@ -25,18 +25,53 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\TaxRuleRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject(TaxRuleRepository::class)
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
 
     /**
      * 税率設定の初期表示・登録
@@ -51,18 +86,18 @@ class TaxRuleController extends AbstractController
         $TargetTaxRule = null;
 
         if ($id == null) {
-            $TargetTaxRule = $app['eccube.repository.tax_rule']->newTaxRule();
+            $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
         } else {
-            $TargetTaxRule = $app['eccube.repository.tax_rule']->find($id);
+            $TargetTaxRule = $this->taxRuleRepository->find($id);
             if (is_null($TargetTaxRule)) {
                 throw new NotFoundHttpException();
             }
         }
 
         /** @var  $BaseInfo \Eccube\Entity\BaseInfo */
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(TaxRuleType::class, $TargetTaxRule);
 
         $builder
@@ -82,17 +117,17 @@ class TaxRuleController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE, $event);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($this->isValid($app['orm.em'], $form)) {
-                $app['orm.em']->persist($TargetTaxRule);
+            if ($this->isValid($this->entityManager, $form)) {
+                $this->entityManager->persist($TargetTaxRule);
 
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -102,7 +137,7 @@ class TaxRuleController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
 
@@ -111,7 +146,7 @@ class TaxRuleController extends AbstractController
         }
 
         // 共通税率一覧
-        $TaxRules = $app['eccube.repository.tax_rule']->getList();
+        $TaxRules = $this->taxRuleRepository->getList();
 
         return $app->render('Setting/Shop/tax_rule.twig', array(
             'TargetTaxRule' => $TargetTaxRule,
@@ -132,14 +167,14 @@ class TaxRuleController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetTaxRule = $app['eccube.repository.tax_rule']->find($id);
+        $TargetTaxRule = $this->taxRuleRepository->find($id);
         if (!$TargetTaxRule) {
             $app->deleteMessage();
             return $app->redirect($app->url('admin_setting_shop_tax'));
         }
 
         if (!$TargetTaxRule->isDefaultTaxRule()) {
-            $app['eccube.repository.tax_rule']->delete($TargetTaxRule);
+            $this->taxRuleRepository->delete($TargetTaxRule);
 
             $event = new EventArgs(
                 array(
@@ -147,7 +182,7 @@ class TaxRuleController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.shop.tax.delete.complete', 'admin');
         }
@@ -164,7 +199,7 @@ class TaxRuleController extends AbstractController
      */
     public function editParameter(Application $app, Request $request)
     {
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(TaxRuleType::class);
 
         $event = new EventArgs(
@@ -173,7 +208,7 @@ class TaxRuleController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -184,10 +219,10 @@ class TaxRuleController extends AbstractController
             $optionForm = $form->get('option_product_tax_rule');
             if ($optionForm->isValid()) {
                 /** @var  $BaseInfo \Eccube\Entity\BaseInfo */
-                $BaseInfo = $app['eccube.repository.base_info']->get();
+                $BaseInfo = $this->baseInfoRepository->get();
                 $BaseInfo->setOptionProductTaxRule($optionForm->getData());
 
-                $app['orm.em']->flush();
+                $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
@@ -196,7 +231,7 @@ class TaxRuleController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
             }

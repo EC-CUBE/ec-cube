@@ -24,25 +24,58 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Service;
+use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
+use Eccube\Repository\PluginEventHandlerRepository;
+use Eccube\Repository\PluginRepository;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @Service
+ */
 class PluginService
 {
+    /**
+     * @Inject(PluginEventHandlerRepository::class)
+     * @var PluginEventHandlerRepository
+     */
+    protected $pluginEventHandlerRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(PluginRepository::class)
+     * @var PluginRepository
+     */
+    protected $pluginRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(Application::class)
+     * @var Application
+     */
+    protected $app;
+
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
-    private $app;
-
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
 
     public function install($path, $source = 0)
     {
@@ -84,8 +117,8 @@ class PluginService
 
     public function createTempDir()
     {
-        @mkdir($this->app['config']['plugin_temp_realdir']);
-        $d = ($this->app['config']['plugin_temp_realdir'].'/'.sha1(Str::random(16)));
+        @mkdir($this->appConfig['plugin_temp_realdir']);
+        $d = ($this->appConfig['plugin_temp_realdir'].'/'.sha1(Str::random(16)));
 
         if (!mkdir($d, 0777)) {
             throw new PluginException($php_errormsg.$d);
@@ -188,7 +221,7 @@ class PluginService
 
     public function checkSamePlugin($code)
     {
-        $repo = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $code));
+        $repo = $this->pluginRepository->findOneBy(array('code' => $code));
         if ($repo) {
             throw new PluginException('plugin already installed.');
         }
@@ -196,7 +229,7 @@ class PluginService
 
     public function calcPluginDir($name)
     {
-        return $this->app['config']['plugin_realdir'].'/'.$name;
+        return $this->appConfig['plugin_realdir'].'/'.$name;
     }
 
     public function createPluginDir($d)
@@ -209,7 +242,7 @@ class PluginService
 
     public function registerPlugin($meta, $event_yml, $source = 0)
     {
-        $em = $this->app['orm.em'];
+        $em = $this->entityManager;
         $em->getConnection()->beginTransaction();
         try {
             $p = new \Eccube\Entity\Plugin();
@@ -237,7 +270,7 @@ class PluginService
                             ->setdelFlg(Constant::DISABLED)
                             ->setHandler($handler[0])
                             ->setHandlerType($handler[1])
-                            ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
+                            ->setPriority($this->pluginEventHandlerRepository->calcNewPriority($event, $handler[1]));
                         $em->persist($peh);
                         $em->flush();
                     }
@@ -285,7 +318,7 @@ class PluginService
     public function unregisterPlugin(\Eccube\Entity\Plugin $p)
     {
         try {
-            $em = $this->app['orm.em'];
+            $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
 
             $p->setDelFlg(Constant::ENABLED)->setEnable(Constant::DISABLED);
@@ -310,7 +343,7 @@ class PluginService
 
     public function enable(\Eccube\Entity\Plugin $plugin, $enable = true)
     {
-        $em = $this->app['orm.em'];
+        $em = $this->entityManager;
         try {
             PluginConfigManager::removePluginConfigCache();
             Cache::clear($this->app, false);
@@ -372,7 +405,7 @@ class PluginService
     public function updatePlugin(\Eccube\Entity\Plugin $plugin, $meta, $event_yml)
     {
         try {
-            $em = $this->app['orm.em'];
+            $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
             $plugin->setVersion($meta['version'])
                 ->setName($meta['name']);
@@ -381,7 +414,7 @@ class PluginService
                 $plugin->setClassName($meta['event']);
             }
 
-            $rep = $this->app['eccube.repository.plugin_event_handler'];
+            $rep = $this->pluginEventHandlerRepository;
 
             if (is_array($event_yml)) {
                 foreach ($event_yml as $event => $handlers) {

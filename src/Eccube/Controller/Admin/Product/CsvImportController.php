@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Category;
@@ -35,15 +37,90 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\DeliveryDateRepository;
+use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\ProductTypeRepository;
+use Eccube\Repository\Master\TagRepository;
+use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CsvImportController
 {
+    /**
+     * @Inject(DeliveryDateRepository::class)
+     * @var DeliveryDateRepository
+     */
+    protected $deliveryDateRepository;
+
+    /**
+     * @Inject(ProductTypeRepository::class)
+     * @var ProductTypeRepository
+     */
+    protected $productTypeRepository;
+
+    /**
+     * @Inject(TagRepository::class)
+     * @var TagRepository
+     */
+    protected $tagRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(CategoryRepository::class)
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * @Inject(ClassCategoryRepository::class)
+     * @var ClassCategoryRepository
+     */
+    protected $classCategoryRepository;
+
+    /**
+     * @Inject(DispRepository::class)
+     * @var DispRepository
+     */
+    protected $dispRepository;
+
+    /**
+     * @Inject(ProductRepository::class)
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
 
     private $errors = array();
 
@@ -61,7 +138,7 @@ class CsvImportController
      */
     public function csvProduct(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder(CsvImportType::class)->getForm();
+        $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
         $headers = $this->getProductCsvHeader();
 
@@ -98,12 +175,12 @@ class CsvImportController
 
                     $headerSize = count($keys);
 
-                    $this->em = $app['orm.em'];
+                    $this->em = $this->entityManager;
                     $this->em->getConfiguration()->setSQLLogger(null);
 
                     $this->em->getConnection()->beginTransaction();
 
-                    $BaseInfo = $app['eccube.repository.base_info']->get();
+                    $BaseInfo = $this->baseInfoRepository->get();
 
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -118,7 +195,7 @@ class CsvImportController
                             $this->em->persist($Product);
                         } else {
                             if (preg_match('/^\d+$/', $row['商品ID'])) {
-                                $Product = $app['eccube.repository.product']->find($row['商品ID']);
+                                $Product = $this->productRepository->find($row['商品ID']);
                                 if (!$Product) {
                                     $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
                                     return $this->render($app, $form, $headers, $this->productTwig);
@@ -134,7 +211,7 @@ class CsvImportController
                             $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が設定されていません。');
                         } else {
                             if (preg_match('/^\d+$/', $row['公開ステータス(ID)'])) {
-                                $Disp = $app['eccube.repository.master.disp']->find($row['公開ステータス(ID)']);
+                                $Disp = $this->dispRepository->find($row['公開ステータス(ID)']);
                                 if (!$Disp) {
                                     $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
                                 } else {
@@ -236,7 +313,7 @@ class CsvImportController
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
                                     if (preg_match('/^\d+$/', $row['規格分類1(ID)'])) {
-                                        $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
+                                        $ClassCategory1 = $this->classCategoryRepository->find($row['規格分類1(ID)']);
                                         if (!$ClassCategory1) {
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
                                         } else {
@@ -248,7 +325,7 @@ class CsvImportController
 
                                     if ($row['規格分類2(ID)'] != '') {
                                         if (preg_match('/^\d+$/', $row['規格分類2(ID)'])) {
-                                            $ClassCategory2 = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
+                                            $ClassCategory2 = $this->classCategoryRepository->find($row['規格分類2(ID)']);
                                             if (!$ClassCategory2) {
                                                 $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                                             } else {
@@ -330,7 +407,7 @@ class CsvImportController
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
                                     if (preg_match('/^\d+$/', $classCategoryId1)) {
-                                        $ClassCategory1 = $app['eccube.repository.class_category']->find($classCategoryId1);
+                                        $ClassCategory1 = $this->classCategoryRepository->find($classCategoryId1);
                                         if (!$ClassCategory1) {
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
                                         }
@@ -344,7 +421,7 @@ class CsvImportController
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)は設定できません。');
                                         } else {
                                             if (preg_match('/^\d+$/', $classCategoryId2)) {
-                                                $ClassCategory2 = $app['eccube.repository.class_category']->find($classCategoryId2);
+                                                $ClassCategory2 = $this->classCategoryRepository->find($classCategoryId2);
                                                 if (!$ClassCategory2) {
                                                     $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                                                 } else {
@@ -413,7 +490,7 @@ class CsvImportController
     public function csvCategory(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder(CsvImportType::class)->getForm();
+        $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
         $headers = $this->getCategoryCsvHeader();
 
@@ -450,7 +527,7 @@ class CsvImportController
 
                     $headerSize = count($keys);
 
-                    $this->em = $app['orm.em'];
+                    $this->em = $this->entityManager;
                     $this->em->getConfiguration()->setSQLLogger(null);
 
                     $this->em->getConnection()->beginTransaction();
@@ -470,7 +547,7 @@ class CsvImportController
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-                            $Category = $app['eccube.repository.category']->find($row['カテゴリID']);
+                            $Category = $this->categoryRepository->find($row['カテゴリID']);
                             if (!$Category) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -496,7 +573,7 @@ class CsvImportController
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
 
-                            $ParentCategory = $app['eccube.repository.category']->find($row['親カテゴリID']);
+                            $ParentCategory = $this->categoryRepository->find($row['親カテゴリID']);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -513,12 +590,12 @@ class CsvImportController
                             $Category->setLevel(1);
                         }
 
-                        if ($app['config']['category_nest_level'] < $Category->getLevel()) {
+                        if ($this->appConfig['category_nest_level'] < $Category->getLevel()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
-                        $status = $app['eccube.repository.category']->save($Category);
+                        $status = $this->categoryRepository->save($Category);
 
                         if (!$status) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが設定できません。');
@@ -571,11 +648,11 @@ class CsvImportController
             // ヘッダ行の出力
             $row = array();
             foreach ($headers as $key => $value) {
-                $row[] = mb_convert_encoding($key, $app['config']['csv_export_encoding'], 'UTF-8');
+                $row[] = mb_convert_encoding($key, $this->appConfig['csv_export_encoding'], 'UTF-8');
             }
 
             $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $app['config']['csv_export_separator']);
+            fputcsv($fp, $row, $this->appConfig['csv_export_separator']);
             fclose($fp);
 
         });
@@ -604,7 +681,7 @@ class CsvImportController
         if (!empty($this->fileName)) {
             try {
                 $fs = new Filesystem();
-                $fs->remove($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
+                $fs->remove($this->appConfig['csv_temp_realdir'] . '/' . $this->fileName);
             } catch (\Exception $e) {
                 // エラーが発生しても無視する
             }
@@ -628,9 +705,9 @@ class CsvImportController
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->fileName = 'upload_' . Str::random() . '.' . $formFile->getClientOriginalExtension();
-        $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
+        $formFile->move($this->appConfig['csv_temp_realdir'], $this->fileName);
 
-        $file = file_get_contents($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
+        $file = file_get_contents($this->appConfig['csv_temp_realdir'] . '/' . $this->fileName);
 
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
@@ -657,7 +734,7 @@ class CsvImportController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $app['config']['csv_import_delimiter'], $app['config']['csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->appConfig['csv_import_delimiter'], $this->appConfig['csv_import_enclosure']);
 
         $ret = $data->setHeaderRowNumber(0);
 
@@ -722,14 +799,14 @@ class CsvImportController
         foreach ($categories as $category) {
 
             if (preg_match('/^\d+$/', $category)) {
-                $Category = $app['eccube.repository.category']->find($category);
+                $Category = $this->categoryRepository->find($category);
                 if (!$Category) {
                     $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
                 } else {
                     foreach($Category->getPath() as $ParentCategory){
                         if (!isset($categoriesIdList[$ParentCategory->getId()])){
                             $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $rank);
-                            $app['orm.em']->persist($ProductCategory);
+                            $this->entityManager->persist($ProductCategory);
                             $rank++;
                             $Product->addProductCategory($ProductCategory);
                             $categoriesIdList[$ParentCategory->getId()] = true;
@@ -777,7 +854,7 @@ class CsvImportController
         foreach ($tags as $tag_id) {
             $Tag = null;
             if (preg_match('/^\d+$/', $tag_id)) {
-                $Tag = $app['eccube.repository.master.tag']->find($tag_id);
+                $Tag = $this->tagRepository->find($tag_id);
                 if ($Tag) {
                     $ProductTags = new ProductTag();
                     $ProductTags
@@ -811,7 +888,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
             if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
+                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
                 if (!$ProductType) {
                     $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
                 } else {
@@ -827,7 +904,7 @@ class CsvImportController
 
         if ($row['発送日目安(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
+                $DeliveryDate = $this->deliveryDateRepository->find($row['発送日目安(ID)']);
                 if (!$DeliveryDate) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
                 } else {
@@ -949,7 +1026,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
             if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
+                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
                 if (!$ProductType) {
                     $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
                 } else {
@@ -963,7 +1040,7 @@ class CsvImportController
         // 規格分類1、2をそれぞれセットし作成
         if ($row['規格分類1(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['規格分類1(ID)'])) {
-                $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
+                $ClassCategory = $this->classCategoryRepository->find($row['規格分類1(ID)']);
                 if (!$ClassCategory) {
                     $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
                 } else {
@@ -976,7 +1053,7 @@ class CsvImportController
 
         if ($row['規格分類2(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['規格分類2(ID)'])) {
-                $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
+                $ClassCategory = $this->classCategoryRepository->find($row['規格分類2(ID)']);
                 if (!$ClassCategory) {
                     $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                 } else {
@@ -989,7 +1066,7 @@ class CsvImportController
 
         if ($row['発送日目安(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
+                $DeliveryDate = $this->deliveryDateRepository->find($row['発送日目安(ID)']);
                 if (!$DeliveryDate) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
                 } else {

@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -31,17 +33,85 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchCustomerType;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\PageMaxRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\Master\SexRepository;
+use Eccube\Service\CsvExportService;
+use Eccube\Service\MailService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerController extends AbstractController
 {
+    /**
+     * @Inject(CsvExportService::class)
+     * @var CsvExportService
+     */
+    protected $csvExportService;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(MailService::class)
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @Inject(PrefRepository::class)
+     * @var PrefRepository
+     */
+    protected $prefRepository;
+
+    /**
+     * @Inject(SexRepository::class)
+     * @var SexRepository
+     */
+    protected $sexRepository;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(PageMaxRepository::class)
+     * @var PageMaxRepository
+     */
+    protected $pageMaxRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(CustomerRepository::class)
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
     public function index(Application $app, Request $request, $page_no = null)
     {
         $session = $request->getSession();
         $pagination = array();
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
@@ -50,15 +120,15 @@ class CustomerController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
 
         //アコーディオンの制御初期化( デフォルトでは閉じる )
         $active = false;
 
-        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
-        $page_count = $app['config']['default_page_count'];
+        $pageMaxis = $this->pageMaxRepository->findAll();
+        $page_count = $this->appConfig['default_page_count'];
 
         if ('POST' === $request->getMethod()) {
 
@@ -68,7 +138,7 @@ class CustomerController extends AbstractController
                 $searchData = $searchForm->getData();
 
                 // paginator
-                $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+                $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
                 $page_no = 1;
 
                 $event = new EventArgs(
@@ -78,7 +148,7 @@ class CustomerController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
                 $pagination = $app['paginator']()->paginate(
                     $qb,
@@ -108,7 +178,7 @@ class CustomerController extends AbstractController
                     $pcount = $request->get('page_count');
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
-                    $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+                    $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
                     $event = new EventArgs(
                         array(
@@ -117,7 +187,7 @@ class CustomerController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
                     $pagination = $app['paginator']()->paginate(
                         $qb,
@@ -131,11 +201,11 @@ class CustomerController extends AbstractController
                         foreach ($searchData['sex'] as $Sex) {
                             $sex_ids[] = $Sex->getId();
                         }
-                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
+                        $searchData['sex'] = $this->sexRepository->findBy(array('id' => $sex_ids));
                     }
 
                     if (!is_null($searchData['pref'])) {
-                        $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
+                        $searchData['pref'] = $this->prefRepository->find($searchData['pref']->getId());
                     }
                     $searchForm->setData($searchData);
                 }
@@ -155,8 +225,7 @@ class CustomerController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Customer = $app['orm.em']
-            ->getRepository('Eccube\Entity\Customer')
+        $Customer = $this->customerRepository
             ->find($id);
 
         if (is_null($Customer)) {
@@ -166,7 +235,7 @@ class CustomerController extends AbstractController
         $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
         // メール送信
-        $app['eccube.service.mail']->sendAdminCustomerConfirmMail($Customer, $activateUrl);
+        $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);
 
         $event = new EventArgs(
             array(
@@ -175,7 +244,7 @@ class CustomerController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
 
         $app->addSuccess('admin.customer.resend.complete', 'admin');
 
@@ -192,8 +261,7 @@ class CustomerController extends AbstractController
         $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
 
-        $Customer = $app['orm.em']
-            ->getRepository('Eccube\Entity\Customer')
+        $Customer = $this->customerRepository
             ->find($id);
 
         if (!$Customer) {
@@ -202,8 +270,8 @@ class CustomerController extends AbstractController
         }
 
         $Customer->setDelFlg(Constant::ENABLED);
-        $app['orm.em']->persist($Customer);
-        $app['orm.em']->flush();
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
 
         log_info('会員削除完了', array($id));
 
@@ -213,7 +281,7 @@ class CustomerController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
@@ -232,25 +300,25 @@ class CustomerController extends AbstractController
         set_time_limit(0);
 
         // sql loggerを無効にする.
-        $em = $app['orm.em'];
+        $em = $this->entityManager;
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
 
             // CSV種別を元に初期化.
-            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
+            $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
             // ヘッダ行の出力.
-            $app['eccube.service.csv.export']->exportHeader();
+            $this->csvExportService->exportHeader();
 
             // 会員データ検索用のクエリビルダを取得.
-            $qb = $app['eccube.service.csv.export']
+            $qb = $this->csvExportService
                 ->getCustomerQueryBuilder($request);
 
             // データ行の出力.
-            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -273,7 +341,7 @@ class CustomerController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT, $event);
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT, $event);
 
                     $ExportCsvRow->pushData();
                 }

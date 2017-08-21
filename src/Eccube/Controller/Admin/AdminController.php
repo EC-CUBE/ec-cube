@@ -24,9 +24,11 @@
 
 namespace Eccube\Controller\Admin;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -37,11 +39,44 @@ use Eccube\Form\Type\Admin\LoginType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\MemberRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
 {
+    /**
+     * @Inject(MemberRepository::class)
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
     public function login(Application $app, Request $request)
     {
         if ($app->isGranted('ROLE_ADMIN')) {
@@ -49,7 +84,7 @@ class AdminController extends AbstractController
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createNamedBuilder('', LoginType::class);
 
         $event = new EventArgs(
@@ -58,7 +93,7 @@ class AdminController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -71,13 +106,13 @@ class AdminController extends AbstractController
     public function index(Application $app, Request $request)
     {
         // install.phpのチェック.
-        if (isset($app['config']['eccube_install']) && $app['config']['eccube_install'] == 1) {
-            $file = $app['config']['root_dir'] . '/html/install.php';
+        if (isset($this->appConfig['eccube_install']) && $this->appConfig['eccube_install'] == 1) {
+            $file = $this->appConfig['root_dir'] . '/html/install.php';
             if (file_exists($file)) {
                 $message = $app->trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
                 $app->addWarning($message, 'admin');
             }
-            $fileOnRoot = $app['config']['root_dir'] . '/install.php';
+            $fileOnRoot = $this->appConfig['root_dir'] . '/install.php';
             if (file_exists($fileOnRoot)) {
                 $message = $app->trans('admin.install.warning', array('installphpPath' => 'install.php'));
                 $app->addWarning($message, 'admin');
@@ -85,13 +120,13 @@ class AdminController extends AbstractController
         }
 
         // 受注マスター検索用フォーム
-        $searchOrderBuilder = $app['form.factory']
+        $searchOrderBuilder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
         // 商品マスター検索用フォーム
-        $searchProductBuilder = $app['form.factory']
+        $searchProductBuilder = $this->formFactory
             ->createBuilder(SearchProductType::class);
         // 会員マスター検索用フォーム
-        $searchCustomerBuilder = $app['form.factory']
+        $searchCustomerBuilder = $this->formFactory
             ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
@@ -102,7 +137,7 @@ class AdminController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE, $event);
 
         // 受注マスター検索用フォーム
         $searchOrderForm = $searchOrderBuilder->getForm();
@@ -117,10 +152,10 @@ class AdminController extends AbstractController
          * 受注状況.
          */
         $excludes = array();
-        $excludes[] = $app['config']['order_pending'];
-        $excludes[] = $app['config']['order_processing'];
-        $excludes[] = $app['config']['order_cancel'];
-        $excludes[] = $app['config']['order_deliv'];
+        $excludes[] = $this->appConfig['order_pending'];
+        $excludes[] = $this->appConfig['order_processing'];
+        $excludes[] = $this->appConfig['order_cancel'];
+        $excludes[] = $this->appConfig['order_deliv'];
 
         $event = new EventArgs(
             array(
@@ -128,21 +163,21 @@ class AdminController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
         $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
-        $Orders = $this->getOrderEachStatus($app['orm.em'], $excludes);
+        $Orders = $this->getOrderEachStatus($this->entityManager, $excludes);
         // 受注ステータスの一覧.
-        $OrderStatuses = $this->findOrderStatus($app['orm.em'], $excludes);
+        $OrderStatuses = $this->findOrderStatus($this->entityManager, $excludes);
 
         /**
          * 売り上げ状況
          */
         $excludes = array();
-        $excludes[] = $app['config']['order_processing'];
-        $excludes[] = $app['config']['order_cancel'];
-        $excludes[] = $app['config']['order_pending'];
+        $excludes[] = $this->appConfig['order_processing'];
+        $excludes[] = $this->appConfig['order_cancel'];
+        $excludes[] = $this->appConfig['order_pending'];
 
         $event = new EventArgs(
             array(
@@ -150,23 +185,23 @@ class AdminController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
         $excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
-        $salesToday = $this->getSalesByDay($app['orm.em'], new \DateTime(), $excludes);
+        $salesToday = $this->getSalesByDay($this->entityManager, new \DateTime(), $excludes);
         // 昨日の売上/件数
-        $salesYesterday = $this->getSalesByDay($app['orm.em'], new \DateTime('-1 day'), $excludes);
+        $salesYesterday = $this->getSalesByDay($this->entityManager, new \DateTime('-1 day'), $excludes);
         // 今月の売上/件数
-        $salesThisMonth = $this->getSalesByMonth($app['orm.em'], new \DateTime(), $excludes);
+        $salesThisMonth = $this->getSalesByMonth($this->entityManager, new \DateTime(), $excludes);
 
         /**
          * ショップ状況
          */
         // 在庫切れ商品数
-        $countNonStockProducts = $this->countNonStockProducts($app['orm.em']);
+        $countNonStockProducts = $this->countNonStockProducts($this->entityManager);
         // 本会員数
-        $countCustomers = $this->countCustomers($app['orm.em']);
+        $countCustomers = $this->countCustomers($this->entityManager);
 
         $event = new EventArgs(
             array(
@@ -180,7 +215,7 @@ class AdminController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
         return $app->render('index.twig', array(
             'searchOrderForm' => $searchOrderForm->createView(),
@@ -205,7 +240,7 @@ class AdminController extends AbstractController
      */
     public function changePassword(Application $app, Request $request)
     {
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(ChangePasswordType::class);
 
         $event = new EventArgs(
@@ -214,7 +249,7 @@ class AdminController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE, $event);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -228,17 +263,17 @@ class AdminController extends AbstractController
             $dummyMember->setPassword($password);
             $salt = $dummyMember->getSalt();
             if (!isset($salt)) {
-                $salt = $app['eccube.repository.member']->createSalt(5);
+                $salt = $this->memberRepository->createSalt(5);
                 $dummyMember->setSalt($salt);
             }
 
-            $encryptPassword = $app['eccube.repository.member']->encryptPassword($dummyMember);
+            $encryptPassword = $this->memberRepository->encryptPassword($dummyMember);
 
             $Member
                 ->setPassword($encryptPassword)
                 ->setSalt($salt);
 
-            $status = $app['eccube.repository.member']->save($Member);
+            $status = $this->memberRepository->save($Member);
             if ($status) {
                 $event = new EventArgs(
                     array(
@@ -246,7 +281,7 @@ class AdminController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
 
                 $app->addSuccess('admin.change_password.save.complete', 'admin');
 
@@ -272,7 +307,7 @@ class AdminController extends AbstractController
     {
         // 商品マスター検索用フォーム
         /* @var Form $form */
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(SearchProductType::class)
             ->getForm();
 
@@ -286,7 +321,7 @@ class AdminController extends AbstractController
 
             return $app->redirect($app->url('admin_product_page', array(
                 'page_no' => 1,
-                'status' => $app['config']['admin_product_stock_status'])));
+                'status' => $this->appConfig['admin_product_stock_status'])));
         }
 
         return $app->redirect($app->url('admin_homepage'));

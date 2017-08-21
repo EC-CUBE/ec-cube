@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -35,11 +37,20 @@ use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Service\CartService;
+use Eccube\Service\OrderHelper;
+use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -47,6 +58,72 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ShoppingController extends AbstractShoppingController
 {
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject(OrderHelper::class)
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
+     * @Inject(CartService::class)
+     * @var CartService
+     */
+    protected $cartService;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(ShoppingService::class)
+     * @var ShoppingService
+     */
+    protected $shoppingService;
+
+    /**
+     * @Inject(CustomerAddressRepository::class)
+     * @var CustomerAddressRepository
+     */
+    protected $customerAddressRepository;
+
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("session")
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * @Inject("request_scope")
+     * @var ParameterBag
+     */
+    protected $parameterBag;
+
     /**
      * 購入画面表示
      *
@@ -72,7 +149,7 @@ class ShoppingController extends AbstractShoppingController
         }
 
         /** @var Order $Order */
-        $Order = $app['request_scope']->get('Order');
+        $Order = $this->parameterBag->get('Order');
 
         // 単価集計
         $flowResult = $this->executePurchaseFlow($app, $Order);
@@ -86,7 +163,7 @@ class ShoppingController extends AbstractShoppingController
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
         $app->forward($app->path("shopping/handleMultipleErrors"));
-        $form = $app['request_scope']->get(OrderType::class);
+        $form = $this->parameterBag->get(OrderType::class);
 
         return [
             'form' => $form->createView(),
@@ -118,8 +195,8 @@ class ShoppingController extends AbstractShoppingController
 
         // フォームの生成
         $app->forward($app->path("shopping/createForm"));
-        $form = $app['request_scope']->get(OrderType::class);
-        $Order = $app['request_scope']->get('Order');
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
 
         $form->handleRequest($request);
 
@@ -128,8 +205,8 @@ class ShoppingController extends AbstractShoppingController
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
-        $form = $app['request_scope']->get(OrderType::class);
-        $Order = $app['request_scope']->get('Order');
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -161,8 +238,8 @@ class ShoppingController extends AbstractShoppingController
         // FIXME イベントハンドラを外から渡したい
         $app->forward($app->path("shopping/createForm"));
 
-        $form = $app['request_scope']->get(OrderType::class);
-        $Order = $app['request_scope']->get('Order');
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
 
         $form->handleRequest($request);
 
@@ -187,7 +264,7 @@ class ShoppingController extends AbstractShoppingController
     public function complete(Application $app, Request $request)
     {
         // 受注IDを取得
-        $orderId = $app['session']->get($this->sessionOrderKey);
+        $orderId = $this->session->get($this->sessionOrderKey);
 
         $event = new EventArgs(
             array(
@@ -195,18 +272,18 @@ class ShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE, $event);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
         }
 
         // 受注に関連するセッションを削除
-        $app['session']->remove($this->sessionOrderKey);
-        $app['session']->remove($this->sessionMultipleKey);
+        $this->session->remove($this->sessionOrderKey);
+        $this->session->remove($this->sessionMultipleKey);
         // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
-        $app['session']->set($this->sessionKey, array());
-        $app['session']->set($this->sessionCustomerAddressKey, array());
+        $this->session->set($this->sessionKey, array());
+        $this->session->set($this->sessionCustomerAddressKey, array());
 
         log_info('購入処理完了', array($orderId));
 
@@ -243,7 +320,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 選択されたお届け先情報を取得
-            $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
+            $CustomerAddress = $this->customerAddressRepository->findOneBy(array(
                 'Customer' => $app->user(),
                 'id' => $address,
             ));
@@ -252,7 +329,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             /** @var Order $Order */
-            $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+            $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
             if (!$Order) {
                 log_info('購入処理中の受注情報がないため購入エラー');
                 $app->addError('front.shopping.order.error');
@@ -271,7 +348,7 @@ class ShoppingController extends AbstractShoppingController
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             // 配送料金の設定
-            $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+            $this->shoppingService->setShippingDeliveryFee($Shipping);
 
 
             // 合計金額の再計算
@@ -281,7 +358,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 配送先を更新
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
@@ -290,7 +367,7 @@ class ShoppingController extends AbstractShoppingController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE, $event);
 
             log_info('お届先情報更新完了', array($Shipping->getId()));
             return $app->redirect($app->url('shopping'));
@@ -315,7 +392,7 @@ class ShoppingController extends AbstractShoppingController
         $Customer = $app->user();
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $addressCurrNum = count($app->user()->getCustomerAddresses());
-            $addressMax = $app['config']['deliv_addr_max'];
+            $addressMax = $this->appConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('配送先住所最大数エラー');
             }
@@ -334,7 +411,7 @@ class ShoppingController extends AbstractShoppingController
         }
 
         /** @var Order $Order */
-        $Order = $app['request_scope']->get('Order');
+        $Order = $this->parameterBag->get('Order');
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
@@ -351,7 +428,7 @@ class ShoppingController extends AbstractShoppingController
             $CustomerAddress->setFromShipping($Shipping);
         }
 
-        $builder = $app['form.factory']->createBuilder(ShoppingShippingType::class, $CustomerAddress);
+        $builder = $this->formFactory->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(
@@ -362,7 +439,7 @@ class ShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -376,7 +453,7 @@ class ShoppingController extends AbstractShoppingController
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             if ($Customer instanceof Customer) {
-                $app['orm.em']->persist($CustomerAddress);
+                $this->entityManager->persist($CustomerAddress);
                 log_info('新規お届け先登録', array(
                     'id' => $Order->getId(),
                     'shipping' => $id,
@@ -384,7 +461,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 配送料金の設定
-            $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+            $this->shoppingService->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
             $flowResult = $this->executePurchaseFlow($app, $Order);
@@ -393,7 +470,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // 配送先を更新
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
@@ -403,7 +480,7 @@ class ShoppingController extends AbstractShoppingController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
 
             log_info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
             return $app->redirect($app->url('shopping'));
@@ -420,7 +497,7 @@ class ShoppingController extends AbstractShoppingController
      */
     public function login(Application $app, Request $request)
     {
-        if (!$app['eccube.service.cart']->isLocked()) {
+        if (!$this->cartService->isLocked()) {
             return $app->redirect($app->url('cart'));
         }
 
@@ -429,7 +506,7 @@ class ShoppingController extends AbstractShoppingController
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', CustomerLoginType::class);
+        $builder = $this->formFactory->createNamedBuilder('', CustomerLoginType::class);
 
         if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $app->user();
@@ -444,7 +521,7 @@ class ShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -464,7 +541,7 @@ class ShoppingController extends AbstractShoppingController
             array(),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE, $event);
 
         if ($event->getResponse() !== null) {
             return $event->getResponse();
@@ -483,7 +560,7 @@ class ShoppingController extends AbstractShoppingController
      */
     public function checkToCart(Application $app, Request $request)
     {
-        $cartService = $app['eccube.service.cart'];
+        $cartService = $this->cartService;
 
         // カートチェック
         if (!$cartService->isLocked()) {
@@ -512,16 +589,16 @@ class ShoppingController extends AbstractShoppingController
      */
     public function initializeOrder(Application $app, Request $request)
     {
-        $cartService = $app['eccube.service.cart'];
+        $cartService = $this->cartService;
         // 購入処理中の受注情報を取得
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
 
         // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
         if (is_null($Order)) {
             // 未ログインの場合, ログイン画面へリダイレクト.
             if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
                 // 非会員でも一度会員登録されていればショッピング画面へ遷移
-                $Customer = $app['eccube.service.shopping']->getNonMember($this->sessionKey);
+                $Customer = $this->shoppingService->getNonMember($this->sessionKey);
 
                 if (is_null($Customer)) {
                     log_info('未ログインのためログイン画面にリダイレクト');
@@ -534,7 +611,7 @@ class ShoppingController extends AbstractShoppingController
             try {
                 // 受注情報を作成
                 //$Order = $app['eccube.service.shopping']->createOrder($Customer);
-                $Order = $app['eccube.helper.order']->createProcessingOrder(
+                $Order = $this->orderHelper->createProcessingOrder(
                     $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
                 $cartService->setPreOrderId($Order->getPreOrderId());
                 $cartService->save();
@@ -545,14 +622,14 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // セッション情報を削除
-            $app['session']->remove($this->sessionOrderKey);
-            $app['session']->remove($this->sessionMultipleKey);
+            $this->session->remove($this->sessionOrderKey);
+            $this->session->remove($this->sessionMultipleKey);
         }
 
         // 受注関連情報を最新状態に更新
-        $app['orm.em']->refresh($Order);
+        $this->entityManager->refresh($Order);
 
-        $app['request_scope']->set('Order', $Order);
+        $this->parameterBag->set('Order', $Order);
         return new Response();
     }
 
@@ -566,9 +643,9 @@ class ShoppingController extends AbstractShoppingController
      */
     public function createForm(Application $app, Request $request)
     {
-        $Order = $app['request_scope']->get('Order');
+        $Order = $this->parameterBag->get('Order');
         // フォームの生成
-        $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
+        $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
             array(
@@ -577,11 +654,11 @@ class ShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
-        $app['request_scope']->set(OrderType::class, $form);
+        $this->parameterBag->set(OrderType::class, $form);
         return new Response();
     }
 
@@ -595,8 +672,8 @@ class ShoppingController extends AbstractShoppingController
      */
     public function redirectToChange(Application $app, Request $request)
     {
-        $form = $app['request_scope']->get(OrderType::class);
-        $Order = $app['request_scope']->get('Order');
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
 
         // requestのバインド後、Calculatorに再集計させる
         //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
@@ -604,7 +681,7 @@ class ShoppingController extends AbstractShoppingController
         // 支払い方法の変更や配送業者の変更があった場合はDBに保持する.
         if ($form->isSubmitted() && $form->isValid()) {
             // POSTされたデータをDBに保持.
-            $app['orm.em']->flush();
+            $this->entityManager->flush();
 
             $mode = $form['mode']->getData();
             switch ($mode) {
@@ -639,13 +716,13 @@ class ShoppingController extends AbstractShoppingController
      */
     public function handleMultipleErrors(Application $app, Request $request)
     {
-        $Order = $app['request_scope']->get('Order');
+        $Order = $this->parameterBag->get('Order');
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
-        if (!$app['session']->has($this->sessionMultipleKey)) {
+        if (!$this->session->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
 
-                $BaseInfo = $app['eccube.repository.base_info']->get();
+                $BaseInfo = $this->baseInfoRepository->get();
 
                 if (!$BaseInfo->getOptionMultipleShipping()) {
                     // 複数配送に設定されていないのに複数配送先ができればエラー
@@ -655,7 +732,7 @@ class ShoppingController extends AbstractShoppingController
 
                 $app->addError('shopping.multiple.delivery');
             }
-            $app['session']->set($this->sessionMultipleKey, 'multiple');
+            $this->session->set($this->sessionMultipleKey, 'multiple');
         }
 
         return new Response();
@@ -671,13 +748,13 @@ class ShoppingController extends AbstractShoppingController
      */
     public function existsOrder(Application $app, Request $request)
     {
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
         }
-        $app['request_scope']->set('Order', $Order);
+        $this->parameterBag->set('Order', $Order);
         return new Response();
     }
 
@@ -691,7 +768,7 @@ class ShoppingController extends AbstractShoppingController
      */
     public function completeOrder(Application $app, Request $request)
     {
-        $form = $app['request_scope']->get(OrderType::class);
+        $form = $this->parameterBag->get(OrderType::class);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -700,7 +777,7 @@ class ShoppingController extends AbstractShoppingController
             log_info('購入処理開始', array($Order->getId()));
 
             // トランザクション制御
-            $em = $app['orm.em'];
+            $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
             try {
 
@@ -715,7 +792,7 @@ class ShoppingController extends AbstractShoppingController
                 }
 
                 // 購入処理
-                $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
+                $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
                 // Order も引数で渡すのがベスト??
                 $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
@@ -783,11 +860,11 @@ class ShoppingController extends AbstractShoppingController
      */
     public function afterComplete(Application $app, Request $request)
     {
-        $form = $app['request_scope']->get(OrderType::class);
-        $Order = $app['request_scope']->get('Order');
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
 
         // カート削除
-        $app['eccube.service.cart']->clear()->save();
+        $this->cartService->clear()->save();
 
         $event = new EventArgs(
             array(
@@ -796,7 +873,7 @@ class ShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING, $event);
 
         if ($event->getResponse() !== null) {
             log_info('イベントレスポンス返却', array($Order->getId()));
@@ -804,10 +881,10 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // 受注IDをセッションにセット
-        $app['session']->set($this->sessionOrderKey, $Order->getId());
+        $this->session->set($this->sessionOrderKey, $Order->getId());
 
         // メール送信
-        $MailHistory = $app['eccube.service.shopping']->sendOrderMail($Order);
+        $MailHistory = $this->shoppingService->sendOrderMail($Order);
 
         $event = new EventArgs(
             array(
@@ -817,7 +894,7 @@ class ShoppingController extends AbstractShoppingController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE, $event);
 
         if ($event->getResponse() !== null) {
             log_info('イベントレスポンス返却', array($Order->getId()));

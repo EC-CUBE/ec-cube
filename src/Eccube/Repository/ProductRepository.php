@@ -24,10 +24,11 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Repository;
+use Eccube\Doctrine\Query\Queries;
 use Eccube\Util\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -42,10 +43,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductRepository extends AbstractRepository
 {
     /**
-     * @var Application $app
-     * @Inject(Application::class)
+     * @Inject("eccube.queries")
+     * @var Queries
      */
-    protected $app;
+    protected $queries;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
 
     /**
      * get Product.
@@ -115,7 +128,7 @@ class ProductRepository extends AbstractRepository
 
         // Order By
         // 価格低い順
-        $config = $this->app['config'];
+        $config = $this->appConfig;
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_lower']) {
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
@@ -138,7 +151,7 @@ class ProductRepository extends AbstractRepository
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_newer']) {
             // 在庫切れ商品非表示の設定が有効時対応
             // @see https://github.com/EC-CUBE/ec-cube/issues/1998
-            if ($this->app['orm.em']->getFilters()->isEnabled('nostock_hidden') == true) {
+            if ($this->entityManager->getFilters()->isEnabled('nostock_hidden') == true) {
                 $qb->innerJoin('p.ProductClasses', 'pc');
             }
             $qb->orderBy('p.create_date', 'DESC');
@@ -152,7 +165,7 @@ class ProductRepository extends AbstractRepository
                 ->addOrderBy('p.id', 'DESC');
         }
 
-        return $this->app['eccube.queries']->customize(QueryKey::PRODUCT_SEARCH, $qb, $searchData);
+        return $this->queries->customize(QueryKey::PRODUCT_SEARCH, $qb, $searchData);
     }
 
     /**
@@ -266,7 +279,7 @@ class ProductRepository extends AbstractRepository
         $qb
             ->orderBy('p.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
+        return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
 
     /**
@@ -288,6 +301,6 @@ class ProductRepository extends AbstractRepository
         // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
         $qb->addOrderBy('cfp.create_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(QueryKey::PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
+        return $this->queries->customize(QueryKey::PRODUCT_GET_FAVORITE, $qb, ['customer' => $Customer]);
     }
 }

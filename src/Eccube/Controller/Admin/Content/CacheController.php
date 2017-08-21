@@ -24,20 +24,41 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\CacheType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class CacheController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
 
     public function index(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder(CacheType::class);
+        $builder = $this->formFactory->createBuilder(CacheType::class);
 
         $form = $builder->getForm();
 
@@ -47,7 +68,7 @@ class CacheController extends AbstractController
 
             $data = $form->get('cache')->getData();
 
-            $cacheDir = $app['config']['root_dir'].'/app/cache';
+            $cacheDir = $this->appConfig['root_dir'].'/app/cache';
 
             $filesystem = new Filesystem();
 
@@ -59,7 +80,7 @@ class CacheController extends AbstractController
                 }
                 if ($dir == 'doctrine') {
                     // doctrineが指定された場合は, cache driver経由で削除.
-                    $config =  $app['orm.em']->getConfiguration();
+                    $config =  $this->entityManager->getConfiguration();
                     $this->deleteDoctrineCache($config->getMetadataCacheImpl());
                     $this->deleteDoctrineCache($config->getQueryCacheImpl());
                     $this->deleteDoctrineCache($config->getResultCacheImpl());

@@ -25,6 +25,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
@@ -46,7 +47,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->processor = new DeliveryFeeFreeProcessor($this->app);
+        $this->processor = new DeliveryFeeFreeProcessor($this->app[BaseInfoRepository::class]);
         $this->Order = $this->createOrder($this->createCustomer());
     }
 

@@ -5,6 +5,7 @@ namespace Eccube\ServiceProvider;
 
 use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
+use Eccube\Service\PluginService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -293,7 +294,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
             // 正しい形式の pluginConfig のみ読み込む
             $path = PluginConfigManager::getPluginRealDir().'/'.$code;
             try {
-                $app['eccube.service.plugin']->checkPluginArchiveContent($path, $pluginConfig['config']);
+                $app[PluginService::class]->checkPluginArchiveContent($path, $pluginConfig['config']);
             } catch (\Eccube\Exception\PluginException $e) {
                 $app['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid. Skipping loading.", array(
                     'path' => $path,

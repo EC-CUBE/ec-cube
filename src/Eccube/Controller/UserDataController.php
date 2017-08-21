@@ -24,23 +24,57 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\PageLayoutRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig_Loader_Chain;
 
 class UserDataController
 {
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("twig.loader")
+     * @var Twig_Loader_Chain
+     */
+    protected $twigLoaderChain;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(PageLayoutRepository::class)
+     * @var PageLayoutRepository
+     */
+    protected $pageLayoutRepository;
+
+    /**
+     * @Inject(DeviceTypeRepository::class)
+     * @var DeviceTypeRepository
+     */
+    protected $deviceTypeRepository;
+
     public function index(Application $app, Request $request, $route)
     {
-        $DeviceType = $app['orm.em']
-            ->getRepository('Eccube\Entity\Master\DeviceType')
+        $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $app['eccube.repository.page_layout']->findOneBy(array(
+        $PageLayout = $this->pageLayoutRepository->findOneBy(array(
             'url' => $route,
             'DeviceType' => $DeviceType,
             'edit_flg' => PageLayout::EDIT_FLG_USER,
@@ -52,8 +86,8 @@ class UserDataController
 
         // user_dataディレクトリを探索パスに追加.
         $paths = array();
-        $paths[] = $app['config']['user_data_realdir'];
-        $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+        $paths[] = $this->appConfig['user_data_realdir'];
+        $this->twigLoaderChain->addLoader(new \Twig_Loader_Filesystem($paths));
 
         $file = $PageLayout->getFileName() . '.twig';
 
@@ -65,7 +99,7 @@ class UserDataController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE, $event);
 
         return $app->render($file);
     }

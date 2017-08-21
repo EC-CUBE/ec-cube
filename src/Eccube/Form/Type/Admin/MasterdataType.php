@@ -23,6 +23,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
@@ -31,8 +33,17 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class MasterdataType extends AbstractType
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
     /**
      * @var \Eccube\Application $app
      * @Inject(Application::class)
@@ -53,14 +64,14 @@ class MasterdataType extends AbstractType
 
         $masterdata = array();
 
-        $driverChain = $app['orm.em']->getConfiguration()->getMetadataDriverImpl();
+        $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
         $drivers = $driverChain->getDrivers();
 
         foreach ($drivers as $namespace => $driver) {
             if ($namespace == 'Eccube\Entity') {
                 $classNames = $driver->getAllClassNames();
                 foreach ($classNames as $className) {
-                    $meta = $app['orm.em']->getMetadataFactory()->getMetadataFor($className);
+                    $meta = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
                     if (strpos($meta->rootEntityName, 'Master') !== false
                         && $meta->hasField('id')
                         && $meta->hasField('name')

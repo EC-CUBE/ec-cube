@@ -24,12 +24,20 @@
 namespace Eccube\Controller;
 
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 
 class AbstractShoppingController extends AbstractController
 {
+    /**
+     * @Inject("eccube.purchase.flow.shopping")
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
+
 
     /**
      * @var string 非会員用セッションキー
@@ -59,7 +67,7 @@ class AbstractShoppingController extends AbstractController
     protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $app['eccube.purchase.flow.shopping']->calculate($itemHolder, $app['eccube.purchase.context']());
+        $flowResult = $this->purchaseFlow->calculate($itemHolder, $app['eccube.purchase.context']());
         foreach ($flowResult->getWarning() as $warning) {
             $app->addRequestError($warning->getMessage());
         }

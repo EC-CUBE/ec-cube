@@ -24,10 +24,10 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Doctrine\ORM\QueryBuilder;
+use Eccube\Annotation\Inject;
+use Eccube\Annotation\Repository;
+use Eccube\Doctrine\Query\Queries;
 use Eccube\Util\Str;
 
 /**
@@ -41,10 +41,16 @@ use Eccube\Util\Str;
 class OrderRepository extends AbstractRepository
 {
     /**
-     * @var Application $app
-     * @Inject(Application::class)
+     * @Inject("config")
+     * @var array
      */
-    protected $app;
+    protected $appConfig;
+
+    /**
+     * @Inject("eccube.queries")
+     * @var Queries
+     */
+    protected $queries;
 
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
     {
@@ -247,7 +253,7 @@ class OrderRepository extends AbstractRepository
         // Order By
         $qb->addOrderBy('o.update_date', 'DESC');
 
-        return $this->app['eccube.queries']->customize(QueryKey::ORDER_SEARCH, $qb, $searchData);
+        return $this->queries->customize(QueryKey::ORDER_SEARCH, $qb, $searchData);
     }
 
 
@@ -301,7 +307,7 @@ class OrderRepository extends AbstractRepository
             // 購入処理中は検索対象から除外
             $OrderStatuses = $this->getEntityManager()
                 ->getRepository('Eccube\Entity\Master\OrderStatus')
-                ->findNotContainsBy(array('id' => $this->app['config']['order_processing']));
+                ->findNotContainsBy(array('id' => $this->appConfig['order_processing']));
             $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $OrderStatuses);
         }
@@ -442,7 +448,7 @@ class OrderRepository extends AbstractRepository
         $qb->orderBy('o.update_date', 'DESC');
         $qb->addorderBy('o.id', 'DESC');
 
-        return $this->app['eccube.queries']->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
+        return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }
 
 
@@ -459,7 +465,7 @@ class OrderRepository extends AbstractRepository
         // Order By
         $qb->addOrderBy('o.id', 'DESC');
 
-        return $this->app['eccube.queries']->customize(QueryKey::ORDER_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
+        return $this->queries->customize(QueryKey::ORDER_SEARCH_BY_CUSTOMER, $qb, ['customer' => $Customer]);
     }
 
     /**
@@ -472,7 +478,7 @@ class OrderRepository extends AbstractRepository
         $qb = $this->createQueryBuilder('o');
         $qb
             ->where('o.OrderStatus <> :OrderStatus')
-            ->setParameter('OrderStatus', $this->app['config']['order_cancel'])
+            ->setParameter('OrderStatus', $this->appConfig['order_cancel'])
             ->setMaxResults(10)
             ->orderBy('o.create_date', 'DESC');
 

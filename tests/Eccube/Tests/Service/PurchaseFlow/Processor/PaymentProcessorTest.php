@@ -10,6 +10,7 @@ use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -91,7 +92,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
         $this->ProductClass3->setProductType($ProductType);
 
-        $this->validator = new PaymentProcessor($this->app);
+        $this->validator = new PaymentProcessor($this->app[DeliveryRepository::class]);
     }
 
     public function testInstance()

@@ -24,17 +24,24 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\PluginEventHandlerRepository;
+use Eccube\Repository\PluginRepository;
+use Eccube\Service\PluginService;
 use Eccube\Util\Str;
-use Monolog\Logger;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -42,6 +49,54 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject("monolog")
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @Inject(PluginEventHandlerRepository::class)
+     * @var PluginEventHandlerRepository
+     */
+    protected $pluginEventHandlerRepository;
+
+    /**
+     * @Inject(PluginService::class)
+     * @var PluginService
+     */
+    protected $pluginService;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject(PluginRepository::class)
+     * @var PluginRepository
+     */
+    protected $pluginRepository;
+
 
     /**
      * インストール済プラグイン画面
@@ -55,7 +110,7 @@ class PluginController extends AbstractController
         $pluginForms = array();
         $configPages = array();
 
-        $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('code' => 'ASC'));
+        $Plugins = $this->pluginRepository->findBy(array(), array('code' => 'ASC'));
 
         // ファイル設置プラグインの取得.
         $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins, $app);
@@ -75,7 +130,7 @@ class PluginController extends AbstractController
 
         foreach ($Plugins as $Plugin) {
 
-            $form = $app['form.factory']
+            $form = $this->formFactory
                 ->createNamedBuilder('form'.$Plugin->getId(), PluginManagementType::class, null, array(
                     'plugin_id' => $Plugin->getId(),
                 ))
@@ -100,14 +155,14 @@ class PluginController extends AbstractController
         }
 
         // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         $authKey = $BaseInfo->getAuthenticationKey();
 
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $app['config']['owners_store_url'].'?method=list';
+            $url = $this->appConfig['owners_store_url'].'?method=list';
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json) {
@@ -165,9 +220,9 @@ class PluginController extends AbstractController
     public function update(Application $app, Request $request, $id)
     {
 
-        $Plugin = $app['eccube.repository.plugin']->find($id);
+        $Plugin = $this->pluginRepository->find($id);
 
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createNamedBuilder('form'.$id, PluginManagementType::class, null, array(
                 'plugin_id' => null, // placeHolder
             ))
@@ -185,11 +240,11 @@ class PluginController extends AbstractController
 
                     $formFile = $form['plugin_archive']->getData();
 
-                    $tmpDir = $app['eccube.service.plugin']->createTempDir();
+                    $tmpDir = $this->pluginService->createTempDir();
                     $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
 
                     $formFile->move($tmpDir, $tmpFile);
-                    $app['eccube.service.plugin']->update($Plugin, $tmpDir.'/'.$tmpFile);
+                    $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
 
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
@@ -231,7 +286,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Plugin = $app['eccube.repository.plugin']->find($id);
+        $Plugin = $this->pluginRepository->find($id);
 
         if (!$Plugin) {
             throw new NotFoundHttpException();
@@ -240,7 +295,7 @@ class PluginController extends AbstractController
         if ($Plugin->getEnable() == Constant::ENABLED) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
-            $app['eccube.service.plugin']->enable($Plugin);
+            $this->pluginService->enable($Plugin);
             $app->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
@@ -257,14 +312,14 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Plugin = $app['eccube.repository.plugin']->find($id);
+        $Plugin = $this->pluginRepository->find($id);
 
         if (!$Plugin) {
             throw new NotFoundHttpException();
         }
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
-            $app['eccube.service.plugin']->disable($Plugin);
+            $this->pluginService->disable($Plugin);
             $app->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {
             $app->addError('admin.plugin.already.disable', 'admin');
@@ -284,14 +339,14 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Plugin = $app['eccube.repository.plugin']->find($id);
+        $Plugin = $this->pluginRepository->find($id);
 
         if (!$Plugin) {
             $app->deleteMessage();
             return $app->redirect($app->url('admin_store_plugin'));
         }
 
-        $app['eccube.service.plugin']->uninstall($Plugin);
+        $this->pluginService->uninstall($Plugin);
 
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
@@ -300,7 +355,7 @@ class PluginController extends AbstractController
 
     public function handler(Application $app)
     {
-        $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
+        $handlers = $this->pluginEventHandlerRepository->getHandlers();
 
         // 一次元配列からイベント毎の二次元配列に変換する
         $HandlersPerEvent = array();
@@ -316,7 +371,7 @@ class PluginController extends AbstractController
 
     public function handler_up(Application $app, $handlerId)
     {
-        $repo = $app['eccube.repository.plugin_event_handler'];
+        $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($repo->find($handlerId));
 
         return $app->redirect($app->url('admin_store_plugin_handler'));
@@ -324,7 +379,7 @@ class PluginController extends AbstractController
 
     public function handler_down(Application $app, $handlerId)
     {
-        $repo = $app['eccube.repository.plugin_event_handler'];
+        $repo = $this->pluginEventHandlerRepository;
         $repo->upPriority($repo->find($handlerId), false);
 
         return $app->redirect($app->url('admin_store_plugin_handler'));
@@ -338,7 +393,7 @@ class PluginController extends AbstractController
      */
     public function install(Application $app, Request $request)
     {
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
 
@@ -351,7 +406,7 @@ class PluginController extends AbstractController
 
                 $tmpDir = null;
                 try {
-                    $service = $app['eccube.service.plugin'];
+                    $service = $this->pluginService;
 
                     $formFile = $form['plugin_archive']->getData();
 
@@ -374,7 +429,7 @@ class PluginController extends AbstractController
                         $fs = new Filesystem();
                         $fs->remove($tmpDir);
                     }
-                    $app['monolog']->error("plugin install failed.", array(
+                    $this->logger->error("plugin install failed.", array(
                         'original-message' => $e->getMessage()
                     ));
                     $errors[] = $e;
@@ -403,7 +458,7 @@ class PluginController extends AbstractController
     public function ownersInstall(Application $app, Request $request)
     {
         // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         $authKey = $BaseInfo->getAuthenticationKey();
         $authResult = true;
@@ -414,7 +469,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $app['config']['owners_store_url'].'?method=list';
+            $url = $this->appConfig['owners_store_url'].'?method=list';
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
@@ -434,7 +489,7 @@ class PluginController extends AbstractController
                         $items = array();
 
                         // 既にインストールされているかどうか確認
-                        $Plugins = $app['eccube.repository.plugin']->findAll();
+                        $Plugins = $this->pluginRepository->findAll();
                         $status = false;
                         // update_status 1 : 未インストール、2 : インストール済、 3 : 更新あり、4 : 有料購入
                         foreach ($data['item'] as $item) {
@@ -522,7 +577,7 @@ class PluginController extends AbstractController
     public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         $authKey = $BaseInfo->getAuthenticationKey();
         $message = '';
@@ -530,7 +585,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $app['config']['owners_store_url'].'?method=download&product_id='.$id;
+            $url = $this->appConfig['owners_store_url'].'?method=download&product_id='.$id;
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
@@ -548,7 +603,7 @@ class PluginController extends AbstractController
                     if ($success == '1') {
                         $tmpDir = null;
                         try {
-                            $service = $app['eccube.service.plugin'];
+                            $service = $this->pluginService;
 
                             $item = $data['item'];
                             $file = base64_decode($item['data']);
@@ -568,7 +623,7 @@ class PluginController extends AbstractController
 
                             } else if ($action == 'update') {
 
-                                $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
+                                $Plugin = $this->pluginRepository->findOneBy(array('source' => $id));
 
                                 $service->update($Plugin, $tmpDir.'/'.$tmpFile);
                                 $app->addSuccess('admin.plugin.update.complete', 'admin');
@@ -578,7 +633,7 @@ class PluginController extends AbstractController
                             $fs->remove($tmpDir);
 
                             // ダウンロード完了通知処理(正常終了時)
-                            $url = $app['config']['owners_store_url'].'?method=commit&product_id='.$id.'&status=1&version='.$version;
+                            $url = $this->appConfig['owners_store_url'].'?method=commit&product_id='.$id.'&status=1&version='.$version;
                             $this->getRequestApi($request, $authKey, $url, $app);
 
                             return $app->redirect($app->url('admin_store_plugin'));
@@ -601,7 +656,7 @@ class PluginController extends AbstractController
         }
 
         // ダウンロード完了通知処理(エラー発生時)
-        $url = $app['config']['owners_store_url'].'?method=commit&product_id='.$id.'&status=0&version='.$version.'&message='.urlencode($message);
+        $url = $this->appConfig['owners_store_url'].'?method=commit&product_id='.$id.'&status=0&version='.$version.'&message='.urlencode($message);
         $this->getRequestApi($request, $authKey, $url, $app);
 
         $app->addError($message, 'admin');
@@ -620,7 +675,7 @@ class PluginController extends AbstractController
 
         $form = $app->form()->getForm();
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
 
         // 認証キーの取得
         $form->add(
@@ -642,7 +697,7 @@ class PluginController extends AbstractController
 
                 // 認証キーの登録
                 $BaseInfo->setAuthenticationKey($data['authentication_key']);
-                $app['orm.em']->flush($BaseInfo);
+                $this->entityManager->flush($BaseInfo);
 
                 $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
 
@@ -736,7 +791,7 @@ class PluginController extends AbstractController
             $pluginCodes[] = $plugin->getCode();
         }
         // DB登録済みプラグインコードPluginディレクトリから排他
-        $dirs = $finder->in($app['config']['plugin_realdir'])->depth(0)->directories();
+        $dirs = $finder->in($this->appConfig['plugin_realdir'])->depth(0)->directories();
 
         // プラグイン基本チェック
         $unregisteredPlugins = array();
@@ -746,13 +801,13 @@ class PluginController extends AbstractController
                 continue;
             }
             try {
-                $app['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+                $this->pluginService->checkPluginArchiveContent($dir->getRealPath());
             } catch (\Eccube\Exception\PluginException $e) {
                 //config.yamlに不備があった際は全てスキップ
-                $app['monolog']->warning($e->getMessage());
+                $this->logger->warning($e->getMessage());
                 continue;
             }
-            $config = $app['eccube.service.plugin']->readYml($dir->getRealPath().'/config.yml');
+            $config = $this->pluginService->readYml($dir->getRealPath().'/config.yml');
             $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
             $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
             $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;

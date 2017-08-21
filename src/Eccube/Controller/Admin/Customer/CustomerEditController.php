@@ -23,24 +23,58 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CustomerType;
+use Eccube\Repository\CustomerRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerEditController extends AbstractController
 {
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+
+    /**
+     * @Inject("orm.em")
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @Inject(CustomerRepository::class)
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
     public function index(Application $app, Request $request, $id = null)
     {
-        $app['orm.em']->getFilters()->enable('incomplete_order_status_hidden');
+        $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
-            $Customer = $app['orm.em']
-                ->getRepository('Eccube\Entity\Customer')
+            $Customer = $this->customerRepository
                 ->find($id);
 
             if (is_null($Customer)) {
@@ -48,17 +82,17 @@ class CustomerEditController extends AbstractController
             }
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
-            $Customer->setPassword($app['config']['default_password']);
+            $Customer->setPassword($this->appConfig['default_password']);
             // 新規登録
         } else {
-            $Customer = $app['eccube.repository.customer']->newCustomer();
+            $Customer = $this->customerRepository->newCustomer();
             $CustomerAddress = new \Eccube\Entity\CustomerAddress();
             $Customer->setBuyTimes(0);
             $Customer->setBuyTotal(0);
         }
 
         // 会員登録フォーム
-        $builder = $app['form.factory']
+        $builder = $this->formFactory
             ->createBuilder(CustomerType::class, $Customer);
 
         $event = new EventArgs(
@@ -68,7 +102,7 @@ class CustomerEditController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -79,10 +113,10 @@ class CustomerEditController extends AbstractController
 
                 if ($Customer->getId() === null) {
                     $Customer->setSalt(
-                        $app['eccube.repository.customer']->createSalt(5)
+                        $this->customerRepository->createSalt(5)
                     );
                     $Customer->setSecretKey(
-                        $app['eccube.repository.customer']->getUniqueSecretKey($app)
+                        $this->customerRepository->getUniqueSecretKey($app)
                     );
 
                     $CustomerAddress->setName01($Customer->getName01())
@@ -105,22 +139,22 @@ class CustomerEditController extends AbstractController
                         ->setDelFlg(Constant::DISABLED)
                         ->setCustomer($Customer);
 
-                    $app['orm.em']->persist($CustomerAddress);
+                    $this->entityManager->persist($CustomerAddress);
                 }
 
-                if ($Customer->getPassword() === $app['config']['default_password']) {
+                if ($Customer->getPassword() === $this->appConfig['default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {
                     if ($Customer->getSalt() === null) {
-                        $Customer->setSalt($app['eccube.repository.customer']->createSalt(5));
+                        $Customer->setSalt($this->customerRepository->createSalt(5));
                     }
                     $Customer->setPassword(
-                        $app['eccube.repository.customer']->encryptPassword($app, $Customer)
+                        $this->customerRepository->encryptPassword($app, $Customer)
                     );
                 }
 
-                $app['orm.em']->persist($Customer);
-                $app['orm.em']->flush();
+                $this->entityManager->persist($Customer);
+                $this->entityManager->flush();
 
                 log_info('会員登録完了', array($Customer->getId()));
 
@@ -131,7 +165,7 @@ class CustomerEditController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.customer.save.complete', 'admin');
 
