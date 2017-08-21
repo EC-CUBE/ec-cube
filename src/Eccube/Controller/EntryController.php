@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * @Component
- * @Route("/entry", service=EntryController::class)
+ * @Route(service=EntryController::class)
  */
 class EntryController extends AbstractController
 {
@@ -104,7 +104,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録画面.
      *
-     * @Route("", name="entry")
+     * @Route("/entry", name="entry")
      * @Template("Entry/index.twig")
      */
     public function index(Application $app, Request $request)
@@ -216,7 +216,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録完了画面.
      *
-     * @Route("/complete", name="entry_complete")
+     * @Route("/entry/complete", name="entry_complete")
      * @Template("Entry/complete.twig")
      */
     public function complete(Application $app, Request $request)

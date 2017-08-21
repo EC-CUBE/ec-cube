@@ -32,12 +32,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/", service=TopController::class)
+ * @Route(service=TopController::class)
  */
 class TopController extends AbstractController
 {
     /**
-     * @Route("", name="homepage")
+     * @Route("/", name="homepage")
      * @Template("index.twig")
      */
     public function index(Application $app, Request $request)

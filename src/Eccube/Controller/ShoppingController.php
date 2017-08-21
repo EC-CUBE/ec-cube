@@ -56,7 +56,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Component
- * @Route("/shopping", service=ShoppingController::class)
+ * @Route(service=ShoppingController::class)
  */
 class ShoppingController extends AbstractShoppingController
 {
@@ -129,7 +129,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入画面表示
      *
-     * @Route("", name="shopping")
+     * @Route("/shopping", name="shopping")
      * @Template("Shopping/index.twig")
      */
     public function index(Application $app, Request $request)
@@ -173,7 +173,7 @@ class ShoppingController extends AbstractShoppingController
      * 購入確認画面から, 他の画面へのリダイレクト.
      * 配送業者や支払方法、お問い合わせ情報をDBに保持してから遷移する.
      *
-     * @Route("/redirect", name="shopping_redirect_to")
+     * @Route("/shopping/redirect", name="shopping_redirect_to")
      * @Template("Shopping/index.twig")
      */
     public function redirectTo(Application $app, Request $request)
@@ -212,7 +212,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入処理
      *
-     * @Route("/confirm", name="shopping_confirm")
+     * @Route("/shopping/confirm", name="shopping_confirm")
      * @Method("POST")
      * @Template("Shopping/index.twig")
      */
@@ -257,7 +257,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入完了画面表示
      *
-     * @Route("complete", name="shopping_complete")
+     * @Route("/shopping/complete", name="shopping_complete")
      * @Template("Shopping/complete.twig")
      */
     public function complete(Application $app, Request $request)
@@ -295,7 +295,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * お届け先の設定一覧からの選択
      *
-     * @Route("/shipping/{id}", name="shopping_shipping", requirements={"id":"\d+"})
+     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id":"\d+"})
      * @Template("Shopping/shipping.twig")
      */
     public function shipping(Application $app, Request $request, $id)
@@ -387,7 +387,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * お届け先の設定(非会員でも使用する)
      *
-     * @Route("/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id":"\d+"})
+     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id":"\d+"})
      * @Template("Shopping/shipping_edit.twig")
      */
     public function shippingEdit(Application $app, Request $request, $id)
@@ -504,7 +504,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * ログイン
      *
-     * @Route("/login", name="shopping_login")
+     * @Route("/shopping/login", name="shopping_login")
      * @Template("Shopping/login.twig")
      */
     public function login(Application $app, Request $request)
@@ -546,7 +546,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入エラー画面表示
      *
-     * @Route("/error", name="shopping_error")
+     * @Route("/shopping/error", name="shopping_error")
      * @Template("Shopping/shopping_error.twig")
      */
     public function shoppingError(Application $app, Request $request)
@@ -567,7 +567,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * カート画面のチェック
      *
-     * @Route("/check_to_cart", name="shopping_check_to_cart")
+     * @Route("/shopping/check_to_cart", name="shopping_check_to_cart")
      */
     public function checkToCart(Application $app, Request $request)
     {
@@ -593,7 +593,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注情報を初期化する.
      *
-     * @Route("/initialize_order", name="shopping_initialize_order")
+     * @Route("/shopping/initialize_order", name="shopping_initialize_order")
      */
     public function initializeOrder(Application $app, Request $request)
     {
@@ -649,7 +649,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * フォームを作成し, イベントハンドラを設定する
      *
-     * @Route("/create_form", name="shopping_create_form")
+     * @Route("/shopping/create_form", name="shopping_create_form")
      */
     public function createForm(Application $app, Request $request)
     {
@@ -676,7 +676,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * mode に応じて各変更ページへリダイレクトする.
      *
-     * @Route("/redirect_to_change", name="shopping_redirect_to_change")
+     * @Route("/shopping/redirect_to_change", name="shopping_redirect_to_change")
      */
     public function redirectToChange(Application $app, Request $request)
     {
@@ -718,7 +718,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 複数配送時のエラーを表示する
      *
-     * @Route("/handle_multiple_errors", name="shopping_handle_multiple_errors")
+     * @Route("/shopping/handle_multiple_errors", name="shopping_handle_multiple_errors")
      */
     public function handleMultipleErrors(Application $app, Request $request)
     {
@@ -748,7 +748,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注の存在チェック
      *
-     * @Route("/exists_order", name="shopping_exists_order")
+     * @Route("/shopping/exists_order", name="shopping_exists_order")
      */
     public function existsOrder(Application $app, Request $request)
     {
@@ -767,7 +767,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注完了処理
      *
-     * @Route("/complete_order", name="shopping_complete_order")
+     * @Route("/shopping/complete_order", name="shopping_complete_order")
      */
     public function completeOrder(Application $app, Request $request)
     {
@@ -863,7 +863,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注完了の後処理
      *
-     * @Route("/after_complete", name="shopping_after_complete")
+     * @Route("/shopping/after_complete", name="shopping_after_complete")
      */
     public function afterComplete(Application $app, Request $request)
     {

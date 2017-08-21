@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @Component
- * @Route("/block", service=SearchProductController::class)
+ * @Route(service=SearchProductController::class)
  */
 class SearchProductController
 {
@@ -61,7 +61,7 @@ class SearchProductController
     protected $eventDispatcher;
 
     /**
-     * @Route("/search_product", name="block_search_product")
+     * @Route("/block/search_product", name="block_search_product")
      * @Template("Block/search_product.twig")
      */
     public function index(Application $app, Request $request)

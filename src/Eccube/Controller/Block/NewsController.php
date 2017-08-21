@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/block", service=NewsController::class)
+ * @Route(service=NewsController::class)
  */
 class NewsController
 {
@@ -45,7 +45,7 @@ class NewsController
     protected $newsRepository;
 
     /**
-     * @Route("/news", name="block_news")
+     * @Route("/block/news", name="block_news")
      * @Template("Block/news.twig'")
      */
     public function index(Application $app, Request $request)

@@ -32,12 +32,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/block", service=LoginController::class)
+ * @Route(service=LoginController::class)
  */
 class LoginController
 {
     /**
-     * @Route("/login", name="block_login")
+     * @Route("/block/login", name="block_login")
      * @Template("Block/login.twig")
      */
     public function index(Application $app, Request $request)

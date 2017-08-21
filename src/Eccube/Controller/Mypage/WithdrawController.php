@@ -42,7 +42,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/mypage", service=WithdrawController::class)
+ * @Route(service=WithdrawController::class)
  */
 class WithdrawController extends AbstractController
 {
@@ -73,7 +73,7 @@ class WithdrawController extends AbstractController
     /**
      * 退会画面.
      *
-     * @Route("/withdraw", name="mypage_withdraw")
+     * @Route("/mypage/withdraw", name="mypage_withdraw")
      * @Template("Mypage/withdraw.twig")
      */
     public function index(Application $app, Request $request)
@@ -148,7 +148,7 @@ class WithdrawController extends AbstractController
     /**
      * 退会完了画面.
      *
-     * @Route("/withdraw_complete", name="mypage_withdraw_complete")
+     * @Route("/mypage/withdraw_complete", name="mypage_withdraw_complete")
      * @Template("Mypage/withdraw_complete.twig")
      */
     public function complete(Application $app, Request $request)

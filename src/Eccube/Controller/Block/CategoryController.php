@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/block", service=CategoryController::class);
+ * @Route(service=CategoryController::class);
  */
 class CategoryController
 {
@@ -45,7 +45,7 @@ class CategoryController
     protected $categoryRepository;
 
     /**
-     * @Route("/category", name="block_category")
+     * @Route("/block/category", name="block_category")
      * @Template("Block/category.twig")
      */
     public function index(Application $app, Request $request)

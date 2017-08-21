@@ -42,7 +42,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/cart", service=CartController::class)
+ * @Route(service=CartController::class)
  */
 class CartController extends AbstractController
 {
@@ -73,7 +73,7 @@ class CartController extends AbstractController
     /**
      * カート画面.
      *
-     * @Route("", name="cart")
+     * @Route("/cart", name="cart")
      * @Template("Cart/index.twig")
      */
     public function index(Application $app, Request $request)
@@ -126,7 +126,7 @@ class CartController extends AbstractController
      *
      * @Method("PUT")
      * @Route(
-     *     path="/{operation}/{productClassId}",
+     *     path="/cart/{operation}/{productClassId}",
      *     name="cart_handle_item",
      *     requirements={
      *          "operation": "up|down|remove",
@@ -192,7 +192,7 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/buystep", name="cart_buystep")
+     * @Route("/cart/buystep", name="cart_buystep")
      */
     public function buystep(Application $app, Request $request)
     {

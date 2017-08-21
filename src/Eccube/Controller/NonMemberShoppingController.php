@@ -54,7 +54,7 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * @Component
- * @Route("/shopping", service=NonMemberShoppingController::class)
+ * @Route(service=NonMemberShoppingController::class)
  */
 class NonMemberShoppingController extends AbstractShoppingController
 {
@@ -128,7 +128,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員処理
      *
-     * @Route("/nonmember", name="shopping_nonmember")
+     * @Route("/shopping/nonmember", name="shopping_nonmember")
      * @Template("Shopping/nonmember.twig")
      */
     public function index(Application $app, Request $request)

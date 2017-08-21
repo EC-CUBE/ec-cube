@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/block", service=CartController::class)
+ * @Route(service=CartController::class)
  */
 class CartController
 {
@@ -45,7 +45,7 @@ class CartController
     protected $cartService;
 
     /**
-     * @Route("/cart", name="block_cart")
+     * @Route("/block/cart", name="block_cart")
      * @Template("Block/cart.twig")
      */
     public function index(Application $app, Request $request)

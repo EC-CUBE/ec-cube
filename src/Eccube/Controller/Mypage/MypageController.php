@@ -49,7 +49,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Component
- * @Route("/mypage", service=MypageController::class)
+ * @Route(service=MypageController::class)
  */
 class MypageController extends AbstractController
 {
@@ -110,7 +110,7 @@ class MypageController extends AbstractController
     /**
      * ログイン画面.
      *
-     * @Route("/login", name="mypage_login")
+     * @Route("/mypage/login", name="mypage_login")
      * @Template("Mypage/login.twig")
      */
     public function login(Application $app, Request $request)
@@ -151,7 +151,7 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @Route("", name="mypage")
+     * @Route("/mypage", name="mypage")
      * @Template("Mypage/index.twig")
      */
     public function index(Application $app, Request $request)
@@ -197,7 +197,7 @@ class MypageController extends AbstractController
     /**
      * 購入履歴詳細を表示する.
      *
-     * @Route("/history/{id}", name="mypage_history", requirements={"id":"\d+"})
+     * @Route("/mypage/history/{id}", name="mypage_history", requirements={"id":"\d+"})
      * @Template("Mypage/history.twig")
      */
     public function history(Application $app, Request $request, $id)
@@ -240,7 +240,7 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @Route("/order/{id}", name="mypage_order", requirements={"id":"\d+"})
+     * @Route("/mypage/order/{id}", name="mypage_order", requirements={"id":"\d+"})
      * @Method("PUT")
      */
     public function order(Application $app, Request $request, $id)
@@ -313,7 +313,7 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を表示する.
      *
-     * @Route("/avorite", name="mypage_favorite")
+     * @Route("/mypage/favorite", name="mypage_favorite")
      * @Template("Mypage/favorite.twig")
      */
     public function favorite(Application $app, Request $request)

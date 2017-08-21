@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * @Component
- * @Route("/forgot", service=ForgotController::class)
+ * @Route(service=ForgotController::class)
  */
 class ForgotController extends AbstractController
 {
@@ -99,7 +99,7 @@ class ForgotController extends AbstractController
     /**
      * パスワードリマインダ.
      *
-     * @Route("", name="forgot")
+     * @Route("/forgot", name="forgot")
      * @Template("Forgot/index.twig")
      */
     public function index(Application $app, Request $request)
@@ -169,7 +169,7 @@ class ForgotController extends AbstractController
     /**
      * パスワードリマインダ完了画面.
      *
-     * @Route("/complete", name="forgot_complete")
+     * @Route("/forgot/complete", name="forgot_complete")
      * @Template("Forgot/complete.twig")
      */
     public function complete(Application $app, Request $request)
@@ -180,7 +180,7 @@ class ForgotController extends AbstractController
     /**
      * パスワード再発行実行画面.
      *
-     * @Route("/reset/{reset_key}", name="forgot_reset")
+     * @Route("/forgot/reset/{reset_key}", name="forgot_reset")
      * @Template("Forgot/reset.twig")
      */
     public function reset(Application $app, Request $request, $reset_key)

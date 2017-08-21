@@ -43,7 +43,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Component
- * @Route("/mypage", service=DeliveryController::class)
+ * @Route(service=DeliveryController::class)
  */
 class DeliveryController extends AbstractController
 {
@@ -86,7 +86,7 @@ class DeliveryController extends AbstractController
     /**
      * お届け先一覧画面.
      *
-     * @Route("/delivery", name="mypage_delivery")
+     * @Route("/mypage/delivery", name="mypage_delivery")
      * @Template("Mypage/delivery.twig")
      */
     public function index(Application $app, Request $request)
@@ -101,8 +101,8 @@ class DeliveryController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/delivery/new", name="mypage_delivery_new")
-     * @Route("/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id":"\d+"})
+     * @Route("/mypage/delivery/new", name="mypage_delivery_new")
+     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id":"\d+"})
      * @Template("Mypage/delivery_edit.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
@@ -186,7 +186,7 @@ class DeliveryController extends AbstractController
     /**
      * お届け先を削除する.
      *
-     * @Route("/delivery/{id}/delete", name="mypage_delivery_delete")
+     * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {

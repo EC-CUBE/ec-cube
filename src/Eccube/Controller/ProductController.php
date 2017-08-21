@@ -52,7 +52,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Component
- * @Route("/products", service=ProductController::class)
+ * @Route(service=ProductController::class)
  */
 class ProductController
 {
@@ -120,7 +120,7 @@ class ProductController
     /**
      * 商品一覧画面.
      *
-     * @Route("/list", name="product_list")
+     * @Route("/products/list", name="product_list")
      * @Template("Product/list.twig")
      */
     public function index(Application $app, Request $request)
@@ -299,7 +299,7 @@ class ProductController
     /**
      * 商品詳細画面.
      *
-     * @Route("/detail/{id}", name="product_detail", requirements={"id":"\d+"})
+     * @Route("/products/detail/{id}", name="product_detail", requirements={"id":"\d+"})
      * @Template("Product/detail.twig")
      */
     public function detail(Application $app, Request $request, $id)

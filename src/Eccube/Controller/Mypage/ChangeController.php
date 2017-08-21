@@ -42,7 +42,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * @Component
- * @Route("/mypage", service=ChangeController::class)
+ * @Route(service=ChangeController::class)
  */
 class ChangeController extends AbstractController
 {
@@ -85,7 +85,7 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集画面.
      *
-     * @Route("/change", name="mypage_change")
+     * @Route("/mypage/change", name="mypage_change")
      * @Template("Mypage/change.twig")
      */
     public function index(Application $app, Request $request)
@@ -153,7 +153,7 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集完了画面.
      *
-     * @Route("/change_complete", name="mypage_change_complete")
+     * @Route("/mypage/change_complete", name="mypage_change_complete")
      * @Template("Mypage/change_complete.twig")
      */
     public function complete(Application $app, Request $request)

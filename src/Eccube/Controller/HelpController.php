@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/help", service=HelpController::class)
+ * @Route(service=HelpController::class)
  */
 class HelpController extends AbstractController
 {
@@ -47,7 +47,7 @@ class HelpController extends AbstractController
     /**
      * 特定商取引法.
      *
-     * @Route("/tradelaw", name="help_tradelaw")
+     * @Route("/help/tradelaw", name="help_tradelaw")
      * @Template("Help/tradelaw.twig")
      */
     public function tradelaw(Application $app, Request $request)
@@ -73,7 +73,7 @@ class HelpController extends AbstractController
     /**
      * 当サイトについて.
      *
-     * @Route("/about", name="help_about")
+     * @Route("/help/about", name="help_about")
      * @Template("Help/about.twig")
      */
     public function about(Application $app, Request $request)
@@ -84,7 +84,7 @@ class HelpController extends AbstractController
     /**
      * プライバシーポリシー.
      *
-     * @Route("/privacy", name="help_privacy")
+     * @Route("/help/privacy", name="help_privacy")
      * @Template("Help/privacy.twig")
      */
     public function privacy(Application $app, Request $request)

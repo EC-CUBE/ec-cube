@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Component
- * @Route("/contact", service=ContactController::class)
+ * @Route(service=ContactController::class)
  */
 class ContactController
 {
@@ -64,7 +64,7 @@ class ContactController
     /**
      * お問い合わせ画面.
      *
-     * @Route("", name="contact")
+     * @Route("/contact", name="contact")
      * @Template("Contact/index.twig")
      */
     public function index(Application $app, Request $request)
@@ -150,7 +150,7 @@ class ContactController
     /**
      * お問い合わせ完了画面.
      *
-     * @Route("/complete", name="contact_complete")
+     * @Route("/contact/complete", name="contact_complete")
      * @Template("Contact/complete.twig")
      */
     public function complete(Application $app, Request $request)
