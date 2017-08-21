@@ -24,10 +24,18 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Repository\CategoryRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/block", service=CategoryController::class);
+ */
 class CategoryController
 {
     /**
@@ -36,12 +44,16 @@ class CategoryController
      */
     protected $categoryRepository;
 
-    public function index(Application $app)
+    /**
+     * @Route("/category", name="block_category")
+     * @Template("Block/category.twig")
+     */
+    public function index(Application $app, Request $request)
     {
         $Categories = $this->categoryRepository->getList();
 
-        return $app->render('Block/category.twig', array(
-            'Categories' => $Categories
-        ));
+        return [
+            'Categories' => $Categories,
+        ];
     }
 }

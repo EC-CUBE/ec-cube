@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -41,12 +42,18 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route("/products", service=ProductController::class)
+ */
 class ProductController
 {
     /**
@@ -103,7 +110,6 @@ class ProductController
      */
     protected $baseInfoRepository;
 
-
     private $title;
 
     public function __construct()
@@ -111,6 +117,12 @@ class ProductController
         $this->title = '';
     }
 
+    /**
+     * 商品一覧画面.
+     *
+     * @Route("/list", name="product_list")
+     * @Template("Product/list.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $BaseInfo = $this->baseInfoRepository->get();
@@ -171,10 +183,15 @@ class ProductController
         $forms = array();
         foreach ($pagination as $Product) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-            $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, array(
-                'product' => $Product,
-                'allow_extra_fields' => true,
-            ));
+            $builder = $this->formFactory->createNamedBuilder(
+                '',
+                AddCartType::class,
+                null,
+                array(
+                    'product' => $Product,
+                    'allow_extra_fields' => true,
+                )
+            );
             $addCartForm = $builder->getForm();
 
             if ($request->getMethod() === 'POST' && (string)$Product->getId() === $request->get('product_id')) {
@@ -184,7 +201,10 @@ class ProductController
                     $addCartData = $addCartForm->getData();
 
                     try {
-                        $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+                        $this->cartService->addProduct(
+                            $addCartData['product_class_id'],
+                            $addCartData['quantity']
+                        )->save();
                     } catch (CartException $e) {
                         $app->addRequestError($e->getMessage());
                     }
@@ -210,11 +230,16 @@ class ProductController
         }
 
         // 表示件数
-        $builder = $this->formFactory->createNamedBuilder('disp_number', ProductListMaxType::class, null, array(
-            'required' => false,
-            'label' => '表示件数',
-            'allow_extra_fields' => true,
-        ));
+        $builder = $this->formFactory->createNamedBuilder(
+            'disp_number',
+            ProductListMaxType::class,
+            null,
+            array(
+                'required' => false,
+                'label' => '表示件数',
+                'allow_extra_fields' => true,
+            )
+        );
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
@@ -232,11 +257,16 @@ class ProductController
         $dispNumberForm->handleRequest($request);
 
         // ソート順
-        $builder = $this->formFactory->createNamedBuilder('orderby', ProductListOrderByType::class, null, array(
-            'required' => false,
-            'label' => '表示順',
-            'allow_extra_fields' => true,
-        ));
+        $builder = $this->formFactory->createNamedBuilder(
+            'orderby',
+            ProductListOrderByType::class,
+            null,
+            array(
+                'required' => false,
+                'label' => '表示順',
+                'allow_extra_fields' => true,
+            )
+        );
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
@@ -255,7 +285,7 @@ class ProductController
 
         $Category = $searchForm->get('category_id')->getData();
 
-        return $app->render('Product/list.twig', array(
+        return [
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
@@ -263,9 +293,15 @@ class ProductController
             'order_by_form' => $orderByForm->createView(),
             'forms' => $forms,
             'Category' => $Category,
-        ));
+        ];
     }
 
+    /**
+     * 商品詳細画面.
+     *
+     * @Route("/detail/{id}", name="product_detail", requirements={"id":"\d+"})
+     * @Template("Product/detail.twig")
+     */
     public function detail(Application $app, Request $request, $id)
     {
         $BaseInfo = $this->baseInfoRepository->get();
@@ -283,10 +319,15 @@ class ProductController
         }
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, array(
-            'product' => $Product,
-            'id_add_product_id' => false,
-        ));
+        $builder = $this->formFactory->createNamedBuilder(
+            '',
+            AddCartType::class,
+            null,
+            array(
+                'product' => $Product,
+                'id_add_product_id' => false,
+            )
+        );
 
         $event = new EventArgs(
             array(
@@ -330,11 +371,19 @@ class ProductController
                         //  ログイン後の画面遷移先を設定
                         $app->setLoginTargetPath($app->url('product_detail', array('id' => $Product->getId())));
                         $this->session->getFlashBag()->set('eccube.add.favorite', true);
+
                         return $app->redirect($app->url('mypage_login'));
                     }
                 } elseif ($addCartData['mode'] === 'add_cart') {
 
-                    log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    log_info(
+                        'カート追加処理開始',
+                        array(
+                            'product_id' => $Product->getId(),
+                            'product_class_id' => $addCartData['product_class_id'],
+                            'quantity' => $addCartData['quantity'],
+                        )
+                    );
 
                     // カートを取得
                     $Cart = $this->cartService->getCart();
@@ -360,7 +409,14 @@ class ProductController
 
                     $this->cartService->save();
 
-                    log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    log_info(
+                        'カート追加処理完了',
+                        array(
+                            'product_id' => $Product->getId(),
+                            'product_class_id' => $addCartData['product_class_id'],
+                            'quantity' => $addCartData['quantity'],
+                        )
+                    );
 
                     $event = new EventArgs(
                         array(
@@ -396,13 +452,13 @@ class ProductController
             $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
         }
 
-        return $app->render('Product/detail.twig', array(
+        return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
             'form' => $form->createView(),
             'Product' => $Product,
             'is_favorite' => $is_favorite,
-        ));
+        ];
     }
 
     /**

@@ -24,10 +24,18 @@
 
 namespace Eccube\Controller\Block;
 
-use \Eccube\Repository\NewsRepository;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Repository\NewsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/block", service=NewsController::class)
+ */
 class NewsController
 {
     /**
@@ -36,7 +44,11 @@ class NewsController
      */
     protected $newsRepository;
 
-    public function index(Application $app)
+    /**
+     * @Route("/news", name="block_news")
+     * @Template("Block/news.twig'")
+     */
+    public function index(Application $app, Request $request)
     {
         $NewsList = $this->newsRepository
             ->findBy(
@@ -44,8 +56,8 @@ class NewsController
                 array('rank' => 'DESC')
             );
 
-        return $app->render('Block/news.twig', array(
+        return [
             'NewsList' => $NewsList,
-        ));
+        ];
     }
 }

@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -32,11 +33,17 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
 use Eccube\Repository\CustomerRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
+/**
+ * @Component
+ * @Route("/mypage", service=ChangeController::class)
+ */
 class ChangeController extends AbstractController
 {
     /**
@@ -78,9 +85,8 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/change", name="mypage_change")
+     * @Template("Mypage/change.twig")
      */
     public function index(Application $app, Request $request)
     {
@@ -139,20 +145,19 @@ class ChangeController extends AbstractController
 
         $this->tokenStorage->getToken()->setUser($LoginCustomer);
 
-        return $app->render('Mypage/change.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * 会員情報編集完了画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/change_complete", name="mypage_change_complete")
+     * @Template("Mypage/change_complete.twig")
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->render('Mypage/change_complete.twig');
+        return [];
     }
 }

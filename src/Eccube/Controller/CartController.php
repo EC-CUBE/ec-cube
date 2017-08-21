@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\ProductClass;
@@ -35,9 +36,14 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/cart", service=CartController::class)
+ */
 class CartController extends AbstractController
 {
     /**
@@ -65,25 +71,10 @@ class CartController extends AbstractController
     protected $cartService;
 
     /**
-     * 商品追加用コントローラ(デバッグ用)
-     *
-     * @Route("/cart/test")
-     * @param Application $app
-     */
-    public function addTestProduct(Application $app)
-    {
-        $this->cartService->addProduct(10, 2);
-        $this->cartService->save();
-
-        return $app->redirect($app->url('cart'));
-    }
-
-    /**
      * カート画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("", name="cart")
+     * @Template("Cart/index.twig")
      */
     public function index(Application $app, Request $request)
     {
@@ -114,15 +105,12 @@ class CartController extends AbstractController
         $quantity = 0;
         $isDeliveryFree = false;
 
-        return $app->render(
-            'Cart/index.twig',
-            array(
-                'Cart' => $Cart,
-                'least' => $least,
-                'quantity' => $quantity,
-                'is_delivery_free' => $isDeliveryFree,
-            )
-        );
+        return [
+            'Cart' => $Cart,
+            'least' => $least,
+            'quantity' => $quantity,
+            'is_delivery_free' => $isDeliveryFree,
+        ];
     }
 
     /**
@@ -138,18 +126,13 @@ class CartController extends AbstractController
      *
      * @Method("PUT")
      * @Route(
-     *     path="/cart/{operation}/{productClassId}",
+     *     path="/{operation}/{productClassId}",
      *     name="cart_handle_item",
      *     requirements={
      *          "operation": "up|down|remove",
      *          "productClassId": "\d+"
      *     }
      * )
-     * @param Application $app
-     * @param Request $request
-     * @param $operation
-     * @param $productClassId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function handleCartItem(Application $app, Request $request, $operation, $productClassId)
     {
@@ -182,7 +165,6 @@ class CartController extends AbstractController
         // カートを取得して明細の正規化を実行
         $Cart = $this->cartService->getCart();
         /** @var PurchaseFlowResult $result */
-
         $result = $this->purchaseFlow->calculate($Cart, $app['eccube.purchase.context']());
 
         // 復旧不可のエラーが発生した場合はカートをクリアしてカート一覧へ
@@ -210,9 +192,7 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/buystep", name="cart_buystep")
      */
     public function buystep(Application $app, Request $request)
     {

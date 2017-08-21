@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -33,9 +34,16 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Service\MailService;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/mypage", service=WithdrawController::class)
+ */
 class WithdrawController extends AbstractController
 {
     /**
@@ -57,15 +65,20 @@ class WithdrawController extends AbstractController
     protected $eventDispatcher;
 
     /**
+     * @Inject("form.factory")
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
      * 退会画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/withdraw", name="mypage_withdraw")
+     * @Template("Mypage/withdraw.twig")
      */
     public function index(Application $app, Request $request)
     {
-        $builder = $app->form();
+        $builder = $this->formFactory->createBuilder();
 
         $event = new EventArgs(
             array(
@@ -84,9 +97,12 @@ class WithdrawController extends AbstractController
                 case 'confirm':
                     log_info('退会確認画面表示');
 
-                    return $app->render('Mypage/withdraw_confirm.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    return $app->render(
+                        'Mypage/withdraw_confirm.twig',
+                        array(
+                            'form' => $form->createView(),
+                        )
+                    );
 
                 case 'complete':
                     log_info('退会処理開始');
@@ -97,7 +113,7 @@ class WithdrawController extends AbstractController
                     // 会員削除
                     $email = $Customer->getEmail();
                     // メールアドレスにダミーをセット
-                    $Customer->setEmail(Str::random(60) . '@dummy.dummy');
+                    $Customer->setEmail(Str::random(60).'@dummy.dummy');
                     $Customer->setDelFlg(Constant::ENABLED);
 
                     $this->entityManager->flush();
@@ -124,20 +140,19 @@ class WithdrawController extends AbstractController
             }
         }
 
-        return $app->render('Mypage/withdraw.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * 退会完了画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/withdraw_complete", name="mypage_withdraw_complete")
+     * @Template("Mypage/withdraw_complete.twig")
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->render('Mypage/withdraw_complete.twig');
+        return [];
     }
 }

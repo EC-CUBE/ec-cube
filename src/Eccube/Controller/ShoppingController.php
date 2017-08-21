@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Customer;
@@ -54,7 +55,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Route("/shopping")
+ * @Component
+ * @Route("/shopping", service=ShoppingController::class)
  */
 class ShoppingController extends AbstractShoppingController
 {
@@ -127,23 +129,19 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入画面表示
      *
-     * @Route("/", name="shopping")
+     * @Route("", name="shopping")
      * @Template("Shopping/index.twig")
-     *
-     * @param Application $app
-     * @param Request $request
-     * @return mixed
      */
     public function index(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注情報を初期化
-        $response = $app->forward($app->path("shopping/initializeOrder"));
+        $response = $app->forward($app->path("shopping_initialize_order"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -155,19 +153,19 @@ class ShoppingController extends AbstractShoppingController
         $flowResult = $this->executePurchaseFlow($app, $Order);
 
         // フォームを生成する
-        $app->forward($app->path("shopping/createForm"));
+        $app->forward($app->path("shopping_create_form"));
 
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
             return $app->redirect($app->url('cart'));
         }
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
-        $app->forward($app->path("shopping/handleMultipleErrors"));
+        $app->forward($app->path("shopping_handle_multiple_errors"));
         $form = $this->parameterBag->get(OrderType::class);
 
         return [
             'form' => $form->createView(),
-            'Order' => $Order
+            'Order' => $Order,
         ];
     }
 
@@ -175,68 +173,66 @@ class ShoppingController extends AbstractShoppingController
      * 購入確認画面から, 他の画面へのリダイレクト.
      * 配送業者や支払方法、お問い合わせ情報をDBに保持してから遷移する.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return mixed
+     * @Route("/redirect", name="shopping_redirect_to")
+     * @Template("Shopping/index.twig")
      */
     public function redirectTo(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping/existsOrder"));
+        $response = $app->forward($app->path("shopping_exists_order"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // フォームの生成
-        $app->forward($app->path("shopping/createForm"));
+        $app->forward($app->path("shopping_create_form"));
         $form = $this->parameterBag->get(OrderType::class);
-        $Order = $this->parameterBag->get('Order');
-
         $form->handleRequest($request);
 
         // 各種変更ページへリダイレクトする
-        $response = $app->forward($app->path("shopping/redirectToChange"));
+        $response = $app->forward($app->path("shopping_redirect_to_change"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
-        return $app->render('Shopping/index.twig', array(
+        return [
             'form' => $form->createView(),
             'Order' => $Order,
-        ));
+        ];
     }
 
     /**
      * 購入処理
      *
+     * @Route("/confirm", name="shopping_confirm")
      * @Method("POST")
-     * @Route("/confirm", name="shopping/confirm")
+     * @Template("Shopping/index.twig")
      */
     public function confirm(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping/existsOrder"));
+        $response = $app->forward($app->path("shopping_exists_order"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // form作成
         // FIXME イベントハンドラを外から渡したい
-        $app->forward($app->path("shopping/createForm"));
+        $app->forward($app->path("shopping_create_form"));
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
@@ -244,22 +240,25 @@ class ShoppingController extends AbstractShoppingController
         $form->handleRequest($request);
 
         // 受注処理
-        $response = $app->forward($app->path("shopping/completeOrder"));
+        $response = $app->forward($app->path("shopping_complete_order"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         log_info('購入チェックエラー', array($Order->getId()));
 
-        return $app->render('Shopping/index.twig', array(
+        return [
             'form' => $form->createView(),
             'Order' => $Order,
-        ));
+        ];
     }
 
 
     /**
      * 購入完了画面表示
+     *
+     * @Route("complete", name="shopping_complete")
+     * @Template("Shopping/complete.twig")
      */
     public function complete(Application $app, Request $request)
     {
@@ -281,24 +280,28 @@ class ShoppingController extends AbstractShoppingController
         // 受注に関連するセッションを削除
         $this->session->remove($this->sessionOrderKey);
         $this->session->remove($this->sessionMultipleKey);
+
         // 非会員用セッション情報を空の配列で上書きする(プラグイン互換性保持のために削除はしない)
         $this->session->set($this->sessionKey, array());
         $this->session->set($this->sessionCustomerAddressKey, array());
 
         log_info('購入処理完了', array($orderId));
 
-        return $app->render('Shopping/complete.twig', array(
+        return [
             'orderId' => $orderId,
-        ));
+        ];
     }
 
     /**
      * お届け先の設定一覧からの選択
+     *
+     * @Route("/shipping/{id}", name="shopping_shipping", requirements={"id":"\d+"})
+     * @Template("Shopping/shipping.twig")
      */
     public function shipping(Application $app, Request $request, $id)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -309,21 +312,21 @@ class ShoppingController extends AbstractShoppingController
             if (is_null($address)) {
                 // 選択されていなければエラー
                 log_info('お届け先入力チェックエラー');
-                return $app->render(
-                    'Shopping/shipping.twig',
-                    array(
-                        'Customer' => $app->user(),
-                        'shippingId' => $id,
-                        'error' => true,
-                    )
-                );
+
+                return [
+                    'Customer' => $app->user(),
+                    'shippingId' => $id,
+                    'error' => false,
+                ];
             }
 
             // 選択されたお届け先情報を取得
-            $CustomerAddress = $this->customerAddressRepository->findOneBy(array(
-                'Customer' => $app->user(),
-                'id' => $address,
-            ));
+            $CustomerAddress = $this->customerAddressRepository->findOneBy(
+                array(
+                    'Customer' => $app->user(),
+                    'id' => $address,
+                )
+            );
             if (is_null($CustomerAddress)) {
                 throw new NotFoundHttpException('選択されたお届け先住所が存在しない');
             }
@@ -370,21 +373,22 @@ class ShoppingController extends AbstractShoppingController
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE, $event);
 
             log_info('お届先情報更新完了', array($Shipping->getId()));
+
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render(
-            'Shopping/shipping.twig',
-            array(
-                'Customer' => $app->user(),
-                'shippingId' => $id,
-                'error' => false,
-            )
-        );
+        return [
+            'Customer' => $app->user(),
+            'shippingId' => $id,
+            'error' => false,
+        ];
     }
 
     /**
      * お届け先の設定(非会員でも使用する)
+     *
+     * @Route("/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id":"\d+"})
+     * @Template("Shopping/shipping_edit.twig")
      */
     public function shippingEdit(Application $app, Request $request, $id)
     {
@@ -454,10 +458,14 @@ class ShoppingController extends AbstractShoppingController
 
             if ($Customer instanceof Customer) {
                 $this->entityManager->persist($CustomerAddress);
-                log_info('新規お届け先登録', array(
-                    'id' => $Order->getId(),
-                    'shipping' => $id,
-                    'customer address' => $CustomerAddress->getId()));
+                log_info(
+                    '新規お届け先登録',
+                    array(
+                        'id' => $Order->getId(),
+                        'shipping' => $id,
+                        'customer address' => $CustomerAddress->getId(),
+                    )
+                );
             }
 
             // 配送料金の設定
@@ -483,17 +491,21 @@ class ShoppingController extends AbstractShoppingController
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
 
             log_info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
+
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render('Shopping/shipping_edit.twig', array(
+        return [
             'form' => $form->createView(),
             'shippingId' => $id,
-        ));
+        ];
     }
 
     /**
      * ログイン
+     *
+     * @Route("/login", name="shopping_login")
+     * @Template("Shopping/login.twig")
      */
     public function login(Application $app, Request $request)
     {
@@ -525,18 +537,20 @@ class ShoppingController extends AbstractShoppingController
 
         $form = $builder->getForm();
 
-        return $app->render('Shopping/login.twig', array(
+        return [
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * 購入エラー画面表示
+     *
+     * @Route("/error", name="shopping_error")
+     * @Template("Shopping/shopping_error.twig")
      */
     public function shoppingError(Application $app, Request $request)
     {
-
         $event = new EventArgs(
             array(),
             $request
@@ -547,31 +561,28 @@ class ShoppingController extends AbstractShoppingController
             return $event->getResponse();
         }
 
-        return $app->render('Shopping/shopping_error.twig');
+        return [];
     }
 
     /**
      * カート画面のチェック
      *
-     * @Route("/checkToCart", name="shopping/checkToCart")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/check_to_cart", name="shopping_check_to_cart")
      */
     public function checkToCart(Application $app, Request $request)
     {
-        $cartService = $this->cartService;
-
         // カートチェック
-        if (!$cartService->isLocked()) {
+        if (!$this->cartService->isLocked()) {
             log_info('カートが存在しません');
+
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
 
         // カートチェック
-        if (count($cartService->getCart()->getCartItems()) <= 0) {
+        if (count($this->cartService->getCart()->getCartItems()) <= 0) {
             log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+
             // カートが存在しない時はエラー
             return $app->redirect($app->url('cart'));
         }
@@ -582,14 +593,10 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注情報を初期化する.
      *
-     * @Route("/initializeOrder", name="shopping/initializeOrder")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/initialize_order", name="shopping_initialize_order")
      */
     public function initializeOrder(Application $app, Request $request)
     {
-        $cartService = $this->cartService;
         // 購入処理中の受注情報を取得
         $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
 
@@ -602,6 +609,7 @@ class ShoppingController extends AbstractShoppingController
 
                 if (is_null($Customer)) {
                     log_info('未ログインのためログイン画面にリダイレクト');
+
                     return $app->redirect($app->url('shopping_login'));
                 }
             } else {
@@ -612,12 +620,16 @@ class ShoppingController extends AbstractShoppingController
                 // 受注情報を作成
                 //$Order = $app['eccube.service.shopping']->createOrder($Customer);
                 $Order = $this->orderHelper->createProcessingOrder(
-                    $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
-                $cartService->setPreOrderId($Order->getPreOrderId());
-                $cartService->save();
+                    $Customer,
+                    $Customer->getCustomerAddresses()->current(),
+                    $this->cartService->getCart()->getCartItems()
+                );
+                $this->cartService->setPreOrderId($Order->getPreOrderId());
+                $this->cartService->save();
             } catch (CartException $e) {
                 log_error('初回受注情報作成エラー', array($e->getMessage()));
                 $app->addRequestError($e->getMessage());
+
                 return $app->redirect($app->url('cart'));
             }
 
@@ -630,16 +642,14 @@ class ShoppingController extends AbstractShoppingController
         $this->entityManager->refresh($Order);
 
         $this->parameterBag->set('Order', $Order);
+
         return new Response();
     }
 
     /**
      * フォームを作成し, イベントハンドラを設定する
      *
-     * @Route("/createForm", name="shopping/createForm")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/create_form", name="shopping_create_form")
      */
     public function createForm(Application $app, Request $request)
     {
@@ -659,21 +669,18 @@ class ShoppingController extends AbstractShoppingController
         $form = $builder->getForm();
 
         $this->parameterBag->set(OrderType::class, $form);
+
         return new Response();
     }
 
     /**
      * mode に応じて各変更ページへリダイレクトする.
      *
-     * @Route("/redirectToChange", name="shopping/redirectToChange")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/redirect_to_change", name="shopping_redirect_to_change")
      */
     public function redirectToChange(Application $app, Request $request)
     {
         $form = $this->parameterBag->get(OrderType::class);
-        $Order = $this->parameterBag->get('Order');
 
         // requestのバインド後、Calculatorに再集計させる
         //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
@@ -688,10 +695,12 @@ class ShoppingController extends AbstractShoppingController
                 case 'shipping_change':
                     // お届け先設定一覧へリダイレクト
                     $param = $form['param']->getData();
+
                     return $app->redirect($app->url('shopping_shipping', array('id' => $param)));
                 case 'shipping_edit_change':
                     // お届け先設定一覧へリダイレクト
                     $param = $form['param']->getData();
+
                     return $app->redirect($app->url('shopping_shipping_edit', array('id' => $param)));
                 case 'shipping_multiple_change':
                     // 複数配送設定へリダイレクト
@@ -709,10 +718,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 複数配送時のエラーを表示する
      *
-     * @Route("/handleMultipleErrors", name="shopping/handleMultipleErrors")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/handle_multiple_errors", name="shopping_handle_multiple_errors")
      */
     public function handleMultipleErrors(Application $app, Request $request)
     {
@@ -727,6 +733,7 @@ class ShoppingController extends AbstractShoppingController
                 if (!$BaseInfo->getOptionMultipleShipping()) {
                     // 複数配送に設定されていないのに複数配送先ができればエラー
                     $app->addRequestError('cart.product.type.kind');
+
                     return $app->redirect($app->url('cart'));
                 }
 
@@ -741,10 +748,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注の存在チェック
      *
-     * @Route("/existsOrder", name="shopping/existsOrder")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/exists_order", name="shopping_exists_order")
      */
     public function existsOrder(Application $app, Request $request)
     {
@@ -752,19 +756,18 @@ class ShoppingController extends AbstractShoppingController
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
+
             return $app->redirect($app->url('shopping_error'));
         }
         $this->parameterBag->set('Order', $Order);
+
         return new Response();
     }
 
     /**
      * 受注完了処理
      *
-     * @Route("/completeOrder", name="shopping/completeOrder")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/complete_order", name="shopping_complete_order")
      */
     public function completeOrder(Application $app, Request $request)
     {
@@ -797,7 +800,11 @@ class ShoppingController extends AbstractShoppingController
                 // Order も引数で渡すのがベスト??
                 $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
 
-                $paymentMethod = $app['payment.method.request']($Order->getPayment()->getMethodClass(), $form, $request);
+                $paymentMethod = $app['payment.method.request'](
+                    $Order->getPayment()->getMethodClass(),
+                    $form,
+                    $request
+                );
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
                 // forward の処理はプラグイン内で書けるようにしておく
                 // dispatch をしたら, パスを返して forwardする
@@ -808,12 +815,14 @@ class ShoppingController extends AbstractShoppingController
                 // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
                 // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof Response
-                    && ($dispatcher->isRedirection() || $dispatcher->getContent())) { // $paymentMethod->apply() が Response を返した場合は画面遷移
+                    && ($dispatcher->isRedirection() || $dispatcher->getContent())
+                ) { // $paymentMethod->apply() が Response を返した場合は画面遷移
                     return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
                 }
                 $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
                 if (!$PaymentResult->isSuccess()) {
                     $em->getConnection()->rollback();
+
                     return $app->redirect($app->url('shopping_error'));
                 }
 
@@ -841,10 +850,11 @@ class ShoppingController extends AbstractShoppingController
                 $app->log($e);
 
                 $app->addError('front.shopping.system.error');
+
                 return $app->redirect($app->url('shopping_error'));
             }
 
-            return $app->forward($app->path('shopping/afterComplete'));
+            return $app->forward($app->path('shopping_after_complete'));
         }
 
         return new Response();
@@ -853,10 +863,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注完了の後処理
      *
-     * @Route("/afterComplete", name="shopping/afterComplete")
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/after_complete", name="shopping_after_complete")
      */
     public function afterComplete(Application $app, Request $request)
     {
@@ -877,6 +884,7 @@ class ShoppingController extends AbstractShoppingController
 
         if ($event->getResponse() !== null) {
             log_info('イベントレスポンス返却', array($Order->getId()));
+
             return $event->getResponse();
         }
 
@@ -898,6 +906,7 @@ class ShoppingController extends AbstractShoppingController
 
         if ($event->getResponse() !== null) {
             log_info('イベントレスポンス返却', array($Order->getId()));
+
             return $event->getResponse();
         }
 

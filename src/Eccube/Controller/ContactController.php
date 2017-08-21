@@ -24,16 +24,23 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ContactType;
 use Eccube\Service\MailService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/contact", service=ContactController::class)
+ */
 class ContactController
 {
     /**
@@ -57,9 +64,8 @@ class ContactController
     /**
      * お問い合わせ画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("", name="contact")
+     * @Template("Contact/index.twig")
      */
     public function index(Application $app, Request $request)
     {
@@ -106,10 +112,13 @@ class ContactController
                     $form->handleRequest($request);
                     $title = 'お問い合わせ(確認ページ)';
 
-                    return $app->render('Contact/confirm.twig', array(
-                        'form' => $form->createView(),
-                        'title' => $title,
-                    ));
+                    return $app->render(
+                        'Contact/confirm.twig',
+                        array(
+                            'form' => $form->createView(),
+                            'title' => $title,
+                        )
+                    );
 
                 case 'complete':
 
@@ -133,19 +142,19 @@ class ContactController
             }
         }
 
-        return $app->render('Contact/index.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * お問い合わせ完了画面.
      *
-     * @param Application $app
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/complete", name="contact_complete")
+     * @Template("Contact/complete.twig")
      */
-    public function complete(Application $app)
+    public function complete(Application $app, Request $request)
     {
-        return $app->render('Contact/complete.twig');
+        return [];
     }
 }

@@ -24,13 +24,24 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Annotation\Component;
 use Eccube\Application;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/block", service=LoginController::class)
+ */
 class LoginController
 {
+    /**
+     * @Route("/login", name="block_login")
+     * @Template("Block/login.twig")
+     */
     public function index(Application $app, Request $request)
     {
-        return $app->render('Block/login.twig');
+        return [];
     }
 }

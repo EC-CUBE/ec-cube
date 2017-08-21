@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -38,11 +39,18 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route("/mypage", service=MypageController::class)
+ */
 class MypageController extends AbstractController
 {
     /**
@@ -102,9 +110,8 @@ class MypageController extends AbstractController
     /**
      * ログイン画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/login", name="mypage_login")
+     * @Template("Mypage/login.twig")
      */
     public function login(Application $app, Request $request)
     {
@@ -135,18 +142,17 @@ class MypageController extends AbstractController
 
         $form = $builder->getForm();
 
-        return $app->render('Mypage/login.twig', array(
+        return [
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
-     * マイページ
+     * マイページ.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("", name="mypage")
+     * @Template("Mypage/index.twig")
      */
     public function index(Application $app, Request $request)
     {
@@ -154,9 +160,11 @@ class MypageController extends AbstractController
 
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
         $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass',
-        ));
+        $softDeleteFilter->setExcludes(
+            array(
+                'Eccube\Entity\ProductClass',
+            )
+        );
 
         // 購入処理中/決済処理中ステータスの受注を非表示にする.
         $this->entityManager
@@ -181,33 +189,35 @@ class MypageController extends AbstractController
             $this->appConfig['search_pmax']
         );
 
-        return $app->render('Mypage/index.twig', array(
+        return [
             'pagination' => $pagination,
-        ));
+        ];
     }
 
     /**
      * 購入履歴詳細を表示する.
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/history/{id}", name="mypage_history", requirements={"id":"\d+"})
+     * @Template("Mypage/history.twig")
      */
     public function history(Application $app, Request $request, $id)
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
         $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass',
-        ));
+        $softDeleteFilter->setExcludes(
+            array(
+                'Eccube\Entity\ProductClass',
+            )
+        );
 
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
-        $Order = $this->orderRepository->findOneBy(array(
-            'id' => $id,
-            'Customer' => $app->user(),
-        ));
-        
+        $Order = $this->orderRepository->findOneBy(
+            array(
+                'id' => $id,
+                'Customer' => $app->user(),
+            )
+        );
+
         $event = new EventArgs(
             array(
                 'Order' => $Order,
@@ -222,18 +232,16 @@ class MypageController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $app->render('Mypage/history.twig', array(
+        return [
             'Order' => $Order,
-        ));
+        ];
     }
 
     /**
      * 再購入を行う.
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/order/{id}", name="mypage_order", requirements={"id":"\d+"})
+     * @Method("PUT")
      */
     public function order(Application $app, Request $request, $id)
     {
@@ -244,10 +252,12 @@ class MypageController extends AbstractController
         $Customer = $app->user();
 
         /* @var $Order \Eccube\Entity\Order */
-        $Order = $this->orderRepository->findOneBy(array(
-            'id' => $id,
-            'Customer' => $Customer,
-        ));
+        $Order = $this->orderRepository->findOneBy(
+            array(
+                'id' => $id,
+                'Customer' => $Customer,
+            )
+        );
 
         $event = new EventArgs(
             array(
@@ -266,8 +276,12 @@ class MypageController extends AbstractController
         foreach ($Order->getOrderDetails() as $OrderDetail) {
             try {
                 if ($OrderDetail->getProduct() &&
-                    $OrderDetail->getProductClass()) {
-                    $this->cartService->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
+                    $OrderDetail->getProductClass()
+                ) {
+                    $this->cartService->addProduct(
+                        $OrderDetail->getProductClass()->getId(),
+                        $OrderDetail->getQuantity()
+                    )->save();
                 } else {
                     log_info($app->trans('cart.product.delete'), array($id));
                     $app->addRequestError('cart.product.delete');
@@ -299,51 +313,47 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を表示する.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/avorite", name="mypage_favorite")
+     * @Template("Mypage/favorite.twig")
      */
     public function favorite(Application $app, Request $request)
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
-        if ($BaseInfo->getOptionFavoriteProduct() == Constant::ENABLED) {
-            $Customer = $app->user();
-
-            // paginator
-            $qb = $this->customerFavoriteProductRepository->getQueryBuilderByCustomer($Customer);
-
-            $event = new EventArgs(
-                array(
-                    'qb' => $qb,
-                    'Customer' => $Customer,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
-
-            $pagination = $app['paginator']()->paginate(
-                $qb,
-                $request->get('pageno', 1),
-                $this->appConfig['search_pmax'],
-                array('wrap-queries' => true)
-            );
-
-            return $app->render('Mypage/favorite.twig', array(
-                'pagination' => $pagination,
-            ));
-        } else {
+        if ($BaseInfo->getOptionFavoriteProduct() == Constant::DISABLED) {
             throw new NotFoundHttpException();
         }
+        $Customer = $app->user();
+
+        // paginator
+        $qb = $this->customerFavoriteProductRepository->getQueryBuilderByCustomer($Customer);
+
+        $event = new EventArgs(
+            array(
+                'qb' => $qb,
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
+
+        $pagination = $app['paginator']()->paginate(
+            $qb,
+            $request->get('pageno', 1),
+            $this->appConfig['search_pmax'],
+            array('wrap-queries' => true)
+        );
+
+        return [
+            'pagination' => $pagination,
+        ];
     }
 
     /**
      * お気に入り商品を削除する.
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id":"\d+"})
+     * @Method("DELETE")
      */
     public function delete(Application $app, Request $request, $id)
     {

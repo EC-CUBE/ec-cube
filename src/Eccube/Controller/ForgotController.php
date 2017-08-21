@@ -24,6 +24,7 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
@@ -31,6 +32,8 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
@@ -39,6 +42,10 @@ use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
+/**
+ * @Component
+ * @Route("/forgot", service=ForgotController::class)
+ */
 class ForgotController extends AbstractController
 {
     /**
@@ -92,13 +99,11 @@ class ForgotController extends AbstractController
     /**
      * パスワードリマインダ.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("", name="forgot")
+     * @Template("Forgot/index.twig")
      */
     public function index(Application $app, Request $request)
     {
-
         $builder = $this->formFactory
             ->createNamedBuilder('', ForgotType::class);
 
@@ -121,7 +126,7 @@ class ForgotController extends AbstractController
                 // リセットキーの発行・有効期限の設定
                 $Customer
                     ->setResetKey($this->customerRepository->getUniqueResetKey($app))
-                    ->setResetExpire(new \DateTime('+' . $this->appConfig['customer_reset_expire'] .' min'));
+                    ->setResetExpire(new \DateTime('+'.$this->appConfig['customer_reset_expire'].' min'));
 
                 // リセットキーを更新
                 $this->entityManager->persist($Customer);
@@ -144,51 +149,57 @@ class ForgotController extends AbstractController
 
                 // ログ出力
                 $this->logger->addInfo(
-                    'send reset password mail to:'  . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                    'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
                 );
             } else {
-                log_warning('Un active customer try send reset password email: ', array('Enter email' => $form->get('login_email')->getData()));
+                log_warning(
+                    'Un active customer try send reset password email: ',
+                    array('Enter email' => $form->get('login_email')->getData())
+                );
             }
 
             return $app->redirect($app->url('forgot_complete'));
         }
 
-        return $app->render('Forgot/index.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * パスワードリマインダ完了画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/complete", name="forgot_complete")
+     * @Template("Forgot/complete.twig")
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->render('Forgot/complete.twig');
+        return [];
     }
 
     /**
      * パスワード再発行実行画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $reset_key
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/reset/{reset_key}", name="forgot_reset")
+     * @Template("Forgot/reset.twig")
      */
     public function reset(Application $app, Request $request, $reset_key)
     {
-        $errors = $this->recursiveValidator->validate($reset_key, array(
-            new Assert\NotBlank(),
-            new Assert\Regex(array(
-                'pattern' => '/^[a-zA-Z0-9]+$/',
-            )))
+        $errors = $this->recursiveValidator->validate(
+            $reset_key,
+            array(
+                new Assert\NotBlank(),
+                new Assert\Regex(
+                    array(
+                        'pattern' => '/^[a-zA-Z0-9]+$/',
+                    )
+                ),
+            )
         );
 
         if ('GET' === $request->getMethod()
-                && count($errors) === 0) {
+            && count($errors) === 0
+        ) {
             try {
                 $Customer = $this->customerRepository
                     ->getActiveCustomerByResetKey($reset_key);
@@ -226,13 +237,13 @@ class ForgotController extends AbstractController
 
             // ログ出力
             $this->logger->addInfo(
-                'reset password complete:' . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                'reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
             );
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
 
-        return $app->render('Forgot/reset.twig');
+        return [];
     }
 
 }

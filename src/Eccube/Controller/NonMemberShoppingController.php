@@ -25,6 +25,7 @@ namespace Eccube\Controller;
 
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -40,6 +41,8 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\ShoppingService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
@@ -49,6 +52,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
+/**
+ * @Component
+ * @Route("/shopping", service=NonMemberShoppingController::class)
+ */
 class NonMemberShoppingController extends AbstractShoppingController
 {
     /**
@@ -120,13 +127,16 @@ class NonMemberShoppingController extends AbstractShoppingController
 
     /**
      * 非会員処理
+     *
+     * @Route("/nonmember", name="shopping_nonmember")
+     * @Template("Shopping/nonmember.twig")
      */
     public function index(Application $app, Request $request)
     {
         $cartService = $this->cartService;
 
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -205,11 +215,15 @@ class NonMemberShoppingController extends AbstractShoppingController
                     // 受注情報を作成
 //                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
                     $Order = $this->orderHelper->createProcessingOrder(
-                        $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
+                        $Customer,
+                        $Customer->getCustomerAddresses()->current(),
+                        $cartService->getCart()->getCartItems()
+                    );
                     $cartService->setPreOrderId($Order->getPreOrderId());
                     $cartService->save();
                 } catch (CartException $e) {
                     $app->addRequestError($e->getMessage());
+
                     return $app->redirect($app->url('cart'));
                 }
             }
@@ -247,18 +261,19 @@ class NonMemberShoppingController extends AbstractShoppingController
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render('Shopping/nonmember.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * 非会員用複数配送設定時の新規お届け先の設定
+     *
      */
     public function shippingMultipleEdit(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_art"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -308,13 +323,67 @@ class NonMemberShoppingController extends AbstractShoppingController
             return $app->redirect($app->url('shopping_shipping_multiple'));
         }
 
-        return $app->render('Shopping/shipping_multiple_edit.twig', array(
+        return $app->render(
+            'Shopping/shipping_multiple_edit.twig',
+            array(
+                'form' => $form->createView(),
+            )
+        );
+    }
+
+    /**
+     * お届け先の設定（非会員）がクリックされた場合の処理
+     *
+     * @Route("/shopping/shipping_edit_change/{id}", name="shopping_shipping_edit_change", requirements={"id":"\d+"})
+     */
+    public function shippingEditChange(Application $app, Request $request, $id)
+    {
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
+
+        if ('POST' !== $request->getMethod()) {
+            return $app->redirect($app->url('shopping'));
+        }
+
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $message = $data['message'];
+            $Order->setMessage($message);
+            // 受注情報を更新
+            $app['orm.em']->flush();
+
+            // お届け先設定一覧へリダイレクト
+            return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+        }
+
+        return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
+            'Order' => $Order,
         ));
     }
 
     /**
      * お客様情報の変更(非会員)
+     *
+     * @Route("/shopping/customer", name="shopping_customer")
      */
     public function customer(Application $app, Request $request)
     {
@@ -333,6 +402,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                         log_info('非会員お客様情報変更入力チェックエラー');
                         $response = new Response(json_encode('NG'), 400);
                         $response->headers->set('Content-Type', 'application/json');
+
                         return $response;
                     }
                 }
@@ -342,6 +412,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                     log_info('非会員お客様情報変更入力チェックエラー');
                     $response = new Response(json_encode('NG'), 400);
                     $response->headers->set('Content-Type', 'application/json');
+
                     return $response;
                 }
 
@@ -349,6 +420,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 if (!$Order) {
                     log_info('カートが存在しません');
                     $app->addError('front.shopping.order.error');
+
                     return $app->redirect($app->url('shopping_error'));
                 }
 
@@ -409,66 +481,113 @@ class NonMemberShoppingController extends AbstractShoppingController
         // 入力チェック
         $errors = array();
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_name01'], array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('max' => $this->appConfig['name_len'],)),
-            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_name01'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $this->appConfig['name_len'],)),
+                new Assert\Regex(
+                    array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_name02'], array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('max' => $this->appConfig['name_len'],)),
-            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_name02'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $this->appConfig['name_len'],)),
+                new Assert\Regex(
+                    array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_company_name'], array(
-            new Assert\Length(array('max' => $this->appConfig['stext_len'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_company_name'],
+            array(
+                new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_tel01'], array(
-            new Assert\NotBlank(),
-            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_tel01'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(
+                    array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_tel02'], array(
-            new Assert\NotBlank(),
-            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_tel02'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(
+                    array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_tel03'], array(
-            new Assert\NotBlank(),
-            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_tel03'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(
+                    array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_zip01'], array(
-            new Assert\NotBlank(),
-            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_zip01'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(
+                    array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_zip02'], array(
-            new Assert\NotBlank(),
-            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-            new Assert\Length(array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_zip02'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(
+                    array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])
+                ),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_addr01'], array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('max' => $this->appConfig['address1_len'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_addr01'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $this->appConfig['address1_len'])),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_addr02'], array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('max' => $this->appConfig['address2_len'])),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_addr02'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $this->appConfig['address2_len'])),
+            )
+        );
 
-        $errors[] = $this->recursiveValidator->validate($data['customer_email'], array(
-            new Assert\NotBlank(),
-            new Assert\Email(array('strict' => true)),
-        ));
+        $errors[] = $this->recursiveValidator->validate(
+            $data['customer_email'],
+            array(
+                new Assert\NotBlank(),
+                new Assert\Email(array('strict' => true)),
+            )
+        );
 
         return $errors;
     }

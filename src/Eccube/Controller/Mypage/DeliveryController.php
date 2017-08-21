@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -33,11 +34,17 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route("/mypage", service=DeliveryController::class)
+ */
 class DeliveryController extends AbstractController
 {
     /**
@@ -79,25 +86,24 @@ class DeliveryController extends AbstractController
     /**
      * お届け先一覧画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/delivery", name="mypage_delivery")
+     * @Template("Mypage/delivery.twig")
      */
     public function index(Application $app, Request $request)
     {
         $Customer = $app['user'];
 
-        return $app->render('Mypage/delivery.twig', array(
+        return [
             'Customer' => $Customer,
-        ));
+        ];
     }
 
     /**
      * お届け先編集画面.
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/delivery/new", name="mypage_delivery_new")
+     * @Route("/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id":"\d+"})
+     * @Template("Mypage/delivery_edit.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
     {
@@ -126,7 +132,7 @@ class DeliveryController extends AbstractController
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
         if (!in_array($parentPage, $allowdParents)) {
             // @deprecated 使用されていないコード
-            $parentPage  = $app->url('mypage_delivery');
+            $parentPage = $app->url('mypage_delivery');
         }
 
         $builder = $this->formFactory
@@ -170,19 +176,17 @@ class DeliveryController extends AbstractController
 
         $BaseInfo = $this->baseInfoRepository->get();
 
-        return $app->render('Mypage/delivery_edit.twig', array(
+        return [
             'form' => $form->createView(),
             'parentPage' => $parentPage,
             'BaseInfo' => $BaseInfo,
-        ));
+        ];
     }
 
     /**
      * お届け先を削除する.
      *
-     * @param Application $app
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/delivery/{id}/delete", name="mypage_delivery_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {

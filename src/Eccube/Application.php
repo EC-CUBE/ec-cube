@@ -241,6 +241,7 @@ class Application extends \Silex\Application
                 $this['config']['root_dir'].'/src/Eccube/Form/Type',
                 $this['config']['root_dir'].'/src/Eccube/Form/Extension',
                 $this['config']['root_dir'].'/src/Eccube/Service',
+                $this['config']['root_dir'].'/src/Eccube/Controller',
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
         ]);
@@ -251,7 +252,6 @@ class Application extends \Silex\Application
 
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 

@@ -24,10 +24,18 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Repository\HelpRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route("/help", service=HelpController::class)
+ */
 class HelpController extends AbstractController
 {
     /**
@@ -36,37 +44,66 @@ class HelpController extends AbstractController
      */
     protected $helpRepository;
 
-
-    public function tradelaw(Application $app)
+    /**
+     * 特定商取引法.
+     *
+     * @Route("/tradelaw", name="help_tradelaw")
+     * @Template("Help/tradelaw.twig")
+     */
+    public function tradelaw(Application $app, Request $request)
     {
         $Help = $this->helpRepository->get();
 
-        return $app->render('Help/tradelaw.twig', array(
+        return [
             'help' => $Help,
-        ));
+        ];
     }
 
-    public function guide(Application $app)
+    /**
+     * ご利用ガイド.
+     *
+     * @Route("/guide", name="help_guide")
+     * @Template("Help/guide.twig")
+     */
+    public function guide(Application $app, Request $request)
     {
-        return $app->render('Help/guide.twig');
+        return [];
     }
 
-    public function about(Application $app)
+    /**
+     * 当サイトについて.
+     *
+     * @Route("/about", name="help_about")
+     * @Template("Help/about.twig")
+     */
+    public function about(Application $app, Request $request)
     {
-        return $app->render('Help/about.twig');
+        return [];
     }
 
-    public function privacy(Application $app)
+    /**
+     * プライバシーポリシー.
+     *
+     * @Route("/privacy", name="help_privacy")
+     * @Template("Help/privacy.twig")
+     */
+    public function privacy(Application $app, Request $request)
     {
-        return $app->render('Help/privacy.twig');
+        return [];
     }
 
-    public function agreement(Application $app)
+    /**
+     * 利用規約.
+     *
+     * @Route("/agreement", name="help_agreement")
+     * @Template("Help/agreement.twig")
+     */
+    public function agreement(Application $app, Request $request)
     {
         $Help = $this->helpRepository->get();
 
-        return $app->render('Help/agreement.twig', array(
+        return [
             'help' => $Help,
-        ));
+        ];
     }
 }
