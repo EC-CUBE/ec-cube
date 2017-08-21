@@ -29,6 +29,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -40,11 +41,17 @@ use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\MemberRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=AdminController::class)
+ */
 class AdminController extends AbstractController
 {
     /**
@@ -77,6 +84,10 @@ class AdminController extends AbstractController
      */
     protected $formFactory;
 
+    /**
+     * @Route("/{_admin}/login", name="admin_login")
+     * @Template("login.twig")
+     */
     public function login(Application $app, Request $request)
     {
         if ($app->isGranted('ROLE_ADMIN')) {
@@ -97,12 +108,16 @@ class AdminController extends AbstractController
 
         $form = $builder->getForm();
 
-        return $app->render('login.twig', array(
+        return [
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
-        ));
+        ];
     }
 
+    /**
+     * @Route("/{_admin}", name="admin_homepage")
+     * @Template("index.twig")
+     */
     public function index(Application $app, Request $request)
     {
         // install.phpのチェック.
@@ -217,7 +232,7 @@ class AdminController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
-        return $app->render('index.twig', array(
+        return [
             'searchOrderForm' => $searchOrderForm->createView(),
             'searchProductForm' => $searchProductForm->createView(),
             'searchCustomerForm' => $searchCustomerForm->createView(),
@@ -228,11 +243,14 @@ class AdminController extends AbstractController
             'salesYesterday' => $salesYesterday,
             'countNonStockProducts' => $countNonStockProducts,
             'countCustomers' => $countCustomers,
-        ));
+        ];
     }
 
     /**
      * パスワード変更画面
+     *
+     * @Route("/{_admin}/login", name="admin_change_password")
+     * @Template("change_password.twig")
      *
      * @param Application $app
      * @param Request $request
@@ -246,7 +264,7 @@ class AdminController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-            ),
+p            ),
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE, $event);
@@ -291,13 +309,15 @@ class AdminController extends AbstractController
             $app->addError('admin.change_password.save.error', 'admin');
         }
 
-        return $app->render('change_password.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * 在庫なし商品の検索結果を表示する.
+     *
+     * @Route("/{_admin}/login", name="admin_homepage_nonstock")
      *
      * @param Application $app
      * @param Request $request
