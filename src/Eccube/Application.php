@@ -246,9 +246,7 @@ class Application extends \Silex\Application
         $this->register(new CompatServiceProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
-        // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
         // ルーティングの設定
