@@ -117,7 +117,6 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/{_admin}/customer", name="admin_customer")
-     * @Route("/{_admin}/customer/new", name="admin_customer_new")
      * @Route("/{_admin}/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
      * @Template("Customer/index.twig")
      */

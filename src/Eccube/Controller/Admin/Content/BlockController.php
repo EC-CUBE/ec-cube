@@ -216,7 +216,7 @@ class BlockController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
+     * @Route("/{_admin}/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {

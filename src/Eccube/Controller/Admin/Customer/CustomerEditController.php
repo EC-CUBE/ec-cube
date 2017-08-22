@@ -78,6 +78,7 @@ class CustomerEditController extends AbstractController
     protected $customerRepository;
 
     /**
+     * @Route("/{_admin}/customer/new", name="admin_customer_new")
      * @Route("/{_admin}/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
      * @Template("Customer/edit.twig")
      */

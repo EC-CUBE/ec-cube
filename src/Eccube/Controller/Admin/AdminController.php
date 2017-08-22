@@ -249,7 +249,7 @@ class AdminController extends AbstractController
     /**
      * パスワード変更画面
      *
-     * @Route("/{_admin}/login", name="admin_change_password")
+     * @Route("/{_admin}/change_password", name="admin_change_password")
      * @Template("change_password.twig")
      *
      * @param Application $app
@@ -264,7 +264,7 @@ class AdminController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-p            ),
+            ),
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE, $event);
@@ -317,7 +317,7 @@ p            ),
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     * @Route("/{_admin}/login", name="admin_homepage_nonstock")
+     * @Route("/{_admin}/nonstock", name="admin_homepage_nonstock")
      *
      * @param Application $app
      * @param Request $request
