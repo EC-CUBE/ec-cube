@@ -178,7 +178,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}", name="admin_payment_image_add")
+     * @Route("/{_admin}/setting/shop/payment/image/add", name="admin_payment_image_add")
      */
     public function imageAdd(Application $app, Request $request)
     {
