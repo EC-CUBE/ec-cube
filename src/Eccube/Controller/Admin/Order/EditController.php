@@ -358,6 +358,8 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
+     * @Route("/{_admin}/order/search/customer", name="admin_order_search_customer")
+     *
      * @param Application $app
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
