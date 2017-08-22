@@ -41,11 +41,6 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // product
 
-        $c->match('/product/class_category/{class_name_id}', '\Eccube\Controller\Admin\Product\ClassCategoryController::index')->assert('class_name_id', '\d+')->bind('admin_product_class_category');
-        $c->match('/product/class_category/{class_name_id}/{id}/edit', '\Eccube\Controller\Admin\Product\ClassCategoryController::index')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_edit');
-        $c->delete('/product/class_category/{class_name_id}/{id}/delete', '\Eccube\Controller\Admin\Product\ClassCategoryController::delete')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_delete');
-        $c->post('/product/class_category/rank/move', '\Eccube\Controller\Admin\Product\ClassCategoryController::moveRank')->bind('admin_product_class_category_rank_move');
-
         $c->match('/product/product_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvProduct')->bind('admin_product_csv_import');
         $c->match('/product/category_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvCategory')->bind('admin_product_category_csv_import');
         $c->match('/product/csv_template/{type}', '\Eccube\Controller\Admin\Product\CsvImportController::csvTemplate')->bind('admin_product_csv_template');
