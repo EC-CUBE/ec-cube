@@ -26,14 +26,21 @@ namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\CacheType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=CacheController::class)
+ */
 class CacheController extends AbstractController
 {
     /**
@@ -54,7 +61,10 @@ class CacheController extends AbstractController
      */
     protected $formFactory;
 
-
+    /**
+     * @Route("/{_admin}/content/cache", name="admin_content_cache")
+     * @Template("Content/cache.twig")
+     */
     public function index(Application $app, Request $request)
     {
 
@@ -91,9 +101,9 @@ class CacheController extends AbstractController
             $app->addSuccess('admin.content.cache.save.complete', 'admin');
         }
 
-        return $app->render('Content/cache.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     protected function deleteDoctrineCache(\Doctrine\Common\Cache\Cache $cacheDriver)
