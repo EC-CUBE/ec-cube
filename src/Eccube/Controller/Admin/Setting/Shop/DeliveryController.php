@@ -25,10 +25,12 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Delivery;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\DeliveryType;
@@ -36,10 +38,18 @@ use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\PaymentOptionRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @Component
+ * @Route(service=DeliveryController::class)
+ */
 class DeliveryController extends AbstractController
 {
     /**
@@ -84,15 +94,10 @@ class DeliveryController extends AbstractController
      */
     protected $deliveryRepository;
 
-    private $main_title;
-    private $sub_title;
-
-    public $form;
-
-    public function __construct()
-    {
-    }
-
+    /**
+     * @Route("/{_admin}/setting/shop/delivery", name="admin_setting_shop_delivery")
+     * @Template("Setting/Shop/delivery.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $Deliveries = $this->deliveryRepository
@@ -109,16 +114,23 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
 
-        return $app->render('Setting/Shop/delivery.twig', array(
+        return [
             'Deliveries' => $Deliveries,
-        ));
+        ];
     }
 
-    public function edit(Application $app, Request $request, $id = 0)
+    /**
+     * @Route("/{_admin}/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
+     * @Route("/{_admin}/setting/shop/delivery/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_shop_delivery_edit")
+     * @Template("Setting/Shop/delivery_edit.twig")
+     */
+    public function edit(Application $app, Request $request, Delivery $Delivery = null)
     {
-        /* @var $Delivery \Eccube\Entity\Delivery */
-        $Delivery = $this->deliveryRepository
-            ->findOrCreate($id);
+        if (is_null($Delivery)) {
+            // FIXME
+            $Delivery = $this->deliveryRepository
+                ->findOrCreate(0);
+        }
 
         // FormType: DeliveryFeeの生成
         $Prefs = $this->prefRepository
@@ -126,10 +138,12 @@ class DeliveryController extends AbstractController
 
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->deliveryFeeRepository
-                ->findOrCreate(array(
-                    'Delivery' => $Delivery,
-                    'Pref' => $Pref,
-                ));
+                ->findOrCreate(
+                    array(
+                        'Delivery' => $Delivery,
+                        'Pref' => $Pref,
+                    )
+                );
             if (!$DeliveryFee->getFee()) {
                 $Delivery->addDeliveryFee($DeliveryFee);
             }
@@ -198,7 +212,7 @@ class DeliveryController extends AbstractController
 
                 // お支払いの登録
                 $PaymentOptions = $this->paymentOptionRepository
-                    ->findBy(array('delivery_id' => $id));
+                    ->findBy(array('delivery_id' => $Delivery->getId()));
                 // 消す
                 foreach ($PaymentOptions as $PaymentOption) {
                     $DeliveryData->removePaymentOption($PaymentOption);
@@ -240,22 +254,20 @@ class DeliveryController extends AbstractController
                 return $app->redirect($app->url('admin_setting_shop_delivery'));
             }
         }
-        return $app->render('Setting/Shop/delivery_edit.twig', array(
+
+        return [
             'form' => $form->createView(),
-            'delivery_id' => $id,
-        ));
+            'delivery_id' => $Delivery->getId(),
+        ];
     }
 
-    public function delete(Application $app, Request $request, $id)
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/setting/shop/delivery/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_shop_delivery_delete")
+     */
+    public function delete(Application $app, Request $request, Delivery $Delivery)
     {
         $this->isTokenValid($app);
-
-        $repo = $this->deliveryRepository;
-        $Delivery = $repo->find($id);
-        if (!$Delivery) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_setting_shop_delivery'));
-        }
 
         $Delivery
             ->setDelFlg(Constant::ENABLED)
@@ -264,13 +276,13 @@ class DeliveryController extends AbstractController
         $this->entityManager->persist($Delivery);
 
         $rank = 1;
-        $Delivs = $repo
+        $Delivs = $this->deliveryRepository
             ->findBy(
                 array('del_flg' => Constant::DISABLED),
                 array('rank' => 'ASC')
             );
         foreach ($Delivs as $Deliv) {
-            if ($Deliv->getId() != $id) {
+            if ($Deliv->getId() != $Delivery->getId()) {
                 $Deliv->setRank($rank);
                 $rank++;
             }
@@ -292,18 +304,23 @@ class DeliveryController extends AbstractController
         return $app->redirect($app->url('admin_setting_shop_delivery'));
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/{_admin}/setting/shop/delivery/rank/move", name="admin_setting_shop_delivery_rank_move")
+     */
     public function moveRank(Application $app, Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            $ranks = $request->request->all();
-            foreach ($ranks as $deliveryId => $rank) {
-                $Delivery = $this->deliveryRepository
-                    ->find($deliveryId);
-                $Delivery->setRank($rank);
-                $this->entityManager->persist($Delivery);
-            }
-            $this->entityManager->flush();
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
         }
+
+        $ranks = $request->request->all();
+        foreach ($ranks as $deliveryId => $rank) {
+            $Delivery = $this->deliveryRepository
+                ->find($deliveryId);
+            $Delivery->setRank($rank);
+        }
+        $this->entityManager->flush();
 
         return true;
     }

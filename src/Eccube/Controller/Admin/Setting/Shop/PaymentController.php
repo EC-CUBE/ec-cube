@@ -25,14 +25,19 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Payment;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
@@ -40,6 +45,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
+/**
+ * @Component
+ * @Route(service=PaymentController::class)
+ */
 class PaymentController extends AbstractController
 {
     /**
@@ -72,6 +81,10 @@ class PaymentController extends AbstractController
      */
     protected $paymentRepository;
 
+    /**
+     * @Route("/{_admin}/setting/shop/payment", name="admin_setting_shop_payment")
+     * @Template("Setting/Shop/payment.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $Payments = $this->paymentRepository
@@ -88,18 +101,26 @@ class PaymentController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE, $event);
 
-        return $app->render('Setting/Shop/payment.twig', array(
+        return [
             'Payments' => $Payments,
-        ));
+        ];
     }
 
-    public function edit(Application $app, Request $request, $id = null)
+    /**
+     * @Route("/{_admin}/setting/shop/payment/new", name="admin_setting_shop_payment_new")
+     * @Route("/{_admin}/setting/shop/payment/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_shop_payment_edit")
+     * @Template("Setting/Shop/payment_edit.twig")
+     */
+    public function edit(Application $app, Request $request, Payment $Payment = null)
     {
-        $Payment = $this->paymentRepository
-            ->findOrCreate($id);
+        if (is_null($Payment)) {
+            // FIXME
+            $Payment = $this->paymentRepository
+                ->findOrCreate(0);
+        }
 
         $builder = $this->formFactory
-            ->createBuilder(PaymentRegisterType::class);
+            ->createBuilder(PaymentRegisterType::class, $Payment);
 
         $event = new EventArgs(
             array(
@@ -111,57 +132,54 @@ class PaymentController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
-
-        $form->setData($Payment);
+        $form->handleRequest($request);
 
         // 登録ボタン押下
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $Payment = $form->getData();
 
-            if ($form->isValid()) {
-                $PaymentData = $form->getData();
-
-                // 手数料を設定できない場合には、手数料を0にする
-                if ($PaymentData->getChargeFlg() == 2) {
-                    $PaymentData->setCharge(0);
-                }
-
-                // ファイルアップロード
-                $file = $form['payment_image']->getData();
-                $fs = new Filesystem();
-                if ($file && $fs->exists($this->appConfig['image_temp_realdir'] . '/' . $file)) {
-                    $fs->rename(
-                        $this->appConfig['image_temp_realdir'] . '/' . $file,
-                        $this->appConfig['image_save_realdir'] . '/' . $file
-                    );
-                }
-
-                $this->entityManager->persist($PaymentData);
-
-                $this->entityManager->flush();
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Payment' => $Payment,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
-
-                $app->addSuccess('admin.register.complete', 'admin');
-
-                return $app->redirect($app->url('admin_setting_shop_payment'));
+            // 手数料を設定できない場合には、手数料を0にする
+            if ($Payment->getChargeFlg() == 2) {
+                $Payment->setCharge(0);
             }
+
+            // ファイルアップロード
+            $file = $form['payment_image']->getData();
+            $fs = new Filesystem();
+            if ($file && $fs->exists($this->appConfig['image_temp_realdir'].'/'.$file)) {
+                $fs->rename(
+                    $this->appConfig['image_temp_realdir'].'/'.$file,
+                    $this->appConfig['image_save_realdir'].'/'.$file
+                );
+            }
+
+            $this->entityManager->persist($Payment);
+            $this->entityManager->flush();
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Payment' => $Payment,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
+
+            $app->addSuccess('admin.register.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_shop_payment'));
         }
 
-        return $app->render('Setting/Shop/payment_edit.twig', array(
+        return [
             'form' => $form->createView(),
-            'payment_id' => $id,
+            'payment_id' => $Payment->getId(),
             'Payment' => $Payment,
-        ));
+        ];
     }
 
+    /**
+     * @Route("/{_admin}", name="admin_payment_image_add")
+     */
     public function imageAdd(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -180,7 +198,7 @@ class PaymentController extends AbstractController
             }
 
             $extension = $image->guessExtension();
-            $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+            $filename = date('mdHis').uniqid('_').'.'.$extension;
             $image->move($this->appConfig['image_temp_realdir'], $filename);
         }
         $event = new EventArgs(
@@ -196,27 +214,25 @@ class PaymentController extends AbstractController
         return $app->json(array('filename' => $filename), 200);
     }
 
-    public function delete(Application $app, Request $request, $id)
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/setting/shop/payment/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_shop_payment_delete")
+     */
+    public function delete(Application $app, Request $request, Payment $TargetPayment)
     {
         $this->isTokenValid($app);
 
-        $Payment = $this->paymentRepository->find($id);
-        if (!$Payment) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_setting_shop_payment'));
-        }
-
-        $Payment
+        $TargetPayment
             ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
-        $this->entityManager->persist($Payment);
+        $this->entityManager->persist($TargetPayment);
 
         $rank = 1;
         $Payments = $this->paymentRepository->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC'));
         foreach ($Payments as $Payment) {
-            if ($Payment->getId() != $id) {
+            if ($Payment->getId() != $TargetPayment->getId()) {
                 $Payment->setRank($rank);
-                $rank ++;
+                $rank++;
             }
         }
 
@@ -224,31 +240,33 @@ class PaymentController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'Payment' => $Payment,
+                'Payment' => $TargetPayment,
             ),
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
-        $app->addSuccess('admin.delete.complete', 'admin') ;
+        $app->addSuccess('admin.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
 
-    public function up(Application $app, $id)
+    /**
+     * @Method("PUT")
+     * @Route("/{_admin}/setting/shop/payment/{id}/up", requirements={"id":"\d+"}, name="admin_setting_shop_payment_up")
+     */
+    public function up(Application $app, Payment $current)
     {
         $this->isTokenValid($app);
 
-        $repo = $this->paymentRepository;
-
-        $current = $repo->find($id);
         $currentRank = $current->getRank();
-
         $targetRank = $currentRank + 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
 
-        $this->entityManager->persist($target->setRank($currentRank));
-        $this->entityManager->persist($current->setRank($targetRank));
+        $target = $this->paymentRepository->findOneBy(array('rank' => $targetRank));
+
+        $target->setRank($currentRank);
+        $current->setRank($targetRank);
+
         $this->entityManager->flush();
 
         $app->addSuccess('admin.rank.move.complete', 'admin');
@@ -256,20 +274,22 @@ class PaymentController extends AbstractController
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
 
-    public function down(Application $app, $id)
+    /**
+     * @Method("PUT")
+     * @Route("/{_admin}/setting/shop/payment/{id}/down", requirements={"id":"\d+"}, name="admin_setting_shop_payment_down")
+     */
+    public function down(Application $app, Payment $current)
     {
         $this->isTokenValid($app);
 
-        $repo = $this->paymentRepository;
-
-        $current = $repo->find($id);
         $currentRank = $current->getRank();
-
         $targetRank = $currentRank - 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
 
-        $this->entityManager->persist($target->setRank($currentRank));
-        $this->entityManager->persist($current->setRank($targetRank));
+        $target = $this->paymentRepository->findOneBy(array('rank' => $targetRank));
+
+        $target->setRank($currentRank);
+        $current->setRank($targetRank);
+
         $this->entityManager->flush();
 
         $app->addSuccess('admin.rank.move.complete', 'admin');
