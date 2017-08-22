@@ -41,13 +41,6 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // product
 
-        $c->match('/product/category', '\Eccube\Controller\Admin\Product\CategoryController::index')->bind('admin_product_category');
-        $c->match('/product/category/export', '\Eccube\Controller\Admin\Product\CategoryController::export')->bind('admin_product_category_export');
-        $c->match('/product/category/{parent_id}', '\Eccube\Controller\Admin\Product\CategoryController::index')->assert('parent_id', '\d+')->bind('admin_product_category_show');
-        $c->match('/product/category/{id}/edit', '\Eccube\Controller\Admin\Product\CategoryController::index')->assert('id', '\d+')->bind('admin_product_category_edit');
-        $c->delete('/product/category/{id}/delete', '\Eccube\Controller\Admin\Product\CategoryController::delete')->assert('id', '\d+')->bind('admin_product_category_delete');
-        $c->post('/product/category/rank/move', '\Eccube\Controller\Admin\Product\CategoryController::moveRank')->bind('admin_product_category_rank_move');
-
         $c->match('/product/class_name', '\Eccube\Controller\Admin\Product\ClassNameController::index')->bind('admin_product_class_name');
         $c->match('/product/class_name/{id}/edit', '\Eccube\Controller\Admin\Product\ClassNameController::index')->assert('id', '\d+')->bind('admin_product_class_name_edit');
         $c->delete('/product/class_name/{id}/delete', '\Eccube\Controller\Admin\Product\ClassNameController::delete')->assert('id', '\d+')->bind('admin_product_class_name_delete');
