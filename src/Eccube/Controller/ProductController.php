@@ -299,7 +299,7 @@ class ProductController
     /**
      * 商品詳細画面.
      *
-     * @Route("/products/detail/{id}", name="product_detail", requirements={"id":"\d+"})
+     * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
      */
     public function detail(Application $app, Request $request, $id)

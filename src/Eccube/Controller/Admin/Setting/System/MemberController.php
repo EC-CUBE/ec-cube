@@ -112,7 +112,7 @@ class MemberController extends AbstractController
 
     /**
      * @Route("/{_admin}/setting/system/member/new", name="admin_setting_system_member_new")
-     * @Route("/{_admin}/setting/system/member/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_system_member_edit")
+     * @Route("/{_admin}/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
      * @Template("Setting/System/member_edit.twig")
      */
     public function edit(Application $app, Request $request, Member $Member = null)
@@ -191,7 +191,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/system/member/{id}/up", requirements={"id":"\d+"}, name="admin_setting_system_member_up")
+     * @Route("/{_admin}/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
      */
     public function up(Application $app, Request $request, Member $Member)
     {
@@ -210,7 +210,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/system/member/{id}/down", requirements={"id":"\d+"}, name="admin_setting_system_member_down")
+     * @Route("/{_admin}/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
      */
     public function down(Application $app, Request $request, Member $Member)
     {
@@ -229,7 +229,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/system/member/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_system_member_delete")
+     * @Route("/{_admin}/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
      */
     public function delete(Application $app, Request $request, Member $Member)
     {

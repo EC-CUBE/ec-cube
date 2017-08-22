@@ -121,7 +121,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Route("/{_admin}/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
-     * @Route("/{_admin}/setting/shop/delivery/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_shop_delivery_edit")
+     * @Route("/{_admin}/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
      * @Template("Setting/Shop/delivery_edit.twig")
      */
     public function edit(Application $app, Request $request, Delivery $Delivery = null)
@@ -263,7 +263,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/shop/delivery/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_shop_delivery_delete")
+     * @Route("/{_admin}/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
      */
     public function delete(Application $app, Request $request, Delivery $Delivery)
     {

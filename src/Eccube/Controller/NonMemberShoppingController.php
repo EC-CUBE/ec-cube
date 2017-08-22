@@ -334,7 +334,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * お届け先の設定（非会員）がクリックされた場合の処理
      *
-     * @Route("/shopping/shipping_edit_change/{id}", name="shopping_shipping_edit_change", requirements={"id":"\d+"})
+     * @Route("/shopping/shipping_edit_change/{id}", name="shopping_shipping_edit_change", requirements={"id" = "\d+"})
      */
     public function shippingEditChange(Application $app, Request $request, $id)
     {

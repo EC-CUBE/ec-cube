@@ -147,7 +147,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧からのダウンロード
      *
-     * @Route("/{_admin}/store/template/{id}/download", name="admin_store_template_download", requirements={"id":"\d+"})
+     * @Route("/{_admin}/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
      */
     public function download(Application $app, Request $request, \Eccube\Entity\Template $Template)
     {
@@ -208,7 +208,7 @@ class TemplateController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id":"\d+"})
+     * @Route("/{_admin}/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"})
      * @Method("DELETE")
      */
     public function delete(Application $app, Request $request, \Eccube\Entity\Template $Template)

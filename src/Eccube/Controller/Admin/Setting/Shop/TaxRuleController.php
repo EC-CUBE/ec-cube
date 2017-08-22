@@ -85,7 +85,7 @@ class TaxRuleController extends AbstractController
      *
      * @Route("/{_admin}/setting/shop/tax", name="admin_setting_shop_tax")
      * @Route("/{_admin}/setting/shop/tax/new", name="admin_setting_shop_tax_new")
-     * @Route("/{_admin}/setting/shop/tax/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_shop_tax_edit")
+     * @Route("/{_admin}/setting/shop/tax/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_edit")
      * @Template("Setting/Shop/tax_rule.twig")
      */
     public function index(Application $app, Request $request, TaxRule $TargetTaxRule = null)
@@ -155,7 +155,7 @@ class TaxRuleController extends AbstractController
      * 税率設定の削除
      *
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/shop/tax/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_shop_tax_delete")
+     * @Route("/{_admin}/setting/shop/tax/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_delete")
      */
     public function delete(Application $app, Request $request, TaxRule $TaxRule)
     {

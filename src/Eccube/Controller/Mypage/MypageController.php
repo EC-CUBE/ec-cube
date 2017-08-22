@@ -197,7 +197,7 @@ class MypageController extends AbstractController
     /**
      * 購入履歴詳細を表示する.
      *
-     * @Route("/mypage/history/{id}", name="mypage_history", requirements={"id":"\d+"})
+     * @Route("/mypage/history/{id}", name="mypage_history", requirements={"id" = "\d+"})
      * @Template("Mypage/history.twig")
      */
     public function history(Application $app, Request $request, $id)
@@ -240,7 +240,7 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @Route("/mypage/order/{id}", name="mypage_order", requirements={"id":"\d+"})
+     * @Route("/mypage/order/{id}", name="mypage_order", requirements={"id" = "\d+"})
      * @Method("PUT")
      */
     public function order(Application $app, Request $request, $id)
@@ -352,7 +352,7 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を削除する.
      *
-     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id":"\d+"})
+     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
      * @Method("DELETE")
      */
     public function delete(Application $app, Request $request, $id)

@@ -108,7 +108,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Route("/{_admin}/setting/shop/payment/new", name="admin_setting_shop_payment_new")
-     * @Route("/{_admin}/setting/shop/payment/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_shop_payment_edit")
+     * @Route("/{_admin}/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit")
      * @Template("Setting/Shop/payment_edit.twig")
      */
     public function edit(Application $app, Request $request, Payment $Payment = null)
@@ -216,7 +216,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/shop/payment/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_shop_payment_delete")
+     * @Route("/{_admin}/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete")
      */
     public function delete(Application $app, Request $request, Payment $TargetPayment)
     {
@@ -253,7 +253,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/payment/{id}/up", requirements={"id":"\d+"}, name="admin_setting_shop_payment_up")
+     * @Route("/{_admin}/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up")
      */
     public function up(Application $app, Payment $current)
     {
@@ -276,7 +276,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/payment/{id}/down", requirements={"id":"\d+"}, name="admin_setting_shop_payment_down")
+     * @Route("/{_admin}/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down")
      */
     public function down(Application $app, Payment $current)
     {

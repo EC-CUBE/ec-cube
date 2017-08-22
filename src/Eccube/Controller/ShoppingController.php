@@ -295,7 +295,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * お届け先の設定一覧からの選択
      *
-     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id":"\d+"})
+     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"})
      * @Template("Shopping/shipping.twig")
      */
     public function shipping(Application $app, Request $request, $id)
@@ -387,7 +387,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * お届け先の設定(非会員でも使用する)
      *
-     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id":"\d+"})
+     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"})
      * @Template("Shopping/shipping_edit.twig")
      */
     public function shippingEdit(Application $app, Request $request, $id)

@@ -227,7 +227,7 @@ class PluginController extends AbstractController
      * インストール済プラグインからのアップデート
      *
      * @Method("POST")
-     * @Route("/{_admin}/store/plugin/{id}/update", requirements={"id":"\d+"}, name="admin_store_plugin_update")
+     * @Route("/{_admin}/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
      */
     public function update(Application $app, Request $request, Plugin $Plugin)
     {
@@ -294,7 +294,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを有効にします。
      *
      * @Method("PUT")
-     * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id":"\d+"}, name="admin_store_plugin_enable")
+     * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
      */
     public function enable(Application $app, Plugin $Plugin)
     {
@@ -314,7 +314,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを無効にします。
      *
      * @Method("PUT")
-     * @Route("/{_admin}/store/plugin/{id}/disable", requirements={"id":"\d+"}, name="admin_store_plugin_disable")
+     * @Route("/{_admin}/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
      */
     public function disable(Application $app, Plugin $Plugin)
     {
@@ -335,7 +335,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを削除します。
      *
      * @Method("DELETE")
-     * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id":"\d+"}, name="admin_store_plugin_uninstall")
+     * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
      */
     public function uninstall(Application $app, Plugin $Plugin)
     {
@@ -368,7 +368,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/plugin/handler_up/{id}", requirements={"id":"\d+"}, name="admin_store_plugin_handler_up")
+     * @Route("/{_admin}/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
      */
     public function handler_up(Application $app, PluginEventHandler $Handler)
     {
@@ -379,7 +379,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/plugin/handler_down/{id}", requirements={"id":"\d+"}, name="admin_store_plugin_handler_down")
+     * @Route("/{_admin}/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
      */
     public function handler_down(Application $app, PluginEventHandler $Handler)
     {
@@ -574,7 +574,7 @@ class PluginController extends AbstractController
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @Route("/{_admin}/store/plugin/upgrade/{action}/{id}/{version}", requirements={"id":"\d+"}, name="admin_store_plugin_upgrade")
+     * @Route("/{_admin}/store/plugin/upgrade/{action}/{id}/{version}", requirements={"id" = "\d+"}, name="admin_store_plugin_upgrade")
      */
     public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
