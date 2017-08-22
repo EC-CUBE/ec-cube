@@ -27,6 +27,7 @@ namespace Eccube\Controller\Admin\Content;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
@@ -34,6 +35,9 @@ use Eccube\Entity\Layout;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -41,6 +45,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 // todo プレビュー実装
+/**
+ * @Component
+ * @Route(service=LayoutController::class)
+ */
 class LayoutController extends AbstractController
 {
     /**
@@ -61,18 +69,23 @@ class LayoutController extends AbstractController
      */
     protected $layoutRepository;
 
+    /**
+     * @Route("/{_admin}/content/layout", name="admin_content_layout")
+     * @Template("Content/layout_list.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
 
-        return $app->render(
-            'Content/layout_list.twig',
-            [
-                'Layouts' => $Layouts,
-            ]
-        );
+        return [
+            'Layouts' => $Layouts,
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     */
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
@@ -93,6 +106,11 @@ class LayoutController extends AbstractController
         return $app->redirect($app->url('admin_content_layout'));
     }
 
+    /**
+     * @Route("/{_admin}/content/layout/new", name="admin_content_layout_new")
+     * @Route("/{_admin}/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
+     * @Template("Content/layout.twig")
+     */
     public function edit(Application $app, Request $request, $id = null)
     {
         if (is_null($id)) {
@@ -201,16 +219,17 @@ class LayoutController extends AbstractController
             return $app->redirect($app->url('admin_content_layout_edit', array('id' => $Layout->getId())));
         }
 
-        return $app->render(
-            'Content/layout.twig',
-            array(
-                'form' => $form->createView(),
-                'Layout' => $Layout,
-                'UnusedBlocks' => $UnusedBlocks,
-            )
-        );
+        return [
+            'form' => $form->createView(),
+            'Layout' => $Layout,
+            'UnusedBlocks' => $UnusedBlocks,
+        ];
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/{_admin}/content/layout/view_block", name="admin_content_layout_view_block")
+     */
     public function viewBlock(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
