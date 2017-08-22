@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
@@ -37,12 +38,19 @@ use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=PageController::class)
+ */
 class PageController extends AbstractController
 {
     /**
@@ -81,6 +89,10 @@ class PageController extends AbstractController
      */
     protected $deviceTypeRepository;
 
+    /**
+     * @Route("/{_admin}/content/page", name="admin_content_page")
+     * @Template("Content/page.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $DeviceType = $this->deviceTypeRepository
@@ -102,6 +114,11 @@ class PageController extends AbstractController
         ));
     }
 
+    /**
+     * @Route("/{_admin}/content/page/new", name="admin_content_page_new")
+     * @Route("/{_admin}/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
+     * @Template("Content/page_edit.twig")
+     */
     public function edit(Application $app, Request $request, $id = null)
     {
         $DeviceType = $this->deviceTypeRepository
@@ -229,14 +246,18 @@ class PageController extends AbstractController
 
         $templatePath = $this->pageLayoutRepository->getWriteTemplatePath($editable);
 
-        return $app->render('Content/page_edit.twig', array(
+        return [
             'form' => $form->createView(),
             'page_id' => $PageLayout->getId(),
             'editable' => $editable,
             'template_path' => $templatePath,
-        ));
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
+     */
     public function delete(Application $app, Request $request, $id = null)
     {
         $this->isTokenValid($app);
