@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
@@ -35,6 +36,9 @@ use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -42,6 +46,10 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=BlockController::class)
+ */
 class BlockController extends AbstractController
 {
     /**
@@ -80,6 +88,10 @@ class BlockController extends AbstractController
      */
     protected $deviceTypeRepository;
 
+    /**
+     * @Route("/{_admin}/content/block", name="admin_content_block")
+     * @Template("Content/block.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $DeviceType = $this->deviceTypeRepository
@@ -97,11 +109,16 @@ class BlockController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE, $event);
 
-        return $app->render('Content/block.twig', array(
+        return [
             'Blocks' => $Blocks,
-        ));
+        ];
     }
 
+    /**
+     * @Route("/{_admin}/content/block/new", name="admin_content_block_new")
+     * @Route("/{_admin}/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
+     * @Template("Content/block_edit.twig")
+     */
     public function edit(Application $app, Request $request, $id = null)
     {
         $DeviceType = $this->deviceTypeRepository
@@ -197,6 +214,10 @@ class BlockController extends AbstractController
         ));
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
+     */
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);

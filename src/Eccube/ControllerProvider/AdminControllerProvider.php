@@ -40,11 +40,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         }
 
         // content
-        $c->match('/content/block', '\Eccube\Controller\Admin\Content\BlockController::index')->bind('admin_content_block');
-        $c->match('/content/block/new', '\Eccube\Controller\Admin\Content\BlockController::edit')->bind('admin_content_block_new');
-        $c->match('/content/block/{id}/edit', '\Eccube\Controller\Admin\Content\BlockController::edit')->assert('id', '\d+')->bind('admin_content_block_edit');
-        $c->delete('/content/block/{id}/delete', '\Eccube\Controller\Admin\Content\BlockController::delete')->assert('id', '\d+')->bind('admin_content_block_delete');
-
         $c->match('/content/page', '\Eccube\Controller\Admin\Content\PageController::index')->bind('admin_content_page');
         $c->match('/content/page/new', '\Eccube\Controller\Admin\Content\PageController::edit')->bind('admin_content_page_new');
         $c->match('/content/page/{id}/edit', '\Eccube\Controller\Admin\Content\PageController::edit')->assert('id', '\d+')->bind('admin_content_page_edit');
