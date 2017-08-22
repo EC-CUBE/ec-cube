@@ -181,16 +181,16 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/system/log', '\Eccube\Controller\Admin\Setting\System\LogController::index')->bind('admin_setting_system_log');
 
         // system/masterdata
-        $c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');
-        $c->match('/setting/system/masterdata/{entity}/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata_view');
-        $c->match('/setting/system/masterdata/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::edit')->bind('admin_setting_system_masterdata_edit');
+        //$c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');
+        //$c->match('/setting/system/masterdata/{entity}/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata_view');
+        //$c->match('/setting/system/masterdata//xxx/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::edit')->bind('admin_setting_system_masterdata_edit');
 
         // store
-        $c->match('/store/template', '\Eccube\Controller\Admin\Store\TemplateController::index')->bind('admin_store_template');
-        $c->match('/store/template/install', '\Eccube\Controller\Admin\Store\TemplateController::add')->bind('admin_store_template_install');
-        $c->match('/store/template/{id}/download', '\Eccube\Controller\Admin\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_store_template_download');
-        $c->delete('/store/template/{id}/delete', '\Eccube\Controller\Admin\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_store_template_delete');
-        $c->match('/store/plugin', '\Eccube\Controller\Admin\Store\PluginController::index')->bind('admin_store_plugin');
+        //$c->match('/store/template', '\Eccube\Controller\Admin\Store\TemplateController::index')->bind('admin_store_template');
+        //$c->match('/store/template/install', '\Eccube\Controller\Admin\Store\TemplateController::add')->bind('admin_store_template_install');
+        //$c->match('/store/template/{id}/download', '\Eccube\Controller\Admin\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_store_template_download');
+        //$c->delete('/store/template/{id}/delete', '\Eccube\Controller\Admin\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_store_template_delete');
+        //$c->match('/store/plugin', '\Eccube\Controller\Admin\Store\PluginController::index')->bind('admin_store_plugin');
         $c->match('/store/plugin/owners_install', '\Eccube\Controller\Admin\Store\PluginController::ownersInstall')->bind('admin_store_plugin_owners_install');
         $c->match('/store/plugin/install', '\Eccube\Controller\Admin\Store\PluginController::install')->bind('admin_store_plugin_install');
         $c->match('/store/plugin/upgrade/{action}/{id}/{version}', '\Eccube\Controller\Admin\Store\PluginController::upgrade')->assert('id', '\d+')->bind('admin_store_plugin_upgrade');
@@ -202,7 +202,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->delete('/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_store_plugin_uninstall');
         $c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
         $c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
-        $c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
+        //$c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
 
         return $c;
     }

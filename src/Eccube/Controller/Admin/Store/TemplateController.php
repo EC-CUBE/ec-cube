@@ -24,6 +24,7 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -32,18 +33,23 @@ use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @Component
+ * @Route(service=TemplateController::class)
+ */
 class TemplateController extends AbstractController
 {
     /**
@@ -82,98 +88,85 @@ class TemplateController extends AbstractController
      */
     protected $deviceTypeRepository;
 
-
     /**
      * テンプレート一覧画面
      *
-     * @param Application $app
-     * @param Request $request
+     * @Route("/{_admin}/store/template", name="admin_store_template")
+     * @Template("Store/template.twig")
      */
     public function index(Application $app, Request $request)
     {
-
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Templates = $this->templateRepository
             ->findBy(array('DeviceType' => $DeviceType));
 
-        $form = $app->form()
+        $form = $this->formFactory->createBuilder()
             ->add('selected', HiddenType::class)
             ->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $Template = $this->templateRepository
-                    ->find($form['selected']->getData());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $Template = $this->templateRepository
+                ->find($form['selected']->getData());
 
-                // path.(yml|php)の再構築
-                $file = $this->appConfig['root_dir'].'/app/config/eccube/path';
-                if (file_exists($file.'.php')) {
-                    $config = require $file.'.php';
-                } elseif (file_exists($file.'.yml')) {
-                    $config = Yaml::parse(file_get_contents($file.'.yml'));
-                }
-
-                $templateCode = $Template->getCode();
-                $config['template_code'] = $templateCode;
-                $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
-                $config['template_html_realdir'] = $config['public_path_realdir'].'/template/'.$templateCode;
-                $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
-                $config['block_realdir'] =$config['template_realdir'].'/Block';
-
-                if (file_exists($file.'.php')) {
-                    file_put_contents($file.'.php', sprintf('<?php return %s', var_export($config, true)).';');
-                }
-                if (file_exists($file.'.yml')) {
-                    file_put_contents($file.'.yml', Yaml::dump($config));
-                }
-
-                $app->addSuccess('admin.content.template.save.complete', 'admin');
-
-                return $app->redirect($app->url('admin_store_template'));
+            // path.(yml|php)の再構築
+            $file = $this->appConfig['root_dir'].'/app/config/eccube/path';
+            if (file_exists($file.'.php')) {
+                $config = require $file.'.php';
+            } elseif (file_exists($file.'.yml')) {
+                $config = Yaml::parse(file_get_contents($file.'.yml'));
             }
+
+            $templateCode = $Template->getCode();
+            $config['template_code'] = $templateCode;
+            $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
+            $config['template_html_realdir'] = $config['public_path_realdir'].'/template/'.$templateCode;
+            $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
+            $config['block_realdir'] = $config['template_realdir'].'/Block';
+
+            if (file_exists($file.'.php')) {
+                file_put_contents($file.'.php', sprintf('<?php return %s', var_export($config, true)).';');
+            }
+            if (file_exists($file.'.yml')) {
+                file_put_contents($file.'.yml', Yaml::dump($config));
+            }
+
+            $app->addSuccess('admin.content.template.save.complete', 'admin');
+
+            return $app->redirect($app->url('admin_store_template'));
         }
 
-        return $app->render('Store/template.twig', array(
+        return [
             'form' => $form->createView(),
             'Templates' => $Templates,
-        ));
+        ];
     }
 
     /**
      * テンプレート一覧からのダウンロード
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $id
+     * @Route("/{_admin}/store/template/{id}/download", name="admin_store_template_download", requirements={"id":"\d+"})
      */
-    public function download(Application $app, Request $request, $id)
+    public function download(Application $app, Request $request, \Eccube\Entity\Template $Template)
     {
-        /** @var $Template \Eccube\Entity\Template */
-        $Template = $this->templateRepository->find($id);
-
-        if (!$Template) {
-            throw new NotFoundHttpException();
-        }
-
         // 該当テンプレートのディレクトリ
         $config = $this->appConfig;
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
-        $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+        $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
         // 一時ディレクトリ
         $uniqId = sha1(Str::random(32));
-        $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
-        $appDir = $tmpDir . '/app';
-        $htmlDir = $tmpDir . '/html';
+        $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
+        $appDir = $tmpDir.'/app';
+        $htmlDir = $tmpDir.'/html';
 
         // ファイル名
-        $tarFile = $config['template_temp_realdir'] . '/' . $uniqId . '.tar';
-        $tarGzFile = $tarFile . '.gz';
-        $downloadFileName = $Template->getCode() . '.tar.gz';
+        $tarFile = $config['template_temp_realdir'].'/'.$uniqId.'.tar';
+        $tarGzFile = $tarFile.'.gz';
+        $downloadFileName = $Template->getCode().'.tar.gz';
 
         // 該当テンプレートを一時ディレクトリへコピーする.
         $fs = new Filesystem();
@@ -193,36 +186,34 @@ class TemplateController extends AbstractController
 
         // ダウンロード完了後にファイルを削除する.
         // http://stackoverflow.com/questions/15238897/removing-file-after-delivering-response-with-silex-symfony
-        $app->finish(function (Request $request, Response $response, \Silex\Application $app) use (
-            $tmpDir,
-            $tarFile,
-            $tarGzFile
-        ) {
-            $this->logger->addDebug('remove temp file: ' . $tmpDir);
-            $this->logger->addDebug('remove temp file: ' . $tarFile);
-            $this->logger->addDebug('remove temp file: ' . $tarGzFile);
-            $fs = new Filesystem();
-            $fs->remove($tmpDir);
-            $fs->remove($tarFile);
-            $fs->remove($tarGzFile);
-        });
+        $app->finish(
+            function (Request $request, Response $response, \Silex\Application $app) use (
+                $tmpDir,
+                $tarFile,
+                $tarGzFile
+            ) {
+                $this->logger->addDebug('remove temp file: '.$tmpDir);
+                $this->logger->addDebug('remove temp file: '.$tarFile);
+                $this->logger->addDebug('remove temp file: '.$tarGzFile);
+                $fs = new Filesystem();
+                $fs->remove($tmpDir);
+                $fs->remove($tarFile);
+                $fs->remove($tarGzFile);
+            }
+        );
 
         return $app
             ->sendFile($tarGzFile)
             ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $downloadFileName);
     }
 
-    public function delete(Application $app, Request $request, $id)
+    /**
+     * @Route("/{_admin}/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id":"\d+"})
+     * @Method("DELETE")
+     */
+    public function delete(Application $app, Request $request, \Eccube\Entity\Template $Template)
     {
         $this->isTokenValid($app);
-
-        /** @var $Template \Eccube\Entity\Template */
-        $Template = $this->templateRepository->find($id);
-
-        if (!$Template) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_store_template'));
-        }
 
         // デフォルトテンプレート
         if ($Template->isDefaultTemplate()) {
@@ -241,8 +232,8 @@ class TemplateController extends AbstractController
         // テンプレートディレクトリの削除
         $config = $this->appConfig;
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
-        $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+        $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
         $fs = new Filesystem();
         $fs->remove($targetRealDir);
@@ -257,105 +248,107 @@ class TemplateController extends AbstractController
         return $app->redirect($app->url('admin_store_template'));
     }
 
-    public function add(Application $app, Request $request)
+    /**
+     * テンプレートの追加画面.
+     *
+     * @Route("/{_admin}/store/template/install", name="admin_store_template_install")
+     * @Template("Store/template_add.twig")
+     */
+    public function install(Application $app, Request $request)
     {
-        /** @var $Template \Eccube\Entity\Template */
-        $Template = new \Eccube\Entity\Template();
-
         $form = $this->formFactory
-            ->createBuilder(TemplateType::class, $Template)
+            ->createBuilder(TemplateType::class)
             ->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var $Template \Eccube\Entity\Template */
+            $Template = $form->getData();
 
-            if ($form->isValid()) {
+            $TemplateExists = $this->templateRepository
+                ->findByCode($Template->getCode());
 
-                /** @var $Template \Eccube\Entity\Template */
-                $tem = $this->templateRepository
-                    ->findByCode($form['code']->getData());
+            // テンプレートコードの重複チェック.
+            if ($TemplateExists) {
+                $form['code']->addError(new FormError('すでに登録されているテンプレートコードです。'));
 
-                // テンプレートコードの重複チェック.
-                if ($tem) {
-                    $form['code']->addError(new FormError('すでに登録されているテンプレートコードです。'));
-
-                    return false;
-                }
-
-                // 該当テンプレートのディレクトリ
-                $config = $this->appConfig;
-                $templateCode = $Template->getCode();
-                $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
-                $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
-
-                // 一時ディレクトリ
-                $uniqId = sha1(Str::random(32));
-                $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
-                $appDir = $tmpDir . '/app';
-                $htmlDir = $tmpDir . '/html';
-
-                $formFile = $form['file']->getData();
-                // ファイル名
-                $archive = $templateCode . '.' . $formFile->getClientOriginalExtension();
-
-                // ファイルを一時ディレクトリへ移動.
-                $formFile->move($tmpDir, $archive);
-
-                // 一時ディレクトリへ解凍する.
-                try {
-                    if ($formFile->getClientOriginalExtension() == 'zip') {
-                        $zip = new \ZipArchive();
-                        $zip->open($tmpDir . '/' . $archive);
-                        $zip->extractTo($tmpDir);
-                        $zip->close();
-                    } else {
-                        $phar = new \PharData($tmpDir . '/' . $archive);
-                        $phar->extractTo($tmpDir, null, true);
-                    }
-                } catch (\Exception $e) {
-                    $form['file']->addError(new FormError('アップロードに失敗しました。圧縮ファイルを確認してください。'));
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
-                }
-
-                $fs = new Filesystem();
-
-                // appディレクトリの存在チェック.
-                if (!file_exists($appDir)) {
-                    $fs->mkdir($appDir);
-                }
-
-                // htmlディレクトリの存在チェック.
-                if (!file_exists($htmlDir)) {
-                    $fs->mkdir($htmlDir);
-                }
-
-                // 一時ディレクトリから該当テンプレートのディレクトリへコピーする.
-                $fs->mirror($appDir, $targetRealDir);
-                $fs->mirror($htmlDir, $targetHtmlRealDir);
-
-                // 一時ディレクトリを削除.
-                $fs->remove($tmpDir);
-
-                $DeviceType = $this->deviceTypeRepository
-                    ->find(DeviceType::DEVICE_TYPE_PC);
-
-                $Template->setDeviceType($DeviceType);
-
-                $this->entityManager->persist($Template);
-                $this->entityManager->flush();
-
-                $app->addSuccess('admin.content.template.add.complete', 'admin');
-
-                return $app->redirect($app->url('admin_store_template'));
+                return [
+                    'form' => $form->createView(),
+                ];
             }
+
+            // 該当テンプレートのディレクトリ
+            $config = $this->appConfig;
+            $templateCode = $Template->getCode();
+            $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
+            $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
+
+            // 一時ディレクトリ
+            $uniqId = sha1(Str::random(32));
+            $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
+            $appDir = $tmpDir.'/app';
+            $htmlDir = $tmpDir.'/html';
+
+            $formFile = $form['file']->getData();
+            // ファイル名
+            $archive = $templateCode.'.'.$formFile->getClientOriginalExtension();
+
+            // ファイルを一時ディレクトリへ移動.
+            $formFile->move($tmpDir, $archive);
+
+            // 一時ディレクトリへ解凍する.
+            try {
+                if ($formFile->getClientOriginalExtension() === 'zip') {
+                    $zip = new \ZipArchive();
+                    $zip->open($tmpDir.'/'.$archive);
+                    $zip->extractTo($tmpDir);
+                    $zip->close();
+                } else {
+                    $phar = new \PharData($tmpDir.'/'.$archive);
+                    $phar->extractTo($tmpDir, null, true);
+                }
+            } catch (\Exception $e) {
+                $form['file']->addError(new FormError('アップロードに失敗しました。圧縮ファイルを確認してください。'));
+
+                return [
+                    'form' => $form->createView(),
+                ];
+            }
+
+            $fs = new Filesystem();
+
+            // appディレクトリの存在チェック.
+            if (!file_exists($appDir)) {
+                $fs->mkdir($appDir);
+            }
+
+            // htmlディレクトリの存在チェック.
+            if (!file_exists($htmlDir)) {
+                $fs->mkdir($htmlDir);
+            }
+
+            // 一時ディレクトリから該当テンプレートのディレクトリへコピーする.
+            $fs->mirror($appDir, $targetRealDir);
+            $fs->mirror($htmlDir, $targetHtmlRealDir);
+
+            // 一時ディレクトリを削除.
+            $fs->remove($tmpDir);
+
+            $DeviceType = $this->deviceTypeRepository
+                ->find(DeviceType::DEVICE_TYPE_PC);
+
+            $Template->setDeviceType($DeviceType);
+
+            $this->entityManager->persist($Template);
+            $this->entityManager->flush();
+
+            $app->addSuccess('admin.content.template.add.complete', 'admin');
+
+            return $app->redirect($app->url('admin_store_template'));
         }
 
-        return $app->render('Store/template_add.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
-
 }
