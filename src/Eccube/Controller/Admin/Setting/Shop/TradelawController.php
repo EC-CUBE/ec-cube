@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -32,10 +33,16 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TradelawType;
 use Eccube\Repository\HelpRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=TradelawController::class)
+ */
 class TradelawController extends AbstractController
 {
     /**
@@ -62,12 +69,10 @@ class TradelawController extends AbstractController
      */
     protected $helpRepository;
 
-    public $form;
-
-    public function __construct()
-    {
-    }
-
+    /**
+     * @Route("/{_admin}/setting/shop/tradelaw", name="admin_setting_shop_tradelaw")
+     * @Template("Setting/Shop/tradelaw.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $Help = $this->helpRepository->get();
@@ -85,13 +90,13 @@ class TradelawController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $this->entityManager->persist($Help);
-
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
@@ -111,8 +116,8 @@ class TradelawController extends AbstractController
             }
         }
 
-        return $app->render('Setting/Shop/tradelaw.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 }

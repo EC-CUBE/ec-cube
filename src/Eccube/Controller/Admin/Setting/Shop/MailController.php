@@ -24,19 +24,26 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use \Eccube\Repository\MailTemplateRepository;
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\MailTemplate;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
+use Eccube\Repository\MailTemplateRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=MailController::class)
+ */
 class MailController extends AbstractController
 {
     /**
@@ -63,18 +70,13 @@ class MailController extends AbstractController
      */
     protected $mailTemplateRepository;
 
-    public function index(Application $app, Request $request, $id = null)
+    /**
+     * @Route("/{_admin}/setting/shop/mail", name="admin_setting_shop_mail")
+     * @Route("/{_admin}/setting/shop/mail/{id}", requirements={"id":"\d+"}, name="admin_setting_shop_mail_edit")
+     * @Template("Setting/Shop/mail.twig")
+     */
+    public function index(Application $app, Request $request, MailTemplate $Mail = null)
     {
-        $Mail = null;
-
-        if ($id) {
-            $Mail = $this->mailTemplateRepository
-                ->find($id);
-            if (is_null($Mail)) {
-                throw new NotFoundHttpException();
-            }
-        }
-
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 
@@ -88,7 +90,6 @@ class MailController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
-
         $form['template']->setData($Mail);
 
         if ('POST' === $request->getMethod()) {
@@ -116,13 +117,13 @@ class MailController extends AbstractController
 
                 $app->addSuccess('admin.shop.mail.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop_mail_edit', array('id' => $id)));
+                return $app->redirect($app->url('admin_setting_shop_mail_edit', array('id' => $Mail->getId())));
             }
         }
 
-        return $app->render('Setting/Shop/mail.twig', array(
+        return [
             'form' => $form->createView(),
-            'id' => $id,
-        ));
+            'id' => is_null($Mail) ? null : $Mail->getId(),
+        ];
     }
 }
