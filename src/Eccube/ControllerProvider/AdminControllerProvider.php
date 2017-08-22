@@ -169,11 +169,11 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->put('/setting/system/member/{id}/up', '\Eccube\Controller\Admin\Setting\System\MemberController::up')->assert('id', '\d+')->bind('admin_setting_system_member_up');
         $c->put('/setting/system/member/{id}/down', '\Eccube\Controller\Admin\Setting\System\MemberController::down')->assert('id', '\d+')->bind('admin_setting_system_member_down');
         // system/authority
-        $c->match('/setting/system/authority', '\Eccube\Controller\Admin\Setting\System\AuthorityController::index')->bind('admin_setting_system_authority');
+        //$c->match('/setting/system/authority', '\Eccube\Controller\Admin\Setting\System\AuthorityController::index')->bind('admin_setting_system_authority');
         // system/security
-        $c->match('/setting/system/security', '\Eccube\Controller\Admin\Setting\System\SecurityController::index')->bind('admin_setting_system_security');
+        //$c->match('/setting/system/security', '\Eccube\Controller\Admin\Setting\System\SecurityController::index')->bind('admin_setting_system_security');
         // system/log
-        $c->match('/setting/system/log', '\Eccube\Controller\Admin\Setting\System\LogController::index')->bind('admin_setting_system_log');
+        //$c->match('/setting/system/log', '\Eccube\Controller\Admin\Setting\System\LogController::index')->bind('admin_setting_system_log');
 
         // system/masterdata
         //$c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');

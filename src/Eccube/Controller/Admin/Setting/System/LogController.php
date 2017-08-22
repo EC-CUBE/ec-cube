@@ -24,15 +24,22 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=LogController::class)
+ */
 class LogController
 {
     /**
@@ -53,6 +60,10 @@ class LogController
      */
     protected $formFactory;
 
+    /**
+     * @Route("/{_admin}/setting/system/log", name="admin_setting_system_log")
+     * @Template("Setting/System/log.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $formData = array();
@@ -91,10 +102,10 @@ class LogController
 
         $logFile = $this->appConfig['root_dir'].'/app/log/'.$formData['files'];
 
-        return $app->render('Setting/System/log.twig', array(
+        return [
             'form' => $form->createView(),
             'log' => $this->parseLogFile($logFile, $formData),
-        ));
+        ];
     }
 
     private function parseLogFile($logFile, $formData)
@@ -113,6 +124,7 @@ class LogController
 
             $log[] = $line;
         }
+
         return $log;
     }
 }

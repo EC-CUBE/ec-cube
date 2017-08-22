@@ -24,17 +24,23 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
-
+/**
+ * @Component
+ * @Route(service=SecurityController::class)
+ */
 class SecurityController extends AbstractController
 {
     /**
@@ -49,6 +55,10 @@ class SecurityController extends AbstractController
      */
     protected $formFactory;
 
+    /**
+     * @Route("/{_admin}/setting/system/security", name="admin_setting_system_security")
+     * @Template("Setting/System/security.twig")
+     */
     public function index(Application $app, Request $request)
     {
 
@@ -88,7 +98,7 @@ class SecurityController extends AbstractController
                     } else {
                         // httpから変更されたらfalseのまま
                         $config['force_ssl'] = Constant::DISABLED;
-                        $data['force_ssl'] = (bool) Constant::DISABLED;
+                        $data['force_ssl'] = (bool)Constant::DISABLED;
                     }
                 } else {
                     $config['force_ssl'] = Constant::DISABLED;
@@ -144,8 +154,8 @@ class SecurityController extends AbstractController
             $form->get('force_ssl')->setData((bool)$this->appConfig['force_ssl']);
         }
 
-        return $app->render('Setting/System/security.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 }
