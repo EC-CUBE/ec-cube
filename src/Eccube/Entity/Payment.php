@@ -42,7 +42,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getMethod();
+        return (string)$this->getMethod();
     }
 
     /**
