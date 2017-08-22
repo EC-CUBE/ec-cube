@@ -53,7 +53,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/cache', '\Eccube\Controller\Admin\Content\CacheController::index')->bind('admin_content_cache');
 
         // shop
-        $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
+//        $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 
         // delivery
 //        $c->match('/setting/shop/delivery', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::index')->bind('admin_setting_shop_delivery');
