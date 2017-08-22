@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -47,6 +48,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
@@ -56,7 +58,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @Route("/{_admin}/order")
+ * @Component
+ * @Route(service=EditController::class)
  */
 class EditController extends AbstractController
 {
@@ -154,11 +157,9 @@ class EditController extends AbstractController
     /**
      * 受注登録/編集画面.
      *
-     * @Route("/edit", name="admin_order_new")
-     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
+     * @Route("/{_admin}/order/edit", name="admin_order_new")
+     * @Route("/{_admin}/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
      * @Template("Order/edit.twig")
-     *
-     * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
      */
     public function index(Application $app, Request $request, $id = null)
     {
@@ -419,6 +420,10 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
+     * @Route("/{_admin}/order/search/customer/html", name="admin_order_search_customer_html")
+     * @Route("/{_admin}/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
+     * @Template("Order/search_customer.twig")
+     *
      * @param Application $app
      * @param Request $request
      * @param integer $page_no
@@ -500,15 +505,18 @@ class EditController extends AbstractController
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
             $data = $event->getArgument('data');
 
-            return $app->render('Order/search_customer.twig', array(
+            return [
                 'data' => $data,
                 'pagination' => $pagination,
-            ));
+            ];
         }
     }
 
     /**
      * 顧客情報を検索する.
+     *
+     * @Method("POST")
+     * @Route("/{_admin}/order/search/customer/id", name="admin_order_search_customer_by_id")
      *
      * @param Application $app
      * @param Request $request
@@ -574,6 +582,11 @@ class EditController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{_admin}/order/search/product", name="admin_order_search_product")
+     * @Route("/{_admin}/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
+     * @Template("Order/search_product.twig")
+     */
     public function searchProduct(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
@@ -652,11 +665,11 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
 
-            return $app->render('Order/search_product.twig', array(
+            return [
                 'forms' => $forms,
                 'Products' => $Products,
                 'pagination' => $pagination,
-            ));
+            ];
         }
     }
 

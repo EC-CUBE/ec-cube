@@ -40,13 +40,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         }
 
         // order
-        $c->post('/order/search/customer/html', '\Eccube\Controller\Admin\Order\EditController::searchCustomerHtml')->bind('admin_order_search_customer_html');
-        $c->match('/order/search/customer/html/page/{page_no}', '\Eccube\Controller\Admin\Order\EditController::searchCustomerHtml')->assert('page_no', '\d+')->bind('admin_order_search_customer_html_page');
-        $c->post('/order/search/customer/id', '\Eccube\Controller\Admin\Order\EditController::searchCustomerById')->bind('admin_order_search_customer_by_id');
-        $c->post('/order/search/product', '\Eccube\Controller\Admin\Order\EditController::searchProduct')->bind('admin_order_search_product');
-        $c->match('/order/search/product/page/{page_no}', '\Eccube\Controller\Admin\Order\EditController::searchProduct')->assert('page_no', '\d+')->bind('admin_order_search_product_page');
-        $c->match('/order/search/product/id', '\Eccube\Controller\Admin\Order\EditController::searchProductById')->bind('admin_order_search_product_by_id');
-
         $c->match('/order/{id}/mail', '\Eccube\Controller\Admin\Order\MailController::index')->assert('id', '\d+')->bind('admin_order_mail');
         $c->match('/order/mail/mail_all', '\Eccube\Controller\Admin\Order\MailController::mailAll')->bind('admin_order_mail_all');
         $c->match('/order/mail_complete', '\Eccube\Controller\Admin\Order\MailController::complete')->bind('admin_order_mail_complete');
