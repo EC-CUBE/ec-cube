@@ -40,12 +40,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         }
 
         // content
-
-        $c->match('/content/file_manager', '\Eccube\Controller\Admin\Content\FileController::index')->bind('admin_content_file');
-        $c->match('/content/file_view', '\Eccube\Controller\Admin\Content\FileController::view')->bind('admin_content_file_view');
-        $c->match('/content/file_download', '\Eccube\Controller\Admin\Content\FileController::download')->bind('admin_content_file_download');
-        $c->delete('/content/file_delete', '\Eccube\Controller\Admin\Content\FileController::delete')->bind('admin_content_file_delete');
-
         $c->match('/content/layout', '\Eccube\Controller\Admin\Content\LayoutController::index')->bind('admin_content_layout');
         $c->match('/content/layout/new', '\Eccube\Controller\Admin\Content\LayoutController::edit')->bind('admin_content_layout_new');
         $c->match('/content/layout/{id}/edit', '\Eccube\Controller\Admin\Content\LayoutController::edit')->assert('id', '\d+')->bind('admin_content_layout_edit');

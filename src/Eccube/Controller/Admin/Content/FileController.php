@@ -25,8 +25,12 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -37,6 +41,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=FileController::class)
+ */
 class FileController extends AbstractController
 {
     /**
@@ -63,6 +71,10 @@ class FileController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{_admin}/content/file_manager", name="admin_content_file")
+     * @Template("Content/file.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
@@ -103,7 +115,7 @@ class FileController extends AbstractController
         $javascript = $this->getJsArrayList($tree);
         $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
 
-        return $app->render('Content/file.twig', array(
+        return [
             'form' => $form->createView(),
             'tpl_onload' => $onload,
             'tpl_javascript' => $javascript,
@@ -115,9 +127,12 @@ class FileController extends AbstractController
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
             'error' => $this->error,
-        ));
+        ];
     }
 
+    /**
+     * @Route("/{_admin}/content/file_view", name="admin_content_file_view")
+     */
     public function view(Application $app, Request $request)
     {
         $topDir = $this->appConfig['user_data_realdir'];
@@ -130,6 +145,7 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
+    
     public function create(Application $app, Request $request)
     {
 
@@ -163,6 +179,10 @@ class FileController extends AbstractController
         }
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/content/file_delete", name="admin_content_file_delete")
+     */
     public function delete(Application $app, Request $request)
     {
 
@@ -179,6 +199,9 @@ class FileController extends AbstractController
         return $app->redirect($app->url('admin_content_file'));
     }
 
+    /**
+     * @Route("/{_admin}/content/file_download", name="admin_content_file_download")
+     */
     public function download(Application $app, Request $request)
     {
         $topDir = $this->appConfig['user_data_realdir'];
