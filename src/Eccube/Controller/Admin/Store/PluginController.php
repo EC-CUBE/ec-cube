@@ -25,10 +25,13 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Plugin;
+use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
@@ -37,9 +40,13 @@ use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,6 +54,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Component
+ * @Route(service=PluginController::class)
+ */
 class PluginController extends AbstractController
 {
     /**
@@ -101,12 +112,11 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
-     * @param Application $app
-     * @param Request $request
+     * @Route("/{_admin}/store/plugin", name="admin_store_plugin")
+     * @Template("Store/plugin.twig")
      */
     public function index(Application $app, Request $request)
     {
-
         $pluginForms = array();
         $configPages = array();
 
@@ -131,9 +141,14 @@ class PluginController extends AbstractController
         foreach ($Plugins as $Plugin) {
 
             $form = $this->formFactory
-                ->createNamedBuilder('form'.$Plugin->getId(), PluginManagementType::class, null, array(
-                    'plugin_id' => $Plugin->getId(),
-                ))
+                ->createNamedBuilder(
+                    'form'.$Plugin->getId(),
+                    PluginManagementType::class,
+                    null,
+                    array(
+                        'plugin_id' => $Plugin->getId(),
+                    )
+                )
                 ->getForm();
 
             $pluginForms[$Plugin->getId()] = $form->createView();
@@ -198,34 +213,33 @@ class PluginController extends AbstractController
             }
         }
 
-
-        return $app->render('Store/plugin.twig', array(
+        return [
             'plugin_forms' => $pluginForms,
             'officialPlugins' => $officialPlugins,
             'unofficialPlugins' => $unofficialPlugins,
             'configPages' => $configPages,
             'unregisterdPlugins' => $unregisterdPlugins,
             'unregisterdPluginsConfigPages' => $unregisterdPluginsConfigPages,
-        ));
-
+        ];
     }
 
     /**
      * インストール済プラグインからのアップデート
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $id
+     * @Method("POST")
+     * @Route("/{_admin}/store/plugin/{id}/update", requirements={"id":"\d+"}, name="admin_store_plugin_update")
      */
-    public function update(Application $app, Request $request, $id)
+    public function update(Application $app, Request $request, Plugin $Plugin)
     {
-
-        $Plugin = $this->pluginRepository->find($id);
-
         $form = $this->formFactory
-            ->createNamedBuilder('form'.$id, PluginManagementType::class, null, array(
-                'plugin_id' => null, // placeHolder
-            ))
+            ->createNamedBuilder(
+                'form'.$Plugin->getId(),
+                PluginManagementType::class,
+                null,
+                array(
+                    'plugin_id' => null, // placeHolder
+                )
+            )
             ->getForm();
 
         $message = '';
@@ -279,18 +293,12 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを有効にします。
      *
-     * @param Application $app
-     * @param $id
+     * @Method("PUT")
+     * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id":"\d+"}, name="admin_store_plugin_enable")
      */
-    public function enable(Application $app, $id)
+    public function enable(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
-
-        $Plugin = $this->pluginRepository->find($id);
-
-        if (!$Plugin) {
-            throw new NotFoundHttpException();
-        }
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
             $app->addError('admin.plugin.already.enable', 'admin');
@@ -305,18 +313,12 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを無効にします。
      *
-     * @param Application $app
-     * @param $id
+     * @Method("PUT")
+     * @Route("/{_admin}/store/plugin/{id}/disable", requirements={"id":"\d+"}, name="admin_store_plugin_disable")
      */
-    public function disable(Application $app, $id)
+    public function disable(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
-
-        $Plugin = $this->pluginRepository->find($id);
-
-        if (!$Plugin) {
-            throw new NotFoundHttpException();
-        }
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
             $this->pluginService->disable($Plugin);
@@ -332,19 +334,12 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを削除します。
      *
-     * @param Application $app
-     * @param $id
+     * @Method("DELETE")
+     * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id":"\d+"}, name="admin_store_plugin_uninstall")
      */
-    public function uninstall(Application $app, $id)
+    public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
-
-        $Plugin = $this->pluginRepository->find($id);
-
-        if (!$Plugin) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_store_plugin'));
-        }
 
         $this->pluginService->uninstall($Plugin);
 
@@ -353,6 +348,10 @@ class PluginController extends AbstractController
         return $app->redirect($app->url('admin_store_plugin'));
     }
 
+    /**
+     * @Route("/{_admin}/store/plugin/handler", name="admin_store_plugin_handler")
+     * @Template("Store/plugin_handler.twig")
+     */
     public function handler(Application $app)
     {
         $handlers = $this->pluginEventHandlerRepository->getHandlers();
@@ -363,24 +362,29 @@ class PluginController extends AbstractController
             $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
         }
 
-        return $app->render('Store/plugin_handler.twig', array(
-            'handlersPerEvent' => $HandlersPerEvent
-        ));
-
+        return [
+            'handlersPerEvent' => $HandlersPerEvent,
+        ];
     }
 
-    public function handler_up(Application $app, $handlerId)
+    /**
+     * @Route("/{_admin}/store/plugin/handler_up/{id}", requirements={"id":"\d+"}, name="admin_store_plugin_handler_up")
+     */
+    public function handler_up(Application $app, PluginEventHandler $Handler)
     {
         $repo = $this->pluginEventHandlerRepository;
-        $repo->upPriority($repo->find($handlerId));
+        $repo->upPriority($repo->find($Handler->getId()));
 
         return $app->redirect($app->url('admin_store_plugin_handler'));
     }
 
-    public function handler_down(Application $app, $handlerId)
+    /**
+     * @Route("/{_admin}/store/plugin/handler_down/{id}", requirements={"id":"\d+"}, name="admin_store_plugin_handler_down")
+     */
+    public function handler_down(Application $app, PluginEventHandler $Handler)
     {
         $repo = $this->pluginEventHandlerRepository;
-        $repo->upPriority($repo->find($handlerId), false);
+        $repo->upPriority($Handler, false);
 
         return $app->redirect($app->url('admin_store_plugin_handler'));
     }
@@ -388,8 +392,8 @@ class PluginController extends AbstractController
     /**
      * プラグインファイルアップロード画面
      *
-     * @param Application $app
-     * @param Request $request
+     * @Route("/{_admin}/store/plugin/install", name="admin_store_plugin_install")
+     * @Template("Store/plugin_install.twig")
      */
     public function install(Application $app, Request $request)
     {
@@ -411,7 +415,9 @@ class PluginController extends AbstractController
                     $formFile = $form['plugin_archive']->getData();
 
                     $tmpDir = $service->createTempDir();
-                    $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
+                    $tmpFile = sha1(Str::random(32))
+                        .'.'
+                        .$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
 
                     $formFile->move($tmpDir, $tmpFile);
 
@@ -429,9 +435,12 @@ class PluginController extends AbstractController
                         $fs = new Filesystem();
                         $fs->remove($tmpDir);
                     }
-                    $this->logger->error("plugin install failed.", array(
-                        'original-message' => $e->getMessage()
-                    ));
+                    $this->logger->error(
+                        "plugin install failed.",
+                        array(
+                            'original-message' => $e->getMessage(),
+                        )
+                    );
                     $errors[] = $e;
                 }
             } else {
@@ -441,19 +450,17 @@ class PluginController extends AbstractController
             }
         }
 
-        return $app->render('Store/plugin_install.twig', array(
+        return [
             'form' => $form->createView(),
             'errors' => $errors,
-        ));
-
+        ];
     }
 
     /**
      * オーナーズストアプラグインインストール画面
      *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/{_admin}/store/plugin/owners_install", name="admin_store_plugin_owners_install")
+     * @Template("Store/plugin_owners_install.twig")
      */
     public function ownersInstall(Application $app, Request $request)
     {
@@ -555,24 +562,19 @@ class PluginController extends AbstractController
             $authResult = false;
         }
 
-        return $app->render('Store/plugin_owners_install.twig', array(
+        return [
             'authResult' => $authResult,
             'success' => $success,
             'items' => $items,
             'promotionItems' => $promotionItems,
             'message' => $message,
-        ));
-
+        ];
     }
 
     /**
      * オーナーズブラグインインストール、アップデート
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $action
-     * @param $id
-     * @param $version
+     * @Route("/{_admin}/store/plugin/upgrade/{action}/{id}/{version}", requirements={"id":"\d+"}, name="admin_store_plugin_upgrade")
      */
     public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
@@ -621,12 +623,14 @@ class PluginController extends AbstractController
                                 $service->install($tmpDir.'/'.$tmpFile, $id);
                                 $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-                            } else if ($action == 'update') {
+                            } else {
+                                if ($action == 'update') {
 
-                                $Plugin = $this->pluginRepository->findOneBy(array('source' => $id));
+                                    $Plugin = $this->pluginRepository->findOneBy(array('source' => $id));
 
-                                $service->update($Plugin, $tmpDir.'/'.$tmpFile);
-                                $app->addSuccess('admin.plugin.update.complete', 'admin');
+                                    $service->update($Plugin, $tmpDir.'/'.$tmpFile);
+                                    $app->addSuccess('admin.plugin.update.complete', 'admin');
+                                }
                             }
 
                             $fs = new Filesystem();
@@ -656,7 +660,11 @@ class PluginController extends AbstractController
         }
 
         // ダウンロード完了通知処理(エラー発生時)
-        $url = $this->appConfig['owners_store_url'].'?method=commit&product_id='.$id.'&status=0&version='.$version.'&message='.urlencode($message);
+        $url = $this->appConfig['owners_store_url']
+            .'?method=commit&product_id='.$id
+            .'&status=0&version='.$version
+            .'&message='.urlencode($message);
+
         $this->getRequestApi($request, $authKey, $url, $app);
 
         $app->addError($message, 'admin');
@@ -667,48 +675,40 @@ class PluginController extends AbstractController
     /**
      * 認証キー設定画面
      *
-     * @param Application $app
-     * @param Request $request
+     * @Route("/{_admin}/store/plugin/authentication_setting", name="admin_store_authentication_setting")
+     * @Template("Store/authentication_setting.twig")
      */
     public function authenticationSetting(Application $app, Request $request)
     {
-
-        $form = $app->form()->getForm();
-
         $BaseInfo = $this->baseInfoRepository->get();
 
-        // 認証キーの取得
-        $form->add(
-            'authentication_key', TextType::class, array(
-            'label' => '認証キー',
-            'constraints' => array(
-                new Assert\Regex(array(
-                    'pattern' => "/^[0-9a-zA-Z]+$/",
-                )),
-            ),
-            'data' => $BaseInfo->getAuthenticationKey(),
-        ));
+        $builder = $this->formFactory
+            ->createBuilder(FormType::class, $BaseInfo);
+        $builder->add(
+            'authentication_key',
+            TextType::class,
+            [
+                'label' => '認証キー',
+                'constraints' => [
+                    new Assert\Regex(['pattern' => "/^[0-9a-zA-Z]+$/",]),
+                ],
+            ]
+        );
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form = $builder->getForm();
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $data = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            // 認証キーの登録
+            $BaseInfo = $form->getData();
+            $this->entityManager->flush($BaseInfo);
 
-                // 認証キーの登録
-                $BaseInfo->setAuthenticationKey($data['authentication_key']);
-                $this->entityManager->flush($BaseInfo);
-
-                $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
-
-            }
+            $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
         }
 
-
-        return $app->render('Store/authentication_setting.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
-
+        ];
     }
 
 

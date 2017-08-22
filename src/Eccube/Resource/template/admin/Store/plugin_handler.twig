@@ -68,10 +68,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                                     {% if true != loop.first %}
-                                                                        <a href="{{ url('admin_store_plugin_handler_up',   {'handlerId': handler.id}) }}">上へ</a>
+                                                                        <a href="{{ url('admin_store_plugin_handler_up',   {'id': handler.id}) }}">上へ</a>
                                                                     {% endif %}
                                                                     {% if true != loop.last %}
-                                                                        <a href="{{ url('admin_store_plugin_handler_down', {'handlerId': handler.id}) }}">下へ</a>
+                                                                        <a href="{{ url('admin_store_plugin_handler_down', {'id': handler.id}) }}">下へ</a>
                                                                     {% endif %}
                                                                 </ul>
                                                             </div>

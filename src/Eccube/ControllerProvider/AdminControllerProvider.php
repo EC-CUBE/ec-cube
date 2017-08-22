@@ -105,17 +105,16 @@ class AdminControllerProvider implements ControllerProviderInterface
         //$c->match('/store/template/{id}/download', '\Eccube\Controller\Admin\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_store_template_download');
         //$c->delete('/store/template/{id}/delete', '\Eccube\Controller\Admin\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_store_template_delete');
         //$c->match('/store/plugin', '\Eccube\Controller\Admin\Store\PluginController::index')->bind('admin_store_plugin');
-        $c->match('/store/plugin/owners_install', '\Eccube\Controller\Admin\Store\PluginController::ownersInstall')->bind('admin_store_plugin_owners_install');
-        $c->match('/store/plugin/install', '\Eccube\Controller\Admin\Store\PluginController::install')->bind('admin_store_plugin_install');
-        $c->match('/store/plugin/upgrade/{action}/{id}/{version}', '\Eccube\Controller\Admin\Store\PluginController::upgrade')->assert('id', '\d+')->bind('admin_store_plugin_upgrade');
-        $c->match('/store/plugin/handler', '\Eccube\Controller\Admin\Store\PluginController::handler')->bind('admin_store_plugin_handler');
-        $c->match('/store/plugin/manage', '\Eccube\Controller\Admin\Store\PluginController::manage')->bind('admin_store_plugin_manage');
-        $c->put('/store/plugin/{id}/enable', '\Eccube\Controller\Admin\Store\PluginController::enable')->assert('id', '\d+')->bind('admin_store_plugin_enable');
-        $c->put('/store/plugin/{id}/disable', '\Eccube\Controller\Admin\Store\PluginController::disable')->assert('id', '\d+')->bind('admin_store_plugin_disable');
-        $c->post('/store/plugin/{id}/update', '\Eccube\Controller\Admin\Store\PluginController::update')->assert('id', '\d+')->bind('admin_store_plugin_update');
-        $c->delete('/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_store_plugin_uninstall');
-        $c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
-        $c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
+        //$c->match('/store/plugin/owners_install', '\Eccube\Controller\Admin\Store\PluginController::ownersInstall')->bind('admin_store_plugin_owners_install');
+        //$c->match('/store/plugin/install', '\Eccube\Controller\Admin\Store\PluginController::install')->bind('admin_store_plugin_install');
+        //$c->match('/store/plugin/upgrade/{action}/{id}/{version}', '\Eccube\Controller\Admin\Store\PluginController::upgrade')->assert('id', '\d+')->bind('admin_store_plugin_upgrade');
+        //$c->match('/store/plugin/handler', '\Eccube\Controller\Admin\Store\PluginController::handler')->bind('admin_store_plugin_handler');
+        //$c->put('/store/plugin/{id}/enable', '\Eccube\Controller\Admin\Store\PluginController::enable')->assert('id', '\d+')->bind('admin_store_plugin_enable');
+        //$c->put('/store/plugin/{id}/disable', '\Eccube\Controller\Admin\Store\PluginController::disable')->assert('id', '\d+')->bind('admin_store_plugin_disable');
+        //$c->post('/store/plugin/{id}/update', '\Eccube\Controller\Admin\Store\PluginController::update')->assert('id', '\d+')->bind('admin_store_plugin_update');
+        //$c->delete('/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_store_plugin_uninstall');
+        //$c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
+        //$c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
         //$c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
 
         return $c;
