@@ -26,17 +26,24 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassNameType;
 use Eccube\Repository\ClassNameRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=ClassNameController::class)
+ */
 class ClassNameController extends AbstractController
 {
     /**
@@ -63,6 +70,11 @@ class ClassNameController extends AbstractController
      */
     protected $classNameRepository;
 
+    /**
+     * @Route("/{_admin}/product/class_name", name="admin_product_class_name")
+     * @Route("/{_admin}/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
+     * @Template("Product/class_name.twig")
+     */
     public function index(Application $app, Request $request, $id = null)
     {
         if ($id) {
@@ -118,13 +130,17 @@ class ClassNameController extends AbstractController
 
         $ClassNames = $this->classNameRepository->getList();
 
-        return $app->render('Product/class_name.twig', array(
+        return [
             'form' => $form->createView(),
             'ClassNames' => $ClassNames,
             'TargetClassName' => $TargetClassName,
-        ));
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
+     */
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
@@ -158,6 +174,10 @@ class ClassNameController extends AbstractController
         return $app->redirect($app->url('admin_product_class_name'));
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/{_admin}/product/class_name/rank/move", name="admin_product_class_name_rank_move")
+     */
     public function moveRank(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
