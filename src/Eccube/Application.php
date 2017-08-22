@@ -134,11 +134,6 @@ class Application extends \Silex\Application
 
             return $configAll;
         };
-
-        // annotation Cache Driver
-        $this['annotation.cache.driver'] = function () {
-            return new ArrayCache();
-        };
     }
 
     public function initLogger()
@@ -204,6 +199,15 @@ class Application extends \Silex\Application
         // init mailer
         $this->initMailer();
 
+        $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider(), [
+            'annotations.debug' => $this['debug'],
+            'annotations.options' => [
+                'cache_driver' => $this['debug'] ? 'array' : 'filesystem',
+                'cache_dir' => $this['debug'] ? null : __DIR__.'/../../app/cache/annotation'
+            ]
+        ]);
+
         // init doctrine orm
         $this->initDoctrine();
 
@@ -216,15 +220,7 @@ class Application extends \Silex\Application
         $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider(), [
             'routing.cache_dir' => $this['debug'] ? null : __DIR__.'/../../app/cache/routing'
         ]);
-        $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
         $this->register(new \Sergiors\Silex\Provider\TemplatingServiceProvider());
-        $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider(), [
-            'annotations.debug' => $this['debug'],
-            'annotations.options' => [
-                'cache_driver' => $this['debug'] ? 'array' : 'filesystem',
-                'cache_dir' => $this['debug'] ? null : __DIR__.'/../../app/cache/annotation'
-            ]
-        ]);
         $this->register(new \Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider(), [
             'request' => [
                 'auto_convert' => true
@@ -701,7 +697,7 @@ class Application extends \Silex\Application
                 foreach ($drivers as $namespace => $oldDriver) {
                     if ('Eccube\Entity' === $namespace) {
                         $newDriver = new AnnotationDriver(
-                            new CachedReader(new AnnotationReader(), $app['annotation.cache.driver']),
+                            $app['annotations'],
                             $oldDriver->getPaths());
                         $newDriver->setFileExtension($oldDriver->getFileExtension());
                         $newDriver->addExcludePaths($oldDriver->getExcludePaths());
