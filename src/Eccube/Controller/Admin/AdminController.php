@@ -115,7 +115,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}", name="admin_homepage")
+     * @Route("/{_admin}/", name="admin_homepage")
      * @Template("index.twig")
      */
     public function index(Application $app, Request $request)
