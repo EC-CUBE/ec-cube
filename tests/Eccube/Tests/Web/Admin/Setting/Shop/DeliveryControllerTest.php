@@ -27,6 +27,7 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Common\Constant;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class DeliveryControllerTest
@@ -187,17 +188,14 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     public function testDeleteFail()
     {
         $pid = 9999;
-        $this->client->request(
-            'DELETE',
-            $this->app->url('admin_setting_shop_delivery_delete', array('id' => $pid))
-        );
-
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.warning');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.delete.warning';
-        $this->verify();
+        try {
+            $this->client->request(
+                'DELETE',
+                $this->app->url('admin_setting_shop_delivery_delete', array('id' => $pid))
+            );
+            $this->fail();
+        } catch (NotFoundHttpException $e) {
+        }
     }
 
     public function testMoveRank()
