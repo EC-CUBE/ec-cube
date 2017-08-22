@@ -25,6 +25,7 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -32,11 +33,18 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CustomerType;
 use Eccube\Repository\CustomerRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=CustomerEditController::class)
+ */
 class CustomerEditController extends AbstractController
 {
     /**
@@ -69,6 +77,10 @@ class CustomerEditController extends AbstractController
      */
     protected $customerRepository;
 
+    /**
+     * @Route("/{_admin}/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
+     * @Template("Customer/edit.twig")
+     */
     public function index(Application $app, Request $request, $id = null)
     {
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
@@ -177,9 +189,9 @@ class CustomerEditController extends AbstractController
             }
         }
 
-        return $app->render('Customer/edit.twig', array(
+        return [
             'form' => $form->createView(),
             'Customer' => $Customer,
-        ));
+        ];
     }
 }

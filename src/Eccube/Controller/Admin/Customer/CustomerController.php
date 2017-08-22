@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -39,12 +40,19 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=CustomerController::class)
+ */
 class CustomerController extends AbstractController
 {
     /**
@@ -107,6 +115,12 @@ class CustomerController extends AbstractController
      */
     protected $customerRepository;
 
+    /**
+     * @Route("/{_admin}/customer", name="admin_customer")
+     * @Route("/{_admin}/customer/new", name="admin_customer_new")
+     * @Route("/{_admin}/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
+     * @Template("Customer/index.twig")
+     */
     public function index(Application $app, Request $request, $page_no = null)
     {
         $session = $request->getSession();
@@ -211,16 +225,19 @@ class CustomerController extends AbstractController
                 }
             }
         }
-        return $app->render('Customer/index.twig', array(
+        return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $page_count,
             'active' => $active,
-        ));
+        ];
     }
 
+    /**
+     * @Route("/{_admin}/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
+     */
     public function resend(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
@@ -251,6 +268,10 @@ class CustomerController extends AbstractController
         return $app->redirect($app->url('admin_customer'));
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
+     */
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
@@ -290,6 +311,9 @@ class CustomerController extends AbstractController
 
     /**
      * 会員CSVの出力.
+     *
+     * @Route("/{_admin}/customer/export", name="admin_customer_export")
+     *
      * @param Application $app
      * @param Request $request
      * @return StreamedResponse
