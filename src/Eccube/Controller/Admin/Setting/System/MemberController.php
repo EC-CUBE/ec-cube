@@ -24,19 +24,27 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Member;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
+/**
+ * @Component
+ * @Route(service=MemberController::class)
+ */
 class MemberController extends AbstractController
 {
     /**
@@ -75,13 +83,13 @@ class MemberController extends AbstractController
      */
     protected $memberRepository;
 
-    public function __construct()
-    {
-    }
-
+    /**
+     * @Route("/{_admin}/setting/system/member", name="admin_setting_system_member")
+     * @Template("Setting/System/member.twig")
+     */
     public function index(Application $app, Request $request)
     {
-        $Members = $this->memberRepository->findBy(array(), array('rank' => 'DESC'));
+        $Members = $this->memberRepository->findBy([], ['rank' => 'DESC']);
 
         $builder = $this->formFactory->createBuilder();
 
@@ -96,24 +104,25 @@ class MemberController extends AbstractController
 
         $form = $builder->getForm();
 
-        return $app->render('Setting/System/member.twig', array(
+        return [
             'form' => $form->createView(),
             'Members' => $Members,
-        ));
+        ];
     }
 
-    public function edit(Application $app, Request $request, $id = null)
+    /**
+     * @Route("/{_admin}/setting/system/member/new", name="admin_setting_system_member_new")
+     * @Route("/{_admin}/setting/system/member/{id}/edit", requirements={"id":"\d+"}, name="admin_setting_system_member_edit")
+     * @Template("Setting/System/member_edit.twig")
+     */
+    public function edit(Application $app, Request $request, Member $Member = null)
     {
         $previous_password = null;
-        if ($id) {
-            $Member = $this->memberRepository->find($id);
-            if (!$Member) {
-                throw new NotFoundHttpException();
-            }
+        if (is_null($Member)) {
+            $Member = new Member();
+        } else {
             $previous_password = $Member->getPassword();
             $Member->setPassword($this->appConfig['default_password']);
-        } else {
-            $Member = new \Eccube\Entity\Member();
         }
 
         $LoginMember = clone $app->user();
@@ -132,70 +141,63 @@ class MemberController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                if (!is_null($previous_password)
-                    && $Member->getpassword() === $this->appConfig['default_password']) {
-                    // 編集時にPWを変更していなければ
-                    // 変更前のパスワード(暗号化済み)をセット
-                    $Member->setPassword($previous_password);
-                } else {
-                    $salt = $Member->getSalt();
-                    if (!isset($salt)) {
-                        $salt = $this->memberRepository->createSalt(5);
-                        $Member->setSalt($salt);
-                    }
-
-                    // 入力されたPWを暗号化してセット
-                    $password = $this->memberRepository->encryptPassword($Member);
-                    $Member->setPassword($password);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!is_null($previous_password)
+                && $Member->getpassword() === $this->appConfig['default_password']
+            ) {
+                // 編集時にPWを変更していなければ
+                // 変更前のパスワード(暗号化済み)をセット
+                $Member->setPassword($previous_password);
+            } else {
+                $salt = $Member->getSalt();
+                if (!isset($salt)) {
+                    $salt = $this->memberRepository->createSalt(5);
+                    $Member->setSalt($salt);
                 }
-                $status = $this->memberRepository->save($Member);
 
-                if ($status) {
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'Member' => $Member,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
+                // 入力されたPWを暗号化してセット
+                $password = $this->memberRepository->encryptPassword($Member);
+                $Member->setPassword($password);
+            }
+            $status = $this->memberRepository->save($Member);
 
-                    $app->addSuccess('admin.member.save.complete', 'admin');
+            if ($status) {
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Member' => $Member,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-                    return $app->redirect($app->url('admin_setting_system_member'));
-                } else {
-                    $app->addError('admin.member.save.error', 'admin');
-                }
+                $app->addSuccess('admin.member.save.complete', 'admin');
+
+                return $app->redirect($app->url('admin_setting_system_member'));
+            } else {
+                $app->addError('admin.member.save.error', 'admin');
             }
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
 
-        return $app->render('Setting/System/member_edit.twig', array(
+        return [
             'form' => $form->createView(),
             'Member' => $Member,
-        ));
-
+        ];
     }
 
-    public function up(Application $app, Request $request, $id)
+    /**
+     * @Method("PUT")
+     * @Route("/{_admin}/setting/system/member/{id}/up", requirements={"id":"\d+"}, name="admin_setting_system_member_up")
+     */
+    public function up(Application $app, Request $request, Member $Member)
     {
         $this->isTokenValid($app);
 
-        $TargetMember = $this->memberRepository->find($id);
-
-        if (!$TargetMember) {
-            throw new NotFoundHttpException();
-        }
-
-        $status = false;
-        if ('PUT' === $request->getMethod()) {
-            $status = $this->memberRepository->up($TargetMember);
-        }
+        $status = $this->memberRepository->up($Member);
 
         if ($status) {
             $app->addSuccess('admin.member.up.complete', 'admin');
@@ -206,20 +208,15 @@ class MemberController extends AbstractController
         return $app->redirect($app->url('admin_setting_system_member'));
     }
 
-    public function down(Application $app, Request $request, $id)
+    /**
+     * @Method("PUT")
+     * @Route("/{_admin}/setting/system/member/{id}/down", requirements={"id":"\d+"}, name="admin_setting_system_member_down")
+     */
+    public function down(Application $app, Request $request, Member $Member)
     {
         $this->isTokenValid($app);
 
-        $TargetMember = $this->memberRepository->find($id);
-
-        if (!$TargetMember) {
-            throw new NotFoundHttpException();
-        }
-
-        $status = false;
-        if ('PUT' === $request->getMethod()) {
-            $status = $this->memberRepository->down($TargetMember);
-        }
+        $status = $this->memberRepository->down($Member);
 
         if ($status) {
             $app->addSuccess('admin.member.down.complete', 'admin');
@@ -230,25 +227,23 @@ class MemberController extends AbstractController
         return $app->redirect($app->url('admin_setting_system_member'));
     }
 
-    public function delete(Application $app, Request $request, $id)
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/setting/system/member/{id}/delete", requirements={"id":"\d+"}, name="admin_setting_system_member_delete")
+     */
+    public function delete(Application $app, Request $request, Member $Member)
     {
         $this->isTokenValid($app);
 
-        $TargetMember = $this->memberRepository->find($id);
-        if (!$TargetMember) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_setting_system_member'));
-        }
-
         $event = new EventArgs(
             array(
-                'TargetMember' => $TargetMember,
+                'TargetMember' => $Member,
             ),
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE, $event);
 
-        $status = $this->memberRepository->delete($TargetMember);
+        $status = $this->memberRepository->delete($Member);
 
         if ($status) {
             $app->addSuccess('admin.member.delete.complete', 'admin');

@@ -149,14 +149,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/csv/{id}', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->assert('id', '\d+')->value('id', CsvType::CSV_TYPE_ORDER)->bind('admin_setting_shop_csv');
 
         // setting/system
-        $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
+        //$c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
         // system/member
-        $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
-        $c->match('/setting/system/member/new', '\Eccube\Controller\Admin\Setting\System\MemberController::edit')->bind('admin_setting_system_member_new');
-        $c->match('/setting/system/member/{id}/edit', 'Eccube\Controller\Admin\Setting\System\MemberController::edit')->assert('id', '\d+')->bind('admin_setting_system_member_edit');
-        $c->delete('/setting/system/member/{id}/delete', '\Eccube\Controller\Admin\Setting\System\MemberController::delete')->assert('id', '\d+')->bind('admin_setting_system_member_delete');
-        $c->put('/setting/system/member/{id}/up', '\Eccube\Controller\Admin\Setting\System\MemberController::up')->assert('id', '\d+')->bind('admin_setting_system_member_up');
-        $c->put('/setting/system/member/{id}/down', '\Eccube\Controller\Admin\Setting\System\MemberController::down')->assert('id', '\d+')->bind('admin_setting_system_member_down');
+        //$c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
+        //$c->match('/setting/system/member/new', '\Eccube\Controller\Admin\Setting\System\MemberController::edit')->bind('admin_setting_system_member_new');
+        //$c->match('/setting/system/member/{id}/edit', 'Eccube\Controller\Admin\Setting\System\MemberController::edit')->assert('id', '\d+')->bind('admin_setting_system_member_edit');
+        //$c->delete('/setting/system/member/{id}/delete', '\Eccube\Controller\Admin\Setting\System\MemberController::delete')->assert('id', '\d+')->bind('admin_setting_system_member_delete');
+        //$c->put('/setting/system/member/{id}/up', '\Eccube\Controller\Admin\Setting\System\MemberController::up')->assert('id', '\d+')->bind('admin_setting_system_member_up');
+        //$c->put('/setting/system/member/{id}/down', '\Eccube\Controller\Admin\Setting\System\MemberController::down')->assert('id', '\d+')->bind('admin_setting_system_member_down');
         // system/authority
         //$c->match('/setting/system/authority', '\Eccube\Controller\Admin\Setting\System\AuthorityController::index')->bind('admin_setting_system_authority');
         // system/security

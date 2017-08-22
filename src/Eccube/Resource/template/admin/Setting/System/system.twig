@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- /.box-header -->
                 <div id="server_info_box__body_inner" class="box-body">
                     <dl class="dl-horizontal">
-                       {% for key, item in arrSystemInfo %}
+                       {% for key, item in info %}
                             <dt id="server_info_box__title--{{ loop.index }}">
                                {{item.title}}
                             </dt>
@@ -56,7 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">PHP情報</h3>
                 </div><!-- /.box-header -->
                 <div id="php_info_box__frame" class="box-body no-padding">
-                    <iframe name="php_info" src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
+                    <iframe name="php_info" src="{{ url('admin_setting_system_system_phpinfo') }}" height="500" frameborder="0" style="width: 100%;"></iframe>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>
