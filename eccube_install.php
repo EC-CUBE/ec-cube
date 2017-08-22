@@ -277,6 +277,9 @@ function createApplication()
 {
     $app = \Eccube\Application::getInstance();
     $app['debug'] = true;
+    $app['annotations'] = function () {
+        return new \Doctrine\Common\Annotations\AnnotationReader();
+    };
     $app->initDoctrine();
     $app->boot();
     return $app;
