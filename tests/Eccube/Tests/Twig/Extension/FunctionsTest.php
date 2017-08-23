@@ -3,26 +3,33 @@
 namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use org\bovigo\vfs\vfsStream;
 
 class FunctionsTest extends EccubeTestCase
 {
-    protected $twigFileName;
-    protected $fixture;
-    protected $filter;
+    protected $templateDir;
+    protected $blockTwig = 'block.twig';
 
     public function setUp()
     {
         parent::setUp();
-        $this->client = $this->createClient();
-        $this->twigFileName = 'index';
-        $root = vfsStream::setup('rootDir');
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['template_realdir'] = vfsStream::url('rootDir');
-        $this->app->overwrite('config', $config);
+        $root = vfsStream::setup();
+        $this->templateDir = $root->url();
+
+        // テンプレート探索パスを追加
+        $this->app['twig.loader']->addLoader(
+            new \Twig_Loader_Filesystem(
+                [
+                    $this->templateDir,
+                ]
+            )
+        );
+
+        // ブロックテンプレートを初期化
+        $this->app['eccube.twig.block.templates'] = [
+            $this->blockTwig,
+        ];
     }
 
     /**
@@ -30,9 +37,12 @@ class FunctionsTest extends EccubeTestCase
      */
     public function testPhpFunctions()
     {
-        $this->filter = '#test';
-        $this->fixture = "<div id='test'>{{ php_print_r('aaa', true) }}</div>";
-        $this->expected = 'aaa';
+        /** @var \Twig_Environment $twig */
+        $twig = $this->app['twig'];
+        $template = $twig->createTemplate("<div id='test'>{{ php_print_r('aaa', true) }}</div>");
+
+        $this->expected = "<div id='test'>aaa</div>";
+        $this->actual = $template->render([]);
 
         $this->verify();
     }
@@ -42,19 +52,19 @@ class FunctionsTest extends EccubeTestCase
      */
     public function testEccubeBlockFunctions()
     {
-        $app = $this->app;
-        $this->app->extend('eccube.twig.block.templates', function ($templates) use ($app) {
-                $templates = ['test_block.twig']; // eccube.twig.block.templates を初期化
-                return $templates;
-            });
+        $file = $this->templateDir.'/'.$this->blockTwig;
+        $source = '{% block exampleblock %}<div id="exampleblock">test</div>{% endblock %}';
 
-        file_put_contents($this->app['config']['template_realdir'].'/test_block.twig', '{% block exampleblock %}<div id="exampleblock">test</div>{% endblock %}');
+        file_put_contents($file, $source);
 
-        $this->filter = '#exampleblock';
-        $this->fixture = "<div id='test'>{{ eccube_block_exampleblock() }}</div>";
-        $this->expected = 'test';
+        /** @var \Twig_Environment $twig */
+        $twig = $this->app['twig'];
+        $template = $twig->createTemplate("<div id='test'>{{ eccube_block_exampleblock() }}</div>");
+
+        $this->expected = "<div id='test'><div id=\"exampleblock\">test</div></div>";
+        $this->actual = $template->render([]);
+
         $this->verify();
-
     }
 
     /**
@@ -64,33 +74,23 @@ class FunctionsTest extends EccubeTestCase
      */
     public function testEccubeBlockFunctionsWithParams()
     {
-        $app = $this->app;
-        $this->app->extend('eccube.twig.block.templates', function ($templates) use ($app) {
-                $templates = ['test_block2.twig']; // eccube.twig.block.templates を初期化
-                return $templates;
-            });
+        $file = $this->templateDir.'/'.$this->blockTwig;
+        $source = '{% block exampleblock %}<div id="exampleblock">{{ variable }}</div>{% endblock %}';
 
-        file_put_contents($this->app['config']['template_realdir'].'/test_block2.twig', '{% block exampleblock %}<div id="exampleblock">{{ variable }}</div>{% endblock %}');
+        file_put_contents($file, $source);
 
-        $this->filter = '#exampleblock';
-        $this->fixture = "<div id='test'>{{ eccube_block_exampleblock({'variable': 'example'}) }}</div>";
-        $this->expected = 'example';
-        $this->verify();
+        file_put_contents(
+            $this->app['config']['template_realdir'].'/test_block2.twig',
+            '{% block exampleblock %}<div id="exampleblock">{{ variable }}</div>{% endblock %}'
+        );
 
-    }
+        /** @var \Twig_Environment $twig */
+        $twig = $this->app['twig'];
+        $template = $twig->createTemplate(
+            "<div id='test'>{{ eccube_block_exampleblock({'variable': 'example'}) }}</div>"
+        );
 
-    /**
-     * fixture をテンプレートに書き出し, filter のノードと比較する.
-     *
-     * @param string $message
-     */
-    public function verify($message = null)
-    {
-        file_put_contents($this->app['config']['template_realdir'].'/'.$this->twigFileName.'.twig', $this->fixture);
-        $crawler = $this->client->request('GET', $this->app->url('homepage'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $this->actual = $crawler->filter($this->filter)->html();
-        parent::verify($message);
+        $this->expected = "<div id='test'><div id=\"exampleblock\">example</div></div>";
+        $this->actual = $template->render(['variable' => 'example']);
     }
 }
