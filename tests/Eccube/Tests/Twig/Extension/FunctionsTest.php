@@ -79,11 +79,6 @@ class FunctionsTest extends EccubeTestCase
 
         file_put_contents($file, $source);
 
-        file_put_contents(
-            $this->app['config']['template_realdir'].'/test_block2.twig',
-            '{% block exampleblock %}<div id="exampleblock">{{ variable }}</div>{% endblock %}'
-        );
-
         /** @var \Twig_Environment $twig */
         $twig = $this->app['twig'];
         $template = $twig->createTemplate(
