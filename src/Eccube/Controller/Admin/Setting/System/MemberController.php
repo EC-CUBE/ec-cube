@@ -34,11 +34,13 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
@@ -115,12 +117,16 @@ class MemberController extends AbstractController
      * @Route("/{_admin}/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
      * @Template("Setting/System/member_edit.twig")
      */
-    public function edit(Application $app, Request $request, Member $Member = null)
+    public function edit(Application $app, Request $request, $id = null)
     {
         $previous_password = null;
-        if (is_null($Member)) {
+        if (is_null($id)) {
             $Member = new Member();
         } else {
+            $Member = $this->memberRepository->find($id);
+            if (is_null($Member)) {
+                throw new NotFoundHttpException();
+            }
             $previous_password = $Member->getPassword();
             $Member->setPassword($this->appConfig['default_password']);
         }

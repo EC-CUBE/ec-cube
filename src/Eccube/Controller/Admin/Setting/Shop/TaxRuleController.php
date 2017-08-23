@@ -43,6 +43,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Component
@@ -88,10 +89,15 @@ class TaxRuleController extends AbstractController
      * @Route("/{_admin}/setting/shop/tax/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_edit")
      * @Template("Setting/Shop/tax_rule.twig")
      */
-    public function index(Application $app, Request $request, TaxRule $TargetTaxRule = null)
+    public function index(Application $app, Request $request, $id = null)
     {
-        if (is_null($TargetTaxRule)) {
+        if (is_null($id)) {
             $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
+        } else {
+            $TargetTaxRule = $this->taxRuleRepository->find($id);
+            if (is_null($TargetTaxRule)) {
+                throw new NotFoundHttpException();
+            }
         }
 
         $BaseInfo = $this->baseInfoRepository->get();
