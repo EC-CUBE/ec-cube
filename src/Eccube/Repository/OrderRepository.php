@@ -502,7 +502,7 @@ class OrderRepository extends EntityRepository
     public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
     {
         $result = $this->createQueryBuilder('o')
-            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total) AS buy_total, min(o.order_date) AS min_order_date, max(o.order_date) AS max_order_date')
             ->where('o.Customer = :Customer')
             ->andWhere('o.OrderStatus in (:OrderStatuses)')
             ->setParameter('Customer', $Customer)
@@ -513,4 +513,5 @@ class OrderRepository extends EntityRepository
 
         return $result;
     }
+
 }

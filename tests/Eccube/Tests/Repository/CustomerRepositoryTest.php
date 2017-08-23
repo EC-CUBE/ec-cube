@@ -203,7 +203,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->actual = 1;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_new']);
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
@@ -215,7 +215,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->actual = 0;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_cancel']);
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
