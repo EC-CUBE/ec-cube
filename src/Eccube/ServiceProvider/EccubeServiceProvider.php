@@ -62,10 +62,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
      */
     public function register(Container $app)
     {
-        // Service
-        $app['view'] = function () use ($app) {
-            return $app['twig'];
-        };
         $app['eccube.calculate.context'] = function () use ($app) {
                 return new \Eccube\Service\Calculator\CalculateContext();
         };
@@ -203,14 +199,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
             return $templates;
         };
-
-        // Form\Type
-        $app->extend('form.type.extensions', function ($extensions) use ($app) {
-            //$extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
-            //$extensions[] = new \Eccube\Form\Extension\FreezeTypeExtension();
-            //$extensions[] = new \Eccube\Form\Extension\DoctrineOrmExtension($app['orm.em']);
-            return $extensions;
-        });
 
         $app['eccube.entity.event.dispatcher']->addEventListener(new \Acme\Entity\SoldOutEventListener());
         $app['eccube.queries'] = function () {
