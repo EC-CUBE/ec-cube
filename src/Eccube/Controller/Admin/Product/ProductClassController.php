@@ -27,6 +27,7 @@ namespace Eccube\Controller\Admin\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
@@ -43,6 +44,9 @@ use Eccube\Repository\Master\ProductTypeRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -54,6 +58,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Component
+ * @Route(service=ProductClassController::class)
+ */
 class ProductClassController
 {
     /**
@@ -118,6 +126,9 @@ class ProductClassController
 
     /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
+     *
+     * @Route("/{_admin}/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
+     * @Template("Product/product_class.twig")
      */
     public function index(Application $app, Request $request, $id)
     {
@@ -231,14 +242,14 @@ class ProductClassController
                 }
             }
 
-            return $app->render('Product/product_class.twig', array(
+            return [
                 'form' => $form->createView(),
                 'classForm' => $productClassForm,
                 'Product' => $Product,
                 'not_product_class' => true,
                 'error' => null,
                 'has_class_category_flg' => $hasClassCategoryFlg,
-            ));
+            ];
         } else {
             // 既に商品規格が登録されている場合、商品規格画面を表示する
 
@@ -320,7 +331,7 @@ class ProductClassController
 
             $productClassForm = $builder->getForm()->createView();
 
-            return $app->render('Product/product_class.twig', array(
+            return [
                 'classForm' => $productClassForm,
                 'Product' => $Product,
                 'class_name1' => $ClassName1,
@@ -328,12 +339,15 @@ class ProductClassController
                 'not_product_class' => false,
                 'error' => null,
                 'has_class_category_flg' => true,
-            ));
+            ];
         }
     }
 
     /**
      * 商品規格の登録、更新、削除を行う
+     *
+     * @Route("/{_admin}/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
+     * @Template("Product/product_class.twig")
      *
      * @param Application $app
      * @param Request     $request
@@ -638,7 +652,7 @@ class ProductClassController
         log_info('商品規格登録エラー');
 
 
-        return $app->render('Product/product_class.twig', array(
+        return [
             'form' => $form->createView(),
             'classForm' => $classForm->createView(),
             'Product' => $Product,
@@ -647,7 +661,7 @@ class ProductClassController
             'not_product_class' => $not_product_class,
             'error' => $error,
             'has_class_category_flg' => true,
-        ));
+        ];
     }
 
 

@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
@@ -32,11 +33,16 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig_Loader_Chain;
 
+/**
+ * @Component
+ * @Route(service=UserDataController::class)
+ */
 class UserDataController
 {
     /**
@@ -69,16 +75,21 @@ class UserDataController
      */
     protected $deviceTypeRepository;
 
+    /**
+     * @Route("/{_user_data}/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
+     */
     public function index(Application $app, Request $request, $route)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $this->pageLayoutRepository->findOneBy(array(
-            'url' => $route,
-            'DeviceType' => $DeviceType,
-            'edit_flg' => PageLayout::EDIT_FLG_USER,
-        ));
+        $PageLayout = $this->pageLayoutRepository->findOneBy(
+            array(
+                'url' => $route,
+                'DeviceType' => $DeviceType,
+                'edit_flg' => PageLayout::EDIT_FLG_USER,
+            )
+        );
 
         if (is_null($PageLayout)) {
             throw new NotFoundHttpException();
@@ -89,7 +100,7 @@ class UserDataController
         $paths[] = $this->appConfig['user_data_realdir'];
         $this->twigLoaderChain->addLoader(new \Twig_Loader_Filesystem($paths));
 
-        $file = $PageLayout->getFileName() . '.twig';
+        $file = $PageLayout->getFileName().'.twig';
 
         $event = new EventArgs(
             array(

@@ -24,6 +24,7 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -31,6 +32,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Repository\NewsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +42,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * 新着情報のコントローラクラス
+ *
+ * @Component
+ * @Route(service=NewsController::class)
  */
 class NewsController extends AbstractController
 {
@@ -62,6 +69,9 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
+     * @Route("/{_admin}/content/news", name="admin_content_news")
+     * @Template("Content/news.twig")
+     *
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -82,14 +92,18 @@ class NewsController extends AbstractController
 
         $form = $builder->getForm();
 
-        return $app->render('Content/news.twig', array(
+        return [
             'form' => $form->createView(),
             'NewsList' => $NewsList,
-        ));
+        ];
     }
 
     /**
      * 新着情報を登録・編集する。
+     *
+     * @Route("/{_admin}/content/news/new", name="admin_content_news_new")
+     * @Route("/{_admin}/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
+     * @Template("Content/news_edit.twig")
      *
      * @param Application $app
      * @param Request $request
@@ -162,6 +176,9 @@ class NewsController extends AbstractController
     /**
      * 指定した新着情報の表示順を1つ上げる。
      *
+     * @Method("PUT")
+     * @Route("/{_admin}/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
+     *
      * @param Application $app
      * @param Request $request
      * @param integer $id
@@ -191,6 +208,9 @@ class NewsController extends AbstractController
     /**
      * 指定した新着情報の表示順を1つ下げる。
      *
+     * @Method("PUT")
+     * @Route("/{_admin}/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
+     *
      * @param Application $app
      * @param Request $request
      * @param integer $id
@@ -219,6 +239,9 @@ class NewsController extends AbstractController
 
     /**
      * 指定した新着情報を削除する。
+     *
+     * @Method("DELETE")
+     * @Route("/{_admin}/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
      *
      * @param Application $app
      * @param Request $request

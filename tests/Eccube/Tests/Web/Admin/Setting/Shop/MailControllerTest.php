@@ -102,9 +102,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testEditFail()
     {
         $mid = 99999;
@@ -123,6 +120,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->app->url('admin_setting_shop_mail');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.error');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.shop.mail.save.error';
+        $this->verify();
     }
 
     /**

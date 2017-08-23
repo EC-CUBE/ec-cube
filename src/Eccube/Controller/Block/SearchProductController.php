@@ -24,15 +24,22 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\SearchProductBlockType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @Component
+ * @Route(service=SearchProductController::class)
+ */
 class SearchProductController
 {
     /**
@@ -47,9 +54,18 @@ class SearchProductController
      */
     protected $formFactory;
 
+    /**
+     * @Inject("eccube.event.dispatcher")
+     * @var
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @Route("/block/search_product", name="block_search_product")
+     * @Template("Block/search_product.twig")
+     */
     public function index(Application $app, Request $request)
     {
-        /** @var $form \Symfony\Component\Form\Form */
         $builder = $this->formFactory
             ->createNamedBuilder('', SearchProductBlockType::class)
             ->setMethod('GET');
@@ -60,16 +76,16 @@ class SearchProductController
             ),
             $request
         );
-        // $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
 
-        /** @var $request \Symfony\Component\HttpFoundation\Request */
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
+
         $request = $this->requestStack->getMasterRequest();
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        return $app->render('Block/search_product.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 }

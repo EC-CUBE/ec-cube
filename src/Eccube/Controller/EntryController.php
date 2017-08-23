@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Master\CustomerStatus;
@@ -35,6 +36,8 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +46,10 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
+/**
+ * @Component
+ * @Route(service=EntryController::class)
+ */
 class EntryController extends AbstractController
 {
     /**
@@ -97,9 +104,8 @@ class EntryController extends AbstractController
     /**
      * 会員登録画面.
      *
-     * @param  Application $app
-     * @param  Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/entry", name="entry")
+     * @Template("Entry/index.twig")
      */
     public function index(Application $app, Request $request)
     {
@@ -135,9 +141,12 @@ class EntryController extends AbstractController
                     log_info('会員登録確認開始');
                     log_info('会員登録確認完了');
 
-                    return $app->render('Entry/confirm.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    return $app->render(
+                        'Entry/confirm.twig',
+                        array(
+                            'form' => $form->createView(),
+                        )
+                    );
 
                 case 'complete':
                     log_info('会員登録開始');
@@ -199,37 +208,39 @@ class EntryController extends AbstractController
             }
         }
 
-        return $app->render('Entry/index.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 
     /**
      * 会員登録完了画面.
      *
-     * @param Application $app
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/entry/complete", name="entry_complete")
+     * @Template("Entry/complete.twig")
      */
-    public function complete(Application $app)
+    public function complete(Application $app, Request $request)
     {
-        return $app->render('Entry/complete.twig', array());
+        return [];
     }
 
     /**
      * 会員のアクティベート（本会員化）を行う.
      *
-     * @param Application $app
-     * @param Request $request
-     * @param $secret_key
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/entry/activate/{secret_key}", name="entry_activate")
+     * @Template("Entry/activate.twig")
      */
     public function activate(Application $app, Request $request, $secret_key)
     {
-        $errors = $this->recursiveValidator->validate($secret_key, array(
+        $errors = $this->recursiveValidator->validate(
+            $secret_key,
+            array(
                 new Assert\NotBlank(),
-                new Assert\Regex(array(
-                    'pattern' => '/^[a-zA-Z0-9]+$/',
-                ))
+                new Assert\Regex(
+                    array(
+                        'pattern' => '/^[a-zA-Z0-9]+$/',
+                    )
+                ),
             )
         );
 
@@ -266,7 +277,7 @@ class EntryController extends AbstractController
 
             log_info('ログイン済に変更', array($app->user()->getId()));
 
-            return $app->render('Entry/activate.twig');
+            return [];
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }

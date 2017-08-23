@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -44,6 +45,9 @@ use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
@@ -55,6 +59,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
+/**
+ * @Component
+ * @Route(service=ProductController::class)
+ */
 class ProductController extends AbstractController
 {
     /**
@@ -141,6 +149,11 @@ class ProductController extends AbstractController
      */
     protected $session;
 
+    /**
+     * @Route("/{_admin}/product", name="admin_product")
+     * @Route("/{_admin}/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
+     * @Template("Product/index.twig")
+     */
     public function index(Application $app, Request $request, $page_no = null)
     {
 
@@ -271,7 +284,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $app->render('Product/index.twig', array(
+        return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,
@@ -280,9 +293,13 @@ class ProductController extends AbstractController
             'page_status' => $page_status,
             'page_count' => $page_count,
             'active' => $active,
-        ));
+        ];
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/{_admin}/product/product/image/add", name="admin_product_image_add")
+     */
     public function addImage(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -322,6 +339,11 @@ class ProductController extends AbstractController
         return $app->json(array('files' => $files), 200);
     }
 
+    /**
+     * @Route("/{_admin}/product/new", name="admin_product_product_new")
+     * @Route("/{_admin}/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
+     * @Template("Product/product.twig")
+     */
     public function edit(Application $app, Request $request, $id = null)
     {
         $has_class = false;
@@ -598,15 +620,19 @@ class ProductController extends AbstractController
             $searchForm->handleRequest($request);
         }
 
-        return $app->render('Product/product.twig', array(
+        return [
             'Product' => $Product,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
             'id' => $id,
-        ));
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
+     */
     public function delete(Application $app, Request $request, $id = null)
     {
         $this->isTokenValid($app);
@@ -697,6 +723,10 @@ class ProductController extends AbstractController
         return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/{_admin}/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
+     */
     public function copy(Application $app, Request $request, $id = null)
     {
         $this->isTokenValid($app);
@@ -792,6 +822,9 @@ class ProductController extends AbstractController
         return $app->redirect($app->url('admin_product'));
     }
 
+    /**
+     * @Route("/{_admin}/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
+     */
     public function display(Application $app, Request $request, $id = null)
     {
         $event = new EventArgs(
@@ -809,6 +842,8 @@ class ProductController extends AbstractController
 
     /**
      * 商品CSVの出力.
+     *
+     * @Route("export", name="admin_product_export")
      *
      * @param Application $app
      * @param Request $request

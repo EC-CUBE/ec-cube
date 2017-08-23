@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
@@ -34,11 +35,18 @@ use Eccube\Form\Type\Admin\ClassCategoryType;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=ClassCategoryController::class)
+ */
 class ClassCategoryController extends AbstractController
 {
     /**
@@ -77,6 +85,11 @@ class ClassCategoryController extends AbstractController
      */
     protected $classNameRepository;
 
+    /**
+     * @Route("/{_admin}/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category")
+     * @Route("/{_admin}/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit")
+     * @Template("Product/class_category.twig")
+     */
     public function index(Application $app, Request $request, $class_name_id, $id = null)
     {
         //
@@ -142,14 +155,18 @@ class ClassCategoryController extends AbstractController
 
         $ClassCategories = $this->classCategoryRepository->getList($ClassName);
 
-        return $app->render('Product/class_category.twig', array(
+        return [
             'form' => $form->createView(),
             'ClassName' => $ClassName,
             'ClassCategories' => $ClassCategories,
             'TargetClassCategory' => $TargetClassCategory,
-        ));
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/product/class_category/{class_name_id}/{id}/delete", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_delete")
+     */
     public function delete(Application $app, Request $request, $class_name_id, $id)
     {
         $this->isTokenValid($app);
@@ -202,6 +219,10 @@ class ClassCategoryController extends AbstractController
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/product/class_category/rank/move", name="admin_product_class_category_rank_move")
+     */
     public function moveRank(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {

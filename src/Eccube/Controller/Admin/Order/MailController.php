@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Entity\MailHistory;
 use Eccube\Event\EccubeEvents;
@@ -34,11 +35,17 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=MailController::class)
+ */
 class MailController
 {
     /**
@@ -77,6 +84,10 @@ class MailController
      */
     protected $orderRepository;
 
+    /**
+     * @Route("/{_admin}/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
+     * @Template("Order/mail.twig")
+     */
     public function index(Application $app, Request $request, $id)
     {
         $Order = $this->orderRepository->find($id);
@@ -203,20 +214,26 @@ class MailController
             }
         }
 
-        return $app->render('Order/mail.twig', array(
+        return [
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories
-        ));
+        ];
     }
 
-
+    /**
+     * @Route("/{_admin}/order/mail_complete", name="admin_order_mail_complete")
+     * @Template("Order/mail_complete.twig")
+     */
     public function complete(Application $app)
     {
-        return $app->render('Order/mail_complete.twig');
+        return [];
     }
 
-
+    /**
+     * @Route("/{_admin}/order/mail/view", name="admin_order_mail_view")
+     * @Template("Order/mail_view.twig")
+     */
     public function view(Application $app, Request $request)
     {
 
@@ -236,16 +253,18 @@ class MailController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE, $event);
 
-            return $app->render('Order/mail_view.twig', array(
+            return [
                 'subject' => $MailHistory->getSubject(),
                 'body' => $MailHistory->getMailBody()
-            ));
+            ];
         }
 
     }
 
-
-
+    /**
+     * @Route("/{_admin}/order/mail/mail_all", name="admin_order_mail_all")
+     * @Template("Order/mail_all.twig")
+     */
     public function mailAll(Application $app, Request $request)
     {
 
@@ -391,10 +410,10 @@ class MailController
             $ids = implode(',', $idArray);
         }
 
-        return $app->render('Order/mail_all.twig', array(
+        return [
             'form' => $form->createView(),
             'ids' => $ids,
-        ));
+        ];
     }
 
 

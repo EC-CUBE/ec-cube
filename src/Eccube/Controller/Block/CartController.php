@@ -24,10 +24,18 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Service\CartService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=CartController::class)
+ */
 class CartController
 {
     /**
@@ -36,12 +44,16 @@ class CartController
      */
     protected $cartService;
 
-    public function index(Application $app)
+    /**
+     * @Route("/block/cart", name="block_cart")
+     * @Template("Block/cart.twig")
+     */
+    public function index(Application $app, Request $request)
     {
-        /** @var $Cart \Eccube\Entity\Cart */
         $Cart = $this->cartService->getCart();
-        return $app->render('Block/cart.twig', array(
+
+        return [
             'Cart' => $Cart,
-        ));
+        ];
     }
 }

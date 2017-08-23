@@ -24,6 +24,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -31,10 +32,16 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CustomerAgreementType;
 use Eccube\Repository\HelpRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=CustomerAgreementController::class)
+ */
 class CustomerAgreementController extends AbstractController
 {
     /**
@@ -63,10 +70,10 @@ class CustomerAgreementController extends AbstractController
 
     public $form;
 
-    public function __construct()
-    {
-    }
-
+    /**
+     * @Route("/{_admin}/setting/shop/customer_agreement", name="admin_setting_shop_customer_agreement")
+     * @Template("Setting/Shop/customer_agreement.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $Help = $this->helpRepository->get();
@@ -83,14 +90,14 @@ class CustomerAgreementController extends AbstractController
         );
 
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
-        $form = $builder->getForm();
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $this->entityManager->persist($Help);
-
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
@@ -100,9 +107,13 @@ class CustomerAgreementController extends AbstractController
                     ),
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch(
+                    EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE,
+                    $event
+                );
 
                 $app->addSuccess('admin.register.complete', 'admin');
+
                 return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
 
             } else {
@@ -110,8 +121,8 @@ class CustomerAgreementController extends AbstractController
             }
         }
 
-        return $app->render('Setting/Shop/customer_agreement.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 }

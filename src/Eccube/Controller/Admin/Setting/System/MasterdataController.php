@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -33,10 +34,16 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=MasterdataController::class)
+ */
 class MasterdataController extends AbstractController
 {
     /**
@@ -57,6 +64,11 @@ class MasterdataController extends AbstractController
      */
     protected $formFactory;
 
+    /**
+     * @Route("/{_admin}/setting/system/masterdata", name="admin_setting_system_masterdata")
+     * @Route("/{_admin}/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view")
+     * @Template("Setting/System/masterdata.twig")
+     */
     public function index(Application $app, Request $request, $entity = null)
     {
         $data = array();
@@ -88,14 +100,19 @@ class MasterdataController extends AbstractController
                     return $event->getResponse();
                 }
 
-                return $app->redirect($app->url('admin_setting_system_masterdata_view', array('entity' => $form['masterdata']->getData())));
+                return $app->redirect(
+                    $app->url('admin_setting_system_masterdata_view', array('entity' => $form['masterdata']->getData()))
+                );
             }
         } elseif (!is_null($entity)) {
             $form->submit(array('masterdata' => $entity));
             if ($form['masterdata']->isValid()) {
                 $entityName = str_replace('-', '\\', $entity);
                 try {
-                    $masterdata = $this->entityManager->getRepository($entityName)->findBy(array(), array('rank' => 'ASC'));
+                    $masterdata = $this->entityManager->getRepository($entityName)->findBy(
+                        array(),
+                        array('rank' => 'ASC')
+                    );
                     $data['data'] = array();
                     $data['masterdata_name'] = $entity;
                     foreach ($masterdata as $value) {
@@ -123,12 +140,16 @@ class MasterdataController extends AbstractController
 
         $form2 = $builder2->getForm();
 
-        return $app->render('Setting/System/masterdata.twig', array(
+        return [
             'form' => $form->createView(),
             'form2' => $form2->createView(),
-        ));
+        ];
     }
 
+    /**
+     * @Route("/{_admin}/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit")
+     * @Template("Setting/System/masterdata.twig")
+     */
     public function edit(Application $app, Request $request)
     {
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);
@@ -152,7 +173,12 @@ class MasterdataController extends AbstractController
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $entity = new $entityName();
                 $rank = 0;
-                $ids = array_map(function ($v) {return $v['id'];}, $data['data']);
+                $ids = array_map(
+                    function ($v) {
+                        return $v['id'];
+                    },
+                    $data['data']
+                );
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
@@ -177,7 +203,10 @@ class MasterdataController extends AbstractController
                         ),
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch(
+                        EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE,
+                        $event
+                    );
 
                     $app->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
@@ -185,7 +214,9 @@ class MasterdataController extends AbstractController
                     $app->addError('admin.register.failed', 'admin');
                 }
 
-                return $app->redirect($app->url('admin_setting_system_masterdata_view', array('entity' => $data['masterdata_name'])));
+                return $app->redirect(
+                    $app->url('admin_setting_system_masterdata_view', array('entity' => $data['masterdata_name']))
+                );
             }
         }
 
@@ -203,9 +234,9 @@ class MasterdataController extends AbstractController
         $parameter = array_merge($request->request->all(), array('masterdata' => $form2['masterdata_name']->getData()));
         $form->submit($parameter);
 
-        return $app->render('Setting/System/masterdata.twig', array(
+        return [
             'form' => $form->createView(),
             'form2' => $form2->createView(),
-        ));
+        ];
     }
 }

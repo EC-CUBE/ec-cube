@@ -40,8 +40,9 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * @return string
      */
-    public function __toString() {
-        return $this->name;
+    public function __toString()
+    {
+        return (string)$this->name;
     }
 
     /**

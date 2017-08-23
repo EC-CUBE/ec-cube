@@ -25,7 +25,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -60,27 +59,6 @@ class AbstractController
      */
     protected $formFactory;
 
-    public function __construct()
-    {
-    }
-
-    /**
-     * getBoundForm
-     *
-     * @deprecated
-     */
-    protected function getBoundForm(Application $app, $type)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-
-        $form = $this->formFactory
-            ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
-            ->getForm();
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-
-        return $form;
-    }
-
     protected function getSecurity($app)
     {
         return $this->tokenStorage;
@@ -96,5 +74,4 @@ class AbstractController
 
         return true;
     }
-
 }

@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -41,11 +42,18 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * @Component
+ * @Route(service=OrderController::class)
+ */
 class OrderController extends AbstractController
 {
     /**
@@ -120,7 +128,11 @@ class OrderController extends AbstractController
      */
     protected $orderRepository;
 
-
+    /**
+     * @Route("/{_admin}/order", name="admin_order")
+     * @Route("/{_admin}/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
+     * @Template("Order/index.twig")
+     */
     public function index(Application $app, Request $request, $page_no = null)
     {
 
@@ -256,7 +268,7 @@ class OrderController extends AbstractController
             }
         }
 
-        return $app->render('Order/index.twig', array(
+        return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,
@@ -265,10 +277,13 @@ class OrderController extends AbstractController
             'page_status' => $page_status,
             'page_count' => $page_count,
             'active' => $active,
-        ));
-
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
+     */
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
@@ -316,6 +331,8 @@ class OrderController extends AbstractController
 
     /**
      * 受注CSVの出力.
+     *
+     * @Route("/order/export/order", name="admin_order_export_order")
      *
      * @param Application $app
      * @param Request $request
@@ -399,6 +416,8 @@ class OrderController extends AbstractController
 
     /**
      * 配送CSVの出力.
+     *
+     * @Route("/order/export/shipping", name="admin_order_export_shipping")
      *
      * @param Application $app
      * @param Request $request

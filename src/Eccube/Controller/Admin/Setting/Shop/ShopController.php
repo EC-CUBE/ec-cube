@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -32,11 +33,17 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Repository\BaseInfoRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 
+/**
+ * @Component
+ * @Route(service=ShopController::class)
+ */
 class ShopController extends AbstractController
 {
     /**
@@ -69,6 +76,10 @@ class ShopController extends AbstractController
      */
     protected $baseInfoRepository;
 
+    /**
+     * @Route("/{_admin}/setting/shop", name="admin_setting_shop")
+     * @Template("Setting/Shop/shop_master.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $BaseInfo = $this->baseInfoRepository->get();
@@ -89,9 +100,9 @@ class ShopController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $this->entityManager->persist($BaseInfo);
                 $this->entityManager->flush();
@@ -114,8 +125,8 @@ class ShopController extends AbstractController
 
         $this->twigEnvironment->addGlobal('BaseInfo', $CloneInfo);
 
-        return $app->render('Setting/Shop/shop_master.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 }

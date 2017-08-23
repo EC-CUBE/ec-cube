@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -32,11 +33,17 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\AuthorityRoleType;
 use Eccube\Repository\AuthorityRoleRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Component
+ * @Route(service=AuthorityController::class)
+ */
 class AuthorityController extends AbstractController
 {
     /**
@@ -63,20 +70,27 @@ class AuthorityController extends AbstractController
      */
     protected $authorityRoleRepository;
 
-
+    /**
+     * @Route("/{_admin}/setting/system/authority", name="admin_setting_system_authority")
+     * @Template("Setting/System/authority.twig")
+     */
     public function index(Application $app, Request $request)
     {
         $AuthorityRoles = $this->authorityRoleRepository->findAllSort();
 
         $builder = $this->formFactory->createBuilder();
         $builder
-            ->add('AuthorityRoles', CollectionType::class, array(
-                'entry_type' => AuthorityRoleType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-                'data' => $AuthorityRoles,
-            ));
+            ->add(
+                'AuthorityRoles',
+                CollectionType::class,
+                array(
+                    'entry_type' => AuthorityRoleType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'data' => $AuthorityRoles,
+                )
+            );
 
         $event = new EventArgs(
             array(
@@ -140,8 +154,8 @@ class AuthorityController extends AbstractController
             }
         }
 
-        return $app->render('Setting/System/authority.twig', array(
+        return [
             'form' => $form->createView(),
-        ));
+        ];
     }
 }

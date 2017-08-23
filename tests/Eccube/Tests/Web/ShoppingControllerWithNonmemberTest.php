@@ -44,7 +44,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->app['eccube.service.cart']->unlock();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping/');
+        $crawler = $client->request('GET', '/shopping');
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
     }
@@ -54,7 +54,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->app['eccube.service.cart']->lock();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping/');
+        $crawler = $client->request('GET', '/shopping');
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
     }
@@ -95,7 +95,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
@@ -287,7 +287,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping/confirm'));
+        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $Messages = $this->getMailCatcherMessages();

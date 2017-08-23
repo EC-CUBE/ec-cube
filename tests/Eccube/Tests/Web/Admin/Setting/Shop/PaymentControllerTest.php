@@ -26,6 +26,7 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Common\Constant;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
@@ -114,17 +115,15 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testDeleteFail()
     {
         $pid = 9999;
-        $this->client->request(
-            'DELETE',
-            $this->app->url('admin_setting_shop_payment_delete', array('id' => $pid))
-        );
+        try {
+            $this->client->request(
+                'DELETE',
+                $this->app->url('admin_setting_shop_payment_delete', array('id' => $pid))
+            );
+            $this->fail();
+        } catch (NotFoundHttpException $e) {
 
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.warning');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.delete.warning';
-        $this->verify();
+        }
     }
 
     public function testUp()

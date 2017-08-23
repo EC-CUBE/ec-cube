@@ -26,6 +26,7 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Common\Constant;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
@@ -77,7 +78,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEditParam()
     {
         $this->client->request(
-            'GET',
+            'POST',
             $this->app->url('admin_setting_shop_tax_edit_param', array('id' => 1))
         );
         $redirectUrl = $this->app->url('admin_setting_shop_tax');
@@ -211,13 +212,15 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function testTaxDeleteFail()
     {
         $tid = 99999;
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
 
-        $this->client->request(
-            'DELETE',
-            $this->app->url('admin_setting_shop_tax_delete', array('id' => $tid))
-        );
+        try {
+            $this->client->request(
+                'DELETE',
+                $this->app->url('admin_setting_shop_tax_delete', array('id' => $tid))
+            );
+            $this->fail();
+        } catch (NotFoundHttpException $e) {
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+        }
     }
 }

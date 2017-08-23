@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -34,6 +35,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CategoryType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Service\CsvExportService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +45,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @Component
+ * @Route(service=CategoryController::class)
+ */
 class CategoryController extends AbstractController
 {
     /**
@@ -79,6 +87,12 @@ class CategoryController extends AbstractController
      */
     protected $categoryRepository;
 
+    /**
+     * @Route("/{_admin}/product/category", name="admin_product_category")
+     * @Route("/{_admin}/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
+     * @Route("/{_admin}/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
+     * @Template("Product/category.twig")
+     */
     public function index(Application $app, Request $request, $parent_id = null, $id = null)
     {
         if ($parent_id) {
@@ -164,15 +178,19 @@ class CategoryController extends AbstractController
         // ツリー表示のため、ルートからのカテゴリを取得
         $TopCategories = $this->categoryRepository->getList(null);
 
-        return $app->render('Product/category.twig', array(
+        return [
             'form' => $form->createView(),
             'Parent' => $Parent,
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
-        ));
+        ];
     }
 
+    /**
+     * @Method("DELETE")
+     * @Route("/{_admin}/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete")
+     */
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
@@ -214,6 +232,10 @@ class CategoryController extends AbstractController
         }
     }
 
+    /**
+     * @Method("POST")
+     * @Route("/{_admin}/product/category/rank/move", name="admin_product_category_rank_move")
+     */
     public function moveRank(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
@@ -233,6 +255,8 @@ class CategoryController extends AbstractController
 
     /**
      * カテゴリCSVの出力.
+     *
+     * @Route("/{_admin}/product/category/export", name="admin_product_category_export")
      *
      * @param Application $app
      * @param Request $request
