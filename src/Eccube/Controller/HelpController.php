@@ -95,7 +95,7 @@ class HelpController extends AbstractController
     /**
      * 利用規約.
      *
-     * @Route("/agreement", name="help_agreement")
+     * @Route("/help/agreement", name="help_agreement")
      * @Template("Help/agreement.twig")
      */
     public function agreement(Application $app, Request $request)

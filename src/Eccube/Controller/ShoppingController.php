@@ -403,13 +403,13 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping/existsOrder"));
+        $response = $app->forward($app->path("shopping_exists_order"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }

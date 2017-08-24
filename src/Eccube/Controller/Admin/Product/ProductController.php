@@ -340,7 +340,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/product/new", name="admin_product_product_new")
+     * @Route("/{_admin}/product/product/new", name="admin_product_product_new")
      * @Route("/{_admin}/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("Product/product.twig")
      */
