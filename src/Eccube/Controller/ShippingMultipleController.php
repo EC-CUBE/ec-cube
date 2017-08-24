@@ -94,7 +94,7 @@ class ShippingMultipleController extends AbstractShoppingController
     public function index(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping/checkToCart"));
+        $response = $app->forward($app->path("shopping_check_to_cart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
