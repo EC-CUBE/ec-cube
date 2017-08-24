@@ -33,6 +33,8 @@ use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Util\Str;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
@@ -111,6 +113,14 @@ class SecurityController extends AbstractController
                 }
                 if (file_exists($configFile.'.yml')) {
                     file_put_contents($configFile.'.yml', Yaml::dump($config));
+                }
+
+                // ルーティングのキャッシュを削除
+                $cacheDir = $this->appConfig['root_dir'].'/app/cache/routing';
+                if (file_exists($cacheDir)) {
+                    $finder = Finder::create()->in($cacheDir);
+                    $filesystem = new Filesystem();
+                    $filesystem->remove($finder);
                 }
 
                 if ($adminRoot != $data['admin_route_dir']) {
