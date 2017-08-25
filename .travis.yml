@@ -13,10 +13,10 @@ cache:
     - $HOME/.composer/cache
 
 php:
+  - 7.2
   - 7.1
   - 7.0
   - 5.6
-  - 5.5
 
 env:
   matrix:
@@ -30,11 +30,11 @@ matrix:
   fast_finish: true
   exclude:
     # php7.1以外のカバレッジレポート用matrixは除外
-    - php: 5.5
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
     - php: 5.6
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
     - php: 7.0
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+    - php: 7.2
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
   allow_failures:
     # sqlite
@@ -42,6 +42,8 @@ matrix:
     # カバレッジレポートはphp7.1のmatrixで実行
     - php: 7.1
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+    # php7.2
+    - php: 7.2
 
 install:
   # @see https://github.com/sj26/mailcatcher/issues/277
@@ -49,7 +51,7 @@ install:
   - gem install --conservative mailcatcher
 
 before_script:
-  - phpenv config-rm xdebug.ini
+  - phpenv config-rm xdebug.ini || true
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer install --dev --no-interaction -o
   - php ./eccube_install.php $DB none
