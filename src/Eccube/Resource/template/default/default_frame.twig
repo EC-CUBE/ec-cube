@@ -45,6 +45,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- for original theme CSS -->
     {% block stylesheet %}{% endblock %}
 
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
     {# Layout: HEAD #}
     {% if PageLayout.Head %}
         {{ include('block.twig', {'Blocks': PageLayout.Head}) }}
