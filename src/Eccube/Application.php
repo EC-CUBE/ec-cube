@@ -371,14 +371,10 @@ class Application extends \Silex\Application
         $this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
-            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
-            if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale'], 'validators');
-            }
-
             $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
             if (file_exists($file)) {
                 $translator->addResource('yaml', $file, $app['locale']);
+                $translator->addResource('yaml', $file, $app['locale'], 'validators');
             }
 
             return $translator;
