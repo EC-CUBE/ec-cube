@@ -19,14 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'new_style_frame.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% set body_class = 'front_page' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
     <style>
-
         .slick-slider {
             margin-bottom: 30px;
         }
@@ -100,22 +98,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             width: 0;
             height: 0;
         }
-
     </style>
-{% endblock %}
-
-{% block javascript %}
-<script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-<script>
-$(function(){
-    $('.main_visual').slick({
-        dots: true,
-        arrows: false,
-        autoplay: true,
-        speed: 300
-    });
-});
-</script>
 {% endblock %}
 
 {% block main %}
