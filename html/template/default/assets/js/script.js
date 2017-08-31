@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -103,48 +103,67 @@ $(function(){
 })
 
 $(function(){
+    $(".ec-orderMail__link").on("click",function(){
+        $(".ec-orderMail__body").slideToggle();
+    })
+})
+$(function(){
+    $(".ec-orderMail__close").on("click",function(){
+        $(".ec-orderMail__body").slideToggle();
+
+    })
+})
+
+$(function(){
     $(".is_inDrawer").each(function(){
         var html = $(this).html();
         $(html).appendTo(".ec-drawerRole")
     })
 })
 
-// Slick Slide
-// TODO FIX CLASS NAME
-// $(function(){
-//     $('.main_visual').slick({
-//         dots: true,
-//         arrows: false,
-//         autoplay: true,
-//         speed: 300
-//     });
-// });
+$(function(){
+    $(".ec-blockTopBtn").on("click",function(){
+        $("html,body").animate({"scrollTop":0},500);
+    })
+})
 
 
 // Slick Slide
 // TODO FIX CLASS NAME
-// $(function(){
-//     $('.item_visual').slick({
-//         dots: false,
-//         arrows: false,
-//         responsive: [
-//             {
-//                 breakpoint: 768,
-//                 settings: {
-//                     dots: true
-//                 }
-//             }]
-//     })
-// });
-// $(function(){
-//     $('.item_nav').slick({//サムネイル画像
-//         dots: false,
-//         arrows:false,
-//         slidesToShow: 3,
-//         focusOnSelect: true,
-//         asNavFor: '.item_visual',//スライダー部分の要素を記述
-//     })
-// });
+$(function(){
+    $('.main_visual').slick({
+        dots: true,
+        arrows: false,
+        autoplay: true,
+        speed: 300
+    });
+});
+
+
+// Slick Slide
+// TODO FIX CLASS NAME
+$(function(){
+    $('.item_visual').slick({
+        dots: false,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    dots: true
+                }
+            }]
+    })
+});
+$(function(){
+    $('.item_nav').slick({//サムネイル画像
+        dots: false,
+        arrows:false,
+        slidesToShow: 3,
+        focusOnSelect: true,
+        asNavFor: '.item_visual',//スライダー部分の要素を記述
+    })
+});
 
 /***/ })
 /******/ ]);
