@@ -371,7 +371,7 @@ class Application extends \Silex\Application
         $this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('php', new \Symfony\Component\Translation\Loader\PhpFileLoader());
 
-            $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.php';
+            $file = __DIR__.'/Resource/locale/messages.'.$app['locale'].'.php';
             if (file_exists($file)) {
                 $translator->addResource('php', $file, $app['locale']);
                 $translator->addResource('php', $file, $app['locale'], 'validators');
