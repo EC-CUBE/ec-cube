@@ -40,18 +40,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endif %}
     <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
     <link rel="stylesheet" href="{{ app.config.front_urlpath }}/assets/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
     <!-- for original theme CSS -->
     {% block stylesheet %}{% endblock %}
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{{ app.config.front_urlpath }}/js/vendor/jquery-1.11.3.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"><\/script>')</script>
 
     {# Layout: HEAD #}
     {% if PageLayout.Head %}
         {{ include('block.twig', {'Blocks': PageLayout.Head}) }}
     {% endif %}
-
 </head>
 <body id="page_{{ app.request_stack.currentrequest.get('_route') }}" class="{{ body_class|default('other_page') }}">
 <div class="ec-layoutRole">
@@ -126,11 +123,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endif %}
 </div><!-- ec-layoutRole -->
 
-{# TODO display:none
-<div class="ec-overlayRole"></div> #}
+<div class="ec-overlayRole"></div>
 <div class="ec-drawerRole"></div>
-
+<div class="ec-blockTopBtn"></div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
 <script src="{{ app.config.front_urlpath }}/assets/js/script.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
 <script src="{{ app.config.front_urlpath }}/js/function.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
 <script src="{{ app.config.front_urlpath }}/js/eccube.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
