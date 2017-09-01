@@ -23,102 +23,161 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set body_class = 'cart_page' %}
 
+{% form_theme form 'Form/form_div_layout.twig' %}
+
 {% block javascript %}
 <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
-<h1 class="page-heading">お客様情報の入力</h1>
-<div id="detail_wrap" class="container-fluid">
-    <div id="detail_box__body" class="row">
-        <div id="detail_box__body_inner" class="col-md-10 col-md-offset-1">
-            <div id="detail_flow_box__flow_state" class="flowline step4">
-                <ul id="detail_flow_box___flow_state_list"  class="clearfix">
-                    <li><span class="flow_number">1</span><br>カートの商品</li>
-                    <li class="active"><span class="flow_number">2</span><br>お客様情報</li>
-                    <li><span class="flow_number">3</span><br>ご注文内容確認</li>
-                    <li><span class="flow_number">4</span><br>完了</li>
-                </ul>
-            </div>
+
+<div class="ec-customerRole">
+    <div class="ec-pageHeader">
+        <h1>お客様情報の入力</h1>
+    </div>
+    <div class="ec-layoutRole__progress">
+        <ul class="ec-progress">
+            <li class="ec-progress__item is-complete">
+                <div class="ec-progress__number">1
+                </div>
+                <div class="ec-progress__label">カートの商品
+                </div>
+            </li>
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">2
+                </div>
+                <div class="ec-progress__label">お客様情報
+                </div>
+            </li>
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">3
+                </div>
+                <div class="ec-progress__label">ご注文内容確認
+                </div>
+            </li>
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">4
+                </div>
+                <div class="ec-progress__label">完了
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="ec-off1Grid">
+        <div class="ec-off1Grid__cell">
             <form method="post" action="{{ url('shopping_nonmember') }}" class="h-adr">
-                <span class="p-country-name" style="display:none;">Japan</span>
-                {{ form_widget(form._token) }}
-                <div id="detail_box__body" class="dl_table">
-                    <dl id="detail_box__name">
-                        <dt>{{ form_label(form.name) }}</dt>
-                        <dd class="form-group input_name">
+            <span class="p-country-name" style="display:none;">Japan</span>
+            {{ form_widget(form._token) }}
+            <div class="ec-borderedDefs">
+                <dl>
+                    <dt>
+                        {{ form_label(form.name) }}
+                    </dt>
+                    <dd>
+                        <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
                             {{ form_widget(form.name.name01) }}
                             {{ form_widget(form.name.name02) }}
                             {{ form_errors(form.name.name01) }}
                             {{ form_errors(form.name.name02) }}
-                        </dd>
-                    </dl>
-                    <dl id="detail_box__kana">
-                        <dt>{{ form_label(form.kana) }}</dt>
-                        <dd class="form-group input_name">
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        {{ form_label(form.kana) }}
+                    </dt>
+                    <dd>
+                        <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error'}}">
                             {{ form_widget(form.kana.kana01) }}
                             {{ form_widget(form.kana.kana02) }}
                             {{ form_errors(form.kana.kana01) }}
                             {{ form_errors(form.kana.kana02) }}
-                        </dd>
-                    </dl>
-                    <dl id="detail_box__company_name">
-                        <dt>{{ form_label(form.company_name) }}</dt>
-                        <dd class="form-group input_name">
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        {{ form_label(form.company_name) }}
+                    </dt>
+                    <dd>
+                        <div class="ec-halfInput{{ has_errors(form.company_name) ? ' error' }}">
                             {{ form_widget(form.company_name) }}
                             {{ form_errors(form.company_name) }}
-                        </dd>
-                    </dl>
-                    <dl id="detail_box__address">
-                        <dt>{{ form_label(form.address) }}</dt>
-                        <dd>
-                            <div id="detail_box__zip" class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                            <div id="detail_box__address" class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                {{ form_widget(form.address) }}
-                                {{ form_errors(form.address) }}
-                            </div>
-                        </dd>
-                    </dl>
-                    <dl id="detail_box__tel">
-                        <dt>{{ form_label(form.tel) }}</dt>
-                        <dd>
-                            <div class="form-inline form-group input_tel">
-                                {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
-                                {{ form_errors(form.tel) }}
-                            </div>
-                        </dd>
-                    </dl>
-                    <dl id="detail_box__email">
-                        <dt>{{ form_label(form.email) }}</dt>
-                        <dd>
-                            <div class="form-group {% if form.email.first.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.first) }}</div>
-                            <div class="form-group {% if form.email.second.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.second, {attr: {placeholder: '確認のためもう一度入力してください'}}) }}
-                                {{ form_errors(form.email.first) }}
-                                {{ form_errors(form.email.second) }}
-                            </div>
-                        </dd>
-                    </dl>
-                </div>
-                {% for f in form %}
-                    {% if f.vars.name matches '[^plg*]' %}
-                        <div class="extra-form dl_table">
-                            {{ form_row(f) }}
                         </div>
-                    {% endif %}
-                {% endfor %}
-                <div id="detail_box__footer" class="row no-padding">
-                    <div id="detail_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
-                        <p id="detail_box__next_button">
-                            <button type="submit" class="btn btn-primary btn-block">次へ</button>
-                        </p>
-                        <p id="detail_box__back_button"><a href="{{ url('cart') }}" class="btn btn-info btn-block">戻る</a></p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        {{ form_label(form.address) }}
+                    </dt>
+                    <dd>
+                        <div class="ec-zipInput{{ has_errors(form.zip.zip01, form.zip.zip02) ? ' error' }}"><span>〒</span>
+                            {{ form_widget(form.zip.zip01) }}<span>-</span>
+                            {{ form_widget(form.zip.zip02) }}
+                            {{ form_errors(form.zip.zip01) }}
+                            {{ form_errors(form.zip.zip02) }}
+                        </div>
+                        <div class="ec-zipInputHelp"><a href="http://www.post.japanpost.jp/zipcode/"
+                                                        target="_blank">
+                                <div class="ec-zipInputHelp__icon">
+                                    <div class="ec-icon"><img src="{{ app.config.front_urlpath }}/assets/icon/question-white.svg" alt=""></div>
+                                </div>
+                                <span>郵便番号検索</span></a></div>
+                        <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
+                            {{ form_widget(form.address.pref) }}
+                            {{ form_errors(form.address.pref) }}
+                        </div>
+                        <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
+                            {{ form_widget(form.address.addr01, {'attr': {'placeholder': '市区町村名 (例：千代田区神田神保町)' }}) }}
+                            {{ form_errors(form.address.addr01) }}
+                        </div>
+                        <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
+                            {{ form_widget(form.address.addr02, {'attr': {'placeholder': '番地・ビル名 (例：1-3-5)' }}) }}
+                            {{ form_errors(form.address.addr02) }}
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        {{ form_label(form.tel, '電話番号', {'label_attr': {'class': 'ec-label'}}) }}
+                    </dt>
+                    <dd>
+                        <div class="ec-telInput{{ has_errors(form.tel.tel01, form.tel.tel02, form.tel.tel03) ? ' error' }}">
+                            {{ form_widget(form.tel.tel01) }}<span>-</span>
+                            {{ form_widget(form.tel.tel02) }}<span>-</span>
+                            {{ form_widget(form.tel.tel03) }}
+                            {{ form_errors(form.tel.tel01) }}
+                            {{ form_errors(form.tel.tel02) }}
+                            {{ form_errors(form.tel.tel03) }}
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        {{ form_label(form.email, 'メールアドレス', {'label_attr': {'class': 'ec-label'}}) }}
+                    </dt>
+                    <dd>
+                        <div class="ec-input{{ has_errors(form.email.first) ? ' error' }}">
+                            {{ form_widget(form.email.first) }}
+                            {{ form_errors(form.email.first) }}
+                        </div>
+                        <div class="ec-input{{ has_errors(form.email.second) ? ' error' }}">
+                            {{ form_widget(form.email.second, {'attr': {'placeholder': '確認のためもう一度入力してください' }}) }}
+                            {{ form_errors(form.email.second) }}
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <div class="ec-RegisterRole__actions">
+                <div class="ec-off4Grid">
+                    <div class="ec-off4Grid__cell">
+                        <button type="submit" class="ec-blockBtn--action">次へ</button>
+                        <a class="ec-blockBtn--cancel" href="{{ url('cart') }}">戻る</a>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-
 </div>
 {% endblock %}
