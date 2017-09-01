@@ -25,36 +25,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-    <h1 class="page-heading">ログイン</h1>
-    <div id="login_wrap" class="container-fluid">
-        <form method="post" action="{{ url('login_check') }}">
-            <input type="hidden" name="_target_path" value="shopping" />
-            <input type="hidden" name="_failure_path" value="shopping_login" />
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>ログイン</h1>
+        </div>
+    </div>
 
-            <div id="login_box" class="login_cart row">
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div id="customer_box" class="col-sm-8 col-sm-offset-2" style="height: 330px;">
-                {% else %}
-                <div id="customer_box" class="col-sm-8" style="height: 330px;">
-                {% endif %}
-                    <div id="customer_box__body" class="column">
-                        <div id="customer_box__body_inner" class="column_inner clearfix">
-                            <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
-                            <div id="customer_box__login_email" class="form-group">
-                                {{ form_widget(form.login_email, {attr: {'style' : 'ime-mode: disabled;', placeholder: 'メールアドレス', 'autofocus': true}}) }} <br class="sp">
-                            </div>
-                            <div id="customer_box__login_pass" class="form-group">
+    <div class="ec-role">
+        <div class="ec-grid3">
+
+            <div class="ec-grid3__cell2">
+                <form method="post" action="{{ url('login_check') }}">
+                    <input type="hidden" name="_target_path" value="shopping" />
+                    <input type="hidden" name="_failure_path" value="shopping_login" />
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="ec-login">
+                        <div class="ec-login__icon">
+                            <div class="ec-icon"><img src="{{ app.config.front_urlpath }}/assets/icon/user.svg" alt=""></div>
+                        </div>
+                        <div class="ec-login__input">
+                            <div class="ec-input">
+                                {{ form_widget(form.login_email, {attr: {'style' : 'ime-mode: disabled;', placeholder: 'メールアドレス', 'autofocus': true}}) }}
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
-                                {% if BaseInfo.option_remember_me %}
-                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                        <input type="hidden" name="login_memory" value="1">
-                                    {% else %}
-                                        {{ form_widget(form.login_memory) }}
-                                    {% endif %}
-                                {% endif %}
-                            </div>
-                            <div class="extra-form form-group">
                                 {% for f in form.getIterator %}
                                     {% if f.vars.name matches '[^plg*]' %}
                                         {{ form_row(f) }}
@@ -63,35 +55,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            {% if error %}
-                                <div id="customer_box__error_message" class="form-group">
-                                    <span class="text-danger">{{ error|trans|raw }}</span>
+                            <div class="ec-checkbox">
+                                <label>
+                                    {% if BaseInfo.option_remember_me %}
+                                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                            <input type="hidden" name="login_memory" value="1">
+                                        {% else %}
+                                            {{ form_widget(form.login_memory) }}
+                                        {% endif %}
+                                    {% endif %}
+                                </label>
+                            </div>
+                        </div>
+
+                        {% if error %}
+                            <p class="ec-errorMessage">
+                                {{ error|trans|raw }}
+                            </p>
+                        {% endif %}
+                        <!--p.ec-errorMessage ログインできませんでした。-->
+                        <!--    br-->
+                        <!--    | 入力内容に誤りがないかご確認ください。-->
+                        <div class="ec-grid2">
+                            <div class="ec-grid2__cell">
+                                <div class="ec-login__actions">
+                                    <button type="submit" class="ec-blockBtn--cancel">ログイン</button>
+                                    {#<a class="ec-blockBtn--cancel" href="/moc/guest/login/error">ログイン</a>#}
                                 </div>
-                            {% endif %}
-                            <div id="customer_box__login_button" class="btn_area">
-                                <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
-                                <ul id="customer_box__login_menu">
-                                <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
-                                <li><a href="{{ url('entry') }}">新規会員登録</a></li>
-                                </ul>
+                            </div>
+                            <div class="ec-grid2__cell">
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('forgot') }}">ログイン情報をお忘れですか?</a>
+                                </div>
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('entry') }}">新規会員登録</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div><!-- /.col -->
+                </form>
+            </div>
 
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                {% else %}
-                <div id="guest_box" class="col-sm-4" style="height: 330px;">
-                    <div id="guest_box__body" class="column">
-                        <div id="guest_box__body_inner" class="column_inner">
-                            <p id="guest_box__message" class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
-                            <p id="guest_box__confirm_button" class="btn_area">
-                                <a href="{{ url('shopping_nonmember') }}" class="btn btn-info btn-block btn-lg">ゲスト購入</a></p>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
+                <div class="ec-grid3__cell">
+                    <div class="ec-guest">
+                        <div class="ec-guest__inner">
+                            <p>会員登録をせずに購入手続きをされたい方は、下記よりお進みください。</p>
+                            <div class="ec-guest__actions"><a class="ec-blockBtn--cancel" href="{{ url('shopping_nonmember') }}">ゲスト購入</a>
+                            </div>
                         </div>
                     </div>
-                </div><!-- /.col -->
-                {% endif %}
-            </div><!-- /.row -->
-        </form>
+                </div>
+            {% endif %}
+
+        </div>
     </div>
 {% endblock %}
