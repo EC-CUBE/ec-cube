@@ -85,8 +85,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             {% endfor %}
-            {% include "pagination.twig" with {'pages': pagination.paginationData} %}
-
+            <div class="ec-pagerRole">
+                {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+            </div>
         {% else %}
             <div class="ec-welcomeMsg">ご注文履歴がありません。</div>
         {% endif %}
