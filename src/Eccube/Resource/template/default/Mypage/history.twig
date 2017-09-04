@@ -39,10 +39,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <h1 class="page-heading">マイページ/ご注文履歴詳細</h1>
-    <div id="detail_wrap" class="container-fluid">
-
-        {% include 'Mypage/navi.twig' %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-role">
+            <div class="ec-pageHeader">
+                <h1>マイページ/ご注文履歴詳細</h1>
+            </div>
+            {% include 'Mypage/navi.twig' %}
+        </div>
 
         <div class="ec-orderRole">
             <div class="ec-orderRole__detail">
