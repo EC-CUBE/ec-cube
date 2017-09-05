@@ -201,6 +201,7 @@ class ProductController
                     $addCartData = $addCartForm->getData();
 
                     try {
+                        // TODO カート追加処理の変更
                         $this->cartService->addProduct(
                             $addCartData['product_class_id'],
                             $addCartData['quantity']
@@ -401,7 +402,7 @@ class ProductController
 
                     // 復旧不可のエラーが発生した場合は追加した明細を削除.
                     if ($result->hasError()) {
-                        $Cart->removeCartItemByIdentifier(ProductClass::class, $product_class_id);
+                        $Cart->removeCartItemByCartNo($addCartData->getCartNo());
                         foreach ($result->getErrors() as $error) {
                             $app->addRequestError($error->getMessage());
                         }

@@ -26,7 +26,7 @@ namespace Eccube\Entity;
 
 class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
-
+    private $cart_no;
     private $class_name;
     private $class_id;
     private $price;
@@ -39,7 +39,26 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     public function __sleep()
     {
-        return array('class_name', 'class_id', 'price', 'quantity');
+        return array('cart_no', 'class_name', 'class_id', 'price', 'quantity');
+    }
+
+    /**
+     * @param integer $cart_no
+     * @return $this
+     */
+    public function setCartNo($cart_no)
+    {
+        $this->cart_no = $cart_no;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getCartNo()
+    {
+        return $this->cart_no;
     }
 
     /**
