@@ -24,7 +24,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $this->app->url('forgot'));
 
         $this->expected = 'パスワードの再発行';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
