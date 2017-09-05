@@ -72,7 +72,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $crawler = $client->request('GET', $this->app->path('shopping'));
         $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -92,7 +92,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
         $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
