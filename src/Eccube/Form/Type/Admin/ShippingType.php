@@ -29,6 +29,7 @@ use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -68,16 +69,10 @@ class ShippingType extends AbstractType
     protected $deliveryRepository;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
-
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
+    protected $BaseInfo;
 
     public function __construct()
     {
@@ -88,9 +83,6 @@ class ShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $builder
             ->add('name', NameType::class, array(
                 'required' => false,
@@ -207,8 +199,8 @@ class ShippingType extends AbstractType
                 'prototype' => true,
             ))
 
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
-                if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $form->add('ShipmentItems', CollectionType::class, array(
                         'entry_type' => ShipmentItemType::class,
@@ -245,7 +237,7 @@ class ShippingType extends AbstractType
                 ));
 
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (!$data) {
@@ -272,8 +264,8 @@ class ShippingType extends AbstractType
                     },
                 ));
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
-                if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $shipmentItems = $form['ShipmentItems']->getData();
 
@@ -283,7 +275,7 @@ class ShippingType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $Shipping = $event->getData();
                 $Delivery = $Shipping->getDelivery();
                 $Shipping->setShippingDeliveryName($Delivery ? $Delivery : null);

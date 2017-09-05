@@ -29,11 +29,11 @@ use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\TaxRule;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -70,10 +70,10 @@ class TaxRuleController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject(TaxRuleRepository::class)
@@ -100,14 +100,12 @@ class TaxRuleController extends AbstractController
             }
         }
 
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $builder = $this->formFactory
             ->createBuilder(TaxRuleType::class, $TargetTaxRule);
 
         $builder
             ->get('option_product_tax_rule')
-            ->setData($BaseInfo->getOptionProductTaxRule());
+            ->setData($this->BaseInfo->getOptionProductTaxRule());
 
         if ($TargetTaxRule->isDefaultTaxRule()) {
             // 基本税率設定は適用日時の変更は行わない
@@ -117,7 +115,7 @@ class TaxRuleController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'BaseInfo' => $BaseInfo,
+                'BaseInfo' => $this->BaseInfo,
                 'TargetTaxRule' => $TargetTaxRule,
             ),
             $request
@@ -135,7 +133,7 @@ class TaxRuleController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'BaseInfo' => $BaseInfo,
+                    'BaseInfo' => $this->BaseInfo,
                     'TargetTaxRule' => $TargetTaxRule,
                 ),
                 $request
@@ -209,14 +207,13 @@ class TaxRuleController extends AbstractController
         // 軽減税率設定の項目のみ処理する
         if ($form->isSubmitted() && $form['option_product_tax_rule']->isValid()) {
 
-            $BaseInfo = $this->baseInfoRepository->get();
-            $BaseInfo->setOptionProductTaxRule($form['option_product_tax_rule']->getData());
-            $this->entityManager->flush($BaseInfo);
+            $this->BaseInfo->setOptionProductTaxRule($form['option_product_tax_rule']->getData());
+            $this->entityManager->flush($this->BaseInfo);
 
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'BaseInfo' => $BaseInfo,
+                    'BaseInfo' => $this->BaseInfo,
                 ),
                 $request
             );

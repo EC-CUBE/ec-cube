@@ -39,7 +39,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     protected $processor;
 
     /**
-     * @var BaseInfo
+     * @var Order
      */
     protected $Order;
 
@@ -47,7 +47,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->processor = new DeliveryFeeFreeProcessor($this->app[BaseInfoRepository::class]);
+        $this->processor = new DeliveryFeeFreeProcessor($this->app[BaseInfo::class]);
         $this->Order = $this->createOrder($this->createCustomer());
     }
 

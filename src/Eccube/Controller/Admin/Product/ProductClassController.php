@@ -30,6 +30,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
@@ -38,7 +39,6 @@ use Eccube\Entity\TaxRule;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductClassType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\Master\ProductTypeRepository;
 use Eccube\Repository\ProductClassRepository;
@@ -101,10 +101,10 @@ class ProductClassController
     protected $entityManager;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject("eccube.event.dispatcher")
@@ -272,8 +272,7 @@ class ProductClassController
             $mergeProductClasses = array();
 
             // 商品税率が設定されている場合、商品税率を項目に設定
-            $BaseInfo = $this->baseInfoRepository->get();
-            if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+            if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                 foreach ($ProductClasses as $class) {
                     if ($class->getTaxRule() && !$class->getTaxRule()->getDelFlg()) {
                         $class->setTaxRate($class->getTaxRule()->getTaxRate());
@@ -768,8 +767,7 @@ class ProductClassController
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
 
         // 個別消費税
-        $BaseInfo = $this->baseInfoRepository->get();
-        if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+        if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
             if ($productClassOrig->getTaxRate() !== false && $productClassOrig->getTaxRate() !== null) {
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
                 if ($productClassDest->getTaxRule()) {
@@ -801,7 +799,6 @@ class ProductClassController
      */
     private function insertProductClass($app, $Product, $ProductClasses) {
 
-        $BaseInfo = $this->baseInfoRepository->get();
 
         // 選択された商品を登録
         foreach ($ProductClasses as $ProductClass) {
@@ -825,7 +822,7 @@ class ProductClassController
         }
 
         // 商品税率が設定されている場合、商品税率をセット
-        if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+        if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
             // 初期設定の税設定.
             $TaxRule = $this->taxRuleRepository->find(TaxRule::DEFAULT_TAX_RULE_ID);
             // 初期税率設定の計算方法を設定する

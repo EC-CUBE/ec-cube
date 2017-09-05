@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
@@ -105,10 +106,10 @@ class ProductController
     protected $entityManager;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     private $title;
 
@@ -125,10 +126,8 @@ class ProductController
      */
     public function index(Application $app, Request $request)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-
         // Doctrine SQLFilter
-        if ($BaseInfo->getNostockHidden() === Constant::ENABLED) {
+        if ($this->BaseInfo->getNostockHidden() === Constant::ENABLED) {
             $this->entityManager->getFilters()->enable('nostock_hidden');
         }
 
@@ -304,8 +303,7 @@ class ProductController
      */
     public function detail(Application $app, Request $request, $id)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-        if ($BaseInfo->getNostockHidden() === Constant::ENABLED) {
+        if ($this->BaseInfo->getNostockHidden() === Constant::ENABLED) {
             $this->entityManager->getFilters()->enable('nostock_hidden');
         }
 

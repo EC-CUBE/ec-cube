@@ -29,10 +29,10 @@ use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
-use Eccube\Repository\BaseInfoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -71,10 +71,10 @@ class ShopController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Route("/{_admin}/setting/shop", name="admin_setting_shop")
@@ -82,8 +82,6 @@ class ShopController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $builder = $this->formFactory
             ->createBuilder(ShopMasterType::class, $BaseInfo);
 
@@ -93,7 +91,7 @@ class ShopController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'BaseInfo' => $BaseInfo,
+                'BaseInfo' => $this->BaseInfo,
             ),
             $request
         );

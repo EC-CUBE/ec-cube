@@ -28,11 +28,11 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
@@ -71,10 +71,10 @@ class EntryController extends AbstractController
     protected $mailService;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject("orm.em")
@@ -183,9 +183,7 @@ class EntryController extends AbstractController
 
                     $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
-                    /** @var $BaseInfo \Eccube\Entity\BaseInfo */
-                    $BaseInfo = $this->baseInfoRepository->get();
-                    $activateFlg = $BaseInfo->getOptionCustomerActivate();
+                    $activateFlg = $this->BaseInfo->getOptionCustomerActivate();
 
                     // 仮会員設定が有効な場合は、確認メールを送信し完了画面表示.
                     if ($activateFlg) {

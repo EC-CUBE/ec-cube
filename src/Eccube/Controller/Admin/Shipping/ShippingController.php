@@ -3,6 +3,7 @@
 namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -31,7 +32,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * @Route("/{_admin}/shipping")
+ * @Component
+ * @Route(service=ShippingController::class)
  */
 class ShippingController
 {
@@ -78,8 +80,8 @@ class ShippingController
     protected $formFactory;
 
     /**
-     * @Route("/", name="admin/shipping")
-     * @Route("/page/{page_no}", name="admin/shipping/page")
+     * @Route("/{_admin}/shipping", name="admin/shipping")
+     * @Route("/{_admin}/shipping/page/{page_no}", name="admin/shipping/page")
      *
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("Shipping/index.twig")

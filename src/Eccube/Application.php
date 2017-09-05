@@ -31,6 +31,7 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\BaseInfo;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
@@ -478,8 +479,7 @@ class Application extends \Silex\Application
                 return;
             }
             // ショップ基本情報
-            $BaseInfo = $this['eccube.repository.base_info']->get();
-            $this['twig']->addGlobal('BaseInfo', $BaseInfo);
+            $this['twig']->addGlobal('BaseInfo', $this[BaseInfo::class]);
 
             if ($this->isAdminRequest()) {
                 // 管理画面

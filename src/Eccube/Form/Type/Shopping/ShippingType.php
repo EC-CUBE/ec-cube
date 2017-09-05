@@ -7,7 +7,6 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -47,12 +46,6 @@ class ShippingType extends AbstractType
      * @Inject("eccube.repository.delivery_fee")
      */
     protected $deliveryFeeRepository;
-
-    /**
-     * @var BaseInfoRepository
-     * @Inject("eccube.repository.base_info")
-     */
-    protected $baseInfoRepository;
 
     public function __construct()
     {

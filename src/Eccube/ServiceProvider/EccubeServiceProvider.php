@@ -230,7 +230,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $processors = new ArrayCollection();
             $processors->add(new PaymentProcessor($app[DeliveryRepository::class]));
             $processors->add(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $processors->add(new DeliveryFeeFreeProcessor($app[BaseInfoRepository::class]));
+            $processors->add(new DeliveryFeeFreeProcessor($app[BaseInfo::class]));
             $processors->add(new PaymentTotalNegativeValidator());
 
             return $processors;

@@ -30,11 +30,11 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Form\Type\Front\CustomerLoginType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
@@ -66,10 +66,10 @@ class MypageController extends AbstractController
     protected $customerFavoriteProductRepository;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject(CartService::class)
@@ -318,9 +318,7 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-
-        if ($BaseInfo->getOptionFavoriteProduct() == Constant::DISABLED) {
+        if ($this->BaseInfo->getOptionFavoriteProduct() == Constant::DISABLED) {
             throw new NotFoundHttpException();
         }
         $Customer = $app->user();
