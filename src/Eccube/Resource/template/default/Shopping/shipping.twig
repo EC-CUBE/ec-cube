@@ -35,12 +35,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
                         <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">新規お届け先を追加する</a></div>
                     {% else %}
-                        {# TODO メッセージ #}
-                        <span id="list_box__deliv_addr_max_message" class="text-danger">お届け先登録上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
+                        <div class="ec-alert-warning">
+                            <div class="ec-alert-warning__text">
+                                <div class="ec-alert-warning__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-white.svg"/></div>
+                                お届け先登録上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください
+                            </div>
+                        </div>
                     {% endif %}
                     {% if error %}
-                        {# TODO エラーメッセージ #}
-                        <p id="list_box__deliv_addr_alert" class="text-danger">お届け先を指定してください。</p>
+                        <div class="ec-alert-warning">
+                            <div class="ec-alert-warning__text">
+                                <div class="ec-alert-warning__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-white.svg"/></div>
+                                お届け先を指定してください。
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
 
