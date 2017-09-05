@@ -26,6 +26,7 @@ namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\BaseInfo;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -62,6 +63,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
      */
     public function register(Container $app)
     {
+        $app[BaseInfo::class] = function () use ($app) {
+            return $app[BaseInfoRepository::class]->get();
+        };
+
         $app['eccube.calculate.context'] = function () use ($app) {
                 return new \Eccube\Service\Calculator\CalculateContext();
         };
