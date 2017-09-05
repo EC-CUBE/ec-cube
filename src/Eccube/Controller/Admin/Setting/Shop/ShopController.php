@@ -83,9 +83,9 @@ class ShopController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $builder = $this->formFactory
-            ->createBuilder(ShopMasterType::class, $BaseInfo);
+            ->createBuilder(ShopMasterType::class, $this->BaseInfo);
 
-        $CloneInfo = clone $BaseInfo;
+        $CloneInfo = clone $this->BaseInfo;
         $this->entityManager->detach($CloneInfo);
 
         $event = new EventArgs(
@@ -102,13 +102,13 @@ class ShopController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $this->entityManager->persist($BaseInfo);
+                $this->entityManager->persist($this->BaseInfo);
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'BaseInfo' => $BaseInfo,
+                        'BaseInfo' => $this->BaseInfo,
                     ),
                     $request
                 );
