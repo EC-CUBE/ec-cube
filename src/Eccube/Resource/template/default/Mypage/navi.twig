@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="ec-navlistRole">
 
     <ul class="ec-navlistRole__navlist {% if favorite == 1 %}favorite{% endif %}">
-        <li class="ec-navlistRole__item {% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}/">ご注文履歴</a>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}">ご注文履歴</a>
         </li>
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">お気に入り一覧</a>
         </li>
