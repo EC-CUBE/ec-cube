@@ -212,7 +212,7 @@ class ProductClassController
 
                         // 組み合わされた商品規格にデフォルト値をセット
                         foreach ($ProductClasses as $productClass) {
-                            $this->setDefualtProductClass($app, $productClass, $sourceProduct);
+                            $this->setDefaultProductClass($app, $productClass, $sourceProduct);
                         }
 
                         $builder = $this->formFactory->createBuilder();
@@ -305,7 +305,7 @@ class ProductClassController
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefualtProductClass($app, $mergeProductClass, $ProductClass);
+                $this->setDefaultProductClass($app, $mergeProductClass, $ProductClass);
                 $ProductClasses->add($mergeProductClass);
             }
 
@@ -516,7 +516,7 @@ class ProductClassController
                                 } else {
                                     $productStock->setStock(null);
                                 }
-                                $this->setDefualtProductClass($app, $productClass, $cp);
+                                $this->setDefaultProductClass($app, $productClass, $cp);
                                 $flag = true;
                                 break;
                             }
@@ -755,7 +755,7 @@ class ProductClassController
      * @param $productClassDest コピー先となる商品規格
      * @param $productClassOrig コピー元となる商品規格
      */
-    private function setDefualtProductClass($app, $productClassDest, $productClassOrig) {
+    private function setDefaultProductClass($app, $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
         $productClassDest->setProduct($productClassOrig->getProduct());
         $productClassDest->setProductType($productClassOrig->getProductType());
