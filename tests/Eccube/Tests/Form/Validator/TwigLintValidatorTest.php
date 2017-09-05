@@ -17,7 +17,7 @@ class TwigLintValidatorTest extends EccubeTestCase
         $constraint = new TwigLint();
         self::assertInstanceOf(TwigLint::class, $constraint);
 
-        $validator = new TwigLintValidator();
+        $validator = new TwigLintValidator($this->app['twig']);
         self::assertInstanceOf(TwigLintValidator::class, $validator);
     }
 
@@ -43,6 +43,10 @@ class TwigLintValidatorTest extends EccubeTestCase
         self::assertCount(0, $errors);
 
         $value = '{% for product in products %}{% endfor %}';
+        $errors = $validator->validate($value, $constraint);
+        self::assertCount(0, $errors);
+
+        $value = '{{ url("homepage") }}';
         $errors = $validator->validate($value, $constraint);
         self::assertCount(0, $errors);
     }
