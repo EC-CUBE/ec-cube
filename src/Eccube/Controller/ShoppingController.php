@@ -316,7 +316,7 @@ class ShoppingController extends AbstractShoppingController
                 return [
                     'Customer' => $app->user(),
                     'shippingId' => $id,
-                    'error' => false,
+                    'error' => true,
                 ];
             }
 

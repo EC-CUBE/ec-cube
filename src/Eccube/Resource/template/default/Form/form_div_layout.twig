@@ -27,6 +27,14 @@
     {% endif %}
 {% endblock %}
 
+{%- block textarea_widget -%}
+    {% if type is defined and type == 'hidden' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock textarea_widget -%}
+
 {%- block radio_widget -%}
     <label>{{- parent() -}}<span>{{ label }}</span></label>
 {%- endblock radio_widget -%}

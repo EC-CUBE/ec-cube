@@ -24,7 +24,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $this->app->url('forgot'));
 
         $this->expected = 'パスワードの再発行';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -71,7 +71,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = 'パスワード変更(完了ページ)';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
         // 再発行メール受信確認
@@ -90,7 +90,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $this->app->url('forgot_complete'));
 
         $this->expected = 'パスワード発行メールの送信 完了';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());

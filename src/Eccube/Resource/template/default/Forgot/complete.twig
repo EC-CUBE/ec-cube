@@ -22,27 +22,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block main %}
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">パスワード発行メールの送信 完了</h1>
-                <div id="complete_wrap" class="container-fluid">
-                    <div id="complete_box" class="row">
-                        <div id="complete_box__body" class="col-md-10 col-md-offset-1">
-                            <div id="complete_box__message" class="complete_message">
-                                <h2>パスワード再発行メールの送信が完了しました。</h2>
-                                <p>ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。<br/>
-                            メールの内容をご確認いただきますよう、お願いいたします。</p>
-                                <p>※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。</p>
-                            </div>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>パスワード発行メールの送信 完了</h1>
+        </div>
+    </div>
+    <div class="ec-forgetCompleteRole">
+        <div class="ec-off3Grid ec-text-ac">
+            <div class="ec-off3Grid__cell">
+                <div class="ec-reportHeading">
+                    <h2>パスワード再発行メールの送信が完了しました。</h2>
                 </div>
+                <p class="ec-reportDescription">ご登録メールアドレスにパスワードを再発行するためのメールを送信いたしました。<br>メールの内容をご確認いただきますよう、お願いいたします。</p>
+                <p class="ec-reportDescription">※メールが届かない場合はメールアドレスをご確認の上、再度お試しください。</p>
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 

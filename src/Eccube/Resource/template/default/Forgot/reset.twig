@@ -23,24 +23,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-    <div id="contents" class="main_only">
-        <div id="reset_wrap" class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">パスワード変更(完了ページ)</h1>
-                <div id="reset_box" class="container-fluid">
-                    <div id="reset_box__body" class="row">
-                        <div id="reset_box__message" class="col-md-10 col-md-offset-1">
-                            <h2>新しいパスワードが送信されました。</h2>
-                            <p>新しいパスワード送り致しましたので、メールをご確認ください。</p>
-                            <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>パスワード変更(完了ページ)</h1>
+        </div>
+    </div>
+    <div class="ec-forgetCompleteRole">
+        <div class="ec-off3Grid ec-text-ac">
+            <div class="ec-off3Grid__cell">
+                <div class="ec-reportHeading">
+                    <h2>新しいパスワードが送信されました。</h2>
                 </div>
+                <p class="ec-reportDescription">新しいパスワード送り致しましたので、メールをご確認ください。</p>
+                <p class="ec-reportDescription">今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 

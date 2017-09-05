@@ -19,12 +19,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'new_style_frame.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% set body_class = 'product_page' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
     <style>
 
         .slick-slider {
@@ -105,31 +104,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block javascript %}
-    <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-    <script>
-        $(function () {
-            $('.item_visual').slick({
-                dots: false,
-                arrows: false,
-                responsive: [
-                    {
-                        breakpoint: 768,
-                        settings: {
-                            dots: true
-                        }
-                    }]
-            })
-        });
-        $(function () {
-            $('.item_nav').slick({//サムネイル画像
-                dots: false,
-                arrows: false,
-                slidesToShow: 3,
-                focusOnSelect: true,
-                asNavFor: '.item_visual',//スライダー部分の要素を記述
-            })
-        });
-    </script>
     <script>
         eccube.classCategories = {{ Product.class_categories|json_encode|raw }};
 
