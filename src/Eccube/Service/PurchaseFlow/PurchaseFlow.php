@@ -23,11 +23,17 @@ class PurchaseFlow
      */
     protected $purchaseProcessors;
 
+    /**
+     * @var ArrayCollection|ItemProcessor[]
+     */
+    protected $addItemProcessors;
+
     public function __construct()
     {
         $this->itemProcessors = new ArrayCollection();
         $this->itemHolderProcessors = new ArrayCollection();
         $this->purchaseProcessors = new ArrayCollection();
+        $this->addItemProcessors = new ArrayCollection();
     }
 
     public function setItemProcessors(ArrayCollection $processors)
@@ -43,6 +49,24 @@ class PurchaseFlow
     public function setPurchaseProcessors(ArrayCollection $processors)
     {
         $this->purchaseProcessors = $processors;
+    }
+
+    public function setAddItemProcessors(ArrayCollection $addItemProcessors)
+    {
+        $this->addItemProcessors = $addItemProcessors;
+    }
+
+    public function addItem(ItemInterface $item, PurchaseContext $context)
+    {
+        $holder = $context->getOriginHolder();
+        $flowResult = new PurchaseFlowResult($holder);
+
+        foreach ($this->addItemProcessors as $addItemProcessor) {
+            $result = $addItemProcessor->process($item, $context);
+            $flowResult->addProcessResult($result);
+        }
+
+        return $flowResult;
     }
 
     public function calculate(ItemHolderInterface $itemHolder, PurchaseContext $context)
@@ -96,6 +120,11 @@ class PurchaseFlow
     public function addItemProcessor(ItemProcessor $prosessor)
     {
         $this->itemProcessors[] = $prosessor;
+    }
+
+    public function addAddItemProcessor(ItemProcessor $prosessor)
+    {
+        $this->addItemProcessors[] = $prosessor;
     }
 
     /**

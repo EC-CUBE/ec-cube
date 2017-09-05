@@ -345,8 +345,10 @@ class ProductController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                /** @var \Eccube\Entity\CartItem $addCartData */
                 $addCartData = $form->getData();
-                if ($addCartData['mode'] === 'add_favorite') {
+                $mode = $form['mode']->getData();
+                if ($mode === 'add_favorite') {
                     if ($app->isGranted('ROLE_USER')) {
                         $Customer = $app->user();
                         $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
@@ -374,30 +376,32 @@ class ProductController
 
                         return $app->redirect($app->url('mypage_login'));
                     }
-                } elseif ($addCartData['mode'] === 'add_cart') {
+                } elseif ($mode === 'add_cart') {
+
+                    $ProductClass = $addCartData->getProductClass();
+                    $product_class_id = $ProductClass->getId();
+                    $quantity = $addCartData->getQuantity();
 
                     log_info(
                         'カート追加処理開始',
                         array(
                             'product_id' => $Product->getId(),
-                            'product_class_id' => $addCartData['product_class_id'],
-                            'quantity' => $addCartData['quantity'],
+                            'product_class_id' => $product_class_id,
+                            'quantity' => $quantity,
                         )
                     );
 
                     // カートを取得
                     $Cart = $this->cartService->getCart();
 
-                    // カートへ追加
-                    $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
-
                     // 明細の正規化
                     $flow = $this->purchaseFlow;
+                    $flow->addItem($addCartData, $app['eccube.purchase.context']($Cart));
                     $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
 
                     // 復旧不可のエラーが発生した場合は追加した明細を削除.
                     if ($result->hasError()) {
-                        $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
+                        $Cart->removeCartItemByIdentifier(ProductClass::class, $product_class_id);
                         foreach ($result->getErrors() as $error) {
                             $app->addRequestError($error->getMessage());
                         }
@@ -413,8 +417,8 @@ class ProductController
                         'カート追加処理完了',
                         array(
                             'product_id' => $Product->getId(),
-                            'product_class_id' => $addCartData['product_class_id'],
-                            'quantity' => $addCartData['quantity'],
+                            'product_class_id' => $product_class_id,
+                            'quantity' => $quantity,
                         )
                     );
 

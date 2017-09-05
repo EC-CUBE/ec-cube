@@ -29,6 +29,10 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Service\PurchaseFlow\Comparer\ItemComparerCollection;
+use Eccube\Service\PurchaseFlow\Comparer\PriceComparer;
+use Eccube\Service\PurchaseFlow\Comparer\ProductClassComparer;
+use Eccube\Service\PurchaseFlow\Processor\AddItemProcessor;
 use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
@@ -231,6 +235,12 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $processors;
         };
 
+        $app['eccube.purchase.flow.cart.add_item_processors'] = function ($app) {
+            return new ArrayCollection([
+                new AddItemProcessor($app['eccube.purchase.flow.cart.item_comparer']),
+            ]);
+        };
+
         // example
         $app->extend('eccube.purchase.flow.cart.item_processors', function ($processors, $app) {
 
@@ -239,10 +249,26 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $processors;
         });
 
+        $app['eccube.purchase.flow.cart.item_comparer'] = function ($app) {
+            return new ItemComparerCollection([
+                $app['eccube.purchase.flow.item_comparer.product_class'],
+                $app['eccube.purchase.flow.item_comparer.price'],
+            ]);
+        };
+
+        $app['eccube.purchase.flow.item_comparer.product_class'] = function ($app) {
+            return new ProductClassComparer();
+        };
+
+        $app['eccube.purchase.flow.item_comparer.price'] = function ($app) {
+            return new PriceComparer();
+        };
+
         $app['eccube.purchase.flow.cart'] = function ($app) {
             $flow = new PurchaseFlow();
             $flow->setItemProcessors($app['eccube.purchase.flow.cart.item_processors']);
             $flow->setItemHolderProcessors($app['eccube.purchase.flow.cart.holder_processors']);
+            $flow->setAddItemProcessors($app['eccube.purchase.flow.cart.add_item_processors']);
 
             return $flow;
         };
