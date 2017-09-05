@@ -78,7 +78,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
         // 完了画面
@@ -303,7 +303,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->scenarioConfirm($client);
 
         // お届け先指定画面
-        $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
+        $shipping_url = $crawler->filter('div.ec-orderDelivery__change > a')->attr('href');
         $crawler = $this->scenarioComplete($client, $shipping_url);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -322,7 +322,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
         // お届け先指定画面
-        $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
+        //*[@id="shopping-form"]/div/div[1]/div[3]/div[2]/div/a
+        #shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__title > div > a
+        $shipping_url = $crawler->filter('div.ec-orderDelivery__change > a')->attr('href');
         $crawler = $this->scenarioComplete($client, $shipping_url);
 
         $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
@@ -336,7 +338,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = 'お届け先の指定';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->actual = $crawler->filter('h1')->text();
         $this->verify();
     }
 
