@@ -35,8 +35,8 @@ class TaxComparer implements ItemComparer
     {
         return ($Item1 instanceof ShipmentItem && $Item2 instanceof ShipmentItem) ?
             (
-                intval($Item1->getTaxRule()) === intval($Item2->getTaxRule()) &&
-                intval($Item1->getTaxRate()) === intval($Item2->getTaxRate())
+                (string)$Item1->getTaxRule() === (string)$Item2->getTaxRule() &&
+                (string)$Item1->getTaxRate() === (string)$Item2->getTaxRate()
             ) :
             true;
     }
