@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="ec-addressList">
                             {% for CustomerAddress in Customer.CustomerAddresses %}
                                 <div class="ec-addressList__item">
-                                    <a class="ec-addressList__remove" {{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete"></a>
+                                    <a class="ec-addressList__remove" href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete"></a>
                                     <div class="ec-addressList__address">
                                         <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
                                         <div>〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>

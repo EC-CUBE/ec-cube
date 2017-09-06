@@ -254,19 +254,18 @@ $(function() {
                 </div>
                 {% if is_granted('ROLE_USER') == false %}
                 <div class="ec-orderAccount__change">
-                    <a class="ec-inlineBtn">変更</a>
+                    <button id="customer" class="ec-inlineBtn">変更</button>
                 </div>
                 {% endif %}
                 <div class="ec-orderAccount__account">
-                    <p>{{ Order.name01 }} {{ Order.name02 }} 様</p>
-                    <p>〒{{ Order.zip01 }}-{{ Order.zip02 }}　{{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}</p>
-                    <p>{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}</p>
+                    <p><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</p>
+                    <p>〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span>　<span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
+                    <p><span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                 </div>
-                {# TODO 非会員情報変更フォーム #}
                 {% if is_granted('ROLE_USER') == false %}
                 <div class="ec-orderAccount__account">
-                    <p>{{ Order.email }}</p>
-                    <p>{{ Order.companyName }}</p>
+                    <p><span class="customer-edit customer-email">{{ Order.email }}</span></p>
+                    <p><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                 </div>
                 <div class="mod-button" style="display:none;">
                     <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
@@ -295,9 +294,9 @@ $(function() {
                     <div class="ec-orderDelivery__title">お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}
                         <div class="ec-orderDelivery__change">
                             {% if is_granted('ROLE_USER') %}
-                                <a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="ec-inlineBtn" data-id="{{ shipping.id }}">変更</a>
+                                <a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping" data-id="{{ shipping.id }}">変更</a>
                             {% else %}
-                                <a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="ec-inlineBtn" data-id="{{ shipping.id }}">変更</a>
+                                <a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="ec-inlineBtn btn-shipping-edit" data-id="{{ shipping.id }}">変更</a>
                             {% endif %}
                         </div>
                     </div>
