@@ -369,16 +369,12 @@ class Application extends \Silex\Application
             'locale_fallbacks' => ['ja', 'en'],
         ));
         $this->extend('translator', function ($translator, \Silex\Application $app) {
-            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+            $translator->addLoader('php', new \Symfony\Component\Translation\Loader\PhpFileLoader());
 
-            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
+            $file = __DIR__.'/Resource/locale/messages.'.$app['locale'].'.php';
             if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale'], 'validators');
-            }
-
-            $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
-            if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale']);
+                $translator->addResource('php', $file, $app['locale']);
+                $translator->addResource('php', $file, $app['locale'], 'validators');
             }
 
             return $translator;
