@@ -50,7 +50,7 @@ abstract class StrictArrayCollection extends ArrayCollection
      * {@inheritdoc}
      * @throws \InvalidArgumentException
      */
-    final public function set($key, $value)
+    public function set($key, $value)
     {
         if (!$this->checkValue($value)) {
             throw new \InvalidArgumentException(sprintf("%s does not accept the passed element.", get_class($this)));
@@ -63,7 +63,7 @@ abstract class StrictArrayCollection extends ArrayCollection
      * {@inheritdoc}
      * @throws \InvalidArgumentException
      */
-    final public function add($value)
+    public function add($value)
     {
         if (!$this->checkValue($value)) {
             throw new \InvalidArgumentException(sprintf('%s does not accept the passed element.', get_class($this)));
@@ -75,7 +75,7 @@ abstract class StrictArrayCollection extends ArrayCollection
     /**
      * {@inheritdoc}
      */
-    final public function map(Closure $func)
+    public function map(Closure $func)
     {
         return new parent(array_map($func, $this->toArray()));
     }
@@ -86,7 +86,7 @@ abstract class StrictArrayCollection extends ArrayCollection
      * @param Closure $func
      * @return static
      */
-    final public function strictMap(Closure $func)
+    public function strictMap(Closure $func)
     {
         $collection = $this;
 
