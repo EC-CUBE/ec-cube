@@ -74,9 +74,19 @@ abstract class StrictArrayCollection extends ArrayCollection
 
     /**
      * {@inheritdoc}
-     * @throws \InvalidArgumentException
      */
     final public function map(Closure $func)
+    {
+        return new parent(array_map($func, $this->toArray()));
+    }
+
+    /**
+     * 型を保証するmap
+     *
+     * @param Closure $func
+     * @return static
+     */
+    final public function strictMap(Closure $func)
     {
         $collection = $this;
 
@@ -92,16 +102,5 @@ abstract class StrictArrayCollection extends ArrayCollection
         };
 
         return parent::map($newFunc);
-    }
-
-    /**
-     * 型を保証しないmap
-     *
-     * @param Closure $func
-     * @return ArrayCollection
-     */
-    final public function looseMap(Closure $func)
-    {
-        return new parent(array_map($func, $this->toArray()));
     }
 }
