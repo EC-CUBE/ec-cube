@@ -4,6 +4,7 @@ namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -18,7 +19,6 @@ use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\ShipmentItemType;
 use Eccube\Form\Type\Admin\ShippingType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\ShipmentItemRepository;
@@ -38,7 +38,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @Route("/{_admin}/shipping")
+ * @Component
+ * @Route(service=EditController::class)
  */
 class EditController
 {
@@ -85,12 +86,6 @@ class EditController
     protected $deliveryRepository;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
      * @Inject(TaxRuleService::class)
      * @var TaxRuleService
      */
@@ -123,8 +118,8 @@ class EditController
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/edit", name="admin/shipping/new")
-     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
+     * @Route("/{_admin}/shipping/edit", name="admin/shipping/new")
+     * @Route("/{_admin}/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
      * @Template("Shipping/edit.twig")
      *
      * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
@@ -213,9 +208,6 @@ class EditController
                     log_info('出荷登録開始', array($TargetShipping->getId()));
                     // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                     if ($form->isValid()) {
-
-                        $BaseInfo = $this->baseInfoRepository->get();
-
                         // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
 
                         // 画面上で削除された明細をremove
@@ -313,7 +305,7 @@ class EditController
     }
 
     /**
-     * @Route("/search/product", name="admin_shipping_search_product")
+     * @Route("/{_admin}/shipping/search/product", name="admin_shipping_search_product")
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("shipping/search_product.twig")
      *

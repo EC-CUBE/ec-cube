@@ -30,12 +30,12 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
@@ -91,10 +91,10 @@ class PluginController extends AbstractController
     protected $appConfig;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject("form.factory")
@@ -170,9 +170,7 @@ class PluginController extends AbstractController
         }
 
         // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $BaseInfo = $this->baseInfoRepository->get();
-
-        $authKey = $BaseInfo->getAuthenticationKey();
+        $authKey = $this->BaseInfo->getAuthenticationKey();
 
         if (!is_null($authKey)) {
 
@@ -465,9 +463,7 @@ class PluginController extends AbstractController
     public function ownersInstall(Application $app, Request $request)
     {
         // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $BaseInfo = $this->baseInfoRepository->get();
-
-        $authKey = $BaseInfo->getAuthenticationKey();
+        $authKey = $this->BaseInfo->getAuthenticationKey();
         $authResult = true;
         $success = 0;
         $items = array();
@@ -578,10 +574,7 @@ class PluginController extends AbstractController
      */
     public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
-
-        $BaseInfo = $this->baseInfoRepository->get();
-
-        $authKey = $BaseInfo->getAuthenticationKey();
+        $authKey = $this->BaseInfo->getAuthenticationKey();
         $message = '';
 
         if (!is_null($authKey)) {
@@ -680,10 +673,8 @@ class PluginController extends AbstractController
      */
     public function authenticationSetting(Application $app, Request $request)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $builder = $this->formFactory
-            ->createBuilder(FormType::class, $BaseInfo);
+            ->createBuilder(FormType::class, $this->BaseInfo);
         $builder->add(
             'authentication_key',
             TextType::class,

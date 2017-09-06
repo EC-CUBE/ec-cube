@@ -29,10 +29,10 @@ use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
-use Eccube\Repository\BaseInfoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -71,10 +71,10 @@ class ShopController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Route("/{_admin}/setting/shop", name="admin_setting_shop")
@@ -82,18 +82,16 @@ class ShopController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $builder = $this->formFactory
-            ->createBuilder(ShopMasterType::class, $BaseInfo);
+            ->createBuilder(ShopMasterType::class, $this->BaseInfo);
 
-        $CloneInfo = clone $BaseInfo;
+        $CloneInfo = clone $this->BaseInfo;
         $this->entityManager->detach($CloneInfo);
 
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'BaseInfo' => $BaseInfo,
+                'BaseInfo' => $this->BaseInfo,
             ),
             $request
         );
@@ -104,13 +102,13 @@ class ShopController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $this->entityManager->persist($BaseInfo);
+                $this->entityManager->persist($this->BaseInfo);
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'BaseInfo' => $BaseInfo,
+                        'BaseInfo' => $this->BaseInfo,
                     ),
                     $request
                 );

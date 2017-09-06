@@ -29,10 +29,10 @@ use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -48,10 +48,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DeliveryController extends AbstractController
 {
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject("orm.em")
@@ -174,12 +174,10 @@ class DeliveryController extends AbstractController
             return $app->redirect($app->url('mypage_delivery'));
         }
 
-        $BaseInfo = $this->baseInfoRepository->get();
-
         return [
             'form' => $form->createView(),
             'parentPage' => $parentPage,
-            'BaseInfo' => $BaseInfo,
+            'BaseInfo' => $this->BaseInfo,
         ];
     }
 
