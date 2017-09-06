@@ -24,8 +24,6 @@
 namespace Eccube\Service\PurchaseFlow\Comparer;
 
 use Eccube\Entity\ItemInterface;
-use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\ShipmentItem;
 
 class OrderItemTypeComparer implements ItemComparer
 {
@@ -34,17 +32,7 @@ class OrderItemTypeComparer implements ItemComparer
      */
     public function compare(ItemInterface $Item1, ItemInterface $Item2)
     {
-        /** @var OrderItemType $OrderItemType1 */
-        /** @var OrderItemType $OrderItemType2 */
-        $OrderItemType1 = $Item1->getOrderItemType();
-        $OrderItemType2 = $Item2->getOrderItemType();
-
-        $order_item_type_id1 = $OrderItemType1 ? (string)$OrderItemType1->getId() : null;
-        $order_item_type_id2 = $OrderItemType2 ? (string)$OrderItemType2->getId() : null;
-
         // FIXME 暫定的に、商品以外は全て別商品とする
-        return
-            $order_item_type_id1 === (string)OrderItemType::PRODUCT &&
-            $order_item_type_id2 === (string)OrderItemType::PRODUCT;
+        return $Item1->isProduct() && $Item2->isProduct();
     }
 }
