@@ -41,7 +41,7 @@ class AddItemProcessorTest extends EccubeTestCase
     protected $purchaseContext;
 
     /**
-     * @var ItemHolderInterface
+     * @var Cart
      */
     protected $Cart;
 
@@ -84,7 +84,7 @@ class AddItemProcessorTest extends EccubeTestCase
         $processor = new AddItemProcessor($this->trueComparer);
         $result = $processor->process($this->Item1, $this->purchaseContext);
 
-        $Items = $this->Cart->getItems();
+        $Items = $this->Cart->getCartItems();
 
         $this->assertEquals(1, count($Items));
         $this->assertEquals($quantity, $Items[0]->getQuantity());
@@ -100,7 +100,7 @@ class AddItemProcessorTest extends EccubeTestCase
         $processor = new AddItemProcessor($this->trueComparer);
         $result = $processor->process($this->Item2, $this->purchaseContext);
 
-        $Items = $this->Cart->getItems();
+        $Items = $this->Cart->getCartItems();
 
         $this->assertEquals(1, count($Items));
         $this->assertEquals($quantity1 + $quantity2, $Items[0]->getQuantity());
@@ -116,7 +116,7 @@ class AddItemProcessorTest extends EccubeTestCase
         $processor = new AddItemProcessor($this->falseComparer);
         $result = $processor->process($this->Item2, $this->purchaseContext);
 
-        $Items = $this->Cart->getItems();
+        $Items = $this->Cart->getCartItems();
 
         $this->assertEquals(2, count($Items));
         $this->assertEquals($quantity1, $Items[0]->getQuantity());
