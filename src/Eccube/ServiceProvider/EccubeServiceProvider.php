@@ -30,8 +30,10 @@ use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Comparer\ItemComparerCollection;
+use Eccube\Service\PurchaseFlow\Comparer\OrderItemTypeComparer;
 use Eccube\Service\PurchaseFlow\Comparer\PriceComparer;
 use Eccube\Service\PurchaseFlow\Comparer\ProductClassComparer;
+use Eccube\Service\PurchaseFlow\Comparer\TaxComparer;
 use Eccube\Service\PurchaseFlow\Processor\AddItemProcessor;
 use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
@@ -256,12 +258,35 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             ]);
         };
 
+        $app['eccube.purchase.flow.order.add_item_processors'] = function ($app) {
+            return new ArrayCollection([
+                new AddItemProcessor($app['eccube.purchase.flow.order.item_comparer']),
+            ]);
+        };
+
+        $app['eccube.purchase.flow.order.item_comparer'] = function ($app) {
+            return new ItemComparerCollection([
+                $app['eccube.purchase.flow.item_comparer.product_class'],
+                $app['eccube.purchase.flow.item_comparer.price'],
+                $app['eccube.purchase.flow.item_comparer.tax'],
+                $app['eccube.purchase.flow.item_comparer.order_item_type'],
+            ]);
+        };
+
         $app['eccube.purchase.flow.item_comparer.product_class'] = function ($app) {
             return new ProductClassComparer();
         };
 
         $app['eccube.purchase.flow.item_comparer.price'] = function ($app) {
             return new PriceComparer();
+        };
+
+        $app['eccube.purchase.flow.item_comparer.tax'] = function ($app) {
+            return new TaxComparer();
+        };
+
+        $app['eccube.purchase.flow.item_comparer.order_item_type'] = function ($app) {
+            return new OrderItemTypeComparer();
         };
 
         $app['eccube.purchase.flow.cart'] = function ($app) {
@@ -289,6 +314,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow->addItemHolderProcessor(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
             $flow->addPurchaseProcessor(new UpdateDatePurchaseProcessor($app['config']));
             $flow->addPurchaseProcessor(new AdminOrderRegisterPurchaseProcessor($app));
+            $flow->setAddItemProcessors($app['eccube.purchase.flow.order.add_item_processors']);
             return $flow;
         };
     }
