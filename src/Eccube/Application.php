@@ -39,6 +39,7 @@ use Eccube\ServiceProvider\CompatServiceProvider;
 use Eccube\ServiceProvider\DiServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
+use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\Dotenv\Dotenv;
@@ -170,6 +171,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
         $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());
         $this->register(new MobileDetectServiceProvider());
+        $this->register(new TwigLintServiceProvider());
 
         $this->error(function (\Exception $e, Request $request, $code) {
             if ($this['debug']) {

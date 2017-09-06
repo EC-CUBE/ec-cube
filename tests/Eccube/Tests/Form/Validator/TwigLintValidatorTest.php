@@ -4,21 +4,24 @@ namespace Eccube\Tests\Form\Validator;
 
 use Eccube\Application;
 use Eccube\Form\Validator\TwigLint;
-use Eccube\Form\Validator\TwigLintValidator;
-use Eccube\Tests\EccubeTestCase;
+use Eccube\ServiceProvider\TwigLintServiceProvider;
+use PHPUnit\Framework\TestCase;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 
-class TwigLintValidatorTest extends EccubeTestCase
+class TwigLintValidatorTest extends TestCase
 {
     /** @var Application */
     protected $app;
 
-    public function testNewInstance()
+    public function setUp()
     {
-        $constraint = new TwigLint();
-        self::assertInstanceOf(TwigLint::class, $constraint);
+        $app = new \Silex\Application();
+        $app->register(new TwigServiceProvider());
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new TwigLintServiceProvider());
 
-        $validator = new TwigLintValidator();
-        self::assertInstanceOf(TwigLintValidator::class, $validator);
+        $this->app = $app;
     }
 
     public function testValidTemplate()
@@ -45,6 +48,10 @@ class TwigLintValidatorTest extends EccubeTestCase
         $value = '{% for product in products %}{% endfor %}';
         $errors = $validator->validate($value, $constraint);
         self::assertCount(0, $errors);
+
+        $value = '{{ url("homepage") }}';
+        $errors = $validator->validate($value, $constraint);
+        self::assertCount(0, $errors);
     }
 
     public function testInValidTemplate()
@@ -56,12 +63,15 @@ class TwigLintValidatorTest extends EccubeTestCase
         $errors = $validator->validate($value, $constraint);
         self::assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        self::assertSame('Twigのフォーマットが正しくありません。Unexpected "}" at line 1.', $message);
+        self::assertContains('Unexpected "}" at line 1.', $message);
 
         $value = '{% for product in products %}{% endfo %}';
         $errors = $validator->validate($value, $constraint);
         self::assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        self::assertSame('Twigのフォーマットが正しくありません。Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) at line 1.', $message);
+        self::assertContains(
+            'Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) at line 1.',
+            $message
+        );
     }
 }

@@ -20,7 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% for Block in Blocks %}
-    {#<!-- ▼{{ Block.name }} -->#}
+    <!-- ▼{{ Block.name }} -->
     {% if Block.logic_flg %}
         {% if app.config.http_cache.enabled %}
             {{ render_esi(path('block_' ~ Block.file_name)) }}
@@ -30,5 +30,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% else %}
         {{ include('Block/' ~ Block.file_name~ '.twig', ignore_missing = true) }}
     {% endif %}
-    {#<!-- ▲{{ Block.name }} -->#}
+    <!-- ▲{{ Block.name }} -->
 {% endfor %}

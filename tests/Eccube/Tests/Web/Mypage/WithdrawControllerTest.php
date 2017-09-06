@@ -51,7 +51,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = '退会手続きを実行してもよろしいでしょうか？';
-        $this->actual = $crawler->filter('h3')->text();
+        $this->actual = $crawler->filter('p.ec-withdrawConfirmRole__title')->text();
         $this->verify();
     }
 

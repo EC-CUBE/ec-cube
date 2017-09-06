@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360">
+    <title>dotted</title>
+    <style>.icon{fill:#B8BEC4;fill-rule:evenodd;}</style>
+    <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M10,179.85c0-25.941,17.006-47,37.777-47s37.778,21.059,37.778,47   s-17.007,47-37.778,47S10,205.792,10,179.85z"></path>
+    <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M142.223,179.85c0-25.941,17.008-47,37.779-47c20.767,0,37.778,21.059,37.778,47   s-17.012,47-37.778,47C159.231,226.85,142.223,205.792,142.223,179.85z"></path>
+    <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M274.447,179.85c0-25.941,17.008-47,37.777-47c20.771,0,37.776,21.059,37.776,47   s-17.006,47-37.776,47C291.455,226.85,274.447,205.792,274.447,179.85z"></path>
+</svg>

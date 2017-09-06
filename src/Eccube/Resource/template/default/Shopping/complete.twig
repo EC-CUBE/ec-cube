@@ -24,49 +24,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'cart_page' %}
 
 {% block main %}
-    <h1 class="page-heading">ご注文完了</h1>
-    <div id="complete_wrap" class="container-fluid">
-        <div id="complete_flow_box" class="row">
-            <div id="complete_flow_box__body" class="col-md-12">
-                {% if is_granted('ROLE_USER') %}
-                <div id="complete_flow_box__flow_state" class="flowline step3">
-                {% else %}
-                <div id="complete_flow_box__flow_state" class="flowline step4">
-                {% endif %}
-                    <ul id="complete_flow_box__flow_state_list" class="clearfix">
-                        <li><span class="flow_number">1</span><br>カートの商品</li>
-                    {% if is_granted('ROLE_USER') %}
-                        <li><span class="flow_number">2</span><br>ご注文内容確認</li>
-                        <li class="active"><span class="flow_number">3</span><br>完了</li>
-                    {% else %}
-                        <li><span class="flow_number">2</span><br>お客様情報</li>
-                        <li><span class="flow_number">3</span><br>ご注文内容確認</li>
-                        <li class="active"><span class="flow_number">4</span><br>完了</li>
-                    {% endif %}
-                    </ul>
-                </div>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-
-
-        <div id="deliveradd_input" class="row">
-            <div id="deliveradd_input_box" class="col-sm-10 col-sm-offset-1">
-                <div id="deliveradd_input_box__message" class="complete_message">
-                    <h2 class="heading01">ご注文ありがとうございました</h2>
-                    <p>ただいま、ご注文の確認メールをお送りさせていただきました。<br />
-                        万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br />
-                        今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
-                </div>
-                <div id="deliveradd_input_box__top_button" class="row no-padding">
-                    <div class="btn_group col-sm-offset-4 col-sm-4">
-                        <p>
-                            <a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a>
-                        </p>
-                    </div>
-                </div>
-
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-
+<div class="ec-role">
+    <div class="ec-pageHeader">
+        <h1>ご注文完了</h1>
     </div>
+</div>
+
+<div class="ec-cartRole">
+    <div class="ec-cartRole__progress">
+        <ul class="ec-progress">
+            {% set step = 1 %}
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                </div>
+                <div class="ec-progress__label">カートの商品
+                </div>
+            </li>
+            {% if is_granted('ROLE_USER') == false %}
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                </div>
+                <div class="ec-progress__label">お客様情報
+                </div>
+            </li>
+            {% endif %}
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                </div>
+                <div class="ec-progress__label">ご注文内容確認
+                </div>
+            </li>
+            <li class="ec-progress__item is-complete">
+                <div class="ec-progress__number">{{ step }}
+                </div>
+                <div class="ec-progress__label">完了
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="ec-cartCompleteRole">
+    <div class="ec-off3Grid ec-text-ac">
+        <div class="ec-off3Grid__cell">
+            <div class="ec-reportHeading">
+                <h2>ご注文ありがとうございました</h2>
+            </div>
+            <p class="ec-reportDescription">ただいま、ご注文の確認メールをお送りさせていただきました。<br>万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+            <div class="ec-off4Grid">
+                <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
