@@ -73,7 +73,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             $this->app->path('product_detail', ['id' => $ProductClass->getProduct()->getId()]),
             [
                 'mode' => 'add_cart',
-                'object' => $ProductClass->getId(),
+                'ProductClass' => $ProductClass->getId(),
                 'quantity' => 1,
                 '_token' => 'dummy',
             ]
