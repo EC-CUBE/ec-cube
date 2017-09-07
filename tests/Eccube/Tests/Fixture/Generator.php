@@ -619,7 +619,7 @@ class Generator {
             ->setRuleMin($rule_min)
             ->setRuleMax($rule_max)
             ->setCreator($Member)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
         $this->app['orm.em']->persist($Payment);
         $this->app['orm.em']->flush($Payment);
 
