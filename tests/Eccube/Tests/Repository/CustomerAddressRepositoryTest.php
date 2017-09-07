@@ -3,11 +3,6 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
-use Eccube\Entity\CustomerAddress;
-use Eccube\Entity\Master\CustomerStatus;
 
 /**
  * CustomerAddressRepository test cases.
