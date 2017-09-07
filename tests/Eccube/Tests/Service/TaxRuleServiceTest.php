@@ -2,9 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Entity\TaxRule;
-use Eccube\Service\TaxRuleService;
-
 class TaxRuleServiceTest extends AbstractServiceTestCase
 {
     public function setUp()

@@ -420,7 +420,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $app['eccube.repository.product']->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $app['eccube.repository.tax_rule']->findOneBy(array('Product' => $product));
-        $this->assertEquals(0, $taxRule->getDelFlg());
+        $this->assertNotNull($taxRule);
     }
 
     /**

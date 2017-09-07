@@ -372,7 +372,7 @@ class ProductController extends AbstractController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
-                if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
                 $ProductStock = $ProductClasses[0]->getProductStock();
@@ -439,10 +439,6 @@ class ProductController extends AbstractController
                     if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                         if ($ProductClass->getTaxRate() !== null) {
                             if ($ProductClass->getTaxRule()) {
-                                if ($ProductClass->getTaxRule()->getDelFlg() == Constant::ENABLED) {
-                                    $ProductClass->getTaxRule()->setDelFlg(Constant::DISABLED);
-                                }
-
                                 $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
                             } else {
                                 $taxrule = $this->taxRuleRepository->newTaxRule();
@@ -454,7 +450,8 @@ class ProductController extends AbstractController
                             }
                         } else {
                             if ($ProductClass->getTaxRule()) {
-                                $ProductClass->getTaxRule()->setDelFlg(Constant::ENABLED);
+                                $this->taxRuleRepository->delete($ProductClass->getTaxRule());
+                                $ProductClass->setTaxRule(null);
                             }
                         }
                     }
