@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -177,9 +178,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $this->actual = $Delivery->getDelFlg();
-        $this->expected = Constant::ENABLED;
-        $this->verify();
+        $this->actual = $this->app['orm.em']->find(Delivery::class, $pid);
     }
 
     /**
