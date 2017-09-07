@@ -24,59 +24,60 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block main %}
-    <h1 class="page-heading">ログイン</h1>
-    <div class="container-fluid">
-        <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')">
-            {% if app.session.flashBag.has('eccube.login.target.path') %}
-                {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
-                    <input type="hidden" name="_target_path" value="{{ targetPath }}" />
-                {% endfor %}
-            {% endif %}
-            <div id="login_box" class="row">
-                <div id="mypage_login_wrap" class="col-sm-8 col-sm-offset-2">
-                    <div id="mypage_login_box" class="column">
+    <div class="ec-role">
+        <div class="ec-pageHeader">
+            <h1>ログイン</h1>
+        </div>
+        <div class="ec-off2Grid">
+            <div class="ec-off2Grid__cell">
+                <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')">
+                    {% if app.session.flashBag.has('eccube.login.target.path') %}
+                        {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
+                            <input type="hidden" name="_target_path" value="{{ targetPath }}" />
+                        {% endfor %}
+                    {% endif %}
 
-                        <div id="mypage_login_box__body" class="column_inner clearfix">
-                            <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
-                            <div id="mypage_login_box__login_email" class="form-group">
+                    <div class="ec-login">
+                        <div class="ec-login__icon">
+                            <div class="ec-icon"><img src="{{ app.config.front_urlpath }}/assets/icon/user.svg" alt=""></div>
+                        </div>
+                        <div class="ec-login__input">
+                            <div class="ec-input">
                                 {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : 'メールアドレス', 'autofocus': true}}) }}
-                            </div>
-                            <div id="mypage_login_box__login_pass" class="form-group">
                                 {{ form_widget(form.login_pass,  {'attr': {'placeholder' : 'パスワード' }}) }}
-                                {% if BaseInfo.option_remember_me %}
-                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                        <input id="mypage_login_box__login_memory" type="hidden" name="login_memory" value="1">
-                                    {% else %}
-                                        {{ form_widget(form.login_memory) }}
-                                    {% endif %}
-                                {% endif %}
                             </div>
-                            <div class="extra-form form-group">
-                                {% for f in form.getIterator %}
-                                    {% if f.vars.name matches '[^plg*]' %}
-                                        {{ form_label(f) }}
-                                        {{ form_widget(f) }}
-                                        {{ form_errors(f) }}
+
+                            <div class="ec-checkbox">
+                                <label>
+                                    {% if BaseInfo.option_remember_me %}
+                                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                            <input id="mypage_login_box__login_memory" type="hidden" name="login_memory" value="1">
+                                        {% else %}
+                                            {{ form_widget(form.login_memory) }}
+                                        {% endif %}
                                     {% endif %}
-                                {% endfor %}
+                                </label>
                             </div>
                             {% if error %}
-                            <div id="mypage_login_box__error_message" class="form-group">
-                                <span class="text-danger">{{ error|trans|raw }}</span>
-                            </div>
+                                <p class="ec-errorMessage">{{ error|trans|raw }}</span>
                             {% endif %}
-                            <div id="mypage_login__login_button" class="btn_area">
-                                <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
-                                <ul id="mypage_login__login_menu" >
-                                    <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
-                                    <li><a href="{{ url('entry') }}">新規会員登録</a></li>
-                                </ul>
+                        </div>
+                        <div class="ec-grid2">
+                            <div class="ec-grid2__cell">
+                                <div class="ec-login__actions"><button type="submit" class="ec-blockBtn--cancel">ログイン</button>
+                                </div>
+                            </div>
+                            <div class="ec-grid2__cell">
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('forgot') }}">ログイン情報をお忘れですか?</a>
+                                </div>
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('entry') }}">新規会員登録</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        </form>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

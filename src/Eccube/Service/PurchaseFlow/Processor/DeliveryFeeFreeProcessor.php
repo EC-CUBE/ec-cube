@@ -25,8 +25,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -37,18 +37,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliveryFeeFreeProcessor implements ItemHolderProcessor
 {
     /**
-     * @var BaseInfoRepository
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * DeliveryFeeProcessor constructor.
      *
-     * @param Application $app
+     * @param BaseInfo $BaseInfo
      */
-    public function __construct(BaseInfoRepository $baseInfoRepository)
+    public function __construct(BaseInfo $BaseInfo)
     {
-        $this->baseInfoRepository = $baseInfoRepository;
+        $this->BaseInfo = $BaseInfo;
     }
 
     /**
@@ -59,20 +59,17 @@ class DeliveryFeeFreeProcessor implements ItemHolderProcessor
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        /* @var $BaseInfo \Eccube\Entity\BaseInfo */
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $isDeliveryFree = false;
 
-        if ($BaseInfo->getDeliveryFreeAmount()) {
-            if ($BaseInfo->getDeliveryFreeAmount() <= $itemHolder->getTotal()) {
+        if ($this->BaseInfo->getDeliveryFreeAmount()) {
+            if ($this->BaseInfo->getDeliveryFreeAmount() <= $itemHolder->getTotal()) {
                 // 送料無料（金額）を超えている
                 $isDeliveryFree = true;
             }
         }
 
-        if ($BaseInfo->getDeliveryFreeQuantity()) {
-            if ($BaseInfo->getDeliveryFreeQuantity() <= $itemHolder->getQuantity()) {
+        if ($this->BaseInfo->getDeliveryFreeQuantity()) {
+            if ($this->BaseInfo->getDeliveryFreeQuantity() <= $itemHolder->getQuantity()) {
                 // 送料無料（個数）を超えている
                 $isDeliveryFree = true;
             }

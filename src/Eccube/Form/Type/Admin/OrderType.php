@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
@@ -36,7 +37,6 @@ use Eccube\Form\Type\NameType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
-use Eccube\Repository\BaseInfoRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -70,10 +70,10 @@ class OrderType extends AbstractType
     protected $appConfig;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
 
     /**
@@ -91,8 +91,6 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $BaseInfo = $this->baseInfoRepository->get();
-
         $builder
             ->add('name', NameType::class, array(
                 'required' => false,
@@ -254,9 +252,9 @@ class OrderType extends AbstractType
         /**
          * 複数配送オプション有効時の画面制御を行う.
          */
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
 
-            if ($BaseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
+            if ($this->BaseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
                 return;
             }
 

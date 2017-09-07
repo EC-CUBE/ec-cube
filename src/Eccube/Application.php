@@ -31,6 +31,7 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
 use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Entity\BaseInfo;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
@@ -38,6 +39,7 @@ use Eccube\ServiceProvider\CompatServiceProvider;
 use Eccube\ServiceProvider\DiServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
+use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\Dotenv\Dotenv;
@@ -169,6 +171,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
         $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());
         $this->register(new MobileDetectServiceProvider());
+        $this->register(new TwigLintServiceProvider());
 
         $this->error(function (\Exception $e, Request $request, $code) {
             if ($this['debug']) {
@@ -369,16 +372,12 @@ class Application extends \Silex\Application
             'locale_fallbacks' => ['ja', 'en'],
         ));
         $this->extend('translator', function ($translator, \Silex\Application $app) {
-            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+            $translator->addLoader('php', new \Symfony\Component\Translation\Loader\PhpFileLoader());
 
-            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
+            $file = __DIR__.'/Resource/locale/messages.'.$app['locale'].'.php';
             if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale'], 'validators');
-            }
-
-            $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
-            if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale']);
+                $translator->addResource('php', $file, $app['locale']);
+                $translator->addResource('php', $file, $app['locale'], 'validators');
             }
 
             return $translator;
@@ -478,8 +477,7 @@ class Application extends \Silex\Application
                 return;
             }
             // ショップ基本情報
-            $BaseInfo = $this['eccube.repository.base_info']->get();
-            $this['twig']->addGlobal('BaseInfo', $BaseInfo);
+            $this['twig']->addGlobal('BaseInfo', $this[BaseInfo::class]);
 
             if ($this->isAdminRequest()) {
                 // 管理画面

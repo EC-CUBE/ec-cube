@@ -26,6 +26,7 @@ namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\BaseInfo;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -68,6 +69,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
      */
     public function register(Container $app)
     {
+        $app[BaseInfo::class] = function () use ($app) {
+            return $app[BaseInfoRepository::class]->get();
+        };
+
         $app['eccube.calculate.context'] = function () use ($app) {
                 return new \Eccube\Service\Calculator\CalculateContext();
         };
@@ -231,7 +236,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $processors = new ArrayCollection();
             $processors->add(new PaymentProcessor($app[DeliveryRepository::class]));
             $processors->add(new PaymentTotalLimitValidator($app['config']['max_total_fee']));
-            $processors->add(new DeliveryFeeFreeProcessor($app[BaseInfoRepository::class]));
+            $processors->add(new DeliveryFeeFreeProcessor($app[BaseInfo::class]));
             $processors->add(new PaymentTotalNegativeValidator());
 
             return $processors;

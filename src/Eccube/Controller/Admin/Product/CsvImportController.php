@@ -29,6 +29,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
@@ -38,7 +39,6 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDateRepository;
@@ -111,10 +111,10 @@ class CsvImportController
     protected $productRepository;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject("orm.em")
@@ -185,8 +185,6 @@ class CsvImportController
                     $this->em->getConfiguration()->setSQLLogger(null);
 
                     $this->em->getConnection()->beginTransaction();
-
-                    $BaseInfo = $this->baseInfoRepository->get();
 
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -292,7 +290,7 @@ class CsvImportController
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
                             $ProductClassOrg = $this->createProductClass($row, $Product, $app, $data);
-                            if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                            if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                 if ($row['送料'] != '') {
                                     $deliveryFee = str_replace(',', '', $row['送料']);
                                     if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -378,7 +376,7 @@ class CsvImportController
                                 ) {
                                     $this->updateProductClass($row, $Product, $pc, $app, $data);
 
-                                    if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                                    if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -449,7 +447,7 @@ class CsvImportController
                                     }
                                     $ProductClass = $this->createProductClass($row, $Product, $app, $data, $ClassCategory1, $ClassCategory2);
 
-                                    if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                                    if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {

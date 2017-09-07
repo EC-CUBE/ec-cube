@@ -30,13 +30,13 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductType;
 use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\DispRepository;
 use Eccube\Repository\Master\PageMaxRepository;
@@ -96,12 +96,6 @@ class ProductController extends AbstractController
     protected $taxRuleRepository;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
      * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
@@ -112,6 +106,12 @@ class ProductController extends AbstractController
      * @var ProductRepository
      */
     protected $productRepository;
+
+    /**
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
 
     /**
      * @Inject("config")
@@ -372,8 +372,7 @@ class ProductController extends AbstractController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
-                $BaseInfo = $this->baseInfoRepository->get();
-                if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
                 $ProductStock = $ProductClasses[0]->getProductStock();
@@ -437,8 +436,7 @@ class ProductController extends AbstractController
                     $ProductClass = $form['class']->getData();
 
                     // 個別消費税
-                    $BaseInfo = $this->baseInfoRepository->get();
-                    if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+                    if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                         if ($ProductClass->getTaxRate() !== null) {
                             if ($ProductClass->getTaxRule()) {
                                 if ($ProductClass->getTaxRule()->getDelFlg() == Constant::ENABLED) {

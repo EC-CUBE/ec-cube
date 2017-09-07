@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
@@ -38,7 +39,6 @@ use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\OrderType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -61,10 +61,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShoppingController extends AbstractShoppingController
 {
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject(OrderHelper::class)
@@ -316,7 +316,7 @@ class ShoppingController extends AbstractShoppingController
                 return [
                     'Customer' => $app->user(),
                     'shippingId' => $id,
-                    'error' => false,
+                    'error' => true,
                 ];
             }
 
@@ -727,10 +727,7 @@ class ShoppingController extends AbstractShoppingController
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$this->session->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
-
-                $BaseInfo = $this->baseInfoRepository->get();
-
-                if (!$BaseInfo->getOptionMultipleShipping()) {
+                if (!$this->BaseInfo->getOptionMultipleShipping()) {
                     // 複数配送に設定されていないのに複数配送先ができればエラー
                     $app->addRequestError('cart.product.type.kind');
 

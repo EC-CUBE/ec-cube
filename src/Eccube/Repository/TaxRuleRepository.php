@@ -28,6 +28,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
@@ -49,10 +50,10 @@ class TaxRuleRepository extends AbstractRepository
     protected $appConfig;
 
     /**
-     * @Inject(BaseInfoRepository::class)
-     * @var BaseInfoRepository
+     * @Inject(BaseInfo::class)
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @Inject("security.authorization_checker")
@@ -109,9 +110,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // 商品単位税率設定がOFFの場合
-        /** @var $BaseInfo \Eccube\Entity\BaseInfo */
-        $BaseInfo = $this->baseInfoRepository->get();
-        if ($BaseInfo->getOptionProductTaxRule() !== Constant::ENABLED) {
+        if ($this->BaseInfo->getOptionProductTaxRule() !== Constant::ENABLED) {
             $Product = null;
             $ProductClass = null;
         }

@@ -22,23 +22,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block main %}
-
-    <div id="contents" class="main_only">
-        <div id="agreement_wrap" class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">利用規約</h1>
-                <div id="agreement_box__body" class="container-fluid">
-                    <div id="agreement_box__customer_agreement" class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            {% if help is not null %}
-                            {{ help.customerAgreement|raw|nl2br }}
-                            {% endif %}
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-
-                </div>
-            </div>
+<div class="ec-role">
+    <div class="ec-pageHeader">
+        <h1>利用規約</h1>
+    </div>
+    <div class="ec-off1Grid">
+        <div class="ec-off1Grid__cell">
+            {% if help is not null %}
+                {{ help.customerAgreement|raw|nl2br }}
+            {% endif %}
         </div>
     </div>
-
+</div>
 {% endblock %}
