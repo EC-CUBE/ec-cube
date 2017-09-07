@@ -2,10 +2,9 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\News;
+use Eccube\Tests\EccubeTestCase;
 
 
 /**
@@ -33,7 +32,6 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setCreator($this->Member)
                 ->setSelect(1)
                 ->setLinkMethod(1)
-                ->setDelFlg(0)
                 ->setRank($i)
                 ;
             $this->app['orm.em']->persist($News);
@@ -170,24 +168,10 @@ class NewsRepositoryTest extends EccubeTestCase
             array('title' => 'news-0')
         );
 
-        $updateDate = $News->getUpdateDate();
-        sleep(1);
+        $newsId = $News->getId();
         $result = $this->app['eccube.repository.news']->delete($News);
 
         $this->assertTrue($result);
-        $this->assertEquals(Constant::ENABLED, $News->getDelFlg());
-        $this->assertTrue(0 === $News->getRank());
-
-        $this->expected = $updateDate;
-        $this->actual = $News->getUpdateDate();
-        $this->assertNotEquals($this->expected, $this->actual);
-    }
-
-    public function testDeleteWithException()
-    {
-        $News = new News();     // 存在しないので例外が発生する
-        $result = $this->app['eccube.repository.news']->delete($News);
-
-        $this->assertFalse($result, '削除に失敗するはず');
+        self::assertNull($this->app['eccube.repository.news']->find($newsId));
     }
 }

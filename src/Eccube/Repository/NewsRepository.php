@@ -128,8 +128,7 @@ class NewsRepository extends AbstractRepository
                     $rank = 0;
                 }
                 $News
-                    ->setRank($rank + 1)
-                    ->setDelFlg(0);
+                    ->setRank($rank + 1);
             }
 
             $em->persist($News);
@@ -156,17 +155,13 @@ class NewsRepository extends AbstractRepository
         try {
             $rank = $News->getRank();
             $em->createQueryBuilder()
-            ->update('Eccube\Entity\News', 'n')
-            ->set('n.rank', 'n.rank - 1')
-            ->where('n.rank > :rank')->setParameter('rank', $rank)
-            ->getQuery()
-            ->execute();
+                ->update('Eccube\Entity\News', 'n')
+                ->set('n.rank', 'n.rank - 1')
+                ->where('n.rank > :rank')->setParameter('rank', $rank)
+                ->getQuery()
+                ->execute();
 
-            $News
-                ->setDelFlg(1)
-                ->setRank(0);
-
-            $em->persist($News);
+            $em->remove($News);
             $em->flush();
 
             $em->getConnection()->commit();
