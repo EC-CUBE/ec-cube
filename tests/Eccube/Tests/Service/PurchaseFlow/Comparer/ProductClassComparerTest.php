@@ -45,10 +45,10 @@ class ProductClassComparerTest extends EccubeTestCase
         $this->ProductClass2 = $Product->getProductClasses()->get(1);
 
         $this->Item1 = new CartItem();
-        $this->Item1->setObject($this->ProductClass1);
+        $this->Item1->setProductClass($this->ProductClass1);
 
         $this->Item2 = new CartItem();
-        $this->Item2->setObject($this->ProductClass1);
+        $this->Item2->setProductClass($this->ProductClass1);
     }
 
     public function testCompare()
@@ -58,7 +58,7 @@ class ProductClassComparerTest extends EccubeTestCase
 
     public function testCompare_differentProductClass()
     {
-        $this->Item2->setObject($this->ProductClass2);
+        $this->Item2->setProductClass($this->ProductClass2);
 
         $this->assertFalse($this->comparer->compare($this->Item1, $this->Item2));
     }

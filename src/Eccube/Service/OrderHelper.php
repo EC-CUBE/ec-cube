@@ -180,7 +180,7 @@ class OrderHelper
         return array_map(function($item) use ($ProductItemType, $TaxExclude, $Taxion) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $item->getObject();
+            $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
             $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
@@ -224,7 +224,7 @@ class OrderHelper
 
         foreach ($CartItems as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $item->getObject();
+            $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
 

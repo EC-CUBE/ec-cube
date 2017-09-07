@@ -27,10 +27,24 @@ namespace Eccube\Entity;
 class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     private $cart_no;
-    private $class_name;
-    private $class_id;
     private $price;
     private $quantity;
+    private $ProductClass;
+    private $product_class_id;
+
+    /**
+     * @deprecated
+     */
+    private $class_name;
+
+    /**
+     * @deprecated
+     */
+    private $class_id;
+
+    /**
+     * @deprecated
+     */
     private $object;
 
     public function __construct()
@@ -39,7 +53,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     public function __sleep()
     {
-        return array('cart_no', 'class_name', 'class_id', 'price', 'quantity');
+        return array('cart_no', 'product_class_id', 'price', 'quantity');
     }
 
     /**
@@ -64,6 +78,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @param  string   $class_name
      * @return CartItem
+     * @deprecated
      */
     public function setClassName($class_name)
     {
@@ -74,6 +89,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @return string
+     * @deprecated
      */
     public function getClassName()
     {
@@ -83,6 +99,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @param  string   $class_id
      * @return CartItem
+     * @deprecated
      */
     public function setClassId($class_id)
     {
@@ -93,6 +110,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @return string
+     * @deprecated
      */
     public function getClassId()
     {
@@ -148,6 +166,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @param  object   $object
      * @return CartItem
+     * @deprecated
      */
     public function setObject($object)
     {
@@ -158,6 +177,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 
     /**
      * @return object
+     * @deprecated
      */
     public function getObject()
     {
@@ -222,11 +242,34 @@ class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     }
 
     /**
+     * @param ProductClass $ProductClass
+     * @return $this
+     */
+    public function setProductClass(ProductClass $ProductClass)
+    {
+        $this->ProductClass = $ProductClass;
+
+        $this->product_class_id = is_object($ProductClass) ?
+            $ProductClass->getId() :
+            null;
+
+        return $this;
+    }
+
+    /**
      * @return ProductClass
      */
     public function getProductClass()
     {
-        return $this->getObject();
+        return $this->ProductClass;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getProductClassId()
+    {
+        return $this->product_class_id;
     }
 
     public function getPriceIncTax()

@@ -131,7 +131,7 @@ class AddItemProcessorTest extends EccubeTestCase
         $CartItem = new CartItem();
         $CartItem
             ->setQuantity($quantity)
-            ->setObject($Product->getProductClasses()->first())
+            ->setProductClass($Product->getProductClasses()->first())
 
         ;
         return $CartItem;

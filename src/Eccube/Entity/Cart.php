@@ -126,7 +126,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     {
         $find = false;
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
+            if ($CartItem->getProductClassId() === $AddCartItem->getProductClassId()) {
                 $find = true;
                 $CartItem
                     ->setPrice($AddCartItem->getPrice())
@@ -161,7 +161,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     public function getCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
+            if (get_class($CartItem->getProductClass()) === $class_name && $CartItem->getProductClassId() == $class_id) {
                 return $CartItem;
             }
         }
@@ -194,7 +194,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     public function removeCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
+            if (get_class($CartItem->getProductClass()) === $class_name && $CartItem->getProductClassId() == $class_id) {
                 $this->CartItems->removeElement($CartItem);
             }
         }

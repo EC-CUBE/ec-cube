@@ -82,7 +82,7 @@ class AddCartType extends AbstractType
             ))
             ->add(
                 $builder
-                    ->create('object', HiddenType::class, [
+                    ->create('ProductClass', HiddenType::class, [
                         'data_class' => null,
                         'data' => $ProductClass,
                     ])
@@ -145,8 +145,7 @@ class AddCartType extends AbstractType
                 // FIXME 価格の設定箇所、ここでいいのか
                 if ($ProductClass) {
                     $CartItem
-                        ->setClassId($ProductClass->getId())
-                        ->setClassName(get_class($ProductClass))
+                        ->setProductClass($ProductClass)
                         ->setPrice($ProductClass->getPrice02IncTax())
                     ;
                 }
