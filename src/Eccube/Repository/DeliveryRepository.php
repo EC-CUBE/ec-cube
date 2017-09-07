@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Payment;
 
 /**
@@ -81,7 +82,9 @@ class DeliveryRepository extends AbstractRepository
     {
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.ProductType in (:productTypes)')
+            ->andWhere('d.obsolete_flg = :obsoleteFlg')
             ->setParameter('productTypes', $productTypes)
+            ->setParameter('obsoleteFlg', Delivery::ACTIVE)
             ->getQuery()
             ->getResult();
 

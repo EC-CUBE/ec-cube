@@ -38,6 +38,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Delivery extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @var integer
+     */
+    const ACTIVE = 0;
+
+    /**
+     * @var integer
+     */
+    const OBSOLETE = 1;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -92,9 +102,16 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     * @deprecated
      */
     private $del_flg = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="obsolete_flg", type="smallint", options={"unsigned":true,"default":0})
+     */
+    private $obsolete_flg = 0;
 
     /**
      * @var \DateTime
@@ -220,6 +237,19 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Get serviceName for Admin.
+     * @return string
+     */
+    public function getServiceNameForAdmin()
+    {
+        if ($this->isActive()) {
+            return $this->getServiceName();
+        } else {
+            return $this->getServiceName().'(廃止)';
+        }
+    }
+
+    /**
      * Set description.
      *
      * @param string|null $description
@@ -297,6 +327,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
      * @param int $delFlg
      *
      * @return Delivery
+     * @deprecated
      */
     public function setDelFlg($delFlg)
     {
@@ -309,6 +340,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
      * Get delFlg.
      *
      * @return int
+     * @deprecated
      */
     public function getDelFlg()
     {
@@ -517,5 +549,39 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     public function getProductType()
     {
         return $this->ProductType;
+    }
+
+    /**
+     * Set obsoleteFlg
+     *
+     * @param integer $obsoleteFlg
+     *
+     * @return Delivery
+     */
+    public function setObsoleteFlg($obsoleteFlg)
+    {
+        $this->obsolete_flg = $obsoleteFlg;
+
+        return $this;
+    }
+
+    /**
+     * Get obsoleteFlg
+     *
+     * @return integer
+     */
+    public function getObsoleteFlg()
+    {
+        return $this->obsolete_flg;
+    }
+
+    /**
+     * Is the status active?
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->getObsoleteFlg() === self::ACTIVE;
     }
 }

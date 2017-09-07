@@ -94,7 +94,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div id="delivery_list__name--{{ Delivery.id }}" class="item_pattern td">
                                             <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
-                                                {{ Delivery.name }} / {{ Delivery.service_name }}
+                                                {{ Delivery.name }} / {{ Delivery.serviceNameForAdmin }}
                                             </a>
                                         </div>
                                         <div id="delivery_list__menu_box--{{ Delivery.id }}" class="icon_edit td">
@@ -102,6 +102,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="delivery_list__menu--{{ Delivery.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">編集</a></li>
+                                                    {% if Delivery.isActive %}
+                                                        <li><a href="{{ url('admin_setting_shop_delivery_obsolete', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="廃止してもよろしいですか？">廃止</a></li>
+                                                    {% else %}
+                                                        <li><a href="{{ url('admin_setting_shop_delivery_obsolete', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="廃止をキャンセルしてもよろしいですか？">廃止をキャンセル</a></li>
+                                                    {% endif %}
                                                     <li><a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
                                                 </ul>
                                             </div>
