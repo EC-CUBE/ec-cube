@@ -199,7 +199,6 @@ class MypageControllerTest extends AbstractWebTestCase
             $CustomerFavoriteProduct->setCreateDate(new \DateTime());
             $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
             $CustomerFavoriteProduct->setProduct($Product);
-            $CustomerFavoriteProduct->setDelFlg(0);
             $this->app['orm.em']->persist($CustomerFavoriteProduct);
             $this->app['orm.em']->flush($CustomerFavoriteProduct);
 
@@ -238,7 +237,6 @@ class MypageControllerTest extends AbstractWebTestCase
         $CustomerFavoriteProduct->setCreateDate(new \DateTime());
         $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
         $CustomerFavoriteProduct->setProduct($Product);
-        $CustomerFavoriteProduct->setDelFlg(0);
 
         return $CustomerFavoriteProduct;
     }
