@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
  */
-class MailHistory extends \Eccube\Entity\AbstractEntity
+class MailHistory extends AbstractEntity
 {
     /**
      * @return string
@@ -84,16 +84,6 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $Order;
-
-    /**
-     * @var \Eccube\Entity\MailTemplate
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\MailTemplate")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="template_id", referencedColumnName="template_id")
-     * })
-     */
-    private $MailTemplate;
 
     /**
      * @var \Eccube\Entity\Member
@@ -210,30 +200,6 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     public function getOrder()
     {
         return $this->Order;
-    }
-
-    /**
-     * Set mailTemplate.
-     *
-     * @param \Eccube\Entity\MailTemplate|null $mailTemplate
-     *
-     * @return MailHistory
-     */
-    public function setMailTemplate(\Eccube\Entity\MailTemplate $mailTemplate = null)
-    {
-        $this->MailTemplate = $mailTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Get mailTemplate.
-     *
-     * @return \Eccube\Entity\MailTemplate|null
-     */
-    public function getMailTemplate()
-    {
-        return $this->MailTemplate;
     }
 
     /**

@@ -1405,13 +1405,10 @@ class ShoppingService
         $message = $this->mailService->sendOrderMail($Order);
 
         // 送信履歴を保存.
-        $MailTemplate = $this->mailTemplateRepository->find(1);
-
         $MailHistory = new MailHistory();
         $MailHistory
             ->setSubject($message->getSubject())
             ->setMailBody($message->getBody())
-            ->setMailTemplate($MailTemplate)
             ->setSendDate(new \DateTime())
             ->setOrder($Order);
 

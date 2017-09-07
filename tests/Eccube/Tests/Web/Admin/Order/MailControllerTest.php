@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -27,14 +26,12 @@ class MailControllerTest extends AbstractAdminWebTestCase
             ->setHeader($faker->word)
             ->setFooter($faker->word)
             ->setSubject($faker->word)
-            ->setCreator($this->Member)
-            ->setDelFlg(Constant::DISABLED);
+            ->setCreator($this->Member);
         $this->app['orm.em']->persist($MailTemplate);
         $this->app['orm.em']->flush();
         for ($i = 0; $i < 3; $i++) {
             $this->MailHistories[$i] = new MailHistory();
             $this->MailHistories[$i]
-                ->setMailTemplate($MailTemplate)
                 ->setOrder($this->Order)
                 ->setSendDate(new \DateTime())
                 ->setMailBody($faker->realText())

@@ -25,7 +25,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
-use Eccube\Common\Constant;
+use Eccube\Entity\MailTemplate;
 
 /**
  * MailTemplateRepository
@@ -40,13 +40,12 @@ class MailTemplateRepository extends AbstractRepository
     /**
      * @deprecated 呼び出し元で制御する
      * @param $id
-     * @return \Eccube\Entity\MailTemplate|null|object
+     * @return MailTemplate|null|object
      */
     public function findOrCreate($id)
     {
         if ($id == 0) {
-            $MailTemplate = new \Eccube\Entity\MailTemplate();
-            $MailTemplate->setDelFlg(Constant::DISABLED);
+            $MailTemplate = new MailTemplate();
         } else {
             $MailTemplate = $this->find($id);
 

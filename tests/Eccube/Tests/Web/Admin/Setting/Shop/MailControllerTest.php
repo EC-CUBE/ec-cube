@@ -41,7 +41,6 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         // create new mail
         $Mail = $this->app['orm.em']->getRepository('Eccube\Entity\MailTemplate')->findOrCreate(0);
-        $Mail->setDelFlg(Constant::DISABLED);
         $Mail->setName($faker->word);
         $Mail->setFileName('Mail/order.twig');
         $Mail->setSubject($faker->word);
