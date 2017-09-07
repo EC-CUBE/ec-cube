@@ -23,12 +23,11 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Plugin\ConfigManager;
-use Symfony\Component\Yaml\Yaml;
 use Eccube\Common\Constant;
-use Symfony\Component\Finder\Finder;
+use Eccube\Plugin\ConfigManager;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class PluginServiceTest extends AbstractServiceTestCase
 {

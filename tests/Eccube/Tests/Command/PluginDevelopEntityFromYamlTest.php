@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Command;
 
-use Eccube\Application;
 use Eccube\Command\PluginCommand;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
