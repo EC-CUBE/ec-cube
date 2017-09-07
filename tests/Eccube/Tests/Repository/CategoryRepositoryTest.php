@@ -59,7 +59,6 @@ class CategoryRepositoryTest extends EccubeTestCase
         foreach ($categories as $category_array) {
             $Category = new Category();
             $Category->setPropertiesFromArray($category_array);
-            $Category->setDelFlg(Constant::DISABLED);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
@@ -71,7 +70,6 @@ class CategoryRepositoryTest extends EccubeTestCase
                 $Child = new Category();
                 $Child->setPropertiesFromArray($child_array);
                 $Child->setParent($Category);
-                $Child->setDelFlg(Constant::DISABLED);
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
                 $Category->addChild($Child);
@@ -84,7 +82,6 @@ class CategoryRepositoryTest extends EccubeTestCase
                     $Grandson = new Category();
                     $Grandson->setPropertiesFromArray($grandson_array);
                     $Grandson->setParent($Child);
-                    $Grandson->setDelFlg(Constant::DISABLED);
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
                     $Child->addChild($Grandson);
@@ -99,15 +96,13 @@ class CategoryRepositoryTest extends EccubeTestCase
     }
 
     /**
-     * 既存のデータを論理削除しておく.
+     * 既存のデータを削除しておく.
      */
     public function remove() {
-        $Categories = $this->app['eccube.repository.category']->findAll();
-        foreach ($Categories as $Category) {
-            $Category->setDelFlg(Constant::ENABLED);
-            $this->app['orm.em']->merge($Category);
-        }
-        $this->app['orm.em']->flush();
+        $this->deleteAllRows([
+            'dtb_product_category',
+            'dtb_category'
+        ]);
     }
 
     public function testGetTotalCount()
@@ -220,15 +215,22 @@ class CategoryRepositoryTest extends EccubeTestCase
     public function testDelete()
     {
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
-        $updateDate = $Category->getUpdateDate();
-        sleep(1);
+
         $result = $this->app['eccube.repository.category']->delete($Category);
-
         $this->assertTrue($result);
-        $this->assertEquals(Constant::ENABLED, $Category->getDelFlg());
 
-        $this->expected = $updateDate;
-        $this->actual = $Category->getUpdateDate();
-        $this->assertNotEquals($this->expected, $this->actual);
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+        $this->assertNull($Category);
+    }
+
+    public function testDeleteFail()
+    {
+        // 商品をカテゴリに紐付けて作成.
+        $this->createProduct();
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+
+        // 紐付いた商品が存在している場合は削除できない.
+        $result = $this->app['eccube.repository.category']->delete($Category);
+        $this->assertFalse($result);
     }
 }

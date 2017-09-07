@@ -233,7 +233,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
             ->setName('test')
             ->setRank(1)
             ->setLevel(1)
-            ->setDelFlg(Constant::DISABLED)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
         $this->app['orm.em']->persist($Category);

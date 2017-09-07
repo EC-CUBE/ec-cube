@@ -53,8 +53,7 @@ class CategoryRepository extends AbstractRepository
     {
         $qb = $this
             ->createQueryBuilder('c')
-            ->select('count(c.id)')
-            ->where('c.del_flg = 0');
+            ->select('count(c.id)');
         $count = $qb->getQuery()
             ->getSingleScalarResult();
 
@@ -133,7 +132,6 @@ class CategoryRepository extends AbstractRepository
                     $rank = 0;
                 }
                 $Category->setRank($rank + 1);
-                $Category->setDelFlg(0);
 
                 $em->createQueryBuilder()
                     ->update('Eccube\Entity\Category', 'c')
@@ -182,8 +180,7 @@ class CategoryRepository extends AbstractRepository
                 ->getQuery()
                 ->execute();
 
-            $Category->setDelFlg(1);
-            $em->persist($Category);
+            $em->remove($Category);
             $em->flush();
 
             $em->getConnection()->commit();
