@@ -11,6 +11,7 @@ cache:
   directories:
     - vendor
     - $HOME/.composer/cache
+    - $(gem environment gemdir)
 
 php:
   - 7.2
