@@ -93,7 +93,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
         $Deliveries = $this->deliveryRepository->findBy(
             [
                 'ProductType' => $ProductType,
-                'obsolete_flg' => Delivery::ACTIVE
+                'visible' => true
             ]
         );
 

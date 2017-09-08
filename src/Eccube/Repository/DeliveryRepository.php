@@ -82,9 +82,9 @@ class DeliveryRepository extends AbstractRepository
     {
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.ProductType in (:productTypes)')
-            ->andWhere('d.obsolete_flg = :obsoleteFlg')
+            ->andWhere('d.visible = :visible')
             ->setParameter('productTypes', $productTypes)
-            ->setParameter('obsoleteFlg', Delivery::ACTIVE)
+            ->setParameter('visible', true)
             ->getQuery()
             ->getResult();
 

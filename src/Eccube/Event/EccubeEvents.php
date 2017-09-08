@@ -304,8 +304,8 @@ final class EccubeEvents
     const ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE = 'admin.setting.shop.delivery.edit.complete';
     // delete
     const ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE = 'admin.setting.shop.delivery.delete.complete';
-    // obsolete
-    const ADMIN_SETTING_SHOP_DELIVERY_OBSOLETE_COMPLETE = 'admin.setting.shop.delivery.obsolete.complete';
+    // visibility
+    const ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE = 'admin.setting.shop.delivery.visibility.complete';
 
     /**
      * Admin/Setting/Shop/MailController

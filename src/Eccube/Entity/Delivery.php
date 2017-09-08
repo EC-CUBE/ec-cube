@@ -38,16 +38,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Delivery extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var integer
-     */
-    const ACTIVE = 0;
-
-    /**
-     * @var integer
-     */
-    const OBSOLETE = 1;
-
-    /**
      * @return string
      */
     public function __toString()
@@ -100,18 +90,11 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @deprecated
+     * @ORM\Column(name="visible", type="boolean", options={"unsigned":true,"default":true})
      */
-    private $del_flg = 0;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="obsolete_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $obsolete_flg = 0;
+    private $visible = true;
 
     /**
      * @var \DateTime
@@ -242,10 +225,10 @@ class Delivery extends \Eccube\Entity\AbstractEntity
      */
     public function getServiceNameForAdmin()
     {
-        if ($this->isActive()) {
+        if ($this->isVisible()) {
             return $this->getServiceName();
         } else {
-            return $this->getServiceName().'(廃止)';
+            return $this->getServiceName().'(非表示)';
         }
     }
 
@@ -319,32 +302,6 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Delivery
-     * @deprecated
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     * @deprecated
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**
@@ -552,36 +509,26 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set obsoleteFlg
+     * Set visible
      *
-     * @param integer $obsoleteFlg
+     * @param boolean $visible
      *
      * @return Delivery
      */
-    public function setObsoleteFlg($obsoleteFlg)
+    public function setVisible($visible)
     {
-        $this->obsolete_flg = $obsoleteFlg;
+        $this->visible = $visible;
 
         return $this;
     }
 
     /**
-     * Get obsoleteFlg
-     *
-     * @return integer
-     */
-    public function getObsoleteFlg()
-    {
-        return $this->obsolete_flg;
-    }
-
-    /**
-     * Is the status active?
+     * Is the visibility visible?
      *
      * @return boolean
      */
-    public function isActive()
+    public function isVisible()
     {
-        return $this->getObsoleteFlg() === self::ACTIVE;
+        return $this->visible;
     }
 }

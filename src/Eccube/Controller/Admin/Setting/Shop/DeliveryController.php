@@ -298,18 +298,18 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/delivery/{id}/obsolete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_obsolete")
+     * @Route("/{_admin}/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
      */
-    public function obsolete(Application $app, Request $request, Delivery $Delivery)
+    public function visibility(Application $app, Request $request, Delivery $Delivery)
     {
         $this->isTokenValid($app);
 
-        $message = 'admin.delivery.obsolete.complete';
-        if ($Delivery->isActive()) {
-            $Delivery->setObsoleteFlg(Delivery::OBSOLETE);
+        $message = 'admin.delivery.visible.complete';
+        if ($Delivery->isVisible()) {
+            $Delivery->setVisible(false);
         } else {
-            $message = 'admin.delivery.active.complete';
-            $Delivery->setObsoleteFlg(Delivery::ACTIVE);
+            $message = 'admin.delivery.hidden.complete';
+            $Delivery->setVisible(true);
         }
         $this->entityManager->persist($Delivery);
 
@@ -321,7 +321,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_OBSOLETE_COMPLETE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE, $event);
 
         $app->addSuccess($message, 'admin');
 

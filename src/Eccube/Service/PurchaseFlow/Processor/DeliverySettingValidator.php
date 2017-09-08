@@ -31,7 +31,7 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         }
 
         $ProductType = $item->getProductClass()->getProductType();
-        $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType, 'obsolete_flg' => Delivery::ACTIVE]);
+        $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType, 'visible' => true]);
 
         if (empty($Deliveries)) {
             throw ItemValidateException::fromProductClass('cart.product.not.producttype', $item->getProductClass());
