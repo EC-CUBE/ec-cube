@@ -31,10 +31,10 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function setUp()
     {
-        $src = __DIR__.'/../../../src/Eccube/Resource/config/log.yml.dist';
-        $dist = __DIR__.'/../../../app/config/eccube/log.yml';
+        $src = __DIR__.'/../../../src/Eccube/Resource/config/log.php';
+        $dist = __DIR__.'/../../../app/config/eccube/log.php';
 
-        $config = Yaml::parse(file_get_contents($src));
+        $config = require $src;
         $config['log']['log_level'] = 'ERROR';
         $config['log']['action_level'] = 'ERROR';
         $config['log']['passthru_level'] = 'ERROR';
@@ -46,7 +46,8 @@ abstract class EccubeTestCase extends WebTestCase
             $channel[$key]['passthru_level'] = 'ERROR';
         }
         $config['log']['channel'] = $channel;
-        file_put_contents($dist, Yaml::dump($config));
+
+        file_put_contents($dist, '<?php return '.var_export($config, true).';');
 
         parent::setUp();
 
