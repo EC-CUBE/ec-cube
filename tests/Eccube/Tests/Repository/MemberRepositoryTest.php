@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -25,7 +26,7 @@ class MemberRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
+        $this->Member = $this->app['eccube.repository.member']->find(1);
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')
             ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
 
@@ -35,13 +36,10 @@ class MemberRepositoryTest extends EccubeTestCase
                 ->setLoginId('member-'.$i)
                 ->setPassword('password')
                 ->setSalt($this->app['eccube.repository.member']->createSalt(5))
-                ->setRank($i)
-                ->setWork($Work)
-                ->setDelFlg(Constant::DISABLED);
+                ->setWork($Work);
             $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
-            $this->app['orm.em']->persist($Member);
+            $this->app['eccube.repository.member']->save($Member);
         }
-        $this->app['orm.em']->flush();
     }
 
     public function testLoadUserByUsername()
@@ -79,7 +77,7 @@ class MemberRepositoryTest extends EccubeTestCase
      */
     public function testLoadUserByUsernameSetSameRecord()
     {
-        $this->Member = $this->app['eccube.repository.member']->find(2);
+        $this->Member = $this->app['eccube.repository.member']->find(1);
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')
             ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
 
@@ -90,8 +88,7 @@ class MemberRepositoryTest extends EccubeTestCase
                 ->setPassword('password')
                 ->setSalt($this->app['eccube.repository.member']->createSalt(5))
                 ->setRank($i)
-                ->setWork($Work)
-                ->setDelFlg(Constant::DISABLED);
+                ->setWork($Work);
             $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
             $this->app['orm.em']->persist($Member);
         }
@@ -149,6 +146,17 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testDown()
     {
+        /** @var EntityManager $em */
+        $em = $this->app['orm.em'];
+        $qb = $em->createQueryBuilder();
+        $max = $qb->select('MAX(m.rank)')
+            ->from(Member::class, 'm')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $this->Member->setRank($max + 1);
+        $this->app['orm.em']->flush();
+
         $rank = $this->Member->getRank();
         $result = $this->app['eccube.repository.member']->down($this->Member);
         $this->assertTrue($result);
@@ -174,8 +182,7 @@ class MemberRepositoryTest extends EccubeTestCase
             ->setLoginId('member-100')
             ->setPassword('password')
             ->setSalt($this->app['eccube.repository.member']->createSalt(5))
-            ->setRank(100)
-            ->setDelFlg(Constant::DISABLED);
+            ->setRank(100);
         $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
         $result = $this->app['eccube.repository.member']->save($Member);
         $this->assertTrue($result);
@@ -183,25 +190,27 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testSaveWithRankNull()
     {
-        $Members = $this->app['eccube.repository.member']->findAll();
-        foreach ($Members as $Member) {
-            $this->app['orm.em']->remove($Member);
-        }
-        $this->app['orm.em']->flush();
+        /** @var EntityManager $em */
+        $em = $this->app['orm.em'];
+        $qb = $em->createQueryBuilder();
+        $rank = $qb->select('MAX(m.rank)')
+            ->from(Member::class, 'm')
+            ->getQuery()
+            ->getSingleScalarResult();
 
         $Member = new Member();
         $Member
             ->setLoginId('member-100')
             ->setPassword('password')
             ->setSalt($this->app['eccube.repository.member']->createSalt(5))
-            ->setRank(100)
-            ->setDelFlg(Constant::DISABLED);
+            ->setRank(100);
         $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
         $result = $this->app['eccube.repository.member']->save($Member);
         $this->assertTrue($result);
 
-        $this->expected = 1;
+        $this->expected = $rank + 1;
         $this->actual = $Member->getRank();
+
         $this->verify();
     }
 
@@ -215,18 +224,24 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testDelete()
     {
-        $result = $this->app['eccube.repository.member']->delete($this->Member);
+        $Member = $this->createMember();
+        $id = $Member->getId();
+        $result = $this->app['eccube.repository.member']->delete($Member);
         $this->assertTrue($result);
 
-        $this->expected = 1;
-        $this->actual = $this->Member->getDelFlg();
-        $this->verify();
+        $Member = $this->app['eccube.repository.member']->find($id);
+        $this->assertNull($Member);
     }
 
     public function testDeleteWithException()
     {
-        $Member = new Member(); // 空のインスタンスなので例外になる
-        $result = $this->app['eccube.repository.member']->delete($Member);
+        $Member1 = $this->createMember();
+        $Member2 = $this->createMember();
+        $Member2->setCreator($Member1);
+        $this->app['orm.em']->flush();
+
+        // 参照制約で例外となる
+        $result = $this->app['eccube.repository.member']->delete($Member1);
         $this->assertFalse($result);
     }
 
