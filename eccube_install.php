@@ -413,15 +413,16 @@ function updatePermissions($argv)
 function createConfigFiles($database_driver)
 {
     $config_path = __DIR__.'/app/config/eccube';
-    createYaml(getConfig(), $config_path.'/config.yml');
-    createYaml(getDatabaseConfig($database_driver), $config_path.'/database.yml');
-    createYaml(getMailConfig(), $config_path.'/mail.yml');
-    createYaml(getPathConfig(), $config_path.'/path.yml');
+    createPhp(getConfig(), $config_path.'/config.php');
+    createPhp(getDatabaseConfig($database_driver), $config_path.'/database.php');
+    createPhp(getMailConfig(), $config_path.'/mail.php');
+    createPhp(getPathConfig(), $config_path.'/path.php');
 }
 
-function createYaml($config, $path)
+function createPhp($config, $path)
 {
-    $content = \Symfony\Component\Yaml\Yaml::dump($config);
+    $content = var_export($config, true);
+    $content = '<?php return '.$content.';'.PHP_EOL;
     $fs = new \Symfony\Component\Filesystem\Filesystem();
     $fs->dumpFile($path, $content);
 }
@@ -506,12 +507,12 @@ function getPathConfig()
 
     $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}', '${ROOT_PUBLIC_URLPATH}');
     $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH, $ROOT_PUBLIC_URLPATH);
-    $content = str_replace(
-        $target,
-        $replace,
-        file_get_contents(__DIR__.'/src/Eccube/Resource/config/path.yml.dist')
-    );
-    return \Symfony\Component\Yaml\Yaml::parse($content);
+
+    $config = require __DIR__.'/src/Eccube/Resource/config/path.php';
+    foreach ($config as &$value) {
+        $value = str_replace($target, $replace, $value);
+    }
+    return $config;
 }
 
 /**

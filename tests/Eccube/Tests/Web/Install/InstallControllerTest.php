@@ -25,7 +25,6 @@
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Tests\Web\Install\AbstractInstallWebTestCase;
-use Symfony\Component\Yaml\Yaml;
 
 class InstallControllerTest extends AbstractInstallWebTestCase
 {
@@ -33,8 +32,8 @@ class InstallControllerTest extends AbstractInstallWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $config_file = __DIR__.'/../../../../../app/config/eccube/database.yml';
-        $this->config = Yaml::parse(file_get_contents($config_file));
+        $config_file = __DIR__.'/../../../../../app/config/eccube/database.php';
+        $this->config = require $config_file;
     }
     public function testRoutingIndex()
     {

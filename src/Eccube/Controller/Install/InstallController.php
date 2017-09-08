@@ -38,7 +38,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
+
 class InstallController
 {
     const MCRYPT = 'mcrypt';
@@ -125,7 +125,7 @@ class InstallController
             ->getForm();
         $sessionData = $this->getSessionData($request);
         if (empty($sessionData['shop_name'])) {
-            $config_file = $this->config_path . '/config.yml';
+            $config_file = $this->config_path . '/config.php';
             $fs = new Filesystem();
             if ($fs->exists($config_file)) {
                 // すでに登録されていた場合、登録データを表示
@@ -136,11 +136,11 @@ class InstallController
                     $sessionData['email'] = $row['email01'];
                 }
                 // セキュリティの設定
-                $config_file = $this->config_path . '/path.yml';
-                $config = Yaml::parse(file_get_contents($config_file));
+                $config_file = $this->config_path . '/path.php';
+                $config = require $config_file;
                 $sessionData['admin_dir'] = $config['admin_route'];
-                $config_file = $this->config_path . '/config.yml';
-                $config = Yaml::parse(file_get_contents($config_file));
+                $config_file = $this->config_path . '/config.php';
+                $config = require $config_file;
                 $allowHost = $config['admin_allow_host'];
                 if (count($allowHost) > 0) {
                     $sessionData['admin_allow_hosts'] = Str::convertLineFeed(implode("\n", $allowHost));
@@ -157,8 +157,8 @@ class InstallController
                     }
                 }
                 // メール設定
-                $config_file = $this->config_path . '/mail.yml';
-                $config = Yaml::parse(file_get_contents($config_file));
+                $config_file = $this->config_path . '/mail.php';
+                $config = require $config_file;
                 $mail = $config['mail'];
                 $sessionData['mail_backend'] = $mail['transport'];
                 $sessionData['smtp_host'] = $mail['host'];
@@ -188,12 +188,12 @@ class InstallController
             ->getForm();
         $sessionData = $this->getSessionData($request);
         if (empty($sessionData['database'])) {
-            $config_file = $this->config_path . '/database.yml';
+            $config_file = $this->config_path . '/database.php';
             $fs = new Filesystem();
             if ($fs->exists($config_file)) {
                 // すでに登録されていた場合、登録データを表示
                 // データベース設定
-                $config = Yaml::parse(file_get_contents($config_file));
+                $config = require $config_file;
                 $database = $config['database'];
                 $sessionData['database'] = $database['driver'];
                 if ($database['driver'] != 'pdo_sqlite') {
@@ -267,10 +267,10 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        $config_yml = $this->config_path . '/config.yml';
-        $config = Yaml::parse(file_get_contents($config_yml));
-        $config_path = $this->config_path . '/path.yml';
-        $path_yml = Yaml::parse(file_get_contents($config_path));
+        $config_yml = $this->config_path . '/config.php';
+        $config = require $config_yml;
+        $config_path = $this->config_path . '/path.php';
+        $path_yml = require $config_path;
         $config = array_replace_recursive($path_yml, $config);
         if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
             Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')), $config['trusted_proxies']));
@@ -335,8 +335,8 @@ class InstallController
     }
     private function setPDO()
     {
-        $config_file = $this->config_path . '/database.yml';
-        $config = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/database.php';
+        $config = require $config_file;
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
             $this->PDO->connect();
@@ -362,8 +362,8 @@ class InstallController
     private function getEntityManager()
     {
         if (!isset($this->app['orm.em'])) {
-            $config_file = $this->config_path . '/database.yml';
-            $database = Yaml::parse(file_get_contents($config_file));
+            $config_file = $this->config_path . '/database.php';
+            $database = require $config_file;
             $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
                 'db.options' => $database['database']
             ));
@@ -433,11 +433,11 @@ class InstallController
     private function insert()
     {
         $this->resetNatTimer();
-        $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/database.php';
+        $database = require $config_file;
         $config['database'] = $database['database'];
-        $config_file = $this->config_path . '/config.yml';
-        $baseConfig = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/config.php';
+        $baseConfig = require $config_file;
         $config['config'] = $baseConfig;
         $this->PDO->beginTransaction();
         try {
@@ -485,11 +485,11 @@ class InstallController
     private function update()
     {
         $this->resetNatTimer();
-        $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/database.php';
+        $database = require $config_file;
         $config['database'] = $database['database'];
-        $config_file = $this->config_path . '/config.yml';
-        $baseConfig = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/config.php';
+        $baseConfig = require $config_file;
         $config['config'] = $baseConfig;
         $this->PDO->beginTransaction();
         try {
@@ -586,9 +586,9 @@ class InstallController
     private function createConfigYamlFile($data, $auth = true)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/config.yml';
+        $config_file = $this->config_path . '/config.php';
         if ($fs->exists($config_file)) {
-            $config = Yaml::parse(file_get_contents($config_file));
+            $config = require $config_file;
             $fs->remove($config_file);
         }
         if ($auth) {
@@ -618,34 +618,43 @@ class InstallController
             // ループバックアドレスを含める
             $adminTrustedProxies = array('127.0.0.1/8', '::1');
         }
-        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
-        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
-        $fs = new Filesystem();
-        $content = str_replace(
-            $target, $replace, file_get_contents($this->dist_path . '/config.yml.dist')
-        );
-        $fs->dumpFile($config_file, $content);
-        $config = Yaml::parse(file_get_contents($config_file));
+
+        $config = require $this->dist_path . '/config.php';
+        $config['eccube_install'] = 0;
+        $config['auth_magic'] = $auth_magic;
+        $config['shop_name'] = $data['shop_name'];
+        $config['force_ssl'] = $data['admin_force_ssl'];
         $config['admin_allow_host'] = $adminAllowHosts;
         $config['trusted_proxies_connection_only'] = $data['trusted_proxies_connection_only'];
         $config['trusted_proxies'] = $adminTrustedProxies;
-        $yml = Yaml::dump($config);
-        file_put_contents($config_file, $yml);
+
+        $this->createPhp($config_file, $config);
+
         return $this;
     }
+
+    private function createPhp($path, $config)
+    {
+        $content = var_export($config, true);
+        $content = '<?php return '.$content.';'.PHP_EOL;
+        $fs = new Filesystem();
+        $fs->dumpFile($path, $content);
+    }
+
     private function addInstallStatus()
     {
-        $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/config.php';
+        $config = require $config_file;
         $config['eccube_install'] = 1;
-        $yml = Yaml::dump($config);
-        file_put_contents($config_file, $yml);
+
+        $this->createPhp($config_file, $config);
+
         return $this;
     }
     private function createDatabaseYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path . '/database.php';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -665,58 +674,48 @@ class InstallController
                     $data['db_driver'] = 'pdo_mysql';
                     break;
             }
-            $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
-            $replace = array(
-                $data['db_driver'],
-                $data['database_host'],
-                $data['database_name'],
-                $data['database_port'],
-                $data['database_user'],
-                $data['database_password']
-            );
-            $fs = new Filesystem();
-            $content = str_replace(
-                $target, $replace, file_get_contents($this->dist_path . '/database.yml.dist')
-            );
+
+            $config = $this->dist_path . '/database.php';
+            $config['database']['driver'] = $data['db_driver'];
+            $config['database']['host'] = $data['database_host'];
+            $config['database']['dbname'] = $data['database_name'];
+            $config['database']['port'] = $data['database_port'];
+            $config['database']['user'] = $data['database_user'];
+            $config['database']['password'] = $data['database_password'];
+
         } else {
-            $content = Yaml::dump(
-                array(
-                    'database' => array(
-                        'driver' => 'pdo_sqlite',
-                        'path' => realpath($this->config_path . '/eccube.db')
-                    )
-                )
-            );
+            $config = $this->dist_path . '/database_sqlite3.php';
+            $config['database']['driver'] = 'pdo_sqlite';
+            $config['database']['path'] = realpath($this->config_path . '/eccube.db');
         }
-        $fs->dumpFile($config_file, $content);
+
+        $this->createPhp($config_file, $config);
+
         return $this;
     }
     private function createMailYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/mail.yml';
+        $config_file = $this->config_path . '/mail.php';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
-        $target = array('${MAIL_BACKEND}', '${MAIL_HOST}', '${MAIL_PORT}', '${MAIL_USER}', '${MAIL_PASS}');
-        $replace = array(
-            $data['mail_backend'],
-            $data['smtp_host'],
-            $data['smtp_port'],
-            $data['smtp_username'],
-            $data['smtp_password']
-        );
-        $fs = new Filesystem();
-        $content = str_replace(
-            $target, $replace, file_get_contents($this->dist_path . '/mail.yml.dist')
-        );
-        $fs->dumpFile($config_file, $content);
+
+        $config = $this->dist_path.'/mail.php';
+        $config['mail']['transport'] = $data['mail_backend'];
+        $config['mail']['host'] = $data['smtp_host'];
+        $config['mail']['port'] = $data['smtp_port'];
+        $config['mail']['username'] = $data['smtp_username'];
+        $config['mail']['password'] = $data['smtp_password'];
+
+        $this->createPhp($config_file, $config);
+
         return $this;
     }
     private function createPathYamlFile($data, Request $request)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/path.yml';
+        $config_file = $this->config_path . '/path.php';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -728,17 +727,17 @@ class InstallController
         $ROOT_PUBLIC_URLPATH = $ROOT_URLPATH . RELATIVE_PUBLIC_DIR_PATH;
         $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}', '${ROOT_PUBLIC_URLPATH}');
         $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH, $ROOT_PUBLIC_URLPATH);
-        $fs = new Filesystem();
-        $content = str_replace(
-            $target, $replace, file_get_contents($this->dist_path . '/path.yml.dist')
-        );
-        $fs->dumpFile($config_file, $content);
+
+        $config = require $this->dist_path . '/path.php';
+
+        $this->createPhp($config_file, $config);
+
         return $this;
     }
     private function sendAppData($params)
     {
-        $config_file = $this->config_path . '/database.yml';
-        $db_config = Yaml::parse(file_get_contents($config_file));
+        $config_file = $this->config_path . '/database.php';
+        $db_config = require $config_file;
         $this->setPDO();
         $stmt = $this->PDO->query('select version() as v');
         $version = '';
