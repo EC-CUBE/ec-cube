@@ -3,6 +3,19 @@
   [
     'enabled' => false,
     'age' => 10,
-    'route' => NULL,
+    // フロントでキャッシュを適用させる画面のrouteを設定
+    'route' =>
+    [
+//      'homepage',
+//      'product_list',
+//      'block_category',
+//      'block_news',
+//      'block_search_product',
+//      'help_about',
+//      'help_guide',
+//      'help_privacy',
+//      'help_tradelaw',
+//      'help_agreement',
+    ],
   ],
 ];

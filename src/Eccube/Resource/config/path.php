@@ -1,9 +1,11 @@
 <?php return [
+   // duplicated
   'root' => '${ROOT_URLPATH}/',
   'admin_dir' => '${ADMIN_ROUTE}/',
   'tpl' => '${ROOT_PUBLIC_URLPATH}/user_data/packages/default/',
   'admin_tpl' => '${ROOT_PUBLIC_URLPATH}/user_data/packages/admin/',
   'image_path' => '${ROOT_PUBLIC_URLPATH}/upload/save_image/',
+
   'root_dir' => '${ROOT_DIR}',
   'root_urlpath' => '${ROOT_URLPATH}',
   'template_code' => '${TEMPLATE_CODE}',

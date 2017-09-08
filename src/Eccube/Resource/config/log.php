@@ -55,8 +55,8 @@
     ],
     'exclude_keys' => 
     [
-      0 => 'password',
-      1 => 'app',
+      'password',
+      'app',
     ],
   ],
 ];
