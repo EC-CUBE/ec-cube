@@ -666,7 +666,7 @@ class Generator {
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
             ->setProductType($ProductType)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);
 

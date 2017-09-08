@@ -66,7 +66,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $Delivery = new Delivery();
         $Delivery->setName('テスト配送');
         $Delivery->setProductType($ProductType);
-        $Delivery->setDelFlg(0);
+        $Delivery->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);
 

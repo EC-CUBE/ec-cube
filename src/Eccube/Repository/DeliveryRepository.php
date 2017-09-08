@@ -63,7 +63,7 @@ class DeliveryRepository extends AbstractRepository
             $Delivery = new \Eccube\Entity\Delivery();
             $Delivery
                 ->setRank($rank)
-                ->setDelFlg(0)
+                ->setVisible(true)
                 ->setProductType($ProductType);
         } else {
             $Delivery = $this->find($id);
