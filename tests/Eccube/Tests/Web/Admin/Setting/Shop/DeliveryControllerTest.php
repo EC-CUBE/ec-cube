@@ -45,7 +45,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         // create new delivery
         $Delivery = $this->app['eccube.repository.delivery']->findOrCreate(0);
         $Delivery->setConfirmUrl($faker->url);
-        $Delivery->setDelFlg(Constant::DISABLED);
+        $Delivery->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush();
 
