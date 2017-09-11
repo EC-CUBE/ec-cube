@@ -415,7 +415,7 @@ class Product extends \Eccube\Entity\AbstractEntity
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
-            if (!$ClassCategory2->isVisible()) {
+            if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
                 continue;
             }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
