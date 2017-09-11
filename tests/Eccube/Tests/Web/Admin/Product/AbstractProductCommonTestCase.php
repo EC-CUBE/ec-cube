@@ -116,7 +116,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $TestClassName = new ClassName();
         $TestClassName->setName($this->faker->word)
             ->setRank($this->faker->randomNumber(3))
-            ->setDelFlg(Constant::DISABLED)
             ->setCreator($Creator);
 
         $this->app['orm.em']->persist($TestClassName);
