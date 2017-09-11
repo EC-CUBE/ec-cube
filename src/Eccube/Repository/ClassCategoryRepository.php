@@ -152,7 +152,7 @@ class ClassCategoryRepository extends AbstractRepository
                     $rank = 0;
                 }
                 $ClassCategory->setRank($rank + 1);
-                $ClassCategory->setDelFlg(0);
+                $ClassCategory->setVisible(true);
             }
 
             $em->persist($ClassCategory);
@@ -176,6 +176,10 @@ class ClassCategoryRepository extends AbstractRepository
      */
     public function delete($ClassCategory)
     {
+        if (is_null($ClassCategory->getId())) {
+            // 存在しない場合は何もしない
+            return false;
+        }
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();
         try {
@@ -191,9 +195,37 @@ class ClassCategoryRepository extends AbstractRepository
                 ->getQuery()
                 ->execute();
 
-            $ClassCategory->setDelFlg(1);
-            $em->persist($ClassCategory);
+            $em->remove($ClassCategory);
             $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 規格カテゴリの表示/非表示を切り替える.
+     *
+     * @param \Eccube\Entity\ClassCategory $ClassCategory
+     * @return boolean 成功した場合 true
+     */
+    public function toggleVisibility($ClassCategory)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        if ($ClassCategory->isVisible()) {
+            $ClassCategory->setVisible(false);
+        } else {
+            $ClassCategory->setVisible(true);
+        }
+        try {
+            $em->persist($ClassCategory);
+            $em->flush($ClassCategory);
 
             $em->getConnection()->commit();
         } catch (\Exception $e) {

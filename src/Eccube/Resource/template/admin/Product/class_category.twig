@@ -121,7 +121,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div id="sortable_list_box__name--{{ ClassCategory.id }}" class="item_pattern td">
                                             <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">
-                                                {{ ClassCategory.name }}
+                                                {{ ClassCategory.nameForAdmin }}
                                             </a>
                                         </div>
                                         <div id="sortable_list_box__menu_box--{{ ClassCategory.id }}" class="icon_edit td">
@@ -134,6 +134,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         </li>
                                                     {% else %}
                                                         <li><a>編集中</a></li>
+                                                    {% endif %}
+                                                    {% if ClassCategory.isVisible %}
+                                                        <li>
+                                                            <a href="{{ url('admin_product_class_category_visibility', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}
+                                                               data-method="put"
+                                                               data-message="分類名を非表示に変更しますか？">非表示</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li>
+                                                            <a href="{{ url('admin_product_class_category_visibility', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}
+                                                               data-method="put"
+                                                               data-message="分類名を表示に変更しますか？">表示</a>
+                                                        </li>
                                                     {% endif %}
                                                     <li>
                                                         <a href="{{ url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}

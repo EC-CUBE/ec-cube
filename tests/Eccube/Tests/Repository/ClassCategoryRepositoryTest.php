@@ -35,7 +35,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
                 $ClassCategory
                     ->setName('classcategory-'.$i.'-'.$j)
                     ->setCreator($this->Member)
-                    ->setDelFlg(0)
+                    ->setVisible(true)
                     ->setRank($j)
                     ->setClassName($ClassName);
                 $ClassName->addClassCategory($ClassCategory);
@@ -218,11 +218,11 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
             array('name' => 'classcategory-1-0')
         );
+        $ClassCategoryId = $ClassCategory->getId();
         $result = $this->app['eccube.repository.class_category']->delete($ClassCategory);
 
         $this->assertTrue($result);
-        $this->assertEquals(Constant::ENABLED, $ClassCategory->getDelFlg());
-        $this->assertTrue(0 === $ClassCategory->getRank());
+        self::assertNull($this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId));
     }
 
     public function testDeleteWithException()
@@ -232,5 +232,34 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $result = $this->app['eccube.repository.class_category']->delete($ClassCategory);
         $this->assertFalse($result, '削除に失敗するはず');
 
+    }
+
+    public function testToggleVisibilityToHidden()
+    {
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
+            array('name' => 'classcategory-1-0')
+        );
+        $ClassCategoryId = $ClassCategory->getId();
+        $result = $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
+
+        $this->assertTrue($result);
+        $actual = $this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId);
+        self::assertFalse($actual->isVisible());
+    }
+
+    public function testToggleVisibilityToVisible()
+    {
+        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
+            array('name' => 'classcategory-1-0')
+        );
+        $ClassCategory->setVisible(false);
+        $this->app['orm.em']->flush($ClassCategory);
+        $ClassCategoryId = $ClassCategory->getId();
+
+        $result = $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
+
+        $this->assertTrue($result);
+        $actual = $this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId);
+        self::assertTrue($actual->isVisible());
     }
 }

@@ -220,6 +220,52 @@ class ClassCategoryController extends AbstractController
     }
 
     /**
+     * @Method("PUT")
+     * @Route("/{_admin}/product/class_category/{class_name_id}/{id}/visibility", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_visibility")
+     */
+    public function visibility(Application $app, Request $request, $class_name_id, $id)
+    {
+        $this->isTokenValid($app);
+
+        $ClassName = $this->classNameRepository->find($class_name_id);
+        if (!$ClassName) {
+            throw new NotFoundHttpException('商品規格が存在しません');
+        }
+
+        log_info('規格分類表示変更開始', array($id));
+
+        $TargetClassCategory = $this->classCategoryRepository->find($id);
+        if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        }
+
+        $status = $this->classCategoryRepository->toggleVisibility($TargetClassCategory);
+
+        if ($status === true) {
+
+            log_info('規格分類表示変更完了', array($id));
+
+            $event = new EventArgs(
+                array(
+                    'ClassName' => $ClassName,
+                    'TargetClassCategory' => $TargetClassCategory,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
+
+            $app->addSuccess('admin.class_category.delete.complete', 'admin');
+        } else {
+            log_info('規格分類表示変更エラー', array($id));
+
+            $app->addError('admin.class_category.delete.error', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+    }
+
+    /**
      * @Method("POST")
      * @Route("/product/class_category/rank/move", name="admin_product_class_category_rank_move")
      */

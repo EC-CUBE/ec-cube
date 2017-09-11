@@ -90,7 +90,14 @@ class CartService
                 return false;
             }
         }
-
+        $ClassCategory1 = $ProductClass->getClassCategory1();
+        if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
+            return false;
+        }
+        $ClassCategory2 = $ProductClass->getClassCategory2();
+        if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
+            return false;
+        }
         /** @var Cart $cart */
         $cart = $this->getCart();
         $exists = $cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
