@@ -246,12 +246,12 @@ class EntryController extends AbstractController
             log_info('本会員登録開始');
             try {
                 $Customer = $this->customerRepository
-                    ->getNonActiveCustomerBySecretKey($secret_key);
+                    ->getProvisionalCustomerBySecretKey($secret_key);
             } catch (\Exception $e) {
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
 
-            $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::ACTIVE);
+            $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::REGULAR);
             $Customer->setStatus($CustomerStatus);
             $this->entityManager->persist($Customer);
             $this->entityManager->flush();

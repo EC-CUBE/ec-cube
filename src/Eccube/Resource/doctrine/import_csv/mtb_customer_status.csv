@@ -1,3 +1,4 @@
 id,name,rank,discriminator_type
 "1","仮会員","0","customerstatus"
 "2","本会員","1","customerstatus"
+"3","退会会員","2","customerstatus"

@@ -40,11 +40,28 @@ class CustomerStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
     /**
      * 仮会員.
+     * @deprecated
      */
     const NONACTIVE = 1;
 
     /**
      * 本会員.
+     * @deprecated
      */
     const ACTIVE = 2;
+
+    /**
+     * 仮会員.
+     */
+    const PROVISIONAL = 1;
+
+    /**
+     * 本会員
+     */
+    const REGULAR = 2;
+
+    /**
+     * 退会会員
+     */
+    const WITHDRAWING = 3;
 }
