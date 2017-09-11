@@ -471,4 +471,21 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         $this->entityManager->persist($Customer);
         $this->entityManager->flush();
     }
+
+    /**
+     * 仮会員, 本会員の会員を返す.
+     * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
+     *
+     * @param array $criteria
+     * @return Customer[]
+     */
+    public function getNonWithdrawingCustomers(array $criteria = [])
+    {
+        $criteria['Status'] = [
+            CustomerStatus::PROVISIONAL,
+            CustomerStatus::REGULAR,
+        ];
+
+        return $this->findBy($criteria);
+    }
 }

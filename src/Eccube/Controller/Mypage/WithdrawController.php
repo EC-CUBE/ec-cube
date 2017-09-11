@@ -30,8 +30,10 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
 use Eccube\Util\Str;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -51,6 +53,12 @@ class WithdrawController extends AbstractController
      * @var MailService
      */
     protected $mailService;
+
+    /**
+     * @Inject(CustomerStatusRepository::class)
+     * @var CustomerStatusRepository
+     */
+    protected $customerStatusRepository;
 
     /**
      * @Inject("orm.em")
@@ -109,12 +117,11 @@ class WithdrawController extends AbstractController
 
                     /* @var $Customer \Eccube\Entity\Customer */
                     $Customer = $app->user();
-
-                    // 会員削除
                     $email = $Customer->getEmail();
-                    // メールアドレスにダミーをセット
-                    $Customer->setEmail(Str::random(60).'@dummy.dummy');
-                    $Customer->setDelFlg(Constant::ENABLED);
+
+                    // 退会ステータスに変更
+                    $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::WITHDRAWING);
+                    $Customer->setStatus($CustomerStatus);
 
                     $this->entityManager->flush();
 
