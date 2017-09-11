@@ -86,8 +86,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
             ->find(1);
 
         $Customer
-            ->setStatus($Status)
-            ->setDelFlg(0);
+            ->setStatus($Status);
 
         return $Customer;
     }
@@ -171,8 +170,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->andWhere('c.del_flg = 0');
+            ->select('c');
 
         if (isset($searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             //スペース除去

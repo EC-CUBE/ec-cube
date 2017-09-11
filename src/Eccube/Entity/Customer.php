@@ -247,13 +247,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $reset_expire;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -352,7 +345,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 
         $this->setBuyTimes(0);
         $this->setBuyTotal(0);
-        $this->setDelFlg(Constant::DISABLED);
     }
 
     /**
@@ -1075,30 +1067,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getResetExpire()
     {
         return $this->reset_expire;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Customer
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**
