@@ -72,7 +72,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id")
      * })
      */
     private $Customer;
