@@ -38,16 +38,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Payment extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var int
-     */
-    const ACTIVE = 0;
-
-    /**
-     * @var int
-     */
-    const OBSOLETE = 1;
-
-    /**
      * @return string
      */
     public function __toString()
