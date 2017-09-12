@@ -239,7 +239,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="ShipmentItems")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id", onDelete="CASCADE")
      * })
      */
     private $Order;

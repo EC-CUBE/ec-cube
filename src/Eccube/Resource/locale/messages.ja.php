@@ -73,6 +73,7 @@ return [
     'admin.rank.move.complete' => 'ランクの移動が完了しました。',
     'admin.order.save.complete' => '受注情報を保存しました。',
     'admin.order.delete.complete' => '受注情報を削除しました。',
+    'admin.order.delete.failed' => '受注情報を削除できませんでした。',
     'Quantity' => '数量',
     'admin.class_name.up.complete' => '規格を上へ移動しました。',
     'admin.class_name.up.error' => '規格を上へ移動できませんでした。',
