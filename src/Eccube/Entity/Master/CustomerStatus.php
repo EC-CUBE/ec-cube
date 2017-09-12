@@ -61,7 +61,7 @@ class CustomerStatus extends \Eccube\Entity\Master\AbstractMasterEntity
     const REGULAR = 2;
 
     /**
-     * 退会会員
+     * 退会
      */
     const WITHDRAWING = 3;
 }
