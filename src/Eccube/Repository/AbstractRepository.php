@@ -25,8 +25,7 @@ class AbstractRepository extends EntityRepository
      */
     public function delete($entity)
     {
-        $entity->setDelFlg(Constant::ENABLED);
-        $this->save($entity);
+        $this->getEntityManager()->remove($entity);
     }
 
     /**

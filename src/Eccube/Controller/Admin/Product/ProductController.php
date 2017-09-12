@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
@@ -352,7 +353,6 @@ class ProductController extends AbstractController
             $ProductClass = new \Eccube\Entity\ProductClass();
             $Disp = $this->dispRepository->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
             $Product
-                ->setDelFlg(Constant::DISABLED)
                 ->addProductClass($ProductClass)
                 ->setStatus($Disp);
             $ProductClass
@@ -649,66 +649,42 @@ class ProductController extends AbstractController
             if ($Product instanceof \Eccube\Entity\Product) {
                 log_info('商品削除開始', array($id));
 
-                $Product->setDelFlg(Constant::ENABLED);
-
+                $deleteImages = $Product->getProductImage();
                 $ProductClasses = $Product->getProductClasses();
-                $deleteImages = array();
-                foreach ($ProductClasses as $ProductClass) {
-                    $ProductClass->setDelFlg(Constant::ENABLED);
-                    $Product->removeProductClass($ProductClass);
 
-                    $ProductClasses = $Product->getProductClasses();
-                    foreach ($ProductClasses as $ProductClass) {
-                        $ProductClass->setDelFlg(Constant::ENABLED);
-                        $Product->removeProductClass($ProductClass);
+                try {
+                    $this->productRepository->delete($Product);
+                    $this->entityManager->flush();
 
-                        $ProductStock = $ProductClass->getProductStock();
-                        $this->entityManager->remove($ProductStock);
+                    $event = new EventArgs(
+                        array(
+                            'Product' => $Product,
+                            'ProductClass' => $ProductClasses,
+                            'deleteImages' => $deleteImages,
+                        ),
+                        $request
+                    );
+                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
+                    $deleteImages = $event->getArgument('deleteImages');
+
+                    // 画像ファイルの削除(commit後に削除させる)
+                    foreach ($deleteImages as $deleteImage) {
+                        try {
+                            $fs = new Filesystem();
+                            $fs->remove($this->appConfig['image_save_realdir'] . '/' . $deleteImage);
+                        } catch (\Exception $e) {
+                            // エラーが発生しても無視する
+                        }
                     }
 
-                    $ProductImages = $Product->getProductImage();
-                    foreach ($ProductImages as $ProductImage) {
-                        $Product->removeProductImage($ProductImage);
-                        $deleteImages[] = $ProductImage->getFileName();
-                        $this->entityManager->remove($ProductImage);
-                    }
+                    log_info('商品削除完了', array($id));
 
-                    $ProductCategories = $Product->getProductCategories();
-                    foreach ($ProductCategories as $ProductCategory) {
-                        $Product->removeProductCategory($ProductCategory);
-                        $this->entityManager->remove($ProductCategory);
-                    }
+                    $app->addSuccess('admin.delete.complete', 'admin');
 
+                } catch (ForeignKeyConstraintViolationException $e) {
+                    log_info('商品削除エラー', array($id));
+                    $app->addError('admin.delete.failed', 'admin');
                 }
-
-                $this->entityManager->persist($Product);
-
-                $this->entityManager->flush();
-
-                $event = new EventArgs(
-                    array(
-                        'Product' => $Product,
-                        'ProductClass' => $ProductClasses,
-                        'deleteImages' => $deleteImages,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
-                $deleteImages = $event->getArgument('deleteImages');
-
-                // 画像ファイルの削除(commit後に削除させる)
-                foreach ($deleteImages as $deleteImage) {
-                    try {
-                        $fs = new Filesystem();
-                        $fs->remove($this->appConfig['image_save_realdir'] . '/' . $deleteImage);
-                    } catch (\Exception $e) {
-                        // エラーが発生しても無視する
-                    }
-                }
-
-                log_info('商品削除完了', array($id));
-
-                $app->addSuccess('admin.delete.complete', 'admin');
             } else {
                 log_info('商品削除エラー', array($id));
                 $app->addError('admin.delete.failed', 'admin');
