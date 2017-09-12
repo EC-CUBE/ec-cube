@@ -46,7 +46,6 @@ class EntityUtilTest extends EccubeTestCase
         $Product
             ->setName('test')
             ->setCreator($Member)
-            ->setDelFlg(Constant::DISABLED)
             ->addProductClass($ProductClass)
             ->setStatus($Disp);
         $ProductClass

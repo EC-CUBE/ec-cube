@@ -252,17 +252,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Product = $this->createProduct();
-        $crawler = $this->client->request(
+        $id = $Product->getId();
+        $this->client->request(
             'DELETE',
-            $this->app->url('admin_product_product_delete', array('id' => $Product->getId()))
+            $this->app->url('admin_product_product_delete', array('id' => $id))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_page', array('page_no' => 1)).'?resume=1'));
 
-        $DeletedProduct = $this->app['eccube.repository.product']->find($Product->getId());
-        $this->expected = 1;
-        $this->actual = $DeletedProduct->getDelFlg();
-        $this->verify();
+        self::assertNull($this->app['eccube.repository.product']->find($id));
     }
 
     public function testCopy()

@@ -70,7 +70,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setDescriptionList($this->faker->text(100))
             ->setDescriptionDetail($this->faker->text(200))
             ->setFreeArea($this->faker->text(200))
-            ->setDelFlg(Constant::DISABLED)
             ->setCreator($TestCreator);
 
         $this->app['orm.em']->persist($TestProduct);
