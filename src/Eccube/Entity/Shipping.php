@@ -24,7 +24,7 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Common\Constant;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
@@ -311,6 +311,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\ProductClass
      */
     private $ProductClassOfTemp;
+
+    /**
+     * @var \Eccube\Entity\Master\ShippingStatus
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ShippingStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="shipping_status", referencedColumnName="id")
+     * })
+     */
+    private $ShippingStatus;
 
     /**
      * Constructor

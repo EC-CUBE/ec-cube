@@ -16,6 +16,7 @@
 - mtb_product_list_order_by.csv
 - mtb_product_type.csv
 - mtb_sex.csv
+- mtb_shipping_status.csv
 - mtb_tag.csv
 - mtb_taxrule.csv
 - mtb_tax_type.csv
