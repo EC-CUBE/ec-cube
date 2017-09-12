@@ -25,7 +25,6 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Common\Constant;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -67,8 +66,8 @@ class Product extends \Eccube\Entity\AbstractEntity
             $i = 0;
             foreach ($this->getProductClasses() as $ProductClass) {
                 /* @var $ProductClass \Eccube\Entity\ProductClass */
-                // del_flg
-                if ($ProductClass->getDelFlg() === 1) {
+                // stock_find
+                if ($ProductClass->isVisible() == false) {
                     continue;
                 }
                 $ClassCategory1 = $ProductClass->getClassCategory1();
@@ -460,7 +459,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function hasProductClass()
     {
         foreach ($this->ProductClasses as $ProductClass) {
-            if (!is_null($ProductClass->getClassCategory1()) && $ProductClass->getDelFlg() == Constant::DISABLED) {
+            if (!is_null($ProductClass->getClassCategory1())) {
                 return true;
             }
         }

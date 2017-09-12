@@ -356,7 +356,7 @@ class ProductController extends AbstractController
                 ->addProductClass($ProductClass)
                 ->setStatus($Disp);
             $ProductClass
-                ->setDelFlg(Constant::DISABLED)
+                ->setVisible(true)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
             $ProductStock = new \Eccube\Entity\ProductStock();
@@ -722,7 +722,7 @@ class ProductController extends AbstractController
                         'Eccube\Entity\ProductClass'
                     ));
                     $dummyClass = $this->productClassRepository->findOneBy(array(
-                        'del_flg' => \Eccube\Common\Constant::ENABLED,
+                        'visible' => false,
                         'ClassCategory1' => null,
                         'ClassCategory2' => null,
                         'Product' => $Product,

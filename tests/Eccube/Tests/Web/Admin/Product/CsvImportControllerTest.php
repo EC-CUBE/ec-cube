@@ -72,7 +72,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             '通常価格' => $price01,
             '販売価格' => $price02,
             '送料' => 0,
-            '商品規格削除フラグ' => 0
         );
         $result = array();
         if ($has_header) {
@@ -157,7 +156,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 規格1のみ商品の確認
         // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
         $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
-        $sql = "SELECT * FROM dtb_product_class WHERE product_code = 'class1-only' ORDER BY del_flg DESC";
+        $sql = "SELECT * FROM dtb_product_class WHERE product_code = 'class1-only' ORDER BY visible ASC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -165,10 +164,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->expected = 2;
         $this->actual = count($result);
         $this->verify('取得できるのは2行');
-
-        $this->expected = 1;
-        $this->actual = $result[0]['del_flg'];
-        $this->verify('result[0] は del_flg = 1');
 
         $this->expected = null;
         $this->actual = $result[0]['class_category_id1'];
@@ -179,9 +174,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify('class_category_id2 は null');
 
         // del_flg = 0 の行の確認
-        $this->expected = 0;
-        $this->actual = $result[1]['del_flg'];
-        $this->verify('result[1] は del_flg = 0');
+        $this->expected = 1;
+        $this->actual = $result[1]['visible'];
+        $this->verify('result[1] は visible = 1');
 
         $this->expected = 3;
         $this->actual = $result[1]['class_category_id1'];
@@ -267,7 +262,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 規格1のみ商品の確認
         // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
         $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
-        $sql = "SELECT * FROM dtb_product_class WHERE product_id = 2 ORDER BY del_flg DESC";
+        $sql = "SELECT * FROM dtb_product_class WHERE product_id = 2 ORDER BY visible ASC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -276,9 +271,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($result);
         $this->verify('取得できるのは2行');
 
-        $this->expected = 1;
-        $this->actual = $result[0]['del_flg'];
-        $this->verify('result[0] は del_flg = 1');
+        $this->expected = false;
+        $this->actual = !!$result[0]['visible'];
+        $this->verify('result[0] は visible = false');
 
         $this->expected = null;
         $this->actual = $result[0]['class_category_id1'];
@@ -289,9 +284,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify('class_category_id2 は null');
 
         // del_flg = 0 の行の確認
-        $this->expected = 0;
-        $this->actual = $result[1]['del_flg'];
-        $this->verify('result[1] は del_flg = 0');
+        $this->expected = true;
+        $this->actual = $result[1]['visible'];
+        $this->verify('result[1] は visible = true');
 
         $this->expected = 3;
         $this->actual = $result[1]['class_category_id1'];
@@ -338,7 +333,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->app->overwrite('config', $config);
 
-        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),商品種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,商品規格削除フラグ'."\n");
+        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),商品種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料'."\n");
 
         $crawler = $this->client->request(
             'GET',

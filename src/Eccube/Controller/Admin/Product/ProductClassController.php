@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
@@ -259,7 +260,7 @@ class ProductClassController
             $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
 
             // 設定されている規格分類1、2を取得(商品規格の規格分類には必ず同じ値がセットされている)
-            $ProductClass = $ProductClasses[0];
+            $ProductClass = $ProductClasses->first();
             $ClassName1 = $ProductClass->getClassCategory1()->getClassName();
             $ClassName2 = null;
             if (!is_null($ProductClass->getClassCategory2())) {
@@ -431,11 +432,11 @@ class ProductClassController
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
-                    // デフォルトの商品規格を更新
+                    // デフォルトの商品規格を非表示
+                    /** @var ProductClass $defaultProductClass */
                     $defaultProductClass = $this->productClassRepository
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
-
-                    $defaultProductClass->setDelFlg(Constant::ENABLED);
+                    $defaultProductClass->setVisible(false);
 
                     $this->entityManager->flush();
 
@@ -526,13 +527,13 @@ class ProductClassController
                     }
 
                     foreach ($removeProductClasses as $rc) {
-                        // 登録されている商品規格に削除フラグをセット
+                        // 登録されている商品規格を非表示
+                        /** @var ProductClass $productClass */
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
                                     $productClass->getClassCategory1() == $rc->getClassCategory1() &&
                                     $productClass->getClassCategory2() == $rc->getClassCategory2()) {
-
-                                $productClass->setDelFlg(Constant::ENABLED);
+                                $productClass->setVisible(false);
                                 break;
                             }
                         }
@@ -571,8 +572,8 @@ class ProductClassController
                     }
 
                     foreach ($ProductClasses as $ProductClass) {
-                        // 登録されている商品規格に削除フラグをセット
-                        $ProductClass->setDelFlg(Constant::ENABLED);
+                        // 登録されている商品規格を非表示
+                        $ProductClass->setVisible(false);
                     }
 
                     /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
@@ -581,11 +582,11 @@ class ProductClassController
                         'Eccube\Entity\ProductClass'
                     ));
 
-                    // デフォルトの商品規格を更新
+                    // デフォルトの商品規格を表示
+                    /** @var ProductClass $defaultProductClass */
                     $defaultProductClass = $this->productClassRepository
-                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => Constant::ENABLED));
-
-                    $defaultProductClass->setDelFlg(Constant::DISABLED);
+                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'visible' => false));
+                    $defaultProductClass->setVisible(true);
 
                     $this->entityManager->flush();
                     log_info('商品規格削除完了', array($id));
@@ -689,7 +690,7 @@ class ProductClassController
                     $ProductClass->setClassCategory1($ClassCategory1);
                     $ProductClass->setClassCategory2($ClassCategory2);
                     $ProductClass->setTaxRate(null);
-                    $ProductClass->setDelFlg(Constant::DISABLED);
+                    $ProductClass->setVisible(true);
                     $ProductClasses[] = $ProductClass;
                 }
             } else {
@@ -697,7 +698,7 @@ class ProductClassController
                 $ProductClass->setProduct($Product);
                 $ProductClass->setClassCategory1($ClassCategory1);
                 $ProductClass->setTaxRate(null);
-                $ProductClass->setDelFlg(Constant::DISABLED);
+                $ProductClass->setVisible(true);
                 $ProductClasses[] = $ProductClass;
             }
 
@@ -736,16 +737,16 @@ class ProductClassController
      * 規格なし商品を除いて商品規格を取得.
      *
      * @param Product $Product
-     * @return \Eccube\Entity\ProductClass[]
+     * @return Collection
      */
     private function getProductClassesExcludeNonClass(Product $Product)
     {
         $ProductClasses = $Product->getProductClasses();
-        return $ProductClasses->filter(function($ProductClass) {
+        return new ArrayCollection(array_values($ProductClasses->filter(function($ProductClass) {
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
             return ($ClassCategory1 || $ClassCategory2);
-        });
+        })->toArray()));
     }
 
     /**
@@ -795,7 +796,7 @@ class ProductClassController
      *
      * @param Application     $app
      * @param Product         $Product
-     * @param ArrayCollection $ProductClasses 登録される商品規格
+     * @param ProductClass[] $ProductClasses 登録される商品規格
      */
     private function insertProductClass($app, $Product, $ProductClasses) {
 
@@ -803,7 +804,7 @@ class ProductClassController
         // 選択された商品を登録
         foreach ($ProductClasses as $ProductClass) {
 
-            $ProductClass->setDelFlg(Constant::DISABLED);
+            $ProductClass->setVisible(true);
             $ProductClass->setProduct($Product);
             $this->entityManager->persist($ProductClass);
 
