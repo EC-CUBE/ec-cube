@@ -1,3 +1,4 @@
 id,name,rank,discriminator_type
 "1","公開","0","disp"
 "2","非公開","1","disp"
+"3","廃止","2","disp"
