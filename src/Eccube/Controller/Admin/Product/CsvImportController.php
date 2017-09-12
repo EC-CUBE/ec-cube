@@ -263,17 +263,6 @@ class CsvImportController
                             $Product->setFreeArea(null);
                         }
 
-                        if ($row['商品削除フラグ'] == '') {
-                            $Product->setDelFlg(Constant::DISABLED);
-                        } else {
-                            if ($row['商品削除フラグ'] == (string)Constant::DISABLED || $row['商品削除フラグ'] == (string)Constant::ENABLED) {
-                                $Product->setDelFlg($row['商品削除フラグ']);
-                            } else {
-                                $this->addErrors(($data->key() + 1) . '行目の商品削除フラグが設定されていません。');
-                                return $this->render($app, $form, $headers);
-                            }
-                        }
-
                         // 商品画像登録
                         $this->createProductImage($row, $Product);
 

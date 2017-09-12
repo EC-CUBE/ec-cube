@@ -271,7 +271,6 @@ class Generator {
             ->setStatus($Disp)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
-            ->setDelFlg(Constant::DISABLED)
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->text());
         $Product->extendedParameter = "aaaa";
