@@ -160,6 +160,8 @@ return [
     'admin.preview.register.complete' => 'プレビューを登録しました',
     'admin.change_password.save.complete' => 'パスワードを変更しました。',
     'admin.change_password.save.error' => 'パスワードを変更できませんでした。',
+    'admin.delivery.visible.complete' => '表示に変更しました。',
+    'admin.delivery.hidden.complete' => '非表示に変更しました。',
     'admin_title' => 'EC-CUBE 管理機能',
     'normal_price_title' => '通常価格',
     'sale_price_title' => '販売価格',

@@ -3,6 +3,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Delivery;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -30,7 +31,7 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         }
 
         $ProductType = $item->getProductClass()->getProductType();
-        $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType]);
+        $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType, 'visible' => true]);
 
         if (empty($Deliveries)) {
             throw ItemValidateException::fromProductClass('cart.product.not.producttype', $item->getProductClass());
