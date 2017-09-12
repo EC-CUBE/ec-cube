@@ -78,17 +78,22 @@ class ShippingRepository extends AbstractRepository
                 ->setParameter('order_id', $searchData['order_id']);
         }
 
-        // status
-        if (!empty($searchData['status']) && $searchData['status']) {
+        // order status
+        if (isset($searchData['order_status']) && count($searchData['order_status'])) {
+            dump($searchData['order_status']);
+            dump(empty($searchData['order_status']));
+            $s = $searchData['order_status'];
+            dump(empty($s));
+            dump($searchData['order_status']->isEmpty());
             $qb
-                ->andWhere('o.OrderStatus = :status')
-                ->setParameter('status', $searchData['status']);
+                ->andWhere($qb->expr()->in('o.OrderStatus', ':order_status'))
+                ->setParameter('order_status', $searchData['order_status']);
         }
-        if (!empty($searchData['multi_status']) && count($searchData['multi_status'])) {
+        // shipping status
+        if (isset($searchData['shipping_status']) && count($searchData['shipping_status'])) {
             $qb
-                ->andWhere($qb->expr()->in('o.OrderStatus', ':multi_status'))
-                ->setParameter('multi_status', $searchData['multi_status']->toArray());
-            $filterStatus = true;
+                ->andWhere($qb->expr()->in('s.ShippingStatus', ':shipping_status'))
+                ->setParameter('shipping_status', $searchData['shipping_status']);
         }
         // name
         if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {

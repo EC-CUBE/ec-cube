@@ -126,13 +126,22 @@
                     <div id="search_box_main__body_toggle" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
                         <div class="row">
                             <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
-
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div id="search_box_main__multi_status" class="form-group">
-                                            <label>対応状況</label>
+                                        <div id="search_box_main__order_status" class="form-group">
+                                            <label>受注状況</label>
                                             <div>
-                                                {{ form_widget(searchForm.multi_status) }}
+                                                {{ form_widget(searchForm.order_status) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="search_box_main__shipping_status" class="form-group">
+                                            <label>出荷状況</label>
+                                            <div>
+                                                {{ form_widget(searchForm.shipping_status) }}
                                             </div>
                                         </div>
                                     </div>
