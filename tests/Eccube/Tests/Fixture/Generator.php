@@ -10,6 +10,7 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\PageLayout;
@@ -480,6 +481,8 @@ class Generator {
             ->setDeliveryFee($DeliveryFee)
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
+        $ShippingStatus = $this->app['orm.em']->find(ShippingStatus::class, ShippingStatus::PREPARED);
+        $Shipping->setShippingStatus($ShippingStatus);
 
         $this->app['orm.em']->persist($Shipping);
         $this->app['orm.em']->flush($Shipping);

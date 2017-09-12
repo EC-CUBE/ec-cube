@@ -144,6 +144,20 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Order = $this->createOrder($this->createCustomer());
+        $id = $Order->getId();
+
+        // FIXME FixtureでOrderDetailと紐付いて作成されるため、ここで削除
+        $OrderDetails = $Order->getOrderDetails();
+        foreach ($OrderDetails as $OrderDetail) {
+            $this->app['orm.em']->remove($OrderDetail);
+        }
+
+        // 出荷と明細の紐付けを解除してから削除する.
+        $Items = $Order->getItems();
+        foreach ($Items as $Item) {
+            $Item->setShipping(null);
+        }
+        $this->app['orm.em']->flush();
 
         $crawler = $this->client->request(
             'DELETE',
@@ -155,7 +169,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             ).'?resume=1'
         ));
 
-        $DeletedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $DeletedOrder = $this->app['eccube.repository.order']->find($id);
 
         $this->assertNull($DeletedOrder);
     }
