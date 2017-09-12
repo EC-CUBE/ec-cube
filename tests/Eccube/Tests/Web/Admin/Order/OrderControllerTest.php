@@ -157,9 +157,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $DeletedOrder = $this->app['eccube.repository.order']->find($Order->getId());
 
-        $this->expected = 1;
-        $this->actual = $DeletedOrder->getDelFlg();
-        $this->verify();
+        $this->assertNull($DeletedOrder);
     }
 
     public function testExportOrder()
