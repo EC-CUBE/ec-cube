@@ -331,6 +331,7 @@
                                                     <th id="result_list_main__header_payment_method">お届け先住所</th>
                                                     <th id="result_list_main__header_delivery_date">お届け予定日</th>
                                                     <th id="result_list_main__header_commit_date">発送日</th>
+                                                    <th id="result_list_main__header_commit_date">出荷状況</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -343,7 +344,7 @@
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate|date_format }}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.commit_date|date_format }}</td>
-
+                                                        <td id="result_list_main__shipping_status--{{ Shipping.id }}">{{ Shipping.ShippingStatus }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
