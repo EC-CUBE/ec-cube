@@ -289,8 +289,7 @@ class OrderHelper
             ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
             ->setPref($CustomerAddress->getPref())
             ->setAddr01($CustomerAddress->getAddr01())
-            ->setAddr02($CustomerAddress->getAddr02())
-            ->setDelFlg(Constant::DISABLED);
+            ->setAddr02($CustomerAddress->getAddr02());
 
         return $Shipping;
     }

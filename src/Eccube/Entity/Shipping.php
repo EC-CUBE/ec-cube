@@ -918,30 +918,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Shipping
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
-    }
-
-    /**
      * Set createDate.
      *
      * @param \DateTime $createDate
@@ -1274,5 +1250,27 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set ShippingStatus.
+     *
+     * @param ShippingStatus $ShippingStatus
+     * @return $this
+     */
+    public function setShippingStatus(ShippingStatus $ShippingStatus)
+    {
+        $this->ShippingStatus = $ShippingStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get ShippingStatus
+     * @return ShippingStatus
+     */
+    public function getShippingStatus()
+    {
+        return $this->ShippingStatus;
     }
 }
