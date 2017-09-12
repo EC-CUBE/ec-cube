@@ -10,6 +10,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -21,6 +22,7 @@ use Eccube\Form\Type\Admin\ShipmentItemType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShipmentItemRepository;
 
 use Eccube\Repository\ShippingRepository;
@@ -108,6 +110,12 @@ class EditController
      * @var ShippingRepository
      */
     protected $shippingRepository;
+
+    /**
+     * @Inject(ShippingStatusRepository::class)
+     * @var ShippingStatusRepository
+     */
+    protected $shippingStatusReposisotry;
 
     /**
      * @Inject("orm.em")
@@ -200,6 +208,8 @@ class EditController
             switch ($request->get('mode')) {
                 case 'register_and_commit':
                     if ($form->isValid()) {
+                        $ShippingStatus = $this->shippingStatusReposisotry->find(ShippingStatus::SHIPPED);
+                        $TargetShipping->setShippingStatus($ShippingStatus);
                         $TargetShipping->setCommitDate(new \DateTime());
                     }
                     // no break
