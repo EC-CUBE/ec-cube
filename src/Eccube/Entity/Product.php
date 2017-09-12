@@ -71,6 +71,14 @@ class Product extends \Eccube\Entity\AbstractEntity
                 if ($ProductClass->getDelFlg() === 1) {
                     continue;
                 }
+                $ClassCategory1 = $ProductClass->getClassCategory1();
+                $ClassCategory2 = $ProductClass->getClassCategory2();
+                if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
+                    continue;
+                }
+                if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
+                    continue;
+                }
 
                 // stock_find
                 $this->stockFinds[] = $ProductClass->getStockFind();
@@ -407,7 +415,9 @@ class Product extends \Eccube\Entity\AbstractEntity
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
-
+            if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
+                continue;
+            }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
             $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
