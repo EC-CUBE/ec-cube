@@ -163,6 +163,8 @@ return [
     'admin.payment.visible.complete' => '表示に設定しました。',
     'admin.payment.invisible.complete' => '非表示に設定しました。',
     'admin.payment.delete.error' => 'すでに使用されている支払方法は削除できません。',
+    'admin.delivery.visible.complete' => '表示に変更しました。',
+    'admin.delivery.hidden.complete' => '非表示に変更しました。',
     'admin_title' => 'EC-CUBE 管理機能',
     'normal_price_title' => '通常価格',
     'sale_price_title' => '販売価格',
