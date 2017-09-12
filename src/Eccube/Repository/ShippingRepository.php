@@ -80,11 +80,7 @@ class ShippingRepository extends AbstractRepository
 
         // order status
         if (isset($searchData['order_status']) && count($searchData['order_status'])) {
-            dump($searchData['order_status']);
-            dump(empty($searchData['order_status']));
             $s = $searchData['order_status'];
-            dump(empty($s));
-            dump($searchData['order_status']->isEmpty());
             $qb
                 ->andWhere($qb->expr()->in('o.OrderStatus', ':order_status'))
                 ->setParameter('order_status', $searchData['order_status']);
