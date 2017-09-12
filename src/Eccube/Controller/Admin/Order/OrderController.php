@@ -308,7 +308,7 @@ class OrderController extends AbstractController
         });
         if ($hasShipping) {
             log_info('受注削除失敗', [$Order->getId()]);
-            $app->addSuccess('admin.order.delete.failed', 'admin');
+            $app->addError('admin.order.delete.failed', 'admin');
 
             return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
