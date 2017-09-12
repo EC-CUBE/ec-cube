@@ -24,7 +24,6 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {

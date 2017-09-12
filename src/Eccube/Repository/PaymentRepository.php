@@ -57,9 +57,9 @@ class PaymentRepository extends AbstractRepository
             $Payment = new \Eccube\Entity\Payment();
             $Payment
                 ->setRank($rank)
-                ->setDelFlg(0)
                 ->setFixFlg(1)
-                ->setChargeFlg(1);
+                ->setChargeFlg(1)
+                ->setVisible(true);
         } else {
             $Payment = $this->find($id);
         }
