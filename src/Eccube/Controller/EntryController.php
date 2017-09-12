@@ -29,6 +29,7 @@ use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -161,7 +162,7 @@ class EntryController extends AbstractController
                             $this->customerRepository->getUniqueSecretKey($app)
                         );
 
-                    $CustomerAddress = new \Eccube\Entity\CustomerAddress();
+                    $CustomerAddress = new CustomerAddress();
                     $CustomerAddress
                         ->setFromCustomer($Customer);
 

@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\PluginEventHandlerRepository")
  */
-class PluginEventHandler extends \Eccube\Entity\AbstractEntity
+class PluginEventHandler extends AbstractEntity
 {
 
     const EVENT_PRIORITY_LATEST = -500; // ハンドラテーブルに登録されていない場合の優先度
@@ -97,13 +97,6 @@ class PluginEventHandler extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="handler_type", type="string", length=255, nullable=false)
      */
     private $handler_type;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
 
     /**
      * @var \DateTime
@@ -258,30 +251,6 @@ class PluginEventHandler extends \Eccube\Entity\AbstractEntity
     public function getHandlerType()
     {
         return $this->handler_type;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return PluginEventHandler
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

@@ -2,9 +2,7 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
 use Symfony\Component\Yaml\Yaml;
-use Eccube\Common\Constant;
 
 /**
  * 例外系の PluginService テストケース.

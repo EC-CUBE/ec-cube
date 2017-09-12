@@ -83,7 +83,6 @@ class TaxRuleRepository extends AbstractRepository
             ->find(1);
         $TaxRule->setCalcRule($CalcRule);
         $TaxRule->setTaxAdjust(0);
-        $TaxRule->setDelFlg(0);
 
         return $TaxRule;
     }
@@ -299,9 +298,8 @@ class TaxRuleRepository extends AbstractRepository
         if (!$TaxRule) {
             throw new NoResultException;
         }
-        $TaxRule->setDelFlg(1);
         $em = $this->getEntityManager();
-        $em->persist($TaxRule);
+        $em->remove($TaxRule);
         $em->flush();
     }
 

@@ -28,7 +28,6 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
@@ -200,8 +199,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ->setZipCode($data['zip01'].$data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
-                ->setAddr02($data['addr02'])
-                ->setDelFlg(Constant::DISABLED);
+                ->setAddr02($data['addr02']);
             $Customer->addCustomerAddress($CustomerAddress);
 
             // 受注情報を取得

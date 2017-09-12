@@ -48,9 +48,7 @@ class CustomerAddressRepository extends AbstractRepository
     {
         if (!$id) {
             $CustomerAddress = new \Eccube\Entity\CustomerAddress();
-            $CustomerAddress
-                ->setCustomer($Customer)
-                ->setDelFlg(0);
+            $CustomerAddress->setCustomer($Customer);
         } else {
             $qb = $this->createQueryBuilder('od')
                 ->andWhere('od.Customer = :Customer AND od.id = :id')

@@ -76,7 +76,6 @@ $(function() {
                             <thead>
                                 <tr id="history_box__item_header">
                                     <th id="history_box__header_send_date">処理日</th>
-                                    <th id="history_box__header_mail_template">通知メール</th>
                                     <th id="history_box__header_subject">件名</th>
                                 </tr>
                             </thead>
@@ -84,7 +83,6 @@ $(function() {
                             {% for MailHistory in MailHistories %}
                                 <tr id="history_box__item--{{ MailHistory.id }}">
                                     <td id="history_box__send_date--{{ MailHistory.id }}">{{ MailHistory.send_date|date_format }}</td>
-                                    <td id="history_box__mail_template--{{ MailHistory.id }}">{{ MailHistory.mail_template.subject }}</td>
                                     <td id="history_box__subject--{{ MailHistory.id }}"><a href="#mailModal" data-toggle="modal" data-whatever="{{ MailHistory.id }}">{{ MailHistory.subject }}</a></td>
                                 </tr>
                             {% endfor %}

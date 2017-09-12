@@ -126,9 +126,7 @@ class Generator {
         $this->app['orm.em']->flush($Customer);
 
         $CustomerAddress = new CustomerAddress();
-        $CustomerAddress
-            ->setCustomer($Customer)
-            ->setDelFlg(Constant::DISABLED);
+        $CustomerAddress->setCustomer($Customer);
         $CustomerAddress->copyProperties($Customer);
         $this->app['orm.em']->persist($CustomerAddress);
         $this->app['orm.em']->flush($CustomerAddress);
@@ -154,7 +152,6 @@ class Generator {
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress
             ->setCustomer($Customer)
-            ->setDelFlg(Constant::DISABLED)
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
             ->setKana01($faker->lastKanaName)
@@ -228,9 +225,7 @@ class Generator {
             ->setDelFlg(Constant::DISABLED);
 
         $CustomerAddress = new CustomerAddress();
-        $CustomerAddress
-            ->setCustomer($Customer)
-            ->setDelFlg(Constant::DISABLED);
+        $CustomerAddress->setCustomer($Customer);
         $CustomerAddress->copyProperties($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 

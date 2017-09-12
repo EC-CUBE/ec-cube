@@ -482,8 +482,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ->setCalcRule($DefaultTaxRule->getCalcRule())
                 ->setTaxRate($before)
                 ->setTaxAdjust(0)
-                ->setApplyDate(new \DateTime())
-                ->setDelFlg(Constant::DISABLED);
+                ->setApplyDate(new \DateTime());
             $ProductClass->setTaxRule($TaxRule);
             $this->app['orm.em']->persist($TaxRule);
             $this->app['orm.em']->flush();

@@ -274,7 +274,7 @@ class ProductClassController
             // 商品税率が設定されている場合、商品税率を項目に設定
             if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                 foreach ($ProductClasses as $class) {
-                    if ($class->getTaxRule() && !$class->getTaxRule()->getDelFlg()) {
+                    if ($class->getTaxRule()) {
                         $class->setTaxRate($class->getTaxRule()->getTaxRate());
                     }
                 }
@@ -751,8 +751,8 @@ class ProductClassController
     /**
      * デフォルトとなる商品規格を設定
      *
-     * @param $productClassDest コピー先となる商品規格
-     * @param $productClassOrig コピー元となる商品規格
+     * @param $productClassDest ProductClass コピー先となる商品規格
+     * @param $productClassOrig ProductClass コピー元となる商品規格
      */
     private function setDefualtProductClass($app, $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
@@ -772,7 +772,6 @@ class ProductClassController
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
                 if ($productClassDest->getTaxRule()) {
                     $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
-                    $productClassDest->getTaxRule()->setDelFlg(Constant::DISABLED);
                 } else {
                     $taxrule = $this->taxRuleRepository->newTaxRule();
                     $taxrule->setTaxRate($productClassOrig->getTaxRate());
@@ -783,7 +782,8 @@ class ProductClassController
                 }
             } else {
                 if ($productClassDest->getTaxRule()) {
-                    $productClassDest->getTaxRule()->setDelFlg(Constant::ENABLED);
+                    $this->taxRuleRepository->delete($productClassDest->getTaxRule());
+                    $productClassDest->setTaxRule(null);
                 }
             }
         }
@@ -836,7 +836,6 @@ class ProductClassController
                     $TaxRule->setTaxRate($taxRate);
                     $TaxRule->setTaxAdjust(0);
                     $TaxRule->setApplyDate(new \DateTime());
-                    $TaxRule->setDelFlg(Constant::DISABLED);
                     $this->entityManager->persist($TaxRule);
                 }
             }

@@ -1,9 +1,8 @@
 <?php
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Common\Constant;
 use Eccube\Entity\CustomerFavoriteProduct;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ProductRepository test cases.
@@ -34,8 +33,7 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
         foreach ($Products as $Product) {
             $Fav = new CustomerFavoriteProduct();
             $Fav->setProduct($Product)
-                ->setCustomer($Customer)
-                ->setDelFlg(Constant::DISABLED);
+                ->setCustomer($Customer);
             $this->app['orm.em']->persist($Fav);
         }
         $this->app['orm.em']->flush();

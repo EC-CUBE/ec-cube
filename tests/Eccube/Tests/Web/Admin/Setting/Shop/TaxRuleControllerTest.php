@@ -25,11 +25,15 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @return TaxRule
+     */
     public function createTaxRule()
     {
         $faker = $this->getFaker();
@@ -195,6 +199,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     {
         $TaxRule = $this->createTaxRule();
 
+        $taxRuleId = $TaxRule->getId();
         $redirectUrl = $this->app->url('admin_setting_shop_tax');
 
         $this->client->request(
@@ -203,10 +208,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $this->actual = $TaxRule->getDelFlg();
-        $this->expected = Constant::ENABLED;
-        $this->verify();
+        $this->assertNull($this->app['eccube.repository.tax_rule']->find($taxRuleId));
     }
 
     public function testTaxDeleteFail()

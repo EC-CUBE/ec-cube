@@ -278,7 +278,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
             ->getHandlers();
 
         foreach ($handlers as $handler) {
-            if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+            if ($handler->getPlugin()->getEnable()) {
 
                 $priority = $handler->getPriority();
             } else {

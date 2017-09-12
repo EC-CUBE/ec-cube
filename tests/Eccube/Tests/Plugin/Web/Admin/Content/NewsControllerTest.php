@@ -189,7 +189,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             ->setRank(100 + $rank)
             ->setSelect(0)
             ->setLinkMethod(0)
-            ->setDelFlg(0)
             ->setCreator($TestCreator);
 
         return $TestNews;
