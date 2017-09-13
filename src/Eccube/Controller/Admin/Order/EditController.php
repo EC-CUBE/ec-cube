@@ -716,12 +716,6 @@ class EditController extends AbstractController
             // $subtotal += $OrderDetail->getTotalPrice();
         }
 
-        $shippings = $Order->getShippings();
-        /** @var \Eccube\Entity\Shipping $Shipping */
-        foreach ($shippings as $Shipping) {
-            $Shipping->setDelFlg(Constant::DISABLED);
-        }
-
         // // 受注データの税・小計・合計を再計算
         // $Order->setTax($taxtotal);
         // $Order->setSubtotal($subtotal);

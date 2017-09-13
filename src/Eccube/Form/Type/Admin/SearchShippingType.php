@@ -27,9 +27,11 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\Master\ShippingStatusType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -51,16 +53,6 @@ class SearchShippingType extends AbstractType
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    public function __construct()
-    {
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -74,11 +66,13 @@ class SearchShippingType extends AbstractType
                     new Assert\Length(array('max' => $this->appConfig['stext_len'])),
                 ),
             ))
-            ->add('status', OrderStatusType::class, array(
-                'label' => '対応状況',
+            ->add('order_status', OrderStatusType::class, array(
+                'label' => '受注状況',
+                'expanded' => true,
+                'multiple' => true,
             ))
-            ->add('multi_status', OrderStatusType::class, array(
-                'label' => '対応状況',
+            ->add('shipping_status', ShippingStatusType::class, array(
+                'label' => '出荷状況',
                 'expanded' => true,
                 'multiple' => true,
             ))

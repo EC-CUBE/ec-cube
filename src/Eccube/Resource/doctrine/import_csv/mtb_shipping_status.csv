@@ -1,0 +1,4 @@
+id,name,rank,discriminator_type
+"1","出荷準備中","0","shippingstatus"
+"2","出荷済み","1","shippingstatus"
+"3","キャンセル","2","shippingstatus"
