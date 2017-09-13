@@ -59,7 +59,6 @@ class CategoryRepositoryTest extends EccubeTestCase
         foreach ($categories as $category_array) {
             $Category = new Category();
             $Category->setPropertiesFromArray($category_array);
-            $Category->setDelFlg(Constant::DISABLED);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
@@ -71,7 +70,6 @@ class CategoryRepositoryTest extends EccubeTestCase
                 $Child = new Category();
                 $Child->setPropertiesFromArray($child_array);
                 $Child->setParent($Category);
-                $Child->setDelFlg(Constant::DISABLED);
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
                 $Category->addChild($Child);
@@ -84,7 +82,6 @@ class CategoryRepositoryTest extends EccubeTestCase
                     $Grandson = new Category();
                     $Grandson->setPropertiesFromArray($grandson_array);
                     $Grandson->setParent($Child);
-                    $Grandson->setDelFlg(Constant::DISABLED);
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
                     $Child->addChild($Grandson);
@@ -99,15 +96,13 @@ class CategoryRepositoryTest extends EccubeTestCase
     }
 
     /**
-     * 既存のデータを論理削除しておく.
+     * 既存のデータを削除しておく.
      */
     public function remove() {
-        $Categories = $this->app['eccube.repository.category']->findAll();
-        foreach ($Categories as $Category) {
-            $Category->setDelFlg(Constant::ENABLED);
-            $this->app['orm.em']->merge($Category);
-        }
-        $this->app['orm.em']->flush();
+        $this->deleteAllRows([
+            'dtb_product_category',
+            'dtb_category'
+        ]);
     }
 
     public function testGetTotalCount()
@@ -170,108 +165,6 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->verify('取得したカテゴリ名が正しくありません');
     }
 
-    public function testUpWithParent()
-    {
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-1'));
-        $result = $this->app['eccube.repository.category']->up($Category);
-
-        $this->assertTrue($result);
-
-        $Parent = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
-        $Categories = $this->app['eccube.repository.category']->getList($Parent);
-
-        $this->actual = array();
-        foreach ($Categories as $Category) {
-            $this->actual[] = $Category->getName();
-        }
-
-        $this->expected = array('子2-1', '子2-2', '子2-0');
-        $this->verify('取得したカテゴリ名が正しくありません');
-    }
-
-    public function testUp()
-    {
-        // CategoryRepository::upは、現状機能しておらず、期待値を返さないが、deprecatedのためスキップする
-        $this->markTestSkipped('CategoryRepository::up() is deprecated.');
-
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
-        // CategoryRepository::up() では, rank を1つだけ加算することに注意
-        $result = $this->app['eccube.repository.category']->up($Category);
-
-        $this->assertTrue($result);
-
-        $Categories = $this->app['eccube.repository.category']->getList();
-
-        $this->actual = array();
-        $c = array();
-        foreach ($Categories as $Category) {
-            $this->actual[] = $Category->getName();
-            $c[$Category->getRank()] = $Category->getName();
-        }
-
-        $this->expected = array('親2', '親3', '親1'); // 現状、array('親2', '親1', '親3')が返っている
-        $this->verify('取得したカテゴリ名が正しくありません');
-    }
-
-    public function testUpWithException()
-    {
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親3'));
-        $result = $this->app['eccube.repository.category']->up($Category);
-
-        $this->assertFalse($result);
-    }
-
-    public function testDownWithParent()
-    {
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-1'));
-        $result = $this->app['eccube.repository.category']->down($Category);
-
-        $this->assertTrue($result);
-
-        $Parent = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
-        $Categories = $this->app['eccube.repository.category']->getList($Parent);
-
-        $this->actual = array();
-        foreach ($Categories as $Category) {
-            $this->actual[] = $Category->getName();
-        }
-
-        $this->expected = array('子2-2', '子2-0', '子2-1');
-        $this->verify('取得したカテゴリ名が正しくありません');
-    }
-
-    public function testDown()
-    {
-        // CategoryRepository::downは、現状機能しておらず、期待値を返さないが、deprecatedのためスキップする
-        $this->markTestSkipped('CategoryRepository::down() is deprecated.');
-
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
-        // CategoryRepository::down() では, rank を1つだけ減算することに注意
-        $result = $this->app['eccube.repository.category']->down($Category);
-
-        $this->assertTrue($result);
-
-        $Categories = $this->app['eccube.repository.category']->getList();
-
-        $this->actual = array();
-        $c = array();
-        foreach ($Categories as $Category) {
-            $this->actual[] = $Category->getName();
-            $c[$Category->getRank()] = $Category->getName();
-        }
-
-        $this->expected = array('親3', '親1', '親2'); // 現状、array('親1', '親3', '親2')が返っている
-        $this->verify('取得したカテゴリ名が正しくありません');
-    }
-
-    public function testDownWithException()
-    {
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
-        $result = $this->app['eccube.repository.category']->down($Category);
-
-        $this->assertFalse($result);
-    }
-
     public function testSave()
     {
         $faker = $this->getFaker();
@@ -322,15 +215,22 @@ class CategoryRepositoryTest extends EccubeTestCase
     public function testDelete()
     {
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
-        $updateDate = $Category->getUpdateDate();
-        sleep(1);
+
         $result = $this->app['eccube.repository.category']->delete($Category);
-
         $this->assertTrue($result);
-        $this->assertEquals(Constant::ENABLED, $Category->getDelFlg());
 
-        $this->expected = $updateDate;
-        $this->actual = $Category->getUpdateDate();
-        $this->assertNotEquals($this->expected, $this->actual);
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+        $this->assertNull($Category);
+    }
+
+    public function testDeleteFail()
+    {
+        // 商品をカテゴリに紐付けて作成.
+        $this->createProduct();
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+
+        // 紐付いた商品が存在している場合は削除できない.
+        $result = $this->app['eccube.repository.category']->delete($Category);
+        $this->assertFalse($result);
     }
 }

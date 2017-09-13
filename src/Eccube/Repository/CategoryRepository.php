@@ -53,8 +53,7 @@ class CategoryRepository extends AbstractRepository
     {
         $qb = $this
             ->createQueryBuilder('c')
-            ->select('count(c.id)')
-            ->where('c.del_flg = 0');
+            ->select('count(c.id)');
         $count = $qb->getQuery()
             ->getSingleScalarResult();
 
@@ -109,110 +108,6 @@ class CategoryRepository extends AbstractRepository
     }
 
     /**
-     * カテゴリの順位を1上げる.
-     *
-     * @param  \Eccube\Entity\Category $Category カテゴリ
-     * @return boolean 成功した場合 true
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function up(\Eccube\Entity\Category $Category)
-    {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $Category->getRank();
-            $Parent = $Category->getParent();
-
-            if ($Parent) {
-                $CategoryUp = $this->createQueryBuilder('c')
-                    ->where('c.rank > :rank AND c.Parent = :Parent')
-                    ->setParameter('rank', $rank)
-                    ->setParameter('Parent', $Parent)
-                    ->orderBy('c.rank', 'ASC')
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getSingleResult();
-            } else {
-                $CategoryUp = $this->createQueryBuilder('c')
-                    ->where('c.rank > :rank AND c.Parent IS NULL')
-                    ->setParameter('rank', $rank)
-                    ->orderBy('c.rank', 'ASC')
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getSingleResult();
-            }
-
-            $this_count = $Category->countBranches();
-            $up_count = $CategoryUp->countBranches();
-
-            $Category->calcChildrenRank($em, $up_count);
-            $CategoryUp->calcChildrenRank($em, $this_count * -1);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * カテゴリの順位を1下げる.
-     *
-     * @param  \Eccube\Entity\Category $Category カテゴリ
-     * @return boolean 成功した場合 true
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function down(\Eccube\Entity\Category $Category)
-    {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $Category->getRank();
-            $Parent = $Category->getParent();
-
-            if ($Parent) {
-                $CategoryDown = $this->createQueryBuilder('c')
-                    ->where('c.rank < :rank AND c.Parent = :Parent')
-                    ->setParameter('rank', $rank)
-                    ->setParameter('Parent', $Parent)
-                    ->orderBy('c.rank', 'DESC')
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getSingleResult();
-            } else {
-                $CategoryDown = $this->createQueryBuilder('c')
-                    ->where('c.rank < :rank AND c.Parent IS NULL')
-                    ->setParameter('rank', $rank)
-                    ->orderBy('c.rank', 'DESC')
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getSingleResult();
-            }
-
-            $this_count = $Category->countBranches();
-            $down_count = $CategoryDown->countBranches();
-
-            $Category->calcChildrenRank($em, $down_count * -1);
-            $CategoryDown->calcChildrenRank($em, $this_count);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * カテゴリを保存する.
      *
      * @param  \Eccube\Entity\Category $Category カテゴリ
@@ -237,7 +132,6 @@ class CategoryRepository extends AbstractRepository
                     $rank = 0;
                 }
                 $Category->setRank($rank + 1);
-                $Category->setDelFlg(0);
 
                 $em->createQueryBuilder()
                     ->update('Eccube\Entity\Category', 'c')
@@ -286,8 +180,7 @@ class CategoryRepository extends AbstractRepository
                 ->getQuery()
                 ->execute();
 
-            $Category->setDelFlg(1);
-            $em->persist($Category);
+            $em->remove($Category);
             $em->flush();
 
             $em->getConnection()->commit();
