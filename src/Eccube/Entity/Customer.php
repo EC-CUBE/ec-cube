@@ -247,13 +247,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $reset_expire;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -270,14 +263,14 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Customer")
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Customer", cascade={"remove"})
      */
     private $CustomerFavoriteProducts;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerAddress", mappedBy="Customer")
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerAddress", mappedBy="Customer", cascade={"remove"})
      * @ORM\OrderBy({
      *     "id"="ASC"
      * })
@@ -352,7 +345,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 
         $this->setBuyTimes(0);
         $this->setBuyTotal(0);
-        $this->setDelFlg(Constant::DISABLED);
     }
 
     /**
@@ -391,7 +383,8 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
         $metadata->addConstraint(new UniqueEntity(array(
             'fields'  => 'email',
-            'message' => '既に利用されているメールアドレスです'
+            'message' => '既に利用されているメールアドレスです',
+            'repositoryMethod' => 'getNonWithdrawingCustomers'
         )));
     }
 
@@ -1075,30 +1068,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getResetExpire()
     {
         return $this->reset_expire;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Customer
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

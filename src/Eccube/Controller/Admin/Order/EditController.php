@@ -30,6 +30,7 @@ use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -444,6 +445,9 @@ class EditController extends AbstractController
 
                 $searchData = array(
                     'multi' => $request->get('search_word'),
+                    'customer_status' => [
+                        CustomerStatus::REGULAR
+                    ]
                 );
 
                 $session->set('eccube.admin.order.customer.search', $searchData);

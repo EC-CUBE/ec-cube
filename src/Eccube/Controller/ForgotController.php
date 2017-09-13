@@ -120,7 +120,7 @@ class ForgotController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $Customer = $this->customerRepository
-                ->getActiveCustomerByEmail($form->get('login_email')->getData());
+                ->getRegularCustomerByEmail($form->get('login_email')->getData());
 
             if (!is_null($Customer)) {
                 // リセットキーの発行・有効期限の設定
@@ -202,7 +202,7 @@ class ForgotController extends AbstractController
         ) {
             try {
                 $Customer = $this->customerRepository
-                    ->getActiveCustomerByResetKey($reset_key);
+                    ->getRegularCustomerByResetKey($reset_key);
             } catch (\Exception $e) {
                 throw new HttpException\NotFoundHttpException('有効期限が切れているか、無効なURLです。');
             }

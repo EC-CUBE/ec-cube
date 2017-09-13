@@ -119,8 +119,7 @@ class Generator {
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
-            ->setUpdateDate(new \DateTime())
-            ->setDelFlg(Constant::DISABLED);
+            ->setUpdateDate(new \DateTime());
         $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush($Customer);
@@ -221,8 +220,7 @@ class Generator {
             ->setTel03($tel[2])
             ->setFax01($fax[0])
             ->setFax02($fax[1])
-            ->setFax03($fax[2])
-            ->setDelFlg(Constant::DISABLED);
+            ->setFax03($fax[2]);
 
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress->setCustomer($Customer);

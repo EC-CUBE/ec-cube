@@ -86,8 +86,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
             ->find(1);
 
         $Customer
-            ->setStatus($Status)
-            ->setDelFlg(0);
+            ->setStatus($Status);
 
         return $Customer;
     }
@@ -109,19 +108,13 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function loadUserByUsername($username)
     {
         // 本会員ステータスの会員のみ有効.
-        $CustomerStatus = $this
-            ->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\CustomerStatus')
-            ->find(CustomerStatus::ACTIVE);
-
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email')
-            ->andWhere('c.del_flg = :delFlg')
-            ->andWhere('c.Status =:CustomerStatus')
+            ->leftJoin('c.Status', 's')
+            ->andWhere('s.id = :status')
             ->setParameters(array(
                 'email' => $username,
-                'delFlg' => Constant::DISABLED,
-                'CustomerStatus' => $CustomerStatus,
+                'status' => CustomerStatus::REGULAR,
             ))
             ->setMaxResults(1)
             ->getQuery();
@@ -171,8 +164,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->andWhere('c.del_flg = 0');
+            ->select('c');
 
         if (isset($searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             //スペース除去
@@ -381,25 +373,25 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
     }
 
-    public function getNonActiveCustomerBySecretKey($secret_key)
+    public function getProvisionalCustomerBySecretKey($secret_key)
     {
         $qb = $this->createQueryBuilder('c')
-            ->where('c.del_flg = 0 AND c.secret_key = :secret_key')
+            ->where('c.secret_key = :secret_key')
             ->leftJoin('c.Status', 's')
             ->andWhere('s.id = :status')
             ->setParameter('secret_key', $secret_key)
-            ->setParameter('status', CustomerStatus::NONACTIVE);
+            ->setParameter('status', CustomerStatus::PROVISIONAL);
         $query = $qb->getQuery();
 
         return $query->getSingleResult();
     }
 
-    public function getActiveCustomerByEmail($email)
+    public function getRegularCustomerByEmail($email)
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email AND c.Status = :status')
             ->setParameter('email', $email)
-            ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setParameter('status', CustomerStatus::REGULAR)
             ->setMaxResults(1)
             ->getQuery();
 
@@ -408,12 +400,12 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         return $Customer;
     }
 
-    public function getActiveCustomerByResetKey($reset_key)
+    public function getRegularCustomerByResetKey($reset_key)
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
             ->setParameter('reset_key', $reset_key)
-            ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setParameter('status', CustomerStatus::REGULAR)
             ->setParameter('reset_expire', new \DateTime())
             ->getQuery();
 
@@ -478,5 +470,22 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
 
         $this->entityManager->persist($Customer);
         $this->entityManager->flush();
+    }
+
+    /**
+     * 仮会員, 本会員の会員を返す.
+     * Eccube\Entity\CustomerのUniqueEntityバリデーションで使用しています.
+     *
+     * @param array $criteria
+     * @return Customer[]
+     */
+    public function getNonWithdrawingCustomers(array $criteria = [])
+    {
+        $criteria['Status'] = [
+            CustomerStatus::PROVISIONAL,
+            CustomerStatus::REGULAR,
+        ];
+
+        return $this->findBy($criteria);
     }
 }

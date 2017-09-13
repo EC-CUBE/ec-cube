@@ -110,6 +110,7 @@ return [
     'admin.customer.save.complete' => '会員情報を保存しました。',
     'admin.customer.save.failed' => '会員情報を保存できませんでした。',
     'admin.customer.delete.complete' => '会員情報を削除しました。',
+    'admin.customer.delete.failed' => '会員情報を削除できませんでした。',
     'admin.customer.resend.complete' => '仮会員登録メールを送信しました。',
     'admin.news.up.complete' => '新着情報を上へ移動しました。',
     'admin.news.up.error' => '新着情報を上へ移動できませんでした。',

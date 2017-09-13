@@ -122,7 +122,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchById()
     {
-        $Customer = $this->app['eccube.repository.customer']->findOneBy(array('del_flg' => 0), array('id' => 'DESC'));
+        $Customer = $this->app['eccube.repository.customer']->findOneBy([], array('id' => 'DESC'));
 
         $crawler = $this->client->request(
             'POST', $this->app->path('admin_customer'), array('admin_search_customer' => array('_token' => 'dummy', 'multi' => $Customer->getId()))
@@ -164,17 +164,16 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Customer = $this->createCustomer();
+        $id = $Customer->getId();
         $this->client->request(
             'DELETE',
             $this->app->path('admin_customer_delete', array('id' => $Customer->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_customer_page', array('page_no' => 1)).'?resume=1'));
 
-        $DeletedCustomer = $this->app['eccube.repository.customer']->find($Customer->getId());
+        $DeletedCustomer = $this->app['eccube.repository.customer']->find($id);
 
-        $this->expected = 1;
-        $this->actual = $DeletedCustomer->getDelFlg();
-        $this->verify();
+        $this->assertNull($DeletedCustomer);
     }
 
     /**

@@ -124,25 +124,25 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testGetNonActiveCustomerBySecretKey()
+    public function testGetProvisionalCustomerBySecretKey()
     {
         $this->expected = $this->Customer->getSecretKey();
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($Status);
         $this->app['orm.em']->flush();
 
-        $Customer = $this->app['eccube.repository.customer']->getNonActiveCustomerBySecretKey($this->expected);
+        $Customer = $this->app['eccube.repository.customer']->getProvisionalCustomerBySecretKey($this->expected);
         $this->actual = $Customer->getSecretKey();
         $this->verify('secretは'.$this->expected.'ではありません');
     }
 
-    public function testGetNonActiveCustomerBySecretKeyWithException()
+    public function testGetProvisionalCustomerBySecretKeyWithException()
     {
         $secret = $this->Customer->getSecretKey();
 
         try {
-            // CustomerStatus::ACTIVE なので取得できないはず
-            $Customer = $this->app['eccube.repository.customer']->getNonActiveCustomerBySecretKey($secret);
+            // CustomerStatus::REGULARなので取得できないはず
+            $Customer = $this->app['eccube.repository.customer']->getProvisionalCustomerBySecretKey($secret);
             $this->fail();
         } catch (\Doctrine\ORM\NoResultException $e) {
             $this->expected = 'No result was found for query although at least one row was expected.';
@@ -151,15 +151,15 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testGetActiveCustomerByEmail()
+    public function testGetRegularCustomerByEmail()
     {
         // XXX loadUserByUsername() と同じ役割？
         $this->actual = $this->Customer;
-        $this->expected = $this->app['eccube.repository.customer']->getActiveCustomerByEmail($this->email);
+        $this->expected = $this->app['eccube.repository.customer']->getRegularCustomerByEmail($this->email);
         $this->verify();
     }
 
-    public function testGetActiveCustomerByResetKey()
+    public function testGetRegularCustomerByResetKey()
     {
         $expire = '+'.$this->app['config']['customer_reset_expire'].' min';
         $reset_key = $this->app['eccube.repository.customer']->getResetPassword();
@@ -168,12 +168,12 @@ class CustomerRepositoryTest extends EccubeTestCase
             ->setResetExpire(new \DateTime($expire));
         $this->app['orm.em']->flush();
 
-        $Customer = $this->app['eccube.repository.customer']->getActiveCustomerByResetKey($reset_key);
+        $Customer = $this->app['eccube.repository.customer']->getRegularCustomerByResetKey($reset_key);
 
         $this->assertNotNull($Customer);
     }
 
-    public function testGetActiveCustomerByResetKeyWithException()
+    public function testGetRegularCustomerByResetKeyWithException()
     {
         $expire = '-'.$this->app['config']['customer_reset_expire'].' min';
         $reset_key = $this->app['eccube.repository.customer']->getResetPassword();
@@ -183,7 +183,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         try {
-            $Customer = $this->app['eccube.repository.customer']->getActiveCustomerByResetKey($reset_key);
+            $Customer = $this->app['eccube.repository.customer']->getRegularCustomerByResetKey($reset_key);
             $this->fail();
         } catch (\Doctrine\ORM\NoResultException $e) {
             $this->expected = 'No result was found for query although at least one row was expected.';
