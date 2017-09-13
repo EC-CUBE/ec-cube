@@ -1,3 +1,3 @@
-class_name_id,creator_id,name,rank,create_date,update_date,del_flg,discriminator_type
-"1","1","材質","1","2017-03-07 10:14:52","2017-03-07 10:14:52","0","classname"
-"2","1","サイズ","2","2017-03-07 10:14:52","2017-03-07 10:14:52","0","classname"
+class_name_id,creator_id,name,rank,create_date,update_date,discriminator_type
+"1","1","材質","1","2017-03-07 10:14:52","2017-03-07 10:14:52","classname"
+"2","1","サイズ","2","2017-03-07 10:14:52","2017-03-07 10:14:52","classname"

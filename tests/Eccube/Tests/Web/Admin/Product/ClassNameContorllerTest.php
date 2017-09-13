@@ -40,7 +40,6 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             $ClassName
                 ->setName('class-'.$i)
                 ->setCreator($this->Member)
-                ->setDelFlg(0)
                 ->setRank($i)
                 ;
             $this->app['orm.em']->persist($ClassName);
@@ -169,7 +168,6 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)
-            ->setDelFlg(false)
             ->setCreator($TestCreator);
 
         return $TestClassName;

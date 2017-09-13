@@ -68,12 +68,6 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      */
     private $rank;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
 
     /**
      * @var \DateTime
@@ -173,30 +167,6 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return ClassName
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

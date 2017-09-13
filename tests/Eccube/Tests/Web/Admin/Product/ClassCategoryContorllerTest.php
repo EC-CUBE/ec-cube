@@ -170,7 +170,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)
-            ->setDelFlg(false)
             ->setCreator($TestCreator);
 
         return $TestClassName;

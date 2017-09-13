@@ -28,7 +28,6 @@ class ClassNameRepositoryTest extends EccubeTestCase
             $ClassName
                 ->setName('class-'.$i)
                 ->setCreator($this->Member)
-                ->setDelFlg(0)
                 ->setRank($i)
                 ;
             $this->app['orm.em']->persist($ClassName);
@@ -174,18 +173,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $ClassName = $this->app['eccube.repository.class_name']->findOneBy(
             array('name' => 'class-0')
         );
-
-        $updateDate = $ClassName->getUpdateDate();
-        sleep(1);
+        $ClassNameId = $ClassName->getId();
         $result = $this->app['eccube.repository.class_name']->delete($ClassName);
 
         $this->assertTrue($result);
-        $this->assertEquals(Constant::ENABLED, $ClassName->getDelFlg());
-        $this->assertTrue(0 === $ClassName->getRank());
-
-        $this->expected = $updateDate;
-        $this->actual = $ClassName->getUpdateDate();
-        $this->assertNotEquals($this->expected, $this->actual);
+        self::assertNull($this->app['orm.em']->find(ClassName::class, $ClassNameId));
     }
 
     public function testDeleteWithException()

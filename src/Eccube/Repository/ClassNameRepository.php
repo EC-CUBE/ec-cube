@@ -145,7 +145,6 @@ class ClassNameRepository extends AbstractRepository
                     $rank = 0;
                 }
                 $ClassName->setRank($rank + 1);
-                $ClassName->setDelFlg(0);
             }
 
             $em->persist($ClassName);
@@ -169,6 +168,10 @@ class ClassNameRepository extends AbstractRepository
      */
     public function delete($ClassName)
     {
+        if (is_null($ClassName->getId())) {
+            // 存在しない場合は何もしない
+            return false;
+        }
         $em = $this->getEntityManager();
         $em->getConnection()->beginTransaction();
         try {
@@ -184,8 +187,7 @@ class ClassNameRepository extends AbstractRepository
                 ->getQuery()
                 ->execute();
 
-            $ClassName->setDelFlg(1);
-            $em->persist($ClassName);
+            $em->remove($ClassName);
             $em->flush();
 
             $em->getConnection()->commit();

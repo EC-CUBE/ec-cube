@@ -28,7 +28,6 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             $ClassName
                 ->setName('class-'.$i)
                 ->setCreator($this->Member)
-                ->setDelFlg(0)
                 ->setRank($i);
             for ($j = 0; $j < 3; $j++) {
                 $ClassCategory = new ClassCategory();
