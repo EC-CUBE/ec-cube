@@ -37,7 +37,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @Component
@@ -77,12 +76,8 @@ class SecurityController extends AbstractController
                 // 現在のセキュリティ情報を更新
                 $adminRoot = $this->appConfig['admin_route'];
 
-                $configFile = $this->appConfig['root_dir'].'/app/config/eccube/config';
-                if (file_exists($configFile.'.php')) {
-                    $config = require $configFile.'.php';
-                } elseif (file_exists($configFile.'.yml')) {
-                    $config = Yaml::parse(file_get_contents($configFile.'.yml'));
-                }
+                $configFile = $this->appConfig['root_dir'].'/app/config/eccube/config.php';
+                $config = require $configFile;
 
                 // trim処理
                 $allowHost = Str::convertLineFeed($data['admin_allow_host']);
@@ -108,12 +103,7 @@ class SecurityController extends AbstractController
                 $form = $builder->getForm();
                 $form->setData($data);
 
-                if (file_exists($configFile.'.php')) {
-                    file_put_contents($configFile.'.php', sprintf('<?php return %s', var_export($config, true)).';');
-                }
-                if (file_exists($configFile.'.yml')) {
-                    file_put_contents($configFile.'.yml', Yaml::dump($config));
-                }
+                file_put_contents($configFile, sprintf('<?php return %s', var_export($config, true)).';');
 
                 // ルーティングのキャッシュを削除
                 $cacheDir = $this->appConfig['root_dir'].'/app/cache/routing';
@@ -124,23 +114,12 @@ class SecurityController extends AbstractController
                 }
 
                 if ($adminRoot != $data['admin_route_dir']) {
-                    // admin_routeが変更されればpath.(yml|php)を更新
-                    $pathFile = $this->appConfig['root_dir'].'/app/config/eccube/path';
-
-                    if (file_exists($pathFile.'.php')) {
-                        $config = require $pathFile.'.php';
-                    } elseif (file_exists($pathFile.'.yml')) {
-                        $config = Yaml::parse(file_get_contents($pathFile.'.yml'));
-                    }
-
+                    // admin_routeが変更されればpath.phpを更新
+                    $pathFile = $this->appConfig['root_dir'].'/app/config/eccube/path.php';
+                    $config = require $pathFile;
                     $config['admin_route'] = $data['admin_route_dir'];
 
-                    if (file_exists($pathFile.'.php')) {
-                        file_put_contents($pathFile.'.php', sprintf('<?php return %s', var_export($config, true)).';');
-                    }
-                    if (file_exists($pathFile.'.yml')) {
-                        file_put_contents($pathFile.'.yml', Yaml::dump($config));
-                    }
+                    file_put_contents($pathFile, sprintf('<?php return %s', var_export($config, true)).';');
 
                     $app->addSuccess('admin.system.security.route.dir.complete', 'admin');
 

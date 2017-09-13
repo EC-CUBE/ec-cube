@@ -1,3 +1,0 @@
-database:
-    driver: ${DBDRIVER}
-    path: ${DBPATH}

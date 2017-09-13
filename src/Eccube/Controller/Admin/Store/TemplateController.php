@@ -44,7 +44,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @Component
@@ -112,12 +111,8 @@ class TemplateController extends AbstractController
                 ->find($form['selected']->getData());
 
             // path.(yml|php)の再構築
-            $file = $this->appConfig['root_dir'].'/app/config/eccube/path';
-            if (file_exists($file.'.php')) {
-                $config = require $file.'.php';
-            } elseif (file_exists($file.'.yml')) {
-                $config = Yaml::parse(file_get_contents($file.'.yml'));
-            }
+            $file = $this->appConfig['root_dir'].'/app/config/eccube/path.php';
+            $config = require $file;
 
             $templateCode = $Template->getCode();
             $config['template_code'] = $templateCode;
@@ -126,12 +121,7 @@ class TemplateController extends AbstractController
             $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
             $config['block_realdir'] = $config['template_realdir'].'/Block';
 
-            if (file_exists($file.'.php')) {
-                file_put_contents($file.'.php', sprintf('<?php return %s', var_export($config, true)).';');
-            }
-            if (file_exists($file.'.yml')) {
-                file_put_contents($file.'.yml', Yaml::dump($config));
-            }
+            file_put_contents($file, sprintf('<?php return %s', var_export($config, true)).';');
 
             $app->addSuccess('admin.content.template.save.complete', 'admin');
 

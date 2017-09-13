@@ -25,7 +25,6 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\ServiceProvider\DiServiceProvider;
-use Symfony\Component\Yaml\Yaml;
 
 class InstallApplication extends \Silex\Application
 {
@@ -62,15 +61,15 @@ class InstallApplication extends \Silex\Application
             $distPath = __DIR__.'/../../src/Eccube/Resource/config';
 
             $configConstant = array();
-            $constantYamlPath = $distPath.'/constant.yml.dist';
+            $constantYamlPath = $distPath.'/constant.php';
             if (file_exists($constantYamlPath)) {
-                $configConstant = Yaml::parse(file_get_contents($constantYamlPath));
+                $configConstant = require $constantYamlPath;
             }
 
             $configLog = array();
-            $logYamlPath = $distPath.'/log.yml.dist';
+            $logYamlPath = $distPath.'/log.php';
             if (file_exists($logYamlPath)) {
-                $configLog = Yaml::parse(file_get_contents($logYamlPath));
+                $configLog = require $logYamlPath;
             }
 
             $config = array_replace_recursive($configConstant, $configLog);
@@ -79,7 +78,7 @@ class InstallApplication extends \Silex\Application
         };
 
         $distPath = __DIR__.'/../../src/Eccube/Resource/config';
-        $config_dist = Yaml::parse(file_get_contents($distPath.'/config.yml.dist'));
+        $config_dist = require $distPath.'/config.php';
         if (!empty($config_dist['timezone'])) {
             date_default_timezone_set($config_dist['timezone']);
         }

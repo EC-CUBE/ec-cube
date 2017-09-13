@@ -48,7 +48,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Yaml\Yaml;
 
 class Application extends \Silex\Application
 {
@@ -954,18 +953,10 @@ class Application extends \Silex\Application
     {
         $ymlPath = $ymlPath ? $ymlPath : __DIR__.'/../../app/config/eccube';
         $distPath = $distPath ? $distPath : __DIR__.'/../../src/Eccube/Resource/config';
-        $config = array();
+
+        $config = [];
         $config_php = $ymlPath.'/'.$config_name.'.php';
-        if (!file_exists($config_php)) {
-            $config_yml = $ymlPath.'/'.$config_name.'.yml';
-            if (file_exists($config_yml)) {
-                $config = Yaml::parse(file_get_contents($config_yml));
-                $config = empty($config) ? array() : $config;
-                if (isset($this['output_config_php']) && $this['output_config_php']) {
-                    file_put_contents($config_php, sprintf('<?php return %s', var_export($config, true)).';');
-                }
-            }
-        } else {
+        if (file_exists($config_php)) {
             $config = require $config_php;
         }
 
@@ -975,19 +966,8 @@ class Application extends \Silex\Application
             $value = str_replace('%ROOT_DIR%', $rootDir, $value);
         });
 
-        $config_dist = array();
-        $config_php_dist = $distPath.'/'.$config_name.'.dist.php';
-        if (!file_exists($config_php_dist)) {
-            $config_yml_dist = $distPath.'/'.$config_name.'.yml.dist';
-            if (file_exists($config_yml_dist)) {
-                $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
-                if (isset($this['output_config_php']) && $this['output_config_php']) {
-                    file_put_contents($config_php_dist, sprintf('<?php return %s', var_export($config_dist, true)).';');
-                }
-            }
-        } else {
-            $config_dist = require $config_php_dist;
-        }
+        $config_php_dist = $distPath.'/'.$config_name.'.php';
+        $config_dist = require $config_php_dist;
 
         if ($wrap_key) {
             $configAll = array_replace_recursive($configAll, array($config_name => $config_dist), array($config_name => $config));
