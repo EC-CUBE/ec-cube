@@ -245,6 +245,19 @@ class EditController extends AbstractController
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
                     if ($flowResult->hasError() === false && $form->isValid()) {
+
+                        $Items = $TargetOrder->getShipmentItems();
+                        foreach ($Items as $Item) {
+                            $Items->removeElement($Item);
+                            $this->purchaseFlow->addItem($Item, $purchaseContext);
+                        }
+
+                        foreach ($OriginalShipmentItems as $Item) {
+                            if (!$TargetOrder->getShipmentItems()->contains($Item)) {
+                                $this->entityManager->remove($Item);
+                            }
+                        }
+
                         try {
                             $this->purchaseFlow->purchase($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {

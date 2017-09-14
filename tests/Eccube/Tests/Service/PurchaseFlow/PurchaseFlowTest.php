@@ -10,6 +10,7 @@ use Eccube\Entity\ShipmentItem;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\Processor\AddItemProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -17,6 +18,8 @@ use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Service\PurchaseFlow\Comparer\FalseComparer;
+use Eccube\Tests\Service\PurchaseFlow\Comparer\TrueComparer;
 
 class PurchaseFlowTest extends EccubeTestCase
 {
@@ -109,6 +112,28 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected->addProcessResult(ProcessResult::warn('error 1'));
         $expected->addProcessResult(ProcessResult::warn('error 2'));
         self::assertEquals($expected, $this->flow->calculate($itemHolder, new PurchaseContext()));
+    }
+
+    public function testAddItem_exists()
+    {
+        $this->flow->addAddItemProcessor(new AddItemProcessor(new TrueComparer()));
+        $itemHolder = new Order();
+        $itemHolder->addShipmentItem(new ShipmentItem());
+
+        $expected = new PurchaseFlowResult($itemHolder);
+        $expected->addProcessResult(ProcessResult::warn('cart.item.exists'));
+        self::assertEquals($expected, $this->flow->addItem(new ShipmentItem(), new PurchaseContext($itemHolder)));
+    }
+
+    public function testAddItem_notExists()
+    {
+        $this->flow->addAddItemProcessor(new AddItemProcessor(new FalseComparer()));
+        $itemHolder = new Order();
+        $itemHolder->addShipmentItem(new ShipmentItem());
+
+        $expected = new PurchaseFlowResult($itemHolder);
+        $expected->addProcessResult(ProcessResult::success());
+        self::assertEquals($expected, $this->flow->addItem(new ShipmentItem(), new PurchaseContext($itemHolder)));
     }
 }
 

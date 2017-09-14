@@ -278,6 +278,7 @@ class MypageController extends AbstractController
                 if ($OrderDetail->getProduct() &&
                     $OrderDetail->getProductClass()
                 ) {
+                    // TODO カート追加処理の変更
                     $this->cartService->addProduct(
                         $OrderDetail->getProductClass()->getId(),
                         $OrderDetail->getQuantity()

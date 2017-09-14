@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-cartNaviIsset">
         <div class="ec-cartNaviIsset__cart">
             {% for CartItem in Cart.CartItems %}
-                {% set ProductClass = CartItem.Object %}
+                {% set ProductClass = CartItem.ProductClass %}
                 {% set Product = ProductClass.Product %}
                 <div class="ec-cartNaviIsset__cartImage"><img
                             src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}"

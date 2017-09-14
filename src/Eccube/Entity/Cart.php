@@ -25,10 +25,14 @@
 namespace Eccube\Entity;
 
 use Eccube\Service\PurchaseFlow\ItemCollection;
-use Eccube\Service\ItemValidateException;
 
 class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
+    /**
+     * @var integer
+     */
+    private $current_cart_no = 0;
+
     /**
      * @var bool
      */
@@ -116,12 +120,13 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     /**
      * @param  \Eccube\Entity\CartItem $AddCartItem
      * @return \Eccube\Entity\Cart
+     * @deprecated
      */
     public function setCartItem(\Eccube\Entity\CartItem $AddCartItem)
     {
         $find = false;
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
+            if ($CartItem->getProductClassId() === $AddCartItem->getProductClassId()) {
                 $find = true;
                 $CartItem
                     ->setPrice($AddCartItem->getPrice())
@@ -151,11 +156,12 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      * @param  string                  $class_name
      * @param  string                  $class_id
      * @return \Eccube\Entity\CartItem
+     * @deprecated
      */
     public function getCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
+            if (get_class($CartItem->getProductClass()) === $class_name && $CartItem->getProductClassId() == $class_id) {
                 return $CartItem;
             }
         }
@@ -163,10 +169,48 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
         return null;
     }
 
+    /**
+     * @param integer $cart_no
+     * @return CartItem|null
+     */
+    public function getCartItemByCartNo($cart_no)
+    {
+        /** @var CartItem $CartItem */
+        foreach ($this->CartItems as $CartItem) {
+            if ($CartItem->getCartNo() == $cart_no) {
+                return $CartItem;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $class_name
+     * @param $class_id
+     * @return $this
+     * @deprecated
+     */
     public function removeCartItemByIdentifier($class_name, $class_id)
     {
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
+            if (get_class($CartItem->getProductClass()) === $class_name && $CartItem->getProductClassId() == $class_id) {
+                $this->CartItems->removeElement($CartItem);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param integer $cart_no
+     * @return $this
+     */
+    public function removeCartItemByCartNo($cart_no)
+    {
+        /** @var CartItem $CartItem */
+        foreach ($this->CartItems as $CartItem) {
+            if ($CartItem->getCartNo() == $cart_no) {
                 $this->CartItems->removeElement($CartItem);
             }
         }
@@ -289,6 +333,10 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      */
     public function addItem(ItemInterface $item)
     {
+        if ($item instanceof CartItem) {
+            $item->setCartNo($this->getNextCartNo());
+        }
+
         $this->CartItems->add($item);
     }
 
@@ -338,5 +386,13 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      */
     public function setTax($total) {
         // TODO quiet
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNextCartNo()
+    {
+        return ++$this->current_cart_no;
     }
 }

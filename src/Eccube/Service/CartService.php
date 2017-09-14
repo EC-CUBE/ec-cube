@@ -31,6 +31,7 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\ProductClassRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -49,6 +50,12 @@ class CartService
      * @Inject("orm.em")
      */
     protected $em;
+
+    /**
+     * @var ProductClassRepository
+     * @Inject("eccube.repository.product_class")
+     */
+    protected $productClassRepository;
 
     /**
      * @var ItemHolderInterface
@@ -72,10 +79,9 @@ class CartService
     {
         /** @var CartItem $item */
         foreach ($this->cart->getItems() as $item) {
-            $id = $item->getClassId();
-            $class = $item->getClassName();
-            $entity = $this->em->getRepository($class)->find($id);
-            $item->setObject($entity);
+            $id = $item->getProductClassId();
+            $ProductClass = $this->productClassRepository->find($id);
+            $item->setProductClass($ProductClass);
         }
     }
 
@@ -83,9 +89,7 @@ class CartService
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
+            $ProductClass = $this->productClassRepository->find($ProductClassId);
             if (is_null($ProductClass)) {
                 return false;
             }
@@ -99,34 +103,50 @@ class CartService
             $exists->setQuantity($exists->getQuantity() + $quantity);
         } else {
             $item = new CartItem();
-            $item->setQuantity($quantity);
-            $item->setPrice($ProductClass->getPrice01IncTax());
-            $item->setClassId($ProductClass->getId());
-            $item->setClassName(ProductClass::class);
-            $item->setObject($ProductClass);
+            $item
+                ->setQuantity($quantity)
+                ->setPrice($ProductClass->getPrice01IncTax())
+                ->setProductClass($ProductClass);
             $cart->addItem($item);
         }
 
         return true;
     }
 
-    public function removeProduct($ProductClass)
+    /**
+     * @param int $cart_no
+     * @param int $quantity
+     * @return bool
+     */
+    public function addQuantity($cart_no, $quantity = 1)
     {
-        if (!$ProductClass instanceof ProductClass) {
-            $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
-                ->getRepository(ProductClass::class)
-                ->find($ProductClassId);
-            if (is_null($ProductClass)) {
-                return false;
-            }
+        $CartItem = $this->getCart()->getCartItemByCartNo($cart_no);
+
+        if ($CartItem) {
+            $CartItem->setQuantity($CartItem->getQuantity() + $quantity);
+            return true;
         }
 
-        /** @var Cart $cart */
-        $cart = $this->getCart();
-        $cart->removeCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+        return false;
+    }
 
+    /**
+     * @param integer $cart_no
+     * @return bool
+     */
+    public function removeProduct($cart_no)
+    {
+        $this->getCart()->removeCartItemByCartNo($cart_no);
         return true;
+    }
+
+    /**
+     * @param $cart_no
+     * @return CartItem|null
+     */
+    public function getCartItem($cart_no)
+    {
+        return $this->getCart()->getCartItemByCartNo($cart_no);
     }
 
     public function save()
