@@ -37,7 +37,7 @@ class EntityUtilTest extends EccubeTestCase
         $this->app['orm.em']->getFilters()->enable('soft_delete');
 
         // eccube_install.sh で追加される Member
-        $Member = $this->app['eccube.repository.member']->find(2);
+        $Member = $this->app['eccube.repository.member']->find(1);
 
         $Product = new Product();
         $ProductClass = new ProductClass();

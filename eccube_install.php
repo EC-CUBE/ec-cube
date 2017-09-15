@@ -340,7 +340,6 @@ function initializeDatabase(\Eccube\Application $app)
         'password' => $encodedPassword,
         'salt' => $salt,
         'work' => 1,
-        'del_flg' => 0,
         'authority' => 0,
         'creator_id' => 1,
         'rank' => 1,
