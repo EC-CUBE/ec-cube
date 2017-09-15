@@ -275,6 +275,7 @@ class CsvImportController
                         $this->createProductTag($row, $Product, $app, $data);
 
                         // 商品規格が存在しなければ新規登録
+                        /** @var ProductClass[] $ProductClasses */
                         $ProductClasses = $Product->getProductClasses();
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
@@ -300,8 +301,8 @@ class CsvImportController
                                     $ProductClass = clone $ProductClassOrg;
                                     $ProductStock = clone $ProductClassOrg->getProductStock();
 
-                                    // 規格分類1、規格分類2がnullであるデータの削除フラグを1にセット
-                                    $ProductClassOrg->setDelFlg(Constant::ENABLED);
+                                    // 規格分類1、規格分類2がnullであるデータを非表示
+                                    $ProductClassOrg->setVisible(false);
 
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
@@ -388,8 +389,8 @@ class CsvImportController
                                     $pc->getClassCategory2() == null
                                 ) {
 
-                                    // 規格分類1、規格分類2がnullであるデータの削除フラグを1にセット
-                                    $pc->setDelFlg(Constant::ENABLED);
+                                    // 規格分類1、規格分類2がnullであるデータを非表示
+                                    $pc->setVisible(false);
                                 }
 
                                 if ($row['規格分類1(ID)'] == $row['規格分類2(ID)']) {
@@ -880,6 +881,7 @@ class CsvImportController
 
         $ProductClass = new ProductClass();
         $ProductClass->setProduct($Product);
+        $ProductClass->setVisible(true);
 
 
         if ($row['商品種別(ID)'] == '') {
@@ -979,16 +981,6 @@ class CsvImportController
                 $ProductClass->setDeliveryFee($delivery_fee);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
-            }
-        }
-
-        if ($row['商品規格削除フラグ'] == '') {
-            $ProductClass->setDelFlg(Constant::DISABLED);
-        } else {
-            if ($row['商品規格削除フラグ'] == (string) Constant::DISABLED || $row['商品規格削除フラグ'] == (string) Constant::ENABLED) {
-                $ProductClass->setDelFlg($row['商品規格削除フラグ']);
-            } else {
-                $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
             }
         }
 
@@ -1135,16 +1127,6 @@ class CsvImportController
             }
         }
 
-        if ($row['商品規格削除フラグ'] == '') {
-            $ProductClass->setDelFlg(Constant::DISABLED);
-        } else {
-            if ($row['商品規格削除フラグ'] == (string) Constant::DISABLED || $row['商品規格削除フラグ'] == (string) Constant::ENABLED) {
-                $ProductClass->setDelFlg($row['商品規格削除フラグ']);
-            } else {
-                $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
-            }
-        }
-
         $ProductStock = $ProductClass->getProductStock();
 
         if (!$ProductClass->getStockUnlimited()) {
@@ -1213,7 +1195,6 @@ class CsvImportController
             '通常価格' => 'price01',
             '販売価格' => 'price02',
             '送料' => 'delivery_fee',
-            '商品規格削除フラグ' => 'product_class_del_flg',
         );
     }
 

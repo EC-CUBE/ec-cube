@@ -89,7 +89,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setPrice02($this->faker->randomNumber(4))
             ->setDeliveryFee($this->faker->randomNumber(4))
             ->setCreator($TestCreator)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
 
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);
@@ -183,7 +183,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setDeliveryFee(1000)
             ->setDeliveryDate($DeliveryDates[$this->faker->numberBetween(0, 8)])
             ->setCreator($Creator)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
 
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);

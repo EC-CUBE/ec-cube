@@ -175,7 +175,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setPrice02(5000)
             ->setDeliveryFee(1000)
             ->setCreator($TestCreator)
-            ->setDelFlg(0);
+            ->setVisible(true);
         return $TestClassCategory;
     }
 

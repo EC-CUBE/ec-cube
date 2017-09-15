@@ -857,6 +857,7 @@ class ShoppingService
     {
         $orderDetails = $Order->getOrderDetails();
 
+        /** @var ShipmentItem $orderDetail */
         foreach ($orderDetails as $orderDetail) {
 
             if (is_null($orderDetail->getProduct())) {
@@ -865,7 +866,7 @@ class ShoppingService
             }
 
             // 商品削除チェック
-            if ($orderDetail->getProductClass()->getDelFlg()) {
+            if ($orderDetail->getProductClass()->isVisible() == false) {
                 // @deprecated 3.1以降ではexceptionをthrowする
                 // throw new ShoppingException('cart.product.delete');
                 return false;

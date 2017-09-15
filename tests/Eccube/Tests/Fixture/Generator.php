@@ -335,7 +335,7 @@ class Generator {
                 ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
-                ->setDelFlg(Constant::DISABLED);
+                ->setVisible(true);
 
             if (array_key_exists($i, $ClassCategories1)) {
                 $ProductClass->setClassCategory1($ClassCategories1[$i]);
@@ -364,9 +364,9 @@ class Generator {
         $this->app['orm.em']->flush($ProductStock);
         $ProductClass = new ProductClass();
         if ($product_class_num > 0) {
-            $ProductClass->setDelFlg(Constant::ENABLED);
+            $ProductClass->setVisible(false);
         } else {
-            $ProductClass->setDelFlg(Constant::DISABLED);
+            $ProductClass->setVisible(true);
         }
         $ProductClass
             ->setCode($faker->word)

@@ -238,11 +238,11 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $delivery_fee;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="visible", type="boolean", options={"default":true})
      */
-    private $del_flg = 0;
+    private $visible;
 
     /**
      * @var \DateTime
@@ -523,27 +523,21 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return ProductClass
+     * @return boolean
      */
-    public function setDelFlg($delFlg)
+    public function isVisible()
     {
-        $this->del_flg = $delFlg;
-
-        return $this;
+        return $this->visible;
     }
 
     /**
-     * Get delFlg.
-     *
-     * @return int
+     * @param boolean $visible
+     * @return ProductClass
      */
-    public function getDelFlg()
+    public function setVisible($visible)
     {
-        return $this->del_flg;
+        $this->visible = $visible;
+        return $this;
     }
 
     /**

@@ -51,7 +51,7 @@ class EntityUtilTest extends EccubeTestCase
         $ProductClass
             ->setPrice02(1000)
             ->setCreator($Member)
-            ->setDelFlg(Constant::DISABLED)
+            ->setVisible(true)
             ->setStockUnlimited(true)
             ->setProductType($ProductType)
             ->setProduct($Product);
