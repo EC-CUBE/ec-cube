@@ -7,16 +7,11 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Controller\AbstractController;
-use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
-use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\ShipmentItemType;
 use Eccube\Form\Type\Admin\ShippingType;
@@ -24,10 +19,8 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\ShipmentItemRepository;
-
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -36,7 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Serializer;
 
 /**
@@ -134,13 +127,6 @@ class EditController
      */
     public function edit(Application $app, Request $request, $id = null)
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass',
-            'Eccube\Entity\Product',
-        ));
-
         $TargetShipping = null;
         $OriginShipping = null;
 

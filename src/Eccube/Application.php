@@ -23,9 +23,6 @@
 
 namespace Eccube;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Types\Type;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
@@ -718,10 +715,8 @@ class Application extends \Silex\Application
 
             // filters
             $config = $em->getConfiguration();
-            $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
             $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
             $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
-            $em->getFilters()->enable('soft_delete');
 
             return $em;
         });
