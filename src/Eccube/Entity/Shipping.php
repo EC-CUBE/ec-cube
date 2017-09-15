@@ -225,13 +225,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
