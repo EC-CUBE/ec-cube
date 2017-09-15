@@ -26,39 +26,35 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
-use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;;
+use Eccube\Entity\Master\Disp;
+use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\DispType;
+use Eccube\Repository\Master\DispRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+
+;
 
 /**
  * @FormType
  */
 class SearchProductType extends AbstractType
 {
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
 
-    public function __construct()
-    {
-    }
+    /**
+     * @Inject(DispRepository::class)
+     * @var DispRepository
+     */
+    protected $DispRepository;
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('id', TextType::class, array(
                 'label' => '商品ID',
@@ -83,6 +79,10 @@ class SearchProductType extends AbstractType
                 'label' => '種別',
                 'multiple'=> true,
                 'required' => false,
+                'data' => $this->DispRepository->findBy(['id' => [
+                    Disp::DISPLAY_SHOW,
+                    Disp::DISPLAY_HIDE
+                ]])
             ))
             ->add('create_date_start', DateType::class, array(
                 'label' => '登録日(FROM)',
