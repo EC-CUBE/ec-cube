@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
@@ -143,32 +144,27 @@ class CategoryController extends AbstractController
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));
-                $status = $this->categoryRepository->save($TargetCategory);
 
-                if ($status) {
+                $this->categoryRepository->save($TargetCategory);
 
-                    log_info('カテゴリ登録完了', array($id));
+                log_info('カテゴリ登録完了', array($id));
 
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'Parent' => $Parent,
-                            'TargetCategory' => $TargetCategory,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Parent' => $Parent,
+                        'TargetCategory' => $TargetCategory,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                    $app->addSuccess('admin.category.save.complete', 'admin');
+                $app->addSuccess('admin.category.save.complete', 'admin');
 
-                    if ($Parent) {
-                        return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
-                    } else {
-                        return $app->redirect($app->url('admin_product_category'));
-                    }
+                if ($Parent) {
+                    return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
                 } else {
-                    log_info('カテゴリ登録エラー', array($id));
-                    $app->addError('admin.category.save.error', 'admin');
+                    return $app->redirect($app->url('admin_product_category'));
                 }
             }
         }
@@ -204,9 +200,8 @@ class CategoryController extends AbstractController
 
         log_info('カテゴリ削除開始', array($id));
 
-        $status = $this->categoryRepository->delete($TargetCategory);
-
-        if ($status === true) {
+        try {
+            $this->categoryRepository->delete($TargetCategory);
 
             log_info('カテゴリ削除完了', array($id));
 
@@ -220,8 +215,10 @@ class CategoryController extends AbstractController
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.category.delete.complete', 'admin');
-        } else {
-            log_info('カテゴリ削除エラー', array($id));
+
+        } catch (\Exception $e) {
+            log_info('カテゴリ削除エラー', [$id, $e]);
+
             $app->addError('admin.category.delete.error', 'admin');
         }
 

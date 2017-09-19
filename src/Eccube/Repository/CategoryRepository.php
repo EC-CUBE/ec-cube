@@ -24,6 +24,8 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\Category;
@@ -51,13 +53,11 @@ class CategoryRepository extends AbstractRepository
      */
     public function getTotalCount()
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('c')
-            ->select('count(c.id)');
-        $count = $qb->getQuery()
+            ->select('COALESCE(COUNT(c.id), 0)')
+            ->getQuery()
             ->getSingleScalarResult();
-
-        return $count;
     }
 
     /**
@@ -65,10 +65,10 @@ class CategoryRepository extends AbstractRepository
      *
      * 引数 $Parent を指定した場合は, 指定したカテゴリの子以下を取得する.
      *
-     * @param \Eccube\Entity\Category|null $Parent 指定の親カテゴリ
+     * @param Category|null $Parent 指定の親カテゴリ
      * @param bool $flat trueの場合, 階層化されたカテゴリを一つの配列にまとめる
      *
-     * @return \Eccube\Entity\Category[] カテゴリの配列
+     * @return Category[] カテゴリの配列
      */
     public function getList(Category $Parent = null, $flat = false)
     {
@@ -110,86 +110,59 @@ class CategoryRepository extends AbstractRepository
     /**
      * カテゴリを保存する.
      *
-     * @param  \Eccube\Entity\Category $Category カテゴリ
-     * @return boolean 成功した場合 true
+     * @param  Category $Category カテゴリ
      */
     public function save($Category)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if (!$Category->getId()) {
-                $Parent = $Category->getParent();
-                if ($Parent) {
-                    $rank = $Parent->getRank() - 1;
-                } else {
-                    $rank = $this->createQueryBuilder('c')
-                        ->select('MAX(c.rank)')
-                        ->getQuery()
-                        ->getSingleScalarResult();
-                }
-                if (!$rank) {
-                    $rank = 0;
-                }
-                $Category->setRank($rank + 1);
-
-                $em->createQueryBuilder()
-                    ->update('Eccube\Entity\Category', 'c')
-                    ->set('c.rank', 'c.rank + 1')
-                    ->where('c.rank > :rank')
-                    ->setParameter('rank', $rank)
+        if (!$Category->getId()) {
+            $Parent = $Category->getParent();
+            if ($Parent) {
+                $rank = $Parent->getRank() - 1;
+            } else {
+                $rank = $this->createQueryBuilder('c')
+                    ->select('COALESCE(MAX(c.rank), 0)')
                     ->getQuery()
-                    ->execute();
+                    ->getSingleScalarResult();
             }
 
-            $em->persist($Category);
-            $em->flush();
+            $Category->setRank($rank + 1);
 
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+            $this
+                ->createQueryBuilder('c')
+                ->update()
+                ->set('c.rank', 'c.rank + 1')
+                ->where('c.rank > :rank')
+                ->setParameter('rank', $rank)
+                ->getQuery()
+                ->execute();
         }
 
-        return true;
+        $em = $this->getEntityManager();
+        $em->persist($Category);
+        $em->flush($Category);
     }
 
     /**
      * カテゴリを削除する.
      *
-     * @param  \Eccube\Entity\Category $Category 削除対象のカテゴリ
-     * @return boolean 成功した場合 true, 子カテゴリが存在する場合, 商品カテゴリが紐づいている場合は false
+     * @param  Category $Category 削除対象のカテゴリ
+     *
+     * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
+     * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     public function delete($Category)
     {
+        $this
+            ->createQueryBuilder('c')
+            ->update()
+            ->set('c.rank', 'c.rank - 1')
+            ->where('c.rank > :rank')
+            ->setParameter('rank', $Category->getRank())
+            ->getQuery()
+            ->execute();
+
         $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if ($Category->getChildren()->count() > 0 || $Category->getProductCategories()->count() > 0) {
-                throw new \Exception();
-            }
-
-            $rank = $Category->getRank();
-
-            $em->createQueryBuilder()
-                ->update('Eccube\Entity\Category', 'c')
-                ->set('c.rank', 'c.rank - 1')
-                ->where('c.rank > :rank')
-                ->setParameter('rank', $rank)
-                ->getQuery()
-                ->execute();
-
-            $em->remove($Category);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
+        $em->remove($Category);
+        $em->flush($Category);
     }
 }
