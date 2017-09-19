@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
@@ -36,9 +35,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CategoryType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Service\CsvExportService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -203,18 +202,17 @@ class CategoryController extends AbstractController
         try {
             $this->categoryRepository->delete($TargetCategory);
 
-            log_info('カテゴリ削除完了', array($id));
-
             $event = new EventArgs(
                 array(
                     'Parent' => $Parent,
                     'TargetCategory' => $TargetCategory,
-                ),
-                $request
+                ), $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.category.delete.complete', 'admin');
+
+            log_info('カテゴリ削除完了', array($id));
 
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
