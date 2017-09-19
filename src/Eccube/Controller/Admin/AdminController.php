@@ -47,6 +47,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @Component
@@ -83,6 +84,12 @@ class AdminController extends AbstractController
      * @var FormFactory
      */
     protected $formFactory;
+
+    /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
 
     /**
      * @Route("/{_admin}/login", name="admin_login")
@@ -273,40 +280,36 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $Member = $app->user();
+            $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
 
-            $Member = $app->user();
-
-            $dummyMember = clone $Member;
-            $dummyMember->setPassword($password);
-            $salt = $dummyMember->getSalt();
-            if (!isset($salt)) {
-                $salt = $this->memberRepository->createSalt(5);
-                $dummyMember->setSalt($salt);
+            // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
+            if (empty($salt)) {
+                $salt = bin2hex(openssl_random_pseudo_bytes(5));
             }
 
-            $encryptPassword = $this->memberRepository->encryptPassword($dummyMember);
+            $encoder = $this->encoderFactory->getEncoder($Member);
+            $password = $encoder->encodePassword($password, $salt);
 
             $Member
-                ->setPassword($encryptPassword)
+                ->setPassword($password)
                 ->setSalt($salt);
 
-            $status = $this->memberRepository->save($Member);
-            if ($status) {
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
+            $this->memberRepository->save($Member);
 
-                $app->addSuccess('admin.change_password.save.complete', 'admin');
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Member' => $Member
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
 
-                return $app->redirect($app->url('admin_change_password'));
-            }
+            $app->addSuccess('admin.change_password.save.complete', 'admin');
 
-            $app->addError('admin.change_password.save.error', 'admin');
+            return $app->redirect($app->url('admin_change_password'));
         }
 
         return [

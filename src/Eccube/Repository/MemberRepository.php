@@ -24,11 +24,11 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
-use Eccube\Annotation\Inject;
-use Eccube\Common\Constant;
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,20 +45,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class MemberRepository extends AbstractRepository implements UserProviderInterface
 {
     /**
-     * @var EncoderFactoryInterface
-     * @Inject("security.encoder_factory")
-     */
-    private $encoder_factory;
-
-    /**
-     * @param EncoderFactoryInterface $encoder_factory
-     */
-    public function setEncoderFactorty(EncoderFactoryInterface $encoder_factory)
-    {
-        $this->encoder_factory = $encoder_factory;
-    }
-
-    /**
      * Loads the user for the given username.
      *
      * This method must throw UsernameNotFoundException if the user is not
@@ -74,21 +60,8 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
      */
     public function loadUserByUsername($username)
     {
-        $Work = $this
-            ->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\Work')
-            ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
+        $Member = $this->findOneBy(['login_id' => $username, 'Work' => Work::WORK_ACTIVE_ID]);
 
-        $query = $this->createQueryBuilder('m')
-            ->where('m.login_id = :login_id')
-            ->andWhere('m.Work = :Work')
-            ->setParameters(array(
-                    'login_id' => $username,
-                    'Work' => $Work,
-            ))
-            ->setMaxResults(1)
-            ->getQuery();
-        $Member = $query->getOneOrNullResult();
         if (!$Member) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
@@ -128,165 +101,94 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
      */
     public function supportsClass($class)
     {
-        return $class === 'Eccube\Entity\Member';
+        return $class === Member::class;
     }
 
     /**
-     * @param  \Eccube\Entity\Member $Member
+     * 管理ユーザの表示順を一つ上げる.
      *
-     * @return void
+     * @param Member $Member
+     * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
      */
-    public function up(\Eccube\Entity\Member $Member)
+    public function up(Member $Member)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $Member->getRank();
+        $rank = $Member->getRank();
+        $Member2 = $this->findOneBy(array('rank' => $rank + 1));
 
-            $Member2 = $this->findOneBy(array('rank' => $rank + 1));
-            if (!$Member2) {
-                throw new \Exception();
-            }
-            $Member2->setRank($rank);
-            $em->persist($Member2);
-
-            // Member更新
-            $Member->setRank($rank + 1);
-
-            $em->persist($Member);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+        if (!$Member2) {
+            throw new \Exception(sprintf('%s より上位の管理ユーザが存在しません.', $Member->getId()));
         }
 
-        return true;
+        $Member->setRank($rank + 1);
+        $Member2->setRank($rank);
+
+        $em = $this->getEntityManager();
+        $em->flush([$Member, $Member2]);
     }
 
     /**
-     * @param  \Eccube\Entity\Member $Member
-     * @return bool
+     * 管理ユーザの表示順を一つ下げる.
+     *
+     * @param Member $Member
+     * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
      */
-    public function down(\Eccube\Entity\Member $Member)
+    public function down(Member $Member)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $Member->getRank();
+        $rank = $Member->getRank();
+        $Member2 = $this->findOneBy(array('rank' => $rank - 1));
 
-            //
-            $Member2 = $this->findOneBy(array('rank' => $rank - 1));
-            if (!$Member2) {
-                throw new \Exception();
-            }
-            $Member2->setRank($rank);
-            $em->persist($Member2);
-
-            // Member更新
-            $Member->setRank($rank - 1);
-
-            $em->persist($Member);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+        if (!$Member2) {
+            throw new \Exception(sprintf('%s より下位の管理ユーザが存在しません.', $Member->getId()));
         }
 
-        return true;
+        $Member->setRank($rank - 1);
+        $Member2->setRank($rank);
+
+        $em = $this->getEntityManager();
+        $em->flush([$Member, $Member2]);
     }
 
     /**
-     * @param  \Eccube\Entity\Member $Member
-     * @return bool
+     * 管理ユーザを登録します.
+     *
+     * @param Member $Member
      */
     public function save($Member)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if (!$Member->getId()) {
-                $rank = $this->createQueryBuilder('m')
-                    ->select('MAX(m.rank)')
-                    ->getQuery()
-                    ->getSingleScalarResult();
-                if (!$rank) {
-                    $rank = 0;
-                }
-                $Member
-                    ->setRank($rank + 1);
-            }
-
-            $em->persist($Member);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+        if (!$Member->getId()) {
+            $rank = $this->createQueryBuilder('m')
+                ->select('COALESCE(MAX(m.rank), 0)')
+                ->getQuery()
+                ->getSingleScalarResult();
+            $Member
+                ->setRank($rank + 1);
         }
 
-        return true;
+        $em = $this->getEntityManager();
+        $em->persist($Member);
+        $em->flush($Member);
     }
 
     /**
-     * @param  \Eccube\Entity\Member $Member
-     * @return bool
+     * 管理ユーザを削除します.
+     *
+     * @param Member $Member
+     *
+     * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
+     * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     public function delete($Member)
     {
+        $this->createQueryBuilder('m')
+            ->update()
+            ->set('m.rank', 'm.rank - 1')
+            ->where('m.rank > :rank')
+            ->setParameter('rank', $Member->getRank())
+            ->getQuery()
+            ->execute();
+
         $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $Member->getRank();
-            $em->createQueryBuilder()
-                ->update('Eccube\Entity\Member', 'm')
-                ->set('m.rank', 'm.rank - 1')
-                ->where('m.rank > :rank')->setParameter('rank', $rank)
-                ->getQuery()
-                ->execute();
-
-            $em->remove($Member);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * saltを生成する
-     *
-     * @param $byte
-     * @return string
-     */
-    public function createSalt($byte)
-    {
-        return bin2hex(openssl_random_pseudo_bytes($byte));
-    }
-
-    /**
-     * 入力されたパスワードをSaltと暗号化する
-     *
-     * @param $app
-     * @param  \Eccube\Entity\Member $Member
-     * @return mixed
-     */
-    public function encryptPassword(\Eccube\Entity\Member $Member)
-    {
-        $encoder = $this->encoder_factory->getEncoder($Member);
-
-        return $encoder->encodePassword($Member->getPassword(), $Member->getSalt());
+        $em->remove($Member);
+        $em->flush($Member);
     }
 }

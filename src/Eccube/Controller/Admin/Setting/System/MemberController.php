@@ -34,14 +34,13 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Repository\MemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @Component
@@ -86,6 +85,12 @@ class MemberController extends AbstractController
     protected $memberRepository;
 
     /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
+
+    /**
      * @Route("/{_admin}/setting/system/member", name="admin_setting_system_member")
      * @Template("Setting/System/member.twig")
      */
@@ -114,25 +119,72 @@ class MemberController extends AbstractController
 
     /**
      * @Route("/{_admin}/setting/system/member/new", name="admin_setting_system_member_new")
+     * @Template("Setting/System/member_edit.twig")
+     */
+    public function create(Application $app, Request $request)
+    {
+        $LoginMember = clone $app->user();
+        $this->entityManager->detach($LoginMember);
+
+        $Member = new Member();
+        $builder = $this->formFactory
+            ->createBuilder(MemberType::class, $Member);
+
+        $event = new EventArgs([
+            'builder' => $builder,
+            'Member' => $Member,
+        ],
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $salt = bin2hex(openssl_random_pseudo_bytes(5));
+            $rawPassword = $Member->getPassword();
+            $encoder = $this->encoderFactory->getEncoder($Member);
+            $encodedPassword = $encoder->encodePassword($rawPassword, $salt);
+            $Member
+                ->setSalt($salt)
+                ->setPassword($encodedPassword);
+
+            $this->memberRepository->save($Member);
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Member' => $Member,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
+
+            $app->addSuccess('admin.member.save.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_system_member'));
+        }
+
+        $this->tokenStorage->getToken()->setUser($LoginMember);
+
+        return [
+            'form' => $form->createView(),
+            'Member' => $Member,
+        ];
+    }
+
+    /**
      * @Route("/{_admin}/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
      * @Template("Setting/System/member_edit.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Application $app, Request $request, Member $Member)
     {
-        $previous_password = null;
-        if (is_null($id)) {
-            $Member = new Member();
-        } else {
-            $Member = $this->memberRepository->find($id);
-            if (is_null($Member)) {
-                throw new NotFoundHttpException();
-            }
-            $previous_password = $Member->getPassword();
-            $Member->setPassword($this->appConfig['default_password']);
-        }
-
         $LoginMember = clone $app->user();
         $this->entityManager->detach($LoginMember);
+
+        $previousPassword = $Member->getPassword();
+        $Member->setPassword($this->appConfig['default_password']);
 
         $builder = $this->formFactory
             ->createBuilder(MemberType::class, $Member);
@@ -150,41 +202,38 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!is_null($previous_password)
-                && $Member->getpassword() === $this->appConfig['default_password']
-            ) {
-                // 編集時にPWを変更していなければ
+            if ($Member->getpassword() === $this->appConfig['default_password']) {
+                // 編集時にパスワードを変更していなければ
                 // 変更前のパスワード(暗号化済み)をセット
-                $Member->setPassword($previous_password);
+                $Member->setPassword($previousPassword);
             } else {
                 $salt = $Member->getSalt();
-                if (!isset($salt)) {
-                    $salt = $this->memberRepository->createSalt(5);
+                // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
+                if (empty($salt)) {
+                    $salt = bin2hex(openssl_random_pseudo_bytes(5));
                     $Member->setSalt($salt);
                 }
 
-                // 入力されたPWを暗号化してセット
-                $password = $this->memberRepository->encryptPassword($Member);
-                $Member->setPassword($password);
+                $rawPassword = $Member->getPassword();
+                $encoder = $this->encoderFactory->getEncoder($Member);
+                $encodedPassword = $encoder->encodePassword($rawPassword, $salt);
+                $Member->setPassword($encodedPassword);
             }
-            $status = $this->memberRepository->save($Member);
 
-            if ($status) {
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Member' => $Member,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
+            $this->memberRepository->save($Member);
 
-                $app->addSuccess('admin.member.save.complete', 'admin');
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Member' => $Member,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-                return $app->redirect($app->url('admin_setting_system_member'));
-            } else {
-                $app->addError('admin.member.save.error', 'admin');
-            }
+            $app->addSuccess('admin.member.save.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_system_member'));
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
@@ -203,11 +252,14 @@ class MemberController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $status = $this->memberRepository->up($Member);
+        try {
+            $this->memberRepository->up($Member);
 
-        if ($status) {
             $app->addSuccess('admin.member.up.complete', 'admin');
-        } else {
+
+        } catch (\Exception $e) {
+            log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
+
             $app->addError('admin.member.up.error', 'admin');
         }
 
@@ -222,11 +274,13 @@ class MemberController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $status = $this->memberRepository->down($Member);
+        try {
+            $this->memberRepository->down($Member);
 
-        if ($status) {
             $app->addSuccess('admin.member.down.complete', 'admin');
-        } else {
+        } catch (\Exception $e) {
+            log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
+
             $app->addError('admin.member.down.error', 'admin');
         }
 
@@ -241,24 +295,26 @@ class MemberController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $event = new EventArgs(
-            array(
-                'TargetMember' => $Member,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE, $event);
+        log_info('メンバー削除開始', [$Member->getId()]);
 
-        $status = $this->memberRepository->delete($Member);
+        try {
+            $this->memberRepository->delete($Member);
 
-        if ($status) {
-            $app->addSuccess('admin.member.delete.complete', 'admin');
             $event = new EventArgs(
-                array(),
+                [
+                    'Member' => $Member,
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
-        } else {
+
+            $app->addSuccess('admin.member.delete.complete', 'admin');
+
+            log_info('メンバー削除完了', [$Member->getId()]);
+
+        } catch (\Exception $e) {
+            log_info('メンバー削除エラー', [$Member->getId(), $e]);
+
             $app->addError('admin.member.delete.error', 'admin');
         }
 
