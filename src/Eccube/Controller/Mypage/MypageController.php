@@ -31,6 +31,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -334,16 +335,25 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を削除する.
      *
-     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
      * @Method("DELETE")
+     * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Application $app, Request $request, Product $Product)
     {
         $this->isTokenValid($app);
 
         $Customer = $app->user();
 
-        $Product = $this->productRepository->find($id);
+        log_info('お気に入り商品削除開始', [$Customer->getId(), $Product->getId()]);
+
+        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository
+            ->findOneBy(['Customer' => $Customer, 'Product' => $Product]);
+
+        if (is_null($CustomerFavoriteProduct)) {
+            throw new NotFoundHttpException();
+        }
+
+        $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
 
         $event = new EventArgs(
             array(
@@ -351,23 +361,9 @@ class MypageController extends AbstractController
                 'Product' => $Product,
             ), $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
 
-        if ($Product) {
-            log_info('お気に入り商品削除開始');
-
-            $this->customerFavoriteProductRepository->deleteFavorite($Customer, $Product);
-
-            $event = new EventArgs(
-                array(
-                    'Customer' => $Customer,
-                    'Product' => $Product,
-                ), $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
-
-            log_info('お気に入り商品削除完了');
-        }
+        log_info('お気に入り商品削除完了', [$Customer->getId(), $Product->getId()]);
 
         return $app->redirect($app->url('mypage_favorite'));
     }

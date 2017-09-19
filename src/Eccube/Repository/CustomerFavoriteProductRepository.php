@@ -81,35 +81,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
 
     /**
      * @param  \Eccube\Entity\Customer $Customer
-     * @param  \Eccube\Entity\Product  $Product
-     * @return bool
-     */
-    public function deleteFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
-    {
-        $qb = $this->createQueryBuilder('cf')
-            ->andWhere('cf.Customer = :Customer AND cf.Product = :Product')
-            ->setParameters(array(
-                'Customer' => $Customer,
-                'Product' => $Product,
-            ));
-
-        try {
-            $CustomerFavoriteProduct = $qb
-                ->getQuery()
-                ->getSingleResult();
-        } catch (\Exception $e) {
-            return false;
-        }
-
-        $em = $this->getEntityManager();
-        $em->remove($CustomerFavoriteProduct);
-        $em->flush();
-
-        return true;
-    }
-
-    /**
-     * @param  \Eccube\Entity\Customer $Customer
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)
@@ -124,5 +95,17 @@ class CustomerFavoriteProductRepository extends AbstractRepository
         $qb->addOrderBy('cfp.create_date', 'DESC');
 
         return $qb;
+    }
+
+    /**
+     * お気に入りを削除します.
+     *
+     * @param \Eccube\Entity\CustomerFavoriteProduct $CustomerFavoriteProduct
+     */
+    public function delete($CustomerFavoriteProduct)
+    {
+        $em = $this->getEntityManager();
+        $em->remove($CustomerFavoriteProduct);
+        $em->flush($CustomerFavoriteProduct);
     }
 }
