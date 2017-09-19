@@ -27,15 +27,6 @@ class EntityUtilTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $softDeleteFilter = $this->app['orm.em']->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
-        ));
-        // soft_delete filter を有効にする
-        $config = $this->app['orm.em']->getConfiguration();
-        $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
-        $this->app['orm.em']->getFilters()->enable('soft_delete');
-
         // eccube_install.sh で追加される Member
         $Member = $this->app['eccube.repository.member']->find(1);
 
@@ -69,27 +60,6 @@ class EntityUtilTest extends EccubeTestCase
         $this->ProductClass = $ProductClass;
     }
 
-    /**
-     * EntityUtil::isEmpty() のテストケース.
-     *
-     * soft_delete の対象となったオブジェクトを LAZY loading しようとすると
-     * Entity was not found エラーとなるため、 EntityUtil::isEmpty() で取得するテスト
-     *
-     * @see https://github.com/EC-CUBE/ec-cube/pull/602#issuecomment-125431246
-     */
-    public function testIsEmpty()
-    {
-        // migration で追加されるサンプル商品
-        $Product = $this->app['eccube.repository.product']->find(1);
-        // migration で追加されるダミーの Member. del_flg = 1 の状態で INSERT されている
-        $Member = $Product->getCreator();
-        /*
-         * member.del_flg = 1 になっているので、soft_delete filter が適用され
-         * LAZY loading しようとすると Entity was not found のエラーとなる
-         */
-        $this->assertTrue(EntityUtil::isEmpty($Member));
-    }
-
     public function testIsEmptyWithFalse()
     {
         // setUp() で追加したサンプル商品
@@ -101,19 +71,6 @@ class EntityUtilTest extends EccubeTestCase
          * LAZY loading で取得できる
          */
         $this->assertFalse(EntityUtil::isEmpty($Member));
-    }
-
-    public function testIsNotEmpty()
-    {
-        // migration で追加されるサンプル商品
-        $Product = $this->app['eccube.repository.product']->find(1);
-        // migration で追加されるダミーの Member
-        $Member = $Product->getCreator();
-        /*
-         * member.del_flg = 1 になっているので、soft_delete filter が適用され
-         * LAZY loading しようとすると Entity was not found のエラーとなる
-         */
-        $this->assertFalse(EntityUtil::isNotEmpty($Member));
     }
 
     public function testDumpToArray()

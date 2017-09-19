@@ -717,10 +717,6 @@ class ProductController extends AbstractController
 
                 // 規格あり商品の場合は, デフォルトの商品規格を取得し登録する.
                 if ($CopyProduct->hasProductClass()) {
-                    $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-                    $softDeleteFilter->setExcludes(array(
-                        'Eccube\Entity\ProductClass'
-                    ));
                     $dummyClass = $this->productClassRepository->findOneBy(array(
                         'visible' => false,
                         'ClassCategory1' => null,
@@ -730,7 +726,6 @@ class ProductController extends AbstractController
                     $dummyClass = clone $dummyClass;
                     $dummyClass->setProduct($CopyProduct);
                     $CopyProduct->addProductClass($dummyClass);
-                    $softDeleteFilter->setExcludes(array());
                 }
 
                 $CopyProductClasses = $CopyProduct->getProductClasses();

@@ -27,8 +27,8 @@ namespace Eccube\Controller\Admin\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
@@ -47,7 +47,6 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -356,13 +355,6 @@ class ProductClassController
      */
     public function edit(Application $app, Request $request, $id)
     {
-
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\TaxRule',
-        ));
-
         /** @var $Product \Eccube\Entity\Product */
         $Product = $this->productRepository->find($id);
 
@@ -576,14 +568,9 @@ class ProductClassController
                         $ProductClass->setVisible(false);
                     }
 
-                    /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-                    $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-                    $softDeleteFilter->setExcludes(array(
-                        'Eccube\Entity\ProductClass'
-                    ));
-
                     // デフォルトの商品規格を表示
                     /** @var ProductClass $defaultProductClass */
+
                     $defaultProductClass = $this->productClassRepository
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'visible' => false));
                     $defaultProductClass->setVisible(true);
