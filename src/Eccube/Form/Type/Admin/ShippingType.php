@@ -37,6 +37,7 @@ use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\DeliveryTimeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -67,6 +68,12 @@ class ShippingType extends AbstractType
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
+
+    /**
+     * @Inject(DeliveryTimeRepository::class)
+     * @var DeliveryTimeRepository
+     */
+    protected $deliveryTimeRepository;
 
     /**
      * @Inject(BaseInfo::class)
@@ -221,6 +228,7 @@ class ShippingType extends AbstractType
                 }
 
                 $Delivery = $data->getDelivery();
+                $DeliveryTime = $this->deliveryTimeRepository->find($data->getTimeId());
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, array(
@@ -229,13 +237,13 @@ class ShippingType extends AbstractType
                     'choice_label' => 'delivery_time',
                     'placeholder' => '指定なし',
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er) use($Delivery) {
+                    'data' => $DeliveryTime,
+                    'query_builder' => function (EntityRepository $er) use ($Delivery) {
                         return $er->createQueryBuilder('dt')
                             ->where('dt.Delivery = :Delivery')
                             ->setParameter('Delivery', $Delivery);
                     },
                 ));
-
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
@@ -280,7 +288,10 @@ class ShippingType extends AbstractType
                 $Delivery = $Shipping->getDelivery();
                 $Shipping->setShippingDeliveryName($Delivery ? $Delivery : null);
                 $DeliveryTime = $Shipping->getDeliveryTime();
-                $Shipping->setShippingDeliveryTime($DeliveryTime ? $DeliveryTime->getDeliveryTime() : null);
+                if ($DeliveryTime) {
+                    $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
+                    $Shipping->setTimeId($DeliveryTime->getId());
+                }
             });
     }
 
