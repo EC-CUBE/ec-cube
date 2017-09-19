@@ -2,12 +2,9 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * MailHistoryRepository test cases.
@@ -33,14 +30,12 @@ class MailHistoryRepositoryTest extends EccubeTestCase
             ->setHeader($faker->word)
             ->setFooter($faker->word)
             ->setSubject($faker->word)
-            ->setCreator($this->Member)
-            ->setDelFlg(Constant::DISABLED);
+            ->setCreator($this->Member);
         $this->app['orm.em']->persist($MailTemplate);
         $this->app['orm.em']->flush();
         for ($i = 0; $i < 3; $i++) {
             $this->MailHistories[$i] = new MailHistory();
             $this->MailHistories[$i]
-                ->setMailTemplate($MailTemplate)
                 ->setOrder($this->Order)
                 ->setSendDate(new \DateTime())
                 ->setMailBody($faker->realText())

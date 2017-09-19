@@ -25,11 +25,11 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -46,9 +46,9 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
@@ -163,13 +163,6 @@ class EditController extends AbstractController
      */
     public function index(Application $app, Request $request, $id = null)
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass',
-            'Eccube\Entity\Product',
-        ));
-
         $TargetOrder = null;
         $OriginOrder = null;
 
@@ -444,6 +437,9 @@ class EditController extends AbstractController
 
                 $searchData = array(
                     'multi' => $request->get('search_word'),
+                    'customer_status' => [
+                        CustomerStatus::REGULAR
+                    ]
                 );
 
                 $session->set('eccube.admin.order.customer.search', $searchData);
@@ -710,12 +706,6 @@ class EditController extends AbstractController
 
             // // 小計
             // $subtotal += $OrderDetail->getTotalPrice();
-        }
-
-        $shippings = $Order->getShippings();
-        /** @var \Eccube\Entity\Shipping $Shipping */
-        foreach ($shippings as $Shipping) {
-            $Shipping->setDelFlg(Constant::DISABLED);
         }
 
         // // 受注データの税・小計・合計を再計算

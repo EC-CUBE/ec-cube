@@ -128,13 +128,48 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
+    public function testRoutingAdminProductClassCategoryToggle()
+    {
+        // before
+        $TestCreator = $this->createMember();
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->app['orm.em']->persist($TestClassName);
+        $this->app['orm.em']->flush();
+        $test_class_name_id = $this->app['eccube.repository.class_name']
+            ->findOneBy(array(
+                'name' => $TestClassName->getName()
+            ))
+            ->getId();
+        $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
+        $this->app['orm.em']->persist($TestClassCategory);
+        $this->app['orm.em']->flush();
+        $test_class_category_id = $this->app['eccube.repository.class_category']
+            ->findOneBy(array(
+                'name' => $TestClassCategory->getName()
+            ))
+            ->getId();
+
+        // main
+        $redirectUrl = $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id));
+        $this->client->request('PUT',
+            $this->app->url('admin_product_class_category_visibility',
+                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // after
+        $this->app['orm.em']->remove($TestClassCategory);
+        $this->app['orm.em']->flush();
+        $this->app['orm.em']->remove($TestClassName);
+        $this->app['orm.em']->flush();
+    }
+
     private function newTestClassName($TestCreator)
     {
         $Creator = $this->createMember();
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)
-            ->setDelFlg(false)
             ->setCreator($TestCreator);
 
         return $TestClassName;
@@ -146,7 +181,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassCategory->setName('立方体')
             ->setRank(100)
             ->setClassName($TestClassName)
-            ->setDelFlg(false)
+            ->setVisible(true)
             ->setCreator($TestCreator);
 
         return $TestClassCategory;

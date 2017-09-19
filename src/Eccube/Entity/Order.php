@@ -479,13 +479,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $payment_date;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(name="currency_code", type="string", nullable=true)
@@ -632,7 +625,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
             ->setTax(0)
             ->setDeliveryFeeTotal(0)
             ->setOrderStatus($orderStatus)
-            ->setDelFlg(Constant::DISABLED);
+        ;
 
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1463,30 +1456,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getPaymentDate()
     {
         return $this->payment_date;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Order
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

@@ -1,1 +1,1 @@
-favorite_id,customer_id,product_id,create_date,update_date,del_flg,discriminator_type
+favorite_id,customer_id,product_id,create_date,update_date,discriminator_type

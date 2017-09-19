@@ -469,25 +469,6 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * 新規受付一覧の取得
-     *
-     * @return \Eccube\Entity\Order[]
-     */
-    public function getNew()
-    {
-        $qb = $this->createQueryBuilder('o');
-        $qb
-            ->where('o.OrderStatus <> :OrderStatus')
-            ->setParameter('OrderStatus', $this->appConfig['order_cancel'])
-            ->setMaxResults(10)
-            ->orderBy('o.create_date', 'DESC');
-
-        return $qb
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * 会員の合計購入金額を取得、回数を取得
      *
      * @param  \Eccube\Entity\Customer $Customer

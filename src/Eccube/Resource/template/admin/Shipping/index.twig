@@ -126,13 +126,22 @@
                     <div id="search_box_main__body_toggle" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
                         <div class="row">
                             <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
-
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div id="search_box_main__multi_status" class="form-group">
-                                            <label>対応状況</label>
+                                        <div id="search_box_main__order_status" class="form-group">
+                                            <label>受注状況</label>
                                             <div>
-                                                {{ form_widget(searchForm.multi_status) }}
+                                                {{ form_widget(searchForm.order_status) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="search_box_main__shipping_status" class="form-group">
+                                            <label>出荷状況</label>
+                                            <div>
+                                                {{ form_widget(searchForm.shipping_status) }}
                                             </div>
                                         </div>
                                     </div>
@@ -322,6 +331,7 @@
                                                     <th id="result_list_main__header_payment_method">お届け先住所</th>
                                                     <th id="result_list_main__header_delivery_date">お届け予定日</th>
                                                     <th id="result_list_main__header_commit_date">発送日</th>
+                                                    <th id="result_list_main__header_commit_date">出荷状況</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -334,7 +344,7 @@
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate|date_format }}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.commit_date|date_format }}</td>
-
+                                                        <td id="result_list_main__shipping_status--{{ Shipping.id }}">{{ Shipping.ShippingStatus }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

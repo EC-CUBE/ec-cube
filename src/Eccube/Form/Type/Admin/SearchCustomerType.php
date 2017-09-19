@@ -27,9 +27,12 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
+use Eccube\Form\Type\Master\CustomerStatusType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\Master\SexType;
+use Eccube\Repository\Master\CustomerStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -52,14 +55,10 @@ class SearchCustomerType extends AbstractType
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * @Inject(CustomerStatusRepository::class)
+     * @var CustomerStatusRepository
      */
-    protected $app;
-
-    public function __construct()
-    {
-    }
+    protected $customerStatusRepository;
 
     /**
      * {@inheritdoc}
@@ -217,16 +216,15 @@ class SearchCustomerType extends AbstractType
                 'label' => '商品カテゴリ',
                 'required' => false,
             ))
-            ->add('customer_status', ChoiceType::class, array(
-                'label' => '会員ステータス',
+            ->add('customer_status', CustomerStatusType::class, array(
                 'required' => false,
-                'choices' => array_flip(array(
-                    '1' => '仮会員',
-                    '2' => '本会員',
-                )),
                 'expanded' => true,
                 'multiple' => true,
                 'placeholder' => false,
+                'data' => $this->customerStatusRepository->findBy(['id' => [
+                    CustomerStatus::PROVISIONAL,
+                    CustomerStatus::REGULAR,
+                ]])
             ))
         ;
     }

@@ -272,11 +272,22 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function deleteAllRows(array $tables)
     {
-        $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
+        /** @var Connection $conn */
+        $conn = $this->app['db'];
+
+        // MySQLの場合は参照制約を無効にする.
+        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
+            $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+        }
+
         foreach ($tables as $table) {
             $sql = 'DELETE FROM '.$table;
-            $stmt = $pdo->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->execute();
+        }
+
+        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
+            $conn->query('SET FOREIGN_KEY_CHECKS = 1');
         }
     }
 

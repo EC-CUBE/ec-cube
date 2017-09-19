@@ -219,8 +219,7 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
                     $rank = 0;
                 }
                 $Member
-                    ->setRank($rank + 1)
-                    ->setDelFlg(Constant::DISABLED);
+                    ->setRank($rank + 1);
             }
 
             $em->persist($Member);
@@ -253,11 +252,7 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
                 ->getQuery()
                 ->execute();
 
-            $Member
-                ->setDelFlg(Constant::ENABLED)
-                ->setRank(0);
-
-            $em->persist($Member);
+            $em->remove($Member);
             $em->flush();
 
             $em->getConnection()->commit();

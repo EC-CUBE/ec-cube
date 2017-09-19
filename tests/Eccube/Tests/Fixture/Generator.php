@@ -10,6 +10,7 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\PageLayout;
@@ -119,16 +120,13 @@ class Generator {
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
-            ->setUpdateDate(new \DateTime())
-            ->setDelFlg(Constant::DISABLED);
+            ->setUpdateDate(new \DateTime());
         $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush($Customer);
 
         $CustomerAddress = new CustomerAddress();
-        $CustomerAddress
-            ->setCustomer($Customer)
-            ->setDelFlg(Constant::DISABLED);
+        $CustomerAddress->setCustomer($Customer);
         $CustomerAddress->copyProperties($Customer);
         $this->app['orm.em']->persist($CustomerAddress);
         $this->app['orm.em']->flush($CustomerAddress);
@@ -154,7 +152,6 @@ class Generator {
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress
             ->setCustomer($Customer)
-            ->setDelFlg(Constant::DISABLED)
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
             ->setKana01($faker->lastKanaName)
@@ -224,13 +221,10 @@ class Generator {
             ->setTel03($tel[2])
             ->setFax01($fax[0])
             ->setFax02($fax[1])
-            ->setFax03($fax[2])
-            ->setDelFlg(Constant::DISABLED);
+            ->setFax03($fax[2]);
 
         $CustomerAddress = new CustomerAddress();
-        $CustomerAddress
-            ->setCustomer($Customer)
-            ->setDelFlg(Constant::DISABLED);
+        $CustomerAddress->setCustomer($Customer);
         $CustomerAddress->copyProperties($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 
@@ -276,7 +270,6 @@ class Generator {
             ->setStatus($Disp)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
-            ->setDelFlg(Constant::DISABLED)
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->text());
         $Product->extendedParameter = "aaaa";
@@ -342,7 +335,7 @@ class Generator {
                 ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
-                ->setDelFlg(Constant::DISABLED);
+                ->setVisible(true);
 
             if (array_key_exists($i, $ClassCategories1)) {
                 $ProductClass->setClassCategory1($ClassCategories1[$i]);
@@ -371,9 +364,9 @@ class Generator {
         $this->app['orm.em']->flush($ProductStock);
         $ProductClass = new ProductClass();
         if ($product_class_num > 0) {
-            $ProductClass->setDelFlg(Constant::ENABLED);
+            $ProductClass->setVisible(false);
         } else {
-            $ProductClass->setDelFlg(Constant::DISABLED);
+            $ProductClass->setVisible(true);
         }
         $ProductClass
             ->setCode($faker->word)
@@ -480,6 +473,8 @@ class Generator {
             ->setDeliveryFee($DeliveryFee)
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
+        $ShippingStatus = $this->app['orm.em']->find(ShippingStatus::class, ShippingStatus::PREPARED);
+        $Shipping->setShippingStatus($ShippingStatus);
 
         $this->app['orm.em']->persist($Shipping);
         $this->app['orm.em']->flush($Shipping);
@@ -624,7 +619,7 @@ class Generator {
             ->setRuleMin($rule_min)
             ->setRuleMax($rule_max)
             ->setCreator($Member)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
         $this->app['orm.em']->persist($Payment);
         $this->app['orm.em']->flush($Payment);
 
@@ -666,7 +661,7 @@ class Generator {
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
             ->setProductType($ProductType)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);
 

@@ -2,13 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
-use Doctrine\ORM\NoResultException;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * TaxRuleRepository test cases.
@@ -57,8 +52,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
             ->setApplyDate($apply_date)
             ->setCalcRule($CalcRule)
             ->setTaxAdjust(0)
-            ->setCreator($Member)
-            ->setDelFlg(0);
+            ->setCreator($Member);
         $this->app['orm.em']->persist($TaxRule);
         $this->app['orm.em']->flush();
         return $TaxRule;

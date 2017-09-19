@@ -369,8 +369,7 @@ class AdminController extends AbstractController
                 FROM
                     dtb_order t1
                 WHERE
-                    t1.del_flg = 0
-                    AND t1.status NOT IN (:excludes)
+                    t1.status NOT IN (:excludes)
                 GROUP BY
                     t1.status
                 ORDER BY
@@ -400,8 +399,7 @@ class AdminController extends AbstractController
                 FROM
                   Eccube\Entity\Order o
                 WHERE
-                    o.del_flg = 0
-                    AND o.OrderStatus NOT IN (:excludes)
+                    o.OrderStatus NOT IN (:excludes)
                     AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) = SUBSTRING(:targetDate, 1, 7)
                 GROUP BY
                   order_month';
@@ -431,8 +429,7 @@ class AdminController extends AbstractController
                 FROM
                   Eccube\Entity\Order o
                 WHERE
-                    o.del_flg = 0
-                    AND o.OrderStatus NOT IN (:excludes)
+                    o.OrderStatus NOT IN (:excludes)
                     AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 10) = SUBSTRING(:targetDate, 1, 10)
                 GROUP BY
                   order_day';

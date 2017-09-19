@@ -29,6 +29,7 @@ use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CustomerType;
@@ -99,7 +100,7 @@ class CustomerEditController extends AbstractController
             // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
-            $CustomerAddress = new \Eccube\Entity\CustomerAddress();
+            $CustomerAddress = new CustomerAddress();
             $Customer->setBuyTimes(0);
             $Customer->setBuyTotal(0);
         }
@@ -149,7 +150,6 @@ class CustomerEditController extends AbstractController
                         ->setFax01($Customer->getFax01())
                         ->setFax02($Customer->getFax02())
                         ->setFax03($Customer->getFax03())
-                        ->setDelFlg(Constant::DISABLED)
                         ->setCustomer($Customer);
 
                     $this->entityManager->persist($CustomerAddress);

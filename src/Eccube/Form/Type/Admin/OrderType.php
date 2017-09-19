@@ -193,13 +193,19 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('discount', PriceType::class, array(
+                'required' => false,
                 'label' => '値引き',
+                'required' => false,
             ))
             ->add('delivery_fee_total', PriceType::class, array(
+                'required' => false,
                 'label' => '送料',
+                'required' => false,
             ))
             ->add('charge', PriceType::class, array(
+                'required' => false,
                 'label' => '手数料',
+                'required' => false,
             ))
             ->add('note', TextareaType::class, array(
                 'label' => 'SHOP用メモ欄',

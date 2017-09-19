@@ -82,23 +82,6 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testGetNew()
-    {
-        $NewStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
-        $CancelStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_cancel']);
-        $Customer2 = $this->createCustomer();
-        $Order1 = $this->createOrder($this->Customer);
-        $Order1->setOrderStatus($NewStatus);
-        $Order2 = $this->createOrder($Customer2);
-        $Order2->setOrderStatus($CancelStatus);
-        $this->app['orm.em']->flush();
-
-        $Orders = $this->app['eccube.repository.order']->getNew();
-        $this->expected = 2;
-        $this->actual = count($Orders);
-        $this->verify();
-    }
-
     public function testGetShippings()
     {
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->Order->getShippings());

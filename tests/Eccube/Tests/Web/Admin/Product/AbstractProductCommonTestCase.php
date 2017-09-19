@@ -70,7 +70,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setDescriptionList($this->faker->text(100))
             ->setDescriptionDetail($this->faker->text(200))
             ->setFreeArea($this->faker->text(200))
-            ->setDelFlg(Constant::DISABLED)
             ->setCreator($TestCreator);
 
         $this->app['orm.em']->persist($TestProduct);
@@ -90,7 +89,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setPrice02($this->faker->randomNumber(4))
             ->setDeliveryFee($this->faker->randomNumber(4))
             ->setCreator($TestCreator)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
 
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);
@@ -116,7 +115,6 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $TestClassName = new ClassName();
         $TestClassName->setName($this->faker->word)
             ->setRank($this->faker->randomNumber(3))
-            ->setDelFlg(Constant::DISABLED)
             ->setCreator($Creator);
 
         $this->app['orm.em']->persist($TestClassName);
@@ -141,7 +139,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $TestClassCategory->setName($this->faker->word)
             ->setRank($this->faker->randomNumber(3))
             ->setClassName($TestClassName)
-            ->setDelFlg(Constant::DISABLED)
+            ->setVisible(true)
             ->setCreator($Creator);
 
         $this->app['orm.em']->persist($TestClassCategory);
@@ -185,7 +183,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setDeliveryFee(1000)
             ->setDeliveryDate($DeliveryDates[$this->faker->numberBetween(0, 8)])
             ->setCreator($Creator)
-            ->setDelFlg(Constant::DISABLED);
+            ->setVisible(true);
 
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);

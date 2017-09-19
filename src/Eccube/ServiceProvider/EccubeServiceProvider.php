@@ -218,7 +218,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
         $app['eccube.purchase.flow.cart.item_processors'] = function ($app) {
             $processors = new ArrayCollection();
-            $processors->add(new DeletedProductValidator());
             $processors->add(new DisplayStatusValidator());
             $processors->add(new SaleLimitValidator());
             $processors->add(new DeliverySettingValidator($app['eccube.repository.delivery']));

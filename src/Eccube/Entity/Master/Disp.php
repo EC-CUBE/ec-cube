@@ -40,12 +40,20 @@ class Disp extends \Eccube\Entity\Master\AbstractMasterEntity
 {
 
     /**
+     * 公開
      * @var integer
      */
     const DISPLAY_SHOW = 1;
 
     /**
+     * 非公開
      * @var integer
      */
     const DISPLAY_HIDE = 2;
+
+    /**
+     * 廃止
+     * @var integer
+     */
+    const DISPLAY_ABOLISHED = 3;
 }

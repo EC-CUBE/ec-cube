@@ -125,7 +125,6 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setDescriptionList('テスト商品 商品説明(リスト)')
             ->setDescriptionDetail('テスト商品 商品説明(詳細)')
             ->setFreeArea('フリー記載')
-            ->setDelFlg(0)
             ->setCreator($TestCreator);
 
         return $TestProduct;
@@ -176,7 +175,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setPrice02(5000)
             ->setDeliveryFee(1000)
             ->setCreator($TestCreator)
-            ->setDelFlg(0);
+            ->setVisible(true);
         return $TestClassCategory;
     }
 

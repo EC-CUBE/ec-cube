@@ -127,9 +127,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="visible", type="boolean", options={"default":true})
      */
-    private $del_flg = 0;
+    private $visible;
 
     /**
      * @var \DateTime
@@ -421,27 +421,21 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Payment
+     * @return boolean
      */
-    public function setDelFlg($delFlg)
+    public function isVisible()
     {
-        $this->del_flg = $delFlg;
-
-        return $this;
+        return $this->visible;
     }
 
     /**
-     * Get delFlg.
-     *
-     * @return int
+     * @param boolean $visible
+     * @return Payment
      */
-    public function getDelFlg()
+    public function setVisible($visible)
     {
-        return $this->del_flg;
+        $this->visible = $visible;
+        return $this;
     }
 
     /**
@@ -550,5 +544,16 @@ class Payment extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodForAdmin()
+    {
+        if ($this->isVisible()) {
+            return $this->getMethod();
+        }
+        return $this->getMethod().'(非表示)';
     }
 }

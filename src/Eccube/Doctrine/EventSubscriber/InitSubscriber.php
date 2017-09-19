@@ -64,6 +64,8 @@ class InitSubscriber implements EventSubscriber
             $db->executeQuery("SET SESSION time_zone = '+00:00'");
         } elseif ($platform === 'postgresql') {
             $db->executeQuery("SET TIME ZONE 'UTC'");
+        } elseif ($platform === 'sqlite') {
+            $db->executeQuery("PRAGMA foreign_keys = ON");
         }
     }
 }

@@ -25,9 +25,10 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
@@ -46,7 +47,6 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -259,7 +259,7 @@ class ProductClassController
             $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
 
             // 設定されている規格分類1、2を取得(商品規格の規格分類には必ず同じ値がセットされている)
-            $ProductClass = $ProductClasses[0];
+            $ProductClass = $ProductClasses->first();
             $ClassName1 = $ProductClass->getClassCategory1()->getClassName();
             $ClassName2 = null;
             if (!is_null($ProductClass->getClassCategory2())) {
@@ -274,7 +274,7 @@ class ProductClassController
             // 商品税率が設定されている場合、商品税率を項目に設定
             if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                 foreach ($ProductClasses as $class) {
-                    if ($class->getTaxRule() && !$class->getTaxRule()->getDelFlg()) {
+                    if ($class->getTaxRule()) {
                         $class->setTaxRate($class->getTaxRule()->getTaxRate());
                     }
                 }
@@ -355,13 +355,6 @@ class ProductClassController
      */
     public function edit(Application $app, Request $request, $id)
     {
-
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\TaxRule',
-        ));
-
         /** @var $Product \Eccube\Entity\Product */
         $Product = $this->productRepository->find($id);
 
@@ -431,11 +424,11 @@ class ProductClassController
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
-                    // デフォルトの商品規格を更新
+                    // デフォルトの商品規格を非表示
+                    /** @var ProductClass $defaultProductClass */
                     $defaultProductClass = $this->productClassRepository
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
-
-                    $defaultProductClass->setDelFlg(Constant::ENABLED);
+                    $defaultProductClass->setVisible(false);
 
                     $this->entityManager->flush();
 
@@ -526,13 +519,13 @@ class ProductClassController
                     }
 
                     foreach ($removeProductClasses as $rc) {
-                        // 登録されている商品規格に削除フラグをセット
+                        // 登録されている商品規格を非表示
+                        /** @var ProductClass $productClass */
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
                                     $productClass->getClassCategory1() == $rc->getClassCategory1() &&
                                     $productClass->getClassCategory2() == $rc->getClassCategory2()) {
-
-                                $productClass->setDelFlg(Constant::ENABLED);
+                                $productClass->setVisible(false);
                                 break;
                             }
                         }
@@ -571,21 +564,16 @@ class ProductClassController
                     }
 
                     foreach ($ProductClasses as $ProductClass) {
-                        // 登録されている商品規格に削除フラグをセット
-                        $ProductClass->setDelFlg(Constant::ENABLED);
+                        // 登録されている商品規格を非表示
+                        $ProductClass->setVisible(false);
                     }
 
-                    /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-                    $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-                    $softDeleteFilter->setExcludes(array(
-                        'Eccube\Entity\ProductClass'
-                    ));
+                    // デフォルトの商品規格を表示
+                    /** @var ProductClass $defaultProductClass */
 
-                    // デフォルトの商品規格を更新
                     $defaultProductClass = $this->productClassRepository
-                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => Constant::ENABLED));
-
-                    $defaultProductClass->setDelFlg(Constant::DISABLED);
+                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'visible' => false));
+                    $defaultProductClass->setVisible(true);
 
                     $this->entityManager->flush();
                     log_info('商品規格削除完了', array($id));
@@ -689,7 +677,7 @@ class ProductClassController
                     $ProductClass->setClassCategory1($ClassCategory1);
                     $ProductClass->setClassCategory2($ClassCategory2);
                     $ProductClass->setTaxRate(null);
-                    $ProductClass->setDelFlg(Constant::DISABLED);
+                    $ProductClass->setVisible(true);
                     $ProductClasses[] = $ProductClass;
                 }
             } else {
@@ -697,7 +685,7 @@ class ProductClassController
                 $ProductClass->setProduct($Product);
                 $ProductClass->setClassCategory1($ClassCategory1);
                 $ProductClass->setTaxRate(null);
-                $ProductClass->setDelFlg(Constant::DISABLED);
+                $ProductClass->setVisible(true);
                 $ProductClasses[] = $ProductClass;
             }
 
@@ -736,23 +724,23 @@ class ProductClassController
      * 規格なし商品を除いて商品規格を取得.
      *
      * @param Product $Product
-     * @return \Eccube\Entity\ProductClass[]
+     * @return Collection
      */
     private function getProductClassesExcludeNonClass(Product $Product)
     {
         $ProductClasses = $Product->getProductClasses();
-        return $ProductClasses->filter(function($ProductClass) {
+        return new ArrayCollection(array_values($ProductClasses->filter(function($ProductClass) {
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
             return ($ClassCategory1 || $ClassCategory2);
-        });
+        })->toArray()));
     }
 
     /**
      * デフォルトとなる商品規格を設定
      *
-     * @param $productClassDest コピー先となる商品規格
-     * @param $productClassOrig コピー元となる商品規格
+     * @param $productClassDest ProductClass コピー先となる商品規格
+     * @param $productClassOrig ProductClass コピー元となる商品規格
      */
     private function setDefaultProductClass($app, $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
@@ -772,7 +760,6 @@ class ProductClassController
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
                 if ($productClassDest->getTaxRule()) {
                     $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
-                    $productClassDest->getTaxRule()->setDelFlg(Constant::DISABLED);
                 } else {
                     $taxrule = $this->taxRuleRepository->newTaxRule();
                     $taxrule->setTaxRate($productClassOrig->getTaxRate());
@@ -783,7 +770,8 @@ class ProductClassController
                 }
             } else {
                 if ($productClassDest->getTaxRule()) {
-                    $productClassDest->getTaxRule()->setDelFlg(Constant::ENABLED);
+                    $this->taxRuleRepository->delete($productClassDest->getTaxRule());
+                    $productClassDest->setTaxRule(null);
                 }
             }
         }
@@ -795,7 +783,7 @@ class ProductClassController
      *
      * @param Application     $app
      * @param Product         $Product
-     * @param ArrayCollection $ProductClasses 登録される商品規格
+     * @param ProductClass[] $ProductClasses 登録される商品規格
      */
     private function insertProductClass($app, $Product, $ProductClasses) {
 
@@ -803,7 +791,7 @@ class ProductClassController
         // 選択された商品を登録
         foreach ($ProductClasses as $ProductClass) {
 
-            $ProductClass->setDelFlg(Constant::DISABLED);
+            $ProductClass->setVisible(true);
             $ProductClass->setProduct($Product);
             $this->entityManager->persist($ProductClass);
 
@@ -836,7 +824,6 @@ class ProductClassController
                     $TaxRule->setTaxRate($taxRate);
                     $TaxRule->setTaxAdjust(0);
                     $TaxRule->setApplyDate(new \DateTime());
-                    $TaxRule->setDelFlg(Constant::DISABLED);
                     $this->entityManager->persist($TaxRule);
                 }
             }

@@ -55,7 +55,6 @@ class OrderTest extends EccubeTestCase
         $this->verify();
 
         $this->assertSame($OrderStatus, $Order->getOrderStatus());
-        $this->assertSame(Constant::DISABLED, $Order->getDelFlg());
     }
 
     public function testConstructor2()
@@ -86,7 +85,6 @@ class OrderTest extends EccubeTestCase
         $this->verify();
 
         $this->assertNull($Order->getOrderStatus());
-        $this->assertSame(Constant::DISABLED, $Order->getDelFlg());
     }
 
     public function testGetSubTotal()

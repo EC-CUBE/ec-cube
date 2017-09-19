@@ -31,6 +31,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
@@ -301,15 +302,26 @@ class OrderController extends AbstractController
 
         log_info('受注削除開始', array($Order->getId()));
 
-        $Order->setDelFlg(Constant::ENABLED);
+        // 出荷に紐付いている明細がある場合は削除できない.
+        $hasShipping = $Order->getItems()->exists(function ($k, $v) {
+            return false === is_null($v->getShipping());
+        });
+        if ($hasShipping) {
+            log_info('受注削除失敗', [$Order->getId()]);
+            $app->addError('admin.order.delete.failed', 'admin');
 
-        $this->entityManager->persist($Order);
-        $this->entityManager->flush();
+            return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        }
 
         $Customer = $Order->getCustomer();
+        $OrderStatusId = $Order->getOrderStatus()->getId();
+
+        $this->entityManager->remove($Order);
+        $this->entityManager->flush();
+
         if ($Customer) {
             // 会員の場合、購入回数、購入金額などを更新
-            $this->customerRepository->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
+            $this->customerRepository->updateBuyData($app, $Customer, $OrderStatusId);
         }
 
         $event = new EventArgs(

@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Payment in Payments %}
                                     <tr id="payment_list__item--{{ Payment.id }}">
 
-                                        <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.method }}</td>
+                                        <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.methodForAdmin }}</td>
                                         <td id="payment_list__charge--{{ Payment.id }}" class="member_name">
                                             {{ Payment.charge }}
                                         </td>
@@ -75,18 +75,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="payment_list__menu--{{ Payment.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
-                                                        {% if Payment.fix_flg == 1 %}
-                                                            <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
+                                                        <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
+                                                    </li>
+                                                    <li>
+                                                        {% if Payment.visible %}
+                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="非表示にしてもよろしいですか?">非表示にする</a>
                                                         {% else %}
-                                                            <a>編集</a>
+                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="表示にしてもよろしいですか">表示にする</a>
                                                         {% endif %}
                                                     </li>
                                                     <li>
-                                                        {% if Payment.fix_flg == 1 %}
-                                                            <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
-                                                        {% else %}
-                                                            <a>削除</a>
-                                                        {% endif %}
+                                                        <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
                                                     </li>
                                                     <li>
                                                         {% if loop.first == false %}

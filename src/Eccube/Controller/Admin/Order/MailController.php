@@ -187,7 +187,6 @@ class MailController
                         $MailHistory
                             ->setSubject($data['subject'])
                             ->setMailBody($body)
-                            ->setMailTemplate($MailTemplate)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
 
@@ -370,12 +369,10 @@ class MailController
                             $this->mailService->sendAdminOrderMail($Order, $data);
 
                             // 送信履歴を保存.
-                            $MailTemplate = $form->get('template')->getData();
                             $MailHistory = new MailHistory();
                             $MailHistory
                                 ->setSubject($data['subject'])
                                 ->setMailBody($body)
-                                ->setMailTemplate($MailTemplate)
                                 ->setSendDate(new \DateTime())
                                 ->setOrder($Order);
                             $this->entityManager->persist($MailHistory);

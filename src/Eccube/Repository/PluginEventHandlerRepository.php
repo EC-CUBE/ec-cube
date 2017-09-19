@@ -42,7 +42,6 @@ class PluginEventHandlerRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('e')
             ->innerJoin('e.Plugin', 'p')
-            ->andWhere('e.del_flg = 0 ')  
             ->Orderby('e.event','ASC') 
             ->addOrderby('e.priority','DESC');
             ;
@@ -98,7 +97,6 @@ class PluginEventHandlerRepository extends AbstractRepository
 
         $qb->andWhere("e.priority >= $range_end ")
            ->andWhere("e.priority <= $range_start ")
-           ->andWhere("e.del_flg = 0 ") 
            ->andWhere('e.priority '.($up ?  '>' : '<' ).' :pri')
            ->andWhere('e.event = :event')
            ->setParameter('event',$pluginEventHandler->getEvent())

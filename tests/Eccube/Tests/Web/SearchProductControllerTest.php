@@ -51,7 +51,6 @@ class SearchProductControllerTest extends AbstractWebTestCase
         foreach ($categories as $category_array) {
             $Category = new Category();
             $Category->setPropertiesFromArray($category_array);
-            $Category->setDelFlg(Constant::DISABLED);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
@@ -64,7 +63,6 @@ class SearchProductControllerTest extends AbstractWebTestCase
                 $Child = new Category();
                 $Child->setPropertiesFromArray($child_array);
                 $Child->setParent($Category);
-                $Child->setDelFlg(Constant::DISABLED);
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
                 $this->app['orm.em']->persist($Child);
@@ -79,7 +77,6 @@ class SearchProductControllerTest extends AbstractWebTestCase
                     $Grandson = new Category();
                     $Grandson->setPropertiesFromArray($grandson_array);
                     $Grandson->setParent($Child);
-                    $Grandson->setDelFlg(Constant::DISABLED);
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
                     $this->app['orm.em']->persist($Grandson);
@@ -94,12 +91,10 @@ class SearchProductControllerTest extends AbstractWebTestCase
      * 既存のデータを論理削除しておく.
      */
     public function remove() {
-        $Categories = $this->app['eccube.repository.category']->findAll();
-        foreach ($Categories as $Category) {
-            $Category->setDelFlg(Constant::ENABLED);
-            $this->app['orm.em']->merge($Category);
-        }
-        $this->app['orm.em']->flush();
+        $this->deleteAllRows([
+            'dtb_product_category',
+            'dtb_category'
+        ]);
     }
 
     public function testRoutingSearchProduct()

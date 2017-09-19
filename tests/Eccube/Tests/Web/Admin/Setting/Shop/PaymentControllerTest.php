@@ -24,7 +24,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Eccube\Common\Constant;
+use Eccube\Entity\Payment;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -99,7 +99,20 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testDeleteSuccess()
     {
-        $pid = 1;
+
+        $Member = $this->app['eccube.repository.member']->find(2);
+        $Payment = new Payment();
+        $Payment->setMethod('testDeleteSuccess')
+            ->setCharge(0)
+            ->setRuleMin(0)
+            ->setRuleMax(9999)
+            ->setCreator($Member)
+            ->setVisible(true);
+
+        $this->app['orm.em']->persist($Payment);
+        $this->app['orm.em']->flush($Payment);
+
+        $pid = $Payment->getId();
         $this->client->request('DELETE',
             $this->app->url('admin_setting_shop_payment_delete', array('id' => $pid))
         );
@@ -107,12 +120,10 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Payment = $this->app['eccube.repository.payment']->find($pid);
-        $this->actual = $Payment->getDelFlg();
-        $this->expected = Constant::ENABLED;
-        $this->verify();
+        $this->assertNull($Payment);
     }
 
-    public function testDeleteFail()
+    public function testDeleteFail_NotFound()
     {
         $pid = 9999;
         try {

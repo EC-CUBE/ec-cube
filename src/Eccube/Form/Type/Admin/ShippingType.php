@@ -162,7 +162,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
-                'choice_label' => 'name',
+                'choice_label' => 'serviceNameForAdmin',
                 'placeholder' => '選択してください',
                 'constraints' => array(
                     new Assert\NotBlank(),

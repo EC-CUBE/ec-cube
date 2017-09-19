@@ -6,7 +6,6 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\Inject;
-use Eccube\Common\Constant;
 use Eccube\Entity\AbstractEntity;
 
 class AbstractRepository extends EntityRepository
@@ -25,8 +24,7 @@ class AbstractRepository extends EntityRepository
      */
     public function delete($entity)
     {
-        $entity->setDelFlg(Constant::ENABLED);
-        $this->save($entity);
+        $this->getEntityManager()->remove($entity);
     }
 
     /**

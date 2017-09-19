@@ -25,7 +25,6 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Common\Constant;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -67,8 +66,16 @@ class Product extends \Eccube\Entity\AbstractEntity
             $i = 0;
             foreach ($this->getProductClasses() as $ProductClass) {
                 /* @var $ProductClass \Eccube\Entity\ProductClass */
-                // del_flg
-                if ($ProductClass->getDelFlg() === 1) {
+                // stock_find
+                if ($ProductClass->isVisible() == false) {
+                    continue;
+                }
+                $ClassCategory1 = $ProductClass->getClassCategory1();
+                $ClassCategory2 = $ProductClass->getClassCategory2();
+                if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
+                    continue;
+                }
+                if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
                     continue;
                 }
 
@@ -407,7 +414,9 @@ class Product extends \Eccube\Entity\AbstractEntity
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
-
+            if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
+                continue;
+            }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
             $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
@@ -450,7 +459,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function hasProductClass()
     {
         foreach ($this->ProductClasses as $ProductClass) {
-            if (!is_null($ProductClass->getClassCategory1()) && $ProductClass->getDelFlg() == Constant::DISABLED) {
+            if (!is_null($ProductClass->getClassCategory1())) {
                 return true;
             }
         }
@@ -509,13 +518,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $free_area;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -539,14 +541,14 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductClass", mappedBy="Product", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductClass", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductClasses;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product")
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product", cascade={"remove"})
      * @ORM\OrderBy({
      *     "rank"="ASC"
      * })
@@ -796,30 +798,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getFreeArea()
     {
         return $this->free_area;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Product
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

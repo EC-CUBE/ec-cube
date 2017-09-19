@@ -69,11 +69,11 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="visible", type="boolean", options={"default":true})
      */
-    private $del_flg = 0;
+    private $visible;
 
     /**
      * @var \DateTime
@@ -145,6 +145,20 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Get name for Admin.
+     *
+     * @return string
+     */
+    public function getNameForAdmin()
+    {
+        if ($this->isVisible()) {
+            return $this->getName();
+        } else {
+            return $this->getName().'(非表示)';
+        }
+    }
+
+    /**
      * Set rank.
      *
      * @param int $rank
@@ -166,30 +180,6 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return ClassCategory
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**
@@ -286,5 +276,29 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return ClassCategory
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Is the visibility visible?
+     *
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->visible;
     }
 }

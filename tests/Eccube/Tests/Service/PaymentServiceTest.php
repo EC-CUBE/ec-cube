@@ -2,13 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Exception\CartException;
-use Eccube\Service\CartService;
-use Eccube\Util\Str;
-use Eccube\Service\Calculator\ShipmentItemCollection;
-
 class PaymentServiceTest extends AbstractServiceTestCase
 {
     public function testConstructorInjection()

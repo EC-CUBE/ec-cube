@@ -90,11 +90,11 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="visible", type="boolean", options={"unsigned":true,"default":true})
      */
-    private $del_flg = 0;
+    private $visible = true;
 
     /**
      * @var \DateTime
@@ -220,6 +220,19 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Get serviceName for Admin.
+     * @return string
+     */
+    public function getServiceNameForAdmin()
+    {
+        if ($this->isVisible()) {
+            return $this->getServiceName();
+        } else {
+            return $this->getServiceName().'(非表示)';
+        }
+    }
+
+    /**
      * Set description.
      *
      * @param string|null $description
@@ -289,30 +302,6 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Delivery
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**
@@ -517,5 +506,29 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     public function getProductType()
     {
         return $this->ProductType;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return Delivery
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Is the visibility visible?
+     *
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->visible;
     }
 }

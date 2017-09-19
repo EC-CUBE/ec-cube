@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerAddressRepository")
  */
-class CustomerAddress extends \Eccube\Entity\AbstractEntity
+class CustomerAddress extends AbstractEntity
 {
 
     /**
@@ -229,13 +229,6 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
      */
     private $fax03;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
 
     /**
      * @var \DateTime
@@ -674,30 +667,6 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     public function getFax03()
     {
         return $this->fax03;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return CustomerAddress
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

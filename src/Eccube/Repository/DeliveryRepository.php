@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Payment;
 
 /**
@@ -62,7 +63,7 @@ class DeliveryRepository extends AbstractRepository
             $Delivery = new \Eccube\Entity\Delivery();
             $Delivery
                 ->setRank($rank)
-                ->setDelFlg(0)
+                ->setVisible(true)
                 ->setProductType($ProductType);
         } else {
             $Delivery = $this->find($id);
@@ -81,7 +82,9 @@ class DeliveryRepository extends AbstractRepository
     {
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.ProductType in (:productTypes)')
+            ->andWhere('d.visible = :visible')
             ->setParameter('productTypes', $productTypes)
+            ->setParameter('visible', true)
             ->getQuery()
             ->getResult();
 

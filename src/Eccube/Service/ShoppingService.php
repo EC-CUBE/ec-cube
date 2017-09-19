@@ -857,6 +857,7 @@ class ShoppingService
     {
         $orderDetails = $Order->getOrderDetails();
 
+        /** @var ShipmentItem $orderDetail */
         foreach ($orderDetails as $orderDetail) {
 
             if (is_null($orderDetail->getProduct())) {
@@ -865,7 +866,7 @@ class ShoppingService
             }
 
             // 商品削除チェック
-            if ($orderDetail->getProductClass()->getDelFlg()) {
+            if ($orderDetail->getProductClass()->isVisible() == false) {
                 // @deprecated 3.1以降ではexceptionをthrowする
                 // throw new ShoppingException('cart.product.delete');
                 return false;
@@ -1405,13 +1406,10 @@ class ShoppingService
         $message = $this->mailService->sendOrderMail($Order);
 
         // 送信履歴を保存.
-        $MailTemplate = $this->mailTemplateRepository->find(1);
-
         $MailHistory = new MailHistory();
         $MailHistory
             ->setSubject($message->getSubject())
             ->setMailBody($message->getBody())
-            ->setMailTemplate($MailTemplate)
             ->setSendDate(new \DateTime())
             ->setOrder($Order);
 

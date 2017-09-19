@@ -24,7 +24,7 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Common\Constant;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\ShipmentItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
@@ -225,13 +225,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -311,6 +304,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\ProductClass
      */
     private $ProductClassOfTemp;
+
+    /**
+     * @var \Eccube\Entity\Master\ShippingStatus
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ShippingStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="shipping_status", referencedColumnName="id")
+     * })
+     */
+    private $ShippingStatus;
 
     /**
      * Constructor
@@ -918,30 +921,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return Shipping
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
-    }
-
-    /**
      * Set createDate.
      *
      * @param \DateTime $createDate
@@ -1274,5 +1253,27 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set ShippingStatus.
+     *
+     * @param ShippingStatus $ShippingStatus
+     * @return $this
+     */
+    public function setShippingStatus(ShippingStatus $ShippingStatus)
+    {
+        $this->ShippingStatus = $ShippingStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get ShippingStatus
+     * @return ShippingStatus
+     */
+    public function getShippingStatus()
+    {
+        return $this->ShippingStatus;
     }
 }

@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Eccube\Repository\NewsRepository")
  */
-class News extends \Eccube\Entity\AbstractEntity
+class News extends AbstractEntity
 {
     /**
      * @return string
@@ -102,13 +102,6 @@ class News extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="link_method", type="smallint", options={"unsigned":true,"default":0})
      */
     private $link_method = 0;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="del_flg", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $del_flg = 0;
 
     /**
      * @var \DateTime
@@ -311,30 +304,6 @@ class News extends \Eccube\Entity\AbstractEntity
     public function getLinkMethod()
     {
         return $this->link_method;
-    }
-
-    /**
-     * Set delFlg.
-     *
-     * @param int $delFlg
-     *
-     * @return News
-     */
-    public function setDelFlg($delFlg)
-    {
-        $this->del_flg = $delFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get delFlg.
-     *
-     * @return int
-     */
-    public function getDelFlg()
-    {
-        return $this->del_flg;
     }
 
     /**

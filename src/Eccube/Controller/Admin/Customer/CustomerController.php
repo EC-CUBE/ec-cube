@@ -24,9 +24,10 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -40,9 +41,9 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -289,9 +290,14 @@ class CustomerController extends AbstractController
             return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
-        $Customer->setDelFlg(Constant::ENABLED);
-        $this->entityManager->persist($Customer);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->remove($Customer);
+            $this->entityManager->flush($Customer);
+            $app->addSuccess('admin.customer.delete.complete', 'admin');
+        } catch (ForeignKeyConstraintViolationException $e) {
+            log_error('会員削除失敗', [$e], 'admin');
+            $app->addError('admin.customer.delete.failed', 'admin');
+        }
 
         log_info('会員削除完了', array($id));
 
@@ -302,8 +308,6 @@ class CustomerController extends AbstractController
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
-
-        $app->addSuccess('admin.customer.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }

@@ -158,14 +158,6 @@ class MypageController extends AbstractController
     {
         $Customer = $app['user'];
 
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(
-            array(
-                'Eccube\Entity\ProductClass',
-            )
-        );
-
         // 購入処理中/決済処理中ステータスの受注を非表示にする.
         $this->entityManager
             ->getFilters()
@@ -202,14 +194,6 @@ class MypageController extends AbstractController
      */
     public function history(Application $app, Request $request, $id)
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(
-            array(
-                'Eccube\Entity\ProductClass',
-            )
-        );
-
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         $Order = $this->orderRepository->findOneBy(
             array(

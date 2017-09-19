@@ -24,11 +24,11 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Payment;
 use Eccube\Event\EccubeEvents;
@@ -89,7 +89,7 @@ class PaymentController extends AbstractController
     {
         $Payments = $this->paymentRepository
             ->findBy(
-                array('del_flg' => 0),
+                array(),
                 array('rank' => 'DESC')
             );
 
@@ -153,6 +153,7 @@ class PaymentController extends AbstractController
                 );
             }
 
+            $Payment->setVisible(true);
             $this->entityManager->persist($Payment);
             $this->entityManager->flush();
 
@@ -222,31 +223,29 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $TargetPayment
-            ->setDelFlg(Constant::ENABLED)
-            ->setRank(0);
-        $this->entityManager->persist($TargetPayment);
-
         $rank = 1;
-        $Payments = $this->paymentRepository->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC'));
+        $Payments = $this->paymentRepository->findBy(array(), array('rank' => 'ASC'));
         foreach ($Payments as $Payment) {
-            if ($Payment->getId() != $TargetPayment->getId()) {
-                $Payment->setRank($rank);
-                $rank++;
-            }
+                $Payment->setRank($rank++);
         }
 
-        $this->entityManager->flush();
+        try {
+            $this->paymentRepository->delete($TargetPayment);
+            $this->entityManager->flush();
 
-        $event = new EventArgs(
-            array(
-                'Payment' => $TargetPayment,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
+            $event = new EventArgs(
+                array(
+                    'Payment' => $TargetPayment,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
-        $app->addSuccess('admin.delete.complete', 'admin');
+            $app->addSuccess('admin.delete.complete', 'admin');
+        } catch(ForeignKeyConstraintViolationException $e) {
+            $this->entityManager->rollback();
+            $app->addError('admin.payment.delete.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
@@ -293,6 +292,27 @@ class PaymentController extends AbstractController
         $this->entityManager->flush();
 
         $app->addSuccess('admin.rank.move.complete', 'admin');
+
+        return $app->redirect($app->url('admin_setting_shop_payment'));
+    }
+
+    /**
+     * @Method("PUT")
+     * @Route("/{_admin}/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible")
+     */
+    public function visible(Application $app, Payment $Payment)
+    {
+        $this->isTokenValid($app);
+
+        $Payment->setVisible(!$Payment->isVisible());
+
+        $this->entityManager->flush();
+
+        if ($Payment->isVisible()) {
+            $app->addSuccess('admin.payment.visible.complete', 'admin');
+        } else {
+            $app->addSuccess('admin.payment.invisible.complete', 'admin');
+        }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }

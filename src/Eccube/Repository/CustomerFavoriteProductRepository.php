@@ -24,9 +24,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
 use Doctrine\ORM\QueryBuilder;
-use Eccube\Common\Constant;
+use Eccube\Annotation\Repository;
 
 /**
  * CustomerFavoriteProductRepository
@@ -52,7 +51,6 @@ class CustomerFavoriteProductRepository extends AbstractRepository
             $CustomerFavoriteProduct->setProduct($Product);
             $CustomerFavoriteProduct->setCreateDate(new \DateTime());
             $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
-            $CustomerFavoriteProduct->setDelFlg(Constant::DISABLED);
 
             $em = $this->getEntityManager();
             $em->persist($CustomerFavoriteProduct);

@@ -101,10 +101,7 @@ class DeliveryController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $Deliveries = $this->deliveryRepository
-            ->findBy(
-                array('del_flg' => 0),
-                array('rank' => 'DESC')
-            );
+            ->findBy([], ['rank' => 'DESC']);
 
         $event = new EventArgs(
             array(
@@ -269,18 +266,13 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $Delivery
-            ->setDelFlg(Constant::ENABLED)
-            ->setRank(0);
-
-        $this->entityManager->persist($Delivery);
+        $this->entityManager->remove($Delivery);
+        $this->entityManager->flush($Delivery);
 
         $rank = 1;
         $Delivs = $this->deliveryRepository
-            ->findBy(
-                array('del_flg' => Constant::DISABLED),
-                array('rank' => 'ASC')
-            );
+            ->findBy([], ['rank' => 'ASC']);
+
         foreach ($Delivs as $Deliv) {
             if ($Deliv->getId() != $Delivery->getId()) {
                 $Deliv->setRank($rank);
@@ -300,6 +292,38 @@ class DeliveryController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.delete.complete', 'admin');
+
+        return $app->redirect($app->url('admin_setting_shop_delivery'));
+    }
+
+    /**
+     * @Method("PUT")
+     * @Route("/{_admin}/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
+     */
+    public function visibility(Application $app, Request $request, Delivery $Delivery)
+    {
+        $this->isTokenValid($app);
+
+        $message = 'admin.delivery.visible.complete';
+        if ($Delivery->isVisible()) {
+            $Delivery->setVisible(false);
+        } else {
+            $message = 'admin.delivery.hidden.complete';
+            $Delivery->setVisible(true);
+        }
+        $this->entityManager->persist($Delivery);
+
+        $this->entityManager->flush($Delivery);
+
+        $event = new EventArgs(
+            array(
+                'Delivery' => $Delivery,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE, $event);
+
+        $app->addSuccess($message, 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_delivery'));
     }
