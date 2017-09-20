@@ -24,6 +24,7 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
