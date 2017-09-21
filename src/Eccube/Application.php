@@ -230,13 +230,23 @@ class Application extends \Silex\Application
 
         // init ec-cube service provider
         $this->register(new DiServiceProvider(), [
-            'eccube.di.dirs' => [
-                $this['config']['root_dir'].'/app/Acme/Controller',
-                $this['config']['root_dir'].'/src/Eccube/Repository',
-                $this['config']['root_dir'].'/src/Eccube/Form/Type',
-                $this['config']['root_dir'].'/src/Eccube/Form/Extension',
-                $this['config']['root_dir'].'/src/Eccube/Service',
-                $this['config']['root_dir'].'/src/Eccube/Controller',
+            'eccube.di.scanners' => [
+                new \Eccube\Di\Scanner\ComponentScanner([
+                    $this['config']['root_dir'].'/app/Acme/Controller',
+                    $this['config']['root_dir'].'/src/Eccube/Controller'
+                ]),
+                new \Eccube\Di\Scanner\FormTypeScanner([
+                    $this['config']['root_dir'].'/src/Eccube/Form/Type'
+                ]),
+                new \Eccube\Di\Scanner\FormExtensionScanner([
+                    $this['config']['root_dir'].'/src/Eccube/Form/Extension'
+                ]),
+                new \Eccube\Di\Scanner\ServiceScanner([
+                    $this['config']['root_dir'].'/src/Eccube/Service'
+                ]),
+                new \Eccube\Di\Scanner\RepositoryScanner([
+                    $this['config']['root_dir'].'/src/Eccube/Repository'
+                ])
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
         ]);
