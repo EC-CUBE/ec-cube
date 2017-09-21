@@ -209,8 +209,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app['eccube.queries'] = function () {
             return new \Eccube\Doctrine\Query\Queries();
         };
-        // TODO QueryCustomizerの追加方法は要検討
-        $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
 
         $app['eccube.purchase.context'] = $app->protect(function (ItemHolderInterface $origin = null) {
             return new PurchaseContext($origin);

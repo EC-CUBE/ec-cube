@@ -246,6 +246,9 @@ class Application extends \Silex\Application
                 ]),
                 new \Eccube\Di\Scanner\RepositoryScanner([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
+                ]),
+                new \Eccube\Di\Scanner\QueryExtensionScanner([
+                    $this['config']['root_dir'].'/src/Eccube/Repository'
                 ])
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
