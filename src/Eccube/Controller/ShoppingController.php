@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\ForwardOnly;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
@@ -173,6 +174,7 @@ class ShoppingController extends AbstractShoppingController
      * 購入確認画面から, 他の画面へのリダイレクト.
      * 配送業者や支払方法、お問い合わせ情報をDBに保持してから遷移する.
      *
+     * @ForwardOnly
      * @Route("/shopping/redirect", name="shopping_redirect_to")
      * @Template("Shopping/index.twig")
      */
@@ -567,6 +569,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * カート画面のチェック
      *
+     * @ForwardOnly
      * @Route("/shopping/check_to_cart", name="shopping_check_to_cart")
      */
     public function checkToCart(Application $app, Request $request)
@@ -593,6 +596,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注情報を初期化する.
      *
+     * @ForwardOnly
      * @Route("/shopping/initialize_order", name="shopping_initialize_order")
      */
     public function initializeOrder(Application $app, Request $request)
@@ -649,6 +653,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * フォームを作成し, イベントハンドラを設定する
      *
+     * @ForwardOnly
      * @Route("/shopping/create_form", name="shopping_create_form")
      */
     public function createForm(Application $app, Request $request)
@@ -676,6 +681,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * mode に応じて各変更ページへリダイレクトする.
      *
+     * @ForwardOnly
      * @Route("/shopping/redirect_to_change", name="shopping_redirect_to_change")
      */
     public function redirectToChange(Application $app, Request $request)
@@ -718,6 +724,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 複数配送時のエラーを表示する
      *
+     * @ForwardOnly
      * @Route("/shopping/handle_multiple_errors", name="shopping_handle_multiple_errors")
      */
     public function handleMultipleErrors(Application $app, Request $request)
@@ -745,6 +752,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注の存在チェック
      *
+     * @ForwardOnly
      * @Route("/shopping/exists_order", name="shopping_exists_order")
      */
     public function existsOrder(Application $app, Request $request)
@@ -764,6 +772,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注完了処理
      *
+     * @ForwardOnly
      * @Route("/shopping/complete_order", name="shopping_complete_order")
      */
     public function completeOrder(Application $app, Request $request)
@@ -860,6 +869,7 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 受注完了の後処理
      *
+     * @ForwardOnly
      * @Route("/shopping/after_complete", name="shopping_after_complete")
      */
     public function afterComplete(Application $app, Request $request)
