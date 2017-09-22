@@ -174,7 +174,6 @@ class ShoppingController extends AbstractShoppingController
      * 購入確認画面から, 他の画面へのリダイレクト.
      * 配送業者や支払方法、お問い合わせ情報をDBに保持してから遷移する.
      *
-     * @ForwardOnly
      * @Route("/shopping/redirect", name="shopping_redirect_to")
      * @Template("Shopping/index.twig")
      */
