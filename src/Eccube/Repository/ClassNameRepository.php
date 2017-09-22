@@ -24,7 +24,10 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
+use Eccube\Entity\ClassName;
 
 /**
  * ClassNameRepository
@@ -52,151 +55,46 @@ class ClassNameRepository extends AbstractRepository
     }
 
     /**
-     * 規格の順位を1上げる.
-     *
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return boolean 成功した場合 true
-     */
-    public function up(\Eccube\Entity\ClassName $ClassName)
-    {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $ClassName->getRank();
-
-            //
-            $ClassName2 = $this->findOneBy(array('rank' => $rank + 1));
-            if (!$ClassName2) {
-                throw new \Exception();
-            }
-            $ClassName2->setRank($rank);
-            $em->persist($ClassName);
-
-            // ClassName更新
-            $ClassName->setRank($rank + 1);
-
-            $em->persist($ClassName);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 規格の順位を1下げる.
-     *
-     * @param \Eccube\Entity\ClassName $ClassName
-     * @return boolean 成功した場合 true
-     */
-    public function down(\Eccube\Entity\ClassName $ClassName)
-    {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $ClassName->getRank();
-
-            //
-            $ClassName2 = $this->findOneBy(array('rank' => $rank - 1));
-            if (!$ClassName2) {
-                throw new \Exception();
-            }
-            $ClassName2->setRank($rank);
-            $em->persist($ClassName);
-
-            // ClassName更新
-            $ClassName->setRank($rank - 1);
-
-            $em->persist($ClassName);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * 規格を保存する.
      *
-     * @param \Eccube\Entity\ClassName $ClassName
-     * @return boolean 成功した場合 true
+     * @param ClassName $ClassName
      */
     public function save($ClassName)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if (!$ClassName->getId()) {
-                $rank = $this->createQueryBuilder('cn')
-                    ->select('MAX(cn.rank)')
-                    ->getQuery()
-                    ->getSingleScalarResult();
-                if (!$rank) {
-                    $rank = 0;
-                }
-                $ClassName->setRank($rank + 1);
-            }
-
-            $em->persist($ClassName);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+        if (!$ClassName->getId()) {
+            $rank = $this->createQueryBuilder('cn')
+                ->select('COALESCE(MAX(cn.rank), 0)')
+                ->getQuery()
+                ->getSingleScalarResult();
+            $ClassName->setRank($rank + 1);
         }
 
-        return true;
+        $em = $this->getEntityManager();
+        $em->persist($ClassName);
+        $em->flush([$ClassName]);
     }
 
     /**
      * 規格を削除する.
      *
-     * @param \Eccube\Entity\ClassName $ClassName
-     * @return boolean 成功した場合 true
+     * @param ClassName $ClassName
+     *
+     * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
+     * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     public function delete($ClassName)
     {
-        if (is_null($ClassName->getId())) {
-            // 存在しない場合は何もしない
-            return false;
-        }
+        $rank = $ClassName->getRank();
+        $this->createQueryBuilder('cn')
+            ->update()
+            ->set('cn.rank', 'cn.rank - 1')
+            ->where('cn.rank > :rank')
+            ->setParameter('rank', $rank)
+            ->getQuery()
+            ->execute();
+
         $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if ($ClassName->getClassCategories()->count() > 0) {
-                throw new \Exception();
-            }
-
-            $rank = $ClassName->getRank();
-            $em->createQueryBuilder()
-                ->update('Eccube\Entity\ClassName', 'cn')
-                ->set('cn.rank', 'cn.rank - 1')
-                ->where('cn.rank > :rank')->setParameter('rank', $rank)
-                ->getQuery()
-                ->execute();
-
-            $em->remove($ClassName);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
+        $em->remove($ClassName);
+        $em->flush($ClassName);
     }
 }
