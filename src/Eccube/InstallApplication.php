@@ -131,7 +131,11 @@ class InstallApplication extends \Silex\Application
         });
 
         $app->register(new DiServiceProvider(), [
-            'eccube.di.dirs' => [__DIR__.'/Form/Type/Install'],
+            'eccube.di.scanners' => [
+                new \Eccube\Di\Scanner\FormTypeScanner([
+                    __DIR__.'/Form/Type/Install'
+                ])
+            ],
             'eccube.di.generator.dir' => __DIR__.'/../../app/cache/provider',
             'eccube.di.generator.class' => 'InstallServiceProviderCache'
         ]);

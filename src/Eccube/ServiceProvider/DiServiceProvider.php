@@ -4,7 +4,6 @@ namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Eccube\Di\Di;
-use Eccube\Di\ProviderGenerator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -16,25 +15,16 @@ class DiServiceProvider implements ServiceProviderInterface, BootableProviderInt
     {
         $app['eccube.di'] = function (Container $app) {
             $di = new Di(
-                $app['eccube.di.dirs'],
+                $app['eccube.di.generator.dir'],
+                $app['eccube.di.generator.class'],
+                $app['eccube.di.scanners'],
                 $app['eccube.di.annotation_reader'],
-                $app['eccube.di.generator'],
                 $app['eccube.di.debug']
             );
 
             return $di;
         };
 
-        $app['eccube.di.generator'] = function (Container $app) {
-            $generator = new ProviderGenerator(
-                $app['eccube.di.generator.dir'],
-                $app['eccube.di.generator.class']
-            );
-
-            return $generator;
-        };
-
-        $app['eccube.di.dirs'] = [];
         $app['eccube.di.debug'] = $app['debug'];
         $app['eccube.di.annotation_reader'] = isset($app['annotations']) ? $app['annotations'] : new AnnotationReader();
 
