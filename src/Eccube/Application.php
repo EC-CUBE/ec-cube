@@ -24,6 +24,13 @@
 namespace Eccube;
 
 use Doctrine\DBAL\Types\Type;
+use Eccube\Di\Scanner\ComponentScanner;
+use Eccube\Di\Scanner\EntityEventScanner;
+use Eccube\Di\Scanner\FormExtensionScanner;
+use Eccube\Di\Scanner\FormTypeScanner;
+use Eccube\Di\Scanner\QueryExtensionScanner;
+use Eccube\Di\Scanner\RepositoryScanner;
+use Eccube\Di\Scanner\ServiceScanner;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
@@ -40,7 +47,6 @@ use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -228,31 +234,43 @@ class Application extends \Silex\Application
         // init proxy
         $this->initProxy();
 
+        $enabledPlugins = $this['orm.em']->getRepository('Eccube\Entity\Plugin')->findAllEnabled();
+        $configRootDir = $this['config']['root_dir'];
+        $enabledPluginDirs = array_map(function($plugin) use ($configRootDir) {
+            return $configRootDir.'/app/Plugin/'.$plugin->getCode();
+        }, $enabledPlugins);
+
+        $pluginSubDirs = (function($dirName) use ($enabledPluginDirs) {
+            return array_map(function($pluginDir) use ($dirName) {
+                return $pluginDir . '/' . $dirName;
+            }, $enabledPluginDirs);
+        });
+
         // init ec-cube service provider
         $this->register(new DiServiceProvider(), [
             'eccube.di.scanners' => [
-                new \Eccube\Di\Scanner\ComponentScanner([
+                new ComponentScanner(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Controller',
                     $this['config']['root_dir'].'/src/Eccube/Controller'
-                ]),
-                new \Eccube\Di\Scanner\FormTypeScanner([
+                ], $pluginSubDirs('Controller'))),
+                new FormTypeScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
-                ]),
-                new \Eccube\Di\Scanner\FormExtensionScanner([
+                ], $pluginSubDirs('Form/Type'))),
+                new FormExtensionScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Extension'
-                ]),
-                new \Eccube\Di\Scanner\ServiceScanner([
+                ], $pluginSubDirs('Form/Extension'))),
+                new ServiceScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Service'
-                ]),
-                new \Eccube\Di\Scanner\RepositoryScanner([
+                ], $pluginSubDirs('Service'))),
+                new RepositoryScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
-                ]),
-                new \Eccube\Di\Scanner\QueryExtensionScanner([
+                ], $pluginSubDirs('Repository'))),
+                new QueryExtensionScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
-                ]),
-                new \Eccube\Di\Scanner\EntityEventScanner([
+                ], $pluginSubDirs('Repository'))),
+                new EntityEventScanner(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Entity'
-                ])
+                ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
         ]);
@@ -298,22 +316,7 @@ class Application extends \Silex\Application
             return $app['eccube.router']($resource, $cachePrefix);
         };
 
-        $this['eccube.routers.plugin'] = function ($app) {
-            // TODO 有効なプラグインを対象とする必要がある.
-            $dirs = Finder::create()
-                ->in($app['config']['root_dir'].'/app/Plugin')
-                ->name('Controller')
-                ->directories();
-
-            $routers = [];
-            foreach ($dirs as $dir) {
-                $realPath = $dir->getRealPath();
-                $pluginCode = basename(dirname($realPath));
-                $routers[] = $app['eccube.router']($realPath, 'Plugin'.$pluginCode);
-            }
-
-            return $routers;
-        };
+        $this['eccube.routers.plugin'] = [];
 
         $this['eccube.router.extend'] = function ($app) {
             // TODO ディレクトリ名は暫定

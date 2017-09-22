@@ -4,6 +4,7 @@
 namespace Eccube\ServiceProvider;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Plugin;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Service\PluginService;
 use Pimple\Container;
@@ -33,6 +34,31 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
         // プラグインディレクトリを探索.
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($app['debug']);
 
+        $enabledPlugins = $app['orm.em']->getRepository('Eccube\Entity\Plugin')->findAllEnabled();
+
+        $app['eccube.routers.plugin'] = function ($app) use ($enabledPlugins) {
+            $pluginDirs = array_map(function($plugin) use ($app) {
+                return $app['config']['root_dir'].'/app/Plugin/'.$plugin->getCode();
+            }, $enabledPlugins);
+
+            $routers = [];
+
+            if ((empty($pluginDirs)) === false) {
+                $dirs = Finder::create()
+                    ->in($pluginDirs)
+                    ->name('Controller')
+                    ->directories();
+
+                foreach ($dirs as $dir) {
+                    $realPath = $dir->getRealPath();
+                    $pluginCode = basename(dirname($realPath));
+                    $routers[] = $app['eccube.router']($realPath, 'Plugin'.$pluginCode);
+                }
+            }
+
+            return $routers;
+        };
+
         foreach ($pluginConfigs as $code => $pluginConfig) {
             $config = $pluginConfig['config'];
 
@@ -43,20 +69,6 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                     );
                     return $eccubeConfig;
                 });
-            }
-
-            // Type: ServiceProvider
-            if (isset($config['service'])) {
-                foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
-                    if (!class_exists($class)) {
-                        $app['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
-                            'class' => $class,
-                        ));
-                        continue;
-                    }
-                    $app->register(new $class($this));
-                }
             }
         }
     }
@@ -343,6 +355,20 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                             }
                         }
                     }
+                }
+            }
+
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
+                    if (!class_exists($class)) {
+                        $app['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
+                            'class' => $class,
+                        ));
+                        continue;
+                    }
+                    $app->register(new $class($this));
                 }
             }
         }
