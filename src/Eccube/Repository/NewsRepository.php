@@ -24,7 +24,10 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
+use Eccube\Entity\News;
 
 /**
  * NewsRepository
@@ -36,140 +39,91 @@ use Eccube\Annotation\Repository;
  */
 class NewsRepository extends AbstractRepository
 {
-
     /**
-     * News の順位を1上げる.
+     * 新着情報の表示順を1上げる.
      *
-     * @param  \Eccube\Entity\News $News
-     * @return boolean 成功した場合 true
+     * @param News $News
+     * @throws \Exception 更新対象の新着情報より上位の新着情報が存在しない場合.
      */
-    public function up(\Eccube\Entity\News $News)
+    public function up(News $News)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $News->getRank();
+        $rank = $News->getRank();
+        $News2 = $this->findOneBy(array('rank' => $rank + 1));
 
-            $News2 = $this->findOneBy(array('rank' => $rank + 1));
-            if (!$News2) {
-                throw new \Exception();
-            }
-            $News2->setRank($rank);
-            $em->persist($News2);
-
-            // News更新
-            $News->setRank($rank + 1);
-
-            $em->persist($News);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+        if (!$News2) {
+            throw new \Exception(sprintf('%s より上位の新着情報が存在しません.', $News->getId()));
         }
 
-        return true;
+        $News->setRank($rank + 1);
+        $News2->setRank($rank);
+
+        $em = $this->getEntityManager();
+        $em->flush([$News, $News2]);
     }
 
     /**
-     * News の順位を1下げる
+     * 新着情報の表示順を1下げる.
      *
-     * @param  \Eccube\Entity\News $News
-     * @return boolean 成功した場合 true
+     * @param News $News
+     * @throws \Exception \Exception 更新対象の新着情報より上位の新着情報が存在しない場合.
      */
-    public function down(\Eccube\Entity\News $News)
+    public function down(News $News)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $News->getRank();
-            $News2 = $this->findOneBy(array('rank' => $rank - 1));
-            if (!$News2) {
-                throw new \Exception();
-            }
-            $News2->setRank($rank);
-            $em->persist($News2);
+        $rank = $News->getRank();
+        $News2 = $this->findOneBy(array('rank' => $rank - 1));
 
-            // News更新
-            $News->setRank($rank - 1);
-
-            $em->persist($News);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+        if (!$News2) {
+            throw new \Exception();
         }
 
-        return true;
+        $News->setRank($rank - 1);
+        $News2->setRank($rank);
+
+        $em = $this->getEntityManager();
+        $em->flush([$News, $News2]);
     }
 
     /**
-     * News を保存する.
+     * 新着情報を登録します.
      *
-     * @param  \Eccube\Entity\News $News
-     * @return boolean 成功した場合 true
+     * @param $News
      */
     public function save($News)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if (!$News->getId()) {
-                $rank = $this->createQueryBuilder('n')
-                ->select('MAX(n.rank)')
+        if (!$News->getId()) {
+            $rank = $this->createQueryBuilder('n')
+                ->select('COALESCE(MAX(n.rank), 0)')
                 ->getQuery()
                 ->getSingleScalarResult();
-                if (!$rank) {
-                    $rank = 0;
-                }
-                $News
-                    ->setRank($rank + 1);
-            }
-
-            $em->persist($News);
-            $em->flush();
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-            return false;
+            $News
+                ->setRank($rank + 1);
         }
 
-        return true;
+        $em = $this->getEntityManager();
+        $em->persist($News);
+        $em->flush($News);
     }
 
     /**
-     * News を削除する.
+     * 新着情報を削除します.
      *
-     * @param  \Eccube\Entity\News $News
-     * @return boolean 成功した場合 true
+     * @param News $News
+     *
+     * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
+     * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     public function delete($News)
     {
+       $this->createQueryBuilder('n')
+            ->update()
+            ->set('n.rank', 'n.rank - 1')
+            ->where('n.rank > :rank')
+            ->setParameter('rank', $News->getRank())
+            ->getQuery()
+            ->execute();
+
         $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $News->getRank();
-            $em->createQueryBuilder()
-                ->update('Eccube\Entity\News', 'n')
-                ->set('n.rank', 'n.rank - 1')
-                ->where('n.rank > :rank')->setParameter('rank', $rank)
-                ->getQuery()
-                ->execute();
-
-            $em->remove($News);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-            return false;
-        }
-
-        return true;
+        $em->remove($News);
+        $em->flush($News);
     }
 }
