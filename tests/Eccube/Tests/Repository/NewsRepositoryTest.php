@@ -20,7 +20,6 @@ class NewsRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $this->removeNews();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
 
         $faker = $this->getFaker();
         for ($i = 0; $i < 3; $i++) {
@@ -29,7 +28,6 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setTitle('news-'.$i)
                 ->setComment($faker->text())
                 ->setUrl($faker->url)
-                ->setCreator($this->Member)
                 ->setSelect(1)
                 ->setLinkMethod(1)
                 ->setRank($i)
@@ -57,9 +55,8 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->assertEquals(1, $News->getRank());
 
         // rank up 1 => 2
-        $result = $this->app['eccube.repository.news']->up($News);
+        $this->app['eccube.repository.news']->up($News);
 
-        $this->assertTrue($result);
         $this->expected = 2;
         $this->actual = $News->getRank();
         $this->verify('rank は '.$this->expected.'ではありません');
@@ -71,9 +68,12 @@ class NewsRepositoryTest extends EccubeTestCase
             array('title' => 'news-2')
         );
 
-        $result = $this->app['eccube.repository.news']->up($News);
+        try {
+            $this->app['eccube.repository.news']->up($News);
+            $this->fail();
+        } catch (\Exception $e) {
 
-        $this->assertFalse($result);
+        }
     }
 
     public function testDown()
@@ -85,9 +85,8 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->assertEquals(1, $News->getRank());
 
         // rank down 1 => 0
-        $result = $this->app['eccube.repository.news']->down($News);
+        $this->app['eccube.repository.news']->down($News);
 
-        $this->assertTrue($result);
         $this->expected = 0;
         $this->actual = $News->getRank();
         $this->verify('rank は '.$this->expected.'ではありません');
@@ -99,9 +98,11 @@ class NewsRepositoryTest extends EccubeTestCase
             array('title' => 'news-0')
         );
 
-        $result = $this->app['eccube.repository.news']->down($News);
+        try {
+            $this->app['eccube.repository.news']->down($News);
+        } catch (\Exception $e) {
 
-        $this->assertFalse($result);
+        }
     }
 
     public function testSave()
@@ -112,12 +113,10 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setTitle('news-10')
             ->setComment($faker->text())
             ->setUrl($faker->url)
-            ->setCreator($this->Member)
             ->setSelect(1)
             ->setLinkMethod(1);
 
-        $result = $this->app['eccube.repository.news']->save($News);
-        $this->assertTrue($result);
+        $this->app['eccube.repository.news']->save($News);
 
         $this->expected = 3;
         $this->actual = $News->getRank();
@@ -133,34 +132,15 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setTitle('news-10')
             ->setComment($faker->text())
             ->setUrl($faker->url)
-            ->setCreator($this->Member)
             ->setSelect(1)
             ->setLinkMethod(1);
 
-        $result = $this->app['eccube.repository.news']->save($News);
-        $this->assertTrue($result);
+        $this->app['eccube.repository.news']->save($News);
 
         $this->expected = 1;
         $this->actual = $News->getRank();
         $this->verify('rank は'.$this->expected.'ではありません');
     }
-
-    public function testSaveWithException()
-    {
-        $faker = $this->getFaker();
-        $News = new News();
-        $News
-            ->setTitle('news-10')
-            ->setComment($faker->text())
-            ->setUrl($faker->url)
-            ->setCreator($this->Member)
-            ->setSelect(null)   // select は not null なので例外になる
-            ->setLinkMethod(1);
-
-        $result = $this->app['eccube.repository.news']->save($News);
-        $this->assertFalse($result);
-    }
-
 
     public function testDelete()
     {
@@ -169,9 +149,8 @@ class NewsRepositoryTest extends EccubeTestCase
         );
 
         $newsId = $News->getId();
-        $result = $this->app['eccube.repository.news']->delete($News);
+        $this->app['eccube.repository.news']->delete($News);
 
-        $this->assertTrue($result);
         self::assertNull($this->app['eccube.repository.news']->find($newsId));
     }
 }

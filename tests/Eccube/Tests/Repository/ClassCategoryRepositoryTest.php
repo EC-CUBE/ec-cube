@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\ProductClass;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -15,25 +16,20 @@ use Eccube\Entity\ClassName;
  */
 class ClassCategoryRepositoryTest extends EccubeTestCase
 {
-    protected $Member;
-
     public function setUp()
     {
         parent::setUp();
         $this->removeClass();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
 
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName
                 ->setName('class-'.$i)
-                ->setCreator($this->Member)
                 ->setRank($i);
             for ($j = 0; $j < 3; $j++) {
                 $ClassCategory = new ClassCategory();
                 $ClassCategory
                     ->setName('classcategory-'.$i.'-'.$j)
-                    ->setCreator($this->Member)
                     ->setVisible(true)
                     ->setRank($j)
                     ->setClassName($ClassName);
@@ -99,62 +95,6 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->verify('ソート順が違います');
     }
 
-    public function testUp()
-    {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
-            array('name' => 'classcategory-1-1')
-        );
-        $this->assertNotNull($ClassCategory);
-        $this->assertEquals(1, $ClassCategory->getRank());
-
-        // rank up 1 => 2
-        $result = $this->app['eccube.repository.class_category']->up($ClassCategory);
-
-        $this->assertTrue($result);
-        $this->expected = 2;
-        $this->actual = $ClassCategory->getRank();
-        $this->verify('rank は '.$this->expected.'ではありません');
-    }
-
-    public function testUpWithException()
-    {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
-            array('name' => 'classcategory-1-2')
-        );
-
-        $result = $this->app['eccube.repository.class_category']->up($ClassCategory);
-
-        $this->assertFalse($result);
-    }
-
-    public function testDown()
-    {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
-            array('name' => 'classcategory-1-1')
-        );
-        $this->assertNotNull($ClassCategory);
-        $this->assertEquals(1, $ClassCategory->getRank());
-
-        // rank down 1 => 0
-        $result = $this->app['eccube.repository.class_category']->down($ClassCategory);
-
-        $this->assertTrue($result);
-        $this->expected = 0;
-        $this->actual = $ClassCategory->getRank();
-        $this->verify('rank は '.$this->expected.'ではありません');
-    }
-
-    public function testDownWithException()
-    {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
-            array('name' => 'classcategory-1-0')
-        );
-
-        $result = $this->app['eccube.repository.class_category']->down($ClassCategory);
-
-        $this->assertFalse($result);
-    }
-
     public function testSave()
     {
         $faker = $this->getFaker();
@@ -165,11 +105,9 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $ClassCategory = new ClassCategory();
         $ClassCategory
             ->setName($faker->name)
-            ->setClassName($ClassName)
-            ->setCreator($this->Member);
+            ->setClassName($ClassName);
 
-        $result = $this->app['eccube.repository.class_category']->save($ClassCategory);
-        $this->assertTrue($result);
+        $this->app['eccube.repository.class_category']->save($ClassCategory);
 
         $this->expected = 3;
         $this->actual = $ClassCategory->getRank();
@@ -181,35 +119,21 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->removeClass();    // 一旦全件削除
         $ClassName = new ClassName();
         $ClassName
-            ->setName('class-3')
-            ->setCreator($this->Member);
-        $result = $this->app['eccube.repository.class_name']->save($ClassName);
-        $this->assertTrue($result);
+            ->setName('class-3');
+        $this->app['eccube.repository.class_name']->save($ClassName);
 
         $faker = $this->getFaker();
 
         $ClassCategory = new ClassCategory();
         $ClassCategory
             ->setName($faker->name)
-            ->setClassName($ClassName)
-            ->setCreator($this->Member);
+            ->setClassName($ClassName);
 
-        $result = $this->app['eccube.repository.class_category']->save($ClassCategory);
-        $this->assertTrue($result, '保存に成功したかどうか');
+        $this->app['eccube.repository.class_category']->save($ClassCategory);
 
         $this->expected = 1;
         $this->actual = $ClassCategory->getRank();
         $this->verify('rank は'.$this->expected.'ではありません');
-    }
-
-    public function testSaveWithException()
-    {
-        $ClassCategory = new ClassCategory(); // 空の要素なので例外となる
-
-        // TODO name, rank のテストをする
-        // https://github.com/EC-CUBE/ec-cube/issues/913
-        $result = $this->app['eccube.repository.class_category']->save($ClassCategory);
-        $this->assertFalse($result, '保存に成功したかどうか');
     }
 
     public function testDelete()
@@ -218,19 +142,29 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             array('name' => 'classcategory-1-0')
         );
         $ClassCategoryId = $ClassCategory->getId();
-        $result = $this->app['eccube.repository.class_category']->delete($ClassCategory);
+        $this->app['eccube.repository.class_category']->delete($ClassCategory);
 
-        $this->assertTrue($result);
         self::assertNull($this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId));
     }
 
     public function testDeleteWithException()
     {
-        $ClassCategory = new ClassCategory(); // 存在しないので例外となる
+        $Product = $this->createProduct();
+        /** @var ProductClass[] $ProductClassess */
+        $ProductClassess = $Product->getProductClasses();
+        foreach ($ProductClassess as $ProductClass) {
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            if ($ClassCategory1 === null) {
+                continue;
+            }
+            try {
+                // 外部キー制約違反のため例外が発生するはず.
+                $this->app['eccube.repository.class_category']->delete($ClassCategory1);
+                $this->fail();
+            } catch (\Exception $e) {
 
-        $result = $this->app['eccube.repository.class_category']->delete($ClassCategory);
-        $this->assertFalse($result, '削除に失敗するはず');
-
+            }
+        }
     }
 
     public function testToggleVisibilityToHidden()
@@ -239,9 +173,8 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             array('name' => 'classcategory-1-0')
         );
         $ClassCategoryId = $ClassCategory->getId();
-        $result = $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
+        $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
 
-        $this->assertTrue($result);
         $actual = $this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId);
         self::assertFalse($actual->isVisible());
     }
@@ -255,9 +188,8 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->app['orm.em']->flush($ClassCategory);
         $ClassCategoryId = $ClassCategory->getId();
 
-        $result = $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
+        $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
 
-        $this->assertTrue($result);
         $actual = $this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId);
         self::assertTrue($actual->isVisible());
     }

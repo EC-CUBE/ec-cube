@@ -184,6 +184,9 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function testDeleteWithFailure()
     {
         $this->logIn($this->Customer);
@@ -193,11 +196,5 @@ class DeliveryControllerTest extends AbstractWebTestCase
             'DELETE',
             $this->app->path('mypage_delivery_delete', array('id' => 999999999))
         );
-
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));
-
-        $this->expected = array('mypage.address.delete.failed');
-        $this->actual = $this->app['session']->getFlashBag()->get('eccube.front.error');
-        $this->verify();
     }
 }

@@ -59,18 +59,20 @@ class Generator {
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')->find(1);
         $Authority = $this->app['eccube.repository.master.authority']->find(0);
         $Creator = $this->app['eccube.repository.member']->find(2);
-        $salt = $this->app['eccube.repository.member']->createSalt(5);
+
+        $salt = bin2hex(openssl_random_pseudo_bytes(5));
+        $password = 'password';
+        $encoder = $this->app['security.encoder_factory']->getEncoder($Member);
+        $password = $encoder->encodePassword($password, $salt);
 
         $Member
-            ->setPassword('password')
             ->setLoginId($username)
             ->setName($username)
             ->setSalt($salt)
+            ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
             ->setCreator($Creator);
-        $password = $this->app['eccube.repository.member']->encryptPassword($Member);
-        $Member->setPassword($password);
         $this->app['eccube.repository.member']->save($Member);
         return $Member;
     }
