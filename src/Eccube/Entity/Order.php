@@ -593,16 +593,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     private $CustomerOrderStatus;
 
     /**
-     * @var \Eccube\Entity\Master\OrderStatusColor
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatusColor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
-     * })
-     */
-    private $OrderStatusColor;
-
-    /**
      * @var \Eccube\Entity\Master\OrderStatus
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
@@ -1830,30 +1820,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getCustomerOrderStatus()
     {
         return $this->CustomerOrderStatus;
-    }
-
-    /**
-     * Set orderStatusColor.
-     *
-     * @param \Eccube\Entity\Master\OrderStatusColor|null $orderStatusColor
-     *
-     * @return Order
-     */
-    public function setOrderStatusColor(\Eccube\Entity\Master\OrderStatusColor $orderStatusColor = null)
-    {
-        $this->OrderStatusColor = $orderStatusColor;
-
-        return $this;
-    }
-
-    /**
-     * Get orderStatusColor.
-     *
-     * @return \Eccube\Entity\Master\OrderStatusColor|null
-     */
-    public function getOrderStatusColor()
-    {
-        return $this->OrderStatusColor;
     }
 
     /**

@@ -263,7 +263,6 @@ class Generator {
         if (is_null($product_name)) {
             $product_name = $faker->word;
         }
-        $Db = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Db')->find(1);
         $Product
             ->setName($product_name)
             ->setCreator($Member)
@@ -273,7 +272,6 @@ class Generator {
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->text());
         $Product->extendedParameter = "aaaa";
-        $Product->Db = $Db;
 
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->flush($Product);
