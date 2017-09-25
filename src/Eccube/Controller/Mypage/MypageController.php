@@ -362,7 +362,7 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
 
-        log_info('お気に入り商品削除完了', [$Customer->getId(), $Product->getId()]);
+        log_info('お気に入り商品削除完了', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
         return $app->redirect($app->url('mypage_favorite'));
     }
