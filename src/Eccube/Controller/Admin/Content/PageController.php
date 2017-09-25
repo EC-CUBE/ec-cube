@@ -30,13 +30,13 @@ use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use Eccube\Entity\PageLayoutLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Util\Str;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -78,10 +78,10 @@ class PageController extends AbstractController
     protected $eventDispatcher;
 
     /**
-     * @Inject(PageLayoutRepository::class)
-     * @var PageLayoutRepository
+     * @Inject(PageRepository::class)
+     * @var PageRepository
      */
-    protected $pageLayoutRepository;
+    protected $pageRepository;
 
     /**
      * @Inject(DeviceTypeRepository::class)
@@ -98,19 +98,19 @@ class PageController extends AbstractController
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayouts = $this->pageLayoutRepository->getPageList($DeviceType);
+        $Pages = $this->pageRepository->getPageList($DeviceType);
 
         $event = new EventArgs(
             array(
                 'DeviceType' => $DeviceType,
-                'PageLayouts' => $PageLayouts,
+                'Pages' => $Pages,
             ),
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
 
         return $app->render('Content/page.twig', array(
-            'PageLayouts' => $PageLayouts,
+            'Pages' => $Pages,
         ));
     }
 
@@ -124,19 +124,19 @@ class PageController extends AbstractController
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $this->pageLayoutRepository
+        $Page = $this->pageRepository
             ->findOrCreate($id, $DeviceType);
 
         $editable = true;
 
         $builder = $this->formFactory
-            ->createBuilder(MainEditType::class, $PageLayout);
+            ->createBuilder(MainEditType::class, $Page);
 
         $event = new EventArgs(
             array(
                 'builder' => $builder,
                 'DeviceType' => $DeviceType,
-                'PageLayout' => $PageLayout,
+                'Page' => $Page,
             ),
             $request
         );
@@ -148,38 +148,38 @@ class PageController extends AbstractController
         $fileName = null;
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
-            if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_DEFAULT) {
+            if ($Page->getEditFlg() == Page::EDIT_FLG_DEFAULT) {
                 $editable = false;
-                $PrevPageLayout = clone $PageLayout;
+                $PrevPage = clone $Page;
             }
             // テンプレートファイルの取得
-            $file = $this->pageLayoutRepository
-                ->getReadTemplateFile($PageLayout->getFileName(), $editable);
+            $file = $this->pageRepository
+                ->getReadTemplateFile($Page->getFileName(), $editable);
 
             $form->get('tpl_data')->setData($file['tpl_data']);
 
-            $fileName = $PageLayout->getFileName();
+            $fileName = $Page->getFileName();
         }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $PageLayout = $form->getData();
+            $Page = $form->getData();
 
             if (!$editable) {
-                $PageLayout
-                    ->setUrl($PrevPageLayout->getUrl())
-                    ->setFileName($PrevPageLayout->getFileName())
-                    ->setName($PageLayout->getName());
+                $Page
+                    ->setUrl($PrevPage->getUrl())
+                    ->setFileName($PrevPage->getFileName())
+                    ->setName($Page->getName());
             }
             // DB登録
-            $this->entityManager->persist($PageLayout);
+            $this->entityManager->persist($Page);
             $this->entityManager->flush();
 
             // ファイル生成・更新
-            $templatePath = $this->pageLayoutRepository->getWriteTemplatePath($editable);
-            $filePath = $templatePath.'/'.$PageLayout->getFileName().'.twig';
+            $templatePath = $this->pageRepository->getWriteTemplatePath($editable);
+            $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
 
             $fs = new Filesystem();
             $pageData = $form->get('tpl_data')->getData();
@@ -187,15 +187,15 @@ class PageController extends AbstractController
             $fs->dumpFile($filePath, $pageData);
 
             // 更新でファイル名を変更した場合、以前のファイルを削除
-            if ($PageLayout->getFileName() != $fileName && !is_null($fileName)) {
+            if ($Page->getFileName() != $fileName && !is_null($fileName)) {
                 $oldFilePath = $templatePath.'/'.$fileName.'.twig';
                 if ($fs->exists($oldFilePath)) {
                     $fs->remove($oldFilePath);
                 }
             }
 
-            foreach ($PageLayout->getPageLayoutLayouts() as $PageLayoutLayout) {
-                $PageLayout->removePageLayoutLayout($PageLayoutLayout);
+            foreach ($Page->getPageLayoutLayouts() as $PageLayoutLayout) {
+                $Page->removePageLayoutLayout($PageLayoutLayout);
                 $this->entityManager->remove($PageLayoutLayout);
                 $this->entityManager->flush($PageLayoutLayout);
             }
@@ -205,8 +205,8 @@ class PageController extends AbstractController
                 $PageLayoutLayout = new PageLayoutLayout();
                 $PageLayoutLayout->setLayoutId($Layout->getId());
                 $PageLayoutLayout->setLayout($Layout);
-                $PageLayoutLayout->setPageId($PageLayout->getId());
-                $PageLayoutLayout->setPageLayout($PageLayout);
+                $PageLayoutLayout->setPageId($Page->getId());
+                $PageLayoutLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayoutLayout);
                 $this->entityManager->flush($PageLayoutLayout);
@@ -217,8 +217,8 @@ class PageController extends AbstractController
                 $PageLayoutLayout = new PageLayoutLayout();
                 $PageLayoutLayout->setLayoutId($Layout->getId());
                 $PageLayoutLayout->setLayout($Layout);
-                $PageLayoutLayout->setPageId($PageLayout->getId());
-                $PageLayoutLayout->setPageLayout($PageLayout);
+                $PageLayoutLayout->setPageId($Page->getId());
+                $PageLayoutLayout->setPage($Page);
 
                 $this->entityManager->persist($PageLayoutLayout);
                 $this->entityManager->flush($PageLayoutLayout);
@@ -227,7 +227,7 @@ class PageController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'PageLayout' => $PageLayout,
+                    'Page' => $Page,
                     'templatePath' => $templatePath,
                     'filePath' => $filePath,
                 ),
@@ -241,14 +241,14 @@ class PageController extends AbstractController
             $finder = Finder::create()->in($this->appConfig['root_dir'].'/app/cache/twig');
             $fs->remove($finder);
 
-            return $app->redirect($app->url('admin_content_page_edit', array('id' => $PageLayout->getId())));
+            return $app->redirect($app->url('admin_content_page_edit', array('id' => $Page->getId())));
         }
 
-        $templatePath = $this->pageLayoutRepository->getWriteTemplatePath($editable);
+        $templatePath = $this->pageRepository->getWriteTemplatePath($editable);
 
         return [
             'form' => $form->createView(),
-            'page_id' => $PageLayout->getId(),
+            'page_id' => $Page->getId(),
             'editable' => $editable,
             'template_path' => $templatePath,
         ];
@@ -265,33 +265,33 @@ class PageController extends AbstractController
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $this->pageLayoutRepository
+        $Page = $this->pageRepository
             ->findOneBy(array(
                 'id' => $id,
                 'DeviceType' => $DeviceType
             ));
 
-        if (!$PageLayout) {
+        if (!$Page) {
             $app->deleteMessage();
 
             return $app->redirect($app->url('admin_content_page'));
         }
 
         // ユーザーが作ったページのみ削除する
-        if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_USER) {
-            $templatePath = $this->pageLayoutRepository->getWriteTemplatePath(true);
-            $file = $templatePath.'/'.$PageLayout->getFileName().'.twig';
+        if ($Page->getEditFlg() == Page::EDIT_FLG_USER) {
+            $templatePath = $this->pageRepository->getWriteTemplatePath(true);
+            $file = $templatePath.'/'.$Page->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
-            $this->entityManager->remove($PageLayout);
+            $this->entityManager->remove($Page);
             $this->entityManager->flush();
 
             $event = new EventArgs(
                 array(
                     'DeviceType' => $DeviceType,
-                    'PageLayout' => $PageLayout,
+                    'Page' => $Page,
                 ),
                 $request
             );

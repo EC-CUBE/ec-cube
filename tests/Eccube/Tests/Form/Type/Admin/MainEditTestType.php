@@ -127,8 +127,8 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidUrl_DuplicateUrl()
     {
-        $PageLayout = $this->createPageLayout();
-        $this->formData['url'] = $PageLayout->getUrl();
+        $Page = $this->createPage();
+        $this->formData['url'] = $Page->getUrl();
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

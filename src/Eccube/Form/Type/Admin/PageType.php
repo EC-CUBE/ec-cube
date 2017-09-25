@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @FormType
  */
-class PageLayoutType extends AbstractType
+class PageType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -44,7 +44,7 @@ class PageLayoutType extends AbstractType
         $builder
             ->add('layout', EntityType::class, array(
                 'label' => false,
-                'class' => 'Eccube\Entity\PageLayout',
+                'class' => 'Eccube\Entity\Page',
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er
@@ -60,6 +60,6 @@ class PageLayoutType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'admin_page_layout';
+        return 'admin_page';
     }
 }

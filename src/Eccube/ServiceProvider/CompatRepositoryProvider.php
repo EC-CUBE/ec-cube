@@ -113,8 +113,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.tax_rule'] = function () use ($app) {
             return $app['Eccube\Repository\TaxRuleRepository'];
         };
-        $app['eccube.repository.page_layout'] = function () use ($app) {
-            return $app['Eccube\Repository\PageLayoutRepository'];
+        $app['eccube.repository.page'] = function () use ($app) {
+            return $app['Eccube\Repository\PageRepository'];
         };
         $app['eccube.repository.block'] = function () use ($app) {
             return $app['Eccube\Repository\BlockRepository'];

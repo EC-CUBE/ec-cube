@@ -5,15 +5,15 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PageLayout
+ * Page
  *
- * @ORM\Table(name="dtb_page_layout", indexes={@ORM\Index(name="dtb_page_layout_url_idx", columns={"url"})})
+ * @ORM\Table(name="dtb_page", indexes={@ORM\Index(name="dtb_page_url_idx", columns={"url"})})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\PageLayoutRepository")
+ * @ORM\Entity(repositoryClass="Eccube\Repository\PageRepository")
  */
-class PageLayout extends \Eccube\Entity\AbstractEntity
+class Page extends \Eccube\Entity\AbstractEntity
 {
     // 配置ID
     /** 配置ID: 未使用 */
@@ -360,7 +360,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="PageLayout", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Page", cascade={"persist","remove"})
      *
      * @deprecated
      */
@@ -369,7 +369,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayoutLayout", mappedBy="PageLayout", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayoutLayout", mappedBy="Page", cascade={"persist","remove"})
      */
     private $PageLayoutLayouts;
 

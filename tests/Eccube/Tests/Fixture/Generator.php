@@ -13,7 +13,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
@@ -693,15 +693,15 @@ class Generator {
     /**
      * ページを生成する
      *
-     * @return PageLayout
+     * @return Page
      */
-    public function createPageLayout()
+    public function createPage()
     {
         $faker = $this->getFaker();
         $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
-        /** @var PageLayout $PageLayout */
-        $PageLayout = $this->app['eccube.repository.page_layout']->newPageLayout($DeviceType);
-        $PageLayout
+        /** @var Page $Page */
+        $Page = $this->app['eccube.repository.page']->newPage($DeviceType);
+        $Page
             ->setName($faker->word)
             ->setUrl($faker->word)
             ->setFileName($faker->word)
@@ -710,9 +710,9 @@ class Generator {
             ->setKeyword($faker->word)
             ->setMetaRobots($faker->word)
         ;
-        $this->app['orm.em']->persist($PageLayout);
-        $this->app['orm.em']->flush($PageLayout);
-        return $PageLayout;
+        $this->app['orm.em']->persist($Page);
+        $this->app['orm.em']->flush($Page);
+        return $Page;
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use org\bovigo\vfs\vfsStream;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -31,13 +31,13 @@ class UserDataControllerTest extends AbstractWebTestCase
             ->getRepository('Eccube\Entity\Master\DeviceType')
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = new PageLayout();
-        $PageLayout
+        $Page = new Page();
+        $Page
             ->setUrl($this->fileName)
             ->setFileName($this->fileName)
             ->setDeviceType($this->DeviceType)
-            ->setEditFlg(PageLayout::EDIT_FLG_USER);
-        $this->app['orm.em']->persist($PageLayout);
+            ->setEditFlg(Page::EDIT_FLG_USER);
+        $this->app['orm.em']->persist($Page);
         $this->app['orm.em']->flush();
 
     }

@@ -24,14 +24,14 @@ class Layout extends AbstractEntity
     }
 
     /**
-     * @return PageLayout[]
+     * @return Page[]
      */
     public function getPages()
     {
         $Pages = [];
         foreach ($this->PageLayoutLayouts as $PageLayoutLayout)
         {
-            $Pages[] = $PageLayoutLayout->getPageLayout();
+            $Pages[] = $PageLayoutLayout->getPage();
         }
 
         return $Pages;

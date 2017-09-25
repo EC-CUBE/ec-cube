@@ -23,7 +23,7 @@
 - dtb_member.csv
 - dtb_tax_rule.csv
 - dtb_block.csv
-- dtb_page_layout.csv
+- dtb_page.csv
 - dtb_layout.csv
 - dtb_page_layout_layout.csv
 - dtb_block_position.csv

@@ -80,14 +80,14 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\PageLayout
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\PageLayout", inversedBy="BlockPositions")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="BlockPositions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
      * })
      *
      * @deprecated
      */
-    private $PageLayout;
+    private $Page;
 
     /**
      * @var \Eccube\Entity\Layout
@@ -302,15 +302,15 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set pageLayout.
      *
-     * @param \Eccube\Entity\PageLayout|null $pageLayout
+     * @param \Eccube\Entity\Page|null $page
      *
      * @return BlockPosition
      *
      * @deprecated
      */
-    public function setPageLayout(\Eccube\Entity\PageLayout $pageLayout = null)
+    public function setPage(\Eccube\Entity\Page $Page = null)
     {
-        $this->PageLayout = $pageLayout;
+        $this->Page = $Page;
 
         return $this;
     }
@@ -318,12 +318,12 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get pageLayout.
      *
-     * @return \Eccube\Entity\PageLayout|null
+     * @return \Eccube\Entity\Page|null
      *
      * @deprecated
      */
-    public function getPageLayout()
+    public function getPage()
     {
-        return $this->PageLayout;
+        return $this->Page;
     }
 }

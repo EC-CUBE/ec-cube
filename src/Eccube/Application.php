@@ -530,8 +530,8 @@ class Application extends \Silex\Application
 
                     $DeviceType = $this['eccube.repository.master.device_type']
                         ->find($device_type_id);
-                    $qb = $this['eccube.repository.page_layout']->createQueryBuilder('p');
-                    $PageLayout = $qb->select('p, pll,l, bp, b')
+                    $qb = $this['eccube.repository.page']->createQueryBuilder('p');
+                    $Page = $qb->select('p, pll,l, bp, b')
                         ->leftJoin('p.PageLayoutLayouts', 'pll')
                         ->leftJoin('pll.Layout', 'l')
                         ->leftJoin('l.BlockPositions', 'bp')
@@ -544,11 +544,11 @@ class Application extends \Silex\Application
                         ->getQuery()
                         ->getSingleResult();
                 } catch (\Doctrine\ORM\NoResultException $e) {
-                    $PageLayout = $this['eccube.repository.page_layout']->newPageLayout($DeviceType);
+                    $Page = $this['eccube.repository.page']->newPage($DeviceType);
                 }
 
-                $this['twig']->addGlobal('PageLayout', $PageLayout);
-                $this['twig']->addGlobal('title', $PageLayout->getName());
+                $this['twig']->addGlobal('Page', $Page);
+                $this['twig']->addGlobal('title', $Page->getName());
             }
 
             $this['twig_global_initialized'] = true;

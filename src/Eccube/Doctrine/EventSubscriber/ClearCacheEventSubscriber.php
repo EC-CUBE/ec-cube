@@ -51,7 +51,7 @@ class ClearCacheEventSubscriber implements EventSubscriber
         $this->classes = array(
             'Eccube\Entity\BaseInfo',
             'Eccube\Entity\Category',
-            'Eccube\Entity\PageLayout',
+            'Eccube\Entity\Page',
             'Eccube\Entity\Block',
             'Eccube\Entity\BlockPosition',
         );

@@ -36,12 +36,12 @@ class PageLayoutLayout extends AbstractEntity
     /**
      * @var \Eccube\Entity\PageLayout
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\PageLayout", inversedBy="PageLayoutLayouts")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayoutLayouts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
      * })
      */
-    private $PageLayout;
+    private $Page;
 
     /**
      * @var \Eccube\Entity\Layout
@@ -105,13 +105,13 @@ class PageLayoutLayout extends AbstractEntity
     /**
      * Set pageLayout
      *
-     * @param \Eccube\Entity\PageLayout $pageLayout
+     * @param \Eccube\Entity\Page $page
      *
      * @return PageLayoutLayout
      */
-    public function setPageLayout(\Eccube\Entity\PageLayout $pageLayout = null)
+    public function setPage(\Eccube\Entity\Page $Page = null)
     {
-        $this->PageLayout = $pageLayout;
+        $this->Page = $Page;
 
         return $this;
     }
@@ -121,9 +121,9 @@ class PageLayoutLayout extends AbstractEntity
      *
      * @return \Eccube\Entity\PageLayout
      */
-    public function getPageLayout()
+    public function getPage()
     {
-        return $this->PageLayout;
+        return $this->Page;
     }
 
     /**
