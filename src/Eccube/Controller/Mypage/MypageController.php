@@ -31,6 +31,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -46,6 +47,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -338,19 +340,16 @@ class MypageController extends AbstractController
      * @Method("DELETE")
      * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
      */
-    public function delete(Application $app, Request $request, Product $Product)
+    public function delete(Application $app, Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
     {
         $this->isTokenValid($app);
 
         $Customer = $app->user();
 
-        log_info('お気に入り商品削除開始', [$Customer->getId(), $Product->getId()]);
+        log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
-        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository
-            ->findOneBy(['Customer' => $Customer, 'Product' => $Product]);
-
-        if (is_null($CustomerFavoriteProduct)) {
-            throw new NotFoundHttpException();
+        if ($Customer->getId() !== $CustomerFavoriteProduct->getCustomer()->getId()) {
+            throw new BadRequestHttpException();
         }
 
         $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
@@ -358,7 +357,7 @@ class MypageController extends AbstractController
         $event = new EventArgs(
             array(
                 'Customer' => $Customer,
-                'Product' => $Product,
+                'CustomerFavoriteProduct' => $CustomerFavoriteProduct,
             ), $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
