@@ -39,6 +39,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
@@ -97,6 +98,12 @@ class ForgotController extends AbstractController
     protected $formFactory;
 
     /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
+
+    /**
      * パスワードリマインダ.
      *
      * @Route("/forgot", name="forgot")
@@ -125,7 +132,7 @@ class ForgotController extends AbstractController
             if (!is_null($Customer)) {
                 // リセットキーの発行・有効期限の設定
                 $Customer
-                    ->setResetKey($this->customerRepository->getUniqueResetKey($app))
+                    ->setResetKey($this->customerRepository->getUniqueResetKey())
                     ->setResetExpire(new \DateTime('+'.$this->appConfig['customer_reset_expire'].' min'));
 
                 // リセットキーを更新
@@ -200,22 +207,23 @@ class ForgotController extends AbstractController
         if ('GET' === $request->getMethod()
             && count($errors) === 0
         ) {
-            try {
-                $Customer = $this->customerRepository
-                    ->getRegularCustomerByResetKey($reset_key);
-            } catch (\Exception $e) {
+
+            $Customer = $this->customerRepository
+                ->getRegularCustomerByResetKey($reset_key);
+            if (is_null($Customer)) {
                 throw new HttpException\NotFoundHttpException('有効期限が切れているか、無効なURLです。');
             }
 
             // パスワードの発行・更新
+            $encoder = $this->encoderFactory->getEncoder($Customer);
             $pass = $this->customerRepository->getResetPassword();
             $Customer->setPassword($pass);
 
             // 発行したパスワードの暗号化
             if ($Customer->getSalt() === null) {
-                $Customer->setSalt($this->customerRepository->createSalt(5));
+                $Customer->setSalt($this->encoderFactory->getEncoder($Customer)->createSalt());
             }
-            $encPass = $this->customerRepository->encryptPassword($app, $Customer);
+            $encPass = $encoder->encodePassword($pass, $Customer->getSalt());
             $Customer->setPassword($encPass);
 
             $Customer->setResetKey(null);

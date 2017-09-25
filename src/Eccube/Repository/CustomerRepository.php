@@ -323,7 +323,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      *
      * @return string
      */
-    public function getUniqueResetKey($app)
+    public function getUniqueResetKey()
     {
         do {
             $key = Str::random(32);
