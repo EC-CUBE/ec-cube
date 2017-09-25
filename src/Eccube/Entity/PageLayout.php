@@ -5,15 +5,15 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PageLayoutLayout
+ * PageLayout
  *
- * @ORM\Table(name="dtb_page_layout_layout")
+ * @ORM\Table(name="dtb_page_layout")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\PageLayoutLayoutRepository")
+ * @ORM\Entity(repositoryClass="Eccube\Repository\PageLayoutRepository")
  */
-class PageLayoutLayout extends AbstractEntity
+class PageLayout extends AbstractEntity
 {
     /**
      * @var integer
@@ -34,9 +34,9 @@ class PageLayoutLayout extends AbstractEntity
     private $layout_id;
 
     /**
-     * @var \Eccube\Entity\PageLayout
+     * @var \Eccube\Entity\Page
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayoutLayouts")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayouts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
      * })
@@ -46,7 +46,7 @@ class PageLayoutLayout extends AbstractEntity
     /**
      * @var \Eccube\Entity\Layout
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="PageLayoutLayouts")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="PageLayouts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="layout_id", referencedColumnName="layout_id")
      * })
@@ -59,7 +59,7 @@ class PageLayoutLayout extends AbstractEntity
      *
      * @param integer $pageId
      *
-     * @return PageLayoutLayout
+     * @return PageLayout
      */
     public function setPageId($pageId)
     {
@@ -83,7 +83,7 @@ class PageLayoutLayout extends AbstractEntity
      *
      * @param integer $layoutId
      *
-     * @return PageLayoutLayout
+     * @return PageLayout
      */
     public function setLayoutId($layoutId)
     {
@@ -107,7 +107,7 @@ class PageLayoutLayout extends AbstractEntity
      *
      * @param \Eccube\Entity\Page $page
      *
-     * @return PageLayoutLayout
+     * @return PageLayout
      */
     public function setPage(\Eccube\Entity\Page $Page = null)
     {
@@ -131,7 +131,7 @@ class PageLayoutLayout extends AbstractEntity
      *
      * @param \Eccube\Entity\Layout $layout
      *
-     * @return PageLayoutLayout
+     * @return PageLayout
      */
     public function setLayout(\Eccube\Entity\Layout $layout = null)
     {

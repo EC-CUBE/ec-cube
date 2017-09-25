@@ -31,7 +31,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
-use Eccube\Entity\PageLayoutLayout;
+use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
@@ -194,34 +194,34 @@ class PageController extends AbstractController
                 }
             }
 
-            foreach ($Page->getPageLayoutLayouts() as $PageLayoutLayout) {
-                $Page->removePageLayoutLayout($PageLayoutLayout);
-                $this->entityManager->remove($PageLayoutLayout);
-                $this->entityManager->flush($PageLayoutLayout);
+            foreach ($Page->getPageLayouts() as $PageLayout) {
+                $Page->removePageLayout($PageLayout);
+                $this->entityManager->remove($PageLayout);
+                $this->entityManager->flush($PageLayout);
             }
 
             $Layout = $form['PcLayout']->getData();
             if ($Layout) {
-                $PageLayoutLayout = new PageLayoutLayout();
-                $PageLayoutLayout->setLayoutId($Layout->getId());
-                $PageLayoutLayout->setLayout($Layout);
-                $PageLayoutLayout->setPageId($Page->getId());
-                $PageLayoutLayout->setPage($Page);
+                $PageLayout = new PageLayout();
+                $PageLayout->setLayoutId($Layout->getId());
+                $PageLayout->setLayout($Layout);
+                $PageLayout->setPageId($Page->getId());
+                $PageLayout->setPage($Page);
 
-                $this->entityManager->persist($PageLayoutLayout);
-                $this->entityManager->flush($PageLayoutLayout);
+                $this->entityManager->persist($PageLayout);
+                $this->entityManager->flush($PageLayout);
             }
 
             $Layout = $form['SpLayout']->getData();
             if ($Layout) {
-                $PageLayoutLayout = new PageLayoutLayout();
-                $PageLayoutLayout->setLayoutId($Layout->getId());
-                $PageLayoutLayout->setLayout($Layout);
-                $PageLayoutLayout->setPageId($Page->getId());
-                $PageLayoutLayout->setPage($Page);
+                $PageLayout = new PageLayout();
+                $PageLayout->setLayoutId($Layout->getId());
+                $PageLayout->setLayout($Layout);
+                $PageLayout->setPageId($Page->getId());
+                $PageLayout->setPage($Page);
 
-                $this->entityManager->persist($PageLayoutLayout);
-                $this->entityManager->flush($PageLayoutLayout);
+                $this->entityManager->persist($PageLayout);
+                $this->entityManager->flush($PageLayout);
             }
 
             $event = new EventArgs(

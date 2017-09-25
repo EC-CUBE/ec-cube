@@ -532,7 +532,7 @@ class Application extends \Silex\Application
                         ->find($device_type_id);
                     $qb = $this['eccube.repository.page']->createQueryBuilder('p');
                     $Page = $qb->select('p, pll,l, bp, b')
-                        ->leftJoin('p.PageLayoutLayouts', 'pll')
+                        ->leftJoin('p.PageLayouts', 'pll')
                         ->leftJoin('pll.Layout', 'l')
                         ->leftJoin('l.BlockPositions', 'bp')
                         ->leftJoin('bp.Block', 'b')

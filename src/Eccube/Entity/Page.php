@@ -36,8 +36,8 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function getLayouts()
     {
         $Layouts = [];
-        foreach ($this->PageLayoutLayouts as $PageLayoutLayout) {
-            $Layouts[] = $PageLayoutLayout->getLayout();
+        foreach ($this->PageLayouts as $PageLayout) {
+            $Layouts[] = $PageLayout->getLayout();
         }
 
         return $Layouts;
@@ -369,9 +369,9 @@ class Page extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayoutLayout", mappedBy="Page", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Page", cascade={"persist","remove"})
      */
-    private $PageLayoutLayouts;
+    private $PageLayouts;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
@@ -389,7 +389,7 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function __construct()
     {
         $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->PageLayoutLayouts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->PageLayouts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -709,21 +709,21 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPageLayoutLayouts()
+    public function getPageLayouts()
     {
-        return $this->PageLayoutLayouts;
+        return $this->PageLayouts;
     }
 
     /**
      * Add pageLayoutLayout
      *
-     * @param \Eccube\Entity\PageLayoutLayout $pageLayoutLayout
+     * @param \Eccube\Entity\PageLayout $PageLayout
      *
      * @return PageLayout
      */
-    public function addPageLayoutLayout(\Eccube\Entity\PageLayoutLayout $pageLayoutLayout)
+    public function addPageLayout(\Eccube\Entity\PageLayout $PageLayout)
     {
-        $this->PageLayoutLayouts[] = $pageLayoutLayout;
+        $this->PageLayouts[] = $PageLayout;
 
         return $this;
     }
@@ -731,11 +731,11 @@ class Page extends \Eccube\Entity\AbstractEntity
     /**
      * Remove pageLayoutLayout
      *
-     * @param \Eccube\Entity\PageLayoutLayout $pageLayoutLayout
+     * @param \Eccube\Entity\PageLayout $PageLayout
      */
-    public function removePageLayoutLayout(\Eccube\Entity\PageLayoutLayout $pageLayoutLayout)
+    public function removePageLayout(\Eccube\Entity\PageLayout $PageLayout)
     {
-        $this->PageLayoutLayouts->removeElement($pageLayoutLayout);
+        $this->PageLayouts->removeElement($PageLayout);
     }
 
     /**

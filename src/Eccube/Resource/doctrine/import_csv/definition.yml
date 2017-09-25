@@ -25,7 +25,7 @@
 - dtb_block.csv
 - dtb_page.csv
 - dtb_layout.csv
-- dtb_page_layout_layout.csv
+- dtb_page_layout.csv
 - dtb_block_position.csv
 - dtb_authority_role.csv
 - dtb_base_info.csv
