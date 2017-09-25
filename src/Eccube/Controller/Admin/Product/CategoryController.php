@@ -217,7 +217,8 @@ class CategoryController extends AbstractController
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
-            $app->addError('admin.category.delete.error', 'admin');
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => 'カテゴリ']);
+            $app->addError($message, 'admin');
         }
 
         if ($Parent) {

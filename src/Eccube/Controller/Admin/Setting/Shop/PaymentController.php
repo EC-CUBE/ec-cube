@@ -244,7 +244,9 @@ class PaymentController extends AbstractController
             $app->addSuccess('admin.delete.complete', 'admin');
         } catch(ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
-            $app->addError('admin.payment.delete.error', 'admin');
+
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '支払方法']);
+            $app->addError($message, 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));

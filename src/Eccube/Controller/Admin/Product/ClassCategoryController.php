@@ -207,8 +207,8 @@ class ClassCategoryController extends AbstractController
             } catch (\Exception $e) {
                 log_error('規格分類削除エラー', array($id, $e));
 
-                $app->addError('admin.class_category.delete.error', 'admin');
-            }
+                $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
+                $app->addError($message, 'admin');            }
         }
 
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));

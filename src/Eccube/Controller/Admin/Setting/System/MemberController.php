@@ -315,7 +315,8 @@ class MemberController extends AbstractController
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $app->addError('admin.member.delete.error', 'admin');
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => 'メンバー']);
+            $app->addError($message, 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_system_member'));

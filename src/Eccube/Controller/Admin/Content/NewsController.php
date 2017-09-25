@@ -251,7 +251,9 @@ class NewsController extends AbstractController
             log_info('新着情報削除完了', [$News->getId()]);
 
         } catch (\Exception $e) {
-            $app->addError('admin.news.delete.error', 'admin');
+
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '新着情報']);
+            $app->addError($message, 'admin');
 
             log_error('新着情報削除エラー', [$News->getId(), $e]);
         }
