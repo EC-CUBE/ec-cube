@@ -142,9 +142,9 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $salt = bin2hex(openssl_random_pseudo_bytes(5));
-            $rawPassword = $Member->getPassword();
             $encoder = $this->encoderFactory->getEncoder($Member);
+            $salt = $encoder->createSalt();
+            $rawPassword = $Member->getPassword();
             $encodedPassword = $encoder->encodePassword($rawPassword, $salt);
             $Member
                 ->setSalt($salt)

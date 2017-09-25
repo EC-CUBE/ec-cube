@@ -284,12 +284,13 @@ class AdminController extends AbstractController
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
 
+            $encoder = $this->encoderFactory->getEncoder($Member);
+
             // 2系からのデータ移行でsaltがセットされていない場合はsaltを生成.
             if (empty($salt)) {
-                $salt = bin2hex(openssl_random_pseudo_bytes(5));
+                $salt = $encoder->createSalt();
             }
 
-            $encoder = $this->encoderFactory->getEncoder($Member);
             $password = $encoder->encodePassword($password, $salt);
 
             $Member
