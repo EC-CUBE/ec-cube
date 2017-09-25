@@ -499,7 +499,7 @@ class Generator {
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getCalcRule()->getId())
+                ->setTaxRule($TaxRule->getRoundingType()->getId())
                 ->setTaxRate($TaxRule->getTaxRate());
             $this->app['orm.em']->persist($OrderDetail);
             $OrderDetail->setOrder($Order);
@@ -515,7 +515,7 @@ class Generator {
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getCalcRule()->getId())
+                ->setTaxRule($TaxRule->getRoundingType()->getId())
                 ->setTaxRate($TaxRule->getTaxRate())
                 ->setTaxType($Taxion) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別

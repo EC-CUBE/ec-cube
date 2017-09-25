@@ -16,7 +16,7 @@
 - mtb_sex.csv
 - mtb_shipping_status.csv
 - mtb_tag.csv
-- mtb_taxrule.csv
+- mtb_rounding_type.csv
 - mtb_tax_type.csv
 - mtb_tax_display_type.csv
 - mtb_work.csv

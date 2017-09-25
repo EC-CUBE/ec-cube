@@ -175,7 +175,7 @@ class OrderDetailType extends AbstractType
                     $data['class_category_name2'] = $ProductClass->hasClassCategory2() ?
                         $ProductClass->getClassCategory2()->getName() :
                         null;
-                    $data['tax_rule'] = $TaxRule->getCalcRule()->getId();
+                    $data['tax_rule'] = $TaxRule->getRoundingType()->getId();
                     $data['price'] = $ProductClass->getPrice02();
                     $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
                     $data['tax_rate'] = $TaxRule->getTaxRate();

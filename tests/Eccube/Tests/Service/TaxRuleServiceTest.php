@@ -18,91 +18,91 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
     {
         $input = 100.4;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, 999);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, 999);
         $this->verify();
 
         $input = 100.5;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, 999);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, 999);
         $this->verify();
 
         $input = 100;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, 999);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, 999);
         $this->verify();
 
         $input = 101;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, 999);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, 999);
         $this->verify();
     }
 
-    public function testRoundByCalcRuleWithCeil()
+    public function testRoundByRoundingTypeWithCeil()
     {
         $input = 100.4;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::CEIL);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
         $this->verify();
 
         $input = 100.5;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::CEIL);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
         $this->verify();
 
         $input = 100;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::CEIL);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
         $this->verify();
 
         $input = 101;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::CEIL);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
         $this->verify();
     }
 
-    public function testRoundByCalcRuleWithRound()
+    public function testRoundByRoundingTypeWithRound()
     {
         $input = 100.4;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::ROUND);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
         $this->verify();
 
         $input = 100.5;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::ROUND);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
         $this->verify();
 
         $input = 100;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::ROUND);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
         $this->verify();
 
         $input = 101;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::ROUND);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
         $this->verify();
     }
 
-    public function testRoundByCalcRuleWithFloor()
+    public function testRoundByRoundingTypeWithFloor()
     {
         $input = 100.4;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::FLOOR);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
         $this->verify();
 
         $input = 100.5;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::FLOOR);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
         $this->verify();
 
         $input = 100;
         $this->expected = 100;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::FLOOR);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
         $this->verify();
 
         $input = 101;
         $this->expected = 101;
-        $this->actual = $this->app['eccube.service.tax_rule']->roundByCalcRule($input, \Eccube\Entity\Master\Taxrule::FLOOR);
+        $this->actual = $this->app['eccube.service.tax_rule']->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
         $this->verify();
     }
 
@@ -111,7 +111,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $input = 1000;
         $rate = 8;
         $this->expected = 80.0;
-        $this->actual = $this->app['eccube.service.tax_rule']->calcTax($input, $rate, \Eccube\Entity\Master\Taxrule::ROUND);
+        $this->actual = $this->app['eccube.service.tax_rule']->calcTax($input, $rate, \Eccube\Entity\Master\RoundingType::ROUND);
         $this->verify();
     }
 
@@ -121,7 +121,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $rate = 8;
         $adjust = -1;
         $this->expected = 80.0;
-        $this->actual = $this->app['eccube.service.tax_rule']->calcTax($input, $rate, \Eccube\Entity\Master\Taxrule::ROUND, $adjust);
+        $this->actual = $this->app['eccube.service.tax_rule']->calcTax($input, $rate, \Eccube\Entity\Master\RoundingType::ROUND, $adjust);
         $this->verify();
     }
 

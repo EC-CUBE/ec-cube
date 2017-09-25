@@ -24,9 +24,9 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
-use Eccube\Form\Type\Master\CalcRuleType;
+use Eccube\Form\Type\Master\RoundingTypeType;
 
-class CalcRuleTypeTest extends AbstractTypeTestCase
+class RoundingTypeTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -40,14 +40,14 @@ class CalcRuleTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder(CalcRuleType::class, null, array(
+            ->createBuilder(RoundingTypeType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
     }
 
-    public function test_getName_is_calc_rule()
+    public function test_getName_is_rounding_type()
     {
-        $this->assertSame('calc_rule', $this->form->getName());
+        $this->assertSame('rounding_type', $this->form->getName());
     }
 }

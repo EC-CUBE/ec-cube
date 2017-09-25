@@ -598,7 +598,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
             $this->expected = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule())) * $OrderDetail->getQuantity();
 
-            $this->actual = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $TaxRule->getCalcRule()->getId())) * $OrderDetail->getQuantity();
+            $this->actual = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $TaxRule->getRoundingType()->getId())) * $OrderDetail->getQuantity();
 
             $this->verify();
         }

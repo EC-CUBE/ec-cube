@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\TaxRule;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -40,9 +41,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function createTaxRule($tax_rate = 8, $apply_date = null)
     {
         $TaxRule = new TaxRule();
-        $CalcRule = $this->app['orm.em']
-            ->getRepository('Eccube\Entity\Master\Taxrule')
-            ->find(1);
+        $RoundingType = $this->app['orm.em']->find(RoundingType::class, 1);
         $Member = $this->app['eccube.repository.member']->find(2);
         if (is_null($apply_date)) {
             $apply_date = $this->DateTimeNow;
@@ -50,7 +49,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $TaxRule
             ->setTaxRate($tax_rate)
             ->setApplyDate($apply_date)
-            ->setCalcRule($CalcRule)
+            ->setRoundingType($RoundingType)
             ->setTaxAdjust(0)
             ->setCreator($Member);
         $this->app['orm.em']->persist($TaxRule);

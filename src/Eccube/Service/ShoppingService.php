@@ -628,7 +628,7 @@ class ShoppingService
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getCalcRule()->getId())
+            ->setTaxRule($TaxRule->getRoundingType()->getId())
             ->setTaxRate($TaxRule->getTaxRate());
 
         $ClassCategory1 = $ProductClass->getClassCategory1();

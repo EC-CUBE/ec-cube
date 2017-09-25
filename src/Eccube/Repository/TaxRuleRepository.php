@@ -78,10 +78,10 @@ class TaxRuleRepository extends AbstractRepository
     public function newTaxRule()
     {
         $TaxRule = new \Eccube\Entity\TaxRule();
-        $CalcRule = $this->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\Taxrule')
+        $RoundingType = $this->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\RoundingType')
             ->find(1);
-        $TaxRule->setCalcRule($CalcRule);
+        $TaxRule->setRoundingType($RoundingType);
         $TaxRule->setTaxAdjust(0);
 
         return $TaxRule;

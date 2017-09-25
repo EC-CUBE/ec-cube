@@ -34,12 +34,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @FormType
  */
-class CalcRuleType extends AbstractType
+class RoundingTypeType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Taxrule',
+            'class' => 'Eccube\Entity\Master\RoundingType',
             'expanded' => true,
         ));
     }
@@ -51,6 +51,6 @@ class CalcRuleType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'calc_rule';
+        return 'rounding_type';
     }
 }

@@ -26,7 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Eccube\Form\Type\AddressType;
-use Eccube\Form\Type\Master\CalcRuleType;
+use Eccube\Form\Type\Master\RoundingTypeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -68,7 +68,7 @@ class TaxRuleType extends AbstractType
                     )),
                 ),
             ))
-            ->add('calc_rule', CalcRuleType::class, array(
+            ->add('rounding_type', RoundingTypeType::class, array(
                 'label' => '課税規則',
                 'required' => true,
             ))

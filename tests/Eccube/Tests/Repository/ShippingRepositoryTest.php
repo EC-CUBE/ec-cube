@@ -45,7 +45,7 @@ class ShippingRepositoryTest extends EccubeTestCase
             ->setProductCode($this->ProductClass->getCode())
             ->setPrice($this->ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getCalcRule()->getId())
+            ->setTaxRule($TaxRule->getRoundingType()->getId())
             ->setTaxRate($TaxRule->getTaxRate());
         $this->app['orm.em']->persist($OrderDetail);
         $OrderDetail->setOrder($this->Order);

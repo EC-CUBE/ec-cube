@@ -477,7 +477,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $TaxRule->setProductClass($ProductClass)
                 ->setCreator($Product->getCreator())
                 ->setProduct($Product)
-                ->setCalcRule($DefaultTaxRule->getCalcRule())
+                ->setRoundingType($DefaultTaxRule->getRoundingType())
                 ->setTaxRate($before)
                 ->setTaxAdjust(0)
                 ->setApplyDate(new \DateTime());

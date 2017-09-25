@@ -90,7 +90,7 @@ $(function() {
                 </div><!-- /.box-header -->
                 <div id="tax_common_rule_box__body" class="box-body">
                     {{ form_row(form.tax_rate) }}
-                    {{ form_row(form.calc_rule) }}
+                    {{ form_row(form.rounding_type) }}
                     {% if TargetTaxRule.default_tax_rule == false %}
                         {{ form_row(form.apply_date) }}
                     {% endif %}
@@ -121,7 +121,7 @@ $(function() {
                             <tr id="tax_rule_list__header">
                                 <th id="tax_rule_list__header_id">ID</th>
                                 <th id="tax_rule_list__header_tax_rate">消費税率</th>
-                                <th id="tax_rule_list__header_calc_rule">課税規則</th>
+                                <th id="tax_rule_list__header_rounding_type">課税規則</th>
                                 <th id="tax_rule_list__header_default_tax_rule">適用日時</th>
                                 <th id="tax_rule_list__header_menu_box">&nbsp;</th>
                             </tr>
@@ -131,7 +131,7 @@ $(function() {
                             <tr id="tax_rule_list__item--{{ TaxRule.id }}">
                                 <td id="tax_rule_list__id--{{ TaxRule.id }}">{{ TaxRule.id }}</td>
                                 <td id="tax_rule_list__tax_rate--{{ TaxRule.id }}">{{ TaxRule.tax_rate }}%</td>
-                                <td id="tax_rule_list__calc_rule--{{ TaxRule.id }}">{{ TaxRule.calc_rule }}</td>
+                                <td id="tax_rule_list__rounding_type--{{ TaxRule.id }}">{{ TaxRule.rounding_type }}</td>
                                 <td id="tax_rule_list__default_tax_rule--{{ TaxRule.id }}">{{ TaxRule.default_tax_rule  ? '基本税率設定' : TaxRule.apply_date|date('Y/m/d  H:i') }}</td>
                                 <td id="tax_rule_list__menu_box--{{ TaxRule.id }}" class="icon_edit">
                                     <div id="tax_rule_list__menu_box_toggle" class="dropdown">
