@@ -645,6 +645,7 @@ class Application extends \Silex\Application
             $config = $code['config'];
             // Doctrine Extend
             if (isset($config['orm.path']) && is_array($config['orm.path'])) {
+                // orm.pathが明示されている場合
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
                     $paths[] = $this['config']['plugin_realdir'].'/'.$config['code'].$path;
@@ -660,6 +661,25 @@ class Application extends \Silex\Application
                     'path' => $paths,
                     'use_simple_annotation_reader' => false,
                 );
+            } else {
+                // orm.pathを省略しても `/Resource/doctrine` と `/Entity` ディレクトリがある場合は設定を追加する
+                $doctrineDir = $this['config']['plugin_realdir'].'/'.$config['code'].'/Resource/doctrine';
+                if (glob($doctrineDir.'/*.yml')) {
+                    $ormMappings[] = array(
+                        'type' => 'yml',
+                        'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                        'path' => [$doctrineDir],
+                    );
+                }
+                $entityDir = $this['config']['plugin_realdir'].'/'.$config['code'].'/Entity';
+                if (file_exists($entityDir)) {
+                    $ormMappings[] = array(
+                        'type' => 'annotation',
+                        'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                        'path' => [$entityDir],
+                        'use_simple_annotation_reader' => false,
+                    );
+                }
             }
         }
 
