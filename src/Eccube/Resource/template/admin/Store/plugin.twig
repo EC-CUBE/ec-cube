@@ -28,21 +28,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}プラグイン一覧{% endblock %}
 
 {% block javascript %}
-<script>
-    function changeActionSubmit(action, form_name) {
-        document.forms[form_name].action = action;
-        document.forms[form_name].submit();
-        return false;
-    }
-    $(function(){
-        $('#readmeModal').on('show.bs.modal', function(event) {
-            var target = $(event.relatedTarget);
-            var modal = $(this)
-            modal.find('#readmeModalLabel').text(target.data('name'));
-            modal.find('#readmeContent').html(target.data('readme'));
+    <script>
+        function changeActionSubmit(action, form_name) {
+            document.forms[form_name].action = action;
+            document.forms[form_name].submit();
+            return false;
+        }
+        $(function(){
+            $('#readmeModal').on('show.bs.modal', function(event) {
+                var target = $(event.relatedTarget);
+                var modal = $(this)
+                modal.find('#readmeModalLabel').text(target.data('name'));
+                modal.find('#readmeContent').html(target.data('readme'));
+            });
         });
-    });
-</script>
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <a href="{{ url('admin_store_plugin_owners_install') }}" class="btn btn-info btn-xs pull-right">プラグインの新規追加はこちら</a>
+                    <a href="{{ url('admin_store_plugin_owners_search') }}" class="btn btn-info btn-xs pull-right">プラグインの新規追加はこちら</a>
                     <h3 class="box-title">オーナーズストアプラグイン</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -68,32 +68,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
             {% if unregisterdPlugins is not empty %}
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">未登録プラグイン</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    {{ include('Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">未登録プラグイン</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        {{ include('Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
             {% endif %}
         </div><!-- /.col -->
     </div>
 {% endblock %}
 {% block modal %}
-<div class="modal fade" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
-                <h4 class="modal-title" id="readmeModalLabel">{# プラグイン名 #}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group" id="readmeContent">
-                    {# README #}
+    <div class="modal fade" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
+                    <h4 class="modal-title" id="readmeModalLabel">{# プラグイン名 #}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" id="readmeContent">
+                        {# README #}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
