@@ -40,31 +40,31 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function createCategories()
     {
         $categories = array(
-            array('name' => '親1', 'level' => 1, 'rank' => 1,
+            array('name' => '親1', 'hierarchy' => 1, 'rank' => 1,
                   'child' => array(
-                      array('name' => '子1', 'level' => 2, 'rank' => 4,
+                      array('name' => '子1', 'hierarchy' => 2, 'rank' => 4,
                             'child' => array(
-                                array('name' => '孫1', 'level' => 3, 'rank' => 9)
+                                array('name' => '孫1', 'hierarchy' => 3, 'rank' => 9)
                             ),
                       ),
                   ),
             ),
-            array('name' => '親2', 'level' => 1, 'rank' => 2,
+            array('name' => '親2', 'hierarchy' => 1, 'rank' => 2,
                   'child' => array(
-                      array('name' => '子2-0', 'level' => 2, 'rank' => 5,
+                      array('name' => '子2-0', 'hierarchy' => 2, 'rank' => 5,
                             'child' => array(
-                                array('name' => '孫2', 'level' => 3, 'rank' => 10)
+                                array('name' => '孫2', 'hierarchy' => 3, 'rank' => 10)
                             )
                       ),
-                      array('name' => '子2-1', 'level' => 2, 'rank' => 6),
-                      array('name' => '子2-2', 'level' => 2, 'rank' => 7)
+                      array('name' => '子2-1', 'hierarchy' => 2, 'rank' => 6),
+                      array('name' => '子2-2', 'hierarchy' => 2, 'rank' => 7)
                   ),
             ),
-            array('name' => '親3', 'level' => 1, 'rank' => 3,
+            array('name' => '親3', 'hierarchy' => 1, 'rank' => 3,
                   'child' => array(
-                      array('name' => '子3', 'level' => 2, 'rank' => 8,
+                      array('name' => '子3', 'hierarchy' => 2, 'rank' => 8,
                             'child' => array(
-                                array('name' => '孫3', 'level' => 3, 'rank' => 11)
+                                array('name' => '孫3', 'hierarchy' => 3, 'rank' => 11)
                             )
                       )
                   ),
