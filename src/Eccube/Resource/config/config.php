@@ -3,7 +3,7 @@
   'password_hash_algos' => 'sha256',
   'shop_name' => '${SHOP_NAME}',
   'force_ssl' => '${FORCE_SSL}',
-  'admin_allow_host' => NULL,
+  'admin_allow_host' => null,
   'cookie_lifetime' => 0,
   'cookie_name' => 'eccube',
   'locale' => 'ja',
