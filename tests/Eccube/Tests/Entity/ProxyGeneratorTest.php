@@ -27,7 +27,6 @@ use Eccube\Annotation\EntityExtension;
 use Eccube\Entity\ProxyGenerator;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 class ProxyGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -51,8 +50,7 @@ class ProxyGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGenerate()
     {
         $generator = new ProxyGenerator();
-        $output = new BufferedOutput();
-        $generator->generate([__DIR__], $this->tempOutputDir, $output);
+        $generator->generate([__DIR__], $this->tempOutputDir);
 
         $generatedFile = $this->tempOutputDir.'/Product.php';
         self::assertTrue(file_exists($generatedFile));

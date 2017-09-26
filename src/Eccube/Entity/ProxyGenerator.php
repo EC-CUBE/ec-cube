@@ -26,6 +26,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Eccube\Annotation\EntityExtension;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Zend\Code\Generator\ClassGenerator;
@@ -38,10 +39,13 @@ class ProxyGenerator
      * @param array $scanDirs スキャン対象ディレクトリ
      * @param string $outputDir 出力先
      * @param OutputInterface $output ログ出力
+     * @return array 生成したファイルのリスト
      */
-    public function generate($scanDirs, $outputDir, OutputInterface $output)
+    public function generate($scanDirs, $outputDir, OutputInterface $output = null)
     {
-
+        if (is_null($output)) {
+            $output = new ProxyGeneratorLoggerOutput();
+        }
 //        // プロキシのクリア
 //        $files = Finder::create()
 //            ->in($app['config']['root_dir'].'/app/cache/doctrine/entity-proxies')
@@ -55,7 +59,7 @@ class ProxyGenerator
 
         // Acmeからファイルを抽出
         $files = Finder::create()
-            ->in($scanDirs)
+            ->in(array_filter($scanDirs, 'file_exists'))
             ->name('*.php')
             ->files();
 
@@ -86,6 +90,9 @@ class ProxyGenerator
                 $proxies[$anno->value][] = $trait;
             }
         }
+
+        $generatedFiles = [];
+
         // プロキシファイルの生成
         foreach ($proxies as $targetEntity => $traits) {
             $rc = new ClassReflection($targetEntity);
@@ -133,9 +140,25 @@ class ProxyGenerator
             $file = basename($rc->getFileName());
 
             $code = $generator->generate();
-            $outputFile = $outputDir.'/'.$file;
+            $generatedFiles[] = $outputFile = $outputDir.'/'.$file;
             file_put_contents($outputFile, '<?php '.PHP_EOL.$code);
             $output->writeln('gen -> '.$outputFile);
         }
+
+        return $generatedFiles;
+    }
+}
+
+class ProxyGeneratorLoggerOutput extends Output
+{
+    /**
+     * Writes a message to the output.
+     *
+     * @param string $message A message to write to the output
+     * @param bool $newline Whether to add a newline or not
+     */
+    protected function doWrite($message, $newline)
+    {
+        log_info($newline);
     }
 }

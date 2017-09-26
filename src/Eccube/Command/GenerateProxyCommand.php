@@ -24,6 +24,7 @@
 namespace Eccube\Command;
 
 use Eccube\Entity\ProxyGenerator;
+use Eccube\Repository\PluginRepository;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,14 +43,17 @@ class GenerateProxyCommand extends Command
     {
         /** @var \Eccube\Application $app */
         $app = $this->getSilexApplication();
+        /** @var ProxyGenerator $proxyGenerator */
+        $proxyGenerator = $app['eccube.entity.proxy.generator'];
 
-        $scanDirs = [
-            $app['config']['root_dir'].'/app/Acme/Entity',
-            $app['config']['root_dir'].'/app/Plugin/*/Entity',
-        ];
-        $outputDir = $app['config']['root_dir'].'/app/proxy/entity';
+        $dirs = array_map(function($p) use ($app) {
+            return $app['config']['root_dir'].'/app/Plugin/'.$p->getCode().'/Entity';
+        }, $app[PluginRepository::class]->findAllEnabled());
 
-        $generator = new ProxyGenerator();
-        $generator->generate($scanDirs, $outputDir, $output);
+        $proxyGenerator->generate(
+            array_merge([$app['config']['root_dir'].'/app/Acme/Entity'], $dirs),
+            $app['config']['root_dir'].'/app/proxy/entity',
+            $output
+        );
     }
 }

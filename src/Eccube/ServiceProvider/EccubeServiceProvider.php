@@ -28,6 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\EventListener\ForwardOnlyListener;
+use Eccube\Entity\ProxyGenerator;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -265,6 +266,11 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $flow->addPurchaseProcessor(new UpdateDatePurchaseProcessor($app['config']));
             $flow->addPurchaseProcessor(new AdminOrderRegisterPurchaseProcessor($app));
             return $flow;
+        };
+
+        $app['eccube.entity.proxy.generator'] = function () {
+            $generator = new ProxyGenerator();
+            return $generator;
         };
     }
 

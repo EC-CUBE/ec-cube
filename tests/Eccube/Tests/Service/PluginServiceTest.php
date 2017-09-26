@@ -25,6 +25,10 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Repository\PluginRepository;
+use Eccube\Service\PluginService;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -47,6 +51,10 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         foreach ($dirs as $dir) {
             $this->deleteFile($dir);
+        }
+
+        foreach (glob($this->app['config']['root_dir'].'/app/proxy/entity/*.php') as $file) {
+            unlink($file);
         }
         parent::tearDown();
     }
@@ -681,5 +689,205 @@ EOD;
 
         $pluginConfigs = ConfigManager::getPluginConfigAll();
         $this->assertFalse(array_key_exists($tmpname, $pluginConfigs), 'キャッシュからプラグインが削除されているか');
+    }
+
+    /**
+     * プラグインを有効化したときにProxyが再生成される
+     */
+    public function testInstallWithEntityExtension()
+    {
+        /** @var PluginService $service */
+        $service = $this->app['eccube.service.plugin'];
+
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+
+        // インストール
+        $service->install($fileA);
+
+        $pluginA = $repository->findOneBy(array('code'=>$configA['code']));
+        $this->app['orm.em']->detach($pluginA);
+
+        // 有効化
+        $service->enable($pluginA);
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertContains("Plugin\\${configA['code']}\\Entity\\HogeTrait", $useStatement);
+    }
+
+    /**
+     * 無効化されているプラグインのTraitはProxyに利用されない
+     */
+    public function testInstallWithEntityExtension_with_disabled_plugin()
+    {
+        /** @var PluginService $service */
+        $service = $this->app['eccube.service.plugin'];
+
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configDisabled, $fileDisabled) = $this->createDummyPluginWithEntityExtension();
+        list($configEnabled, $fileEnabled) = $this->createDummyPluginWithEntityExtension();
+
+        // プラグイン1はインストールのみ
+        {
+            $service->install($fileDisabled);
+
+            $pluginDisabled = $repository->findOneBy(array('code'=>$configDisabled['code']));
+            $this->app['orm.em']->detach($pluginDisabled);
+        }
+        // プラグイン2をインストール&有効化
+        {
+            $service->install($fileEnabled);
+
+            $pluginEnabled = $repository->findOneBy(array('code'=>$configEnabled['code']));
+            $this->app['orm.em']->detach($pluginEnabled);
+
+            // 有効化
+            $service->enable($pluginEnabled);
+        }
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertNotContains("Plugin\\${configDisabled['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されていないプラグインのTraitは利用されない');
+        self::assertContains("Plugin\\${configEnabled['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されたプラグインのTraitは利用される');
+    }
+
+    /**
+     * すべての有効化されているプラグインのTraitを使ってProxyが再生成される
+     */
+    public function testInstallWithEntityExtension_all_enabled()
+    {
+        /** @var PluginService $service */
+        $service = $this->app['eccube.service.plugin'];
+
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configEnabledA, $fileEnabledA) = $this->createDummyPluginWithEntityExtension();
+        list($configEnabledB, $fileEnabledB) = $this->createDummyPluginWithEntityExtension();
+
+        // プラグイン1をインストール&有効化
+        {
+            $service->install($fileEnabledA);
+
+            $pluginEnabledA = $repository->findOneBy(array('code'=>$configEnabledA['code']));
+            $this->app['orm.em']->detach($pluginEnabledA);
+
+            // 有効化
+            $service->enable($pluginEnabledA);
+        }
+        // プラグイン2をインストール&有効化
+        {
+            $service->install($fileEnabledB);
+
+            $pluginEnabledB = $repository->findOneBy(array('code'=>$configEnabledB['code']));
+            $this->app['orm.em']->detach($pluginEnabledB);
+
+            // 有効化
+            $service->enable($pluginEnabledB);
+        }
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertContains("Plugin\\${configEnabledA['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されたプラグインのTraitは利用される');
+        self::assertContains("Plugin\\${configEnabledB['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されたプラグインのTraitは利用される');
+    }
+
+
+    /**
+     * プラグインを無効化するとProxyからTraitが使われなくなる
+     */
+    public function testInstallWithEntityExtension_enable()
+    {
+        /** @var PluginService $service */
+        $service = $this->app['eccube.service.plugin'];
+
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+
+        // インストール
+        $service->install($fileA);
+
+        $pluginA = $repository->findOneBy(array('code'=>$configA['code']));
+        $this->app['orm.em']->detach($pluginA);
+
+        // 有効化
+        $service->enable($pluginA);
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertContains("Plugin\\${configA['code']}\\Entity\\HogeTrait", $useStatement, 'Traitが有効になっている');
+
+        // 無効化
+        $service->disable($pluginA);
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertNotContains("Plugin\\${configA['code']}\\Entity\\HogeTrait", $useStatement, 'Traitが無効になっている');
+    }
+
+    private function createDummyPluginConfig()
+    {
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        $config['event'] = 'DummyEvent';
+        return $config;
+    }
+
+    private function createDummyPluginWithEntityExtension()
+    {
+        // インストールするプラグインを作成する
+        $config = $this->createDummyPluginConfig();
+        $tmpname = $config['code'];
+
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
+        $tar->addFromString('Entity/HogeTrait.php', <<< EOT
+<?php
+
+namespace Plugin\\${tmpname}\\Entity;
+
+use Eccube\Annotation\EntityExtension;
+
+/**
+ * @EntityExtension("Eccube\Entity\Customer")
+ */
+trait HogeTrait
+{
+}
+EOT
+        );
+        return [$config, $tmpfile];
     }
 }
