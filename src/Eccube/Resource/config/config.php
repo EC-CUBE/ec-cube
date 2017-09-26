@@ -1,5 +1,6 @@
 <?php return [
   'auth_magic' => null,
+  'auth_type' => 'HMAC',
   'password_hash_algos' => 'sha256',
   'force_ssl' => false,
   'admin_allow_host' => [],
