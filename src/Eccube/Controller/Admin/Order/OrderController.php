@@ -469,9 +469,9 @@ class OrderController extends AbstractController
                 $Shippings = $Order->getShippings();
 
                 foreach ($Shippings as $Shipping) {
-                    /** @var $ShipmentItems \Eccube\Entity\ShipmentItem */
-                    $ShipmentItems = $Shipping->getShipmentItems();
-                    foreach ($ShipmentItems as $ShipmentItem) {
+                    /** @var $OrderItems \Eccube\Entity\OrderItem */
+                    $OrderItems = $Shipping->getOrderItems();
+                    foreach ($OrderItems as $OrderItem) {
                         $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                         // CSV出力項目と合致するデータを取得.
@@ -484,14 +484,14 @@ class OrderController extends AbstractController
                             }
                             if ($ExportCsvRow->isDataNull()) {
                                 // 配送商品を検索.
-                                $ExportCsvRow->setData($csvService->getData($Csv, $ShipmentItem));
+                                $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
                             }
 
                             $event = new EventArgs(
                                 array(
                                     'csvService' => $csvService,
                                     'Csv' => $Csv,
-                                    'ShipmentItem' => $ShipmentItem,
+                                    'OrderItem' => $OrderItem,
                                     'ExportCsvRow' => $ExportCsvRow,
                                 ),
                                 $request

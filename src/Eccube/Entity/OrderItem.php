@@ -30,15 +30,15 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ShipmentItem
+ * OrderItem
  *
- * @ORM\Table(name="dtb_shipment_item")
+ * @ORM\Table(name="dtb_order_item")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\ShipmentItemRepository")
+ * @ORM\Entity(repositoryClass="Eccube\Repository\OrderItemRepository")
  */
-class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
+class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
     private $price_inc_tax = null;
 
@@ -46,7 +46,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      * Set price IncTax
      *
      * @param  string       $price_inc_tax
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setPriceIncTax($price_inc_tax)
     {
@@ -237,7 +237,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     /**
      * @var \Eccube\Entity\Order
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="ShipmentItems")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderItems")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
      * })
@@ -267,7 +267,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
     /**
      * @var \Eccube\Entity\Shipping
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Shipping", inversedBy="ShipmentItems")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Shipping", inversedBy="OrderItems")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="shipping_id", referencedColumnName="shipping_id")
      * })
@@ -319,7 +319,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string $productName
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setProductName($productName)
     {
@@ -343,7 +343,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string|null $productCode
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setProductCode($productCode = null)
     {
@@ -367,7 +367,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string|null $className1
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setClassName1($className1 = null)
     {
@@ -391,7 +391,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string|null $className2
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setClassName2($className2 = null)
     {
@@ -415,7 +415,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string|null $classCategoryName1
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setClassCategoryName1($classCategoryName1 = null)
     {
@@ -439,7 +439,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string|null $classCategoryName2
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setClassCategoryName2($classCategoryName2 = null)
     {
@@ -463,7 +463,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string $price
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setPrice($price)
     {
@@ -487,7 +487,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string $quantity
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setQuantity($quantity)
     {
@@ -511,7 +511,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string $taxRate
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setTaxRate($taxRate)
     {
@@ -535,7 +535,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param int|null $taxRule
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setTaxRule($taxRule = null)
     {
@@ -569,7 +569,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param string|null $currencyCode
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setCurrencyCode($currencyCode = null)
     {
@@ -583,7 +583,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\Order|null $order
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setOrder(\Eccube\Entity\Order $order = null)
     {
@@ -615,7 +615,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\Product|null $product
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
     {
@@ -642,7 +642,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\ProductClass|null $productClass
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
     {
@@ -666,7 +666,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\Shipping|null $shipping
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setShipping(\Eccube\Entity\Shipping $shipping = null)
     {
@@ -690,7 +690,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\Master\TaxType $taxType
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setTaxType(\Eccube\Entity\Master\TaxType $taxType = null)
     {
@@ -714,7 +714,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\Master\TaxDisplayType $taxDisplayType
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setTaxDisplayType(\Eccube\Entity\Master\TaxDisplayType $taxDisplayType = null)
     {
@@ -738,7 +738,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity implements ItemInterfac
      *
      * @param \Eccube\Entity\Master\OrderItemType $orderItemType
      *
-     * @return ShipmentItem
+     * @return OrderItem
      */
     public function setOrderItemType(\Eccube\Entity\Master\OrderItemType $orderItemType = null)
     {

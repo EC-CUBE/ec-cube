@@ -178,16 +178,16 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 $shippingDeliveryDate['month'] = $date->format('n');
                 $shippingDeliveryDate['day'] = $date->format('d');
             }
-            $shipmentItems = array();
-            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            foreach ($Shippings->getShipmentItems() as $ShipmentItem) {
-                $shipmentItems[] = array(
-                    'Product' => $ShipmentItem->getProduct()->getId(),
-                    'ProductClass' => $ShipmentItem->getProductClass()->getId(),
-                    'price' => $ShipmentItem->getPrice(),
-                    'quantity' => $ShipmentItem->getQuantity(),
-                    'product_name' => $ShipmentItem->getProduct()->getName(),
-                    'product_code' => $ShipmentItem->getProductClass()->getCode(),
+            $orderItems = array();
+            /** @var \Eccube\Entity\OrderItem $OrderItem */
+            foreach ($Shippings->getOrderItems() as $OrderItem) {
+                $orderItems[] = array(
+                    'Product' => $OrderItem->getProduct()->getId(),
+                    'ProductClass' => $OrderItem->getProductClass()->getId(),
+                    'price' => $OrderItem->getPrice(),
+                    'quantity' => $OrderItem->getQuantity(),
+                    'product_name' => $OrderItem->getProduct()->getName(),
+                    'product_code' => $OrderItem->getProductClass()->getCode(),
                 );
             }
 
@@ -229,7 +229,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'Delivery' => $Shippings->getDelivery()->getId(),
                 'DeliveryTime' => $deliveryTime,
                 'shipping_delivery_date' => $shippingDeliveryDate,
-                'ShipmentItems' => $shipmentItems,
+                'orderItems' => $orderItems,
             );
         }
         $Customer = $Order->getCustomer();

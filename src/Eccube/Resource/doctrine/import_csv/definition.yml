@@ -56,6 +56,6 @@
 - dtb_product_image.csv
 - dtb_product_stock.csv
 - dtb_product_tag.csv
-- dtb_shipment_item.csv
+- dtb_order_item.csv
 - dtb_shipping.csv
 - dtb_template.csv

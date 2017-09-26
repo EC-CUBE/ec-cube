@@ -9,7 +9,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * ShippingRepository test cases.
@@ -62,8 +62,8 @@ class ShippingRepositoryTest extends EccubeTestCase
 
             $this->app['orm.em']->persist($Shipping);
 
-            $ShipmentItem = new ShipmentItem();
-            $ShipmentItem->setShipping($Shipping)
+            $OrderItem = new OrderItem();
+            $OrderItem->setShipping($Shipping)
                 ->setOrder($this->Order)
                 ->setProductClass($this->ProductClass)
                 ->setProduct($this->Product)
@@ -71,8 +71,8 @@ class ShippingRepositoryTest extends EccubeTestCase
                 ->setProductCode($this->ProductClass->getCode())
                 ->setPrice($this->ProductClass->getPrice02())
                 ->setQuantity(1);
-            $Shipping->addShipmentItem($ShipmentItem);
-            $this->app['orm.em']->persist($ShipmentItem);
+            $Shipping->addOrderItem($OrderItem);
+            $this->app['orm.em']->persist($OrderItem);
             $this->Shippings[$i] = $Shipping;
         }
 

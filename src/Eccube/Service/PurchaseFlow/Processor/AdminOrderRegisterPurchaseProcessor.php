@@ -17,14 +17,14 @@ class AdminOrderRegisterPurchaseProcessor implements PurchaseProcessor
     public function process(ItemHolderInterface $target, PurchaseContext $context)
     {
         // 画面上で削除された明細をremove
-        foreach ($context->getOriginHolder()->getItems() as $ShipmentItem) {
-            if (false === $target->getShipmentItems()->contains($ShipmentItem)) {
-                $ShipmentItem->setOrder(null);
+        foreach ($context->getOriginHolder()->getItems() as $OrderItem) {
+            if (false === $target->getOrderItems()->contains($OrderItem)) {
+                $OrderItem->setOrder(null);
             }
         }
 
-        foreach ($target->getItems() as $ShipmentItem) {
-            $ShipmentItem->setOrder($target);
+        foreach ($target->getItems() as $OrderItem) {
+            $OrderItem->setOrder($target);
         }
     }
 }

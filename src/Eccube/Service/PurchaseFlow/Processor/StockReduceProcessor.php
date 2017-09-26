@@ -6,7 +6,7 @@ use Doctrine\DBAL\LockMode;
 use Eccube\Annotation\Inject;
 use Eccube\Common\Constant;
 use Eccube\Entity\ItemInterface;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Repository\ProductStockRepository;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
@@ -42,8 +42,8 @@ class StockReduceProcessor implements ItemProcessor
      */
     public function process(ItemInterface $item, PurchaseContext $context)
     {
-        if (!$item instanceof ShipmentItem) {
-            // ShipmentItem 以外の場合は何もしない
+        if (!$item instanceof OrderItem) {
+            // OrderItem 以外の場合は何もしない
             return ProcessResult::success();
         }
 

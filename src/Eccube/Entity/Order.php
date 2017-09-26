@@ -25,7 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Util\EntityUtil;
@@ -117,8 +117,8 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function calculateSubTotal()
     {
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        return array_reduce($this->getProductOrderItems(), function($total, $ShipmentItem) {
-            return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+        return array_reduce($this->getProductOrderItems(), function($total, $OrderItem) {
+            return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
         }, 0);
     }
 
@@ -150,12 +150,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         // TODO filter を外出ししたい
         return array_reduce(
-            array_filter($this->getShipmentItems()->toArray(),
-                         function($ShipmentItem) {
-                             return $ShipmentItem->isDeliveryFee();
+            array_filter($this->getOrderItems()->toArray(),
+                         function($OrderItem) {
+                             return $OrderItem->isDeliveryFee();
                          }),
-            function($total, $ShipmentItem) {
-                return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+            function($total, $OrderItem) {
+                return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
             }, 0);
     }
 
@@ -170,12 +170,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         // TODO filter を外出ししたい
         return array_reduce(
-            array_filter($this->getShipmentItems()->toArray(),
-                         function($ShipmentItem) {
-                             return $ShipmentItem->isDiscount();
+            array_filter($this->getOrderItems()->toArray(),
+                         function($OrderItem) {
+                             return $OrderItem->isDiscount();
                          }),
-            function($total, $ShipmentItem) {
-                return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+            function($total, $OrderItem) {
+                return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
             }, 0);
     }
 
@@ -190,12 +190,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
         // TODO filter を外出ししたい
         return array_reduce(
-            array_filter($this->getShipmentItems()->toArray(),
-                         function($ShipmentItem) {
-                             return $ShipmentItem->isCharge();
+            array_filter($this->getOrderItems()->toArray(),
+                         function($OrderItem) {
+                             return $OrderItem->isCharge();
                          }),
-            function($total, $ShipmentItem) {
-                return $total + $ShipmentItem->getPriceIncTax() * $ShipmentItem->getQuantity();
+            function($total, $OrderItem) {
+                return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
             }, 0);
     }
 
@@ -498,9 +498,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\ShipmentItem", mappedBy="Order", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
      */
-    private $ShipmentItems;
+    private $OrderItems;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -618,7 +618,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         ;
 
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1510,58 +1510,58 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
     /**
      * 商品の受注明細を取得
-     * @return ShipmentItem[]
+     * @return OrderItem[]
      */
     public function getProductOrderItems()
     {
-        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        $sio = new OrderItemCollection($this->OrderItems->toArray());
         return $sio->getProductClasses()->toArray();
     }
 
     /**
-     * Add shipmentItem.
+     * Add orderItem.
      *
-     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     * @param \Eccube\Entity\OrderItem $OrderItem
      *
      * @return Shipping
      */
-    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
-        $this->ShipmentItems[] = $shipmentItem;
+        $this->OrderItems[] = $OrderItem;
 
         return $this;
     }
 
     /**
-     * Remove shipmentItem.
+     * Remove orderItem.
      *
-     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     * @param \Eccube\Entity\OrderItem $OrderItem
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    public function removeOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
-        return $this->ShipmentItems->removeElement($shipmentItem);
+        return $this->OrderItems->removeElement($OrderItem);
     }
 
     /**
-     * Get shipmentItems.
+     * Get orderItems.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getShipmentItems()
+    public function getOrderItems()
     {
-        return $this->ShipmentItems;
+        return $this->OrderItems;
     }
 
     /**
-     * Sorted to getShipmentItems()
+     * Sorted to getOrderItems()
      *
      * @return ItemCollection
      */
     public function getItems()
     {
-        return (new ItemCollection($this->getShipmentItems()))->sort();
+        return (new ItemCollection($this->getOrderItems()))->sort();
     }
 
     /**
@@ -1572,8 +1572,8 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getShippings()
     {
         $Shippings = [];
-        foreach ($this->getShipmentItems() as $ShipmentItem) {
-            $Shipping = $ShipmentItem->getShipping();
+        foreach ($this->getOrderItems() as $OrderItem) {
+            $Shipping = $OrderItem->getShipping();
             if (is_object($Shipping)) {
                 $name = $Shipping->getName01(); // XXX lazy loading
                 $Shippings[$Shipping->getId()] = $Shipping;
@@ -1868,7 +1868,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      */
     public function addItem(ItemInterface $item)
     {
-        $this->ShipmentItems->add($item);
+        $this->OrderItems->add($item);
     }
 
     public function getQuantity()

@@ -5,11 +5,11 @@ namespace Eccube\Service\Calculator\Strategy;
 use Eccube\Application;
 use Eccube\Entity\Order;
 use Eccube\Entity\PurchaseInterface;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 
 interface CalculateStrategyInterface
 {
-    public function execute(ShipmentItemCollection $ShipmentItems);
+    public function execute(OrderItemCollection $OrderItems);
 
     public function setApplication(Application $app);
 

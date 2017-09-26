@@ -128,8 +128,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.shipping'] = function () use ($app) {
             return $app['Eccube\Repository\ShippingRepository'];
         };
-        $app['eccube.repository.shipment_item'] = function () use ($app) {
-            return $app['Eccube\Repository\ShipmentItemRepository'];
+        $app['eccube.repository.order_item'] = function () use ($app) {
+            return $app['Eccube\Repository\OrderItemRepository'];
         };
         $app['eccube.repository.master.customer_status'] = function () use ($app) {
             return $app['Eccube\Repository\Master\CustomerStatusRepository'];

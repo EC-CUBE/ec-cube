@@ -6,7 +6,7 @@ use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Order;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
@@ -102,9 +102,9 @@ class OrderType extends AbstractType
                 }
 
                 // 受注明細に含まれる商品種別を抽出.
-                $ProductTypes = array_reduce($Order->getShipmentItems()->toArray(), function($results, $ShipmentItem) {
-                    /* @var ShipmentItem $ShipmentItem */
-                    $ProductClass = $ShipmentItem->getProductClass();
+                $ProductTypes = array_reduce($Order->getOrderItems()->toArray(), function($results, $OrderItem) {
+                    /* @var OrderItem $OrderItem */
+                    $ProductClass = $OrderItem->getProductClass();
                     if (!is_null($ProductClass)) {
                         $ProductType = $ProductClass->getProductType();
                         $results[$ProductType->getId()] = $ProductType;

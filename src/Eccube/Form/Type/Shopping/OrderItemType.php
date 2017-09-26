@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @FormType
  */
-class ShipmentItemType extends AbstractType
+class OrderItemType extends AbstractType
 {
     public function __construct()
     {
@@ -27,13 +27,13 @@ class ShipmentItemType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Eccube\Entity\ShipmentItem',
+                'data_class' => 'Eccube\Entity\OrderItem',
             )
         );
     }
 
     public function getBlockPrefix()
     {
-        return '_shopping_shipment_item';
+        return '_shopping_order_item';
     }
 }

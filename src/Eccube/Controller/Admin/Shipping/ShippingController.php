@@ -15,7 +15,7 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\SearchShippingType;
-use Eccube\Form\Type\Admin\ShipmentItemType;
+use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\ShippingType;
 
 use Eccube\Repository\Master\ProductStatusRepository;

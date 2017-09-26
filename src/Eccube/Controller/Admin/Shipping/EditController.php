@@ -13,12 +13,12 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Form\Type\Admin\ShipmentItemType;
+use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
-use Eccube\Repository\ShipmentItemRepository;
+use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,10 +39,10 @@ use Symfony\Component\Serializer\Serializer;
 class EditController
 {
     /**
-     * @Inject(ShipmentItemRepository::class)
-     * @var ShipmentItemRepository
+     * @Inject(OrderItemRepository::class)
+     * @var OrderItemRepository
      */
-    protected $shipmentItemRepository;
+    protected $orderItemRepository;
 
     /**
      * @Inject(CategoryRepository::class)
@@ -143,10 +143,10 @@ class EditController
         // 編集前の受注情報を保持
         $OriginShipping = clone $TargetShipping;
         // 編集前のお届け先のアイテム情報を保持
-        $OriginalShipmentItems = new ArrayCollection();
+        $OriginalOrderItems = new ArrayCollection();
 
-        foreach ($TargetShipping->getShipmentItems() as $ShipmentItem) {
-            $OriginalShipmentItems->add($ShipmentItem);
+        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+            $OriginalOrderItems->add($OrderItem);
         }
 
         $builder = $this->formFactory
@@ -157,7 +157,7 @@ class EditController
                 'builder' => $builder,
                 'OriginShipping' => $OriginShipping,
                 'TargetShipping' => $TargetShipping,
-                'OriginalShipmentItems' => $OriginalShipmentItems,
+                'OriginalOrderItems' => $OriginalOrderItems,
             ),
             $request
         );
@@ -172,7 +172,7 @@ class EditController
                     'builder' => $builder,
                     'OriginShipping' => $OriginShipping,
                     'TargetShipping' => $TargetShipping,
-                    'OriginalShipmentItems' => $OriginalShipmentItems,
+                    'OriginalOrderItems' => $OriginalOrderItems,
                 ),
                 $request
             );
@@ -180,14 +180,14 @@ class EditController
 
             // FIXME 税額計算は CalculateService で処理する. ここはテストを通すための暫定処理
             // see EditControllerTest::testOrderProcessingWithTax
-            $ShipmentItems = $TargetShipping->getShipmentItems();
+            $OrderItems = $TargetShipping->getOrderItems();
             $taxtotal = 0;
-            foreach ($ShipmentItems as $ShipmentItem) {
+            foreach ($OrderItems as $OrderItem) {
                 $tax = $this->taxRuleService
-                    ->calcTax($ShipmentItem->getPrice(), $ShipmentItem->getTaxRate(), $ShipmentItem->getTaxRule());
-                $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice() + $tax);
+                    ->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule());
+                $OrderItem->setPriceIncTax($OrderItem->getPrice() + $tax);
 
-                $taxtotal += $tax * $ShipmentItem->getQuantity();
+                $taxtotal += $tax * $OrderItem->getQuantity();
             }
 
             // 登録ボタン押下
@@ -207,14 +207,14 @@ class EditController
                         // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
 
                         // 画面上で削除された明細をremove
-                        foreach ($OriginalShipmentItems as $ShipmentItem) {
-                            if (false === $TargetShipping->getShipmentItems()->contains($ShipmentItem)) {
-                                $ShipmentItem->setShipping(null);
+                        foreach ($OriginalOrderItems as $OrderItem) {
+                            if (false === $TargetShipping->getOrderItems()->contains($OrderItem)) {
+                                $OrderItem->setShipping(null);
                             }
                         }
 
-                        foreach ($TargetShipping->getShipmentItems() as $ShipmentItem) {
-                            $ShipmentItem->setShipping($TargetShipping);
+                        foreach ($TargetShipping->getOrderItems() as $OrderItem) {
+                            $OrderItem->setShipping($TargetShipping);
                         }
                         $this->entityManager->persist($TargetShipping);
                         $this->entityManager->flush();
@@ -224,7 +224,7 @@ class EditController
                                 'form' => $form,
                                 'OriginShipping' => $OriginShipping,
                                 'TargetShipping' => $TargetShipping,
-                                'OriginalShipmentItems' => $OriginalShipmentItems,
+                                'OriginalOrderItems' => $OriginalOrderItems,
                                 //'Customer' => $Customer,
                             ),
                             $request
@@ -254,7 +254,7 @@ class EditController
                 'builder' => $builder,
                 'OriginShipping' => $OriginShipping,
                 'TargetShipping' => $TargetShipping,
-                'OriginalShipmentItems' => $OriginalShipmentItems,
+                'OriginalOrderItems' => $OriginalOrderItems,
             ),
             $request
         );
@@ -271,7 +271,7 @@ class EditController
                 'builder' => $builder,
                 'OriginShipping' => $OriginShipping,
                 'TargetShipping' => $TargetShipping,
-                'OriginalShipmentItems' => $OriginalShipmentItems,
+                'OriginalOrderItems' => $OriginalOrderItems,
             ),
             $request
         );
@@ -338,8 +338,8 @@ class EditController
                     $session->set('eccube.admin.order.product.search.page_no', $page_no);
                 }
             }
-            // TODO ShipmentItemRepository に移動
-            $qb = $this->shipmentItemRepository->createQueryBuilder('s')
+            // TODO OrderItemRepository に移動
+            $qb = $this->orderItemRepository->createQueryBuilder('s')
                 ->where('s.Shipping is null AND s.Order is not null')
                 ->andWhere('s.OrderItemType in (1, 2)');
 
@@ -360,24 +360,24 @@ class EditController
                 array('wrap-queries' => true)
             );
 
-            $ShipmentItems = $pagination->getItems();
+            $OrderItems = $pagination->getItems();
 
-            if (empty($ShipmentItems)) {
+            if (empty($OrderItems)) {
                 $this->logger->addDebug('search product not found.');
             }
 
             $forms = array();
-            foreach ($ShipmentItems as $ShipmentItem) {
+            foreach ($OrderItems as $OrderItem) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $this->formFactory->createNamedBuilder('', ShipmentItemType::class, $ShipmentItem);
+                $builder = $this->formFactory->createNamedBuilder('', OrderItemType::class, $OrderItem);
                 $addCartForm = $builder->getForm();
-                $forms[$ShipmentItem->getId()] = $addCartForm->createView();
+                $forms[$OrderItem->getId()] = $addCartForm->createView();
             }
 
             $event = new EventArgs(
                 array(
                     'forms' => $forms,
-                    'ShipmentItems' => $ShipmentItems,
+                    'OrderItems' => $OrderItems,
                     'pagination' => $pagination,
                 ),
                 $request
@@ -386,7 +386,7 @@ class EditController
 
             return [
                 'forms' => $forms,
-                'ShipmentItems' => $ShipmentItems,
+                'OrderItems' => $OrderItems,
                 'pagination' => $pagination,
             ];
         }

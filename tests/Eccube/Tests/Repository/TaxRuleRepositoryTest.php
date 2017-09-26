@@ -271,7 +271,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
      *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1029
      */
-    public function testShipmentItem()
+    public function testOrderItem()
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
@@ -289,12 +289,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $Shippings = $Order->getShippings();
 
         foreach ($Shippings as $Shipping) {
-            $ShipmentItems = $Shipping->getShipmentItems();
+            $OrderItems = $Shipping->getOrderItems();
 
-            foreach ($ShipmentItems as $Shipment) {
+            foreach ($OrderItems as $Shipment) {
                 $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
                 $this->actual = $Shipment->getPriceIncTax();
-                $this->verify('ShipmentItem で TaxRuleEventSubscriber が正常にコールされるか');
+                $this->verify('OrderItem で TaxRuleEventSubscriber が正常にコールされるか');
             }
         }
     }

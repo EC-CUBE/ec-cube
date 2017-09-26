@@ -58,10 +58,10 @@ class ShippingType extends AbstractType
     {
         $builder
             ->add(
-                'ShipmentItems',
+                'OrderItems',
                 CollectionType::class,
                 array(
-                    'entry_type' => ShipmentItemType::class,
+                    'entry_type' => OrderItemType::class,
                 )
             );
 
@@ -76,10 +76,10 @@ class ShippingType extends AbstractType
                 }
 
                 // 配送商品に含まれる商品種別を抽出.
-                $ShipmentItems = $Shipping->getProductOrderItems();
+                $OrderItems = $Shipping->getProductOrderItems();
                 $ProductTypes = array();
-                foreach ($ShipmentItems as $ShipmentItem) {
-                    $ProductClass = $ShipmentItem->getProductClass();
+                foreach ($OrderItems as $OrderItem) {
+                    $ProductClass = $OrderItem->getProductClass();
                     $ProductType = $ProductClass->getProductType();
                     $ProductTypes[$ProductType->getId()] = $ProductType;
                 }
@@ -121,7 +121,7 @@ class ShippingType extends AbstractType
                 $deliveryDateFlag = false;
 
                 // 配送時に最大となる商品日数を取得
-                foreach ($Shipping->getShipmentItems() as $detail) {
+                foreach ($Shipping->getOrderItems() as $detail) {
                     $ProductClass = $detail->getProductClass();
                     if (is_null($ProductClass)) {
                         continue;

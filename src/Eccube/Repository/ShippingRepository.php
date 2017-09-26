@@ -46,7 +46,7 @@ class ShippingRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('s');
 
-        $qb->leftJoin('s.ShipmentItems', 'si')
+        $qb->leftJoin('s.OrderItems', 'si')
             ->leftJoin('si.Order', 'o');
         // order_id_start
         if (isset($searchData['shipping_id_start']) && Str::isNotBlank($searchData['shipping_id_start'])) {
@@ -245,7 +245,7 @@ class ShippingRepository extends AbstractRepository
     public function findShippingsProduct($Order, $productClass)
     {
         $shippings = $this->createQueryBuilder('s')
-            ->innerJoin('Eccube\Entity\ShipmentItem', 'si', 'WITH', 'si.Shipping = s.id')
+            ->innerJoin('Eccube\Entity\OrderItem', 'si', 'WITH', 'si.Shipping = s.id')
             ->where('si.Order = (:order)')
             ->andWhere('si.ProductClass = (:productClass)')
             ->setParameter('order', $Order)

@@ -9,7 +9,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * OrderRepository::getQueryBuilderBySearchDataTest test cases.

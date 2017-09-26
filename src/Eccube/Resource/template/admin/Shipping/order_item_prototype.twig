@@ -3,8 +3,10 @@
     {{ form_widget(orderItemForm.Order) }}
     {{ form_widget(orderItemForm.Product) }}
     {{ form_widget(orderItemForm.ProductClass) }}
-    {{ form_widget(orderItemForm.price) }}
+    {{ form_widget(orderItemForm.price, {'type': 'hidden'}) }}
     {{ form_widget(orderItemForm.quantity, {'type': 'hidden'}) }}
-    {{ form_widget(orderItemForm.tax_rate, {'type': 'hidden'}) }}
+    {{ form_widget(orderItemForm.id, {'type': 'hidden'}) }}
     {{ form_widget(orderItemForm.order_item_type, {'type': 'hidden'}) }}
+    {{ form_widget(orderItemForm.tax_type, {'type': 'hidden'}) }}
+    {{ form_widget(orderItemForm.tax_display_type, {'type': 'hidden'}) }}
 </div>
