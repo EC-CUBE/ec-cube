@@ -2,7 +2,7 @@
   'auth_magic' => null,
   'password_hash_algos' => 'sha256',
   'force_ssl' => false,
-  'admin_allow_host' => null,
+  'admin_allow_host' => [],
   'cookie_lifetime' => 0,
   'cookie_name' => 'eccube',
   'locale' => 'ja',
