@@ -82,9 +82,9 @@ class OwnerStoreController extends AbstractController
                     $items = array();
                     // Check plugin installed
                     $arrPluginInstalled = $this->pluginRepository->findAll();
-                    // update_status 1 : not install 、2 : Installed、 3 : Update、4 : paid purchase
+                    // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : paid purchase
                     foreach ($data['item'] as $item) {
-                        // Not install
+                        // Not install/purchased
                         $item['update_status'] = 1;
                         /** @var Plugin $plugin */
                         foreach ($arrPluginInstalled as $plugin) {
