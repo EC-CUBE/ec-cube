@@ -35,7 +35,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @FormType
  */
-class DispType extends AbstractType
+class ProductStatusType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -43,7 +43,7 @@ class DispType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Disp',
+            'class' => 'Eccube\Entity\Master\ProductStatus',
             'expanded' => true,
         ));
     }
@@ -61,6 +61,6 @@ class DispType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'disp';
+        return 'product_status';
     }
 }

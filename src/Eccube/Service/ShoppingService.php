@@ -873,7 +873,7 @@ class ShoppingService
             }
 
             // 商品公開ステータスチェック
-            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
+            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
 
                 // @deprecated 3.1以降ではexceptionをthrowする

@@ -47,9 +47,9 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $this->createFavorites($Customer);
 
         // 3件中, 1件は非表示にしておく
-        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
         $Products = $this->app['eccube.repository.product']->findAll();
-        $Products[0]->setStatus($Disp);
+        $Products[0]->setStatus($ProductStatus);
         $this->app['orm.em']->flush();
 
         $qb = $this->app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);

@@ -23,8 +23,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.master.sex'] = function () use ($app) {
             return $app['Eccube\Repository\Master\SexRepository'];
         };
-        $app['eccube.repository.master.disp'] = function () use ($app) {
-            return $app['Eccube\Repository\Master\DispRepository'];
+        $app['eccube.repository.master.product_status'] = function () use ($app) {
+            return $app['Eccube\Repository\Master\ProductStatusRepository'];
         };
         $app['eccube.repository.master.product_type'] = function () use ($app) {
             return $app['Eccube\Repository\Master\ProductTypeRepository'];

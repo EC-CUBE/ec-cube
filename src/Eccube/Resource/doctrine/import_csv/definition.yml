@@ -4,7 +4,7 @@
 - mtb_customer_order_status.csv
 - mtb_customer_status.csv
 - mtb_device_type.csv
-- mtb_disp.csv
+- mtb_product_status.csv
 - mtb_job.csv
 - mtb_order_item_type.csv
 - mtb_order_status.csv

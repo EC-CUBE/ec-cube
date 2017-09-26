@@ -42,7 +42,7 @@ use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDateRepository;
-use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\ProductTypeRepository;
 use Eccube\Repository\Master\TagRepository;
 use Eccube\Repository\ProductRepository;
@@ -99,10 +99,10 @@ class CsvImportController
     protected $classCategoryRepository;
 
     /**
-     * @Inject(DispRepository::class)
-     * @var DispRepository
+     * @Inject(ProductStatusRepository::class)
+     * @var ProductStatusRepository
      */
-    protected $dispRepository;
+    protected $productStatusRepository;
 
     /**
      * @Inject(ProductRepository::class)
@@ -215,11 +215,11 @@ class CsvImportController
                             $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が設定されていません。');
                         } else {
                             if (preg_match('/^\d+$/', $row['公開ステータス(ID)'])) {
-                                $Disp = $this->dispRepository->find($row['公開ステータス(ID)']);
-                                if (!$Disp) {
+                                $ProductStatus = $this->productStatusRepository->find($row['公開ステータス(ID)']);
+                                if (!$ProductStatus) {
                                     $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
                                 } else {
-                                    $Product->setStatus($Disp);
+                                    $Product->setStatus($ProductStatus);
                                 }
                             } else {
                                 $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');

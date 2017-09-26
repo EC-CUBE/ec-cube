@@ -25,7 +25,7 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
-use Eccube\Entity\Master\Disp;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Symfony\Component\HttpKernel\Client;
@@ -177,7 +177,7 @@ class CartValidationTest extends AbstractWebTestCase
         );
 
         // private
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // submit
         $client->request(
@@ -650,7 +650,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId);
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         $this->scenarioConfirm($client);
 
@@ -940,7 +940,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId, $stockInCart);
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // cart up
         $this->scenarioCartUp($client, $productClassId);
@@ -1286,7 +1286,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId, $stockInCart);
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // cart down
         $this->scenarioCartDown($client, $productClassId);
@@ -1635,7 +1635,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId, $stockInCart);
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // move to cart
         $crawler = $client->request('GET', $this->app->url('cart'));
@@ -1874,7 +1874,7 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // back to cart
         $urlBackToCart = $crawler->filter('#confirm_box__quantity_edit_button')->selectLink('数量を変更または削除する')->link()->getUri();
@@ -2134,7 +2134,7 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // change payment
         $paymentForm = array(
@@ -2454,7 +2454,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertContains($productName, $product);
 
         // change status
-        $this->changeStatus($Product, Disp::DISPLAY_HIDE);
+        $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
@@ -2920,10 +2920,10 @@ class CartValidationTest extends AbstractWebTestCase
      * @param int     $display
      * @return Product
      */
-    protected function changeStatus(Product $Product, $display = Disp::DISPLAY_SHOW)
+    protected function changeStatus(Product $Product, $display = ProductStatus::DISPLAY_SHOW)
     {
-        $Disp = $this->app['eccube.repository.master.disp']->find($display);
-        $Product->setStatus($Disp);
+        $ProductStatus = $this->app['eccube.repository.master.product_status']->find($ProductStatuslay);
+        $Product->setStatus($ProductStatus);
 
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->flush();

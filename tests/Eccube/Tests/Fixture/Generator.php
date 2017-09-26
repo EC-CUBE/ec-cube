@@ -255,7 +255,7 @@ class Generator {
     {
         $faker = $this->getFaker();
         $Member = $this->app['eccube.repository.member']->find(2);
-        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
 
@@ -266,7 +266,7 @@ class Generator {
         $Product
             ->setName($product_name)
             ->setCreator($Member)
-            ->setStatus($Disp)
+            ->setStatus($ProductStatus)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setDescriptionList($faker->paragraph())

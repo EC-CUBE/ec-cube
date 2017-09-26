@@ -567,8 +567,8 @@ class CreateEcCubeData
         $common_val = array();
         $common_val['creator'] = $this->app['eccube.repository.member']->find(2);
         $common_val['del_flg'] = (string) '0';
-        $common_val['status'] = $this->app['eccube.repository.master.disp']
-            ->find(Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        $common_val['status'] = $this->app['eccube.repository.master.product_status']
+            ->find(Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $common_val['note'] = "コメント";
         $common_val['free_area'] = "コメント";
 

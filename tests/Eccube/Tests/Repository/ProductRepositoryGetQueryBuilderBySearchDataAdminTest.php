@@ -96,11 +96,11 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testStatus()
     {
         $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
-        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
-        $Product->setStatus($Disp);
+        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+        $Product->setStatus($ProductStatus);
         $this->app['orm.em']->flush();
 
-        $Status = new ArrayCollection(array($Disp));
+        $Status = new ArrayCollection(array($ProductStatus));
         $this->searchData = array(
             'status' => $Status
         );
@@ -114,12 +114,12 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testLinkStatus()
     {
         $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
-        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
-        $Product->setStatus($Disp);
+        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+        $Product->setStatus($ProductStatus);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'link_status' => \Eccube\Entity\Master\Disp::DISPLAY_HIDE
+            'link_status' => \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE
         );
         $this->scenario();
 

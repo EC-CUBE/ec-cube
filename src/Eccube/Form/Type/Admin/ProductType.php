@@ -28,7 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Form\Type\Master\DispType;
+use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Type\Master\TagType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
@@ -134,7 +134,7 @@ class ProductType extends AbstractType
             ))
 
             // 右ブロック
-            ->add('Status', DispType::class, array(
+            ->add('Status', ProductStatusType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

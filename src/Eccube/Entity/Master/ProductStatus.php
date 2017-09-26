@@ -27,16 +27,16 @@ namespace Eccube\Entity\Master;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Disp
+ * ProductStatus
  *
- * @ORM\Table(name="mtb_disp")
+ * @ORM\Table(name="mtb_product_status")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\DispRepository")
+ * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductStatusRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
-class Disp extends \Eccube\Entity\Master\AbstractMasterEntity
+class ProductStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
 
     /**

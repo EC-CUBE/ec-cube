@@ -39,7 +39,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CategoryRepository;
-use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductImageRepository;
@@ -127,10 +127,10 @@ class ProductController extends AbstractController
     protected $pageMaxRepository;
 
     /**
-     * @Inject(DispRepository::class)
-     * @var DispRepository
+     * @Inject(ProductStatusRepository::class)
+     * @var ProductStatusRepository
      */
-    protected $dispRepository;
+    protected $productStatusRepository;
 
     /**
      * @Inject("eccube.event.dispatcher")
@@ -175,7 +175,7 @@ class ProductController extends AbstractController
 
         $pagination = array();
 
-        $disps = $this->dispRepository->findAll();
+        $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
         $page_count = $this->appConfig['default_page_count'];
         $page_status = null;
@@ -234,7 +234,7 @@ class ProductController extends AbstractController
                         $searchData['link_status'] = null;
                         $searchData['stock_status'] = null;
                     } else {
-                        $searchData['link_status'] = $this->dispRepository->find($status);
+                        $searchData['link_status'] = $this->productStatusRepository->find($status);
                         $searchData['stock_status'] = null;
                         if ($status == $this->appConfig['admin_product_stock_status']) {
                             // 在庫なし
@@ -278,7 +278,7 @@ class ProductController extends AbstractController
                         foreach ($searchData['status'] as $Status) {
                             $status_ids[] = $Status->getId();
                         }
-                        $searchData['status'] = $this->dispRepository->findBy(array('id' => $status_ids));
+                        $searchData['status'] = $this->productStatusRepository->findBy(array('id' => $status_ids));
                     }
                     $searchForm->setData($searchData);
                 }
@@ -288,7 +288,7 @@ class ProductController extends AbstractController
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
-            'disps' => $disps,
+            'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_status' => $page_status,
@@ -351,10 +351,10 @@ class ProductController extends AbstractController
         if (is_null($id)) {
             $Product = new \Eccube\Entity\Product();
             $ProductClass = new \Eccube\Entity\ProductClass();
-            $Disp = $this->dispRepository->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+            $ProductStatus = $this->productStatusRepository->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
             $Product
                 ->addProductClass($ProductClass)
-                ->setStatus($Disp);
+                ->setStatus($ProductStatus);
             $ProductClass
                 ->setVisible(true)
                 ->setStockUnlimited(true)
@@ -707,8 +707,8 @@ class ProductController extends AbstractController
             if ($Product instanceof \Eccube\Entity\Product) {
                 $CopyProduct = clone $Product;
                 $CopyProduct->copy();
-                $Disp = $this->dispRepository->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
-                $CopyProduct->setStatus($Disp);
+                $ProductStatus = $this->productStatusRepository->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+                $CopyProduct->setStatus($ProductStatus);
 
                 $CopyProductCategories = $CopyProduct->getProductCategories();
                 foreach ($CopyProductCategories as $Category) {
