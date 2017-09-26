@@ -70,7 +70,6 @@ class OwnerStoreController extends AbstractController
         $promotionItems = array();
         $message = '';
         // Owner's store communication
-        // TODO: need change real server
         $url = $this->appConfig['owners_store_url'].'?method=list';
         list($json, $info) = $this->getRequestApi($url, $app);
         if ($json === false) {
@@ -144,7 +143,6 @@ class OwnerStoreController extends AbstractController
 
     /**
      * API request processing
-     * TODO: need change when has real server (url)
      *
      * @param string  $url
      * @param Application $app

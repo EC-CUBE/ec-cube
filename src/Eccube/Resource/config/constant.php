@@ -253,7 +253,7 @@
   'csv_import_delimiter' => ',',
   'csv_import_enclosure' => '"',
   'csv_import_escape' => '\\',
-  'owners_store_url' => 'https://www.ec-cube.net/upgrade/api/index.php',
+  'owners_store_url' => 'http://dev-package-repo.ec-cube.net/api/packages.json',
   'name_len' => 16,
   'kana_len' => 25,
   'address1_len' => 32,
