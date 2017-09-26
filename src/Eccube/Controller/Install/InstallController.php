@@ -226,6 +226,9 @@ class InstallController
                 $sessionData['smtp_port'] = $config['mail']['port'];
                 $sessionData['smtp_username'] = $config['mail']['username'];
                 $sessionData['smtp_password'] = $config['mail']['password'];
+            } else {
+                // 初期値にmailを設定.
+                $sessionData['mail_backend'] = 'mail';
             }
         }
 
