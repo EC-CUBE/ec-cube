@@ -338,9 +338,7 @@ class InstallController
                 ]);
             } else {
                 $this->createConfigFile($sessionData);
-                sleep(60);
                 $config = require $this->configDir.'/config.php';
-                error_log(json_encode($config));
                 $this->dropTables($em);
                 $this->createTables($em);
                 $this->importCsv($em);
@@ -518,20 +516,15 @@ class InstallController
     private function insert(Connection $conn, array $data)
     {
         $conn->beginTransaction();
-        error_log(json_encode($data));
         try {
             $config = array(
                 'auth_type' => '',
                 'auth_magic' => $data['auth_magic'],
                 'password_hash_algos' => 'sha256',
             );
-            error_log(json_encode($config));
             $encoder = new PasswordEncoder($config);
             $salt = Str::random(32);
             $password = $encoder->encodePassword($data['login_pass'], $salt);
-
-            error_log(json_encode($salt));
-            error_log(json_encode($password));
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
                 ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
