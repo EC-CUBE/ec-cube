@@ -28,11 +28,8 @@ if (function_exists('apc_clear_cache')) {
 
 require __DIR__ . '/autoload.php';
 
-$app = new Eccube\InstallApplication();
-$app['debug'] = true;
-$app->before(function (\Symfony\Component\HttpFoundation\Request $request, \Silex\Application $app) {
-    if (!$request->getSession()->isStarted()) {
-        $request->getSession()->start();
-    }
-});
+set_time_limit(0);
+ini_set('memory_limit', -1);
+
+$app = new Eccube\InstallApplication(['debug' => true]);
 $app->run();
