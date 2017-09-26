@@ -422,95 +422,62 @@ function createPhp($config, $path)
 {
     $content = var_export($config, true);
     $content = '<?php return '.$content.';'.PHP_EOL;
-    $fs = new \Symfony\Component\Filesystem\Filesystem();
-    $fs->dumpFile($path, $content);
+    file_put_contents($path, $content);
 }
 
 function getConfig()
 {
-    $config = array (
-        'auth_magic' => getenv('AUTH_MAGIC'),
-        'password_hash_algos' => 'sha256',
-        'shop_name' => getenv('SHOP_NAME'),
-        'force_ssl' => NULL,
-        'admin_allow_host' =>
-        array (
-        ),
-        'cookie_lifetime' => 0,
-        'locale' => 'ja',
-        'timezone' => 'Asia/Tokyo',
-        'currency' => 'JPY',
-        'eccube_install' => 1,
-    );
+    $config = require __DIR__.'/src/Eccube/Resource/config/config.php';
+    $config['auth_magic'] = getenv('AUTH_MAGIC');
+    $config['eccube_install'] = 1;
+
     return $config;
 }
 
 function getDatabaseConfig($database_driver)
 {
-    $database = array (
-        'database' =>
-        array (
-            'driver' => $database_driver,
-        )
-    );
+    $config = [];
 
     switch ($database_driver) {
         case 'pdo_sqlite':
-            $database['database']['dbname'] = $database['database']['path'] = __DIR__.'/app/config/eccube/eccube.db';
-
+            $config = require __DIR__.'/src/Eccube/Resource/config/database_sqlite3.php';
+            $config['database']['path'] = __DIR__.'/app/config/eccube/eccube.db';
+            $config['database']['dbname'] = $config['database']['path'];
             break;
         case 'pdo_pgsql':
         case 'pdo_mysql':
-            $database['database']['host'] = getenv('DBSERVER');
-            $database['database']['dbname'] = getenv('DBNAME');
-            $database['database']['user'] = getenv('DBUSER');
-            $database['database']['port'] = getenv('DBPORT');
-            $database['database']['password'] = getenv('DBPASS');
-            $database['database']['port'] = getenv('DBPORT');
+            $config = require __DIR__.'/src/Eccube/Resource/config/database.php';
+            $config['database']['driver'] = $database_driver;
+            $config['database']['host'] = getenv('DBSERVER');
+            $config['database']['dbname'] = getenv('DBNAME');
+            $config['database']['user'] = getenv('DBUSER');
+            $config['database']['port'] = getenv('DBPORT');
+            $config['database']['password'] = getenv('DBPASS');
+            $config['database']['port'] = getenv('DBPORT');
             break;
     }
-    $database['database']['charset'] = 'utf8';
-    $database['database']['defaultTableOptions'] = array('collate' => 'utf8_general_ci');
-    return $database;
+
+    return $config;
 }
 
 function getMailConfig()
 {
-    $mail = array (
-        'mail' =>
-        array (
-            'transport' => getenv('MAIL_BACKEND'),
-            'host' => getenv('MAIL_HOST'),
-            'port' => getenv('MAIL_PORT'),
-            'username' => getenv('MAIL_USER'),
-            'password' => getenv('MAIL_PASS'),
-            'encryption' => NULL,
-            'auth_mode' => NULL,
-            'charset_iso_2022_jp' => false,
-        ),
-    );
-    return $mail;
+    $config = require __DIR__.'/src/Eccube/Resource/config/mail.php';
+    $config['mail']['transport'] = getenv('MAIL_BACKEND');
+    $config['mail']['host'] = getenv('MAIL_HOST');
+    $config['mail']['port'] = getenv('MAIL_PORT');
+    $config['mail']['username'] = getenv('MAIL_USER');
+    $config['mail']['password'] = getenv('MAIL_PASS');
+
+    return $config;
 }
 
-/**
- * @see \Eccube\Controller\Install\InstallController::createPathYamlFile()
- */
 function getPathConfig()
 {
-    $ADMIN_ROUTE = getenv('ADMIN_ROUTE');
-    $TEMPLATE_CODE = 'default';
-    $USER_DATA_ROUTE = 'user_data';
-    $ROOT_DIR = '%ROOT_DIR%';
-    $ROOT_URLPATH = getenv('ROOT_URLPATH');
-    $ROOT_PUBLIC_URLPATH = $ROOT_URLPATH.RELATIVE_PUBLIC_DIR_PATH;
-
-    $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}', '${ROOT_PUBLIC_URLPATH}');
-    $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH, $ROOT_PUBLIC_URLPATH);
-
     $config = require __DIR__.'/src/Eccube/Resource/config/path.php';
-    foreach ($config as &$value) {
-        $value = str_replace($target, $replace, $value);
-    }
+    $config['admin_route'] = getenv('ADMIN_ROUTE');
+    $config['root_urlpath'] = getenv('ROOT_URLPATH');
+
     return $config;
 }
 

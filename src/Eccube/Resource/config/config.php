@@ -1,8 +1,7 @@
 <?php return [
-  'auth_magic' => '${AUTH_MAGIC}',
+  'auth_magic' => null,
   'password_hash_algos' => 'sha256',
-  'shop_name' => '${SHOP_NAME}',
-  'force_ssl' => '${FORCE_SSL}',
+  'force_ssl' => false,
   'admin_allow_host' => null,
   'cookie_lifetime' => 0,
   'cookie_name' => 'eccube',

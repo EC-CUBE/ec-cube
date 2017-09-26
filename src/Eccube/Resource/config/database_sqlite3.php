@@ -1,7 +1,7 @@
 <?php return [
   'database' => 
   [
-    'driver' => '${DBDRIVER}',
-    'path' => '${DBPATH}',
+    'driver' => 'pdo_sqlite',
+    'path' => null,
   ],
 ];

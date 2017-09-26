@@ -1,12 +1,12 @@
 <?php return [
   'database' => 
   [
-    'driver' => '${DBDRIVER}',
-    'host' => '${DBSERVER}',
-    'dbname' => '${DBNAME}',
-    'port' => '${DBPORT}',
-    'user' => '${DBUSER}',
-    'password' => '${DBPASS}',
+    'driver' => null,
+    'host' => null,
+    'dbname' => null,
+    'port' => null,
+    'user' => null,
+    'password' => null,
     'charset' => 'utf8',
     'defaultTableOptions' => 
     [

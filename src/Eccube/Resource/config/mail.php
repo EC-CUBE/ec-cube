@@ -1,11 +1,11 @@
 <?php return [
   'mail' => 
   [
-    'transport' => '${MAIL_BACKEND}',
-    'host' => '${MAIL_HOST}',
-    'port' => '${MAIL_PORT}',
-    'username' => '${MAIL_USER}',
-    'password' => '${MAIL_PASS}',
+    'transport' => 'smtp',
+    'host' => null,
+    'port' => null,
+    'username' => null,
+    'password' => null,
     'encryption' => null,
     'auth_mode' => null,
     'charset_iso_2022_jp' => false,

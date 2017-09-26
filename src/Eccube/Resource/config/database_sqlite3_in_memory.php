@@ -1,7 +1,7 @@
 <?php return [
   'database' => 
   [
-    'driver' => '${DBDRIVER}',
+    'driver' => 'pdo_sqlite',
     'memory' => true,
   ],
 ];
