@@ -582,12 +582,12 @@ class CsvImportController
 
                         $Category->setParent($ParentCategory);
                         if ($ParentCategory) {
-                            $Category->setLevel($ParentCategory->getLevel() + 1);
+                            $Category->setHierarchy($ParentCategory->getHierarchy() + 1);
                         } else {
-                            $Category->setLevel(1);
+                            $Category->setHierarchy(1);
                         }
 
-                        if ($this->appConfig['category_nest_level'] < $Category->getLevel()) {
+                        if ($this->appConfig['category_nest_level'] < $Category->getHierarchy()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($app, $form, $headers);
                         }

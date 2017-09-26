@@ -232,7 +232,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $Category
             ->setName('test')
             ->setRank(1)
-            ->setLevel(1)
+            ->setHierarchy(1)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
         $this->app['orm.em']->persist($Category);

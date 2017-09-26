@@ -171,7 +171,7 @@ class CategoryRepositoryTest extends EccubeTestCase
         $name = $faker->name;
         $Category = new Category();
         $Category->setName($name)
-            ->setLevel(1);
+            ->setHierarchy(1);
         $result = $this->app['eccube.repository.category']->save($Category);
         $this->assertTrue($result);
 
@@ -186,7 +186,7 @@ class CategoryRepositoryTest extends EccubeTestCase
         $name = $faker->name;
         $Category = new Category();
         $Category->setName($name)
-            ->setLevel(null);   // level は not null なので例外になる
+            ->setHierarchy(null);   // level は not null なので例外になる
         $result = $this->app['eccube.repository.category']->save($Category);
         $this->assertFalse($result);
     }

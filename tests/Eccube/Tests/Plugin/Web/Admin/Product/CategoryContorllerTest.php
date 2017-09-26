@@ -233,14 +233,14 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         if ($TestParentCategory == null) {
             $TestCategory->setName('テスト家具')
                 ->setRank(100)
-                ->setLevel(100)
+                ->setHierarchy(100)
                 ->setDelFlg(false)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         } else {
             $TestCategory->setName($TestParentCategory->getName() . '_c')
                 ->setRank($TestParentCategory->getRank() + 1)
-                ->setLevel($TestParentCategory->getLevel() + 1)
+                ->setHierarchy($TestParentCategory->getHierarchy() + 1)
                 ->setDelFlg(false)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);

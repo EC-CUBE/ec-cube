@@ -113,9 +113,9 @@ class CategoryController extends AbstractController
             $TargetCategory = new \Eccube\Entity\Category();
             $TargetCategory->setParent($Parent);
             if ($Parent) {
-                $TargetCategory->setLevel($Parent->getLevel() + 1);
+                $TargetCategory->setHierarchy($Parent->getHierarchy() + 1);
             } else {
-                $TargetCategory->setLevel(1);
+                $TargetCategory->setHierarchy(1);
             }
         }
 
@@ -139,7 +139,7 @@ class CategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->appConfig['category_nest_level'] < $TargetCategory->getLevel()) {
+                if ($this->appConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));

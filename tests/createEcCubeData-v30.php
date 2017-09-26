@@ -444,7 +444,7 @@ class CreateEcCubeData
             $Category->setCreator($common_val['creator'])
                 ->setDelFlg($common_val['del_flg'])
                 ->setName(sprintf("Category%d00", $i))
-                ->setLevel(1)
+                ->setHierarchy(1)
                 ->setRank($this->lfGetTotalCategoryrank($existingMaxRank) - $count);
             $this->saveEntity($Category);
             $this->arrCategory1[] = $Category;
@@ -460,7 +460,7 @@ class CreateEcCubeData
                     ->setName(sprintf("Category%d%d0", $i,
                         $j + MIDDLE_CATEGORIES_VOLUME))
                     ->setParent($top_category)
-                    ->setLevel(2)
+                    ->setHierarchy(2)
                     ->setRank($this->lfGetTotalCategoryrank($existingMaxRank) - $count);
                 $this->saveEntity($Category);
                 $this->arrCategory2[] = $Category;
@@ -477,7 +477,7 @@ class CreateEcCubeData
                             $i, $j,
                             $k + SMALL_CATEGORIES_VOLUME))
                         ->setParent($middle_category)
-                        ->setLevel(3)
+                        ->setHierarchy(3)
                         ->setRank($this->lfGetTotalCategoryrank($existingMaxRank) - $count);
                     $this->saveEntity($Category);
                     $this->arrCategory3[] = $Category;
