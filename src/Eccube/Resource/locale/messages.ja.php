@@ -69,6 +69,7 @@ return [
     'admin.register.failed' => '登録できませんでした。',
     'admin.delete.complete' => '削除が完了しました。',
     'admin.delete.failed' => '削除できませんでした。',
+    'admin.delete.failed.foreign_key' => '関連するデータがあるため, %name%を削除できませんでした。',
     'admin.delete.warning' => '既に削除されています。',
     'admin.rank.move.complete' => 'ランクの移動が完了しました。',
     'admin.order.save.complete' => '受注情報を保存しました。',

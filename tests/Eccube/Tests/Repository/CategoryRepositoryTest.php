@@ -3,10 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Category;
-
 
 /**
  * CategoryRepository test cases.
@@ -172,23 +169,11 @@ class CategoryRepositoryTest extends EccubeTestCase
         $Category = new Category();
         $Category->setName($name)
             ->setHierarchy(1);
-        $result = $this->app['eccube.repository.category']->save($Category);
-        $this->assertTrue($result);
+        $this->app['eccube.repository.category']->save($Category);
 
         $this->expected = 12;
         $this->actual = $Category->getRank();
         $this->verify('カテゴリの rank は'.$this->expected.'ではありません');
-    }
-
-    public function testSaveWithException()
-    {
-        $faker = $this->getFaker();
-        $name = $faker->name;
-        $Category = new Category();
-        $Category->setName($name)
-            ->setHierarchy(null);   // hierarchy は not null なので例外になる
-        $result = $this->app['eccube.repository.category']->save($Category);
-        $this->assertFalse($result);
     }
 
     public function testSaveWithParent()
@@ -199,8 +184,7 @@ class CategoryRepositoryTest extends EccubeTestCase
         $Category->setName($name);
         $updateDate = $Category->getUpdateDate();
         sleep(1);
-        $result = $this->app['eccube.repository.category']->save($Category);
-        $this->assertTrue($result);
+        $this->app['eccube.repository.category']->save($Category);
 
         $this->expected = $updateDate;
         $this->actual = $Category->getUpdateDate();
@@ -216,8 +200,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     {
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
 
-        $result = $this->app['eccube.repository.category']->delete($Category);
-        $this->assertTrue($result);
+        $this->app['eccube.repository.category']->delete($Category);
 
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
         $this->assertNull($Category);
@@ -229,8 +212,12 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->createProduct();
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
 
-        // 紐付いた商品が存在している場合は削除できない.
-        $result = $this->app['eccube.repository.category']->delete($Category);
-        $this->assertFalse($result);
+        try {
+            // 紐付いた商品が存在している場合は削除できない.
+            $this->app['eccube.repository.category']->delete($Category);
+            $this->fail();
+        } catch (\Exception $e) {
+
+        }
     }
 }

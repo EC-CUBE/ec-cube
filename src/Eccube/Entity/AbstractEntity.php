@@ -24,12 +24,21 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\Inflector;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Proxy\Proxy;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 /** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
 {
+    private $AnnotationReader;
 
     public function offsetExists($offset)
     {
@@ -62,7 +71,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * DBから取り出した連想配列を, プロパティへ設定する際に使用します.
      *
      * @param array $arrProps プロパティの情報を格納した連想配列
-     * @param ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
+     * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
      * @param array $excludeAttribute 除外したいフィールド名の配列
      */
     public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = array(), \ReflectionClass $parentClass = null)
@@ -91,14 +100,16 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     /**
-     * プロパティの値を連想配列で返します.
-     * DBを更新する場合などで, 連想配列の値を取得したい場合に使用します.
+     * Convert to associative array.
      *
-     * @param ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
-     * @param array $excludeAttribute 除外したいフィールド名の配列
-     * @return array 連想配列のプロパティの値
+     * Symfony Serializer Component is expensive, and hard to implementation.
+     * Use for encoder only.
+     *
+     * @param \ReflectionClass $parentClass parent class. Use internally of this method..
+     * @param array $excludeAttribute Array of field names to exclusion.
+     * @return array
      */
-    public function toArray(array $excludeAttribute = array(), \ReflectionClass $parentClass = null)
+    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'], \ReflectionClass $parentClass = null)
     {
         $objReflect = null;
         if (is_object($parentClass)) {
@@ -132,6 +143,64 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     /**
+     * Convert to associative array, and normalize to association properties.
+     *
+     * The type conversion such as:
+     * - Datetime ::  W3C datetime format string
+     * - AbstractEntity :: associative array such as [id => value]
+     * - PersistentCollection :: associative array of [[id => value], [id => value], ...]
+     *
+     * @param array $excludeAttribute Array of field names to exclusion.
+     * @return array
+     */
+    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
+    {
+        $arrResult = $this->toArray($excludeAttribute);
+        foreach ($arrResult as &$value) {
+            if ($value instanceof \DateTime) {
+                // see also https://stackoverflow.com/a/17390817/4956633
+                $value->setTimezone(new \DateTimeZone('UTC'));
+                $value = $value->format('Y-m-d\TH:i:s\Z');
+            } elseif ($value instanceof AbstractEntity) {
+                // Entity の場合は [id => value] の配列を返す
+                $value = $this->getEntityIdentifierAsArray($value);
+            } elseif ($value instanceof Collection) {
+                // Collection の場合は ID を持つオブジェクトの配列を返す
+                $Collections = $value;
+                $value = [];
+                foreach ($Collections as $Child) {
+                    $value[] = $this->getEntityIdentifierAsArray($Child);
+                }
+            }
+        }
+        return $arrResult;
+    }
+
+    /**
+     * Convert to JSON.
+     *
+     * @param array $excludeAttribute Array of field names to exclusion.
+     * @return string
+     */
+    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
+    {
+        return json_encode($this->toNormalizedArray($excludeAttribute));
+    }
+
+    /**
+     * Convert to XML.
+     *
+     * @param array $excludeAttribute Array of field names to exclusion.
+     * @return string
+     */
+    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__', 'AnnotationReader'])
+    {
+        $ReflectionClass = new \ReflectionClass($this);
+        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
+        return $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
+    }
+
+    /**
      * コピー元のオブジェクトのフィールド名を指定して、同名のフィールドに値をコピー
      *
      * @param object $srcObject コピー元のオブジェクト
@@ -142,5 +211,58 @@ abstract class AbstractEntity implements \ArrayAccess
     {
         $this->setPropertiesFromArray($srcObject->toArray($excludeAttribute), $excludeAttribute);
         return $this;
+    }
+
+    /**
+     * Set AnnotationReader.
+     *
+     * @param Reader $Reader
+     * @return object
+     */
+    public function setAnnotationReader(Reader $Reader)
+    {
+        $this->AnnotationReader = $Reader;
+
+        return $this;
+    }
+
+    /**
+     * Get AnnotationReader.
+     *
+     * @return Reader
+     */
+    public function getAnnotationReader()
+    {
+        if ($this->AnnotationReader) {
+            return $this->AnnotationReader;
+        }
+        return new \Doctrine\Common\Annotations\AnnotationReader();
+    }
+
+    /**
+     * Convert to Entity of Identity value to associative array.
+     *
+     * @param AbstractEntity $Entity
+     * @return array associative array of [[id => value], [id => value], ...]
+     */
+    public function getEntityIdentifierAsArray(AbstractEntity $Entity)
+    {
+        $Result = [];
+        $PropReflect = new \ReflectionClass($Entity);
+        if ($Entity instanceof Proxy) {
+            // Doctrine Proxy の場合は親クラスを取得
+            $PropReflect = $PropReflect->getParentClass();
+        }
+        $Properties = $PropReflect->getProperties();
+
+        foreach ($Properties as $Property) {
+            $anno = $this->getAnnotationReader()->getPropertyAnnotation($Property, Id::class);
+            if ($anno) {
+                $Property->setAccessible(true);
+                $Result[$Property->getName()] = $Property->getValue($Entity);
+            }
+        }
+
+        return $Result;
     }
 }

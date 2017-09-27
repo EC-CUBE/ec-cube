@@ -30,15 +30,18 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\CustomerAddressRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -184,36 +187,34 @@ class DeliveryController extends AbstractController
     /**
      * お届け先を削除する.
      *
+     * @Method("DELETE")
      * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Application $app, Request $request, CustomerAddress $CustomerAddress)
     {
         $this->isTokenValid($app);
 
-        log_info('お届け先削除開始', array($id));
+        log_info('お届け先削除開始', array($CustomerAddress->getId()));
 
         $Customer = $app['user'];
 
-        $status = $this->customerAddressRepository->deleteByCustomerAndId($Customer, $id);
-
-        if ($status) {
-            $event = new EventArgs(
-                array(
-                    'id' => $id,
-                    'Customer' => $Customer,
-                ), $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
-
-            $app->addSuccess('mypage.address.delete.complete');
-
-            log_info('お届け先削除完了', array($id));
-
-        } else {
-            $app->addError('mypage.address.delete.failed');
-
-            log_info('お届け先削除失敗', array($id));
+        if ($Customer->getId() != $CustomerAddress->getCustomer()->getId()) {
+            throw new BadRequestHttpException();
         }
+
+        $this->customerAddressRepository->delete($CustomerAddress);
+
+        $event = new EventArgs(
+            array(
+                'Customer' => $Customer,
+                'CustomerAddress' => $CustomerAddress
+            ), $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+
+        $app->addSuccess('mypage.address.delete.complete');
+
+        log_info('お届け先削除完了', array($CustomerAddress->getId()));
 
         return $app->redirect($app->url('mypage_delivery'));
     }

@@ -592,11 +592,7 @@ class CsvImportController
                             return $this->render($app, $form, $headers);
                         }
 
-                        $status = $this->categoryRepository->save($Category);
-
-                        if (!$status) {
-                            $this->addErrors(($data->key() + 1) . '行目のカテゴリが設定できません。');
-                        }
+                        $this->categoryRepository->save($Category);
 
                         if ($this->hasErrors()) {
                             return $this->render($app, $form, $headers);

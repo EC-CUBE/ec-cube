@@ -127,29 +127,24 @@ class ClassCategoryController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 log_info('規格分類登録開始', array($id));
-                $status = $this->classCategoryRepository->save($TargetClassCategory);
 
-                if ($status) {
+                $this->classCategoryRepository->save($TargetClassCategory);
 
-                    log_info('規格分類登録完了', array($id));
+                log_info('規格分類登録完了', array($id));
 
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'ClassName' => $ClassName,
-                            'TargetClassCategory' => $TargetClassCategory,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'ClassName' => $ClassName,
+                        'TargetClassCategory' => $TargetClassCategory,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
 
-                    $app->addSuccess('admin.class_category.save.complete', 'admin');
+                $app->addSuccess('admin.class_category.save.complete', 'admin');
 
-                    return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
-                } else {
-                    log_info('規格分類登録エラー', array($id));
-                    $app->addError('admin.class_category.save.error', 'admin');
-                }
+                return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
             }
         }
 
@@ -193,11 +188,8 @@ class ClassCategoryController extends AbstractController
         if ($num > 0) {
             $app->addError('admin.class_category.delete.hasproduct', 'admin');
         } else {
-            $status = $this->classCategoryRepository->delete($TargetClassCategory);
-
-            if ($status === true) {
-
-                log_info('規格分類削除完了', array($id));
+            try {
+                $this->classCategoryRepository->delete($TargetClassCategory);
 
                 $event = new EventArgs(
                     array(
@@ -209,11 +201,14 @@ class ClassCategoryController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
                 $app->addSuccess('admin.class_category.delete.complete', 'admin');
-            } else {
-                log_info('規格分類削除エラー', array($id));
 
-                $app->addError('admin.class_category.delete.error', 'admin');
-            }
+                log_info('規格分類削除完了', array($id));
+
+            } catch (\Exception $e) {
+                log_error('規格分類削除エラー', array($id, $e));
+
+                $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
+                $app->addError($message, 'admin');            }
         }
 
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
@@ -240,27 +235,20 @@ class ClassCategoryController extends AbstractController
             return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
         }
 
-        $status = $this->classCategoryRepository->toggleVisibility($TargetClassCategory);
+        $this->classCategoryRepository->toggleVisibility($TargetClassCategory);
 
-        if ($status === true) {
+        log_info('規格分類表示変更完了', array($id));
 
-            log_info('規格分類表示変更完了', array($id));
+        $event = new EventArgs(
+            array(
+                'ClassName' => $ClassName,
+                'TargetClassCategory' => $TargetClassCategory,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
-            $event = new EventArgs(
-                array(
-                    'ClassName' => $ClassName,
-                    'TargetClassCategory' => $TargetClassCategory,
-                ),
-                $request
-            );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
-
-            $app->addSuccess('admin.class_category.delete.complete', 'admin');
-        } else {
-            log_info('規格分類表示変更エラー', array($id));
-
-            $app->addError('admin.class_category.delete.error', 'admin');
-        }
+        $app->addSuccess('admin.class_category.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }

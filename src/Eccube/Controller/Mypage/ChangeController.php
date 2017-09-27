@@ -39,6 +39,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @Component
@@ -83,6 +84,12 @@ class ChangeController extends AbstractController
     protected $entityManager;
 
     /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
+
+    /**
      * 会員情報編集画面.
      *
      * @Route("/mypage/change", name="mypage_change")
@@ -120,11 +127,12 @@ class ChangeController extends AbstractController
             if ($Customer->getPassword() === $this->appConfig['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
+                $encoder = $this->encoderFactory->getEncoder($Customer);
                 if ($Customer->getSalt() === null) {
-                    $Customer->setSalt($this->customerRepository->createSalt(5));
+                    $Customer->setSalt($encoder->createSalt());
                 }
                 $Customer->setPassword(
-                    $this->customerRepository->encryptPassword($app, $Customer)
+                    $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt())
                 );
             }
             $this->entityManager->flush();

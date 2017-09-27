@@ -59,18 +59,20 @@ class Generator {
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')->find(1);
         $Authority = $this->app['eccube.repository.master.authority']->find(0);
         $Creator = $this->app['eccube.repository.member']->find(2);
-        $salt = $this->app['eccube.repository.member']->createSalt(5);
+
+        $salt = bin2hex(openssl_random_pseudo_bytes(5));
+        $password = 'password';
+        $encoder = $this->app['security.encoder_factory']->getEncoder($Member);
+        $password = $encoder->encodePassword($password, $salt);
 
         $Member
-            ->setPassword('password')
             ->setLoginId($username)
             ->setName($username)
             ->setSalt($salt)
+            ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
             ->setCreator($Creator);
-        $password = $this->app['eccube.repository.member']->encryptPassword($Member);
-        $Member->setPassword($password);
         $this->app['eccube.repository.member']->save($Member);
         return $Member;
     }
@@ -94,6 +96,10 @@ class Generator {
         $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
         $Sex = $this->app['eccube.repository.master.sex']->find($faker->numberBetween(1, 2));
         $Job = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->find($faker->numberBetween(1, 18));
+
+        $encoder = $this->app['security.encoder_factory']->getEncoder($Customer);
+        $salt = $encoder->createSalt();
+        $password = $encoder->encodePassword('password', $salt);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -115,13 +121,12 @@ class Generator {
             ->setBirth($faker->dateTimeThisDecade())
             ->setSex($Sex)
             ->setJob($Job)
-            ->setPassword('password')
-            ->setSalt($this->app['eccube.repository.customer']->createSalt(5))
-            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
+            ->setPassword($password)
+            ->setSalt($salt)
+            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime());
-        $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush($Customer);
 

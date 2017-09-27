@@ -44,6 +44,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
@@ -101,6 +102,11 @@ class EntryController extends AbstractController
      */
     protected $customerRepository;
 
+    /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
 
     /**
      * 会員登録画面.
@@ -151,16 +157,16 @@ class EntryController extends AbstractController
 
                 case 'complete':
                     log_info('会員登録開始');
+
+                    $encoder = $this->encoderFactory->getEncoder($Customer);
+                    $salt = $encoder->createSalt();
+                    $password = $encoder->encodePassword($Customer->getPassword(), $salt);
+                    $secretKey = $this->customerRepository->getUniqueSecretKey();
+
                     $Customer
-                        ->setSalt(
-                            $this->customerRepository->createSalt(5)
-                        )
-                        ->setPassword(
-                            $this->customerRepository->encryptPassword($app, $Customer)
-                        )
-                        ->setSecretKey(
-                            $this->customerRepository->getUniqueSecretKey($app)
-                        );
+                        ->setSalt($salt)
+                        ->setPassword($password)
+                        ->setSecretKey($secretKey);
 
                     $CustomerAddress = new CustomerAddress();
                     $CustomerAddress
@@ -245,10 +251,8 @@ class EntryController extends AbstractController
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
             log_info('本会員登録開始');
-            try {
-                $Customer = $this->customerRepository
-                    ->getProvisionalCustomerBySecretKey($secret_key);
-            } catch (\Exception $e) {
+            $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
+            if (is_null($Customer)) {
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
 

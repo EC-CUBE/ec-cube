@@ -23,18 +23,19 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\News;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Repository\NewsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,7 +80,7 @@ class NewsController extends AbstractController
     {
         $NewsList = $this->newsRepository->findBy(array(), array('rank' => 'DESC'));
 
-        $builder = $app->form();
+        $builder = $this->formFactory->createBuilder();
 
         $event = new EventArgs(
             array(
@@ -107,9 +108,8 @@ class NewsController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
-     * @param integer $id
-     * @throws NotFoundHttpException
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param null $id
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function edit(Application $app, Request $request, $id = null)
     {
@@ -122,7 +122,7 @@ class NewsController extends AbstractController
             $News = new \Eccube\Entity\News();
         }
 
-        $News->setLinkMethod((bool) $News->getLinkMethod());
+        $News->setLinkMethod((bool)$News->getLinkMethod());
 
         $builder = $this->formFactory
             ->createBuilder(NewsType::class, $News);
@@ -137,40 +137,32 @@ class NewsController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                if (empty($data['url'])) {
-                    $News->setLinkMethod(Constant::DISABLED);
-                }
-
-                $status = $this->newsRepository->save($News);
-
-                if ($status) {
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'News' => $News,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
-
-                    $app->addSuccess('admin.news.save.complete', 'admin');
-
-                    return $app->redirect($app->url('admin_content_news'));
-                }
-                $app->addError('admin.news.save.error', 'admin');
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$News->getUrl()) {
+                $News->setLinkMethod(Constant::DISABLED);
             }
+            $this->newsRepository->save($News);
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'News' => $News,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
+
+            $app->addSuccess('admin.news.save.complete', 'admin');
+
+            return $app->redirect($app->url('admin_content_news'));
         }
 
-        return $app->render('Content/news_edit.twig', array(
+        return [
             'form' => $form->createView(),
             'News' => $News,
-        ));
+        ];
     }
 
     /**
@@ -181,24 +173,21 @@ class NewsController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
-     * @param integer $id
-     * @throws NotFoundHttpException
+     * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function up(Application $app, Request $request, $id)
+    public function up(Application $app, Request $request, News $News)
     {
         $this->isTokenValid($app);
 
-        $TargetNews = $this->newsRepository->find($id);
-        if (!$TargetNews) {
-            throw new NotFoundHttpException();
-        }
+        try {
+            $this->newsRepository->up($News);
 
-        $status = $this->newsRepository->up($TargetNews);
-
-        if ($status) {
             $app->addSuccess('admin.news.up.complete', 'admin');
-        } else {
+        } catch (\Exception $e) {
+
+            log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
+
             $app->addError('admin.news.up.error', 'admin');
         }
 
@@ -213,24 +202,21 @@ class NewsController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
-     * @param integer $id
-     * @throws NotFoundHttpException
+     * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function down(Application $app, Request $request, $id)
+    public function down(Application $app, Request $request, News $News)
     {
         $this->isTokenValid($app);
 
-        $TargetNews = $this->newsRepository->find($id);
-        if (!$TargetNews) {
-            throw new NotFoundHttpException();
-        }
+        try {
+            $this->newsRepository->down($News);
 
-        $status = $this->newsRepository->down($TargetNews);
-
-        if ($status) {
             $app->addSuccess('admin.news.down.complete', 'admin');
-        } else {
+        } catch (\Exception $e) {
+
+            log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
+
             $app->addError('admin.news.down.error', 'admin');
         }
 
@@ -245,35 +231,31 @@ class NewsController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
-     * @param integer $id
-     * @throws NotFoundHttpException
+     * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Application $app, Request $request, News $News)
     {
         $this->isTokenValid($app);
 
-        $TargetNews = $this->newsRepository->find($id);
-        if (!$TargetNews) {
-            throw new NotFoundHttpException();
-        }
+        log_info('新着情報削除開始', [$News->getId()]);
 
-        $status = $this->newsRepository->delete($TargetNews);
+        try {
+            $this->newsRepository->delete($News);
 
-        $event = new EventArgs(
-            array(
-                'TargetNews' => $TargetNews,
-                'status' => $status,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
-        $status = $event->getArgument('status');
+            $event = new EventArgs(['News' => $News], $request);
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
 
-        if ($status) {
             $app->addSuccess('admin.news.delete.complete', 'admin');
-        } else {
-            $app->addSuccess('admin.news.delete.error', 'admin');
+
+            log_info('新着情報削除完了', [$News->getId()]);
+
+        } catch (\Exception $e) {
+
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '新着情報']);
+            $app->addError($message, 'admin');
+
+            log_error('新着情報削除エラー', [$News->getId(), $e]);
         }
 
         return $app->redirect($app->url('admin_content_news'));

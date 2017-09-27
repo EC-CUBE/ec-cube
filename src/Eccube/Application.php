@@ -246,6 +246,9 @@ class Application extends \Silex\Application
                 ]),
                 new \Eccube\Di\Scanner\RepositoryScanner([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
+                ]),
+                new \Eccube\Di\Scanner\QueryExtensionScanner([
+                    $this['config']['root_dir'].'/src/Eccube/Repository'
                 ])
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
@@ -717,6 +720,10 @@ class Application extends \Silex\Application
             // save
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+
+            // load
+            $loadEventSubscriber = new \Eccube\Doctrine\EventSubscriber\LoadEventSubscriber($app);
+            $em->getEventManager()->addEventSubscriber($loadEventSubscriber);
 
             // clear cache
             $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
