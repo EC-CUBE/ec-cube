@@ -721,6 +721,10 @@ class Application extends \Silex\Application
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
+            // load
+            $loadEventSubscriber = new \Eccube\Doctrine\EventSubscriber\LoadEventSubscriber($app);
+            $em->getEventManager()->addEventSubscriber($loadEventSubscriber);
+
             // clear cache
             $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
