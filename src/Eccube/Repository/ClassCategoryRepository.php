@@ -24,7 +24,10 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
+use Eccube\Entity\ClassCategory;
 
 /**
  * ClasscategoryRepository
@@ -56,184 +59,69 @@ class ClassCategoryRepository extends AbstractRepository
     }
 
     /**
-     * 規格カテゴリの順位を1上げる.
+     * 規格カテゴリを登録します.
      *
-     * @param \Eccube\Entity\ClassCategory $ClassCategory
-     * @return boolean 成功した場合 true
-     */
-    public function up(\Eccube\Entity\ClassCategory $ClassCategory)
-    {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $ClassCategory->getRank();
-            $ClassName = $ClassCategory->getClassName();
-
-            $ClassCategory2 = $this->findOneBy(array('rank' => $rank + 1, 'ClassName' => $ClassName));
-            if (!$ClassCategory2) {
-                throw new \Exception();
-            }
-            $ClassCategory2->setRank($rank);
-            $em->persist($ClassCategory);
-
-            // ClassCategory更新
-            $ClassCategory->setRank($rank + 1);
-
-            $em->persist($ClassCategory);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 規格カテゴリの順位を1下げる.
-     *
-     * @param  \Eccube\Entity\ClassCategory $ClassCategory
-     * @return boolean 成功した場合 true
-     */
-    public function down(\Eccube\Entity\ClassCategory $ClassCategory)
-    {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $ClassCategory->getRank();
-            $ClassName = $ClassCategory->getClassName();
-
-            //
-            $ClassCategory2 = $this->findOneBy(array('rank' => $rank - 1, 'ClassName' => $ClassName));
-            if (!$ClassCategory2) {
-                throw new \Exception();
-            }
-            $ClassCategory2->setRank($rank);
-            $em->persist($ClassCategory);
-
-            // ClassCategory更新
-            $ClassCategory->setRank($rank - 1);
-
-            $em->persist($ClassCategory);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 規格カテゴリを保存する.
-     *
-     * @param  \Eccube\Entity\ClassCategory $ClassCategory
-     * @return boolean 成功した場合 true
+     * @param $ClassCategory
      */
     public function save($ClassCategory)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            if (!$ClassCategory->getId()) {
-                $ClassName = $ClassCategory->getClassName();
-                $rank = $this->createQueryBuilder('cc')
-                    ->select('MAX(cc.rank)')
-                    ->where('cc.ClassName = :ClassName')->setParameter('ClassName', $ClassName)
-                    ->getQuery()
-                    ->getSingleScalarResult();
-                if (!$rank) {
-                    $rank = 0;
-                }
-                $ClassCategory->setRank($rank + 1);
-                $ClassCategory->setVisible(true);
-            }
+        if (!$ClassCategory->getId()) {
+            $ClassName = $ClassCategory->getClassName();
+            $rank = $this->createQueryBuilder('cc')
+                ->select('COALESCE(MAX(cc.rank), 0)')
+                ->where('cc.ClassName = :ClassName')
+                ->setParameter('ClassName', $ClassName)
+                ->getQuery()
+                ->getSingleScalarResult();
 
-            $em->persist($ClassCategory);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
+            $ClassCategory->setRank($rank + 1);
+            $ClassCategory->setVisible(true);
         }
 
-        return true;
+        $em = $this->getEntityManager();
+        $em->persist($ClassCategory);
+        $em->flush($ClassCategory);
     }
 
     /**
      * 規格カテゴリを削除する.
      *
-     * @param \Eccube\Entity\ClassCategory $ClassCategory
-     * @return boolean 成功した場合 true
+     * @param ClassCategory $ClassCategory
+     *
+     * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
+     * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     public function delete($ClassCategory)
     {
-        if (is_null($ClassCategory->getId())) {
-            // 存在しない場合は何もしない
-            return false;
-        }
+        $this->createQueryBuilder('cc')
+            ->update()
+            ->set('cc.rank', 'cc.rank - 1')
+            ->where('cc.rank > :rank AND cc.ClassName = :ClassName')
+            ->setParameter('rank', $ClassCategory->getRank())
+            ->setParameter('ClassName', $ClassCategory->getClassName())
+            ->getQuery()
+            ->execute();
+
         $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
-        try {
-            $rank = $ClassCategory->getRank();
-            $ClassName = $ClassCategory->getClassName();
-
-            $em->createQueryBuilder()
-                ->update('Eccube\Entity\ClassCategory', 'cc')
-                ->set('cc.rank', 'cc.rank - 1')
-                ->where('cc.rank > :rank AND cc.ClassName = :ClassName')
-                ->setParameter('rank', $rank)
-                ->setParameter('ClassName', $ClassName)
-                ->getQuery()
-                ->execute();
-
-            $em->remove($ClassCategory);
-            $em->flush();
-
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
+        $em->remove($ClassCategory);
+        $em->flush($ClassCategory);
     }
 
     /**
      * 規格カテゴリの表示/非表示を切り替える.
      *
-     * @param \Eccube\Entity\ClassCategory $ClassCategory
-     * @return boolean 成功した場合 true
+     * @param $ClassCategory
      */
     public function toggleVisibility($ClassCategory)
     {
-        $em = $this->getEntityManager();
-        $em->getConnection()->beginTransaction();
         if ($ClassCategory->isVisible()) {
             $ClassCategory->setVisible(false);
         } else {
             $ClassCategory->setVisible(true);
         }
-        try {
-            $em->persist($ClassCategory);
-            $em->flush($ClassCategory);
 
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-
-            return false;
-        }
-
-        return true;
+        $em = $this->getEntityManager();
+        $em->persist($ClassCategory);
+        $em->flush($ClassCategory);
     }
 }

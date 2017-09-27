@@ -60,36 +60,7 @@ class ProductRepository extends AbstractRepository
      */
     protected $appConfig;
 
-    /**
-     * get Product.
-     *
-     * @deprecated Use ProductRepository::find()
-     * @param  integer $productId
-     * @return \Eccube\Entity\Product
-     *
-     * @throws NotFoundHttpException
-     */
-    public function get($productId)
-    {
-        // Product
-        try {
-            $qb = $this->createQueryBuilder('p')
-                ->andWhere('p.id = :id');
-
-            $product = $qb
-                ->getQuery()
-                ->setParameters(array(
-                    'id' => $productId,
-                ))
-                ->getSingleResult();
-        } catch (NoResultException $e) {
-            throw new NotFoundHttpException();
-        }
-
-        return $product;
-    }
-
-    /**
+   /**
      * get query builder.
      *
      * @param  array $searchData

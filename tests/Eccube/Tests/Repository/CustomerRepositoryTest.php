@@ -105,25 +105,6 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->assertTrue($this->app['eccube.repository.customer']->supportsClass(get_class($this->Customer)));
     }
 
-    public function testCreateSalt()
-    {
-        $result = $this->app['eccube.repository.customer']->createSalt(5);
-
-        $this->expected = 5;
-        $this->actual = strlen(pack('H*', ($result))); // PHP5.4以降なら hex2bin が使える
-        $this->verify();
-    }
-
-    public function testEncryptPassword()
-    {
-        $Customer = $this->app['eccube.repository.customer']->loadUserByUsername($this->email);
-        $this->expected = $Customer->getPassword();
-
-        $Customer->setPassword('password');
-        $this->actual = $this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer);
-        $this->verify();
-    }
-
     public function testGetProvisionalCustomerBySecretKey()
     {
         $this->expected = $this->Customer->getSecretKey();
@@ -140,15 +121,9 @@ class CustomerRepositoryTest extends EccubeTestCase
     {
         $secret = $this->Customer->getSecretKey();
 
-        try {
-            // CustomerStatus::REGULARなので取得できないはず
-            $Customer = $this->app['eccube.repository.customer']->getProvisionalCustomerBySecretKey($secret);
-            $this->fail();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            $this->expected = 'No result was found for query although at least one row was expected.';
-            $this->actual = $e->getMessage();
-        }
-        $this->verify();
+        // CustomerStatus::REGULARなので取得できないはず
+        $Customer = $this->app['eccube.repository.customer']->getProvisionalCustomerBySecretKey($secret);
+        $this->assertNull($Customer);
     }
 
     public function testGetRegularCustomerByEmail()
@@ -182,14 +157,8 @@ class CustomerRepositoryTest extends EccubeTestCase
             ->setResetExpire(new \DateTime($expire));
         $this->app['orm.em']->flush();
 
-        try {
-            $Customer = $this->app['eccube.repository.customer']->getRegularCustomerByResetKey($reset_key);
-            $this->fail();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            $this->expected = 'No result was found for query although at least one row was expected.';
-            $this->actual = $e->getMessage();
-        }
-        $this->verify();
+        $Customer = $this->app['eccube.repository.customer']->getRegularCustomerByResetKey($reset_key);
+        $this->assertNull($Customer);
     }
 
     public function testUpdateBuyData()

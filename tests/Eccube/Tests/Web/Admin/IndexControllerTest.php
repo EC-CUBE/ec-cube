@@ -168,9 +168,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_change_password')));
 
         $Member = clone $this->Member;
-        $Member->setPassword($form['change_password']['first']);
-
-        $this->expected = $this->app['eccube.repository.member']->encryptPassword($Member);
+        $encoder = $this->app['security.encoder_factory']->getEncoder($this->Member);
+        $this->expected = $encoder->encodePassword($form['change_password']['first'], $this->Member->getSalt());
         $this->actual = $this->Member->getPassword();
 
         // XXX 実行タイミングにより、稀にパスワード変更前のハッシュ値を参照する場合があるため、変更に成功した場合のみ assertion を実行する

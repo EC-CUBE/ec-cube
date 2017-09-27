@@ -94,4 +94,14 @@ class PasswordEncoder implements PasswordEncoderInterface
         return false;
     }
 
+    /**
+     * saltを生成する.
+     *
+     * @param int $length
+     * @return string
+     */
+    public function createSalt($length = 5)
+    {
+        return bin2hex(openssl_random_pseudo_bytes($length));
+    }
 }

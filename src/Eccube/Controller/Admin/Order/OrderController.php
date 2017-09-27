@@ -308,7 +308,8 @@ class OrderController extends AbstractController
         });
         if ($hasShipping) {
             log_info('受注削除失敗', [$Order->getId()]);
-            $app->addError('admin.order.delete.failed', 'admin');
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '受注']);
+            $app->addError($message, 'admin');
 
             return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }

@@ -116,23 +116,16 @@ class ForgotControllerTest extends AbstractWebTestCase
         }
     }
 
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function testResetWithNotFound()
     {
-        // debugはONの時に404ページ表示しない例外になります。
-        if($this->app['debug'] == true){
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
-        }
         $client = $this->createClient();
 
         $crawler = $client->request(
            'GET',
            '/forgot/reset/aaaa'
         );
-        // debugはOFFの時に404ページが表示します。
-        if($this->app['debug'] == false){
-            $this->expected = 404;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
     }
 }

@@ -25,17 +25,18 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Component;
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassNameType;
 use Eccube\Repository\ClassNameRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,27 +106,23 @@ class ClassNameController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 log_info('商品規格登録開始', array($id));
-                $status = $this->classNameRepository->save($TargetClassName);
 
-                if ($status) {
-                    log_info('商品規格登録完了', array($id));
+                $this->classNameRepository->save($TargetClassName);
 
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'TargetClassName' => $TargetClassName,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
+                log_info('商品規格登録完了', array($id));
 
-                    $app->addSuccess('admin.class_name.save.complete', 'admin');
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'TargetClassName' => $TargetClassName,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
-                    return $app->redirect($app->url('admin_product_class_name'));
-                } else {
-                    log_info('商品規格登録エラー', array($id));
-                    $app->addError('admin.class_name.save.error', 'admin');
-                }
+                $app->addSuccess('admin.class_name.save.complete', 'admin');
+
+                return $app->redirect($app->url('admin_product_class_name'));
             }
         }
 
@@ -142,34 +139,27 @@ class ClassNameController extends AbstractController
      * @Method("DELETE")
      * @Route("/{_admin}/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Application $app, Request $request, ClassName $ClassName)
     {
         $this->isTokenValid($app);
 
-        $TargetClassName = $this->classNameRepository->find($id);
-        if (!$TargetClassName) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_product_class_name'));
-        }
+        log_info('商品規格削除開始', array($ClassName->getId()));
 
-        log_info('商品規格削除開始', array($id));
+        try {
+            $this->classNameRepository->delete($ClassName);
 
-        $status = $this->classNameRepository->delete($TargetClassName);
-
-        if ($status === true) {
-            log_info('商品規格削除完了', array($id));
-
-            $event = new EventArgs(
-                array(
-                    'TargetClassName' => $TargetClassName,
-                ),
-                $request
-            );
+            $event = new EventArgs(['ClassName' => $ClassName,], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.class_name.delete.complete', 'admin');
-        } else {
-            $app->addError('admin.class_name.delete.error', 'admin');
+
+            log_info('商品規格削除完了', array($ClassName->getId()));
+
+        } catch (\Exception $e) {
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '商品規格']);
+            $app->addError($message, 'admin');
+
+            log_error('商品企画削除エラー', [$ClassName->getId(), $e]);
         }
 
         return $app->redirect($app->url('admin_product_class_name'));
@@ -191,6 +181,7 @@ class ClassNameController extends AbstractController
             }
             $this->entityManager->flush();
         }
+
         return true;
     }
 }

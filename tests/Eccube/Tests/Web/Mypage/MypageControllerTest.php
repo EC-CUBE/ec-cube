@@ -233,7 +233,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
         $CustomerFavoriteProduct->setCustomer($this->app->user());
-        $Product = $this->app['eccube.repository.product']->get(1);
+        $Product = $this->app['eccube.repository.product']->find(1);
         $CustomerFavoriteProduct->setCreateDate(new \DateTime());
         $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
         $CustomerFavoriteProduct->setProduct($Product);
