@@ -36,4 +36,8 @@ use Eccube\Annotation\Repository;
  */
 class PluginRepository extends AbstractRepository
 {
+    public function findAllEnabled()
+    {
+        return $this->findBy(['enable' => '1']);
+    }
 }
