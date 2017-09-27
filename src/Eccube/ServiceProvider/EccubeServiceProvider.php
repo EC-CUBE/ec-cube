@@ -27,6 +27,7 @@ namespace Eccube\ServiceProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\BaseInfo;
+use Eccube\EventListener\ForwardOnlyListener;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -274,6 +275,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         // Add event subscriber to TaxRuleEvent
         $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app[TaxRuleService::class]));
 
+        $dispatcher->addSubscriber(new ForwardOnlyListener($app));
         $dispatcher->addSubscriber(new TransactionListener($app));
     }
 }
