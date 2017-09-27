@@ -30,7 +30,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
-use Eccube\Entity\Master\Disp;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
@@ -316,7 +316,7 @@ class ProductController
                 }
             }
             // 公開ステータスでない商品は表示しない.
-            if ($Product->getStatus()->getId() !== Disp::DISPLAY_SHOW) {
+            if ($Product->getStatus()->getId() !== ProductStatus::DISPLAY_SHOW) {
                 throw new NotFoundHttpException();
             }
         }
