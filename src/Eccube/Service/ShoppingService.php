@@ -787,8 +787,10 @@ class ShoppingService
             $Delivery = $Shipping->getDelivery();
         }
         $deliveryFee = $this->deliveryFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
-
-        $Shipping->setDeliveryFee($deliveryFee);
+        if ($deliveryFee) {
+            $Shipping->setDeliveryFee($deliveryFee);
+            $Shipping->setFeeId($deliveryFee->getId());
+        }
         $Shipping->setDelivery($Delivery);
 
         // 商品ごとの配送料合計
@@ -956,6 +958,7 @@ class ShoppingService
             $deliveryTime = $Shipping->getDeliveryTime();
             if (!empty($deliveryTime)) {
                 $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
+                $Shipping->setTimeId($deliveryTime->getId());
             }
             $Shipping->setDeliveryFee($deliveryFee);
             // 商品ごとの配送料合計
@@ -1245,6 +1248,7 @@ class ShoppingService
             $deliveryTime = $Shipping->getDeliveryTime();
             if (!empty($deliveryTime)) {
                 $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
+                $Shipping->setTimeId($deliveryTime->getId());
             }
 
         }

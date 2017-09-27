@@ -241,7 +241,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                 </div>
                                 <div class="form-group">
-                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>お届け時間
+                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>お届け時間: {{ Shipping.ShippingDeliveryTime }}
                                     {{ form_widget(shippingForm.DeliveryTime, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="form-group">

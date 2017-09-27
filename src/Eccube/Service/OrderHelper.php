@@ -336,7 +336,10 @@ class OrderHelper
 
         // TODO 配送料の取得方法はこれで良いか要検討
         $deliveryFee = $this->deliveryFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
-        $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+        if ($deliveryFee) {
+            $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+            $Shipping->setFeeId($deliveryFee->getId());
+        }
     }
 
     public function setDefaultPayment(Order $Order)

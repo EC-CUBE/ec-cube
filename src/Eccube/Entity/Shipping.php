@@ -169,6 +169,20 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $shipping_delivery_name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="time_id", type="integer", options={"unsigned":true}, nullable=true)
+     */
+    private $time_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="fee_id", type="integer", options={"unsigned":true}, nullable=true)
+     */
+    private $fee_id;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="shipping_delivery_time", type="string", length=255, nullable=true)
@@ -277,21 +291,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
 
     /**
      * @var \Eccube\Entity\DeliveryTime
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryTime")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="time_id", referencedColumnName="time_id")
-     * })
      */
     private $DeliveryTime;
 
     /**
      * @var \Eccube\Entity\DeliveryFee
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryFee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fee_id", referencedColumnName="fee_id")
-     * })
      */
     private $DeliveryFee;
 
@@ -1275,5 +1279,53 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getShippingStatus()
     {
         return $this->ShippingStatus;
+    }
+
+    /**
+     * Set timeId
+     *
+     * @param integer $timeId
+     *
+     * @return Shipping
+     */
+    public function setTimeId($timeId)
+    {
+        $this->time_id = $timeId;
+
+        return $this;
+    }
+
+    /**
+     * Get timeId
+     *
+     * @return integer
+     */
+    public function getTimeId()
+    {
+        return $this->time_id;
+    }
+
+    /**
+     * Set feeId
+     *
+     * @param integer $feeId
+     *
+     * @return Shipping
+     */
+    public function setFeeId($feeId)
+    {
+        $this->fee_id = $feeId;
+
+        return $this;
+    }
+
+    /**
+     * Get feeId
+     *
+     * @return integer
+     */
+    public function getFeeId()
+    {
+        return $this->fee_id;
     }
 }
