@@ -61,7 +61,6 @@ class CsvExportServiceTest extends AbstractServiceTestCase
             // FIXME https://github.com/EC-CUBE/ec-cube/issues/1236
             // jeftJoin した QueryBuilder で iterate() を実行すると QueryException が発生してしまう
             // ->select(array('o','d'))
-            // ->leftJoin('o.OrderDetails', 'd')
             // ->addOrderBy('o.update_date', 'DESC')
 ;
 

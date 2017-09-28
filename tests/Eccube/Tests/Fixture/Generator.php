@@ -12,7 +12,6 @@ use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Page;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
@@ -496,20 +495,7 @@ class Generator {
         $ItemDiscount = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::DISCOUNT);
         foreach ($ProductClasses as $ProductClass) {
             $Product = $ProductClass->getProduct();
-            $OrderDetail = new OrderDetail();
             $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(); // デフォルト課税規則
-            $OrderDetail->setProduct($Product)
-                ->setProductClass($ProductClass)
-                ->setProductName($Product->getName())
-                ->setProductCode($ProductClass->getCode())
-                ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getRoundingType()->getId())
-                ->setTaxRate($TaxRule->getTaxRate());
-            $this->app['orm.em']->persist($OrderDetail);
-            $OrderDetail->setOrder($Order);
-            $this->app['orm.em']->flush($OrderDetail);
-            $Order->addOrderDetail($OrderDetail);
 
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
@@ -532,7 +518,10 @@ class Generator {
             $this->app['orm.em']->flush($OrderItem);
         }
 
-        $subTotal = $Order->calculateSubTotal();
+        // TODO PurchaseFlow でやった方がよい
+        $subTotal = array_reduce($Order->getProductOrderItems(), function ($total, $OrderItem) {
+            return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
+        }, 0);
 
         // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
         $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
@@ -594,7 +583,10 @@ class Generator {
         $Order->setTotal($total);
         $Order->setPaymentTotal($total);
 
-        $tax = $Order->calculateTotalTax();
+        // TODO PurchaseFlow でやった方がよい
+        $tax = array_reduce($Order->getItems()->toArray(), function ($sum, $item) {
+            return $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
+        }, 0);
         $Order->setTax($tax);
 
         $this->app['orm.em']->flush($Shipping);
