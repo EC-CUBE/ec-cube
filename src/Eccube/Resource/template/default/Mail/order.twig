@@ -37,11 +37,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 　ご注文商品明細
 ************************************************
 
-{% for OrderDetail in Order.OrderDetails %}
-商品コード: {{ OrderDetail.product_code }}
-商品名: {{ OrderDetail.product_name }}  {{ OrderDetail.classcategory_name1 }}  {{ OrderDetail.classcategory_name2 }}
-単価： {{ calc_inc_tax(OrderDetail.price, OrderDetail.tax_rate, OrderDetail.tax_rule)|price }}
-数量： {{ OrderDetail.quantity|number_format }}
+{% for OrderItem in Order.OrderItems %}
+商品コード: {{ OrderItem.product_code }}
+商品名: {{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}
+単価： {{ calc_inc_tax(OrderItem.price, OrderItem.tax_rate, OrderItem.tax_rule)|price }}
+数量： {{ OrderItem.quantity|number_format }}
 
 {% endfor %}
 

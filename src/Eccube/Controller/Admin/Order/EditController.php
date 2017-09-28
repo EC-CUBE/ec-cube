@@ -259,7 +259,6 @@ class EditController extends AbstractController
                                 'form' => $form,
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
-                                // 'OriginOrderDetails' => $OriginalOrderDetails,
                                 //'Customer' => $Customer,
                             ),
                             $request
@@ -303,7 +302,6 @@ class EditController extends AbstractController
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-                // 'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -320,7 +318,6 @@ class EditController extends AbstractController
                 'builder' => $builder,
                 'OriginOrder' => $OriginOrder,
                 'TargetOrder' => $TargetOrder,
-                // 'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -679,45 +676,6 @@ class EditController extends AbstractController
         $Order->setDeviceType($DeviceType);
 
         return $Order;
-    }
-
-    /**
-     * フォームからの入直内容に基づいて、受注情報の再計算を行う
-     *
-     * @param $app
-     * @param $Order
-     */
-    protected function calculate($app, \Eccube\Entity\Order $Order)
-    {
-        $taxtotal = 0;
-        $subtotal = 0;
-
-        // 受注明細データの税・小計を再計算
-        /** @var $OrderDetails \Eccube\Entity\OrderDetail[] */
-        $OrderDetails = $Order->getOrderDetails();
-        foreach ($OrderDetails as $OrderDetail) {
-
-            // 税
-            $tax = $this->taxRuleService
-                ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-            $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
-
-            // $taxtotal += $tax * $OrderDetail->getQuantity();
-
-            // // 小計
-            // $subtotal += $OrderDetail->getTotalPrice();
-        }
-
-        // // 受注データの税・小計・合計を再計算
-        // $Order->setTax($taxtotal);
-        // $Order->setSubtotal($subtotal);
-        // $Order->setTotal($subtotal + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount());
-        // // お支払い合計は、totalと同一金額(2系ではtotal - point)
-        // $Order->setPaymentTotal($Order->getTotal());
-
-        // 集計は,この1行でいけるはず
-        // プラグインで Strategy をセットしたりする
-        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
     }
 
     /**

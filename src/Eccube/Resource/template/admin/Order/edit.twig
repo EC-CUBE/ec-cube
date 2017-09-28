@@ -120,13 +120,13 @@ $(function() {
 
     // 受注明細行の行数カウンタ.
     // 受注登録・編集画面上でグローバルな変数.
-    // search_product.twig/order_detail_prototype.twigで利用しています.
+    // search_product.twig/order_item_prototype.twigで利用しています.
     {% if form.OrderItems is empty %}
         {% set maxIndex = 0 %}
     {% else %}
     {% set maxIndex = max(form.OrderItems|keys) + 1 %}
     {% endif %}
-    order_details_count = '{{ maxIndex }}';
+    order_items_count = '{{ maxIndex }}';
 
     // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
     $("input").on("keydown", function(e) {
@@ -140,7 +140,7 @@ $(function() {
     $(".delete-item").on("click", function(){
         $(this).parents(".item_box").remove();
 
-        onChangeOrderDetailCount(order_details_count);
+        onChangeOrderItemCount(order_items_count);
     });
     
     $(".delete_delivery").on("click", function(){
@@ -158,15 +158,15 @@ $(function() {
        document.form1.submit();
     });
 
-    var onChangeOrderDetailCount = function(order_details_count) {
-        if (order_details_count == 1) {
+    var onChangeOrderItemCount = function(order_items_count) {
+        if (order_items_count == 1) {
             $(".delete-item").attr("disabled", "disabled");
         } else {
             $(".delete-item").removeAttr("disabled");
         }
     };
 
-    onChangeOrderDetailCount();
+    onChangeOrderItemCount();
 
 
     // 配送業者選択時にお届け時間を設定
@@ -373,13 +373,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </ul>
                         </div>
                         <div class="tableish"
-                             id="order_detail_list"
+                             id="order_item_list"
                              data-prototype="
                                 {% filter escape %}
-                                     {{ include('Order/order_detail_prototype.twig', { 'OrderItemForm': form.OrderItems.vars.prototype }) }}
+                                     {{ include('Order/order_item_prototype.twig', { 'OrderItemForm': form.OrderItems.vars.prototype }) }}
                                 {% endfilter %}">
-
-                            {{ form_errors(form.OrderDetailsErrors) }}
 
                             {% for OrderItemForm in form.OrderItems %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">

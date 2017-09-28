@@ -49,10 +49,10 @@ class CalculateContext
      * 集計は全部ここでやる. 明細を加算するのみ.
      * 計算結果を Order にセットし直すのもここでやる.
      * DI で別クラスにした方がいいかも
+     * @deprecated PurchaseFlow::calculate() を使用してください 
      */
     public function calculateOrder(PurchaseInterface $Order)
     {
-        // OrderDetails の計算結果を Order にセットする
         if ($this->Order instanceof Order) { // TODO context のほうで判定したい
             $subTotal = $Order->calculateSubTotal();
             $Order->setSubtotal($subTotal);

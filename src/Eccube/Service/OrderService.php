@@ -141,22 +141,6 @@ class OrderService
      *
      * @param $em トランザクション制御されているEntityManager
      * @param Order $Order 受注情報
-     * @return bool true : 成功、false : 失敗
-     *
-     * @see ShoppingService::isOrderProduct()
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function isOrderProduct($em, Order $Order)
-    {
-        return $this->shoppingService->isOrderProduct($em, $Order);
-    }
-
-    /**
-     * 下位互換用関数
-     *
-     * @param $em トランザクション制御されているEntityManager
-     * @param Order $Order 受注情報
      * @param $formData フォームデータ
      *
      * @see ShoppingService::setOrderUpdate()
@@ -166,21 +150,6 @@ class OrderService
     public function setOrderUpdate($em, Order $Order, $formData)
     {
         $this->shoppingService->setOrderUpdate($Order, $formData);
-    }
-
-    /**
-     * 下位互換用関数
-     *
-     * @param $em トランザクション制御されているEntityManager
-     * @param Order $Order 受注情報
-     *
-     * @see ShoppingService::setStockUpdate()
-     *
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function setStockUpdate($em, Order $Order)
-    {
-        $this->shoppingService->setStockUpdate($em, $Order);
     }
 
     /**

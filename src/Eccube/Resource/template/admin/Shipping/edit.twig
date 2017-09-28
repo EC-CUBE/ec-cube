@@ -118,13 +118,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         // 受注明細行の行数カウンタ.
         // 受注登録・編集画面上でグローバルな変数.
-        // search_product.twig/order_detail_prototype.twigで利用しています.
+        // search_product.twig/order_item_prototype.twigで利用しています.
         {% if form.OrderItems is empty %}
         {% set maxIndex = 0 %}
         {% else %}
         {% set maxIndex = max(form.OrderItems|keys) + 1 %}
         {% endif %}
-        order_details_count = '{{ maxIndex }}';
+        order_items_count = '{{ maxIndex }}';
         var shipping_details_count = [];
         {% for OrderItem in form.OrderItems %}
         shipping_details_count.push({idx:{{ loop.index }}, cnt:{{ max(shippingForm.OrderItems|keys) + 1 }} });
@@ -142,7 +142,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         $(".delete-item").on("click", function(){
             $(this).parents(".item_box").remove();
 
-            onChangeOrderDetailCount(order_details_count);
+            onChangeOrderItemCount(order_items_count);
         });
         
         $(".delete_delivery").on("click", function(){
@@ -160,15 +160,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             document.form1.submit();
         });
 
-        var onChangeOrderDetailCount = function(order_details_count) {
-            if (order_details_count == 1) {
+        var onChangeOrderItemCount = function(order_items_count) {
+            if (order_items_count == 1) {
                 $(".delete-item").attr("disabled", "disabled");
             } else {
                 $(".delete-item").removeAttr("disabled");
             }
         };
 
-        onChangeOrderDetailCount();
+        onChangeOrderItemCount();
 
 
         // 配送業者選択時にお届け時間を設定
@@ -362,7 +362,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </ul>
                         </div>
                         <div class="tableish"
-                             id="order_detail_list"
+                             id="order_item_list"
                              data-prototype="
                                     {% filter escape %}
                                     {{ include('Shipping/order_item_prototype.twig', { 'OrderItemForm': form.OrderItems.vars.prototype }) }}

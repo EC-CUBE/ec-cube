@@ -1,13 +1,13 @@
 <script>
 
     // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(order_details_count)は, edit.twig側で定義している.
-    function fnAddOrderDetail($row, order_item_id, order_id, type) {
+    // 受注明細行のレコード数カウンタ(order_items_count)は, edit.twig側で定義している.
+    function fnAddOrderItem($row, order_item_id, order_id, type) {
 
         type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
 
         // 受注明細行を取得.
-        var list = $('#order_detail_list');
+        var list = $('#order_item_list');
         var orderDetailExists = false;
 
         $('*[id^="product_info_list__item--"]').each(function () {
@@ -26,12 +26,12 @@
             var newWidget = list.attr('data-prototype');
 
             // レコード数カウンタで置換.
-            newWidget = newWidget.replace(/__name__/g, order_details_count);
+            newWidget = newWidget.replace(/__name__/g, order_items_count);
             // フォーム入力値をセットm
             $newWidget = $(newWidget);
-            $newWidget.find('#shipping_OrderItems_' + order_details_count + '_Order').val(order_id);
-            $newWidget.find('#shipping_OrderItems_' + order_details_count + '_id').val(order_item_id);
-            $newWidget.find('#shipping_OrderItems_' + order_details_count + '_order_item_type').val(type);
+            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_Order').val(order_id);
+            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_id').val(order_item_id);
+            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_order_item_type').val(type);
 
             // 明細行に追加.
             list.append($newWidget);
@@ -39,7 +39,7 @@
 
         if (orderDetailExists) {
             // カウンタを更新.
-            order_details_count++;
+            order_items_count++;
         }
 
         // モーダル閉じる.
@@ -108,7 +108,7 @@
                             {% endfor %}
                         </div>
                         <td class="text-right">
-                            <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ OrderItem.id }}, {{ OrderItem.Order.id }}, {{ OrderItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                            <button onclick="fnAddOrderItem($(this).parent().parent(), {{ OrderItem.id }}, {{ OrderItem.Order.id }}, {{ OrderItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                                 決定
                             </button>
                         </td>
