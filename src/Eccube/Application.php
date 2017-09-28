@@ -117,7 +117,7 @@ class Application extends \Silex\Application
     public function initConfig()
     {
         // load .env
-        $envFile = __DIR__.'/../../.env';
+        $envFile = __DIR__.'/../../app/config/eccube/.env';
         if (file_exists($envFile)) {
             (new Dotenv())->load($envFile);
         }
@@ -599,7 +599,7 @@ class Application extends \Silex\Application
         $this->register(new EntityEventServiceProvider());
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
-                'default' => $this['config']['database']
+                'default' => $this['config']['database'][$this['config']['database']['default']]
             )
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
@@ -1006,6 +1006,11 @@ class Application extends \Silex\Application
 
         $config_php_dist = $distPath.'/'.$config_name.'.php';
         $config_dist = require $config_php_dist;
+
+        // `%ROOT_DIR%`を絶対パスに変換
+        array_walk($config_dist, function(&$value) use ($rootDir) {
+            $value = str_replace('%ROOT_DIR%', $rootDir, $value);
+        });
 
         if ($wrap_key) {
             $configAll = array_replace_recursive($configAll, array($config_name => $config_dist), array($config_name => $config));
