@@ -6,15 +6,15 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
 
-class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollection
+class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
     protected $type;
 
-    public function __construct($ShipmentItems, $type = null)
+    public function __construct($OrderItems, $type = null)
     {
-        // $ShipmentItems が Collection だったら toArray(); する
+        // $OrderItems が Collection だったら toArray(); する
         $this->type = is_null($type) ? Order::class : $type;
-        parent::__construct($ShipmentItems);
+        parent::__construct($OrderItems);
     }
 
     public function reduce(\Closure $func, $initial = null)
@@ -26,32 +26,32 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
     public function getProductClasses()
     {
         return $this->filter(
-            function(ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isProduct();
+            function(ItemInterface $OrderItem) {
+                return $OrderItem->isProduct();
             });
     }
 
     public function getDeliveryFees()
     {
         return $this->filter(
-            function(ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isDeliveryFee();
+            function(ItemInterface $OrderItem) {
+                return $OrderItem->isDeliveryFee();
             });
     }
 
     public function getCharges()
     {
         return $this->filter(
-            function(ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isCharge();
+            function(ItemInterface $OrderItem) {
+                return $OrderItem->isCharge();
             });
     }
 
     public function getDiscounts()
     {
         return $this->filter(
-            function(ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isDiscount();
+            function(ItemInterface $OrderItem) {
+                return $OrderItem->isDiscount();
             });
     }
 
@@ -62,12 +62,12 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
      */
     public function hasProductByName($productName)
     {
-        $ShipmentItems = $this->filter(
-            function (ItemInterface $ShipmentItem) use ($productName) {
-                /* @var ShipmentItem $ShipmentItem */
-                return $ShipmentItem->getProductName() == $productName;
+        $OrderItems = $this->filter(
+            function (ItemInterface $OrderItem) use ($productName) {
+                /* @var OrderItem $OrderItem */
+                return $OrderItem->getProductName() == $productName;
             });
-        return !$ShipmentItems->isEmpty();
+        return !$OrderItems->isEmpty();
     }
 
     /**
@@ -77,9 +77,9 @@ class ShipmentItemCollection extends \Doctrine\Common\Collections\ArrayCollectio
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
-        $filteredItems = $this->filter(function(ItemInterface $ShipmentItem) use ($OrderItemType) {
-            /* @var ShipmentItem $ShipmentItem */
-            return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $OrderItemType->getId();
+        $filteredItems = $this->filter(function(ItemInterface $OrderItem) use ($OrderItemType) {
+            /* @var OrderItem $OrderItem */
+            return $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId();
         });
         return !$filteredItems->isEmpty();
     }

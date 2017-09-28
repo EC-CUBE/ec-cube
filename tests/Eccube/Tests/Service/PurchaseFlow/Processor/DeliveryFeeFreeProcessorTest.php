@@ -112,7 +112,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     private function getDeliveryFeeItems(Order $Order)
     {
         $deliveryFeeItems = [];
-        foreach ($Order->getShipmentItems() as $item) {
+        foreach ($Order->getOrderItems() as $item) {
             if ($item->isDeliveryFee()) {
                 $deliveryFeeItems[] = $item;
             }

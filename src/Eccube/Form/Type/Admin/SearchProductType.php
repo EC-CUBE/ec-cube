@@ -26,10 +26,10 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
-use Eccube\Entity\Master\Disp;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
-use Eccube\Form\Type\Master\DispType;
-use Eccube\Repository\Master\DispRepository;
+use Eccube\Form\Type\Master\ProductStatusType;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -45,10 +45,10 @@ class SearchProductType extends AbstractType
 {
 
     /**
-     * @Inject(DispRepository::class)
-     * @var DispRepository
+     * @Inject(ProductStatusRepository::class)
+     * @var ProductStatusRepository
      */
-    protected $DispRepository;
+    protected $productStatusRepository;
 
     /**
      * {@inheritdoc}
@@ -75,13 +75,13 @@ class SearchProductType extends AbstractType
                 'placeholder' => '選択してください',
                 'required' => false,
             ))
-            ->add('status', DispType::class, array(
+            ->add('status', ProductStatusType::class, array(
                 'label' => '種別',
                 'multiple'=> true,
                 'required' => false,
-                'data' => $this->DispRepository->findBy(['id' => [
-                    Disp::DISPLAY_SHOW,
-                    Disp::DISPLAY_HIDE
+                'data' => $this->productStatusRepository->findBy(['id' => [
+                    ProductStatus::DISPLAY_SHOW,
+                    ProductStatus::DISPLAY_HIDE
                 ]])
             ))
             ->add('create_date_start', DateType::class, array(

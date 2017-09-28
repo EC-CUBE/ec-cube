@@ -199,8 +199,8 @@ class ShippingType extends AbstractType
                     )),
                 ),
             ))
-            ->add('ShipmentItems', CollectionType::class, array(
-                'entry_type' => ShipmentItemType::class,
+            ->add('OrderItems', CollectionType::class, array(
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -209,8 +209,8 @@ class ShippingType extends AbstractType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
-                    $form->add('ShipmentItems', CollectionType::class, array(
-                        'entry_type' => ShipmentItemType::class,
+                    $form->add('OrderItems', CollectionType::class, array(
+                        'entry_type' => OrderItemType::class,
                         'allow_add' => true,
                         'allow_delete' => true,
                         'prototype' => true,
@@ -275,9 +275,9 @@ class ShippingType extends AbstractType
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
-                    $shipmentItems = $form['ShipmentItems']->getData();
+                    $OrderItems = $form['OrderItems']->getData();
 
-                    if (empty($shipmentItems) || count($shipmentItems) < 1) {
+                    if (empty($orderItems) || count($orderItems) < 1) {
                         // 画面下部にエラーメッセージを表示させる
                         $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
                     }

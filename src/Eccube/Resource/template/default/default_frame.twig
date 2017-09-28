@@ -26,17 +26,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
     <title>{{ BaseInfo.shop_name }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
-    {% if PageLayout.author is not empty %}
-        <meta name="author" content="{{ PageLayout.author }}">
+    {% if Page.author is not empty %}
+        <meta name="author" content="{{ Page.author }}">
     {% endif %}
-    {% if PageLayout.description is not empty %}
-        <meta name="description" content="{{ PageLayout.description }}">
+    {% if Page.description is not empty %}
+        <meta name="description" content="{{ Page.description }}">
     {% endif %}
-    {% if PageLayout.keyword is not empty %}
-        <meta name="keywords" content="{{ PageLayout.keyword }}">
+    {% if Page.keyword is not empty %}
+        <meta name="keywords" content="{{ Page.keyword }}">
     {% endif %}
-    {% if PageLayout.meta_robots is not empty %}
-        <meta name="robots" content="{{ PageLayout.meta_robots }}">
+    {% if Page.meta_robots is not empty %}
+        <meta name="robots" content="{{ Page.meta_robots }}">
     {% endif %}
     <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -48,46 +48,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
     {# Layout: HEAD #}
-    {% if PageLayout.Head %}
-        {{ include('block.twig', {'Blocks': PageLayout.Head}) }}
+    {% if Page.Head %}
+        {{ include('block.twig', {'Blocks': Page.Head}) }}
     {% endif %}
 </head>
 <body id="page_{{ app.request_stack.currentrequest.get('_route') }}" class="{{ body_class|default('other_page') }}">
 <div class="ec-layoutRole">
     {# Layout: HEADER #}
-    {% if PageLayout.Header %}
+    {% if Page.Header %}
         <div class="ec-layoutRole__header">
-            {{ include('block.twig', {'Blocks': PageLayout.Header}) }}
+            {{ include('block.twig', {'Blocks': Page.Header}) }}
         </div>
     {% endif %}
 
     {# Layout: CONTENTS_TOP #}
-    {% if PageLayout.ContentsTop %}
+    {% if Page.ContentsTop %}
         <div class="ec-layoutRole__contentTop">
-            {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
+            {{ include('block.twig', {'Blocks': Page.ContentsTop}) }}
         </div>
     {% endif %}
 
     <div class="ec-layoutRole__contents">
         {# Layout: SIDE_LEFT #}
-        {% if PageLayout.SideLeft %}
+        {% if Page.SideLeft %}
             <div class="ec-ec-layoutRole__left">
-                {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
+                {{ include('block.twig', {'Blocks': Page.SideLeft}) }}
             </div>
         {% endif %}
 
         {% set layoutRoleMain = 'ec-layoutRole__main' %}
-        {% if PageLayout.ColumnNum == 2 %}
+        {% if Page.ColumnNum == 2 %}
             {% set layoutRoleMain = 'ec-layoutRole__mainWithColumn' %}
-        {% elseif PageLayout.ColumnNum == 3 %}
+        {% elseif Page.ColumnNum == 3 %}
             {% set layoutRoleMain = 'ec-layoutRole__mainBetweenColumn' %}
         {% endif %}
 
         <div class="{{ layoutRoleMain }}">
             {# Layout: MAIN_TOP #}
-            {% if PageLayout.MainTop %}
+            {% if Page.MainTop %}
                 <div class="ec-layoutRole__mainTop">
-                    {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
+                    {{ include('block.twig', {'Blocks': Page.MainTop}) }}
                 </div>
             {% endif %}
 
@@ -95,32 +95,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% block main %}{% endblock %}
 
             {# Layout: MAIN_Bottom #}
-            {% if PageLayout.MainBottom %}
+            {% if Page.MainBottom %}
                 <div class="ec-layoutRole__mainBottom">
-                    {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
+                    {{ include('block.twig', {'Blocks': Page.MainBottom}) }}
                 </div>
             {% endif %}
         </div>
 
         {# Layout: SIDE_RIGHT #}
-        {% if PageLayout.SideRight %}
+        {% if Page.SideRight %}
             <div class="ec-layoutRole__mainRight">
-                {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
+                {{ include('block.twig', {'Blocks': Page.SideRight}) }}
             </div>
         {% endif %}
     </div>
 
     {# Layout: CONTENTS_BOTTOM #}
-    {% if PageLayout.ContentsBottom %}
+    {% if Page.ContentsBottom %}
         <div class="ec-layoutRole__contentBottom">
-            {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
+            {{ include('block.twig', {'Blocks': Page.ContentsBottom}) }}
         </div>
     {% endif %}
 
     {# Layout: CONTENTS_FOOTER #}
-    {% if PageLayout.Footer %}
+    {% if Page.Footer %}
         <div class="ec-layoutRole__footer">
-            {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
+            {{ include('block.twig', {'Blocks': Page.Footer}) }}
         </div>
     {% endif %}
 </div><!-- ec-layoutRole -->

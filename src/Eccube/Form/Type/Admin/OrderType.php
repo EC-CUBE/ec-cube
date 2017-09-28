@@ -237,8 +237,8 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('ShipmentItems', CollectionType::class, array(
-                'entry_type' => ShipmentItemType::class,
+            ->add('OrderItems', CollectionType::class, array(
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -282,12 +282,12 @@ class OrderType extends AbstractType
             };
 
             // foreach ($shippings as &$shipping) {
-            //     if (!empty($shipping['ShipmentItems'])) {
-            //         $shipping['ShipmentItems'] = array_filter($shipping['ShipmentItems'], $quantityFilter);
+            //     if (!empty($shipping['OrderItems'])) {
+            //         $shipping['OrderItems'] = array_filter($shipping['OrderItems'], $quantityFilter);
             //     }
             // }
 
-            // FIXME 実際は ShipmentItem
+            // FIXME 実際は OrderItem
             if (!empty($orderDetails)) {
 
                 foreach ($orderDetails as &$orderDetail) {
@@ -301,7 +301,7 @@ class OrderType extends AbstractType
 
                     foreach ($shippings as &$shipping) {
 
-                        if (!empty($shipping['ShipmentItems'])) {
+                        if (!empty($shipping['OrderItems'])) {
 
                             // 同じ商品規格の受注詳細の価格を適用
                             $applyPrice = function (&$v) use ($orderDetail) {
@@ -309,11 +309,11 @@ class OrderType extends AbstractType
                                     $orderDetail['price'] :
                                     $v['price'];
                             };
-                            array_walk($shipping['ShipmentItems'], $applyPrice);
+                            array_walk($shipping['OrderItems'], $applyPrice);
 
                             // 数量適用
-                            $relatedShipmentItems = array_filter($shipping['ShipmentItems'], $productClassFilter);
-                            $quantities = array_map($getQuantity, $relatedShipmentItems);
+                            $relatedOrderItems = array_filter($shipping['OrderItems'], $productClassFilter);
+                            $quantities = array_map($getQuantity, $relatedOrderItems);
                             $orderDetail['quantity'] += array_sum($quantities);
                         }
                     }

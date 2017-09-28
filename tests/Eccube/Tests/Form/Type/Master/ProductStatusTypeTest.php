@@ -25,9 +25,9 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
-use Eccube\Form\Type\Master\DispType;
+use Eccube\Form\Type\Master\ProductStatusType;
 
-class DispTypeTest extends AbstractTypeTestCase
+class ProductStatusTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -41,7 +41,7 @@ class DispTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder(DispType::class, null, array(
+            ->createBuilder(ProductStatusType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
@@ -51,7 +51,7 @@ class DispTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.disp']->find(1));
+        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.product_status']->find(1));
     }
 
     public function testViewData()
@@ -63,7 +63,7 @@ class DispTypeTest extends AbstractTypeTestCase
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-        $query = $this->app['eccube.repository.master.disp']->createQueryBuilder('m')
+        $query = $this->app['eccube.repository.master.product_status']->createQueryBuilder('m')
             ->orderBy('m.rank', 'ASC')
             ->getQuery();
         $pref = $query->getResult();

@@ -30,7 +30,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
@@ -107,8 +107,8 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
         $Order = $itemHolder;
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
-            $ShipmentItem = new ShipmentItem();
-            $ShipmentItem->setProductName('送料')
+            $OrderItem = new OrderItem();
+            $OrderItem->setProductName('送料')
                 ->setPrice($Shipping->getShippingDeliveryFee())
                 ->setPriceIncTax($Shipping->getShippingDeliveryFee())
                 ->setTaxRate(8)
@@ -118,8 +118,8 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
                 ->setTaxDisplayType($TaxInclude)
                 ->setTaxType($Taxion);
 
-            $itemHolder->addItem($ShipmentItem);
-            $Shipping->addShipmentItem($ShipmentItem);
+            $itemHolder->addItem($OrderItem);
+            $Shipping->addOrderItem($OrderItem);
         }
     }
 }

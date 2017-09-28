@@ -119,12 +119,12 @@
             newWidget = newWidget.replace(/__name__/g, order_details_count);
             // フォーム入力値をセットm
             $newWidget = $(newWidget);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_Product').val(product_id);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_ProductClass').val(product_class_id);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_price').val(price);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_order_item_type').val(type);
+            $newWidget.find('#order_OrderItems_' + order_details_count + '_Product').val(product_id);
+            $newWidget.find('#order_OrderItems_' + order_details_count + '_ProductClass').val(product_class_id);
+            $newWidget.find('#order_OrderItems_' + order_details_count + '_price').val(price);
+            $newWidget.find('#order_OrderItems_' + order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+            $newWidget.find('#order_OrderItems_' + order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
+            $newWidget.find('#order_OrderItems_' + order_details_count + '_order_item_type').val(type);
 
             // 明細行に追加.
             list.append($newWidget);

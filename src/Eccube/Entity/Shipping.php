@@ -25,7 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Entity\Master\ShippingStatus;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -255,9 +255,9 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\ShipmentItem", mappedBy="Shipping", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist","remove"})
      */
-    private $ShipmentItems;
+    private $OrderItems;
 
     /**
      * @var \Eccube\Entity\Master\Country
@@ -324,7 +324,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
-        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -997,48 +997,48 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add shipmentItem.
+     * Add orderItem.
      *
-     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     * @param \Eccube\Entity\OrderItem $OrderItem
      *
      * @return Shipping
      */
-    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
-        $this->ShipmentItems[] = $shipmentItem;
+        $this->OrderItems[] = $OrderItem;
 
         return $this;
     }
 
     /**
-     * Remove shipmentItem.
+     * Remove orderItem.
      *
-     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     * @param \Eccube\Entity\OrderItem $OrderItem
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    public function removeOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
-        return $this->ShipmentItems->removeElement($shipmentItem);
+        return $this->OrderItems->removeElement($OrderItem);
     }
 
     /**
-     * Get shipmentItems.
+     * Get orderItems.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getShipmentItems()
+    public function getOrderItems()
     {
-        return $this->ShipmentItems;
+        return $this->OrderItems;
     }
 
     /**
      * 商品の受注明細を取得
-     * @return ShipmentItem[]
+     * @return OrderItem[]
      */
     public function getProductOrderItems()
     {
-        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        $sio = new OrderItemCollection($this->OrderItems->toArray());
         return $sio->getProductClasses()->toArray();
     }
 
@@ -1195,8 +1195,8 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getOrders()
     {
         $Orders = [];
-        foreach ($this->getShipmentItems() as $ShipmentItem) {
-            $Order = $ShipmentItem->getOrder();
+        foreach ($this->getOrderItems() as $OrderItem) {
+            $Order = $OrderItem->getOrder();
             if (is_object($Order)) {
                 $name = $Order->getName01(); // XXX lazy loading
                 $Orders[$Order->getId()] = $Order;

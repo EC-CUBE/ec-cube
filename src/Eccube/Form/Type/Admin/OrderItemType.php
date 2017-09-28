@@ -28,13 +28,13 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\PriceType;
 use Eccube\Repository\ProductClassRepository;
-use Eccube\Repository\ShipmentItemRepository;
+use Eccube\Repository\OrderItemRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @FormType
  */
-class ShipmentItemType extends AbstractType
+class OrderItemType extends AbstractType
 {
     /**
      * @Inject("orm.em")
@@ -69,10 +69,10 @@ class ShipmentItemType extends AbstractType
     protected $productClassRepository;
 
     /**
-     * @Inject(ShipmentItemRepository::class)
-     * @var ShipmentItemRepository
+     * @Inject(OrderItemRepository::class)
+     * @var OrderItemRepository
      */
-    protected $shipmentItemRepository;
+    protected $orderItemRepository;
 
     /**
      * @Inject("request_stack")
@@ -177,24 +177,24 @@ class ShipmentItemType extends AbstractType
 
         $app = $this->app;
         // XXX price を priceIncTax にセットし直す
-        // ShipmentItem::getTotalPrice でもやっているので、どこか一箇所にまとめたい
+        // OrderItem::getTotalPrice でもやっているので、どこか一箇所にまとめたい
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
-                /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-                $ShipmentItem = $event->getData();
-                $TaxDisplayType = $ShipmentItem->getTaxDisplayType();
+                /** @var \Eccube\Entity\OrderItem $OrderItem */
+                $OrderItem = $event->getData();
+                $TaxDisplayType = $OrderItem->getTaxDisplayType();
                 switch ($TaxDisplayType->getId()) {
                     // 税込価格
                     case TaxDisplayType::INCLUDED:
-                        $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice());
+                        $OrderItem->setPriceIncTax($OrderItem->getPrice());
                         break;
                     // 税別価格の場合は税額を加算する
                     case TaxDisplayType::EXCLUDED:
                         // TODO 課税規則を考慮する
-                        $ShipmentItem->setPriceIncTax($ShipmentItem->getPrice() + $ShipmentItem->getPrice() * $ShipmentItem->getTaxRate() / 100);
+                        $OrderItem->setPriceIncTax($OrderItem->getPrice() + $OrderItem->getPrice() * $OrderItem->getTaxRate() / 100);
                         break;
                 }
 
-                $event->setData($ShipmentItem);
+                $event->setData($OrderItem);
         });
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
@@ -204,28 +204,28 @@ class ShipmentItemType extends AbstractType
                 if (isset($data['new'])) {
                     // 受注済み明細の場合
                     if (array_key_exists('id', $data) && isset($data['id'])) {
-                        /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-                        $ShipmentItem = $this->shipmentItemRepository
+                        /** @var \Eccube\Entity\OrderItem $OrderItem */
+                        $OrderItem = $this->OrderItemRepository
                             ->find($data['id']);
-                        $data = array_merge($data, $ShipmentItem->toArray(['Order', 'Product', 'ProductClass', 'Shipping', 'TaxType', 'TaxDisplayType', 'OrderItemType']));
+                        $data = array_merge($data, $OrderItem->toArray(['Order', 'Product', 'ProductClass', 'Shipping', 'TaxType', 'TaxDisplayType', 'OrderItemType']));
 
-                        if (is_object($ShipmentItem->getOrder())) {
-                            $data['Order'] = $ShipmentItem->getOrder()->getId();
+                        if (is_object($OrderItem->getOrder())) {
+                            $data['Order'] = $OrderItem->getOrder()->getId();
                         }
-                        if (is_object($ShipmentItem->getProduct())) {
-                            $data['Product'] = $ShipmentItem->getProduct()->getId();
+                        if (is_object($OrderItem->getProduct())) {
+                            $data['Product'] = $OrderItem->getProduct()->getId();
                         }
-                        if (is_object($ShipmentItem->getProduct())) {
-                            $data['ProductClass'] = $ShipmentItem->getProductClass()->getId();
+                        if (is_object($OrderItem->getProduct())) {
+                            $data['ProductClass'] = $OrderItem->getProductClass()->getId();
                         }
-                        if (is_object($ShipmentItem->getTaxType())) {
-                            $data['tax_type'] = $ShipmentItem->getTaxType()->getId();
+                        if (is_object($OrderItem->getTaxType())) {
+                            $data['tax_type'] = $OrderItem->getTaxType()->getId();
                         }
-                        if (is_object($ShipmentItem->getTaxDisplayType())) {
-                            $data['tax_display_type'] = $ShipmentItem->getTaxDisplayType()->getId();
+                        if (is_object($OrderItem->getTaxDisplayType())) {
+                            $data['tax_display_type'] = $OrderItem->getTaxDisplayType()->getId();
                         }
-                        if (is_object($ShipmentItem->getOrderItemType())) {
-                            $data['order_item_type'] = $ShipmentItem->getOrderItemType()->getId();
+                        if (is_object($OrderItem->getOrderItemType())) {
+                            $data['order_item_type'] = $OrderItem->getOrderItemType()->getId();
                         }
                     } else {
                         // 新規受注登録時の場合
@@ -235,28 +235,28 @@ class ShipmentItemType extends AbstractType
                         $data['class_category_name1'] = null;
                         $data['class_category_name2'] = null;
                         switch ($data['order_item_type']) {
-                            case OrderItemType::DELIVERY_FEE:
+                            case OrderItemTypeMaster::DELIVERY_FEE:
                                 $data['product_name'] = '送料';
                                 $data['price'] = 0;
                                 $data['quantity'] = 1;
                                 $data['tax_type'] = TaxType::TAXATION;
                                 $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                                 break;
-                            case OrderItemType::CHARGE:
+                            case OrderItemTypeMaster::CHARGE:
                                 $data['product_name'] = '手数料';
                                 $data['price'] = 0;
                                 $data['quantity'] = 1;
                                 $data['tax_type'] = TaxType::TAXATION;
                                 $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                                 break;
-                            case OrderItemType::DISCOUNT:
+                            case OrderItemTypeMaster::DISCOUNT:
                                 $data['product_name'] = '値引き';
                                 $data['price'] = -0;
                                 $data['quantity'] = 1;
                                 $data['tax_type'] = TaxType::NON_TAXABLE;
                                 $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                                 break;
-                            case OrderItemType::PRODUCT:
+                            case OrderItemTypeMaster::PRODUCT:
                             default:
                                 /** @var \Eccube\Entity\ProductClass $ProductClass */
                                 $ProductClass = $this->productClassRepository
@@ -295,7 +295,7 @@ class ShipmentItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\ShipmentItem',
+            'data_class' => 'Eccube\Entity\OrderItem',
         ));
     }
 
@@ -304,6 +304,6 @@ class ShipmentItemType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'shipment_item';
+        return 'order_item';
     }
 }

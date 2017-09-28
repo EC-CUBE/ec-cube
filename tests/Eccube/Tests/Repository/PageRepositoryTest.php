@@ -28,7 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
 use org\bovigo\vfs\vfsStream;
 
-class PageLayoutRepositoryTest extends EccubeTestCase
+class PageRepositoryTest extends EccubeTestCase
 {
     protected $DeviceType;
 
@@ -42,9 +42,9 @@ class PageLayoutRepositoryTest extends EccubeTestCase
     public function test_findOrCreate_pageIdNullisCreate()
     {
         $this->expected = null;
-        $PageLayout = $this->app['eccube.repository.page_layout']
+        $Page = $this->app['eccube.repository.page']
             ->findOrCreate(null, $this->DeviceType);
-        $this->actual = $PageLayout->getUrl();
+        $this->actual = $Page->getUrl();
 
         $this->verify();
     }
@@ -56,11 +56,11 @@ class PageLayoutRepositoryTest extends EccubeTestCase
             'DeviceType' => DeviceType::DEVICE_TYPE_PC,
         );
 
-        $PageLayout = $this->app['eccube.repository.page_layout']
+        $Page = $this->app['eccube.repository.page']
             ->findOrCreate(1, $this->DeviceType);
         $this->actual = array(
-            'url' => $PageLayout->getUrl(),
-            'DeviceType' => $PageLayout->getDeviceType()->getId(),
+            'url' => $Page->getUrl(),
+            'DeviceType' => $Page->getDeviceType()->getId(),
         );
 
         $this->verify();
@@ -71,7 +71,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
         // FIXME 同等の処理をレイアウトコントローラに仮実装している。本実装時に見直し。
         $this->markTestIncomplete('findUnusedBlocks is not implemented.');
 
-        $Blocks = $this->app['eccube.repository.page_layout']
+        $Blocks = $this->app['eccube.repository.page']
             ->findUnusedBlocks($this->DeviceType, 1);
 
         $this->expected = 0;
@@ -81,53 +81,53 @@ class PageLayoutRepositoryTest extends EccubeTestCase
 
     public function testGet()
     {
-        $PageLayout = $this->app['eccube.repository.page_layout']
+        $Page = $this->app['eccube.repository.page']
             ->getByDeviceTypeAndId($this->DeviceType, 1);
 
         $this->expected = 1;
-        $this->actual = $PageLayout->getId();
+        $this->actual = $Page->getId();
         $this->verify();
-        $this->assertNotNull($PageLayout->getBlockPositions());
-        foreach ($PageLayout->getBlockPositions() as $BlockPosition) {
+        $this->assertNotNull($Page->getBlockPositions());
+        foreach ($Page->getBlockPositions() as $BlockPosition) {
             $this->assertNotNull($BlockPosition->getBlock()->getId());
         }
     }
 
     public function testGetByUrl()
     {
-        $PageLayout = $this->app['eccube.repository.page_layout']
+        $Page = $this->app['eccube.repository.page']
             ->getByUrl($this->DeviceType, 'homepage');
 
         $this->expected = 1;
-        $this->actual = $PageLayout->getId();
+        $this->actual = $Page->getId();
         $this->verify();
-        $this->assertNotNull($PageLayout->getBlockPositions());
-        foreach ($PageLayout->getBlockPositions() as $BlockPosition) {
+        $this->assertNotNull($Page->getBlockPositions());
+        foreach ($Page->getBlockPositions() as $BlockPosition) {
             $this->assertNotNull($BlockPosition->getBlock()->getId());
         }
     }
 
     public function testGetPageList()
     {
-        $PageLayouts = $this->app['eccube.repository.page_layout']
+        $Pages = $this->app['eccube.repository.page']
             ->getPageList($this->DeviceType);
-        $All = $this->app['eccube.repository.page_layout']->findAll();
+        $All = $this->app['eccube.repository.page']->findAll();
 
         $this->expected = count($All) - 1;
-        $this->actual = count($PageLayouts);
+        $this->actual = count($Pages);
         $this->verify();
     }
 
     public function testGetWriteTemplatePath()
     {
         $this->expected = $this->app['config']['template_realdir'];
-        $this->actual = $this->app['eccube.repository.page_layout']->getWriteTemplatePath();
+        $this->actual = $this->app['eccube.repository.page']->getWriteTemplatePath();
         $this->verify();
     }
     public function testGetWriteTemplatePathWithUser()
     {
         $this->expected = $this->app['config']['user_data_realdir'];
-        $this->actual = $this->app['eccube.repository.page_layout']->getWriteTemplatePath(true);
+        $this->actual = $this->app['eccube.repository.page']->getWriteTemplatePath(true);
         $this->verify();
     }
 
@@ -145,7 +145,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
 
         file_put_contents($this->app['config']['template_realdir'].'/'.$fileName.'.twig', 'test');
 
-        $data = $this->app['eccube.repository.page_layout']->getReadTemplateFile($fileName);
+        $data = $this->app['eccube.repository.page']->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
@@ -166,7 +166,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
 
         file_put_contents($this->app['config']['template_default_realdir'].'/'.$fileName.'.twig', 'test');
 
-        $data = $this->app['eccube.repository.page_layout']->getReadTemplateFile($fileName);
+        $data = $this->app['eccube.repository.page']->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
@@ -185,7 +185,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
 
         file_put_contents($this->app['config']['user_data_realdir'].'/'.$fileName.'.twig', 'test');
 
-        $data = $this->app['eccube.repository.page_layout']->getReadTemplateFile($fileName, true);
+        $data = $this->app['eccube.repository.page']->getReadTemplateFile($fileName, true);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';

@@ -183,12 +183,12 @@ $(function() {
                                         <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
                                         {% endif %}
                                     </li>
-                                    {% for disp in disps %}
+                                    {% for productStatus in productStatuses %}
                                       <li>
-                                      {% if page_status == disp.id %}
-                                      <a>{{ disp.name|e }}</a>
+                                      {% if page_status == productStatus.id %}
+                                      <a>{{ productStatus.name|e }}</a>
                                       {% else %}
-                                      <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                      <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': productStatus.id} ) }}">{{ productStatus.name|e }}</a>
                                       {% endif %}
                                       </li>
                                     {% endfor %}
@@ -280,12 +280,12 @@ $(function() {
                                                 <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
                                             {% endif %}
                                         </li>
-                                        {% for disp in disps %}
+                                        {% for productStatus in productStatuses %}
                                             <li>
-                                                {% if page_status == disp.id %}
-                                                    <a>{{ disp.name|e }}</a>
+                                                {% if page_status == productStatus.id %}
+                                                    <a>{{ productStatus.name|e }}</a>
                                                 {% else %}
-                                                    <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                                    <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': productStatus.id} ) }}">{{ productStatus.name|e }}</a>
                                                 {% endif %}
                                             </li>
                                         {% endfor %}

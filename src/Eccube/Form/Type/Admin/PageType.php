@@ -22,38 +22,37 @@
  */
 
 
-namespace Eccube\Form\Type\Master;
+namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\FormType;
-use Eccube\Form\Type\MasterType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
  */
-class DispType extends AbstractType
+class PageType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Disp',
-            'expanded' => true,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return MasterType::class;
+        $builder
+            ->add('layout', EntityType::class, array(
+                'label' => false,
+                'class' => 'Eccube\Entity\Page',
+                'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er
+                        ->createQueryBuilder('l')
+                        ->where('l.id <> 0')
+                        ->orderBy('l.id', 'ASC');
+                },
+            ));
     }
 
     /**
@@ -61,6 +60,6 @@ class DispType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'disp';
+        return 'admin_page';
     }
 }

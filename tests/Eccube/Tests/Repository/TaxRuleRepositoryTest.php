@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\TaxRule;
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -40,9 +41,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function createTaxRule($tax_rate = 8, $apply_date = null)
     {
         $TaxRule = new TaxRule();
-        $CalcRule = $this->app['orm.em']
-            ->getRepository('Eccube\Entity\Master\Taxrule')
-            ->find(1);
+        $RoundingType = $this->app['orm.em']->find(RoundingType::class, 1);
         $Member = $this->app['eccube.repository.member']->find(2);
         if (is_null($apply_date)) {
             $apply_date = $this->DateTimeNow;
@@ -50,7 +49,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $TaxRule
             ->setTaxRate($tax_rate)
             ->setApplyDate($apply_date)
-            ->setCalcRule($CalcRule)
+            ->setRoundingType($RoundingType)
             ->setTaxAdjust(0)
             ->setCreator($Member);
         $this->app['orm.em']->persist($TaxRule);
@@ -272,7 +271,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
      *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1029
      */
-    public function testShipmentItem()
+    public function testOrderItem()
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
@@ -290,12 +289,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $Shippings = $Order->getShippings();
 
         foreach ($Shippings as $Shipping) {
-            $ShipmentItems = $Shipping->getShipmentItems();
+            $OrderItems = $Shipping->getOrderItems();
 
-            foreach ($ShipmentItems as $Shipment) {
+            foreach ($OrderItems as $Shipment) {
                 $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
                 $this->actual = $Shipment->getPriceIncTax();
-                $this->verify('ShipmentItem で TaxRuleEventSubscriber が正常にコールされるか');
+                $this->verify('OrderItem で TaxRuleEventSubscriber が正常にコールされるか');
             }
         }
     }

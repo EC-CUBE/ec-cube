@@ -6,7 +6,7 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Order;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
@@ -87,7 +87,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 1'));
         $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 2'));
         $itemHolder = new Order();
-        $itemHolder->addShipmentItem(new ShipmentItem());
+        $itemHolder->addOrderItem(new OrderItem());
 
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::warn('error 1'));
@@ -100,8 +100,8 @@ class PurchaseFlowTest extends EccubeTestCase
         $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 1'));
         $this->flow->addItemProcessor(new PurchaseFlowTest_FailProcessor('error 2'));
         $itemHolder = new Order();
-        $itemHolder->addShipmentItem(new ShipmentItem());
-        $itemHolder->addShipmentItem(new ShipmentItem());
+        $itemHolder->addOrderItem(new OrderItem());
+        $itemHolder->addOrderItem(new OrderItem());
 
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::warn('error 1'));

@@ -25,7 +25,7 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
-use Eccube\Entity\Master\Disp;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -356,7 +356,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/Product with status 01/');
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.disp']->find(Disp::DISPLAY_HIDE);
+        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
         $testProduct->setStatus($display);
         $this->app['orm.em']->flush();
 
@@ -388,7 +388,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/[Product with status 01]{1}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.disp']->find(Disp::DISPLAY_HIDE);
+        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
         $this->app['orm.em']->flush();
 
@@ -420,7 +420,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/[Product with status 01]{1}[Product with status 02]{2}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.disp']->find(Disp::DISPLAY_HIDE);
+        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
         $this->app['orm.em']->flush();
 
@@ -477,7 +477,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $TaxRule->setProductClass($ProductClass)
                 ->setCreator($Product->getCreator())
                 ->setProduct($Product)
-                ->setCalcRule($DefaultTaxRule->getCalcRule())
+                ->setRoundingType($DefaultTaxRule->getRoundingType())
                 ->setTaxRate($before)
                 ->setTaxAdjust(0)
                 ->setApplyDate(new \DateTime());

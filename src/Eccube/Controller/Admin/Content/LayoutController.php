@@ -197,7 +197,7 @@ class LayoutController extends AbstractController
                     continue;
                 }
                 // 未使用ブロックはinsertしない
-                if ($data['target_id_'.$i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
+                if ($data['target_id_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
                     continue;
                 }
                 $Block = $this->blockRepository->find($data['block_id_'.$i]);

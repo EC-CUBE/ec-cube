@@ -46,32 +46,32 @@
                                 <div class="item_pattern td"><strong>レイアウト名</strong></div>
                                 <div class="item_pattern td"></div>
                             </div>
-                            {% for PageLayout in PageLayouts %}
-                                <div id="sortable_list_box__item--{{ PageLayout.id }}" class="item_box tr">
-                                    <div id="sortable_list_box__name--{{ PageLayout.id }}" class="item_pattern td">
-                                        <a href="{{ url('admin_content_page_edit', {id : PageLayout.id } ) }}">{{ PageLayout.name }}</a>
+                            {% for Page in Pages %}
+                                <div id="sortable_list_box__item--{{ Page.id }}" class="item_box tr">
+                                    <div id="sortable_list_box__name--{{ Page.id }}" class="item_pattern td">
+                                        <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">{{ Page.name }}</a>
                                     </div>
-                                    <div id="sortable_list_box__layout--{{ PageLayout.id }}" class="td">
+                                    <div id="sortable_list_box__layout--{{ Page.id }}" class="td">
                                         <ul class="">
-                                        {% for Layout in PageLayout.layouts %}
+                                        {% for Layout in Page.layouts %}
                                             <li>{{ Layout.device_type.name }}：{{ Layout.name }}</li>
                                         {% endfor %}
                                         </ul>
                                     </div>
-                                    <div id="sortable_list_box__menu_box--{{ PageLayout.id }}" class="icon_edit td">
-                                        <div id="sortable_list_box__menu_box_toggle--{{ PageLayout.id }}" class="dropdown">
+                                    <div id="sortable_list_box__menu_box--{{ Page.id }}" class="icon_edit td">
+                                        <div id="sortable_list_box__menu_box_toggle--{{ Page.id }}" class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                            <ul id="sortable_list_box__menu--{{ PageLayout.id }}" class="dropdown-menu dropdown-menu-right">
+                                            <ul id="sortable_list_box__menu--{{ Page.id }}" class="dropdown-menu dropdown-menu-right">
                                                 <li>
-                                                    {% if PageLayout.filename|length >= 1 %}
-                                                        <a href="{{ url('admin_content_page_edit', {id : PageLayout.id } ) }}">ページ編集</a>
+                                                    {% if Page.filename|length >= 1 %}
+                                                        <a href="{{ url('admin_content_page_edit', {id : Page.id } ) }}">ページ編集</a>
                                                     {% else %}
                                                         <a>ページ編集</a>
                                                     {% endif %}
                                                 </li>
                                                 <li>
-                                                    {% if PageLayout.edit_flg == constant('Eccube\\Entity\\PageLayout::EDIT_FLG_USER') %}
-                                                        <a href="{{ url('admin_content_page_delete', { 'id': PageLayout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このページを削除してもよろしいですか？">削除</a>
+                                                    {% if Page.edit_flg == constant('Eccube\\Entity\\Page::EDIT_FLG_USER') %}
+                                                        <a href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このページを削除してもよろしいですか？">削除</a>
                                                     {% else %}
                                                         <a>削除</a>
                                                     {% endif %}

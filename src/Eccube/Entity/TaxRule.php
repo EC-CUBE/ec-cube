@@ -175,14 +175,14 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     private $Product;
 
     /**
-     * @var \Eccube\Entity\Master\Taxrule
+     * @var \Eccube\Entity\Master\RoundingType
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Taxrule")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="calc_rule", referencedColumnName="id")
      * })
      */
-    private $CalcRule;
+    private $RoundingType;
 
 
     /**
@@ -438,13 +438,13 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set calcRule.
      *
-     * @param \Eccube\Entity\Master\Taxrule|null $calcRule
+     * @param \Eccube\Entity\Master\RoundingType|null $calcRule
      *
      * @return TaxRule
      */
-    public function setCalcRule(\Eccube\Entity\Master\Taxrule $calcRule = null)
+    public function setRoundingType(\Eccube\Entity\Master\RoundingType $RoundingType = null)
     {
-        $this->CalcRule = $calcRule;
+        $this->RoundingType = $RoundingType;
 
         return $this;
     }
@@ -452,11 +452,11 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get calcRule.
      *
-     * @return \Eccube\Entity\Master\Taxrule|null
+     * @return \Eccube\Entity\Master\RoundingType|null
      */
-    public function getCalcRule()
+    public function getRoundingType()
     {
-        return $this->CalcRule;
+        return $this->RoundingType;
     }
 
     /**

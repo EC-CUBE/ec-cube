@@ -178,11 +178,11 @@ class EditController extends AbstractController
 
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
-        $OriginalShipmentItems = new ArrayCollection();
+        $OriginalOrderItems = new ArrayCollection();
 
         // 編集前の情報を保持
-        foreach ($TargetOrder->getShipmentItems() as $tmpShipmentItem) {
-            $OriginalShipmentItems->add($tmpShipmentItem);
+        foreach ($TargetOrder->getOrderItems() as $tmpOrderItem) {
+            $OriginalOrderItems->add($tmpOrderItem);
         }
 
         $builder = $this->formFactory

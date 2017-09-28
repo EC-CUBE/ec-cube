@@ -37,7 +37,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -603,7 +603,7 @@ class ShoppingService
             $Order->addOrderDetail($OrderDetail);
 
             // 配送商品情報を作成
-            $this->getNewShipmentItem($Order, $Product, $ProductClass, $quantity);
+            $this->getNewOrderItem($Order, $Product, $ProductClass, $quantity);
         }
 
         return $Order;
@@ -628,7 +628,7 @@ class ShoppingService
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getCalcRule()->getId())
+            ->setTaxRule($TaxRule->getRoundingType()->getId())
             ->setTaxRate($TaxRule->getTaxRate());
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
@@ -654,12 +654,12 @@ class ShoppingService
      * @param Product $Product
      * @param ProductClass $ProductClass
      * @param $quantity
-     * @return \Eccube\Entity\ShipmentItem
+     * @return \Eccube\Entity\OrderItem
      */
-    public function getNewShipmentItem(Order $Order, Product $Product, ProductClass $ProductClass, $quantity)
+    public function getNewOrderItem(Order $Order, Product $Product, ProductClass $ProductClass, $quantity)
     {
 
-        $ShipmentItem = new ShipmentItem();
+        $OrderItem = new OrderItem();
         $shippings = $Order->getShippings();
 
         // 選択された商品がどのお届け先情報と関連するかチェック
@@ -685,7 +685,7 @@ class ShoppingService
 
         $Shipping->setShippingDeliveryFee($Shipping->getShippingDeliveryFee() + $productDeliveryFeeTotal);
 
-        $ShipmentItem->setShipping($Shipping)
+        $OrderItem->setShipping($Shipping)
             ->setOrder($Order)
             ->setProductClass($ProductClass)
             ->setProduct($Product)
@@ -696,18 +696,18 @@ class ShoppingService
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if (!is_null($ClassCategory1)) {
-            $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
-            $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
+            $OrderItem->setClasscategoryName1($ClassCategory1->getName());
+            $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
         }
         $ClassCategory2 = $ProductClass->getClassCategory2();
         if (!is_null($ClassCategory2)) {
-            $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
-            $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
+            $OrderItem->setClasscategoryName2($ClassCategory2->getName());
+            $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
         }
-        $Shipping->addShipmentItem($ShipmentItem);
-        $this->entityManager->persist($ShipmentItem);
+        $Shipping->addOrderItem($OrderItem);
+        $this->entityManager->persist($OrderItem);
 
-        return $ShipmentItem;
+        return $OrderItem;
 
     }
 
@@ -737,9 +737,9 @@ class ShoppingService
     public function getProductDeliveryFee(Shipping $Shipping)
     {
         $productDeliveryFeeTotal = 0;
-        $shipmentItems = $Shipping->getShipmentItems();
-        foreach ($shipmentItems as $ShipmentItem) {
-            $productDeliveryFeeTotal += $ShipmentItem->getProductClass()->getDeliveryFee() * $ShipmentItem->getQuantity();
+        $OrderItems = $Shipping->getOrderItems();
+        foreach ($OrderItems as $OrderItem) {
+            $productDeliveryFeeTotal += $OrderItem->getProductClass()->getDeliveryFee() * $OrderItem->getQuantity();
         }
 
         return $productDeliveryFeeTotal;
@@ -859,7 +859,7 @@ class ShoppingService
     {
         $orderDetails = $Order->getOrderDetails();
 
-        /** @var ShipmentItem $orderDetail */
+        /** @var OrderItem $orderDetail */
         foreach ($orderDetails as $orderDetail) {
 
             if (is_null($orderDetail->getProduct())) {
@@ -875,7 +875,7 @@ class ShoppingService
             }
 
             // 商品公開ステータスチェック
-            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
+            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
 
                 // @deprecated 3.1以降ではexceptionをthrowする

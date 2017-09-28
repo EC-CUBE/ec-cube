@@ -134,7 +134,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function isEnable()
     {
-        return $this->getStatus()->getId() === \Eccube\Entity\Master\Disp::DISPLAY_SHOW ? true : false;
+        return $this->getStatus()->getId() === \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW ? true : false;
     }
 
     /**
@@ -580,9 +580,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $Creator;
 
     /**
-     * @var \Eccube\Entity\Master\Disp
+     * @var \Eccube\Entity\Master\ProductStatus
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Disp")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductStatus")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="status", referencedColumnName="id")
      * })
@@ -1055,11 +1055,11 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set status.
      *
-     * @param \Eccube\Entity\Master\Disp|null $status
+     * @param \Eccube\Entity\Master\ProductStatus|null $status
      *
      * @return Product
      */
-    public function setStatus(\Eccube\Entity\Master\Disp $status = null)
+    public function setStatus(\Eccube\Entity\Master\ProductStatus $status = null)
     {
         $this->Status = $status;
 
@@ -1069,7 +1069,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get status.
      *
-     * @return \Eccube\Entity\Master\Disp|null
+     * @return \Eccube\Entity\Master\ProductStatus|null
      */
     public function getStatus()
     {

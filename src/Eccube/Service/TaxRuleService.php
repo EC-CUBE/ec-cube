@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Service;
+
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Repository\TaxRuleRepository;
@@ -53,7 +54,7 @@ class TaxRuleService
         /* @var $TaxRule \Eccube\Entity\TaxRule */
         $TaxRule = $this->taxRuleRepository->getByRule($product, $productClass, $pref, $country);
 
-        return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getCalcRule()->getId(), $TaxRule->getTaxAdjust());
+        return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getRoundingType()->getId(), $TaxRule->getTaxAdjust());
     }
 
     /**
@@ -76,14 +77,14 @@ class TaxRuleService
      *
      * @param  int    $price     計算対象の金額
      * @param  int    $taxRate   税率(%単位)
-     * @param  int    $calcRule  端数処理
+     * @param  int    $RoundingType  端数処理
      * @param  int    $taxAdjust 調整額
      * @return double 税金額
      */
-    public function calcTax($price, $taxRate, $calcRule, $taxAdjust = 0)
+    public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = 0)
     {
         $tax = $price * $taxRate / 100;
-        $roundTax = $this->roundByCalcRule($tax, $calcRule);
+        $roundTax = $this->roundByRoundingType($tax, $RoundingType);
 
         return $roundTax + $taxAdjust;
     }
@@ -95,19 +96,19 @@ class TaxRuleService
      * @param  integer       $calcRule 課税規則
      * @return double        端数処理後の数値
      */
-    public function roundByCalcRule($value, $calcRule)
+    public function roundByRoundingType($value, $RoundingType)
     {
-        switch ($calcRule) {
+        switch ($RoundingType) {
             // 四捨五入
-            case \Eccube\Entity\Master\Taxrule::ROUND:
+            case \Eccube\Entity\Master\RoundingType::ROUND:
                 $ret = round($value);
                 break;
             // 切り捨て
-            case \Eccube\Entity\Master\Taxrule::FLOOR:
+            case \Eccube\Entity\Master\RoundingType::FLOOR:
                 $ret = floor($value);
                 break;
             // 切り上げ
-            case \Eccube\Entity\Master\Taxrule::CEIL:
+            case \Eccube\Entity\Master\RoundingType::CEIL:
                 $ret = ceil($value);
                 break;
             // デフォルト:切り上げ

@@ -28,11 +28,11 @@ use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Eccube\Repository\PageLayoutRepository;
+use Eccube\Repository\PageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,10 +64,10 @@ class UserDataController
     protected $appConfig;
 
     /**
-     * @Inject(PageLayoutRepository::class)
-     * @var PageLayoutRepository
+     * @Inject(PageRepository::class)
+     * @var PageRepository
      */
-    protected $pageLayoutRepository;
+    protected $pageRepository;
 
     /**
      * @Inject(DeviceTypeRepository::class)
@@ -83,15 +83,15 @@ class UserDataController
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $this->pageLayoutRepository->findOneBy(
+        $Page = $this->pageRepository->findOneBy(
             array(
                 'url' => $route,
                 'DeviceType' => $DeviceType,
-                'edit_flg' => PageLayout::EDIT_FLG_USER,
+                'edit_flg' => Page::EDIT_FLG_USER,
             )
         );
 
-        if (is_null($PageLayout)) {
+        if (is_null($Page)) {
             throw new NotFoundHttpException();
         }
 
@@ -100,12 +100,12 @@ class UserDataController
         $paths[] = $this->appConfig['user_data_realdir'];
         $this->twigLoaderChain->addLoader(new \Twig_Loader_Filesystem($paths));
 
-        $file = $PageLayout->getFileName().'.twig';
+        $file = $Page->getFileName().'.twig';
 
         $event = new EventArgs(
             array(
                 'DeviceType' => $DeviceType,
-                'PageLayout' => $PageLayout,
+                'Page' => $Page,
                 'file' => $file,
             ),
             $request

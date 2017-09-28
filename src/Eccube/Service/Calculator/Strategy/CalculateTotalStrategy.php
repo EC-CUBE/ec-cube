@@ -8,10 +8,10 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
 use Eccube\Entity\PurchaseInterface;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderItemTypeRepository;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 
 /**
  * 明細の合計を集計して Order にセットする.
@@ -27,11 +27,11 @@ class CalculateTotalStrategy implements CalculateStrategyInterface
     /** @var OrderItemTypeRepository */
     protected $OrderItemTypeRepository;
 
-    public function execute(ShipmentItemCollection $ShipmentItems)
+    public function execute(OrderItemCollection $OrderItems)
     {
-        $total = $ShipmentItems->reduce(
-            function($total, $ShipmentItem) {
-                return $total + $ShipmentItem->getPrice() * $ShipmentItem->getQuantity();
+        $total = $OrderItems->reduce(
+            function($total, $OrderItem) {
+                return $total + $OrderItem->getPrice() * $OrderItem->getQuantity();
             }, 0
         );
         $this->Order->setTotal($total);

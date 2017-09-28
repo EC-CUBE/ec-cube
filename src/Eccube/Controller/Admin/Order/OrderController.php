@@ -36,7 +36,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Repository\CustomerRepository;
-use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\SexRepository;
@@ -106,10 +106,10 @@ class OrderController extends AbstractController
     protected $pageMaxRepository;
 
     /**
-     * @Inject(DispRepository::class)
-     * @var DispRepository
+     * @Inject(ProductStatusRepository::class)
+     * @var ProductStatusRepository
      */
-    protected $dispRepository;
+    protected $productStatusRepository;
 
     /**
      * @Inject("eccube.event.dispatcher")
@@ -154,7 +154,7 @@ class OrderController extends AbstractController
 
         $pagination = array();
 
-        $disps = $this->dispRepository->findAll();
+        $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
         $page_count = $this->appConfig['default_page_count'];
         $page_status = null;
@@ -272,7 +272,7 @@ class OrderController extends AbstractController
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
-            'disps' => $disps,
+            'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_status' => $page_status,
@@ -470,9 +470,9 @@ class OrderController extends AbstractController
                 $Shippings = $Order->getShippings();
 
                 foreach ($Shippings as $Shipping) {
-                    /** @var $ShipmentItems \Eccube\Entity\ShipmentItem */
-                    $ShipmentItems = $Shipping->getShipmentItems();
-                    foreach ($ShipmentItems as $ShipmentItem) {
+                    /** @var $OrderItems \Eccube\Entity\OrderItem */
+                    $OrderItems = $Shipping->getOrderItems();
+                    foreach ($OrderItems as $OrderItem) {
                         $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                         // CSV出力項目と合致するデータを取得.
@@ -485,14 +485,14 @@ class OrderController extends AbstractController
                             }
                             if ($ExportCsvRow->isDataNull()) {
                                 // 配送商品を検索.
-                                $ExportCsvRow->setData($csvService->getData($Csv, $ShipmentItem));
+                                $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
                             }
 
                             $event = new EventArgs(
                                 array(
                                     'csvService' => $csvService,
                                     'Csv' => $Csv,
-                                    'ShipmentItem' => $ShipmentItem,
+                                    'OrderItem' => $OrderItem,
                                     'ExportCsvRow' => $ExportCsvRow,
                                 ),
                                 $request

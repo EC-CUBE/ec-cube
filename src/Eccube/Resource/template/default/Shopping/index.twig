@@ -228,7 +228,7 @@ $(function() {
         <div class="ec-orderRole__detail">
             <div class="ec-orderOrder">
                 <ul class="ec-borderedList">
-                    {% for orderDetail in Order.shipmentItems %}
+                    {% for orderDetail in Order.orderItems %}
                     <li>
                         <div class="ec-imageGrid">
                             <div class="ec-imageGrid__img"><img src="{{ app.config.image_save_urlpath }}/{{ (orderDetail.product is null ? null : orderDetail.product.MainListImage)|no_image_product }}"></div>
@@ -302,19 +302,19 @@ $(function() {
                     </div>
                     <div class="ec-orderDelivery__item">
                         <ul class="ec-borderedList">
-                            {% for shipmentItem in shipping.shipmentItems %}
+                            {% for orderItem in shipping.orderItems %}
                             <li>
                                 <div class="ec-imageGrid">
-                                    <div class="ec-imageGrid__img"><img src="{{ app.config.image_save_urlpath }}/{{ (shipmentItem.product is null ? null : shipmentItem.product.MainListImage)|no_image_product }}" alt="{{ shipmentItem.productName }}"></div>
+                                    <div class="ec-imageGrid__img"><img src="{{ app.config.image_save_urlpath }}/{{ (orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product }}" alt="{{ orderItem.productName }}"></div>
                                     <div class="ec-imageGrid__content">
-                                        <p>{{ shipmentItem.productName }}</p>
-                                        {% if shipmentItem.productClass is not null and shipmentItem.productClass.classCategory1 %}
-                                            <p>{{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}</p>
+                                        <p>{{ orderItem.productName }}</p>
+                                        {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
+                                            <p>{{ orderItem.productClass.classCategory1.className }}：{{ orderItem.productClass.classCategory1 }}</p>
                                         {% endif %}
-                                        {% if shipmentItem.productClass is not null and shipmentItem.productClass.classCategory2 %}
-                                            <p>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}</p>
+                                        {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
+                                            <p>{{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}</p>
                                         {% endif %}
-                                        <p>{{ shipmentItem.priceIncTax|price }} × {{ shipmentItem.quantity|number_format }}<span>小計：{{ shipmentItem.totalPrice|price }}</span></p>
+                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>小計：{{ orderItem.totalPrice|price }}</span></p>
                                     </div>
                                 </div>
                             </li>

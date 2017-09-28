@@ -22,37 +22,38 @@
  */
 
 
-namespace Eccube\Form\Type\Admin;
+namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\FormType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @FormType
  */
-class PageLayoutType extends AbstractType
+class ProductStatusType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $builder
-            ->add('layout', EntityType::class, array(
-                'label' => false,
-                'class' => 'Eccube\Entity\PageLayout',
-                'choice_label' => 'name',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('l')
-                        ->where('l.id <> 0')
-                        ->orderBy('l.id', 'ASC');
-                },
-            ));
+        $resolver->setDefaults(array(
+            'class' => 'Eccube\Entity\Master\ProductStatus',
+            'expanded' => true,
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return MasterType::class;
     }
 
     /**
@@ -60,6 +61,6 @@ class PageLayoutType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'admin_page_layout';
+        return 'product_status';
     }
 }

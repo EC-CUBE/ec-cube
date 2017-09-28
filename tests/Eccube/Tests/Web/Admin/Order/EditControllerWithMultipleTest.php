@@ -336,8 +336,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         }
 
         foreach ($formDataForEdit['Shippings'] as &$shipping) {
-            foreach ($shipping['ShipmentItems'] as &$shipmentItem) {
-                $shipmentItem['quantity'] += $addQuantity;
+            foreach ($shipping['orderItems'] as &$orderItem) {
+                $orderItem['quantity'] += $addQuantity;
             }
         }
 
@@ -385,13 +385,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $productClassExpected = array();
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
             $stopFlag = true;
-            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
+            foreach ($Shippings['OrderItems'] as $subIsx => $OrderItem) {
                 if ($stopFlag === true) {
                     $stopFlag = false;
-                    $newFormData['Shippings'][$idx]['ShipmentItems'][$subIsx]['quantity'] = 0;
+                    $newFormData['Shippings'][$idx]['OrderItems'][$subIsx]['quantity'] = 0;
                     continue;
                 }
-                $productClassExpected[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+                $productClassExpected[$idx][$OrderItem['ProductClass']] = $OrderItem['ProductClass'];
             }
         }
         $this->client->request(
@@ -406,8 +406,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         $productClassActual = array();
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
-            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
-                $productClassActual[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+            foreach ($Shippings['OrderItems'] as $subIsx => $OrderItem) {
+                $productClassActual[$idx][$OrderItem['ProductClass']] = $OrderItem['ProductClass'];
             }
         }
 
@@ -475,8 +475,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     /**
      * 複数配送用受注編集用フォーム作成.
      *
-     * createFormData() との違いは、 $Shipping[N]['ShipmentItems'] がフォームに追加されている.
-     * OrderDetails は、 $Shippings[N]['ShipmentItems] から生成される.
+     * createFormData() との違いは、 $Shipping[N]['OrderItems'] がフォームに追加されている.
+     * OrderDetails は、 $Shippings[N]['OrderItems] から生成される.
      *
      * @param Customer $Customer
      * @param array $Shippings お届け先情報の配列
@@ -488,7 +488,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $formData['Shippings'] = $Shippings;
         $OrderDetails = array();
         foreach ($Shippings as $Shipping) {
-            foreach ($Shipping['ShipmentItems'] as $Item) {
+            foreach ($Shipping['OrderItems'] as $Item) {
                 if (empty($OrderDetails[$Item['ProductClass']])) {
                     $OrderDetails[$Item['ProductClass']] = array(
                         'Product' => $Item['Product'],
@@ -536,7 +536,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         }
         $Shipping =
             array (
-                'ShipmentItems' => $ShippingItems,
+                'OrderItems' => $ShippingItems,
                 'name' => array(
                     'name01' => $faker->lastName,
                     'name02' => $faker->firstName,

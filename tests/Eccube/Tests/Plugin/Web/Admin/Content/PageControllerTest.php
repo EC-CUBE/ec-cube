@@ -25,7 +25,7 @@
 namespace Eccube\Tests\Plugin\Web\Admin\Content;
 
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
@@ -88,17 +88,17 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $DeviceType = $this->app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = new PageLayout();
-        $PageLayout->setDeviceType($DeviceType);
-        $PageLayout->setEditFlg(PageLayout::EDIT_FLG_USER);
-        $PageLayout->setUrl('dummy');
-        $this->app['orm.em']->persist($PageLayout);
+        $Page = new Page();
+        $Page->setDeviceType($DeviceType);
+        $Page->setEditFlg(Page::EDIT_FLG_USER);
+        $Page->setUrl('dummy');
+        $this->app['orm.em']->persist($Page);
         $this->app['orm.em']->flush();
 
         $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_page_delete',
-                array('id' => $PageLayout->getId())
+                array('id' => $Page->getId())
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
