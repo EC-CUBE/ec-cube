@@ -74,7 +74,8 @@ if (!in_array('--skip-initdb', $argv)) {
     initializeDatabase($em);
 }
 
-createConfigFiles();
+createEnvFile();
+copyConfigFiles();
 
 out('EC-CUBE3 install finished successfully!', 'success');
 $root_urlpath = env('ROOT_URLPATH');
@@ -410,7 +411,15 @@ function updatePermissions($argv)
     }
 }
 
-function createConfigFiles()
+function copyConfigFiles()
+{
+    $src = __DIR__.'/src/Eccube/Resource/config';
+    $dist = __DIR__.'/app/config/eccube';
+    $fs = new \Symfony\Component\Filesystem\Filesystem();
+    $fs->mirror($src, $dist, null, ['override' => true]);
+}
+
+function createEnvFile()
 {
     $content = '';
     foreach (array_keys(getExampleVariables()) as $key) {
@@ -440,6 +449,8 @@ function createConfigFiles()
         }
         $content .= sprintf('%s=%s', $key, $value).PHP_EOL;
     }
+
+    $content .= 'ECCUBE_INSTALL=1';
 
     file_put_contents(__DIR__.'/app/config/eccube/.env', $content);
 }
