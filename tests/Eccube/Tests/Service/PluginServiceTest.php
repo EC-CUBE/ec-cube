@@ -641,6 +641,7 @@ EOD;
         $this->assertTrue($service->install($tmpfile));
 
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
+        $this->app['orm.em']->refresh($plugin);
 
         $this->expected = realpath($pluginConfigCache);
         $this->actual = realpath(ConfigManager::getPluginConfigCacheFile());
