@@ -924,11 +924,11 @@ class ShoppingService
 
         // 配送時に最大となる商品日数を取得
         foreach ($Order->getOrderItems() as $item) {
-            $ProductClass = $item->getProductClass();
-            if (!$ProductClass) {
+            if (!$item->isProduct()) {
                 continue;
             }
-            $deliveryDate = $ProductClass()->getDeliveryDate();
+            $ProductClass = $item->getProductClass();
+            $deliveryDate = $ProductClass->getDeliveryDate();
             if (!is_null($deliveryDate)) {
                 if ($deliveryDate->getValue() < 0) {
                     // 配送日数がマイナスの場合はお取り寄せなのでスキップする

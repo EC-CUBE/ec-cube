@@ -257,116 +257,6 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    public function testIsOrderProduct()
-    {
-        $Order = $this->createOrder($this->Customer);
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-
-        // 商品を購入可能な状態に設定
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProduct()->setStatus($ProductStatus);
-            $Detail->getProductClass()->setSaleLimit(100);
-            $Detail->setQuantity(2);
-            $Detail->getProductClass()->setStockUnlimited(Constant::ENABLED);
-        }
-        $this->app['orm.em']->flush();
-
-        $this->expected = true;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
-
-        $this->verify();
-    }
-
-    public function testIsOrderProductWithHide()
-    {
-        $Order = $this->createOrder($this->Customer);
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
-
-        // 商品を非表示に設定
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProduct()->setStatus($ProductStatus);
-            break;
-        }
-        $this->app['orm.em']->flush();
-
-        try {
-            $this->app['eccube.service.shopping']->isOrderProduct(
-                $this->app['orm.em'],
-                $Order
-            );
-        } catch (ShoppingException $e) {
-            $this->actual = $e->getMessage();
-            $this->expected = 'cart.product.not.status';
-        }
-
-        $this->verify();
-    }
-
-    public function testIsOrderProductWithSaleLimit()
-    {
-        $Order = $this->createOrder($this->Customer);
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProduct()->setStatus($ProductStatus);
-        }
-
-        // 販売制限1, 注文数量2 に設定
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProductClass()->setSaleLimit(1);
-            $Detail->setQuantity(2);
-            break;
-        }
-        $this->app['orm.em']->flush();
-
-        try {
-            $this->app['eccube.service.shopping']->isOrderProduct(
-                $this->app['orm.em'],
-                $Order
-            );
-        } catch (ShoppingException $e) {
-            $this->actual = $e->getMessage();
-            $this->expected = 'cart.over.sale_limit';
-        }
-
-        $this->verify();
-    }
-
-    public function testIsOrderProductWithStock()
-    {
-        $Order = $this->createOrder($this->Customer);
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProduct()->setStatus($ProductStatus);
-            $Detail->getProductClass()->setStockUnlimited(Constant::DISABLED);
-            $productStock = $this->app['orm.em']->getRepository('Eccube\Entity\ProductStock')->find(
-                $Detail->getProductClass()->getProductStock()->getId()
-            );
-            $productStock->setStock(1);
-        }
-
-        // 在庫1, 注文数量2 に設定
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->setQuantity(2);
-            break;
-        }
-        $this->app['orm.em']->flush();
-
-        try {
-            $this->app['eccube.service.shopping']->isOrderProduct(
-                $this->app['orm.em'],
-                $Order
-            );
-        } catch (ShoppingException $e) {
-            $this->actual = $e->getMessage();
-            $this->expected = 'cart.over.stock';
-        }
-
-        $this->verify();
-    }
-
     public function testSetOrderUpdate()
     {
         $Order = $this->createOrder($this->Customer);
@@ -390,40 +280,6 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->assertNotNull($Order->getOrderDate());
     }
 
-    public function testSetStockUpdate()
-    {
-        $Order = $this->createOrder($this->Customer);
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProduct()->setStatus($ProductStatus);
-            $Detail->getProductClass()->setStockUnlimited(Constant::DISABLED);
-            $productStock = $this->app['orm.em']->getRepository('Eccube\Entity\ProductStock')->find(
-                $Detail->getProductClass()->getProductStock()->getId()
-            );
-            $productStock->setStock(5);
-        }
-
-        // 在庫5, 注文数量2 に設定
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->setQuantity(2);
-        }
-        $this->app['orm.em']->flush();
-
-        $this->app['eccube.service.shopping']->setStockUpdate(
-            $this->app['orm.em'],
-            $Order
-        );
-        $this->app['orm.em']->flush();
-
-        foreach ($Order->getOrderDetails() as $Detail) {
-            // ProductClass を取得し直して, 在庫を比較
-            $ProductClass = $this->app['eccube.repository.product_class']->find($Detail->getProductClass()->getId());
-
-            $this->expected = 3;
-            $this->actual = $ProductClass->getStock();
-            $this->verify();
-        }
-    }
 
     public function testSetCustomerUpdate()
     {
@@ -463,8 +319,11 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         $DeliveryDate = $this->app['eccube.repository.delivery_date']->find(1);
         $Order = $this->createOrder($this->Customer);
-        foreach ($Order->getOrderDetails() as $Detail) {
-            $Detail->getProductClass()->setDeliveryDate($DeliveryDate);
+        foreach ($Order->getOrderItems() as $Item) {
+            if (!$Item->isProduct()) {
+                continue;
+            }
+            $Item->getProductClass()->setDeliveryDate($DeliveryDate);
         }
         $this->app['orm.em']->flush();
 
@@ -496,12 +355,15 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $DeliveryDate9 = $this->app['eccube.repository.delivery_date']->find(9);
         $Order = $this->createOrder($this->Customer);
         $i = 0;
-        foreach ($Order->getOrderDetails() as $Detail) {
+        foreach ($Order->getOrderItems() as $Item) {
+            if (!$Item->isProduct()) {
+                continue;
+            }
             if ($i === 0) {
                 // 1件のみ「お取り寄せ」に設定する
-                $Detail->getProductClass()->setDeliveryDate($DeliveryDate9);
+                $Item->getProductClass()->setDeliveryDate($DeliveryDate9);
             } else {
-                $Detail->getProductClass()->setDeliveryDate($DeliveryDate1);
+                $Item->getProductClass()->setDeliveryDate($DeliveryDate1);
             }
 
             $i++;
@@ -573,7 +435,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
      * #2005のテストケース
      * @link https://github.com/EC-CUBE/ec-cube/issues/2005
      */
-    public function testOrderDetailForTaxRate()
+    public function testOrderItemForTaxRate()
     {
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
@@ -594,11 +456,11 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->app['orm.em']->flush($TaxRule);
 
         // 受注明細で設定された金額
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
+        foreach ($Order->getOrderItems() as $OrderItem) {
 
-            $this->expected = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule())) * $OrderDetail->getQuantity();
+            $this->expected = ($OrderItem->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $OrderItem->getTaxRule())) * $OrderItem->getQuantity();
 
-            $this->actual = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $TaxRule->getRoundingType()->getId())) * $OrderDetail->getQuantity();
+            $this->actual = ($OrderItem->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderItem->getPrice(), $OrderItem->getTaxRate(), $TaxRule->getRoundingType()->getId())) * $OrderItem->getQuantity();
 
             $this->verify();
         }

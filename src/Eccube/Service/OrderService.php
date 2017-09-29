@@ -41,41 +41,6 @@ class OrderService
      */
     protected $shoppingService;
 
-    /**
-     * 合計数量を取得
-     *
-     * @param Order $Order
-     * @return int
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getTotalQuantity(Order $Order)
-    {
-        return $Order->calculateTotalQuantity();
-    }
-
-    /**
-     * 小計を取得
-     *
-     * @param Order $Order
-     * @return int
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getSubTotal(Order $Order)
-    {
-        return $Order->calculateSubTotal();
-    }
-
-    /**
-     * 消費税のみの小計を取得
-     *
-     * @param Order $Order
-     * @return int
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function getTotalTax(Order $Order)
-    {
-        return $Order->calculateTotalTax();
-    }
 
     /**
      * 商品種別を取得
