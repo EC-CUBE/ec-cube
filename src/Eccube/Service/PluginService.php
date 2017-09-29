@@ -81,16 +81,14 @@ class PluginService
      */
     protected $entityProxyService;
 
+    /**
+     * @Inject(SchemaService::class)
+     * @var SchemaService
+     */
+    protected $schemaService;
+
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
-
-    /**
-     * @param EntityProxyService $entityProxyService
-     */
-    public function setEntityProxyService($entityProxyService)
-    {
-        $this->entityProxyService = $entityProxyService;
-    }
 
     public function install($path, $source = 0)
     {
@@ -382,7 +380,7 @@ class PluginService
             $em->persist($plugin);
 
             $generatedFiles = $this->regenerateProxy($plugin);
-            $this->entityProxyService->updateSchema($generatedFiles);
+            $this->schemaService->updateSchema($generatedFiles);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
             $em->flush();

@@ -26,12 +26,9 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Annotation\EntityExtension;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
-use Eccube\Util\Str;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
@@ -153,40 +150,5 @@ class EntityProxyService
         }
 
         return $generatedFiles;
-    }
-
-    public function updateSchema($generatedFiles)
-    {
-        $outputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
-        mkdir($outputDir);
-
-        try {
-            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
-            $drivers = $chain->getDrivers();
-            foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace) {
-                    $newDriver = new ReloadSafeAnnotationDriver(
-                        new AnnotationReader(),
-                        $oldDriver->getPaths()
-                    );
-                    $newDriver->setFileExtension($oldDriver->getFileExtension());
-                    $newDriver->addExcludePaths($oldDriver->getExcludePaths());
-                    $newDriver->setTraitProxiesDirectory(realpath(__DIR__.'/../../../app/proxy/entity'));
-                    $newDriver->setNewProxyFiles($generatedFiles);
-                    $newDriver->setOutputDir($outputDir);
-                    $chain->addDriver($newDriver, $namespace);
-                }
-            }
-
-            $tool = new SchemaTool($this->entityManager);
-            $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
-            $tool->updateSchema($metaData, true);
-
-        } finally {
-            foreach (glob("${outputDir}/*") as  $f) {
-                unlink($f);
-            }
-            rmdir($outputDir);
-        }
     }
 }
