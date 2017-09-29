@@ -317,6 +317,7 @@ class PluginService
         Cache::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
+        $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
         ConfigManager::writePluginConfigCache();
@@ -327,18 +328,12 @@ class PluginService
     {
         try {
             $em = $this->entityManager;
-            $em->getConnection()->beginTransaction();
-
             foreach ($p->getPluginEventHandlers()->toArray() as $peh) {
                 $em->remove($peh);
             }
             $em->remove($p);
-
-            $em->persist($p);
             $em->flush();
-            $em->getConnection()->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
             throw $e;
         }
     }
