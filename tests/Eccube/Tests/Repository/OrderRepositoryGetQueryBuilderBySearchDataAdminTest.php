@@ -441,11 +441,11 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testBuyProductName()
     {
-        foreach ($this->Order1->getOrderDetails() as $OrderDetail) {
-            $OrderDetail->setProductName('アイス');
+        foreach ($this->Order1->getOrderItems() as $item) {
+            $item->setProductName('アイス');
         }
-        foreach ($this->Order2->getOrderDetails() as $OrderDetail) {
-            $OrderDetail->setProductName('アイス');
+        foreach ($this->Order2->getOrderItems() as $item) {
+            $item->setProductName('アイス');
         }
         $this->app['orm.em']->flush();
 
