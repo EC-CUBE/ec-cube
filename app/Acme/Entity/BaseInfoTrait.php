@@ -24,11 +24,4 @@ trait BaseInfoTrait
      *     })
      */
     public $company_name_vn;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="\Eccube\Entity\Master\Db")
-     * @ORM\JoinColumn(name="database_id", referencedColumnName="id")
-     * @Eccube\FormAppend()
-     */
-    public $DataBase;
 }
