@@ -376,10 +376,10 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              id="order_item_list"
                              data-prototype="
                                 {% filter escape %}
-                                     {{ include('Order/order_item_prototype.twig', { 'OrderItemForm': form.OrderItems.vars.prototype }) }}
+                                     {{ include('Order/order_item_prototype.twig', { 'orderItemForm': form.OrderItems.vars.prototype }) }}
                                 {% endfilter %}">
 
-                            {% for OrderItemForm in form.OrderItems %}
+                            {% for orderItemForm in form.OrderItems %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(orderItemForm.Order) }}
                                     {{ form_widget(orderItemForm.Shipping) }}
