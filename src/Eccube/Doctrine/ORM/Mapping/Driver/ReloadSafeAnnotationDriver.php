@@ -126,26 +126,24 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
         $results = [];
         $currentIndex = 0;
         while ($currentIndex = $tokens->getNextTokenOfKind($currentIndex, [[T_CLASS]])) {
-            if ($currentIndex >= 0) {
-                $classNameTokenIndex = $tokens->getNextMeaningfulToken($currentIndex);
-                if ($classNameTokenIndex) {
-                    $namespaceIndex = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
-                    if ($namespaceIndex) {
-                        $namespaceEndIndex = $tokens->getNextTokenOfKind($namespaceIndex, [';']);
-                        $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
-                        $className = $tokens[$classNameTokenIndex]->getContent();
-                        $fqcn = $namespace . '\\' . $className;
-                        if (class_exists($fqcn) && ! $this->isTransient($fqcn)) {
-                            if (in_array($sourceFile, $this->newProxyFiles)) {
-                                $newClassName = $className . Str::random(12);
-                                $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
-                                $newFilePath = $this->outputDir."${newClassName}.php";
-                                file_put_contents($newFilePath, $tokens->generateCode());
-                                require_once $newFilePath;
-                                $results[] = $namespace . "\\${newClassName}";
-                            } else {
-                                $results[] = $fqcn;
-                            }
+            $classNameTokenIndex = $tokens->getNextMeaningfulToken($currentIndex);
+            if ($classNameTokenIndex) {
+                $namespaceIndex = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
+                if ($namespaceIndex) {
+                    $namespaceEndIndex = $tokens->getNextTokenOfKind($namespaceIndex, [';']);
+                    $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
+                    $className = $tokens[$classNameTokenIndex]->getContent();
+                    $fqcn = $namespace . '\\' . $className;
+                    if (class_exists($fqcn) && ! $this->isTransient($fqcn)) {
+                        if (in_array($sourceFile, $this->newProxyFiles)) {
+                            $newClassName = $className . Str::random(12);
+                            $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
+                            $newFilePath = $this->outputDir."${newClassName}.php";
+                            file_put_contents($newFilePath, $tokens->generateCode());
+                            require_once $newFilePath;
+                            $results[] = $namespace . "\\${newClassName}";
+                        } else {
+                            $results[] = $fqcn;
                         }
                     }
                 }
