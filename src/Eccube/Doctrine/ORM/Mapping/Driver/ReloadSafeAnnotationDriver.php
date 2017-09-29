@@ -26,6 +26,7 @@ namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
 
 use Doctrine\ORM\Mapping\MappingException;
+use Eccube\Util\Str;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -136,11 +137,12 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                         $fqcn = $namespace . '\\' . $className;
                         if (class_exists($fqcn) && ! $this->isTransient($fqcn)) {
                             if (in_array($sourceFile, $this->newProxyFiles)) {
-                                $tokens[$classNameTokenIndex] = new Token([T_STRING, "Ex${className}"]);
-                                $newFilePath = $this->outputDir."/Ex${className}.php";
+                                $newClassName = $className . Str::random(12);
+                                $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
+                                $newFilePath = $this->outputDir."${newClassName}.php";
                                 file_put_contents($newFilePath, $tokens->generateCode());
                                 require_once $newFilePath;
-                                $results[] = $namespace . "\\Ex${className}";
+                                $results[] = $namespace . "\\${newClassName}";
                             } else {
                                 $results[] = $fqcn;
                             }

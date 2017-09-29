@@ -26,6 +26,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\EntityProxyService;
 use Eccube\Service\PluginService;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -304,6 +305,7 @@ EOD;
         $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
         $tar->addFromString('event.yml',Yaml::dump($event));
 
+        /** @var PluginService $service */
         $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか

@@ -25,14 +25,11 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
-use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
 use Eccube\Entity\Plugin;
-use Eccube\Entity\ProxyGenerator;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -79,13 +76,21 @@ class PluginService
     protected $app;
 
     /**
-     * @var ProxyGenerator
-     * @Inject("eccube.entity.proxy.generator")
+     * @var EntityProxyService
+     * @Inject(EntityProxyService::class)
      */
-    protected $entityProxyGenerator;
+    protected $entityProxyService;
 
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
+
+    /**
+     * @param EntityProxyService $entityProxyService
+     */
+    public function setEntityProxyService($entityProxyService)
+    {
+        $this->entityProxyService = $entityProxyService;
+    }
 
     public function install($path, $source = 0)
     {
@@ -359,45 +364,10 @@ class PluginService
             }
         }
 
-        return $this->entityProxyGenerator->generate(
+        return $this->entityProxyService->generate(
             array_merge([$this->appConfig['root_dir'].'/app/Acme/Entity'], $enabledPluginEntityDirs),
             $this->appConfig['root_dir'].'/app/proxy/entity'
         );
-    }
-
-    private function updateSchema($generatedFiles)
-    {
-        $outputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
-        mkdir($outputDir);
-
-        try {
-            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
-            $drivers = $chain->getDrivers();
-            foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace) {
-                    $newDriver = new ReloadSafeAnnotationDriver(
-                        $this->app['annotations'],
-                        $oldDriver->getPaths()
-                    );
-                    $newDriver->setFileExtension($oldDriver->getFileExtension());
-                    $newDriver->addExcludePaths($oldDriver->getExcludePaths());
-                    $newDriver->setTraitProxiesDirectory(realpath(__DIR__.'/../../../app/proxy/entity'));
-                    $newDriver->setNewProxyFiles($generatedFiles);
-                    $newDriver->setOutputDir($outputDir);
-                    $chain->addDriver($newDriver, $namespace);
-                }
-            }
-
-            $tool = new SchemaTool($this->entityManager);
-            $metaData = $this->entityManager->getMetadataFactory()->getAllMetadata();
-            $tool->updateSchema($metaData, true);
-
-        } finally {
-            foreach (glob("${outputDir}/*") as  $f) {
-                unlink($f);
-            }
-            rmdir($outputDir);
-        }
     }
 
     public function enable(\Eccube\Entity\Plugin $plugin, $enable = true)
@@ -412,7 +382,7 @@ class PluginService
             $em->persist($plugin);
 
             $generatedFiles = $this->regenerateProxy($plugin);
-            $this->updateSchema($generatedFiles);
+            $this->entityProxyService->updateSchema($generatedFiles);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
             $em->flush();

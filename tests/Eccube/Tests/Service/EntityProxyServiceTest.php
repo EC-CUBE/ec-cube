@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Tests\Entity;
+namespace Eccube\Tests\Service;
 
 use Eccube\Annotation\EntityExtension;
-use Eccube\Entity\ProxyGenerator;
+use Eccube\Service\EntityProxyService;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
-class ProxyGeneratorTest extends \PHPUnit_Framework_TestCase
+class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
 {
     private $tempOutputDir;
 
@@ -49,7 +49,7 @@ class ProxyGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerate()
     {
-        $generator = new ProxyGenerator();
+        $generator = new EntityProxyService();
         $generator->generate([__DIR__], $this->tempOutputDir);
 
         $generatedFile = $this->tempOutputDir.'/Product.php';
@@ -64,7 +64,7 @@ class ProxyGeneratorTest extends \PHPUnit_Framework_TestCase
             [T_NS_SEPARATOR],
             [T_STRING, 'Tests'],
             [T_NS_SEPARATOR],
-            [T_STRING, 'Entity'],
+            [T_STRING, 'Service'],
             [T_NS_SEPARATOR],
             [T_STRING, 'ProxyGeneratorTest_ProductTrait'],
         ]);
