@@ -40,6 +40,7 @@ use Eccube\Form\Type\Install\Step5Type;
 use Eccube\InstallApplication;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\Str;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -191,7 +192,7 @@ class InstallController
             if (file_exists($this->configDir.'/config.php')) {
                 // ショップ名/メールアドレス
                 $config = require $this->configDir.'/database.php';
-                $conn = $this->createConnection($config['database']);
+                $conn = $this->createConnection($config['database'][$config['database']['default']]);
                 $stmt = $conn->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
                 $row = $stmt->fetch();
                 $sessionData['shop_name'] = $row['shop_name'];
@@ -203,9 +204,9 @@ class InstallController
 
                 // 管理画面許可IP
                 $config = require $this->configDir.'/config.php';
-                if (!empty($config['admin_allow_host'])) {
+                if (!empty($config['admin_allow_hosts'])) {
                     $sessionData['admin_allow_hosts']
-                        = Str::convertLineFeed(implode("\n", $config['admin_allow_host']));
+                        = Str::convertLineFeed(implode("\n", $config['admin_allow_hosts']));
                 }
                 // 強制SSL
                 $sessionData['admin_force_ssl'] = $config['force_ssl'];
@@ -269,9 +270,11 @@ class InstallController
             if (file_exists($file)) {
                 // データベース設定
                 $config = require $file;
-                $database = $config['database'];
+                $database = $config['database'][$config['database']['default']];
                 $sessionData['database'] = $database['driver'];
-                if ($database['driver'] != 'pdo_sqlite') {
+                if ($database['driver'] === 'pdo_sqlite') {
+                    $sessionData['database_name'] = $this->configDir.'/eccube.db';
+                } else {
                     $sessionData['database_host'] = $database['host'];
                     $sessionData['database_port'] = $database['port'];
                     $sessionData['database_name'] = $database['dbname'];
@@ -319,19 +322,21 @@ class InstallController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->createDatabaseConfigFile($sessionData);
-            $this->createMailConfigFile($sessionData);
-            $this->createPathConfigFile($sessionData);
+            $noUpdate = $form['no_update']->getData();
+
+            $this->copyConfigFiles();
+            $data = array_merge(['root_urlpath' => $request->getBasePath()], $sessionData);
+            $this->createEnvFile($data, !$noUpdate);
+
+            (new Dotenv())->load($this->configDir.'/.env');
 
             $params = require $this->configDir.'/database.php';
-            $conn = $this->createConnection($params['database']);
+            $conn = $this->createConnection($params['database'][$params['database']['default']]);
             $em = $this->createEntityManager($conn);
             $migration = $this->createMigration($conn);
 
-            if ($form['no_update']->getData()) {
-                // データベースを初期化しない場合、auth_magicは初期化しない
-                $this->createConfigFile($sessionData, false);
-                $config = require $this->configDir.'/config.php';
+            $config = require $this->configDir.'/config.php';
+            if ($noUpdate) {
                 $this->update($conn, [
                     'auth_magic' => $config['auth_magic'],
                     'login_id' => $sessionData['login_id'],
@@ -340,8 +345,6 @@ class InstallController
                     'email' => $sessionData['email'],
                 ]);
             } else {
-                $this->createConfigFile($sessionData);
-                $config = require $this->configDir.'/config.php';
                 $this->dropTables($em);
                 $this->createTables($em);
                 $this->importCsv($em);
@@ -379,6 +382,7 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
+        (new Dotenv())->load($this->configDir.'/.env');
         $config = require $this->configDir.'/config.php';
         if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
             Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')),
@@ -636,128 +640,112 @@ class InstallController
         }
     }
 
-    private function createPhp($path, $config)
+    private function copyConfigFiles()
     {
-        $content = var_export($config, true);
-        $content = '<?php return '.$content.';'.PHP_EOL;
-        file_put_contents($path, $content);
+        $src = $this->rootDir.'/src/Eccube/Resource/config';
+        $dist = $this->configDir;
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs->mirror($src, $dist, null, ['override' => true]);
     }
 
-    private function createConfigFile(array $data, $updateAuthMagic = true)
+    private function createEnvFile(array $data, $updateAuthMagic = true)
     {
-        $file = $this->configDir.'/config.php';
-        $config = [];
-        if (file_exists($file)) {
-            $config = require $file;
-            unlink($file);
+        $values = [];
+        $path = $this->configDir.'/.env';
+        if (file_exists($path)) {
+            $values = (new Dotenv())->parse(file_get_contents($path), $path);
         }
+
+        $values['ECCUBE_INSTALL'] = 1;
+        $values['ROOT_URLPATH'] = $data['root_urlpath'];
+
         if ($updateAuthMagic) {
-            $authMagic = Str::random(32);
+            $values['AUTH_MAGIC'] = Str::random(32);
         } else {
-            if (empty($config['auth_magic'])) {
-                $authMagic = Str::random(32);
-            } else {
-                $authMagic = $config['auth_magic'];
+            if (empty($values['AUTH_MAGIC'])) {
+                $values['AUTH_MAGIC'] = Str::random(32);
             }
         }
-        $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
-        if (empty($allowHost)) {
-            $adminAllowHosts = array();
-        } else {
-            $adminAllowHosts = explode("\n", $allowHost);
+        if (isset($data['force_ssl'])) {
+            $values['FORCE_SSL'] = $data['force_ssl'];
         }
-        $trustedProxies = Str::convertLineFeed($data['trusted_proxies']);
-        if (empty($trustedProxies)) {
-            $adminTrustedProxies = array();
-        } else {
-            $adminTrustedProxies = explode("\n", $trustedProxies);
-            // ループバックアドレスを含める
-            $adminTrustedProxies = array_merge($adminTrustedProxies, array('127.0.0.1/8', '::1'));
+        if (isset($data['admin_dir'])) {
+            $values['ADMIN_ROUTE'] = $data['admin_dir'];
         }
-        if ($data['trusted_proxies_connection_only']) {
-            // ループバックアドレスを含める
-            $adminTrustedProxies = array('127.0.0.1/8', '::1');
+        if (isset($data['database'])) {
+            $values['DB_DEFAULT'] = str_replace('pdo_', '', $data['database']);
         }
-
-        $config = require $this->configDistDir.'/config.php';
-        $config['eccube_install'] = 1;
-        $config['auth_magic'] = $authMagic;
-        $config['force_ssl'] = $data['admin_force_ssl'];
-        $config['admin_allow_host'] = $adminAllowHosts;
-        $config['trusted_proxies_connection_only'] = $data['trusted_proxies_connection_only'];
-        $config['trusted_proxies'] = $adminTrustedProxies;
-
-        $this->createPhp($file, $config);
-    }
-
-    private function createDatabaseConfigFile(array $data)
-    {
-        $file = $this->configDir.'/database.php';
-
-        if (file_exists($file)) {
-            unlink($file);
+        if (isset($data['database_host'])) {
+            $values['DB_HOST'] = $data['database_host'];
         }
-
-        if ($data['database'] === 'pdo_sqlite') {
-            $config = require $this->configDistDir.'/database_sqlite3.php';
-            $config['database']['path'] = realpath($this->configDir.'/eccube.db');
-        } else {
-            switch ($data['database']) {
-                case 'pdo_pgsql':
-                    if (empty($data['db_port'])) {
-                        $data['db_port'] = '5432';
-                    }
-                    $data['db_driver'] = 'pdo_pgsql';
-                    break;
-                case 'pdo_mysql':
-                    if (empty($data['db_port'])) {
-                        $data['db_port'] = '3306';
-                    }
-                    $data['db_driver'] = 'pdo_mysql';
-                    break;
+        if (isset($data['database_port'])) {
+            $values['DB_PORT'] = $data['database_port'];
+        }
+        if (isset($data['database_name'])) {
+            $values['DB_DATABASE'] = $data['database_name'];
+        }
+        if (isset($data['database_user'])) {
+            $values['DB_USERNAME'] = $data['database_user'];
+        }
+        if (isset($data['database_password'])) {
+            $values['DB_PASSWORD'] = $data['database_password'];
+        }
+        if (isset($data['mail_backend'])) {
+            $values['MAIL_TRANSPORT'] = $data['mail_backend'];
+        }
+        if (isset($data['smtp_host'])) {
+            $values['MAIL_HOST'] = $data['smtp_host'];
+        }
+        if (isset($data['smtp_port'])) {
+            $values['MAIL_PORT'] = $data['smtp_port'];
+        }
+        if (isset($data['smtp_username'])) {
+            $values['MAIL_USERNAME'] = $data['smtp_username'];
+        }
+        if (isset($data['smtp_password'])) {
+            $values['MAIL_PASSWORD'] = $data['smtp_password'];
+        }
+        if (isset($data['admin_allow_hosts'])) {
+            $values['ADMIN_ALLOW_HOSTS'] = $data['admin_allow_hosts'];
+        }
+        if (isset($data['admin_allow_hosts'])) {
+            $hosts = Str::convertLineFeed($data['admin_allow_hosts']);
+            if ($hosts) {
+                $values['ADMIN_ALLOW_HOSTS'] = explode("\n", $hosts);
             }
-            $config = require $this->configDistDir.'/database.php';
-            $config['database']['driver'] = $data['db_driver'];
-            $config['database']['host'] = $data['database_host'];
-            $config['database']['dbname'] = $data['database_name'];
-            $config['database']['port'] = $data['database_port'];
-            $config['database']['user'] = $data['database_user'];
-            $config['database']['password'] = $data['database_password'];
+        }
+        if (isset($data['trusted_proxies'])) {
+            $proxies = Str::convertLineFeed($data['trusted_proxies']);
+            if ($proxies) {
+                $proxies = explode("\n", $proxies);
+                // ループバックアドレスを含める
+                $values['TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
+            }
+        }
+        if (isset($data['trusted_proxies_connection_only']) && $data['trusted_proxies_connection_only']) {
+            // ループバックアドレスを含める
+            $values['TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
         }
 
-        $this->createPhp($file, $config);
-    }
-
-    private function createMailConfigFile(array $data)
-    {
-        $file = $this->configDir.'/mail.php';
-
-        if (file_exists($file)) {
-            unlink($file);
+        $content = '';
+        $format = '%s=%s'.PHP_EOL;
+        foreach ($values as $key => $value) {
+            if ($value === true) {
+                $value = 'true';
+            }
+            if ($value === false) {
+                $value = 'false';
+            }
+            if ($value === null) {
+                $value = 'null';
+            }
+            if (is_array($value)) {
+                $value = implode(',', $value);
+            }
+            $content .= sprintf($format, $key, $value);
         }
 
-        $config = require $this->configDistDir.'/mail.php';
-        $config['mail']['transport'] = $data['mail_backend'];
-        $config['mail']['host'] = $data['smtp_host'];
-        $config['mail']['port'] = $data['smtp_port'];
-        $config['mail']['username'] = $data['smtp_username'];
-        $config['mail']['password'] = $data['smtp_password'];
-
-        $this->createPhp($file, $config);
-    }
-
-    private function createPathConfigFile($data)
-    {
-        $file = $this->configDir.'/path.php';
-
-        if (file_exists($file)) {
-            unlink($file);
-        }
-
-        $config = require $this->configDistDir.'/path.php';
-        $config['admin_route'] = $data['admin_dir'];
-
-        $this->createPhp($file, $config);
+        file_put_contents($path, $content);
     }
 
     private function sendAppData($params)
