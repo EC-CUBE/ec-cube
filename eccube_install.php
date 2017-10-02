@@ -64,8 +64,13 @@ updatePermissions($argv);
 
 if (!in_array('--skip-createdb', $argv)) {
     $params = getDatabaseConfig();
+    if ($params['driver'] === 'pdo_sqlite') {
+        $dbname = $params['path'];
+    } else {
+        $dbname = $params['dbname'];
+    }
     $conn = createConnection($params, true);
-    createDatabase($conn, $params['dbname']);
+    createDatabase($conn, $dbname);
 }
 
 out('Created database connection...', 'info');

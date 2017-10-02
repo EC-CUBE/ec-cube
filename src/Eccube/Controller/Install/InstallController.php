@@ -190,6 +190,7 @@ class InstallController
         if (empty($sessionData['shop_name'])) {
             // 再インストールの場合は設定ファイルから復旧
             if (file_exists($this->configDir.'/config.php')) {
+                (new Dotenv())->load($this->configDir.'/.env');
                 // ショップ名/メールアドレス
                 $config = require $this->configDir.'/database.php';
                 $conn = $this->createConnection($config['database'][$config['database']['default']]);
@@ -268,6 +269,7 @@ class InstallController
             // 再インストールの場合は設定ファイルから復旧.
             $file = $this->configDir.'/database.php';
             if (file_exists($file)) {
+                (new Dotenv())->load($this->configDir.'/.env');
                 // データベース設定
                 $config = require $file;
                 $database = $config['database'][$config['database']['default']];
