@@ -30,7 +30,7 @@ use Eccube\Di\ComponentDefinition;
 use Eccube\Di\Scanner;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class RouteScanner implements Scanner
+class RouteScanner extends ComponentScanner
 {
     /**
      * @var string[]
@@ -44,16 +44,6 @@ class RouteScanner implements Scanner
     public function __construct(array $scanDirs)
     {
         $this->scanDirs = $scanDirs;
-    }
-
-    /**
-     * @param $reader AnnotationReader
-     * @param $refClass \ReflectionClass
-     * @return Annotation
-     */
-    public function findAnnotation($reader, $refClass)
-    {
-        return $reader->getClassAnnotation($refClass, $this->getAnnotationClass());
     }
 
     /**
@@ -96,11 +86,6 @@ $app["{{ component.id }}"] = function (\Pimple\Container $app) {
     return $instance;
 };
 {% endfor %}')->render(['components' => $components]);
-    }
-
-    public function generateExtend(\Twig_Environment $twig, array $components)
-    {
-        return null;
     }
 
     /**
