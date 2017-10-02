@@ -475,7 +475,7 @@ class Application extends \Silex\Application
             // 管理画面のIP制限チェック.
             if ($app->isAdminRequest()) {
                 // IP制限チェック
-                $allowHost = $app['config']['admin_allow_host'];
+                $allowHost = $app['config']['admin_allow_hosts'];
                 if (count($allowHost) > 0) {
                     if (array_search($app['request_stack']->getCurrentRequest()->getClientIp(), $allowHost) === false) {
                         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
