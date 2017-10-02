@@ -62,12 +62,15 @@ if (in_array('-V', $argv) || in_array('--verbose', $argv)) {
 out('update permissions...');
 updatePermissions($argv);
 
-out('Created database connection...', 'info');
-$conn = createConnection(getDatabaseConfig());
-
 if (!in_array('--skip-createdb', $argv)) {
-    createDatabase($conn);
+    $params = getDatabaseConfig();
+    $conn = createConnection($params, true);
+    createDatabase($conn, $params['dbname']);
 }
+
+out('Created database connection...', 'info');
+
+$conn = createConnection(getDatabaseConfig());
 
 if (!in_array('--skip-initdb', $argv)) {
     $em = createEntityManager($conn);
@@ -239,10 +242,9 @@ function getDatabaseConfig()
     return $config['database'][$default];
 }
 
-function createDatabase(\Doctrine\DBAL\Connection $conn)
+function createDatabase(\Doctrine\DBAL\Connection $conn, $dbname)
 {
     $sm = $conn->getSchemaManager();
-    $dbname = $conn->getDatabase();
 
     if ($conn->getDatabasePlatform()->getName() === 'sqlite') {
         out('unlink database to '.$dbname, 'info');
@@ -259,8 +261,11 @@ function createDatabase(\Doctrine\DBAL\Connection $conn)
     $sm->createDatabase($dbname);
 }
 
-function createConnection(array $params)
+function createConnection(array $params, $noDb = false)
 {
+    if ($noDb) {
+        unset($params['dbname']);
+    }
     return \Doctrine\DBAL\DriverManager::getConnection($params);
 }
 
