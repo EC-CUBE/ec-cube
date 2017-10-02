@@ -24,7 +24,6 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -43,7 +42,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * @Component
  * @Route(service=MemberController::class)
  */
 class MemberController extends AbstractController

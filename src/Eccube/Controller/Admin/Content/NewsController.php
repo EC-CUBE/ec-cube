@@ -23,7 +23,6 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -44,7 +43,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * 新着情報のコントローラクラス
  *
- * @Component
  * @Route(service=NewsController::class)
  */
 class NewsController extends AbstractController

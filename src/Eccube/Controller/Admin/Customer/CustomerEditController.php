@@ -25,7 +25,6 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -45,7 +44,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * @Component
  * @Route(service=CustomerEditController::class)
  */
 class CustomerEditController extends AbstractController

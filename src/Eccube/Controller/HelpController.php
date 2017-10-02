@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Repository\HelpRepository;
@@ -33,7 +32,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=HelpController::class)
  */
 class HelpController extends AbstractController

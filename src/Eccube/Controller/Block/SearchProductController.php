@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Block;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
@@ -37,7 +36,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @Component
  * @Route(service=SearchProductController::class)
  */
 class SearchProductController

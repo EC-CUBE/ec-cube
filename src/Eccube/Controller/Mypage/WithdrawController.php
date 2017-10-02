@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -43,7 +42,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=WithdrawController::class)
  */
 class WithdrawController extends AbstractController

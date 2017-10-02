@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
@@ -40,7 +39,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig_Loader_Chain;
 
 /**
- * @Component
  * @Route(service=UserDataController::class)
  */
 class UserDataController

@@ -24,7 +24,6 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
@@ -44,7 +43,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
- * @Component
  * @Route(service=ForgotController::class)
  */
 class ForgotController extends AbstractController

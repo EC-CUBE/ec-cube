@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -54,7 +53,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Component
  * @Route(service=PluginController::class)
  */
 class PluginController extends AbstractController

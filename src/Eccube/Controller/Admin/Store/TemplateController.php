@@ -24,7 +24,6 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -46,7 +45,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
- * @Component
  * @Route(service=TemplateController::class)
  */
 class TemplateController extends AbstractController

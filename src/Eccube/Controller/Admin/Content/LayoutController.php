@@ -27,7 +27,6 @@ namespace Eccube\Controller\Admin\Content;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
@@ -46,7 +45,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 // todo プレビュー実装
 /**
- * @Component
  * @Route(service=LayoutController::class)
  */
 class LayoutController extends AbstractController
