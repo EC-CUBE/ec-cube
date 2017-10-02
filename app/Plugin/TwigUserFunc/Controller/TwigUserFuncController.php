@@ -23,13 +23,11 @@
 
 namespace Plugin\TwigUserFunc\Controller;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * @Component
  * @Route(service=TwigUserFuncController::class)
  */
 class TwigUserFuncController

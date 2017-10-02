@@ -22,7 +22,6 @@
  */
 
 namespace Plugin\AnnotatedRouting\Controller;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,7 +29,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(value="/arc", service=AnnotatedRoutingController::class)
  */
 class AnnotatedRoutingController
