@@ -33,7 +33,10 @@ use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Process\Process;
 
 /**
  * @Component
@@ -125,7 +128,7 @@ class OwnerStoreController extends AbstractController
                         $i++;
                     }
                 } else {
-                    $message = $data['error_code'].' : '.$data['error_message'];
+                    $message = $data['error_code'] . ' : ' . $data['error_message'];
                 }
             } else {
                 $success = 0;
@@ -139,6 +142,38 @@ class OwnerStoreController extends AbstractController
             'promotionItems' => $promotionItems,
             'message' => $message,
         ];
+    }
+
+    /**
+     * Api Install plugin by composer connect with packagist
+     *
+     * @Route("/{_admin}/store/plugin/api/{pluginCode}" , name="admin_store_plugin_api_install")
+     *
+     * @param Application $app
+     * @param Request     $request
+     * @param string      $pluginCode
+     * @return RedirectResponse
+     */
+    public function apiInstall(Application $app, Request $request, $pluginCode)
+    {
+        try {
+            $install = new Process(sprintf("cd %s && composer require ec-cube/{$pluginCode}", $this->appConfig['root_dir']));
+            $install->run();
+            if ($install->isSuccessful()) {
+                $app->addSuccess('admin.plugin.install.complete', 'admin');
+
+                $app->log("Install $pluginCode successful!");
+
+                return $app->redirect($app->url('admin_store_plugin'));
+            }
+            $app->addError("Install $pluginCode fail!");
+        } catch (Exception $exception) {
+            $app->addError($exception->getMessage());
+            $app->log($exception->getCode().' : '.$exception->getMessage());
+        }
+        $app->log("Install $pluginCode fail!");
+
+        return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
 
     /**
