@@ -22,5 +22,14 @@ function env($key, $default = null)
             return null;
     }
 
+    if ($value === '') {
+        return $value;
+    }
+
+    $decoded = json_decode($value);
+    if ($decoded !== null) {
+        return $decoded;
+    }
+
     return $value;
 }

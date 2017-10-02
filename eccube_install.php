@@ -173,7 +173,7 @@ function getExampleVariables()
         'ROOTPASS' => 'password',
         'AUTH_MAGIC' => '<auth magic>',
         'FORCE_SSL' => 'false',
-        'ADMIN_ALLOW_HOST' => '()',
+        'ADMIN_ALLOW_HOSTS' => '[]',
         'COOKIE_LIFETIME' => '0',
         'COOKIE_NAME' => 'eccube',
         'LOCALE' => 'ja',
@@ -184,7 +184,7 @@ function getExampleVariables()
         'ADMIN_ROUTE' => 'admin',
         'USER_DATA_ROUTE' => 'user_data',
         'TRUSTED_PROXIES_CONNECTION_ONLY' => 'false',
-        'TRUSTED_PROXIES' => '()',
+        'TRUSTED_PROXIES' => '["127.0.0.1/8", "::1"]',
         'DB_DEFAULT' => 'mysql',
         'DB_HOST' => '127.0.0.1',
         'DB_PORT' => '<database port>',
@@ -455,7 +455,7 @@ function createEnvFile()
             $value = 'null';
         }
         if (is_array($value)) {
-            $value = implode(',', $value);
+            $value = json_encode($value);
         }
         $content .= sprintf('%s=%s', $key, $value).PHP_EOL;
     }
