@@ -24,7 +24,7 @@
 namespace Eccube;
 
 use Doctrine\DBAL\Types\Type;
-use Eccube\Di\Scanner\ComponentScanner;
+use Eccube\Di\Scanner\RouteScanner;
 use Eccube\Di\Scanner\EntityEventScanner;
 use Eccube\Di\Scanner\FormExtensionScanner;
 use Eccube\Di\Scanner\FormTypeScanner;
@@ -249,7 +249,7 @@ class Application extends \Silex\Application
         // init ec-cube service provider
         $this->register(new DiServiceProvider(), [
             'eccube.di.scanners' => [
-                new ComponentScanner(array_merge([
+                new RouteScanner(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Controller',
                     $this['config']['root_dir'].'/src/Eccube/Controller'
                 ], $pluginSubDirs('Controller'))),
