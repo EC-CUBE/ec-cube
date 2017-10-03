@@ -105,10 +105,12 @@ class Application extends \Silex\Application
         $this->initLogger();
 
         // init class loader.
-        $prefix = $this['config']['vendor_prefix'];
-        $path = $this['config']['root_dir'].'/app/'.$this['config']['vendor_dir'];
-        $loader = $this['eccube.autoloader'];
-        $loader->addPsr4($prefix, $path);
+        if (isset($this['eccube.autoloader'])) {
+            $prefix = $this['config']['vendor_prefix'];
+            $path = $this['config']['root_dir'].'/app/'.$this['config']['vendor_dir'];
+            $loader = $this['eccube.autoloader'];
+            $loader->addPsr4($prefix, $path);
+        }
     }
 
     /**

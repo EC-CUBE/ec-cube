@@ -6,12 +6,10 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Eccube\Application;
 use Eccube\Entity\Customer;
-use Eccube\Util\Cache;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client;
 use Silex\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -297,7 +295,9 @@ abstract class EccubeTestCase extends WebTestCase
     public function createApplication()
     {
         Application::clearInstance();
-        $app = Application::getInstance();
+        $app = Application::getInstance([
+            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
+        ]);
         $app['debug'] = true;
 
         $app->initialize();
