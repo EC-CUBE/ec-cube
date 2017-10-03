@@ -52,7 +52,7 @@ class GenerateProxyCommand extends Command
         }, $app[PluginRepository::class]->findAllEnabled());
 
         $entityProxyService->generate(
-            array_merge([$app['config']['root_dir'].'/app/Acme/Entity'], $dirs),
+            array_merge([$app['config']['vendor_dir'].'/Entity'], $dirs),
             [],
             $app['config']['root_dir'].'/app/proxy/entity',
             $output

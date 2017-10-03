@@ -51,7 +51,7 @@ if ($argv[2] != 'none') {
     composerInstall();
 }
 
-require __DIR__.'/autoload.php';
+$loader = require __DIR__.'/autoload.php';
 
 initializeDefaultVariables($database);
 

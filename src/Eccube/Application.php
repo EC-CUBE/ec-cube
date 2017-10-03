@@ -23,6 +23,7 @@
 
 namespace Eccube;
 
+use Composer\Autoload\ClassLoader;
 use Doctrine\DBAL\Types\Type;
 use Eccube\DI\AutoWiring\EntityEventAutowiring;
 use Eccube\DI\AutoWiring\FormExtensionAutoWiring;
@@ -102,6 +103,12 @@ class Application extends \Silex\Application
 
         // init monolog
         $this->initLogger();
+
+        // init class loader.
+        $prefix = $this['config']['vendor_prefix'];
+        $path = $this['config']['root_dir'].'/app/'.$this['config']['vendor_dir'];
+        $loader = $this['eccube.autoloader'];
+        $loader->addPsr4($prefix, $path);
     }
 
     /**
@@ -251,7 +258,7 @@ class Application extends \Silex\Application
             'eccube.di.wirings' => [
                 new RouteAutoWiring(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Controller',
-                    $this['config']['root_dir'].'/src/Eccube/Controller'
+                    $this['config']['root_dir'].'/app/'.$this['config']['vendor_dir'].'Controller',
                 ], $pluginSubDirs('Controller'))),
                 new FormTypeAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
@@ -269,7 +276,7 @@ class Application extends \Silex\Application
                     $this['config']['root_dir'].'/src/Eccube/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new EntityEventAutowiring(array_merge([
-                    $this['config']['root_dir'].'/app/Acme/Entity'
+                    $this['config']['vendor_dir'].'/Entity'
                 ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
@@ -320,7 +327,7 @@ class Application extends \Silex\Application
 
         $this['eccube.router.extend'] = function ($app) {
             // TODO ディレクトリ名は暫定
-            $resource = $app['config']['root_dir'].'/app/Acme/Controller';
+            $resource = $app['config']['root_dir'].'/app/'.$app['config']['vendor_dir'].'Controller';
             $cachePrefix = 'Extend';
 
             $router = $app['eccube.router']($resource, $cachePrefix);
@@ -634,9 +641,9 @@ class Application extends \Silex\Application
         // TODO namespace は暫定
         $ormMappings[] = array(
             'type' => 'annotation',
-            'namespace' => 'Acme\Entity',
+            'namespace' => $this['config']['vendor_prefix'].'Entity',
             'path' => array(
-                __DIR__.'/../../app/Acme/Entity',
+                __DIR__.'/../../app/'.$this['config']['vendor_dir'].'Entity',
             ),
             'use_simple_annotation_reader' => false,
         );

@@ -26,10 +26,12 @@ if (extension_loaded('apc') && ini_get('apc.enabled')) {
     $apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader(sha1(__FILE__), $loader);
     $apcLoader->register();
     $loader->unregister();
+    $loader = $apcLoader;
 } elseif (extension_loaded('wincache') && ini_get('wincache.fcenabled')) {
     $winCacheLoader = new Symfony\Component\ClassLoader\WinCacheClassLoader(sha1(__FILE__), $loader);
     $winCacheLoader->register();
     $loader->unregister();
+    $loader = $winCacheLoader;
 }
 
 define("RELATIVE_PUBLIC_DIR_PATH", '/html');

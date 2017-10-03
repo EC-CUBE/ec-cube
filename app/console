@@ -1,10 +1,11 @@
 #!/usr/bin/env php
 <?php
-require_once __DIR__.'/../autoload.php';
+$loader = require_once __DIR__.'/../autoload.php';
 
 set_time_limit(0);
 
-$app = \Eccube\Application::getInstance();
+$app = \Eccube\Application::getInstance(['eccube.autoloader' => $loader]);
+
 $app->initialize();
 
 // Console
