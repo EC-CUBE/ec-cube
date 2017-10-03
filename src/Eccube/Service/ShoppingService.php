@@ -47,6 +47,7 @@ use Eccube\Form\Type\ShippingItemType;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\DeliveryTimeRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -112,6 +113,12 @@ class ShoppingService
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
+
+    /**
+     * @Inject(DeliveryTimeRepository::class)
+     * @var DeliveryTimeRepository
+     */
+    protected $deliveryTimeRepository;
 
     /**
      * @Inject(OrderStatusRepository::class)
@@ -1245,10 +1252,14 @@ class ShoppingService
         $shippings = $data['shippings'];
         foreach ($shippings as $Shipping) {
 
-            $deliveryTime = $Shipping->getDeliveryTime();
-            if (!empty($deliveryTime)) {
+            $timeId = $Shipping->getTimeId();
+            $deliveryTime = null;
+            if ($timeId) {
+                $deliveryTime = $this->deliveryTimeRepository->find($timeId);
+            }
+            if ($deliveryTime) {
                 $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
-                $Shipping->setTimeId($deliveryTime->getId());
+                $Shipping->setTimeId($timeId);
             }
 
         }

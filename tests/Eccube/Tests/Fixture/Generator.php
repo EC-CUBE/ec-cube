@@ -473,7 +473,7 @@ class Generator {
         $Shipping
             ->setPref($Pref)
             ->setDelivery($Delivery)
-            ->setDeliveryFee($DeliveryFee)
+            ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
         $ShippingStatus = $this->app['orm.em']->find(ShippingStatus::class, ShippingStatus::PREPARED);
