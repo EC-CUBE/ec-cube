@@ -162,14 +162,13 @@ class OwnerStoreController extends AbstractController
             $install->run();
             if ($install->isSuccessful()) {
                 $app->addSuccess('admin.plugin.install.complete', 'admin');
-
                 $app->log("Install $pluginCode successful!");
 
                 return $app->redirect($app->url('admin_store_plugin'));
             }
-            $app->addError("Install $pluginCode fail!");
+            $app->addError("Install $pluginCode fail!", 'admin');
         } catch (Exception $exception) {
-            $app->addError($exception->getMessage());
+            $app->addError($exception->getMessage(), 'admin');
             $app->log($exception->getCode().' : '.$exception->getMessage());
         }
         $app->log("Install $pluginCode fail!");
