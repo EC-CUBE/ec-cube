@@ -290,16 +290,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Delivery;
 
     /**
-     * @var \Eccube\Entity\DeliveryTime
-     */
-    private $DeliveryTime;
-
-    /**
-     * @var \Eccube\Entity\DeliveryFee
-     */
-    private $DeliveryFee;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $Orders;
@@ -1112,58 +1102,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getDelivery()
     {
         return $this->Delivery;
-    }
-
-    /**
-     * Set deliveryTime.
-     *
-     * @param \Eccube\Entity\DeliveryTime|null $deliveryTime
-     *
-     * @return Shipping
-     */
-    public function setDeliveryTime(\Eccube\Entity\DeliveryTime $deliveryTime = null)
-    {
-        $this->DeliveryTime = $deliveryTime;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryTime.
-     *
-     * @return \Eccube\Entity\DeliveryTime|null
-     */
-    public function getDeliveryTime()
-    {
-        return $this->DeliveryTime;
-    }
-
-    /**
-     * Set deliveryFee.
-     *
-     * @param \Eccube\Entity\DeliveryFee|null $deliveryFee
-     *
-     * @return Shipping
-     */
-    public function setDeliveryFee(\Eccube\Entity\DeliveryFee $deliveryFee = null)
-    {
-        $this->DeliveryFee = $deliveryFee;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryFee.
-     *
-     * @return \Eccube\Entity\DeliveryFee|null
-     */
-    public function getDeliveryFee()
-    {
-        if (EntityUtil::isEmpty($this->DeliveryFee)) {
-            return null;
-        }
-
-        return $this->DeliveryFee;
     }
 
     /**

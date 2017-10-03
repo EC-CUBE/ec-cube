@@ -199,6 +199,7 @@ class ShippingType extends AbstractType
                         'choices' => $DeliveryTimes,
                         'required' => false,
                         'placeholder' => '指定なし',
+                        'mapped' => false
                     )
                 );
             }
@@ -216,9 +217,15 @@ class ShippingType extends AbstractType
                     'Pref' => $Shipping->getPref()
                 ));
 
-                $Shipping->setDeliveryFee($DeliveryFee);
+                $Shipping->setFeeId($DeliveryFee ? $DeliveryFee->getId() : null);
                 $Shipping->setShippingDeliveryFee($DeliveryFee->getFee());
                 $Shipping->setShippingDeliveryName($Delivery->getName());
+            }
+            $form = $event->getForm();
+            $DeliveryTime = $form['DeliveryTime']->getData();
+            if ($DeliveryTime) {
+                $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
+                $Shipping->setTimeId($DeliveryTime->getId());
             }
         });
     }
