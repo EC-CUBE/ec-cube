@@ -157,6 +157,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode)
     {
         try {
+            set_time_limit(0);
             $install = new Process(sprintf("cd %s && composer require ec-cube/{$pluginCode}", $this->appConfig['root_dir']));
             $install->run();
             if ($install->isSuccessful()) {
