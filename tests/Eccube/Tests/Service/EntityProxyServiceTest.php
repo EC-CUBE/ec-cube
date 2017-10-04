@@ -66,7 +66,7 @@ class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
             [T_NS_SEPARATOR],
             [T_STRING, 'Service'],
             [T_NS_SEPARATOR],
-            [T_STRING, 'ProxyGeneratorTest_ProductTrait'],
+            [T_STRING, 'EntityProxyServiceTest_ProductTrait'],
         ]);
         self::assertNotNull($sequence);
     }
@@ -75,7 +75,7 @@ class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
 /**
  * @EntityExtension("Eccube\Entity\Product")
  */
-trait ProxyGeneratorTest_ProductTrait
+trait EntityProxyServiceTest_ProductTrait
 {
     public $testProperty;
 }
