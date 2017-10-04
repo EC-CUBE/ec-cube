@@ -667,7 +667,7 @@ class Application extends \Silex\Application
         if (isset($this['config']['vendor_dir'])) {
             $ormMappings[] = array(
                 'type' => 'annotation',
-                'namespace' => $this['config']['vendor_prefix'].'\Entity',
+                'namespace' => $this['config']['vendor_prefix'].'Entity',
                 'path' => array(
                     $this['config']['vendor_dir'].'/Entity',
                 ),
