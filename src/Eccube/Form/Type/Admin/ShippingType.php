@@ -30,6 +30,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Shipping;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -38,6 +39,7 @@ use Eccube\Form\Type\ZipType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\DeliveryTimeRepository;
+use Eccube\Util\Str;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -205,30 +207,18 @@ class ShippingType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-                    $form = $event->getForm();
-                    $form->add('OrderItems', CollectionType::class, array(
-                        'entry_type' => OrderItemType::class,
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'prototype' => true,
-                    ));
-                }
-            })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
 
-                if (is_null($data)) {
-                    return;
-                }
-
                 $Delivery = $data->getDelivery();
-                $DeliveryTime = $this->deliveryTimeRepository->find($data->getTimeId());
+                $timeId = $data->getTimeId();
+                $DeliveryTime = null;
+                if ($timeId) {
+                    $DeliveryTime = $this->deliveryTimeRepository->find($timeId);
+                }
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, array(
@@ -239,55 +229,65 @@ class ShippingType extends AbstractType
                     'required' => false,
                     'data' => $DeliveryTime,
                     'query_builder' => function (EntityRepository $er) use ($Delivery) {
-                        return $er->createQueryBuilder('dt')
-                            ->where('dt.Delivery = :Delivery')
-                            ->setParameter('Delivery', $Delivery);
+                        $qb = $er->createQueryBuilder('dt');
+                        if ($Delivery) {
+                            $qb
+                                ->where('dt.Delivery = :Delivery')
+                                ->setParameter('Delivery', $Delivery);
+                        }
+                        return $qb;
                     },
+                    'mapped' => false,
                 ));
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
                 $form = $event->getForm();
+
                 if (!$data) {
                     return;
                 }
 
-                $value = array_key_exists('Delivery', $data) ? $data['Delivery'] : null;
-                if (empty($value)) {
-                    $value = 0;
+                $Delivery = null;
+                if (Str::isNotBlank($data['Delivery'])) {
+                    $Delivery = $this->deliveryRepository->find($data['Delivery']);
                 }
-                $Delivery = $this->deliveryRepository->find($value);
 
                 // お届け時間を配送業者で絞り込み
+                $form->remove('DeliveryTime');
                 $form->add('DeliveryTime', EntityType::class, array(
                     'label' => 'お届け時間',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
                     'placeholder' => '指定なし',
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er) use($Delivery) {
-                        return $er->createQueryBuilder('dt')
-                            ->where('dt.Delivery = :Delivery')
-                            ->setParameter('Delivery', $Delivery);
+                    'query_builder' => function (EntityRepository $er) use ($Delivery) {
+                        $qb = $er->createQueryBuilder('dt');
+                        if ($Delivery) {
+                            $qb
+                                ->where('dt.Delivery = :Delivery')
+                                ->setParameter('Delivery', $Delivery);
+                        }
+                        return $qb;
                     },
+                    'mapped' => false,
                 ));
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-                    $form = $event->getForm();
-                    $OrderItems = $form['OrderItems']->getData();
+                $form = $event->getForm();
+                $OrderItems = $form['OrderItems']->getData();
 
-                    if (empty($orderItems) || count($orderItems) < 1) {
-                        // 画面下部にエラーメッセージを表示させる
-                        $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
-                    }
+                if (empty($OrderItems) || count($OrderItems) < 1) {
+                    // 画面下部にエラーメッセージを表示させる
+                    $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
                 }
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
                 $Shipping = $event->getData();
                 $Delivery = $Shipping->getDelivery();
-                $Shipping->setShippingDeliveryName($Delivery ? $Delivery : null);
-                $DeliveryTime = $Shipping->getDeliveryTime();
+                $Shipping->setShippingDeliveryName($Delivery ? $Delivery->getName() : null);
+                $DeliveryTime = $form['DeliveryTime']->getData();
                 if ($DeliveryTime) {
                     $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                     $Shipping->setTimeId($DeliveryTime->getId());

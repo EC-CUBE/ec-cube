@@ -365,11 +365,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                              id="order_detail_list"
                              data-prototype="
                                     {% filter escape %}
-                                    {{ include('Shipping/order_item_prototype.twig', { 'OrderItemForm': form.OrderItems.vars.prototype }) }}
+                                    {{ include('Shipping/order_item_prototype.twig', { 'orderItemForm': form.OrderItems.vars.prototype }) }}
                                     {% endfilter %}"
                         >
 
-                            {% for OrderItemForm in form.OrderItems %}
+                            {% for orderItemForm in form.OrderItems %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(orderItemForm.Order) }}
                                     {{ form_widget(orderItemForm.Product) }}
@@ -386,7 +386,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(orderItemForm.order_item_type) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
-                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : orderItemForm.vars.value.order_id }) }}">{{ orderItemForm.vars.value.order_id }}</a></span><br>
+                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : orderItemForm.vars.value.Order.id }) }}">{{ orderItemForm.vars.value.Order.id }}</a></span><br>
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderItemForm.vars.value.product_name }}</strong><br>
                                             <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderItemForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
