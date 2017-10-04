@@ -29,6 +29,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -73,6 +74,18 @@ class PluginService
      * @var Application
      */
     protected $app;
+
+    /**
+     * @var EntityProxyService
+     * @Inject(EntityProxyService::class)
+     */
+    protected $entityProxyService;
+
+    /**
+     * @Inject(SchemaService::class)
+     * @var SchemaService
+     */
+    protected $schemaService;
 
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
@@ -307,6 +320,7 @@ class PluginService
         Cache::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
+        $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
         ConfigManager::writePluginConfigCache();
@@ -317,18 +331,12 @@ class PluginService
     {
         try {
             $em = $this->entityManager;
-            $em->getConnection()->beginTransaction();
-
             foreach ($p->getPluginEventHandlers()->toArray() as $peh) {
                 $em->remove($peh);
             }
             $em->remove($p);
-
-            $em->persist($p);
             $em->flush();
-            $em->getConnection()->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
             throw $e;
         }
     }
@@ -336,6 +344,28 @@ class PluginService
     public function disable(\Eccube\Entity\Plugin $plugin)
     {
         return $this->enable($plugin, false);
+    }
+
+    private function regenerateProxy(Plugin $plugin)
+    {
+        $enabledPluginEntityDirs = array_map(function($p) {
+            return $this->appConfig['root_dir'].'/app/Plugin/'.$p->getCode().'/Entity';
+        }, $this->pluginRepository->findAllEnabled());
+
+        $entityDir = $this->appConfig['root_dir'].'/app/Plugin/'.$plugin->getCode().'/Entity';
+        if ($plugin->getEnable() === Constant::ENABLED) {
+            $enabledPluginEntityDirs[] = $entityDir;
+        } else {
+            $index = array_search($entityDir, $enabledPluginEntityDirs);
+            if ($index >=0 ) {
+                array_splice($enabledPluginEntityDirs, $index, 1);
+            }
+        }
+
+        return $this->entityProxyService->generate(
+            array_merge([$this->appConfig['root_dir'].'/app/Acme/Entity'], $enabledPluginEntityDirs),
+            $this->appConfig['root_dir'].'/app/proxy/entity'
+        );
     }
 
     public function enable(\Eccube\Entity\Plugin $plugin, $enable = true)
@@ -348,6 +378,10 @@ class PluginService
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
+
+            $generatedFiles = $this->regenerateProxy($plugin);
+            $this->schemaService->updateSchema($generatedFiles);
+
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
             $em->flush();
             $em->getConnection()->commit();
@@ -383,8 +417,8 @@ class PluginService
             $this->deleteFile($tmp); // テンポラリのファイルを削除
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
-
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
+
             PluginConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             foreach (array($tmp) as $dir) {
