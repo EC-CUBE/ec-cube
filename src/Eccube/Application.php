@@ -105,12 +105,7 @@ class Application extends \Silex\Application
         $this->initLogger();
 
         // init class loader.
-        if (isset($this['eccube.autoloader'])) {
-            $prefix = $this['config']['vendor_prefix'];
-            $path = $this['config']['root_dir'].'/app/'.$this['config']['vendor_dir'];
-            $loader = $this['eccube.autoloader'];
-            $loader->addPsr4($prefix, $path);
-        }
+        $this->initClassLoader();
     }
 
     /**
@@ -153,6 +148,33 @@ class Application extends \Silex\Application
     {
         $app = $this;
         $this->register(new ServiceProvider\LogServiceProvider($app));
+    }
+
+    public function initClassLoader()
+    {
+        if (!isset($this['config']['vendor_psr4'])) {
+            $this['logger']->log('config.vendor_psr4 is not set.');
+
+            return;
+        }
+
+        list($prefix, $path) = $this['config']['vendor_psr4'];
+
+        $dir = $this['config']['root_dir'].'/app/'.$path;
+        if (false === file_exists($dir)) {
+            $this['logger']->log(sprintf('%s is not exists.', $dir));
+
+            return;
+        }
+
+        $path = realpath($dir);
+        $loader = $this['eccube.autoloader'];
+        $loader->addPsr4($prefix, $path);
+
+        $config = $this['config'];
+        $config['vendor_dir'] = $path;
+        $config['vendor_prefix'] = $prefix;
+        $this->overwrite('config', $config);
     }
 
     public function initialize()
@@ -260,7 +282,7 @@ class Application extends \Silex\Application
             'eccube.di.wirings' => [
                 new RouteAutoWiring(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Controller',
-                    $this['config']['root_dir'].'/app/'.$this['config']['vendor_dir'].'Controller',
+                    $this['config']['vendor_dir'].'/Controller',
                 ], $pluginSubDirs('Controller'))),
                 new FormTypeAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
@@ -327,19 +349,21 @@ class Application extends \Silex\Application
 
         $this['eccube.routers.plugin'] = [];
 
-        $this['eccube.router.extend'] = function ($app) {
-            // TODO ディレクトリ名は暫定
-            $resource = $app['config']['root_dir'].'/app/'.$app['config']['vendor_dir'].'Controller';
-            $cachePrefix = 'Extend';
+        if (isset($this['config']['vendor_dir'])) {
+            $this['eccube.router.extend'] = function ($app) {
+                $resource = $app['config']['vendor_dir'].'/Controller';
+                $cachePrefix = 'Extend';
 
-            $router = $app['eccube.router']($resource, $cachePrefix);
+                $router = $app['eccube.router']($resource, $cachePrefix);
 
-            return $router;
-        };
-
+                return $router;
+            };
+        }
         $this->extend('request_matcher', function ($matcher, $app) {
             $matchers = [];
-            $matchers[] = $app['eccube.router.extend'];
+            if (isset($app['config']['vendor_dir'])) {
+                $matchers[] = $app['eccube.router.extend'];
+            }
             foreach ($app['eccube.routers.plugin'] as $router) {
                 $matchers[] = $router;
             };
@@ -640,15 +664,16 @@ class Application extends \Silex\Application
              'use_simple_annotation_reader' => false,
          );
 
-        // TODO namespace は暫定
-        $ormMappings[] = array(
-            'type' => 'annotation',
-            'namespace' => $this['config']['vendor_prefix'].'Entity',
-            'path' => array(
-                __DIR__.'/../../app/'.$this['config']['vendor_dir'].'Entity',
-            ),
-            'use_simple_annotation_reader' => false,
-        );
+        if (isset($this['config']['vendor_dir'])) {
+            $ormMappings[] = array(
+                'type' => 'annotation',
+                'namespace' => $this['config']['vendor_prefix'].'\Entity',
+                'path' => array(
+                    $this['config']['vendor_dir'].'/Entity',
+                ),
+                'use_simple_annotation_reader' => false,
+            );
+        }
 
         foreach ($pluginConfigs as $code) {
             $config = $code['config'];
