@@ -4,36 +4,36 @@
     'metadata_cache' => 
     [
       'driver' => 'array',
-      'path' => NULL,
-      'host' => NULL,
-      'port' => NULL,
-      'password' => NULL,
+      'path' => null,
+      'host' => null,
+      'port' => null,
+      'password' => null,
     ],
     'query_cache' => 
     [
       'driver' => 'array',
-      'path' => NULL,
-      'host' => NULL,
-      'port' => NULL,
-      'password' => NULL,
+      'path' => null,
+      'host' => null,
+      'port' => null,
+      'password' => null,
     ],
     'result_cache' => 
     [
       'driver' => 'array',
-      'path' => NULL,
-      'host' => NULL,
-      'port' => NULL,
-      'password' => NULL,
+      'path' => null,
+      'host' => null,
+      'port' => null,
+      'password' => null,
       'lifetime' => 3600,
       'clear_cache' => true,
     ],
     'hydration_cache' => 
     [
       'driver' => 'array',
-      'path' => NULL,
-      'host' => NULL,
-      'port' => NULL,
-      'password' => NULL,
+      'path' => null,
+      'host' => null,
+      'port' => null,
+      'password' => null,
     ],
   ],
 ];

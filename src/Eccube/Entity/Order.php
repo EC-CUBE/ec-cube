@@ -59,22 +59,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * isPriceChange
-     * 
-     * @return boolean
-     */
-    public function isPriceChange()
-    {
-        foreach ($this->getOrderDetails() as $OrderDetail) {
-            if ($OrderDetail->isPriceChange()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * 対象となるお届け先情報を取得
      * 
      * @param integer $shippingId
@@ -92,114 +76,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Calculate quantity of total.
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function calculateTotalQuantity()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $totalQuantity = 0;
-        foreach ($this->getOrderDetails() as $OrderDetail) {
-            $totalQuantity += $OrderDetail->getQuantity();
-        }
-
-        return $totalQuantity;
-    }
-
-    /**
-     * Calculate SubTotal.
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function calculateSubTotal()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        return array_reduce($this->getProductOrderItems(), function($total, $OrderItem) {
-            return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
-        }, 0);
-    }
-
-    /**
-     * Calculate tax of total.
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function calculateTotalTax()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $tax = 0;
-        foreach ($this->getOrderDetails() as $OrderDetail) {
-            $tax += ($OrderDetail->getPriceIncTax() - $OrderDetail->getPrice()) * $OrderDetail->getQuantity();
-        }
-
-        return $tax;
-    }
-
-    /**
-     * この注文にかかる送料の合計を返す.
-     *
-     * @return integer
-     * @deprecated \Eccube\Service\Calculator\Strategy\CalculateDeliveryFeeStrategy を使用してください
-     */
-    public function calculateDeliveryFeeTotal()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        // TODO filter を外出ししたい
-        return array_reduce(
-            array_filter($this->getOrderItems()->toArray(),
-                         function($OrderItem) {
-                             return $OrderItem->isDeliveryFee();
-                         }),
-            function($total, $OrderItem) {
-                return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
-            }, 0);
-    }
-
-    /**
-     * この注文にかかる値引きの合計を返す.
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function calculateDiscountTotal()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        // TODO filter を外出ししたい
-        return array_reduce(
-            array_filter($this->getOrderItems()->toArray(),
-                         function($OrderItem) {
-                             return $OrderItem->isDiscount();
-                         }),
-            function($total, $OrderItem) {
-                return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
-            }, 0);
-    }
-
-    /**
-     * この注文にかかる手数料の合計を返す.
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function calculateChargeTotal()
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        // TODO filter を外出ししたい
-        return array_reduce(
-            array_filter($this->getOrderItems()->toArray(),
-                         function($OrderItem) {
-                             return $OrderItem->isCharge();
-                         }),
-            function($total, $OrderItem) {
-                return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
-            }, 0);
-    }
-
-    /**
      * この注文の保持する商品種別を取得します.
      *
      * @return \Eccube\Entity\Master\ProductType[] 一意な商品種別の配列
@@ -207,10 +83,12 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     public function getProductTypes()
     {
         $productTypes = array();
-        foreach ($this->getOrderDetails() as $OrderDetail) {
+        foreach ($this->getOrderItems() as $OrderItem) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $OrderDetail->getProductClass();
-            $productTypes[] = $ProductClass->getProductType();
+            $ProductClass = $OrderItem->getProductClass();
+            if ($ProductClass) {
+                $productTypes[] = $ProductClass->getProductType();
+            }
         }
 
         return array_unique($productTypes);
@@ -488,16 +366,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderDetail", mappedBy="Order", cascade={"persist"})
-     * @ORM\OrderBy({
-     *     "id"="ASC"
-     * })
-     */
-    private $OrderDetails;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Order", cascade={"persist","remove"})
      */
     private $OrderItems;
@@ -617,7 +485,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
             ->setOrderStatus($orderStatus)
         ;
 
-        $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
         $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -1470,42 +1337,6 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
         $this->currency_code = $currencyCode;
 
         return $this;
-    }
-
-    /**
-     * Add orderDetail.
-     *
-     * @param \Eccube\Entity\OrderDetail $orderDetail
-     *
-     * @return Order
-     */
-    public function addOrderDetail(\Eccube\Entity\OrderDetail $orderDetail)
-    {
-        $this->OrderDetails[] = $orderDetail;
-
-        return $this;
-    }
-
-    /**
-     * Remove orderDetail.
-     *
-     * @param \Eccube\Entity\OrderDetail $orderDetail
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeOrderDetail(\Eccube\Entity\OrderDetail $orderDetail)
-    {
-        return $this->OrderDetails->removeElement($orderDetail);
-    }
-
-    /**
-     * Get orderDetails.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOrderDetails()
-    {
-        return $this->OrderDetails;
     }
 
     /**

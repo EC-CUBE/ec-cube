@@ -90,7 +90,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'delivery_fee_total' => 0,
             'charge' => 0,
             'note' => $faker->text,
-            'OrderDetails' => array(
+            'OrderItems' => array(
                 array(
                     'Product' => $Product->getId(),
                     'ProductClass' => $ProductClasses[0]->getId(),

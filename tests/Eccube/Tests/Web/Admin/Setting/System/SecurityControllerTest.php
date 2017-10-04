@@ -116,7 +116,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $config = require $this->configFile;
-        $this->assertTrue(in_array($formData['admin_allow_host'], $config['admin_allow_host']));
+        $this->assertTrue(in_array($formData['admin_allow_hosts'], $config['admin_allow_hosts']));
 
         $path = require $this->pathFile;
         $this->expected = $formData['admin_route_dir'];
@@ -130,7 +130,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
     public function testSubmitEmpty()
     {
         $formData = $this->createFormData();
-        $formData['admin_allow_host'] = null;
+        $formData['admin_allow_hosts'] = null;
         $formData['force_ssl'] = null;
         $formData['admin_route_dir'] = $this->app['config']['admin_route'];
 
@@ -145,7 +145,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $config = require $this->configFile;
-        $this->assertNull($config['admin_allow_host']);
+        $this->assertNull($config['admin_allow_hosts']);
     }
 
     /**
@@ -157,7 +157,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData = array(
             '_token' => 'dummy',
             'admin_route_dir' => 'admintest',
-            'admin_allow_host' => $this->ipTest,
+            'admin_allow_hosts' => $this->ipTest,
             'force_ssl' => 1,
         );
 

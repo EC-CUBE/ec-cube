@@ -292,8 +292,8 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         if (isset($searchData['buy_product_code']) && Str::isNotBlank($searchData['buy_product_code'])) {
             $qb
                 ->leftJoin('c.Orders', 'o')
-                ->leftJoin('o.OrderDetails', 'od')
-                ->andWhere('od.product_name LIKE :buy_product_name OR od.product_code LIKE :buy_product_name')
+                ->leftJoin('o.OrderItems', 'oi')
+                ->andWhere('oi.product_name LIKE :buy_product_name OR oi.product_code LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%'.$searchData['buy_product_code'].'%');
         }
 

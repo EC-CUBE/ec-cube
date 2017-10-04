@@ -379,9 +379,9 @@ class OrderController extends AbstractController
                 $Csvs = $csvService->getCsvs();
 
                 $Order = $entity;
-                $OrderDetails = $Order->getOrderDetails();
+                $OrderItems = $Order->getOrderItems();
 
-                foreach ($OrderDetails as $OrderDetail) {
+                foreach ($OrderItems as $OrderItem) {
                     $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
@@ -390,14 +390,14 @@ class OrderController extends AbstractController
                         $ExportCsvRow->setData($csvService->getData($Csv, $Order));
                         if ($ExportCsvRow->isDataNull()) {
                             // 受注データにない場合は, 受注明細を検索.
-                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderDetail));
+                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
                         }
 
                         $event = new EventArgs(
                             array(
                                 'csvService' => $csvService,
                                 'Csv' => $Csv,
-                                'OrderDetail' => $OrderDetail,
+                                'OrderItem' => $OrderItem,
                                 'ExportCsvRow' => $ExportCsvRow,
                             ),
                             $request

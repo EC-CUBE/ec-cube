@@ -78,11 +78,11 @@ class SecurityController extends AbstractController
                 $config = require $configFile;
 
                 // trim処理
-                $allowHost = Str::convertLineFeed($data['admin_allow_host']);
+                $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
                 if (empty($allowHost)) {
-                    $config['admin_allow_host'] = null;
+                    $config['admin_allow_hosts'] = null;
                 } else {
-                    $config['admin_allow_host'] = explode("\n", $allowHost);
+                    $config['admin_allow_hosts'] = explode("\n", $allowHost);
                 }
 
                 if ($data['force_ssl']) {
@@ -134,9 +134,9 @@ class SecurityController extends AbstractController
         } else {
             // セキュリティ情報の取得
             $form->get('admin_route_dir')->setData($this->appConfig['admin_route']);
-            $allowHost = $this->appConfig['admin_allow_host'];
+            $allowHost = $this->appConfig['admin_allow_hosts'];
             if (count($allowHost) > 0) {
-                $form->get('admin_allow_host')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
+                $form->get('admin_allow_hosts')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
             }
             $form->get('force_ssl')->setData((bool)$this->appConfig['force_ssl']);
         }

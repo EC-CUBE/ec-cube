@@ -258,14 +258,14 @@ class MypageController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
+        foreach ($Order->getOrderItems() as $OrderItem) {
             try {
-                if ($OrderDetail->getProduct() &&
-                    $OrderDetail->getProductClass()
+                if ($OrderItem->getProduct() &&
+                    $OrderItem->getProductClass()
                 ) {
                     $this->cartService->addProduct(
-                        $OrderDetail->getProductClass()->getId(),
-                        $OrderDetail->getQuantity()
+                        $OrderItem->getProductClass()->getId(),
+                        $OrderItem->getQuantity()
                     )->save();
                 } else {
                     log_info($app->trans('cart.product.delete'), array($id));

@@ -7,7 +7,6 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
 
@@ -38,19 +37,6 @@ class ShippingRepositoryTest extends EccubeTestCase
         $quantity = 3;
         $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(); // デフォルト課税規則
 
-        $OrderDetail = new OrderDetail();
-        $OrderDetail->setProduct($this->Product)
-            ->setProductClass($this->ProductClass)
-            ->setProductName($this->Product->getName())
-            ->setProductCode($this->ProductClass->getCode())
-            ->setPrice($this->ProductClass->getPrice02())
-            ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getRoundingType()->getId())
-            ->setTaxRate($TaxRule->getTaxRate());
-        $this->app['orm.em']->persist($OrderDetail);
-        $OrderDetail->setOrder($this->Order);
-        $this->Order->addOrderDetail($OrderDetail);
-
         // 1個ずつ別のお届け先に届ける
         for ($i = 0; $i < $quantity; $i++) {
             $Shipping = new Shipping();
@@ -77,8 +63,8 @@ class ShippingRepositoryTest extends EccubeTestCase
         }
 
         $subTotal = 0;
-        foreach ($this->Order->getOrderDetails() as $OrderDetail) {
-            $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
+        foreach ($this->Order->getOrderItems() as $Item) {
+            $subTotal += $Item->getPriceIncTax() * $Item->getQuantity();
         }
 
         $this->Order->setSubTotal($subTotal);

@@ -2,6 +2,7 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -32,7 +33,7 @@ class LoadEventSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
         if ($entity instanceof AbstractEntity) {
-            $entity->setAnnotationReader($this->app['eccube.di.annotation_reader']);
+            $entity->setAnnotationReader(isset($this->app['eccube.di.annotation_reader']) ? $this->app['eccube.di.annotation_reader'] : new AnnotationReader());
         }
     }
 }

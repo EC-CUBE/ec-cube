@@ -48,8 +48,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="security_ip_box" class="form-group">
                             <label class="col-sm-3 col-lg-2 control-label">IP制限</label>
                             <div id="security_box__allow_host" class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.admin_allow_host, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
-                                {{ form_errors(form.admin_allow_host) }}
+                                {{ form_widget(form.admin_allow_hosts, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
+                                {{ form_errors(form.admin_allow_hosts) }}
                                 <span id="helpBlock" class="help-block">※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
                                     アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span>
                             </div>

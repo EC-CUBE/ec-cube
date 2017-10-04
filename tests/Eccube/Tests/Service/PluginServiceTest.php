@@ -25,6 +25,11 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Repository\PluginRepository;
+use Eccube\Service\PluginService;
+use Eccube\Service\SchemaService;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -32,6 +37,22 @@ use Symfony\Component\Yaml\Yaml;
 class PluginServiceTest extends AbstractServiceTestCase
 {
     protected $app;
+
+    /**
+     * @var PluginService
+     */
+    private $service;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->service = $this->app['eccube.service.plugin'];
+        $rc = new \ReflectionClass($this->service);
+        $prop = $rc->getProperty('schemaService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(SchemaService::class));
+    }
 
     public function tearDown()
     {
@@ -48,6 +69,13 @@ class PluginServiceTest extends AbstractServiceTestCase
         foreach ($dirs as $dir) {
             $this->deleteFile($dir);
         }
+
+        foreach (glob($this->app['config']['root_dir'].'/app/proxy/entity/*.php') as $file) {
+            unlink($file);
+        }
+
+        $this->deleteAllRows(['dtb_plugin_event_handler', 'dtb_plugin']);
+
         parent::tearDown();
     }
 
@@ -90,13 +118,12 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか
-        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
 
         try{
-            $service->install($tmpfile);
+            $this->service->install($tmpfile);
             $this->fail("checkSamePlugin dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){
         }catch(\Exception $e){
@@ -107,7 +134,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // アンインストールできるか
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
-        $this->assertTrue($service->uninstall($plugin));
+        $this->assertTrue($this->service->uninstall($plugin));
 
 
     }
@@ -118,8 +145,6 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->setExpectedException(
           '\Eccube\Exception\PluginException', 'config.yml not found or syntax error'
         );
-        $service = $this->app['eccube.service.plugin'];
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $tmpdir=$this->createTempDir();
@@ -128,14 +153,13 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar = new \PharData($tmpfile);
         $tar->addFromString('dummy','dummy');
         // インストールできるか
-        $service->install($tmpfile);
+        $this->service->install($tmpfile);
 
     }
 
     // config.ymlのフォーマット確認
     public function testConfigYmlFormat()
     {
-        $service = $this->app['eccube.service.plugin'];
         $tmpname='dummy'.mt_rand();
         $tmpfile=sys_get_temp_dir().'/dummy'.mt_rand();
 
@@ -147,7 +171,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['version'] = $tmpname;
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
@@ -157,7 +181,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['version'] = $tmpname;
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
@@ -167,7 +191,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         #$config['version'] = $tmpname;
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
@@ -178,7 +202,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['version'] = $tmpname;
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
@@ -188,7 +212,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['version'] = $tmpname;
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
@@ -199,7 +223,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['version'] = str_repeat('a',256);
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
@@ -210,7 +234,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['event'] = "&".$tmpname;
         try{
             file_put_contents($tmpfile,Yaml::dump($config));
-            $service->checkPluginArchiveContent($tmpfile);
+            $this->service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
     }
@@ -218,7 +242,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     // config.ymlに異常な項目がある場合
     public function testnstallPluginMalformedConfigError()
     {
-        $service = $this->app['eccube.service.plugin'];
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
@@ -234,7 +257,7 @@ class PluginServiceTest extends AbstractServiceTestCase
           '\Eccube\Exception\PluginException', 'config.yml name empty'
         );
         // インストールできないはず
-        $this->assertNull($service->install($tmpfile));
+        $this->assertNull($this->service->install($tmpfile));
     }
 
     // イベント定義を含むプラグインのインストールとアンインストールを検証
@@ -296,10 +319,8 @@ EOD;
         $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
         $tar->addFromString('event.yml',Yaml::dump($event));
 
-        $service = $this->app['eccube.service.plugin'];
-
         // インストールできるか
-        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
         $rep= $this->app['eccube.repository.plugin'];
 
         $plugin=$rep->findOneBy(array('code'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
@@ -344,8 +365,8 @@ EOD;
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
 
         // enable/disableできるか
-        $this->assertTrue($service->disable($plugin));
-        $this->assertTrue($service->enable($plugin));
+        $this->assertTrue($this->service->disable($plugin));
+        $this->assertTrue($this->service->enable($plugin));
 
         // イベント定義を更新する
         $event=array();
@@ -368,7 +389,7 @@ EOD;
         $tar->addFromString('update_dummy',"update dummy");
 
         // updateできるか
-        $this->assertTrue($service->update($plugin,$tmpfile));
+        $this->assertTrue($this->service->update($plugin,$tmpfile));
         $this->assertEquals($plugin->getVersion(),$tmpname."u");
 
         // イベントハンドラが新しいevent.ymlと整合しているか(追加、削除)
@@ -394,7 +415,7 @@ EOD;
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/update_dummy");
 
         // アンインストールできるか
-        $this->assertTrue($service->uninstall($plugin));
+        $this->assertTrue($this->service->uninstall($plugin));
         // ちゃんとファイルが消えているか
         $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enable'=>1)));
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
@@ -450,14 +471,13 @@ class PluginManager extends AbstractPluginManager
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->app['eccube.service.plugin'];
 
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
-        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable()); // インストール直後にプラグインがdisableになっているか
         try{
-            $this->assertTrue($service->enable($plugin));// enableにしようとするが、例外発生
+            $this->assertTrue($this->service->enable($plugin));// enableにしようとするが、例外発生
         }catch(\Exception $e){ }
         $this->app['orm.em']->detach($plugin);
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
@@ -516,11 +536,10 @@ class PluginManager extends AbstractPluginManager
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
-        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
         $this->assertRegexp('/Installed/',ob_get_contents()); ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
@@ -528,17 +547,17 @@ EOD;
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
 
         ob_start();
-        $service->enable($plugin);
+        $this->service->enable($plugin);
         $this->assertRegexp('/Enabled/',ob_get_contents()); ob_end_clean();
         ob_start();
-        $service->disable($plugin);
+        $this->service->disable($plugin);
         $this->assertRegexp('/Disabled/',ob_get_contents()); ob_end_clean();
 
 
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
-        $service->disable($plugin);
-        $this->assertTrue($service->uninstall($plugin));
+        $this->service->disable($plugin);
+        $this->assertTrue($this->service->uninstall($plugin));
         $this->assertRegexp('/DisabledUninstalled/',ob_get_contents()); ob_end_clean();
     }
 
@@ -561,10 +580,9 @@ EOD;
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか
-        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
 
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
 
@@ -585,7 +603,7 @@ EOD;
 //        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
 
         // アンインストールできるか
-        $this->assertTrue($service->uninstall($plugin));
+        $this->assertTrue($this->service->uninstall($plugin));
     }
 
     /**
@@ -627,12 +645,12 @@ EOD;
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
         $tar->addFromString('event.yml', Yaml::dump($event));
-        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか
-        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
 
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
+        $this->app['orm.em']->refresh($plugin);
 
         $this->expected = realpath($pluginConfigCache);
         $this->actual = realpath(ConfigManager::getPluginConfigCacheFile());
@@ -677,9 +695,197 @@ EOD;
 //        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
 
         // アンインストールできるか
-        $this->assertTrue($service->uninstall($plugin));
+        $this->assertTrue($this->service->uninstall($plugin));
 
         $pluginConfigs = ConfigManager::getPluginConfigAll();
         $this->assertFalse(array_key_exists($tmpname, $pluginConfigs), 'キャッシュからプラグインが削除されているか');
+    }
+
+    /**
+     * プラグインを有効化したときにProxyが再生成される
+     */
+    public function testInstallWithEntityExtension()
+    {
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+
+        // インストール
+        $this->service->install($fileA);
+
+        $pluginA = $repository->findOneBy(array('code'=>$configA['code']));
+        $this->app['orm.em']->detach($pluginA);
+
+        // 有効化
+        $this->service->enable($pluginA);
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertContains("Plugin\\${configA['code']}\\Entity\\HogeTrait", $useStatement);
+    }
+
+    /**
+     * 無効化されているプラグインのTraitはProxyに利用されない
+     */
+    public function testInstallWithEntityExtension_with_disabled_plugin()
+    {
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configDisabled, $fileDisabled) = $this->createDummyPluginWithEntityExtension();
+        list($configEnabled, $fileEnabled) = $this->createDummyPluginWithEntityExtension();
+
+        // プラグイン1はインストールのみ
+        {
+            $this->service->install($fileDisabled);
+
+            $pluginDisabled = $repository->findOneBy(array('code'=>$configDisabled['code']));
+            $this->app['orm.em']->detach($pluginDisabled);
+        }
+        // プラグイン2をインストール&有効化
+        {
+            $this->service->install($fileEnabled);
+
+            $pluginEnabled = $repository->findOneBy(array('code'=>$configEnabled['code']));
+            $this->app['orm.em']->detach($pluginEnabled);
+
+            // 有効化
+            $this->service->enable($pluginEnabled);
+        }
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertNotContains("Plugin\\${configDisabled['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されていないプラグインのTraitは利用されない');
+        self::assertContains("Plugin\\${configEnabled['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されたプラグインのTraitは利用される');
+    }
+
+    /**
+     * すべての有効化されているプラグインのTraitを使ってProxyが再生成される
+     */
+    public function testInstallWithEntityExtension_all_enabled()
+    {
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configEnabledA, $fileEnabledA) = $this->createDummyPluginWithEntityExtension();
+        list($configEnabledB, $fileEnabledB) = $this->createDummyPluginWithEntityExtension();
+
+        // プラグイン1をインストール&有効化
+        {
+            $this->service->install($fileEnabledA);
+
+            $pluginEnabledA = $repository->findOneBy(array('code'=>$configEnabledA['code']));
+            $this->app['orm.em']->detach($pluginEnabledA);
+
+            // 有効化
+            $this->service->enable($pluginEnabledA);
+        }
+        // プラグイン2をインストール&有効化
+        {
+            $this->service->install($fileEnabledB);
+
+            $pluginEnabledB = $repository->findOneBy(array('code'=>$configEnabledB['code']));
+            $this->app['orm.em']->detach($pluginEnabledB);
+
+            // 有効化
+            $this->service->enable($pluginEnabledB);
+        }
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertContains("Plugin\\${configEnabledA['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されたプラグインのTraitは利用される');
+        self::assertContains("Plugin\\${configEnabledB['code']}\\Entity\\HogeTrait", $useStatement,
+            '有効化されたプラグインのTraitは利用される');
+    }
+
+
+    /**
+     * プラグインを無効化するとProxyからTraitが使われなくなる
+     */
+    public function testInstallWithEntityExtension_enable()
+    {
+        /** @var PluginRepository $repository */
+        $repository = $this->app['eccube.repository.plugin'];
+
+        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+
+        // インストール
+        $this->service->install($fileA);
+
+        $pluginA = $repository->findOneBy(array('code'=>$configA['code']));
+        $this->app['orm.em']->detach($pluginA);
+
+        // 有効化
+        $this->service->enable($pluginA);
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertContains("Plugin\\${configA['code']}\\Entity\\HogeTrait", $useStatement, 'Traitが有効になっている');
+
+        // 無効化
+        $this->service->disable($pluginA);
+
+        $tokens = Tokens::fromCode(file_get_contents($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        $useTraitStart = $tokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        $useTraitEnd = $tokens->getNextTokenOfKind($useTraitStart, [';']);
+        $useStatement = $tokens->generatePartialCode($useTraitStart, $useTraitEnd);
+
+        self::assertNotContains("Plugin\\${configA['code']}\\Entity\\HogeTrait", $useStatement, 'Traitが無効になっている');
+    }
+
+    private function createDummyPluginConfig()
+    {
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        $config['event'] = 'DummyEvent';
+        return $config;
+    }
+
+    private function createDummyPluginWithEntityExtension()
+    {
+        // インストールするプラグインを作成する
+        $config = $this->createDummyPluginConfig();
+        $tmpname = $config['code'];
+
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
+        $tar->addFromString('Entity/HogeTrait.php', <<< EOT
+<?php
+
+namespace Plugin\\${tmpname}\\Entity;
+
+use Eccube\Annotation\EntityExtension;
+
+/**
+ * @EntityExtension("Eccube\Entity\Customer")
+ */
+trait HogeTrait
+{
+}
+EOT
+        );
+        return [$config, $tmpfile];
     }
 }

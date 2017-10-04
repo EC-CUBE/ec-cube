@@ -23,37 +23,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 <div class="ec-cartNavi">
     <div class="ec-cartNavi__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/cart-dark.svg" alt="cart"></div>
-    <div class="ec-cartNavi__iconClose"><img src="{{ app.config.front_urlpath }}/assets/icon/cross-dark.svg"
-                                             alt="close"></div>
+    <div class="ec-cartNavi__iconClose"><img src="{{ app.config.front_urlpath }}/assets/icon/cross-dark.svg" alt="close"></div>
     <div class="ec-cartNavi__badge">{{ Cart.total_quantity }}</div>
     <div class="ec-cartNavi__label">合計
         <div class="ec-cartNavi__price">{{ Cart.total_price|price }}</div>
     </div>
 </div>
+
 {% if Cart.CartItems|length > 0 %}
     <div class="ec-cartNaviIsset">
-        <div class="ec-cartNaviIsset__cart">
-            {% for CartItem in Cart.CartItems %}
-                {% set ProductClass = CartItem.Object %}
-                {% set Product = ProductClass.Product %}
-                <div class="ec-cartNaviIsset__cartImage"><img
-                            src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}"
-                            alt="{{ Product.name }}">
+z        {% for CartItem in Cart.CartItems %}
+            {% set ProductClass = CartItem.Object %}
+            {% set Product = ProductClass.Product %}
+            <div class="ec-cartNaviIsset__cart">
+                <div class="ec-cartNaviIsset__cartImage">
+                    <img src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}" alt="{{ Product.name }}">
                 </div>
                 <div class="ec-cartNaviIsset__cartContent">
                     <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
-                    </div>
-                    <div class="ec-cartNaviIsset__cartContentPrice">{{ CartItem.price|price }}
-                        <div class="ec-cartNaviIsset__cartContentTax">税込
+                        <div class="ec-font-size-1">
+                            {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                {{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
+                            {% endif %}
+                            {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="ec-cartNaviIsset__cartContentNumber">数量：{{ CartItem.quantity }}
+                    <div class="ec-cartNaviIsset__cartContentPrice">
+                        {{ CartItem.price|price }}
+                        <div class="ec-cartNaviIsset__cartContentTax">税込</div>
                     </div>
+                    <div class="ec-cartNaviIsset__cartContentNumber">数量：{{ CartItem.quantity }}</div>
                 </div>
-            {% endfor %}
-        </div>
-        <div class="ec-cartNaviIsset__action"><a class="ec-blockBtn--action" href="{{ url('cart') }}">カートへ進む</a><a
-                    class="ec-blockBtn ec-cartNavi--cancel">キャンセル</a>
+            </div>
+        {% endfor %}
+        <div class="ec-cartNaviIsset__action">
+            <a class="ec-blockBtn--action" href="{{ url('cart') }}">カートへ進む</a>
+            <a class="ec-blockBtn ec-cartNavi--cancel">キャンセル</a>
         </div>
     </div>
 {% else %}

@@ -182,6 +182,9 @@ class OrderItemType extends AbstractType
                 /** @var \Eccube\Entity\OrderItem $OrderItem */
                 $OrderItem = $event->getData();
                 $TaxDisplayType = $OrderItem->getTaxDisplayType();
+                if (!$TaxDisplayType) {
+                    return;
+                }
                 switch ($TaxDisplayType->getId()) {
                     // 税込価格
                     case TaxDisplayType::INCLUDED:
