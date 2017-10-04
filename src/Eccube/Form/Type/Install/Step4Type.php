@@ -48,13 +48,6 @@ class Step4Type extends AbstractType
      */
     protected $requestStack;
 
-    public $app;
-
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * {@inheritdoc}
      */

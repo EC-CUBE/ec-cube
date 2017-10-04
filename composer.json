@@ -78,7 +78,10 @@
         "symfony/browser-kit": "^3.3"
     },
     "autoload": {
-        "files": [ "src/Eccube/Resource/functions/log.php" ],
+        "files": [
+            "src/Eccube/Resource/functions/log.php",
+            "src/Eccube/Resource/functions/env.php"
+        ],
         "psr-4": {
             "Eccube\\Entity\\": "app/proxy/entity",
             "Eccube\\": "src/Eccube",

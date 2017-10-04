@@ -1,7 +1,7 @@
 <?php return [
   'log' => 
   [
-    'suffix' => NULL,
+    'suffix' => null,
     'filename' => 'site',
     'delimiter' => '_',
     'dateformat' => 'Y-m-d',

@@ -36,7 +36,7 @@ class SecurityTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'admin_route_dir' => 'admin',
-        'admin_allow_host' => '',
+        'admin_allow_hosts' => '',
     );
 
     public function setUp()
@@ -59,21 +59,21 @@ class SecurityTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidAdminAllowHost_OneLineIp()
     {
-        $this->formData['admin_allow_host'] = "127.0.0.1";
+        $this->formData['admin_allow_hosts'] = "127.0.0.1";
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
     public function testValidAdminAllowHost_MultiLineIps()
     {
-        $this->formData['admin_allow_host'] = "127.0.0.1\n1.1.1.1";
+        $this->formData['admin_allow_hosts'] = "127.0.0.1\n1.1.1.1";
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
     public function testValidAdminAllowHost_NotIp()
     {
-        $this->formData['admin_allow_host'] = "255.255.255,256";
+        $this->formData['admin_allow_hosts'] = "255.255.255,256";
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

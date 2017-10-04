@@ -9,6 +9,11 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginDevelopEntityFromDbTest extends AbstractCommandTest
 {
 
+    public static function setUpBeforeClass()
+    {
+        self::markTestIncomplete();
+    }
+
     private $testCase;
 
     public function setUp()
@@ -16,10 +21,6 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
         parent::setUp();
 
         $this->markTestIncomplete();
-
-        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
-            $this->markTestSkipped('Can not support for sqlite3');
-        }
 
         $this->initCommand(new PluginCommand());
     }

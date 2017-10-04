@@ -81,7 +81,7 @@ class SecurityType extends AbstractType
                    )),
                 ),
             ))
-            ->add('admin_allow_host', TextareaType::class, array(
+            ->add('admin_allow_hosts', TextareaType::class, array(
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
@@ -96,7 +96,7 @@ class SecurityType extends AbstractType
                 $form = $event->getForm();
                 $data = $form->getData();
 
-                $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
+                $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
                     $errors = $this->recursiveValidator->validate($ip, array(
@@ -104,7 +104,7 @@ class SecurityType extends AbstractType
                         )
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_host']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                        $form['admin_allow_hosts']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
                     }
                 }
             })
