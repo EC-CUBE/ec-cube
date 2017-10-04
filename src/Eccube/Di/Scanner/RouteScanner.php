@@ -33,17 +33,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class RouteScanner extends ComponentScanner
 {
     /**
-     * @var string[]
-     */
-    private $scanDirs;
-
-    /**
      * ComponentAutoWiring constructor.
      * @param string[] $scanDirs
      */
     public function __construct(array $scanDirs)
     {
-        $this->scanDirs = $scanDirs;
+        parent::__construct($scanDirs);
     }
 
     /**
@@ -62,37 +57,5 @@ class RouteScanner extends ComponentScanner
     public function createComponentDefinition($anno, $refClass)
     {
         return new ComponentDefinition($anno->getService() ?: $refClass->getName(), $refClass);
-    }
-
-    /**
-     * @param \Twig_Environment $twig
-     * @param array $components
-     * @return string
-     */
-    public function generate(\Twig_Environment $twig, array $components)
-    {
-        return $twig->createTemplate(
-'{% for component in components -%}
-$app["{{ component.id }}"] = function (\Pimple\Container $app) {
-    $class = new \ReflectionClass(\{{ component.className }}::class);
-    $instance = $class->newInstanceWithoutConstructor();
-
-    {% for dependency in component.dependencies -%}
-    $property = $class->getProperty("{{ dependency.propertyName }}");
-    $property->setAccessible(true);
-    $property->setValue($instance, {% if is_app(dependency.id) %}$app{% else %}$app["{{ dependency.id }}"]{% endif %});
-    {% endfor %}
-
-    return $instance;
-};
-{% endfor %}')->render(['components' => $components]);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getScanDirs()
-    {
-        return $this->scanDirs;
     }
 }
