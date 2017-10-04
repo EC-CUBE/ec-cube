@@ -50,7 +50,7 @@ class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
     public function testGenerate()
     {
         $generator = new EntityProxyService();
-        $generator->generate([__DIR__], $this->tempOutputDir);
+        $generator->generate([__DIR__], [], $this->tempOutputDir);
 
         $generatedFile = $this->tempOutputDir.'/Product.php';
         self::assertTrue(file_exists($generatedFile));
@@ -69,6 +69,35 @@ class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
             [T_STRING, 'EntityProxyServiceTest_ProductTrait'],
         ]);
         self::assertNotNull($sequence);
+    }
+
+    public function testGenerateExcluded()
+    {
+        $generator = new EntityProxyService();
+        $generator->generate([__DIR__], [], $this->tempOutputDir);
+
+        $generatedFile = $this->tempOutputDir.'/Product.php';
+        self::assertTrue(file_exists($generatedFile));
+
+        $tokens = Tokens::fromCode(file_get_contents($generatedFile));
+        $traitTokens = [
+            [CT::T_USE_TRAIT],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Eccube'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Tests'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Service'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'EntityProxyServiceTest_ProductTrait'],
+        ];
+
+        self::assertNotNull($tokens->findSequence($traitTokens), 'Traitはあるはず');
+
+        // 除外して生成
+        $generator->generate([], [__DIR__], $this->tempOutputDir);
+        $tokens = Tokens::fromCode(file_get_contents($generatedFile));
+        self::assertNull($tokens->findSequence($traitTokens), 'Traitが外されているはず');
     }
 }
 

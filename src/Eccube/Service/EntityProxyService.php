@@ -50,55 +50,26 @@ class EntityProxyService
     /**
      * EntityのProxyを生成します。
      *
-     * @param array $scanDirs スキャン対象ディレクトリ
+     * @param array $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
+     * @param array $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
      * @param string $outputDir 出力先
      * @param OutputInterface $output ログ出力
      * @return array 生成したファイルのリスト
      */
-    public function generate($scanDirs, $outputDir, OutputInterface $output = null)
+    public function generate($includesDirs, $excludeDirs, $outputDir, OutputInterface $output = null)
     {
         if (is_null($output)) {
             $output = new ConsoleOutput();
         }
 
-        // Acmeからファイルを抽出
-        $files = Finder::create()
-            ->in(array_filter($scanDirs, 'file_exists'))
-            ->name('*.php')
-            ->files();
-
-        // traitの一覧を取得
-        $traits = [];
-        $includedFiles = [];
-        foreach ($files as $file) {
-            require_once $file->getRealPath();
-            $includedFiles[] = $file->getRealPath();
-        }
-
-        $declared = get_declared_traits();
-
-        foreach ($declared as $className) {
-            $rc = new \ReflectionClass($className);
-            $sourceFile = $rc->getFileName();
-            if (in_array($sourceFile, $includedFiles)) {
-                $traits[] = $className;
-            }
-        }
-
-        // traitから@EntityExtensionを抽出
-        $reader = new AnnotationReader();
-        $proxies = [];
-        foreach ($traits as $trait) {
-            $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
-            if ($anno) {
-                $proxies[$anno->value][] = $trait;
-            }
-        }
-
         $generatedFiles = [];
 
+        list($addTraits, $removeTrails) = $this->scanTraits([$includesDirs, $excludeDirs]);
+        $targetEntities = array_unique(array_merge(array_keys($addTraits), array_keys($removeTrails)));
+
         // プロキシファイルの生成
-        foreach ($proxies as $targetEntity => $traits) {
+        foreach ($targetEntities as $targetEntity) {
+            $traits = isset($addTraits[$targetEntity]) ? $addTraits[$targetEntity] : [];
             $rc = new ClassReflection($targetEntity);
             $generator = ClassGenerator::fromReflection($rc);
             $uses = FileGenerator::fromReflectedFileName($rc->getFileName())->getUses();
@@ -107,27 +78,15 @@ class EntityProxyService
                 $generator->addUse($use[0], $use[1]);
             }
 
+            if (isset($removeTrails[$targetEntity])) {
+                foreach ($removeTrails[$targetEntity] as $trait) {
+                    $this->removePropertiesFromProxy($trait, $generator);
+                }
+            }
+
             foreach ($traits as $trait) {
-                $rt = new ClassReflection($trait);
-                foreach ($rt->getProperties() as $prop) {
-                    // すでにProxyがある場合, $generatorにuse XxxTrait;が存在せず,
-                    // traitに定義されているフィールド,メソッドがクラス側に追加されてしまう
-                    if ($generator->hasProperty($prop->getName())) {
-                        // $generator->removeProperty()はzend-code 2.6.3 では未実装なのでリフレクションで削除.
-                        $generatorRefObj = new \ReflectionObject($generator);
-                        $generatorRefProp = $generatorRefObj->getProperty('properties');
-                        $generatorRefProp->setAccessible(true);
-                        $properies = $generatorRefProp->getValue($generator);
-                        unset($properies[$prop->getName()]);
-                        $generatorRefProp->setValue($generator, $properies);
-                    }
-                }
-                foreach ($rt->getMethods() as $method) {
-                    if ($generator->hasMethod($method->getName())) {
-                        $generator->removeMethod($method->getName());
-                    }
-                }
-                $generator->addTrait('\\'.$trait);
+                $this->removePropertiesFromProxy($trait, $generator);
+                $generator->addTrait('\\' . $trait);
             }
 
             // extendしたクラスが相対パスになるので
@@ -150,5 +109,89 @@ class EntityProxyService
         }
 
         return $generatedFiles;
+    }
+
+    /**
+     * 複数のディレクトリセットをスキャンしてディレクトリセットごとのEntityとTraitのマッピングを返します.
+     * @param $dirSets array スキャン対象ディレクトリリストの配列
+     * @return array ディレクトリセットごとのEntityとTraitのマッピング
+     */
+    private function scanTraits($dirSets)
+    {
+        // ディレクトリセットごとのファイルをロードしつつ一覧を作成
+        $includedFileSets = [];
+        foreach ($dirSets as $dirSet) {
+            $includedFiles = [];
+            $dirs = array_filter($dirSet, 'file_exists');
+            if (!empty($dirs)) {
+                $files = Finder::create()
+                    ->in($dirs)
+                    ->name('*.php')
+                    ->files();
+
+                foreach ($files as $file) {
+                    require_once $file->getRealPath();
+                    $includedFiles[] = $file->getRealPath();
+                }
+            }
+            $includedFileSets[] = $includedFiles;
+        }
+
+        $declaredTraits = get_declared_traits();
+
+        // ディレクトリセットに含まれるTraitの一覧を作成
+        $traitSets = array_map(function() { return []; }, $dirSets);
+        foreach ($declaredTraits as $className) {
+            $rc = new \ReflectionClass($className);
+            $sourceFile = $rc->getFileName();
+            foreach ($includedFileSets as $index=>$includedFiles) {
+                if (in_array($sourceFile, $includedFiles)) {
+                    $traitSets[$index][] = $className;
+                }
+            }
+        }
+
+        // TraitをEntityごとにまとめる
+        $reader = new AnnotationReader();
+        $proxySets = [];
+        foreach ($traitSets as $traits) {
+            $proxies = [];
+            foreach ($traits as $trait) {
+                $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
+                if ($anno) {
+                    $proxies[$anno->value][] = $trait;
+                }
+            }
+            $proxySets[] = $proxies;
+        }
+
+        return $proxySets;
+    }
+
+    /**
+     * @param $trait
+     * @param $generator
+     */
+    private function removePropertiesFromProxy($trait, $generator)
+    {
+        $rt = new ClassReflection($trait);
+        foreach ($rt->getProperties() as $prop) {
+            // すでにProxyがある場合, $generatorにuse XxxTrait;が存在せず,
+            // traitに定義されているフィールド,メソッドがクラス側に追加されてしまう
+            if ($generator->hasProperty($prop->getName())) {
+                // $generator->removeProperty()はzend-code 2.6.3 では未実装なのでリフレクションで削除.
+                $generatorRefObj = new \ReflectionObject($generator);
+                $generatorRefProp = $generatorRefObj->getProperty('properties');
+                $generatorRefProp->setAccessible(true);
+                $properies = $generatorRefProp->getValue($generator);
+                unset($properies[$prop->getName()]);
+                $generatorRefProp->setValue($generator, $properies);
+            }
+        }
+        foreach ($rt->getMethods() as $method) {
+            if ($generator->hasMethod($method->getName())) {
+                $generator->removeMethod($method->getName());
+            }
+        }
     }
 }
