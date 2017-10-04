@@ -22,7 +22,7 @@ class CalculateServiceTest extends AbstractServiceTestCase
         $newOrder = $this->app['eccube.service.calculate']($Order, $Customer)->calculate();
         $this->assertNotEquals($previousTotal, $newOrder->getSubtotal(), '小計が加算されている');
 
-        $Collection = new OrderItemCollection($newOrder->getOrderDetails()->toArray());
+        $Collection = new OrderItemCollection($newOrder->getOrderItems()->toArray());
 
         $product_class_count = $Collection->getProductClasses()->count();
         $this->assertNotEquals($product_class_count, $Collection->count());

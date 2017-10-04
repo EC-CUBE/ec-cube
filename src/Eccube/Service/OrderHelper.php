@@ -15,7 +15,6 @@ use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
@@ -222,61 +221,6 @@ class OrderHelper
         }, $CartItems->toArray());
     }
 
-    /**
-     * @deprecated
-     */
-    public function createOrderDetailsFromCartItems($CartItems)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $OrderDetails = [];
-
-        foreach ($CartItems as $item) {
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $item->getObject();
-            /* @var $Product \Eccube\Entity\Product */
-            $Product = $ProductClass->getProduct();
-
-            $OrderDetail = new OrderDetail();
-            $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
-            $OrderDetail
-                ->setProduct($Product)
-                ->setProductClass($ProductClass)
-                ->setProductName($Product->getName())
-                ->setProductCode($ProductClass->getCode())
-                ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($item->getQuantity())
-                ->setTaxRule($TaxRule->getId())
-                ->setTaxRate($TaxRule->getTaxRate());
-
-            $ClassCategory1 = $ProductClass->getClassCategory1();
-            if (!is_null($ClassCategory1)) {
-                $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
-                $OrderDetail->setClassName1($ClassCategory1->getClassName()->getName());
-            }
-            $ClassCategory2 = $ProductClass->getClassCategory2();
-            if (!is_null($ClassCategory2)) {
-                $OrderDetail->setClasscategoryName2($ClassCategory2->getName());
-                $OrderDetail->setClassName2($ClassCategory2->getClassName()->getName());
-            }
-
-            $OrderDetails[] = $OrderDetail;
-        }
-
-        return $OrderDetails;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function addOrderDetails(Order $Order, array $OrderDetails)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        foreach ($OrderDetails as $OrderDetail) {
-            $Order->addOrderDetail($OrderDetail);
-            $OrderDetail->setOrder($Order);
-        }
-    }
-
     public function createShippingFromCustomerAddress(CustomerAddress $CustomerAddress)
     {
         $Shipping = new Shipping();
@@ -371,48 +315,6 @@ class OrderHelper
         $Order->setPaymentMethod($Payment->getMethod());
         // TODO CalculateChargeStrategy でセットする
         // $Order->setCharge($Payment->getCharge());
-    }
-
-    /**
-     * @deprecated
-     */
-    public function createOrderItemsFromOrderDetails($OrderDetails, $groupByProductType = true)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-        $OrderItems = [];
-
-        foreach ($OrderDetails as $OrderDetail) {
-            $Product = $OrderDetail->getProduct();
-            $ProductClass = $OrderDetail->getProductClass();
-            $ProductType = $ProductClass->getProductType();
-
-            $OrderItem = new OrderItem();
-            $OrderItem
-                ->setProductClass($ProductClass)
-                ->setProduct($Product)
-                ->setProductName($Product->getName())
-                ->setProductCode($ProductClass->getCode())
-                ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($OrderDetail->getQuantity());
-
-            $ClassCategory1 = $ProductClass->getClassCategory1();
-            if (!is_null($ClassCategory1)) {
-                $OrderItem->setClasscategoryName1($ClassCategory1->getName());
-                $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
-            }
-            $ClassCategory2 = $ProductClass->getClassCategory2();
-            if (!is_null($ClassCategory2)) {
-                $OrderItem->setClasscategoryName2($ClassCategory2->getName());
-                $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
-            }
-            if ($groupByProductType) {
-                $OrderItems[$ProductType->getId()][] = $OrderItem;
-            } else {
-                $OrderItems[] = $OrderItem;
-            }
-        }
-
-        return $OrderItems;
     }
 
     public function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)

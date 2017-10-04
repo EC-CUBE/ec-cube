@@ -34,7 +34,6 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\OrderItem;
@@ -604,54 +603,12 @@ class ShoppingService
 
             $quantity = $item->getQuantity();
 
-            // 受注明細情報を作成
-            $OrderDetail = $this->getNewOrderDetail($Product, $ProductClass, $quantity);
-            $OrderDetail->setOrder($Order);
-            $Order->addOrderDetail($OrderDetail);
-
             // 配送商品情報を作成
             $this->getNewOrderItem($Order, $Product, $ProductClass, $quantity);
         }
 
         return $Order;
 
-    }
-
-    /**
-     * 受注明細情報を作成
-     *
-     * @param Product $Product
-     * @param ProductClass $ProductClass
-     * @param $quantity
-     * @return \Eccube\Entity\OrderDetail
-     */
-    public function getNewOrderDetail(Product $Product, ProductClass $ProductClass, $quantity)
-    {
-        $OrderDetail = new OrderDetail();
-        $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
-        $OrderDetail->setProduct($Product)
-            ->setProductClass($ProductClass)
-            ->setProductName($Product->getName())
-            ->setProductCode($ProductClass->getCode())
-            ->setPrice($ProductClass->getPrice02())
-            ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getRoundingType()->getId())
-            ->setTaxRate($TaxRule->getTaxRate());
-
-        $ClassCategory1 = $ProductClass->getClassCategory1();
-        if (!is_null($ClassCategory1)) {
-            $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
-            $OrderDetail->setClassName1($ClassCategory1->getClassName()->getName());
-        }
-        $ClassCategory2 = $ProductClass->getClassCategory2();
-        if (!is_null($ClassCategory2)) {
-            $OrderDetail->setClasscategoryName2($ClassCategory2->getName());
-            $OrderDetail->setClassName2($ClassCategory2->getClassName()->getName());
-        }
-
-        $this->entityManager->persist($OrderDetail);
-
-        return $OrderDetail;
     }
 
     /**
@@ -854,92 +811,6 @@ class ShoppingService
         }
     }
 
-
-    /**
-     * 商品公開ステータスチェック、在庫チェック、購入制限数チェックを行い、在庫情報をロックする
-     *
-     * @param $em トランザクション制御されているEntityManager
-     * @param Order $Order 受注情報
-     * @return bool true : 成功、false : 失敗
-     */
-    public function isOrderProduct($em, \Eccube\Entity\Order $Order)
-    {
-        $orderDetails = $Order->getOrderDetails();
-
-        /** @var OrderItem $orderDetail */
-        foreach ($orderDetails as $orderDetail) {
-
-            if (is_null($orderDetail->getProduct())) {
-                // FIXME 配送明細を考慮する必要がある
-                continue;
-            }
-
-            // 商品削除チェック
-            if ($orderDetail->getProductClass()->isVisible() == false) {
-                // @deprecated 3.1以降ではexceptionをthrowする
-                // throw new ShoppingException('cart.product.delete');
-                return false;
-            }
-
-            // 商品公開ステータスチェック
-            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW) {
-                // 商品が非公開ならエラー
-
-                // @deprecated 3.1以降ではexceptionをthrowする
-                // throw new ShoppingException('cart.product.not.status');
-                return false;
-            }
-
-            // 購入制限数チェック
-            if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
-                if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
-                    // @deprecated 3.1以降ではexceptionをthrowする
-                    // throw new ShoppingException('cart.over.sale_limit');
-                    return false;
-                }
-            }
-
-            // 購入数チェック
-            if ($orderDetail->getQuantity() < 1) {
-                // 購入数量が1未満ならエラー
-
-                // @deprecated 3.1以降ではexceptionをthrowする
-                // throw new ShoppingException('???');
-                return false;
-            }
-
-        }
-
-        // 在庫チェック
-        foreach ($orderDetails as $orderDetail) {
-            if (is_null($orderDetail->getProductClass())) {
-                // FIXME 配送明細を考慮する必要がある
-                continue;
-            }
-            // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
-            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
-                // 在庫チェックあり
-                // 在庫に対してロック(select ... for update)を実行
-                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
-                    $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
-                );
-                // 購入数量と在庫数をチェックして在庫がなければエラー
-                if ($productStock->getStock() < 1) {
-                    // @deprecated 3.1以降ではexceptionをthrowする
-                    // throw new ShoppingException('cart.over.stock');
-                    return false;
-                } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
-                    // @deprecated 3.1以降ではexceptionをthrowする
-                    // throw new ShoppingException('cart.over.stock');
-                    return false;
-                }
-            }
-        }
-
-        return true;
-
-    }
-
     /**
      * 受注情報、お届け先情報の更新
      *
@@ -999,43 +870,6 @@ class ShoppingService
 
 
     /**
-     * 在庫情報の更新
-     *
-     * @param $em トランザクション制御されているEntityManager
-     * @param Order $Order 受注情報
-     */
-    public function setStockUpdate($em, Order $Order)
-    {
-
-        $orderDetails = $Order->getOrderDetails();
-
-        // 在庫情報更新
-        foreach ($orderDetails as $orderDetail) {
-            if (is_null($orderDetail->getProductClass())) {
-                // FIXME 配送明細を考慮する必要がある
-                continue;
-            }
-            // 在庫が無制限かチェックし、制限ありなら在庫数を更新
-            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
-
-                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
-                    $orderDetail->getProductClass()->getProductStock()->getId()
-                );
-
-                // 在庫情報の在庫数を更新
-                $stock = $productStock->getStock() - $orderDetail->getQuantity();
-                $productStock->setStock($stock);
-
-                // 商品規格情報の在庫数を更新
-                $orderDetail->getProductClass()->setStock($stock);
-
-            }
-        }
-
-    }
-
-
-    /**
      * 会員情報の更新
      *
      * @param Order $Order 受注情報
@@ -1043,9 +877,6 @@ class ShoppingService
      */
     public function setCustomerUpdate(Order $Order, Customer $user)
     {
-
-        $orderDetails = $Order->getOrderDetails();
-
         // 顧客情報を更新
         $now = new \DateTime();
         $firstBuyDate = $user->getFirstBuyDate();
@@ -1056,7 +887,6 @@ class ShoppingService
 
         $user->setBuyTimes($user->getBuyTimes() + 1);
         $user->setBuyTotal($user->getBuyTotal() + $Order->getTotal());
-
     }
 
 
@@ -1100,8 +930,12 @@ class ShoppingService
         $deliveryDateFlag = false;
 
         // 配送時に最大となる商品日数を取得
-        foreach ($Order->getOrderDetails() as $detail) {
-            $deliveryDate = $detail->getProductClass()->getDeliveryDate();
+        foreach ($Order->getOrderItems() as $item) {
+            if (!$item->isProduct()) {
+                continue;
+            }
+            $ProductClass = $item->getProductClass();
+            $deliveryDate = $ProductClass->getDeliveryDate();
             if (!is_null($deliveryDate)) {
                 if ($deliveryDate->getValue() < 0) {
                     // 配送日数がマイナスの場合はお取り寄せなのでスキップする
@@ -1134,7 +968,6 @@ class ShoppingService
         }
 
         return $deliveryDates;
-
     }
 
     /**
@@ -1304,27 +1137,14 @@ class ShoppingService
 
         $em = $this->entityManager;
 
-        // TODO PurchaseFlowでやる
-//        // 合計金額の再計算
-//        $this->calculatePrice($Order);
-//
-//        // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
-//        $check = $this->isOrderProduct($em, $Order);
-//        if (!$check) {
-//            throw new ShoppingException('front.shopping.stock.error');
-//        }
-
         // 受注情報、配送情報を更新
         $Order = $this->calculateDeliveryFee($Order);
         $this->setOrderUpdateData($Order);
-        // 在庫情報を更新
-        $this->setStockUpdate($em, $Order);
 
         if ($this->app->isGranted('ROLE_USER')) {
             // 会員の場合、購入金額を更新
             $this->setCustomerUpdate($Order, $this->app->user());
         }
-
     }
 
 

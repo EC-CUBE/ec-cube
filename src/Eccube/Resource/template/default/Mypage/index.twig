@@ -55,28 +55,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     <div class="ec-historyRole__detail">
-                        {% for OrderDetail in Order.OrderDetails %}
+                        {% for OrderItem in Order.OrderItems %}
                             <div class="ec-imageGrid">
                                 <div class="ec-imageGrid__img">
-                                    {% if OrderDetail.Product is null %}
+                                    {% if OrderItem.Product is null %}
                                         <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
                                     {% else %}
-                                        {% if OrderDetail.enable %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.product.MainListImage|no_image_product }}">
+                                        {% if OrderItem.enable %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}">
                                         {% else %}
                                             <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                         {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="ec-imageGrid__content">
-                                    <p class="ec-font-bold">{{ OrderDetail.product_name }}</p>
-                                    {% if OrderDetail.class_category_name1 is not empty %}
-                                        {{ OrderDetail.class_category_name1 }}
+                                    <p class="ec-font-bold">{{ OrderItem.product_name }}</p>
+                                    {% if OrderItem.class_category_name1 is not empty %}
+                                        {{ OrderItem.class_category_name1 }}
                                     {% endif %}
-                                    {% if OrderDetail.class_category_name1 is not empty %}
-                                        / {{ OrderDetail.class_category_name2 }}
+                                    {% if OrderItem.class_category_name1 is not empty %}
+                                        / {{ OrderItem.class_category_name2 }}
                                     {% endif %}
-                                    <p>{{ OrderDetail.price_inc_tax|price }} ×{{ OrderDetail.quantity }}</p>
+                                    <p>{{ OrderItem.price_inc_tax|price }} ×{{ OrderItem.quantity }}</p>
                                 </div>
                             </div>
                         {% endfor %}

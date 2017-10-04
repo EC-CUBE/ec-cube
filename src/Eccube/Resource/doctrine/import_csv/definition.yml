@@ -45,7 +45,6 @@
 - dtb_mail_template.csv
 - dtb_news.csv
 - dtb_order.csv
-- dtb_order_detail.csv
 - dtb_payment.csv
 - dtb_payment_option.csv
 - dtb_plugin.csv
