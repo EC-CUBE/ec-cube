@@ -13,7 +13,7 @@ class ForwardOnlyListenerTest extends AbstractWebTestCase
             $this->client->request('GET', $this->app->url("shopping_check_to_cart"));
             self::fail();
         } catch (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e) {
-            self::assertEquals('Eccube\Controller\ShoppingController::checkToCart is Forward Only', $e->getMessage());
+            self::assertEquals('Eccube\Controller\ShoppingController:checkToCart is Forward Only', $e->getMessage());
         }
     }
 }
