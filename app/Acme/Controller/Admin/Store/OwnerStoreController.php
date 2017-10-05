@@ -156,22 +156,48 @@ class OwnerStoreController extends AbstractController
      */
     public function apiInstall(Application $app, Request $request, $pluginCode)
     {
+        // Check plugin code
+        $url = $this->appConfig['owners_store_url'].'?method=list';
+        list($json, $info) = $this->getRequestApi($url, $app);
+        $existFlg = false;
+        $data = json_decode($json, true);
+        if ($data && isset($data['success'])) {
+            $success = $data['success'];
+            if ($success == '1') {
+                foreach ($data['item'] as $item) {
+                    if ($item['product_code'] == $pluginCode) {
+                        $existFlg = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if ($existFlg === false) {
+            $app->log(sprintf('%s plugin not found!', $pluginCode));
+            $app->addError('admin.plugin.not.found', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin_owners_search'));
+        }
+
         try {
-            $install = new Process(sprintf("cd %s && composer require ec-cube/{$pluginCode}", $this->appConfig['root_dir']));
+            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
+            $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
+
+            $install = new Process($execute);
             $install->setTimeout(null);
             $install->run();
             if ($install->isSuccessful()) {
                 $app->addSuccess('admin.plugin.install.complete', 'admin');
-                $app->log("Install $pluginCode successful!");
+                $app->log(sprintf('Install %s plugin successful!', $pluginCode));
 
                 return $app->redirect($app->url('admin_store_plugin'));
             }
-            $app->addError("Install $pluginCode fail!", 'admin');
+            $app->addError('admin.plugin.install.fail', 'admin');
         } catch (Exception $exception) {
             $app->addError($exception->getMessage(), 'admin');
             $app->log($exception->getCode().' : '.$exception->getMessage());
         }
-        $app->log("Install $pluginCode fail!");
+        $app->log(sprintf('Install %s plugin fail!', $pluginCode));
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
