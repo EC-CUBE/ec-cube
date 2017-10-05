@@ -27,46 +27,48 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="ec-layoutRole__main">
-        <div class="ec-role">
+        <div class="ec-mypageRole">
             <div class="ec-pageHeader">
                 <h1>マイページ/お気に入り一覧</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
         </div>
 
-        <div class="ec-favoriteRole">
-            {% if pagination.totalItemCount > 0 %}
-                <div class="ec-favoriteRole__header">
-                    <p><span class="ec-font-bold">{{ pagination.totalItemCount }}件</span>のお気に入りがあります。</p>
-                </div>
-                <div class="ec-favoriteRole__detail">
-                    <ul class="ec-favoriteRole__itemList">
-                        {% for FavoriteProduct in pagination %}
-                            {% set Product = FavoriteProduct.Product %}
-                            <li class="ec-favoriteRole__item">
-                                <a class="ec-closeBtn--circle" href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                    <div class="ec-icon">
-                                        <img src="{{ app.config.front_urlpath }}/assets/icon/cross-white.svg" alt="close">
-                                    </div>
-                                </a>
-                                <a class="ec-favoriteRole__itemThumb" href="{{ url('product_detail', {'id': Product.id}) }}">
-                                    <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}" alt="{{ Product.name }}"/>
-                                </a>
-                                <p class="ec-favoriteRole__itemTitle">{{ Product.name }}</p>
-                                <p class="ec-favoriteRole__itemPrice">
-                                    {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
-                                        {{ Product.price02_inc_tax_min|price }}
-                                    {% else %}
-                                        {{ Product.price02_inc_tax_min|price }}～{{ Product.price02_inc_tax_max|price }}
-                                    {% endif %}
-                                </p>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% else %}
-                <div class="ec-welcomeMsg">お気に入りが登録されていません。</div>
-            {% endif %}
+        <div class="ec-mypageRole">
+            <div class="ec-favoriteRole">
+                {% if pagination.totalItemCount > 0 %}
+                    <div class="ec-favoriteRole__header">
+                        <p><span class="ec-font-bold">{{ pagination.totalItemCount }}件</span>のお気に入りがあります。</p>
+                    </div>
+                    <div class="ec-favoriteRole__detail">
+                        <ul class="ec-favoriteRole__itemList">
+                            {% for FavoriteProduct in pagination %}
+                                {% set Product = FavoriteProduct.Product %}
+                                <li class="ec-favoriteRole__item">
+                                    <a class="ec-closeBtn--circle" href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                        <div class="ec-icon">
+                                            <img src="{{ app.config.front_urlpath }}/assets/icon/cross-white.svg" alt="close">
+                                        </div>
+                                    </a>
+                                    <a class="ec-favoriteRole__itemThumb" href="{{ url('product_detail', {'id': Product.id}) }}">
+                                        <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}" alt="{{ Product.name }}"/>
+                                    </a>
+                                    <p class="ec-favoriteRole__itemTitle">{{ Product.name }}</p>
+                                    <p class="ec-favoriteRole__itemPrice">
+                                        {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
+                                            {{ Product.price02_inc_tax_min|price }}
+                                        {% else %}
+                                            {{ Product.price02_inc_tax_min|price }}～{{ Product.price02_inc_tax_max|price }}
+                                        {% endif %}
+                                    </p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <div class="ec-favoriteRole__header">お気に入りが登録されていません。</div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

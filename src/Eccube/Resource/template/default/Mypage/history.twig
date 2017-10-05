@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="ec-layoutRole__main">
-        <div class="ec-role">
+        <div class="ec-mypageRole">
             <div class="ec-pageHeader">
                 <h1>マイページ/ご注文履歴詳細</h1>
             </div>
@@ -194,8 +194,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% else %}
                             <p class="ec-reportDescription">メール履歴がありません。</p>
                         {% endfor %}
+                        <a href="{{ url('mypage') }}" class="ec-inlineBtn">戻る</a>
                     </div>
-                    <a href="{{ url('mypage') }}" class="ec-inlineBtn">戻る</a>
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
@@ -213,6 +213,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dl>
                     <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
                     <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="ec-blockBtn--action" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">再注文する</a>
+
                 </div>
                 {% if remessage %}
                     <p class="ec-color-accent">
