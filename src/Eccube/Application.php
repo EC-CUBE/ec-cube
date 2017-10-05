@@ -152,15 +152,15 @@ class Application extends \Silex\Application
 
     public function initClassLoader()
     {
-        if (!isset($this['config']['vendor_psr4'])) {
-            $this['logger']->log('config.vendor_psr4 is not set.');
+        if (!isset($this['config']['vendor_name'])) {
+            $this['logger']->log('config.vendor_name is not set.');
 
             return;
         }
 
-        list($prefix, $path) = $this['config']['vendor_psr4'];
+        $name = $this['config']['vendor_name'];
+        $dir = $this['config']['root_dir'].'/app/'.$name;
 
-        $dir = $this['config']['root_dir'].'/app/'.$path;
         if (false === file_exists($dir)) {
             $this['logger']->log(sprintf('%s is not exists.', $dir));
 
@@ -168,12 +168,12 @@ class Application extends \Silex\Application
         }
 
         $path = realpath($dir);
+
         $loader = $this['eccube.autoloader'];
-        $loader->addPsr4($prefix, $path);
+        $loader->addPsr4($name.'\\', $path);
 
         $config = $this['config'];
         $config['vendor_dir'] = $path;
-        $config['vendor_prefix'] = $prefix;
         $this->overwrite('config', $config);
     }
 
@@ -349,7 +349,7 @@ class Application extends \Silex\Application
 
         $this['eccube.routers.plugin'] = [];
 
-        if (isset($this['config']['vendor_dir'])) {
+        if (isset($this['config']['vendor_dir']) && file_exists($this['config']['vendor_dir'].'/Controller')) {
             $this['eccube.router.extend'] = function ($app) {
                 $resource = $app['config']['vendor_dir'].'/Controller';
                 $cachePrefix = 'Extend';
@@ -361,7 +361,7 @@ class Application extends \Silex\Application
         }
         $this->extend('request_matcher', function ($matcher, $app) {
             $matchers = [];
-            if (isset($app['config']['vendor_dir'])) {
+            if (isset($app['eccube.router.extend'])) {
                 $matchers[] = $app['eccube.router.extend'];
             }
             foreach ($app['eccube.routers.plugin'] as $router) {
@@ -375,7 +375,9 @@ class Application extends \Silex\Application
 
         $this->extend('url_generator', function ($generator, $app) {
             $generators = [];
-            $generators[] = $app['eccube.router.extend'];
+            if (isset($app['eccube.router.extend'])) {
+                $generators[] = $app['eccube.router.extend'];
+            }
             foreach ($app['eccube.routers.plugin'] as $router) {
                 $generators[] = $router;
             };
@@ -387,7 +389,9 @@ class Application extends \Silex\Application
 
         // Route CollectionにEC-CUBEで定義したルーティングを追加(debug tool barに出力するため)
         $this->extend('routes', function ($routes, $app) {
-            $routes->addCollection($app['eccube.router.extend']->getRouteCollection());
+            if (isset($app['eccube.router.extend'])) {
+                $routes->addCollection($app['eccube.router.extend']->getRouteCollection());
+            }
             foreach ($app['eccube.routers.plugin'] as $router) {
                 $routes->addCollection($router->getRouteCollection());
             };
@@ -664,10 +668,11 @@ class Application extends \Silex\Application
              'use_simple_annotation_reader' => false,
          );
 
-        if (isset($this['config']['vendor_dir'])) {
+        if (isset($this['config']['vendor_dir']) && file_exists($this['config']['vendor_dir'].'/Entity')) {
+
             $ormMappings[] = array(
                 'type' => 'annotation',
-                'namespace' => $this['config']['vendor_prefix'].'Entity',
+                'namespace' => $this['config']['vendor_name'].'\Entity',
                 'path' => array(
                     $this['config']['vendor_dir'].'/Entity',
                 ),

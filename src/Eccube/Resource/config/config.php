@@ -12,5 +12,5 @@
     'currency' => env('CURRENCY', 'JPY'),
     'trusted_proxies_connection_only' => env('TRUSTED_PROXIES_CONNECTION_ONLY', false),
     'trusted_proxies' => env('TRUSTED_PROXIES', []),
-    'vendor_psr4' => ['Acme\\', 'Acme/']
+    'vendor_name' => 'Acme',
 ];

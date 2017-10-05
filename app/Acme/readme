@@ -1,0 +1,5 @@
+In the Acme directory you can place controllers, entities, repository ...etc for customization.
+To change the directory name and namespace, change the vendor_name in app/config/config.php.
+
+Acmeディレクトリには、カスタマイズ用のコントローラやエンティティ、レポジトリなどを配置できます。
+ディレクトリ名・名前空間を変更する場合は、app/config/config.phpのvendor_nameを変更してください。
