@@ -38,7 +38,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% for key,Plugin in Plugins %}
                     {% set form = plugin_forms[Plugin.id] %}
                     {% set pluginDetail = officialPluginsDetail[key] %}
-                    <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" enctype="multipart/form-data">
                         <tr class="{% if Plugin.enable == 0 %}active{% endif %}">
                             <td class="tp">
                                 <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
@@ -103,7 +102,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <a href="{{ pluginDetail.developer_url }}" target="_blank">{{ pluginDetail.developer }}</a>
                             </td>
                         </tr>
-                    </form>
                 {% endfor %}
                 </tbody>
             </table>
