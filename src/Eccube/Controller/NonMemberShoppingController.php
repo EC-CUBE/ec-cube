@@ -25,7 +25,6 @@ namespace Eccube\Controller;
 
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Customer;
@@ -52,7 +51,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
- * @Component
  * @Route(service=NonMemberShoppingController::class)
  */
 class NonMemberShoppingController extends AbstractShoppingController

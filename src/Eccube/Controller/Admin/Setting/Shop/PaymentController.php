@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -46,7 +45,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 /**
- * @Component
  * @Route(service=PaymentController::class)
  */
 class PaymentController extends AbstractController

@@ -21,30 +21,41 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Plugin\TwigUserFunc\Controller;
+namespace Eccube\Di\Scanner;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\Mapping\Annotation;
+use Eccube\Di\ComponentDefinition;
+use Eccube\Di\Scanner;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-/**
- * @Route(service=TwigUserFuncController::class)
- */
-class TwigUserFuncController
+class RouteScanner extends ComponentScanner
 {
     /**
-     * @Inject("twig")
-     * @var \Twig_Environment
+     * ComponentAutoWiring constructor.
+     * @param string[] $scanDirs
      */
-    protected $twig;
+    public function __construct(array $scanDirs)
+    {
+        parent::__construct($scanDirs);
+    }
 
     /**
-     * @Route("/twiguserfunc")
+     * @return string
      */
-    public function index(Application $app)
+    public function getAnnotationClass()
     {
-        return $this->twig
-            ->createTemplate("{{ eccube_block_hello({'name':'EC-CUBE'}) }}")
-            ->render([]);
+        return Route::class;
+    }
+
+    /**
+     * @param $anno Component
+     * @param $refClass \ReflectionClass
+     * @return ComponentDefinition
+     */
+    public function createComponentDefinition($anno, $refClass)
+    {
+        return new ComponentDefinition($anno->getService() ?: $refClass->getName(), $refClass);
     }
 }

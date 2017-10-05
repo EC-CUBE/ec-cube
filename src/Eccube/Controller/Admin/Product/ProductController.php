@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -61,7 +60,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 /**
- * @Component
  * @Route(service=ProductController::class)
  */
 class ProductController extends AbstractController

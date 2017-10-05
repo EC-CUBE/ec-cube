@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
@@ -57,7 +56,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=CsvImportController::class)
  */
 class CsvImportController

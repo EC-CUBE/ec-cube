@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -51,7 +50,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=MypageController::class)
  */
 class MypageController extends AbstractController

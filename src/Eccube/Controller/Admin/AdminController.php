@@ -29,7 +29,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -50,7 +49,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * @Component
  * @Route(service=AdminController::class)
  */
 class AdminController extends AbstractController

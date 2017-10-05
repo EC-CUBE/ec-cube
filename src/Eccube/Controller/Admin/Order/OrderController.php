@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -52,7 +51,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * @Component
  * @Route(service=OrderController::class)
  */
 class OrderController extends AbstractController

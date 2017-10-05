@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -40,7 +39,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=TradelawController::class)
  */
 class TradelawController extends AbstractController

@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
@@ -44,7 +43,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=ClassCategoryController::class)
  */
 class ClassCategoryController extends AbstractController

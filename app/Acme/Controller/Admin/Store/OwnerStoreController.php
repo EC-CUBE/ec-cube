@@ -24,7 +24,6 @@
 
 namespace Acme\Controller\Admin\Store;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -36,7 +35,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=OwnerStoreController::class)
  */
 class OwnerStoreController extends AbstractController

@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Block;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Repository\CategoryRepository;
@@ -33,7 +32,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=CategoryController::class);
  */
 class CategoryController

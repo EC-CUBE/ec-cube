@@ -25,7 +25,6 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\ForwardOnly;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
@@ -56,7 +55,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=ShoppingController::class)
  */
 class ShoppingController extends AbstractShoppingController

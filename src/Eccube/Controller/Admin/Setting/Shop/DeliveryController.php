@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -47,7 +46,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @Component
  * @Route(service=DeliveryController::class)
  */
 class DeliveryController extends AbstractController

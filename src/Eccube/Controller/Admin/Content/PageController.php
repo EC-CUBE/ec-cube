@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Content;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
@@ -48,7 +47,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=PageController::class)
  */
 class PageController extends AbstractController
