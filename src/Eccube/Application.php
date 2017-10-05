@@ -281,23 +281,28 @@ class Application extends \Silex\Application
         $this->register(new DIServiceProvider(), [
             'eccube.di.wirings' => [
                 new RouteAutoWiring(array_merge([
-                    $this['config']['root_dir'].'/app/Acme/Controller',
                     $this['config']['vendor_dir'].'/Controller',
+                    $this['config']['root_dir'].'/src/Eccube/Controller',
                 ], $pluginSubDirs('Controller'))),
+<<<<<<< HEAD
                 new FormTypeAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Form/Type',
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
                 ], $pluginSubDirs('Form/Type'))),
                 new FormExtensionAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Form/Extension',
                     $this['config']['root_dir'].'/src/Eccube/Form/Extension'
                 ], $pluginSubDirs('Form/Extension'))),
                 new ServiceAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Service',
                     $this['config']['root_dir'].'/src/Eccube/Service'
                 ], $pluginSubDirs('Service'))),
                 new RepositoryAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Repository',
                     $this['config']['root_dir'].'/src/Eccube/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new QueryExtensionAutoWiring(array_merge([
-                    $this['config']['root_dir'].'/src/Eccube/Repository'
+                    $this['config']['vendor_dir'].'/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new EntityEventAutowiring(array_merge([
                     $this['config']['vendor_dir'].'/Entity'
