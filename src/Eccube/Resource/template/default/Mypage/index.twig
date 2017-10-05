@@ -60,11 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% if OrderItem.Product is null %}
                                             <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
                                         {% else %}
-                                            {% if OrderItem.enable %}
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}">
-                                            {% else %}
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
-                                            {% endif %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}">
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">
