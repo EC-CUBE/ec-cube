@@ -147,17 +147,17 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with packagist
      *
-     * @Route("/{_admin}/store/plugin/api/{pluginCode}" , name="admin_store_plugin_api_install")
+     * @Route("/{_admin}/store/plugin/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
      * @param Application $app
      * @param Request     $request
      * @param string      $pluginCode
      * @return RedirectResponse
      */
-    public function apiInstall(Application $app, Request $request, $pluginCode)
+    public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['owners_store_url'].'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);

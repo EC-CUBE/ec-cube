@@ -61,7 +61,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <a href="{{ pluginDetail.product_url }}" target="_blank"><img class="img-rounded" src="{{ pluginDetail.product_image_url }}"></a>
                                 </div>
                             </td>
-                            <td class="tv text-center">{{ Plugin.version }}</td>
+                            <td class="tv text-center" style="width: 136px">{{ Plugin.version }}</td>
                             <td class="tc"><p>{{ Plugin.code }}</p>
                                 {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
                                     <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">詳細を表示</a>
@@ -79,9 +79,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </a>
                             {% else %}
                                 {% if pluginDetail.update_status == 1 %}
-                                    <p>新バージョンのプラグインが利用可能です。
-                                        <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">今すぐ更新</a>
-                                    </p>
+                                    新バージョンのプラグインが利用可能です。
+                                    <span {% if Plugin.enable %}data-toggle="tooltip" data-placement="top" title="無効にする状態で利用可能"{% endif %}>
+                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">アップデート</a>
+                                    </span>
                                     <ul class="plugin-meta dl-horizontal">
                                         <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
                                         <li class="plugin-version">EC-CUBE対応バージョン : {% for version in pluginDetail.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</li>
@@ -113,3 +114,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         インストールされているプラグインはありません。
     </div>
 {% endif %}
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
