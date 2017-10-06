@@ -25,7 +25,7 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Master\DeviceType;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class PageControllerTest extends AbstractAdminWebTestCase
@@ -73,17 +73,17 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $DeviceType = $this->app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = new PageLayout();
-        $PageLayout->setDeviceType($DeviceType);
-        $PageLayout->setEditFlg(PageLayout::EDIT_FLG_USER);
-        $PageLayout->setUrl('hogehoge');
-        $this->app['orm.em']->persist($PageLayout);
+        $Page = new Page();
+        $Page->setDeviceType($DeviceType);
+        $Page->setEditFlg(Page::EDIT_FLG_USER);
+        $Page->setUrl('hogehoge');
+        $this->app['orm.em']->persist($Page);
         $this->app['orm.em']->flush();
 
         $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_page_delete',
-                array('id' => $PageLayout->getId())
+                array('id' => $Page->getId())
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -96,36 +96,36 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $editable = false;
 
-        $templatePath = $this->app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
-        $PageLayout = $this->app['eccube.repository.page_layout']->find(1);
+        $templatePath = $this->app['eccube.repository.page']->getWriteTemplatePath($editable);
+        $Page = $this->app['eccube.repository.page']->find(1);
 
-        $tplData = $this->app['eccube.repository.page_layout']->getReadTemplateFile($PageLayout->getFileName());
+        $tplData = $this->app['eccube.repository.page']->getReadTemplateFile($Page->getFileName());
 
         $client->request(
             'POST',
             $this->app->url(
                 'admin_content_page_edit',
-                array('id' => $PageLayout->getId())
+                array('id' => $Page->getId())
             ),
             array(
                 'main_edit' => array(
-                    'id' => $PageLayout->getId(),
+                    'id' => $Page->getId(),
                     'name' => 'testtest',
-                    'url' => $PageLayout->getUrl(),
-                    'file_name' => $PageLayout->getFileName(),
+                    'url' => $Page->getUrl(),
+                    'file_name' => $Page->getFileName(),
                     'tpl_data' => $tplData['tpl_data'],
                     '_token' => 'dummy'
                 ),
-                'page_id' => $PageLayout->getId(),
+                'page_id' => $Page->getId(),
                 'editable' => $editable,
                 'template_path' => $templatePath,
             )
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_content_page_edit', array('id' => $PageLayout->getId()))));
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_content_page_edit', array('id' => $Page->getId()))));
 
         $this->expected = 'testtest';
-        $this->actual = $PageLayout->getName();
+        $this->actual = $Page->getName();
         $this->verify();
     }
 

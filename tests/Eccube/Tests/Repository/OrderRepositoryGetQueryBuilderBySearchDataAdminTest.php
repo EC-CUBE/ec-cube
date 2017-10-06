@@ -7,9 +7,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -441,11 +440,11 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testBuyProductName()
     {
-        foreach ($this->Order1->getOrderDetails() as $OrderDetail) {
-            $OrderDetail->setProductName('アイス');
+        foreach ($this->Order1->getOrderItems() as $item) {
+            $item->setProductName('アイス');
         }
-        foreach ($this->Order2->getOrderDetails() as $OrderDetail) {
-            $OrderDetail->setProductName('アイス');
+        foreach ($this->Order2->getOrderItems() as $item) {
+            $item->setProductName('アイス');
         }
         $this->app['orm.em']->flush();
 

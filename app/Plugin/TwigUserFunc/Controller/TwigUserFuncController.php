@@ -23,17 +23,27 @@
 
 namespace Plugin\TwigUserFunc\Controller;
 
+use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * @Route(service=TwigUserFuncController::class)
+ */
 class TwigUserFuncController
 {
+    /**
+     * @Inject("twig")
+     * @var \Twig_Environment
+     */
+    protected $twig;
+
     /**
      * @Route("/twiguserfunc")
      */
     public function index(Application $app)
     {
-        return $app['twig']
+        return $this->twig
             ->createTemplate("{{ eccube_block_hello({'name':'EC-CUBE'}) }}")
             ->render([]);
     }

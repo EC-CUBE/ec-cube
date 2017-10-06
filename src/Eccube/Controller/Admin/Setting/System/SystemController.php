@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -34,7 +33,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=SystemController::class)
  */
 class SystemController

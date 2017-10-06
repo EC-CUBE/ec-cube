@@ -1,13 +1,11 @@
 {% set Cart = app['eccube.service.cart'].getCart %}
 
 <div class="ec-headerNavSP">
-    <div class="ec-headerNavSP__item">
-        <div class="ec-cartNaviSP">
-            <a class="ec-cartNaviSP__icon ec-icon--colored" href="{{ url('cart') }}"><img
-                        src="{{ app.config.front_urlpath }}/assets/icon/cart-dark.svg" alt=""></a>
-            <div class="ec-cartNaviSP__badge">{{ Cart.total_quantity }}</div>
-        </div>
+    <div class="ec-cartNaviSP">
+        <div class="ec-cartNaviSP__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/cart-dark.svg" alt="cart"></div>
+        <div class="ec-cartNaviSP__badge">{{ Cart.total_quantity }}</div>
     </div>
+
     <div class="ec-headerNavSP__item">
         <a class="ec-headerNavSP__itemMenu"><span></span><span></span><span></span></a>
     </div>

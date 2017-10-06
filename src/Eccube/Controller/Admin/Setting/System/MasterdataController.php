@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -41,7 +40,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=MasterdataController::class)
  */
 class MasterdataController extends AbstractController

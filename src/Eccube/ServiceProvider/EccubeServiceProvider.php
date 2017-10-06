@@ -25,13 +25,13 @@
 namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\ItemHolderInterface;
+use Eccube\EventListener\ForwardOnlyListener;
 use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
-use Eccube\Service\PurchaseFlow\Processor\DeletedProductValidator;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
@@ -205,12 +205,9 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return $templates;
         };
 
-        $app['eccube.entity.event.dispatcher']->addEventListener(new \Acme\Entity\SoldOutEventListener());
         $app['eccube.queries'] = function () {
             return new \Eccube\Doctrine\Query\Queries();
         };
-        // TODO QueryCustomizerの追加方法は要検討
-        $app['eccube.queries']->addCustomizer(new \Acme\Entity\AdminProductListCustomizer());
 
         $app['eccube.purchase.context'] = $app->protect(function (ItemHolderInterface $origin = null) {
             return new PurchaseContext($origin);
@@ -276,6 +273,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         // Add event subscriber to TaxRuleEvent
         $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app[TaxRuleService::class]));
 
+        $dispatcher->addSubscriber(new ForwardOnlyListener());
         $dispatcher->addSubscriber(new TransactionListener($app));
     }
 }

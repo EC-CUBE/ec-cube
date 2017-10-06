@@ -27,9 +27,8 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ProductClass;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 
 class TaxRuleEventSubscriber implements EventSubscriber
 {
@@ -61,10 +60,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof OrderDetail) {
-            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
-        }
-        if ($entity instanceof ShipmentItem) {
+        if ($entity instanceof OrderItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
@@ -77,10 +73,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof OrderDetail) {
-            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
-        }
-        if ($entity instanceof ShipmentItem) {
+        if ($entity instanceof OrderItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
@@ -93,10 +86,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof OrderDetail) {
-            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
-        }
-        if ($entity instanceof ShipmentItem) {
+        if ($entity instanceof OrderItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
@@ -109,10 +99,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof OrderDetail) {
-            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
-        }
-        if ($entity instanceof ShipmentItem) {
+        if ($entity instanceof OrderItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }

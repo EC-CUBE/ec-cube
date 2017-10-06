@@ -27,7 +27,6 @@ namespace Eccube\Controller\Admin\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -59,7 +58,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Component
  * @Route(service=ProductClassController::class)
  */
 class ProductClassController
@@ -814,13 +812,13 @@ class ProductClassController
             // 初期設定の税設定.
             $TaxRule = $this->taxRuleRepository->find(TaxRule::DEFAULT_TAX_RULE_ID);
             // 初期税率設定の計算方法を設定する
-            $CalcRule = $TaxRule->getCalcRule();
+            $RoundingType = $TaxRule->getRoundingType();
             foreach ($ProductClasses as $ProductClass) {
                 if ($ProductClass && is_numeric($taxRate = $ProductClass->getTaxRate())) {
                     $TaxRule = new TaxRule();
                     $TaxRule->setProduct($Product);
                     $TaxRule->setProductClass($ProductClass);
-                    $TaxRule->setCalcRule($CalcRule);
+                    $TaxRule->setRoundingType($RoundingType);
                     $TaxRule->setTaxRate($taxRate);
                     $TaxRule->setTaxAdjust(0);
                     $TaxRule->setApplyDate(new \DateTime());

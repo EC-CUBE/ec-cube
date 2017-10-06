@@ -33,8 +33,8 @@
         }
     }
     // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(order_details_count)は, edit.twig側で定義している.
-    function fnAddOrderDetail($row, product_id, type) {
+    // 受注明細行のレコード数カウンタ(order_items_count)は, edit.twig側で定義している.
+    function fnAddOrderItem($row, product_id, type) {
         // 規格1の要素を取得
         var $sele1 = $row.find('select[name=classcategory_id1]');
         // 規格2の要素を取得
@@ -93,7 +93,7 @@
         }
 
         // 受注明細行を取得.
-        var list = $('#order_detail_list');
+        var list = $('#order_item_list');
         var orderDetailExists = false;
 
         $('*[id^="product_info_list__item--"]').each(function () {
@@ -116,15 +116,15 @@
             // prototype templateを取得.
             var newWidget = list.attr('data-prototype');
             // レコード数カウンタで置換.
-            newWidget = newWidget.replace(/__name__/g, order_details_count);
+            newWidget = newWidget.replace(/__name__/g, order_items_count);
             // フォーム入力値をセットm
             $newWidget = $(newWidget);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_Product').val(product_id);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_ProductClass').val(product_class_id);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_price').val(price);
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_ShipmentItems_' + order_details_count + '_order_item_type').val(type);
+            $newWidget.find('#order_OrderItems_' + order_items_count + '_Product').val(product_id);
+            $newWidget.find('#order_OrderItems_' + order_items_count + '_ProductClass').val(product_class_id);
+            $newWidget.find('#order_OrderItems_' + order_items_count + '_price').val(price);
+            $newWidget.find('#order_OrderItems_' + order_items_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+            $newWidget.find('#order_OrderItems_' + order_items_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
+            $newWidget.find('#order_OrderItems_' + order_items_count + '_order_item_type').val(type);
 
             // 明細行に追加.
             list.append($newWidget);
@@ -132,7 +132,7 @@
 
         if (orderDetailExists) {
             // カウンタを更新.
-            order_details_count++;
+            order_items_count++;
         }
 
         // モーダル閉じる.
@@ -179,7 +179,7 @@
                     <div class="extra-form">
                     </div>
                     <td class="text-right">
-                        <button onclick="fnAddOrderDetail($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DELIVERY_FEE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                        <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DELIVERY_FEE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                             決定
                         </button>
                     </td>
@@ -198,7 +198,7 @@
                     <div class="extra-form">
                     </div>
                     <td class="text-right">
-                        <button onclick="fnAddOrderDetail($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::CHARGE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                        <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::CHARGE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                             決定
                         </button>
                     </td>
@@ -217,7 +217,7 @@
                     <div class="extra-form">
                     </div>
                     <td class="text-right">
-                        <button onclick="fnAddOrderDetail($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DISCOUNT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                        <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DISCOUNT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                             決定
                         </button>
                     </td>
@@ -276,7 +276,7 @@
                             {% endfor %}
                         </div>
                         <td class="text-right">
-                            <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                            <button onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                                 決定
                             </button>
                         </td>

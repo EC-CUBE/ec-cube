@@ -285,10 +285,10 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->expected = 'ディナーフォーク';
         $this->actual = $crawler->filter('dt.item_name')->last()->text();
 
-        $OrderDetails = $EditedOrder->getOrderDetails();
-        foreach ($OrderDetails as $OrderDetail) {
-            if (is_Object($OrderDetail->getProduct())
-                && $this->actual == $OrderDetail->getProduct()->getName()) {
+        $OrderItems = $EditedOrder->getOrderItems();
+        foreach ($OrderItems as $OrderItem) {
+            if (is_Object($OrderItem->getProduct())
+                && $this->actual == $OrderItem->getProduct()->getName()) {
                 $this->fail('#1452 の不具合');
             }
         }
@@ -328,16 +328,16 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         //税金計算
         $totalTax = 0;
         $addQuantity = 2;
-        foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
+        foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数追加
-            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + $addQuantity * count($Shippings);
-            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
-            $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+            $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + $addQuantity * count($Shippings);
+            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
+            $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
         foreach ($formDataForEdit['Shippings'] as &$shipping) {
-            foreach ($shipping['ShipmentItems'] as &$shipmentItem) {
-                $shipmentItem['quantity'] += $addQuantity;
+            foreach ($shipping['orderItems'] as &$orderItem) {
+                $orderItem['quantity'] += $addQuantity;
             }
         }
 
@@ -385,13 +385,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $productClassExpected = array();
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
             $stopFlag = true;
-            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
+            foreach ($Shippings['OrderItems'] as $subIsx => $OrderItem) {
                 if ($stopFlag === true) {
                     $stopFlag = false;
-                    $newFormData['Shippings'][$idx]['ShipmentItems'][$subIsx]['quantity'] = 0;
+                    $newFormData['Shippings'][$idx]['OrderItems'][$subIsx]['quantity'] = 0;
                     continue;
                 }
-                $productClassExpected[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+                $productClassExpected[$idx][$OrderItem['ProductClass']] = $OrderItem['ProductClass'];
             }
         }
         $this->client->request(
@@ -406,8 +406,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         $productClassActual = array();
         foreach ($newFormData['Shippings'] as $idx => $Shippings) {
-            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
-                $productClassActual[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+            foreach ($Shippings['OrderItems'] as $subIsx => $OrderItem) {
+                $productClassActual[$idx][$OrderItem['ProductClass']] = $OrderItem['ProductClass'];
             }
         }
 
@@ -475,8 +475,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     /**
      * 複数配送用受注編集用フォーム作成.
      *
-     * createFormData() との違いは、 $Shipping[N]['ShipmentItems'] がフォームに追加されている.
-     * OrderDetails は、 $Shippings[N]['ShipmentItems] から生成される.
+     * createFormData() との違いは、 $Shipping[N]['OrderItems'] がフォームに追加されている.
+     * OrderItems は、 $Shippings[N]['OrderItems] から生成される.
      *
      * @param Customer $Customer
      * @param array $Shippings お届け先情報の配列
@@ -486,11 +486,11 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         $formData = parent::createFormData($Customer, null);
         $formData['Shippings'] = $Shippings;
-        $OrderDetails = array();
+        $OrderItems = array();
         foreach ($Shippings as $Shipping) {
-            foreach ($Shipping['ShipmentItems'] as $Item) {
-                if (empty($OrderDetails[$Item['ProductClass']])) {
-                    $OrderDetails[$Item['ProductClass']] = array(
+            foreach ($Shipping['OrderItems'] as $Item) {
+                if (empty($OrderItems[$Item['ProductClass']])) {
+                    $OrderItems[$Item['ProductClass']] = array(
                         'Product' => $Item['Product'],
                         'ProductClass' => $Item['ProductClass'],
                         'price' => $Item['price'],
@@ -501,11 +501,11 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                         'product_code' => $Item['product_code'],
                     );
                 } else {
-                    $OrderDetails[$Item['ProductClass']]['quantity'] += $Item['quantity'];
+                    $OrderItems[$Item['ProductClass']]['quantity'] += $Item['quantity'];
                 }
             }
         }
-        $formData['OrderDetails'] = array_values($OrderDetails);
+        $formData['OrderItems'] = array_values($OrderItems);
         return $formData;
     }
 
@@ -536,7 +536,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         }
         $Shipping =
             array (
-                'ShipmentItems' => $ShippingItems,
+                'OrderItems' => $ShippingItems,
                 'name' => array(
                     'name01' => $faker->lastName,
                     'name02' => $faker->firstName,

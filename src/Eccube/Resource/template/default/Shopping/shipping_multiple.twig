@@ -100,7 +100,7 @@ $(function() {
                         <p><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
                     {% endif %}
 
-                    {% for shipmentItem in shipmentItems %}
+                    {% for orderItem in orderItems %}
                         {% set idx = loop.index0 %}
                         {% set itemvalue = 0 %}
                         <hr>
@@ -108,25 +108,25 @@ $(function() {
                             <div id="multiple_list__item_box__body--{{ idx }}" class="tbody">
                                 <div id="multiple_list__item_box_body_inner--{{ idx }}" class="item_box tr">
                                     <div id="multiple_list__item--{{ idx }}" class="td table">
-                                        <div id="multiple_list__image--{{ idx }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}"/></div>
+                                        <div id="multiple_list__image--{{ idx }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderItem.product.MainListImage|no_image_product }}" alt="{{ orderItem.productName }}"/></div>
                                         <dl id="multiple_list__item_detail--{{ idx }}" class="item_detail">
                                             <dt id="multiple_list__product_name--{{ idx }}" class="item_name text-default">
-                                                <strong>{{ shipmentItem.productName }}</strong></dt>
+                                                <strong>{{ orderItem.productName }}</strong></dt>
                                             <dd id="multiple_list__product_class_category--{{ idx }}" class="item_pattern small">
                                                 <p>
-                                                    {% if shipmentItem.productClass.classCategory1 %}
-                                                        {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
+                                                    {% if orderItem.productClass.classCategory1 %}
+                                                        {{ orderItem.productClass.classCategory1.className }}：{{ orderItem.productClass.classCategory1 }}
                                                         <br>
                                                     {% endif %}
-                                                    {% if shipmentItem.productClass.classCategory2 %}
-                                                        {{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                                    {% if orderItem.productClass.classCategory2 %}
+                                                        {{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}
                                                         <br>
                                                     {% endif %}
                                                 </p>
                                             </dd>
-                                            <dd id="multiple_list__total_price--{{ idx }}">小計：{{ shipmentItem.totalPrice|price }}</dd>
+                                            <dd id="multiple_list__total_price--{{ idx }}">小計：{{ orderItem.totalPrice|price }}</dd>
                                             {% for key, value in compItemQuantities %}
-                                                {% if shipmentItem.productClass.id == key %}
+                                                {% if orderItem.productClass.id == key %}
                                                     <dd id="multiple_list__value--{{ idx }}_{{ key }}">数量：{{ value }}</dd>
                                                     {% set itemvalue = value %}
                                                 {% endif %}
@@ -149,7 +149,7 @@ $(function() {
                                     <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="form-group">
                                         <label>数量</label>
                                         {% for key, value in compItemQuantities %}
-                                            {% if shipmentItem.productClass.id == key %}
+                                            {% if orderItem.productClass.id == key %}
                                                 {% set quantity = shipping.quantity.vars.value ?: value %}
                                                 {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}, 'value': quantity}) }}
                                                 {{ form_errors(shipping.quantity) }}

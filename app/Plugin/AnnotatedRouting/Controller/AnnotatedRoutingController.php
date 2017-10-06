@@ -29,7 +29,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/arc")
+ * @Route(value="/arc", service=AnnotatedRoutingController::class)
  */
 class AnnotatedRoutingController
 {

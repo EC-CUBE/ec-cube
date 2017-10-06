@@ -25,7 +25,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -37,11 +37,11 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $processor = new DeliveryFeeProcessor($this->app['orm.em']);
         $Order = $this->createOrder($this->createCustomer());
         /**
-         * @var ShipmentItem
+         * @var OrderItem
          */
-        foreach ($Order->getShipmentItems() as $ShipmentItem) {
-            if ($ShipmentItem->isDeliveryFee()) {
-                $Order->getShipmentItems()->removeElement($ShipmentItem);
+        foreach ($Order->getOrderItems() as $OrderItem) {
+            if ($OrderItem->isDeliveryFee()) {
+                $Order->getOrderItems()->removeElement($OrderItem);
             }
         }
         $processor->process($Order, new PurchaseContext());
@@ -56,15 +56,15 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $processor = new DeliveryFeeProcessor($this->app['orm.em']);
         $Order = $this->createOrder($this->createCustomer());
         /**
-         * @var ShipmentItem
+         * @var OrderItem
          */
-        foreach ($Order->getShipmentItems() as $ShipmentItem) {
-            if ($ShipmentItem->isDeliveryFee()) {
-                $Order->getShipmentItems()->removeElement($ShipmentItem);
+        foreach ($Order->getOrderItems() as $OrderItem) {
+            if ($OrderItem->isDeliveryFee()) {
+                $Order->getOrderItems()->removeElement($OrderItem);
             }
         }
 
-        $DeliveryFee = new ShipmentItem();
+        $DeliveryFee = new OrderItem();
         $OrderItemType = new OrderItemType();
         $OrderItemType->setId(OrderItemType::DELIVERY_FEE);
         $DeliveryFee->setOrderItemType($OrderItemType);
@@ -79,8 +79,8 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 
     private function getDeliveryFees(Order $Order)
     {
-        return array_filter($Order->getShipmentItems()->toArray(), function ($ShipmentItem) {
-            return $ShipmentItem->isDeliveryFee();
+        return array_filter($Order->getOrderItems()->toArray(), function ($OrderItem) {
+            return $OrderItem->isDeliveryFee();
         });
     }
 }

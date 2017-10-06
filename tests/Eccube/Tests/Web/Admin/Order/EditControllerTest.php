@@ -264,10 +264,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->expected = 'ディナーフォーク';
         $this->actual = $crawler->filter('dt.item_name')->last()->text();
 
-        $OrderDetails = $EditedOrder->getOrderDetails();
-        foreach ($OrderDetails as $OrderDetail) {
-            if (is_Object($OrderDetail->getProduct())
-                && $this->actual == $OrderDetail->getProduct()->getName()) {
+        $OrderItems = $EditedOrder->getOrderItems();
+        foreach ($OrderItems as $OrderItem) {
+            if (is_Object($OrderItem->getProduct())
+                && $this->actual == $OrderItem->getProduct()->getName()) {
                 $this->fail('#1452 の不具合');
             }
         }
@@ -302,11 +302,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         //税金計算
         $totalTax = 0;
-        foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
+        foreach ($formDataForEdit['OrderItems'] as $indx => $orderItem) {
             //商品数変更3個追加
-            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
-            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
-            $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+            $formDataForEdit['OrderItems'][$indx]['quantity'] = $orderItem['quantity'] + 3;
+            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderItem['price'], $orderItem['tax_rate'], $orderItem['tax_rule']);
+            $totalTax += $tax * $formDataForEdit['OrderItems'][$indx]['quantity'];
         }
 
         // 管理画面で受注編集する

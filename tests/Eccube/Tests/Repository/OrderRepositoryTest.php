@@ -7,9 +7,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 
 /**
  * OrderRepository test cases.

@@ -24,14 +24,12 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=TopController::class)
  */
 class TopController extends AbstractController

@@ -24,6 +24,8 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
 
 /**
@@ -66,31 +68,14 @@ class CustomerAddressRepository extends AbstractRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  integer                 $id
-     * @return bool
+     * お届け先を削除します.
+     *
+     * @param \Eccube\Entity\CustomerAddress $CustomerAddress
      */
-    public function deleteByCustomerAndId(\Eccube\Entity\Customer $Customer, $id)
+    public function delete($CustomerAddress)
     {
-        $qb = $this->createQueryBuilder('od')
-            ->andWhere('od.Customer = :Customer AND od.id = :id')
-            ->setParameters(array(
-                'Customer' => $Customer,
-                'id' => $id,
-            ));
-
-        try {
-            $CustomerAddress = $qb
-                ->getQuery()
-                ->getSingleResult();
-        } catch (\Exception $e) {
-            return false;
-        }
-
         $em = $this->getEntityManager();
         $em->remove($CustomerAddress);
-        $em->flush();
-
-        return true;
+        $em->flush($CustomerAddress);
     }
 }

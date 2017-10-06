@@ -1,0 +1,4 @@
+id,name,rank,discriminator_type
+"1","四捨五入","0","roundingtype"
+"2","切り捨て","1","roundingtype"
+"3","切り上げ","2","roundingtype"

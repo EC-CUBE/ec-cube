@@ -7,10 +7,10 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Entity\PurchaseInterface;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderItemTypeRepository;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 
 class ShippingStrategy implements CalculateStrategyInterface
 {
@@ -23,7 +23,7 @@ class ShippingStrategy implements CalculateStrategyInterface
     /** @var OrderItemTypeRepository */
     protected $OrderItemTypeRepository;
 
-    public function execute(ShipmentItemCollection $ShipmentItems)
+    public function execute(OrderItemCollection $OrderItems)
     {
         // 送料の受注明細区分
         $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
@@ -34,10 +34,10 @@ class ShippingStrategy implements CalculateStrategyInterface
         // 配送ごとに送料の明細を作成
         foreach ($this->Order->getShippings() as $Shipping) {
             /* @var Shipping $Shipping */
-            $sio = new ShipmentItemCollection($Shipping->getShipmentItems()->toArray());
+            $sio = new OrderItemCollection($Shipping->getOrderItems()->toArray());
             if (!$sio->hasItemByOrderItemType($DeliveryFeeType)) {
-                $ShipmentItem = new ShipmentItem();
-                $ShipmentItem->setProductName("送料")
+                $OrderItem = new OrderItem();
+                $OrderItem->setProductName("送料")
                     ->setPrice($Shipping->getShippingDeliveryFee())
                     ->setPriceIncTax($Shipping->getShippingDeliveryFee())
                     ->setTaxRate(8)
@@ -46,8 +46,8 @@ class ShippingStrategy implements CalculateStrategyInterface
                     ->setShipping($Shipping)
                     ->setTaxDisplayType($TaxInclude)
                     ->setTaxType($Taxion);
-                $ShipmentItems->add($ShipmentItem);
-                $Shipping->addShipmentItem($ShipmentItem);
+                $OrderItems->add($OrderItem);
+                $Shipping->addOrderItem($OrderItem);
             }
         }
     }

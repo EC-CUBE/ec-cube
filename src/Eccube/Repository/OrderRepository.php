@@ -245,8 +245,8 @@ class OrderRepository extends AbstractRepository
         // buy_product_name
         if (isset($searchData['buy_product_name']) && Str::isNotBlank($searchData['buy_product_name'])) {
             $qb
-                ->leftJoin('o.OrderDetails', 'od')
-                ->andWhere('od.product_name LIKE :buy_product_name')
+                ->leftJoin('o.OrderItems', 'oi')
+                ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
         }
 
@@ -439,8 +439,8 @@ class OrderRepository extends AbstractRepository
         // buy_product_name
         if (isset($searchData['buy_product_name']) && Str::isNotBlank($searchData['buy_product_name'])) {
             $qb
-                ->leftJoin('o.OrderDetails', 'od')
-                ->andWhere('od.product_name LIKE :buy_product_name')
+                ->leftJoin('o.OrderItems', 'oi')
+                ->andWhere('oi.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
         }
 

@@ -48,13 +48,13 @@ class OrderServiceTest extends AbstractServiceTestCase
 
         $quantity = 3;
         $price = 100;
-        $rows = count($this->Order->getOrderDetails());
+        $rows = count($this->Order->getOrderItems());
 
         $subTotal = 0;
-        foreach ($this->Order->getOrderDetails() as $Detail) {
-            $Detail->setPrice($price);
-            $Detail->setQuantity($quantity);
-            $subTotal = $Detail->getPriceIncTax() * $Detail->getQuantity();
+        foreach ($this->Order->getOrderItems() as $Item) {
+            $Item->setPrice($price);
+            $Item->setQuantity($quantity);
+            $subTotal = $Item->getPriceIncTax() * $Item->getQuantity();
         }
         $this->Order->setSubTotal($subTotal);
         $this->app['orm.em']->flush();
@@ -63,46 +63,6 @@ class OrderServiceTest extends AbstractServiceTestCase
 
         $this->expected = ($price + ($price * ($this->rate / 100))) * $quantity * $rows;
         $this->actual = $this->app['eccube.service.order']->getSubTotal($Result);
-        $this->verify();
-    }
-
-    public function testGetTotalQuantity()
-    {
-        $quantity = 3;
-        $rows = count($this->Order->getOrderDetails());
-
-        $total = 0;
-        foreach ($this->Order->getOrderDetails() as $Detail) {
-            $Detail->setQuantity($quantity);
-            $total += $Detail->getQuantity();
-        }
-        $this->app['orm.em']->flush();
-
-        $Result = $this->app['eccube.repository.order']->find($this->Order->getId());
-
-        $this->expected = $total;
-        $this->actual = $this->app['eccube.service.order']->getTotalQuantity($Result);
-        $this->verify();
-    }
-
-    public function testGetTotalTax()
-    {
-        $quantity = 3;
-        $price = 100;
-        $rows = count($this->Order->getOrderDetails());
-
-        $totalTax = 0;
-        foreach ($this->Order->getOrderDetails() as $Detail) {
-            $Detail->setPrice($price);
-            $Detail->setQuantity($quantity);
-            $totalTax += ($Detail->getPriceIncTax() - $Detail->getPrice()) * $Detail->getQuantity();
-        }
-        $this->app['orm.em']->flush();
-
-        $Result = $this->app['eccube.repository.order']->find($this->Order->getId());
-
-        $this->expected = ($price * ($this->rate / 100)) * $quantity * $rows;
-        $this->actual = $this->app['eccube.service.order']->getTotalTax($Result);
         $this->verify();
     }
 

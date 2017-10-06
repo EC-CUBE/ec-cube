@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Entity\MailHistory;
 use Eccube\Event\EccubeEvents;
@@ -43,7 +42,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=MailController::class)
  */
 class MailController

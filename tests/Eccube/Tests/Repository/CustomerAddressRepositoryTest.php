@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -56,19 +57,17 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
         }
     }
 
-    public function testDeleteByCustomerAndId()
+    public function testDelete()
     {
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($this->Customer, null);
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress->setCustomer($this->Customer);
         $this->app['orm.em']->persist($CustomerAddress);
         $this->app['orm.em']->flush();
 
-        $result = $this->app['eccube.repository.customer_address']->deleteByCustomerAndId($this->Customer, $CustomerAddress->getId());
-        $this->assertTrue($result);
-    }
+        $id = $CustomerAddress->getId();
+        $this->app['eccube.repository.customer_address']->delete($CustomerAddress);
 
-    public function testDeleteByCustomerAndIdWithException()
-    {
-        $result = $this->app['eccube.repository.customer_address']->deleteByCustomerAndId($this->Customer, 9999);
-        $this->assertFalse($result);
+        $CustomerAddress = $this->app['eccube.repository.customer_address']->find($id);
+        $this->assertNull($CustomerAddress);
     }
 }

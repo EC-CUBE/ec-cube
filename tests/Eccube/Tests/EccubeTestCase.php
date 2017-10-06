@@ -253,13 +253,13 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
-     * PageLayout オブジェクトを生成して返す
+     * Page オブジェクトを生成して返す
      *
-     * @return \Eccube\Entity\PageLayout
+     * @return \Eccube\Entity\Page
      */
-    public function createPageLayout()
+    public function createPage()
     {
-        return $this->app['eccube.fixture.generator']->createPageLayout();
+        return $this->app['eccube.fixture.generator']->createPage();
     }
 
     /**

@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
@@ -37,7 +36,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=LogController::class)
  */
 class LogController

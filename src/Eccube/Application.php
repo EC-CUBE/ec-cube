@@ -24,6 +24,13 @@
 namespace Eccube;
 
 use Doctrine\DBAL\Types\Type;
+use Eccube\Di\Scanner\RouteScanner;
+use Eccube\Di\Scanner\EntityEventScanner;
+use Eccube\Di\Scanner\FormExtensionScanner;
+use Eccube\Di\Scanner\FormTypeScanner;
+use Eccube\Di\Scanner\QueryExtensionScanner;
+use Eccube\Di\Scanner\RepositoryScanner;
+use Eccube\Di\Scanner\ServiceScanner;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
@@ -40,7 +47,6 @@ use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -111,7 +117,7 @@ class Application extends \Silex\Application
     public function initConfig()
     {
         // load .env
-        $envFile = __DIR__.'/../../.env';
+        $envFile = __DIR__.'/../../app/config/eccube/.env';
         if (file_exists($envFile)) {
             (new Dotenv())->load($envFile);
         }
@@ -228,25 +234,43 @@ class Application extends \Silex\Application
         // init proxy
         $this->initProxy();
 
+        $enabledPlugins = $this['orm.em']->getRepository('Eccube\Entity\Plugin')->findAllEnabled();
+        $configRootDir = $this['config']['root_dir'];
+        $enabledPluginDirs = array_map(function($plugin) use ($configRootDir) {
+            return $configRootDir.'/app/Plugin/'.$plugin->getCode();
+        }, $enabledPlugins);
+
+        $pluginSubDirs = (function($dirName) use ($enabledPluginDirs) {
+            return array_map(function($pluginDir) use ($dirName) {
+                return $pluginDir . '/' . $dirName;
+            }, $enabledPluginDirs);
+        });
+
         // init ec-cube service provider
         $this->register(new DiServiceProvider(), [
             'eccube.di.scanners' => [
-                new \Eccube\Di\Scanner\ComponentScanner([
+                new RouteScanner(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Controller',
                     $this['config']['root_dir'].'/src/Eccube/Controller'
-                ]),
-                new \Eccube\Di\Scanner\FormTypeScanner([
+                ], $pluginSubDirs('Controller'))),
+                new FormTypeScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
-                ]),
-                new \Eccube\Di\Scanner\FormExtensionScanner([
+                ], $pluginSubDirs('Form/Type'))),
+                new FormExtensionScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Extension'
-                ]),
-                new \Eccube\Di\Scanner\ServiceScanner([
+                ], $pluginSubDirs('Form/Extension'))),
+                new ServiceScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Service'
-                ]),
-                new \Eccube\Di\Scanner\RepositoryScanner([
+                ], $pluginSubDirs('Service'))),
+                new RepositoryScanner(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
-                ])
+                ], $pluginSubDirs('Repository'))),
+                new QueryExtensionScanner(array_merge([
+                    $this['config']['root_dir'].'/src/Eccube/Repository'
+                ], $pluginSubDirs('Repository'))),
+                new EntityEventScanner(array_merge([
+                    $this['config']['root_dir'].'/app/Acme/Entity'
+                ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
         ]);
@@ -292,22 +316,7 @@ class Application extends \Silex\Application
             return $app['eccube.router']($resource, $cachePrefix);
         };
 
-        $this['eccube.routers.plugin'] = function ($app) {
-            // TODO 有効なプラグインを対象とする必要がある.
-            $dirs = Finder::create()
-                ->in($app['config']['root_dir'].'/app/Plugin')
-                ->name('Controller')
-                ->directories();
-
-            $routers = [];
-            foreach ($dirs as $dir) {
-                $realPath = $dir->getRealPath();
-                $pluginCode = basename(dirname($realPath));
-                $routers[] = $app['eccube.router']($realPath, 'Plugin'.$pluginCode);
-            }
-
-            return $routers;
-        };
+        $this['eccube.routers.plugin'] = [];
 
         $this['eccube.router.extend'] = function ($app) {
             // TODO ディレクトリ名は暫定
@@ -466,7 +475,7 @@ class Application extends \Silex\Application
             // 管理画面のIP制限チェック.
             if ($app->isAdminRequest()) {
                 // IP制限チェック
-                $allowHost = $app['config']['admin_allow_host'];
+                $allowHost = $app['config']['admin_allow_hosts'];
                 if (count($allowHost) > 0) {
                     if (array_search($app['request_stack']->getCurrentRequest()->getClientIp(), $allowHost) === false) {
                         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
@@ -530,9 +539,9 @@ class Application extends \Silex\Application
 
                     $DeviceType = $this['eccube.repository.master.device_type']
                         ->find($device_type_id);
-                    $qb = $this['eccube.repository.page_layout']->createQueryBuilder('p');
-                    $PageLayout = $qb->select('p, pll,l, bp, b')
-                        ->leftJoin('p.PageLayoutLayouts', 'pll')
+                    $qb = $this['eccube.repository.page']->createQueryBuilder('p');
+                    $Page = $qb->select('p, pll,l, bp, b')
+                        ->leftJoin('p.PageLayouts', 'pll')
                         ->leftJoin('pll.Layout', 'l')
                         ->leftJoin('l.BlockPositions', 'bp')
                         ->leftJoin('bp.Block', 'b')
@@ -544,11 +553,11 @@ class Application extends \Silex\Application
                         ->getQuery()
                         ->getSingleResult();
                 } catch (\Doctrine\ORM\NoResultException $e) {
-                    $PageLayout = $this['eccube.repository.page_layout']->newPageLayout($DeviceType);
+                    $Page = $this['eccube.repository.page']->newPage($DeviceType);
                 }
 
-                $this['twig']->addGlobal('PageLayout', $PageLayout);
-                $this['twig']->addGlobal('title', $PageLayout->getName());
+                $this['twig']->addGlobal('Page', $Page);
+                $this['twig']->addGlobal('title', $Page->getName());
             }
 
             $this['twig_global_initialized'] = true;
@@ -590,7 +599,7 @@ class Application extends \Silex\Application
         $this->register(new EntityEventServiceProvider());
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
-                'default' => $this['config']['database']
+                'default' => $this['config']['database'][$this['config']['database']['default']]
             )
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
@@ -636,6 +645,7 @@ class Application extends \Silex\Application
             $config = $code['config'];
             // Doctrine Extend
             if (isset($config['orm.path']) && is_array($config['orm.path'])) {
+                // orm.pathが明示されている場合
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
                     $paths[] = $this['config']['plugin_realdir'].'/'.$config['code'].$path;
@@ -651,6 +661,25 @@ class Application extends \Silex\Application
                     'path' => $paths,
                     'use_simple_annotation_reader' => false,
                 );
+            } else {
+                // orm.pathを省略しても `/Resource/doctrine` と `/Entity` ディレクトリがある場合は設定を追加する
+                $doctrineDir = $this['config']['plugin_realdir'].'/'.$config['code'].'/Resource/doctrine';
+                if (glob($doctrineDir.'/*.yml')) {
+                    $ormMappings[] = array(
+                        'type' => 'yml',
+                        'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                        'path' => [$doctrineDir],
+                    );
+                }
+                $entityDir = $this['config']['plugin_realdir'].'/'.$config['code'].'/Entity';
+                if (file_exists($entityDir)) {
+                    $ormMappings[] = array(
+                        'type' => 'annotation',
+                        'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                        'path' => [$entityDir],
+                        'use_simple_annotation_reader' => false,
+                    );
+                }
             }
         }
 
@@ -717,6 +746,10 @@ class Application extends \Silex\Application
             // save
             $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
             $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+
+            // load
+            $loadEventSubscriber = new \Eccube\Doctrine\EventSubscriber\LoadEventSubscriber($app);
+            $em->getEventManager()->addEventSubscriber($loadEventSubscriber);
 
             // clear cache
             $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
@@ -973,6 +1006,11 @@ class Application extends \Silex\Application
 
         $config_php_dist = $distPath.'/'.$config_name.'.php';
         $config_dist = require $config_php_dist;
+
+        // `%ROOT_DIR%`を絶対パスに変換
+        array_walk($config_dist, function(&$value) use ($rootDir) {
+            $value = str_replace('%ROOT_DIR%', $rootDir, $value);
+        });
 
         if ($wrap_key) {
             $configAll = array_replace_recursive($configAll, array($config_name => $config_dist), array($config_name => $config));

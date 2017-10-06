@@ -12,8 +12,7 @@ use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderDetail;
-use Eccube\Entity\PageLayout;
+use Eccube\Entity\Page;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
@@ -22,7 +21,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Member;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\TaxType;
@@ -59,18 +58,20 @@ class Generator {
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')->find(1);
         $Authority = $this->app['eccube.repository.master.authority']->find(0);
         $Creator = $this->app['eccube.repository.member']->find(2);
-        $salt = $this->app['eccube.repository.member']->createSalt(5);
+
+        $salt = bin2hex(openssl_random_pseudo_bytes(5));
+        $password = 'password';
+        $encoder = $this->app['security.encoder_factory']->getEncoder($Member);
+        $password = $encoder->encodePassword($password, $salt);
 
         $Member
-            ->setPassword('password')
             ->setLoginId($username)
             ->setName($username)
             ->setSalt($salt)
+            ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
             ->setCreator($Creator);
-        $password = $this->app['eccube.repository.member']->encryptPassword($Member);
-        $Member->setPassword($password);
         $this->app['eccube.repository.member']->save($Member);
         return $Member;
     }
@@ -94,6 +95,10 @@ class Generator {
         $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
         $Sex = $this->app['eccube.repository.master.sex']->find($faker->numberBetween(1, 2));
         $Job = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->find($faker->numberBetween(1, 18));
+
+        $encoder = $this->app['security.encoder_factory']->getEncoder($Customer);
+        $salt = $encoder->createSalt();
+        $password = $encoder->encodePassword('password', $salt);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
@@ -115,13 +120,12 @@ class Generator {
             ->setBirth($faker->dateTimeThisDecade())
             ->setSex($Sex)
             ->setJob($Job)
-            ->setPassword('password')
-            ->setSalt($this->app['eccube.repository.customer']->createSalt(5))
-            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
+            ->setPassword($password)
+            ->setSalt($salt)
+            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime());
-        $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush($Customer);
 
@@ -255,7 +259,7 @@ class Generator {
     {
         $faker = $this->getFaker();
         $Member = $this->app['eccube.repository.member']->find(2);
-        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
 
@@ -263,17 +267,15 @@ class Generator {
         if (is_null($product_name)) {
             $product_name = $faker->word;
         }
-        $Db = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Db')->find(1);
         $Product
             ->setName($product_name)
             ->setCreator($Member)
-            ->setStatus($Disp)
+            ->setStatus($ProductStatus)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->text());
         $Product->extendedParameter = "aaaa";
-        $Product->Db = $Db;
 
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->flush($Product);
@@ -470,7 +472,7 @@ class Generator {
         $Shipping
             ->setPref($Pref)
             ->setDelivery($Delivery)
-            ->setDeliveryFee($DeliveryFee)
+            ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
         $ShippingStatus = $this->app['orm.em']->find(ShippingStatus::class, ShippingStatus::PREPARED);
@@ -493,23 +495,10 @@ class Generator {
         $ItemDiscount = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::DISCOUNT);
         foreach ($ProductClasses as $ProductClass) {
             $Product = $ProductClass->getProduct();
-            $OrderDetail = new OrderDetail();
             $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(); // デフォルト課税規則
-            $OrderDetail->setProduct($Product)
-                ->setProductClass($ProductClass)
-                ->setProductName($Product->getName())
-                ->setProductCode($ProductClass->getCode())
-                ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getCalcRule()->getId())
-                ->setTaxRate($TaxRule->getTaxRate());
-            $this->app['orm.em']->persist($OrderDetail);
-            $OrderDetail->setOrder($Order);
-            $this->app['orm.em']->flush($OrderDetail);
-            $Order->addOrderDetail($OrderDetail);
 
-            $ShipmentItem = new ShipmentItem();
-            $ShipmentItem->setShipping($Shipping)
+            $OrderItem = new OrderItem();
+            $OrderItem->setShipping($Shipping)
                 ->setOrder($Order)
                 ->setProductClass($ProductClass)
                 ->setProduct($Product)
@@ -517,24 +506,27 @@ class Generator {
                 ->setProductCode($ProductClass->getCode())
                 ->setPrice($ProductClass->getPrice02())
                 ->setQuantity($quantity)
-                ->setTaxRule($TaxRule->getCalcRule()->getId())
+                ->setTaxRule($TaxRule->getRoundingType()->getId())
                 ->setTaxRate($TaxRule->getTaxRate())
                 ->setTaxType($Taxion) // 課税
                 ->setTaxDisplayType($TaxExclude) // 税別
                 ->setOrderItemType($ItemProduct) // 商品明細
             ;
-            $Shipping->addShipmentItem($ShipmentItem);
-            $Order->addShipmentItem($ShipmentItem);
-            $this->app['orm.em']->persist($ShipmentItem);
-            $this->app['orm.em']->flush($ShipmentItem);
+            $Shipping->addOrderItem($OrderItem);
+            $Order->addOrderItem($OrderItem);
+            $this->app['orm.em']->persist($OrderItem);
+            $this->app['orm.em']->flush($OrderItem);
         }
 
-        $subTotal = $Order->calculateSubTotal();
+        // TODO PurchaseFlow でやった方がよい
+        $subTotal = array_reduce($Order->getProductOrderItems(), function ($total, $OrderItem) {
+            return $total + $OrderItem->getPriceIncTax() * $OrderItem->getQuantity();
+        }, 0);
 
         // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
         $shipment_delivery_fee = $Shipping->getShippingDeliveryFee();
-        $ShipmentItemDeliveryFee = new ShipmentItem();
-        $ShipmentItemDeliveryFee->setShipping($Shipping)
+        $OrderItemDeliveryFee = new OrderItem();
+        $OrderItemDeliveryFee->setShipping($Shipping)
             ->setOrder($Order)
             ->setProductName('送料')
             ->setPrice($shipment_delivery_fee)
@@ -543,14 +535,14 @@ class Generator {
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
-        $Shipping->addShipmentItem($ShipmentItemDeliveryFee);
-        $Order->addShipmentItem($ShipmentItemDeliveryFee);
-        $this->app['orm.em']->persist($ShipmentItemDeliveryFee);
-        $this->app['orm.em']->flush($ShipmentItemDeliveryFee);
+        $Shipping->addOrderItem($OrderItemDeliveryFee);
+        $Order->addOrderItem($OrderItemDeliveryFee);
+        $this->app['orm.em']->persist($OrderItemDeliveryFee);
+        $this->app['orm.em']->flush($OrderItemDeliveryFee);
 
         $charge = $Order->getCharge() + $add_charge;
-        $ShipmentItemCharge = new ShipmentItem();
-        $ShipmentItemCharge
+        $OrderItemCharge = new OrderItem();
+        $OrderItemCharge
             // ->setShipping($Shipping) // Shipping には登録しない
             ->setOrder($Order)
             ->setProductName('手数料')
@@ -560,14 +552,14 @@ class Generator {
             ->setTaxType($Taxion) // 課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemCharge); // 手数料明細
-        // $Shipping->addShipmentItem($ShipmentItemCharge); // Shipping には登録しない
-        $Order->addShipmentItem($ShipmentItemCharge);
-        $this->app['orm.em']->persist($ShipmentItemCharge);
-        $this->app['orm.em']->flush($ShipmentItemCharge);
+        // $Shipping->addOrderItem($OrderItemCharge); // Shipping には登録しない
+        $Order->addOrderItem($OrderItemCharge);
+        $this->app['orm.em']->persist($OrderItemCharge);
+        $this->app['orm.em']->flush($OrderItemCharge);
 
         $discount = $Order->getDiscount() + $add_discount;
-        $ShipmentItemDiscount = new ShipmentItem();
-        $ShipmentItemDiscount
+        $OrderItemDiscount = new OrderItem();
+        $OrderItemDiscount
             // ->setShipping($Shipping) // Shipping には登録しない
             ->setOrder($Order)
             ->setProductName('値引き')
@@ -577,10 +569,10 @@ class Generator {
             ->setTaxType($NonTaxable) // 不課税
             ->setTaxDisplayType($TaxInclude) // 税込
             ->setOrderItemType($ItemDiscount); // 値引き明細
-        // $Shipping->addShipmentItem($ShipmentItemDiscount); // Shipping には登録しない
-        $Order->addShipmentItem($ShipmentItemDiscount);
-        $this->app['orm.em']->persist($ShipmentItemDiscount);
-        $this->app['orm.em']->flush($ShipmentItemDiscount);
+        // $Shipping->addOrderItem($OrderItemDiscount); // Shipping には登録しない
+        $Order->addOrderItem($OrderItemDiscount);
+        $this->app['orm.em']->persist($OrderItemDiscount);
+        $this->app['orm.em']->flush($OrderItemDiscount);
 
         $Order->setDeliveryFeeTotal($shipment_delivery_fee);
         $Order->setSubTotal($subTotal);
@@ -591,7 +583,10 @@ class Generator {
         $Order->setTotal($total);
         $Order->setPaymentTotal($total);
 
-        $tax = $Order->calculateTotalTax();
+        // TODO PurchaseFlow でやった方がよい
+        $tax = array_reduce($Order->getItems()->toArray(), function ($sum, $item) {
+            return $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
+        }, 0);
         $Order->setTax($tax);
 
         $this->app['orm.em']->flush($Shipping);
@@ -695,15 +690,15 @@ class Generator {
     /**
      * ページを生成する
      *
-     * @return PageLayout
+     * @return Page
      */
-    public function createPageLayout()
+    public function createPage()
     {
         $faker = $this->getFaker();
         $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
-        /** @var PageLayout $PageLayout */
-        $PageLayout = $this->app['eccube.repository.page_layout']->newPageLayout($DeviceType);
-        $PageLayout
+        /** @var Page $Page */
+        $Page = $this->app['eccube.repository.page']->newPage($DeviceType);
+        $Page
             ->setName($faker->word)
             ->setUrl($faker->word)
             ->setFileName($faker->word)
@@ -712,9 +707,9 @@ class Generator {
             ->setKeyword($faker->word)
             ->setMetaRobots($faker->word)
         ;
-        $this->app['orm.em']->persist($PageLayout);
-        $this->app['orm.em']->flush($PageLayout);
-        return $PageLayout;
+        $this->app['orm.em']->persist($Page);
+        $this->app['orm.em']->flush($Page);
+        return $Page;
     }
 
     /**

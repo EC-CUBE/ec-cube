@@ -28,7 +28,6 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
-use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
@@ -50,10 +49,10 @@ class TaxRuleRepository extends AbstractRepository
     protected $appConfig;
 
     /**
-     * @Inject(BaseInfo::class)
-     * @var BaseInfo
+     * @Inject(BaseInfoRepository::class)
+     * @var BaseInfoRepository
      */
-    protected $BaseInfo;
+    protected $baseInfoRepository;
 
     /**
      * @Inject("security.authorization_checker")
@@ -78,10 +77,10 @@ class TaxRuleRepository extends AbstractRepository
     public function newTaxRule()
     {
         $TaxRule = new \Eccube\Entity\TaxRule();
-        $CalcRule = $this->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\Taxrule')
+        $RoundingType = $this->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\RoundingType')
             ->find(1);
-        $TaxRule->setCalcRule($CalcRule);
+        $TaxRule->setRoundingType($RoundingType);
         $TaxRule->setTaxAdjust(0);
 
         return $TaxRule;
@@ -109,7 +108,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // 商品単位税率設定がOFFの場合
-        if ($this->BaseInfo->getOptionProductTaxRule() !== Constant::ENABLED) {
+        if ($this->baseInfoRepository->get()->getOptionProductTaxRule() !== Constant::ENABLED) {
             $Product = null;
             $ProductClass = null;
         }

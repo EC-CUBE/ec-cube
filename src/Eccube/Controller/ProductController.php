@@ -25,11 +25,12 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -52,7 +53,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=ProductController::class)
  */
 class ProductController
@@ -301,22 +301,24 @@ class ProductController
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
      */
-    public function detail(Application $app, Request $request, $id)
+    public function detail(Application $app, Request $request, Product $Product)
     {
-        if ($this->BaseInfo->getNostockHidden() === Constant::ENABLED) {
-            $this->entityManager->getFilters()->enable('nostock_hidden');
+        $is_admin = $request->getSession()->has('_security_admin');
+
+        // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
+        if (!$is_admin) {
+            // 在庫なし商品の非表示オプションが有効な場合.
+            if ($this->BaseInfo->getNostockHidden()) {
+                if (!$Product->getStockFind()) {
+                    throw new NotFoundHttpException();
+                }
+            }
+            // 公開ステータスでない商品は表示しない.
+            if ($Product->getStatus()->getId() !== ProductStatus::DISPLAY_SHOW) {
+                throw new NotFoundHttpException();
+            }
         }
 
-        /* @var $Product \Eccube\Entity\Product */
-        $Product = $this->productRepository->get($id);
-        if (!$request->getSession()->has('_security_admin') && $Product->getStatus()->getId() !== 1) {
-            throw new NotFoundHttpException();
-        }
-        if (count($Product->getProductClasses()) < 1) {
-            throw new NotFoundHttpException();
-        }
-
-        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createNamedBuilder(
             '',
             AddCartType::class,

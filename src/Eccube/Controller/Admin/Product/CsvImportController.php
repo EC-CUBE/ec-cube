@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
@@ -42,7 +41,7 @@ use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDateRepository;
-use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\ProductTypeRepository;
 use Eccube\Repository\Master\TagRepository;
 use Eccube\Repository\ProductRepository;
@@ -57,7 +56,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=CsvImportController::class)
  */
 class CsvImportController
@@ -99,10 +97,10 @@ class CsvImportController
     protected $classCategoryRepository;
 
     /**
-     * @Inject(DispRepository::class)
-     * @var DispRepository
+     * @Inject(ProductStatusRepository::class)
+     * @var ProductStatusRepository
      */
-    protected $dispRepository;
+    protected $productStatusRepository;
 
     /**
      * @Inject(ProductRepository::class)
@@ -215,11 +213,11 @@ class CsvImportController
                             $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が設定されていません。');
                         } else {
                             if (preg_match('/^\d+$/', $row['公開ステータス(ID)'])) {
-                                $Disp = $this->dispRepository->find($row['公開ステータス(ID)']);
-                                if (!$Disp) {
+                                $ProductStatus = $this->productStatusRepository->find($row['公開ステータス(ID)']);
+                                if (!$ProductStatus) {
                                     $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
                                 } else {
-                                    $Product->setStatus($Disp);
+                                    $Product->setStatus($ProductStatus);
                                 }
                             } else {
                                 $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
@@ -582,21 +580,17 @@ class CsvImportController
 
                         $Category->setParent($ParentCategory);
                         if ($ParentCategory) {
-                            $Category->setLevel($ParentCategory->getLevel() + 1);
+                            $Category->setHierarchy($ParentCategory->getHierarchy() + 1);
                         } else {
-                            $Category->setLevel(1);
+                            $Category->setHierarchy(1);
                         }
 
-                        if ($this->appConfig['category_nest_level'] < $Category->getLevel()) {
+                        if ($this->appConfig['category_nest_level'] < $Category->getHierarchy()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($app, $form, $headers);
                         }
 
-                        $status = $this->categoryRepository->save($Category);
-
-                        if (!$status) {
-                            $this->addErrors(($data->key() + 1) . '行目のカテゴリが設定できません。');
-                        }
+                        $this->categoryRepository->save($Category);
 
                         if ($this->hasErrors()) {
                             return $this->render($app, $form, $headers);

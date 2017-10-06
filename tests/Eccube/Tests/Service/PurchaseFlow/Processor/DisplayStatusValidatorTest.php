@@ -4,7 +4,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Eccube\Entity\CartItem;
-use Eccube\Entity\Master\Disp;
+use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
@@ -57,8 +57,8 @@ class DisplayStatusValidatorTest extends EccubeTestCase
     {
         /** @var Application $app */
         $app = $this->app;
-        $Disp = $app['eccube.repository.master.disp']->find(Disp::DISPLAY_SHOW);
-        $this->Product->setStatus($Disp);
+        $ProductStatus = $app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_SHOW);
+        $this->Product->setStatus($ProductStatus);
 
         $this->validator->process($this->cartItem, new PurchaseContext());
 
@@ -72,8 +72,8 @@ class DisplayStatusValidatorTest extends EccubeTestCase
     {
         /** @var Application $app */
         $app = $this->app;
-        $Disp = $app['eccube.repository.master.disp']->find(Disp::DISPLAY_HIDE);
-        $this->Product->setStatus($Disp);
+        $ProductStatus = $app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $this->Product->setStatus($ProductStatus);
 
         $this->validator->process($this->cartItem, new PurchaseContext());
 

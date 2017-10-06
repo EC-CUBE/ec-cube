@@ -137,10 +137,10 @@ class ShippingMultipleItemType extends AbstractType
 
                 $quantity = 0;
                 // Check all shipment items
-                foreach ($data->getProductOrderItems() as $ShipmentItem) {
+                foreach ($data->getProductOrderItems() as $OrderItem) {
                     // Check item distinct for each quantity
-                    if ($data->getProductClassOfTemp()->getId() == $ShipmentItem->getProductClass()->getId()) {
-                        $quantity += $ShipmentItem->getQuantity();
+                    if ($data->getProductClassOfTemp()->getId() == $OrderItem->getProductClass()->getId()) {
+                        $quantity += $OrderItem->getQuantity();
                     }
                 }
                 $form['quantity']->setData($quantity);

@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -46,7 +45,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 /**
- * @Component
  * @Route(service=PaymentController::class)
  */
 class PaymentController extends AbstractController
@@ -244,7 +242,9 @@ class PaymentController extends AbstractController
             $app->addSuccess('admin.delete.complete', 'admin');
         } catch(ForeignKeyConstraintViolationException $e) {
             $this->entityManager->rollback();
-            $app->addError('admin.payment.delete.error', 'admin');
+
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '支払方法']);
+            $app->addError($message, 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));

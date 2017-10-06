@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\ProductClass;
@@ -41,7 +40,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=CartController::class)
  */
 class CartController extends AbstractController

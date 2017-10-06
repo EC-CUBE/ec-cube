@@ -31,10 +31,10 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $email = $faker->safeEmail;
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
 
-        $OrderDetails = array();
+        $OrderItems = array();
         if (is_object($Product)) {
             $ProductClasses = $Product->getProductClasses();
-            $OrderDetails[] = array(
+            $OrderItems[] = array(
                 'Product' => $Product->getId(),
                 'ProductClass' => $ProductClasses[0]->getId(),
                 'price' => $ProductClasses[0]->getPrice02(),
@@ -125,7 +125,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'delivery_fee_total' => 0,
             'charge' => 0,
             'note' => $faker->text,
-            'OrderDetails' => $OrderDetails,
+            'OrderItems' => $OrderItems,
             'Shippings' => $Shippings
         );
         return $order;
@@ -140,18 +140,18 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     public function createFormDataForEdit(Order $Order)
     {
         //受注アイテム
-        $orderDetail = array();
-        $OrderDetailColl = $Order->getOrderDetails();
-        foreach ($OrderDetailColl as $OrderDetail) {
-            $Product = $OrderDetail->getProduct();
-            $ProductClass = $OrderDetail->getProductClass();
-            $orderDetail[] = array(
+        $orderItem = array();
+        $OrderItemColl = $Order->getOrderItems();
+        foreach ($OrderItemColl as $OrderItem) {
+            $Product = $OrderItem->getProduct();
+            $ProductClass = $OrderItem->getProductClass();
+            $orderItem[] = array(
                 'Product' => is_object($Product) ? $Product->getId() : null,
                 'ProductClass' => is_object($ProductClass) ? $ProductClass->getId() : null,
-                'price' => $OrderDetail->getPrice(),
-                'quantity' => $OrderDetail->getQuantity(),
-                'tax_rate' => $OrderDetail->getTaxRate(),
-                'tax_rule' => $OrderDetail->getTaxRule(),
+                'price' => $OrderItem->getPrice(),
+                'quantity' => $OrderItem->getQuantity(),
+                'tax_rate' => $OrderItem->getTaxRate(),
+                'tax_rule' => $OrderItem->getTaxRule(),
                 'product_name' => is_object($Product) ? $Product->getName() : '送料', // XXX v3.1 より 送料等, Product の無い明細が追加される
                 'product_code' => is_object($ProductClass) ? $ProductClass->getCode() : null,
             );
@@ -178,16 +178,16 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 $shippingDeliveryDate['month'] = $date->format('n');
                 $shippingDeliveryDate['day'] = $date->format('d');
             }
-            $shipmentItems = array();
-            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            foreach ($Shippings->getShipmentItems() as $ShipmentItem) {
-                $shipmentItems[] = array(
-                    'Product' => $ShipmentItem->getProduct()->getId(),
-                    'ProductClass' => $ShipmentItem->getProductClass()->getId(),
-                    'price' => $ShipmentItem->getPrice(),
-                    'quantity' => $ShipmentItem->getQuantity(),
-                    'product_name' => $ShipmentItem->getProduct()->getName(),
-                    'product_code' => $ShipmentItem->getProductClass()->getCode(),
+            $orderItems = array();
+            /** @var \Eccube\Entity\OrderItem $OrderItem */
+            foreach ($Shippings->getOrderItems() as $OrderItem) {
+                $orderItems[] = array(
+                    'Product' => $OrderItem->getProduct()->getId(),
+                    'ProductClass' => $OrderItem->getProductClass()->getId(),
+                    'price' => $OrderItem->getPrice(),
+                    'quantity' => $OrderItem->getQuantity(),
+                    'product_name' => $OrderItem->getProduct()->getName(),
+                    'product_code' => $OrderItem->getProductClass()->getCode(),
                 );
             }
 
@@ -229,7 +229,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'Delivery' => $Shippings->getDelivery()->getId(),
                 'DeliveryTime' => $deliveryTime,
                 'shipping_delivery_date' => $shippingDeliveryDate,
-                'ShipmentItems' => $shipmentItems,
+                'orderItems' => $orderItems,
             );
         }
         $Customer = $Order->getCustomer();
@@ -278,7 +278,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             ),
             'company_name' => $Order->getCompanyName(),
             'message' => $Order->getMessage(),
-            'OrderDetails' => $orderDetail,
+            'OrderItems' => $orderItem,
             'discount' => $Order->getDiscount(),
             'delivery_fee_total' => $Order->getDeliveryFeeTotal(),
             'charge' => $Order->getCharge(),

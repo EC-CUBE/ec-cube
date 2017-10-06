@@ -21,28 +21,28 @@ php:
 
 env:
   matrix:
-    - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
-    - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+    - DB=mysql DB_USERNAME=root DB_PASSWORD=
+    - DB=pgsql DB_USERNAME=postgres DB_PASSWORD=password
     - DB=sqlite
     # カバレッジレポート用
-    - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+    - DB=pgsql DB_USERNAME=postgres DB_PASSWORD=password COVERAGE=true
 
 matrix:
   fast_finish: true
   exclude:
     # php7.1以外のカバレッジレポート用matrixは除外
     - php: 5.6
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+      env: DB=pgsql DB_USERNAME=postgres DB_PASSWORD=password COVERAGE=true
     - php: 7.0
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+      env: DB=pgsql DB_USERNAME=postgres DB_PASSWORD=password COVERAGE=true
     - php: 7.2
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+      env: DB=pgsql DB_USERNAME=postgres DB_PASSWORD=password COVERAGE=true
   allow_failures:
     # sqlite
     - env: DB=sqlite
     # カバレッジレポートはphp7.1のmatrixで実行
     - php: 7.1
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres COVERAGE=true
+      env: DB=pgsql DB_USERNAME=postgres DB_PASSWORD=password COVERAGE=true
     # php7.2
     - php: 7.2
 

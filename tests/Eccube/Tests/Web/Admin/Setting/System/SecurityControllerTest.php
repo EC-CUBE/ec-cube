@@ -57,8 +57,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         vfsStream::setup('rootDir');
         $config = $this->app['config'];
 
-        $this->configFileReal = $config['root_dir'].'/app/config/eccube/config.yml';
-        $this->pathFileReal = $config['root_dir'].'/app/config/eccube/path.yml';
+        $this->configFileReal = $config['root_dir'].'/app/config/eccube/config.php';
+        $this->pathFileReal = $config['root_dir'].'/app/config/eccube/path.php';
         if (!file_exists($this->configFileReal) || !file_exists($this->pathFileReal)) {
             $this->markTestSkipped('Skip if not have config file');
         }
@@ -67,8 +67,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
             'app' => array(
                 'config' => array(
                     'eccube' => array(
-                        'config.yml' => file_get_contents($this->configFileReal),
-                        'path.yml' => file_get_contents($this->pathFileReal),
+                        'config.php' => file_get_contents($this->configFileReal),
+                        'path.php' => file_get_contents($this->pathFileReal),
                     ),
                 ),
             ),
@@ -77,8 +77,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $config['root_dir'] = vfsStream::url('rootDir');
 
         // dump file
-        $this->configFile = $config['root_dir'].'/app/config/eccube/config.yml';
-        $this->pathFile = $config['root_dir'].'/app/config/eccube/path.yml';
+        $this->configFile = $config['root_dir'].'/app/config/eccube/config.php';
+        $this->pathFile = $config['root_dir'].'/app/config/eccube/path.php';
 
         $this->app->overwrite('config', $config);
         vfsStream::create($structure);
@@ -115,10 +115,10 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'admin.system.security.route.dir.complete';
         $this->verify();
 
-        $config = Yaml::parse(file_get_contents($this->configFile));
-        $this->assertTrue(in_array($formData['admin_allow_host'], $config['admin_allow_host']));
+        $config = require $this->configFile;
+        $this->assertTrue(in_array($formData['admin_allow_hosts'], $config['admin_allow_hosts']));
 
-        $path = Yaml::parse(file_get_contents($this->pathFile));
+        $path = require $this->pathFile;
         $this->expected = $formData['admin_route_dir'];
         $this->actual = $path['admin_route'];
         $this->verify();
@@ -130,7 +130,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
     public function testSubmitEmpty()
     {
         $formData = $this->createFormData();
-        $formData['admin_allow_host'] = null;
+        $formData['admin_allow_hosts'] = null;
         $formData['force_ssl'] = null;
         $formData['admin_route_dir'] = $this->app['config']['admin_route'];
 
@@ -144,8 +144,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $config = Yaml::parse(file_get_contents($this->configFile));
-        $this->assertNull($config['admin_allow_host']);
+        $config = require $this->configFile;
+        $this->assertNull($config['admin_allow_hosts']);
     }
 
     /**
@@ -157,7 +157,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData = array(
             '_token' => 'dummy',
             'admin_route_dir' => 'admintest',
-            'admin_allow_host' => $this->ipTest,
+            'admin_allow_hosts' => $this->ipTest,
             'force_ssl' => 1,
         );
 

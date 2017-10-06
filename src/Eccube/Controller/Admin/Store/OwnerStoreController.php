@@ -24,7 +24,6 @@
 
 namespace Acme\Controller\Admin\Store;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -39,7 +38,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Process\Process;
 
 /**
- * @Component
  * @Route(service=OwnerStoreController::class)
  */
 class OwnerStoreController extends AbstractController

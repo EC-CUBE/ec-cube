@@ -7,7 +7,7 @@ use Eccube\Common\Constant;
 use Eccube\Exception\CartException;
 use Eccube\Service\CartService;
 use Eccube\Util\Str;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 
 class CalculateServiceTest extends AbstractServiceTestCase
 {
@@ -22,7 +22,7 @@ class CalculateServiceTest extends AbstractServiceTestCase
         $newOrder = $this->app['eccube.service.calculate']($Order, $Customer)->calculate();
         $this->assertNotEquals($previousTotal, $newOrder->getSubtotal(), '小計が加算されている');
 
-        $Collection = new ShipmentItemCollection($newOrder->getOrderDetails()->toArray());
+        $Collection = new OrderItemCollection($newOrder->getOrderItems()->toArray());
 
         $product_class_count = $Collection->getProductClasses()->count();
         $this->assertNotEquals($product_class_count, $Collection->count());

@@ -30,8 +30,8 @@ class ExtendedProduct extends \Eccube\Entity\Product
     /**
      * public フィールドでも大丈夫っぽい
      *
-     * @ManyToOne(targetEntity="\Eccube\Entity\Master\Db")
-     * @JoinColumn(name="db_id", referencedColumnName="id")
+     * @ManyToOne(targetEntity="\Eccube\Entity\Master\Country")
+     * @JoinColumn(name="country_id", referencedColumnName="id")
      */
-    public $Db;
+    public $Country;
 }

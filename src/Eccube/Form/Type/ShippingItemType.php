@@ -77,7 +77,7 @@ class ShippingItemType extends AbstractType
 
                 $deliveries = array();
                 foreach ($delives as $Delivery) {
-                    foreach ($data->getShipmentItems() as $item) {
+                    foreach ($data->getOrderItems() as $item) {
                         $productType = $item->getProductClass()->getProductType();
                         if ($Delivery->getProductType()->getId() == $productType->getId()) {
                             $deliveries[] = $Delivery;

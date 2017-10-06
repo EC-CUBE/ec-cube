@@ -30,7 +30,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -108,16 +108,16 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         // 処理しやすいようにすべてのShippingItemをまとめる
-        $ShipmentItems = array();
+        $OrderItems = array();
         foreach ($Order->getShippings() as $Shipping) {
-            foreach ($Shipping->getProductOrderItems() as $ShipmentItem) {
-                $ShipmentItems[] = $ShipmentItem;
+            foreach ($Shipping->getProductOrderItems() as $OrderItem) {
+                $OrderItems[] = $OrderItem;
             }
         }
 
         // Orderに含まれる商品ごとの数量を求める
         $ItemQuantitiesByClassId = array();
-        foreach ($ShipmentItems as $item) {
+        foreach ($OrderItems as $item) {
             $itemId = $item->getProductClass()->getId();
             $quantity = $item->getQuantity();
             if (array_key_exists($itemId, $ItemQuantitiesByClassId)) {
@@ -128,12 +128,12 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         // FormBuilder用に商品ごとにShippingItemをまとめる
-        $ShipmentItemsForFormBuilder = array();
+        $OrderItemsForFormBuilder = array();
         $tmpAddedClassIds = array();
-        foreach ($ShipmentItems as $item) {
+        foreach ($OrderItems as $item) {
             $itemId = $item->getProductClass()->getId();
             if (!in_array($itemId, $tmpAddedClassIds)) {
-                $ShipmentItemsForFormBuilder[] = $item;
+                $OrderItemsForFormBuilder[] = $item;
                 $tmpAddedClassIds[] = $itemId;
             }
         }
@@ -143,7 +143,7 @@ class ShippingMultipleController extends AbstractShoppingController
         $builder
             ->add('shipping_multiple', CollectionType::class, array(
                 'entry_type' => ShippingMultipleType::class,
-                'data' => $ShipmentItemsForFormBuilder,
+                'data' => $OrderItemsForFormBuilder,
                 'allow_add' => true,
                 'allow_delete' => true,
             ));
@@ -168,19 +168,19 @@ class ShippingMultipleController extends AbstractShoppingController
             $data = $form['shipping_multiple'];
 
             // フォームの入力から、送り先ごとに商品の数量を集計する
-            $arrShipmentItemTemp = array();
+            $arrOrderItemTemp = array();
             foreach ($data as $mulitples) {
-                $ShipmentItem = $mulitples->getData();
+                $OrderItem = $mulitples->getData();
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         $cusAddId = $this->getCustomerAddressId($item['customer_address']->getData());
-                        $itemId = $ShipmentItem->getProductClass()->getId();
+                        $itemId = $OrderItem->getProductClass()->getId();
                         $quantity = $item['quantity']->getData();
 
-                        if (isset($arrShipmentItemTemp[$cusAddId]) && array_key_exists($itemId, $arrShipmentItemTemp[$cusAddId])) {
-                            $arrShipmentItemTemp[$cusAddId][$itemId] = $arrShipmentItemTemp[$cusAddId][$itemId] + $quantity;
+                        if (isset($arrOrderItemTemp[$cusAddId]) && array_key_exists($itemId, $arrOrderItemTemp[$cusAddId])) {
+                            $arrOrderItemTemp[$cusAddId][$itemId] = $arrOrderItemTemp[$cusAddId][$itemId] + $quantity;
                         } else {
-                            $arrShipmentItemTemp[$cusAddId][$itemId] = $quantity;
+                            $arrOrderItemTemp[$cusAddId][$itemId] = $quantity;
                         }
                     }
                 }
@@ -188,7 +188,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
             // フォームの入力から、商品ごとの数量を集計する
             $itemQuantities = array();
-            foreach ($arrShipmentItemTemp as $FormItemByAddress) {
+            foreach ($arrOrderItemTemp as $FormItemByAddress) {
                 foreach ($FormItemByAddress as $itemId => $quantity) {
                     if (array_key_exists($itemId, $itemQuantities)) {
                         $itemQuantities[$itemId] = $itemQuantities[$itemId] + $quantity;
@@ -209,7 +209,7 @@ class ShippingMultipleController extends AbstractShoppingController
                         log_info('複数配送設定入力チェックエラー', array($Order->getId()));
                         return $app->render('Shopping/shipping_multiple.twig', array(
                             'form' => $form->createView(),
-                            'shipmentItems' => $ShipmentItemsForFormBuilder,
+                            'OrderItems' => $OrderItemsForFormBuilder,
                             'compItemQuantities' => $ItemQuantitiesByClassId,
                             'errors' => $errors,
                         ));
@@ -227,9 +227,9 @@ class ShippingMultipleController extends AbstractShoppingController
             // お届け先のリストを作成する
             $ShippingList = array();
             foreach ($data as $mulitples) {
-                $ShipmentItem = $mulitples->getData();
-                $ProductClass = $ShipmentItem->getProductClass();
-                $Delivery = $ShipmentItem->getShipping()->getDelivery();
+                $OrderItem = $mulitples->getData();
+                $ProductClass = $OrderItem->getProductClass();
+                $Delivery = $OrderItem->getShipping()->getDelivery();
                 $productTypeId = $ProductClass->getProductType()->getId();
 
                 foreach ($mulitples as $items) {
@@ -256,11 +256,11 @@ class ShippingMultipleController extends AbstractShoppingController
 
             $ProductOrderType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
-            // お届け先に、配送商品の情報(ShipmentItem)を関連付ける
+            // お届け先に、配送商品の情報(OrderItem)を関連付ける
             foreach ($data as $mulitples) {
-                $ShipmentItem = $mulitples->getData();
-                $ProductClass = $ShipmentItem->getProductClass();
-                $Product = $ShipmentItem->getProduct();
+                $OrderItem = $mulitples->getData();
+                $ProductClass = $OrderItem->getProductClass();
+                $Product = $OrderItem->getProduct();
                 $productTypeId = $ProductClass->getProductType()->getId();
                 $productClassId = $ProductClass->getId();
 
@@ -270,9 +270,9 @@ class ShippingMultipleController extends AbstractShoppingController
 
                         // お届け先から商品の数量を取得
                         $quantity = 0;
-                        if (isset($arrShipmentItemTemp[$cusAddId]) && array_key_exists($productClassId, $arrShipmentItemTemp[$cusAddId])) {
-                            $quantity = $arrShipmentItemTemp[$cusAddId][$productClassId];
-                            unset($arrShipmentItemTemp[$cusAddId][$productClassId]);
+                        if (isset($arrOrderItemTemp[$cusAddId]) && array_key_exists($productClassId, $arrOrderItemTemp[$cusAddId])) {
+                            $quantity = $arrOrderItemTemp[$cusAddId][$productClassId];
+                            unset($arrOrderItemTemp[$cusAddId][$productClassId]);
                         } else {
                             // この配送先には送る商品がないのでスキップ（通常ありえない）
                             continue;
@@ -282,8 +282,8 @@ class ShippingMultipleController extends AbstractShoppingController
                         $Shipping = $ShippingList[$cusAddId][$productTypeId];
 
                         // インスタンスを生成して保存
-                        $ShipmentItem = new ShipmentItem();
-                        $ShipmentItem->setShipping($Shipping)
+                        $OrderItem = new OrderItem();
+                        $OrderItem->setShipping($Shipping)
                             ->setOrder($Order)
                             ->setProductClass($ProductClass)
                             ->setProduct($Product)
@@ -295,16 +295,16 @@ class ShippingMultipleController extends AbstractShoppingController
 
                         $ClassCategory1 = $ProductClass->getClassCategory1();
                         if (!is_null($ClassCategory1)) {
-                            $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
-                            $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
+                            $OrderItem->setClasscategoryName1($ClassCategory1->getName());
+                            $OrderItem->setClassName1($ClassCategory1->getClassName()->getName());
                         }
                         $ClassCategory2 = $ProductClass->getClassCategory2();
                         if (!is_null($ClassCategory2)) {
-                            $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
-                            $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
+                            $OrderItem->setClasscategoryName2($ClassCategory2->getName());
+                            $OrderItem->setClassName2($ClassCategory2->getClassName()->getName());
                         }
-                        $Shipping->addShipmentItem($ShipmentItem);
-                        $this->entityManager->persist($ShipmentItem);
+                        $Shipping->addOrderItem($OrderItem);
+                        $this->entityManager->persist($OrderItem);
                     }
                 }
             }
@@ -342,7 +342,7 @@ class ShippingMultipleController extends AbstractShoppingController
 
         return $app->render('Shopping/shipping_multiple.twig', array(
             'form' => $form->createView(),
-            'shipmentItems' => $ShipmentItemsForFormBuilder,
+            'OrderItems' => $OrderItemsForFormBuilder,
             'compItemQuantities' => $ItemQuantitiesByClassId,
             'errors' => $errors,
         ));

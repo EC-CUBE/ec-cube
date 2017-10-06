@@ -237,14 +237,14 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('ShipmentItems', CollectionType::class, array(
-                'entry_type' => ShipmentItemType::class,
+            ->add('OrderItems', CollectionType::class, array(
+                'entry_type' => OrderItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
                 'data' => $options['SortedItems']
             ))
-            ->add('OrderDetailsErrors', TextType::class, [
+            ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
             ]);
 
@@ -255,86 +255,6 @@ class OrderType extends AbstractType
                     '\Eccube\Entity\Customer'
                 )));
 
-        /**
-         * 複数配送オプション有効時の画面制御を行う.
-         */
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-
-            if ($this->BaseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
-                return;
-            }
-
-            $data = $event->getData();
-            $orderDetails = &$data['OrderDetails'];
-
-            // 数量0フィルター
-            $quantityFilter = function ($v) {
-                return !(isset($v['quantity']) && preg_match('/^0+$/', trim($v['quantity'])));
-            };
-
-            // $shippings = &$data['Shippings'];
-
-            // 数量を抽出
-            $getQuantity = function ($v) {
-                return (isset($v['quantity']) && preg_match('/^\d+$/', trim($v['quantity']))) ?
-                    trim($v['quantity']) :
-                    0;
-            };
-
-            // foreach ($shippings as &$shipping) {
-            //     if (!empty($shipping['ShipmentItems'])) {
-            //         $shipping['ShipmentItems'] = array_filter($shipping['ShipmentItems'], $quantityFilter);
-            //     }
-            // }
-
-            // FIXME 実際は ShipmentItem
-            if (!empty($orderDetails)) {
-
-                foreach ($orderDetails as &$orderDetail) {
-
-                    $orderDetail['quantity'] = 0;
-
-                    // 受注詳細と同じ商品規格のみ抽出
-                    $productClassFilter = function ($v) use ($orderDetail) {
-                        return $orderDetail['ProductClass'] === $v['ProductClass'];
-                    };
-
-                    foreach ($shippings as &$shipping) {
-
-                        if (!empty($shipping['ShipmentItems'])) {
-
-                            // 同じ商品規格の受注詳細の価格を適用
-                            $applyPrice = function (&$v) use ($orderDetail) {
-                                $v['price'] = ($v['ProductClass'] === $orderDetail['ProductClass']) ?
-                                    $orderDetail['price'] :
-                                    $v['price'];
-                            };
-                            array_walk($shipping['ShipmentItems'], $applyPrice);
-
-                            // 数量適用
-                            $relatedShipmentItems = array_filter($shipping['ShipmentItems'], $productClassFilter);
-                            $quantities = array_map($getQuantity, $relatedShipmentItems);
-                            $orderDetail['quantity'] += array_sum($quantities);
-                        }
-                    }
-                }
-            }
-
-            if (!empty($orderDetails)) {
-                $data['OrderDetails'] = array_filter($orderDetails, $quantityFilter);
-            }
-
-            $event->setData($data);
-        });
-
-        // 商品明細が追加されているかどうかを検証する
-        // $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-        //     $Order = $event->getData();
-        //     if ($Order['OrderDetails']->isEmpty()) {
-        //         $form = $event->getForm();
-        //         $form['OrderDetailsErrors']->addError(new FormError('商品が追加されていません。'));
-        //     }
-        // });
         // 選択された支払い方法の名称をエンティティにコピーする
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $Order = $event->getData();

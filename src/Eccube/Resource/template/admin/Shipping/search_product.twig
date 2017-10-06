@@ -1,19 +1,19 @@
 <script>
 
     // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(order_details_count)は, edit.twig側で定義している.
-    function fnAddOrderDetail($row, shipment_item_id, order_id, type) {
+    // 受注明細行のレコード数カウンタ(order_items_count)は, edit.twig側で定義している.
+    function fnAddOrderItem($row, order_item_id, order_id, type) {
 
         type = type === undefined ? {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }} : type;
 
         // 受注明細行を取得.
-        var list = $('#order_detail_list');
+        var list = $('#order_item_list');
         var orderDetailExists = false;
 
         $('*[id^="product_info_list__item--"]').each(function () {
             var $inputs = $(this).find(':input');
 
-            if ($inputs.filter('[id$="_ProductClass"][value="'+shipment_item_id+'"]').length > 0) {
+            if ($inputs.filter('[id$="_ProductClass"][value="'+order_item_id+'"]').length > 0) {
 
                 orderDetailExists = true;
                 return false;
@@ -26,12 +26,12 @@
             var newWidget = list.attr('data-prototype');
 
             // レコード数カウンタで置換.
-            newWidget = newWidget.replace(/__name__/g, order_details_count);
+            newWidget = newWidget.replace(/__name__/g, order_items_count);
             // フォーム入力値をセットm
             $newWidget = $(newWidget);
-            $newWidget.find('#shipping_ShipmentItems_' + order_details_count + '_Order').val(order_id);
-            $newWidget.find('#shipping_ShipmentItems_' + order_details_count + '_id').val(shipment_item_id);
-            $newWidget.find('#shipping_ShipmentItems_' + order_details_count + '_order_item_type').val(type);
+            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_Order').val(order_id);
+            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_id').val(order_item_id);
+            $newWidget.find('#shipping_OrderItems_' + order_items_count + '_order_item_type').val(type);
 
             // 明細行に追加.
             list.append($newWidget);
@@ -39,7 +39,7 @@
 
         if (orderDetailExists) {
             // カウンタを更新.
-            order_details_count++;
+            order_items_count++;
         }
 
         // モーダル閉じる.
@@ -78,25 +78,25 @@
             </tr>
         </thead>
         <tbody>
-            {% for ShipmentItem in pagination %}
-                <form name="product_form{{ ShipmentItem.id }}">
-                    {% set form = forms[ShipmentItem.id] %}
+            {% for OrderItem in pagination %}
+                <form name="product_form{{ OrderItem.id }}">
+                    {% set form = forms[OrderItem.id] %}
 
                     <tr>
                         <td>
-                            {{ ShipmentItem.Order.order_date ? ShipmentItem.Order.order_date |date("Y/m/d H:i:s") : '' }}<br>注文ID: {{ ShipmentItem.Order.id }}
+                            {{ OrderItem.Order.order_date ? OrderItem.Order.order_date |date("Y/m/d H:i:s") : '' }}<br>注文ID: {{ OrderItem.Order.id }}
                         </td>
                         <td>
-                            {{ ShipmentItem.Order.Name01 }} {{ ShipmentItem.Order.Name02 }} ({{ ShipmentItem.Order.Kana01 }} {{ ShipmentItem.Order.Kana02 }})<br>
-                            {{ ShipmentItem.Order.Zip01 }}-{{ ShipmentItem.Order.Zip02 }}<br>
-                            {{ ShipmentItem.Order.Pref }}{{ ShipmentItem.Order.Addr01 }}{{ ShipmentItem.Order.Addr02 }}<br>
+                            {{ OrderItem.Order.Name01 }} {{ OrderItem.Order.Name02 }} ({{ OrderItem.Order.Kana01 }} {{ OrderItem.Order.Kana02 }})<br>
+                            {{ OrderItem.Order.Zip01 }}-{{ OrderItem.Order.Zip02 }}<br>
+                            {{ OrderItem.Order.Pref }}{{ OrderItem.Order.Addr01 }}{{ OrderItem.Order.Addr02 }}<br>
                         </td>
                         <td>
-                            {{ ShipmentItem.product_name }}
-                            {% if ShipmentItem.product_code %}
-                                <span><br/>{{ ShipmentItem.product_code }}
+                            {{ OrderItem.product_name }}
+                            {% if OrderItem.product_code %}
+                                <span><br/>{{ OrderItem.product_code }}
                             {% endif %}
-                            <br />{{ ShipmentItem.price|price }}
+                            <br />{{ OrderItem.price|price }}
                         </td>
                         <div class="extra-form">
                             {% for f in form.getIterator %}
@@ -108,7 +108,7 @@
                             {% endfor %}
                         </div>
                         <td class="text-right">
-                            <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ ShipmentItem.id }}, {{ ShipmentItem.Order.id }}, {{ ShipmentItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
+                            <button onclick="fnAddOrderItem($(this).parent().parent(), {{ OrderItem.id }}, {{ OrderItem.Order.id }}, {{ OrderItem.OrderItemType.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                                 決定
                             </button>
                         </td>

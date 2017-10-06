@@ -62,10 +62,10 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
 
         $TestProduct = new Product();
-        $Disp = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Disp')->find(1);
+        $ProductStatus = $this->app['orm.em']->getRepository('Eccube\Entity\Master\ProductStatus')->find(1);
 
         $TestProduct->setName($this->faker->word)
-            ->setStatus($Disp)
+            ->setStatus($ProductStatus)
             ->setNote($this->faker->text(50))
             ->setDescriptionList($this->faker->text(100))
             ->setDescriptionDetail($this->faker->text(200))

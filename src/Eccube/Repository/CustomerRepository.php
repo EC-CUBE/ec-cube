@@ -27,7 +27,6 @@ namespace Eccube\Repository;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
-use Eccube\Common\Constant;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
@@ -80,13 +79,12 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
 
     public function newCustomer()
     {
-        $Customer = new \Eccube\Entity\Customer();
-        $Status = $this->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\CustomerStatus')
-            ->find(1);
+        $CustomerStatus = $this->getEntityManager()
+            ->find(CustomerStatus::class, CustomerStatus::PROVISIONAL);
 
+        $Customer = new \Eccube\Entity\Customer();
         $Customer
-            ->setStatus($Status);
+            ->setStatus($CustomerStatus);
 
         return $Customer;
     }
@@ -107,19 +105,12 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      */
     public function loadUserByUsername($username)
     {
-        // 本会員ステータスの会員のみ有効.
-        $query = $this->createQueryBuilder('c')
-            ->where('c.email = :email')
-            ->leftJoin('c.Status', 's')
-            ->andWhere('s.id = :status')
-            ->setParameters(array(
-                'email' => $username,
-                'status' => CustomerStatus::REGULAR,
-            ))
-            ->setMaxResults(1)
-            ->getQuery();
-        $Customer = $query->getOneOrNullResult();
-        if (!$Customer) {
+        $Customer = $this->findOneBy([
+            'email' => $username,
+            'Status' => CustomerStatus::REGULAR,
+        ]);
+
+        if (is_null($Customer)) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
@@ -158,7 +149,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      */
     public function supportsClass($class)
     {
-        return $class === 'Eccube\Entity\Customer';
+        return $class === Customer::class;
     }
 
     public function getQueryBuilderBySearchData($searchData)
@@ -173,9 +164,9 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
             $qb
                 ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
                 ->setParameter('customer_id', $id)
-                ->setParameter('name', '%' . $clean_key_multi . '%')
-                ->setParameter('kana', '%' . $clean_key_multi . '%')
-                ->setParameter('email', '%' . $clean_key_multi . '%');
+                ->setParameter('name', '%'.$clean_key_multi.'%')
+                ->setParameter('kana', '%'.$clean_key_multi.'%')
+                ->setParameter('email', '%'.$clean_key_multi.'%');
         }
 
         // Pref
@@ -221,7 +212,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         if (isset($searchData['tel']) && Str::isNotBlank($searchData['tel'])) {
             $qb
                 ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
-                ->setParameter('tel', '%' . $searchData['tel'] . '%');
+                ->setParameter('tel', '%'.$searchData['tel'].'%');
         }
 
         // buy_total
@@ -301,9 +292,9 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         if (isset($searchData['buy_product_code']) && Str::isNotBlank($searchData['buy_product_code'])) {
             $qb
                 ->leftJoin('c.Orders', 'o')
-                ->leftJoin('o.OrderDetails', 'od')
-                ->andWhere('od.product_name LIKE :buy_product_name OR od.product_code LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%' . $searchData['buy_product_code'] . '%');
+                ->leftJoin('o.OrderItems', 'oi')
+                ->andWhere('oi.product_name LIKE :buy_product_name OR oi.product_code LIKE :buy_product_name')
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_code'].'%');
         }
 
         // Order By
@@ -313,107 +304,86 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     }
 
     /**
-     * ユニークなシークレットキーを返す
-     * @param $app
+     * ユニークなシークレットキーを返す.
+     *
      * @return string
      */
-    public function getUniqueSecretKey($app)
+    public function getUniqueSecretKey()
     {
-        $unique = Str::random(32);
-        $Customer = $this->findBy(array(
-            'secret_key' => $unique,
-        ));
-        if (count($Customer) == 0) {
-            return $unique;
-        } else {
-            return $this->getUniqueSecretKey($app);
-        }
+        do {
+            $key = Str::random(32);
+            $Customer = $this->findOneBy(['secret_key' => $key]);
+        } while ($Customer);
+
+        return $key;
     }
 
     /**
      * ユニークなパスワードリセットキーを返す
-     * @param $app
+     *
      * @return string
      */
-    public function getUniqueResetKey($app)
+    public function getUniqueResetKey()
     {
-        $unique = Str::random(32);
-        $Customer = $this->findBy(array(
-                        'reset_key' => $unique,
-        ));
-        if (count($Customer) == 0) {
-            return $unique;
-        } else {
-            return $this->getUniqueResetKey($app);
-        }
+        do {
+            $key = Str::random(32);
+            $Customer = $this->findOneBy(['reset_key' => $key]);
+        } while ($Customer);
+
+        return $key;
     }
 
     /**
-     * saltを生成する
+     * 仮会員をシークレットキーで検索する.
      *
-     * @param $byte
-     * @return string
+     * @param $secretKey
+     * @return null|Customer 見つからない場合はnullを返す.
      */
-    public function createSalt($byte)
+    public function getProvisionalCustomerBySecretKey($secretKey)
     {
-        return bin2hex(openssl_random_pseudo_bytes($byte));
+        return $this->findOneBy([
+            'secret_key' => $secretKey,
+            'Status' => CustomerStatus::PROVISIONAL,
+        ]);
     }
 
     /**
-     * 入力されたパスワードをSaltと暗号化する
+     * 本会員をemailで検索する.
      *
-     * @param $app
-     * @param  Customer $Customer
-     * @return mixed
+     * @param $email
+     * @return null|Customer 見つからない場合はnullを返す.
      */
-    public function encryptPassword($app, \Eccube\Entity\Customer $Customer)
-    {
-        $encoder = $this->encoderFactory->getEncoder($Customer);
-
-        return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
-    }
-
-    public function getProvisionalCustomerBySecretKey($secret_key)
-    {
-        $qb = $this->createQueryBuilder('c')
-            ->where('c.secret_key = :secret_key')
-            ->leftJoin('c.Status', 's')
-            ->andWhere('s.id = :status')
-            ->setParameter('secret_key', $secret_key)
-            ->setParameter('status', CustomerStatus::PROVISIONAL);
-        $query = $qb->getQuery();
-
-        return $query->getSingleResult();
-    }
-
     public function getRegularCustomerByEmail($email)
     {
-        $query = $this->createQueryBuilder('c')
-            ->where('c.email = :email AND c.Status = :status')
-            ->setParameter('email', $email)
-            ->setParameter('status', CustomerStatus::REGULAR)
-            ->setMaxResults(1)
-            ->getQuery();
-
-        $Customer = $query->getOneOrNullResult();
-
-        return $Customer;
+        return $this->findOneBy([
+            'email' => $email,
+            'Status' => CustomerStatus::REGULAR,
+        ]);
     }
 
-    public function getRegularCustomerByResetKey($reset_key)
+    /**
+     * 本会員をリセットキーで検索する.
+     *
+     * @param $resetKey
+     * @return null|Customer 見つからない場合はnullを返す.
+     */
+    public function getRegularCustomerByResetKey($resetKey)
     {
-        $query = $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
-            ->setParameter('reset_key', $reset_key)
+            ->setParameter('reset_key', $resetKey)
             ->setParameter('status', CustomerStatus::REGULAR)
             ->setParameter('reset_expire', new \DateTime())
-            ->getQuery();
-
-        $Customer = $query->getSingleResult();
-
-        return $Customer;
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
+    /**
+     * リセット用パスワードを生成する.
+     *
+     * @return string
+     */
     public function getResetPassword()
     {
         return Str::random(8);
@@ -430,12 +400,13 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
-        $arr = array($this->appConfig['order_new'],
-                                $this->appConfig['order_pay_wait'],
-                                $this->appConfig['order_back_order'],
-                                $this->appConfig['order_deliv'],
-                                $this->appConfig['order_pre_end'],
-                        );
+        $arr = array(
+            $this->appConfig['order_new'],
+            $this->appConfig['order_pay_wait'],
+            $this->appConfig['order_back_order'],
+            $this->appConfig['order_deliv'],
+            $this->appConfig['order_pre_end'],
+        );
 
         $result = $this->orderRepository->getCustomerCount($Customer, $arr);
 
@@ -450,8 +421,9 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
             }
 
             if ($orderStatusId == $this->appConfig['order_cancel'] ||
-                    $orderStatusId == $this->appConfig['order_pending'] ||
-                    $orderStatusId == $this->appConfig['order_processing']) {
+                $orderStatusId == $this->appConfig['order_pending'] ||
+                $orderStatusId == $this->appConfig['order_processing']
+            ) {
                 // キャンセル、決済処理中、購入処理中は購入時間は更新しない
             } else {
                 $Customer->setLastBuyDate($now);

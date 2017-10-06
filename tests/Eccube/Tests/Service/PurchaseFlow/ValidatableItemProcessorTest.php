@@ -25,7 +25,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
-use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\ItemValidateException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
@@ -61,7 +61,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
     public function testValidateOrderSuccess()
     {
         $validator = new ValidatableItemProcessorTest_NormalValidator();
-        $item = new ShipmentItem();
+        $item = new OrderItem();
 
         $result = $validator->process($item, new PurchaseContext());
         self::assertFalse($validator->handleCalled);
@@ -71,7 +71,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
     public function testValidateOrderFail()
     {
         $validator = new ValidatableItemProcessorTest_FailValidator();
-        $item = new ShipmentItem();
+        $item = new OrderItem();
 
         $result = $validator->process($item, new PurchaseContext());
         self::assertFalse($validator->handleCalled);

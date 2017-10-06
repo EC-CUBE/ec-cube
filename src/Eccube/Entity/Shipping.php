@@ -25,7 +25,7 @@
 namespace Eccube\Entity;
 
 use Eccube\Entity\Master\ShippingStatus;
-use Eccube\Service\Calculator\ShipmentItemCollection;
+use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -169,6 +169,20 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $shipping_delivery_name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="time_id", type="integer", options={"unsigned":true}, nullable=true)
+     */
+    private $time_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="fee_id", type="integer", options={"unsigned":true}, nullable=true)
+     */
+    private $fee_id;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="shipping_delivery_time", type="string", length=255, nullable=true)
@@ -241,9 +255,9 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Eccube\Entity\ShipmentItem", mappedBy="Shipping", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Eccube\Entity\OrderItem", mappedBy="Shipping", cascade={"persist","remove"})
      */
-    private $ShipmentItems;
+    private $OrderItems;
 
     /**
      * @var \Eccube\Entity\Master\Country
@@ -276,26 +290,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Delivery;
 
     /**
-     * @var \Eccube\Entity\DeliveryTime
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryTime")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="time_id", referencedColumnName="time_id")
-     * })
-     */
-    private $DeliveryTime;
-
-    /**
-     * @var \Eccube\Entity\DeliveryFee
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryFee")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fee_id", referencedColumnName="fee_id")
-     * })
-     */
-    private $DeliveryFee;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $Orders;
@@ -320,7 +314,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
-        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->OrderItems = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -993,48 +987,48 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add shipmentItem.
+     * Add orderItem.
      *
-     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     * @param \Eccube\Entity\OrderItem $OrderItem
      *
      * @return Shipping
      */
-    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    public function addOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
-        $this->ShipmentItems[] = $shipmentItem;
+        $this->OrderItems[] = $OrderItem;
 
         return $this;
     }
 
     /**
-     * Remove shipmentItem.
+     * Remove orderItem.
      *
-     * @param \Eccube\Entity\ShipmentItem $shipmentItem
+     * @param \Eccube\Entity\OrderItem $OrderItem
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItem)
+    public function removeOrderItem(\Eccube\Entity\OrderItem $OrderItem)
     {
-        return $this->ShipmentItems->removeElement($shipmentItem);
+        return $this->OrderItems->removeElement($OrderItem);
     }
 
     /**
-     * Get shipmentItems.
+     * Get orderItems.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getShipmentItems()
+    public function getOrderItems()
     {
-        return $this->ShipmentItems;
+        return $this->OrderItems;
     }
 
     /**
      * 商品の受注明細を取得
-     * @return ShipmentItem[]
+     * @return OrderItem[]
      */
     public function getProductOrderItems()
     {
-        $sio = new ShipmentItemCollection($this->ShipmentItems->toArray());
+        $sio = new OrderItemCollection($this->OrderItems->toArray());
         return $sio->getProductClasses()->toArray();
     }
 
@@ -1111,58 +1105,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliveryTime.
-     *
-     * @param \Eccube\Entity\DeliveryTime|null $deliveryTime
-     *
-     * @return Shipping
-     */
-    public function setDeliveryTime(\Eccube\Entity\DeliveryTime $deliveryTime = null)
-    {
-        $this->DeliveryTime = $deliveryTime;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryTime.
-     *
-     * @return \Eccube\Entity\DeliveryTime|null
-     */
-    public function getDeliveryTime()
-    {
-        return $this->DeliveryTime;
-    }
-
-    /**
-     * Set deliveryFee.
-     *
-     * @param \Eccube\Entity\DeliveryFee|null $deliveryFee
-     *
-     * @return Shipping
-     */
-    public function setDeliveryFee(\Eccube\Entity\DeliveryFee $deliveryFee = null)
-    {
-        $this->DeliveryFee = $deliveryFee;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryFee.
-     *
-     * @return \Eccube\Entity\DeliveryFee|null
-     */
-    public function getDeliveryFee()
-    {
-        if (EntityUtil::isEmpty($this->DeliveryFee)) {
-            return null;
-        }
-
-        return $this->DeliveryFee;
-    }
-
-    /**
      * Product class of shipment item (temp)
      * @return \Eccube\Entity\ProductClass
      */
@@ -1191,8 +1133,8 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getOrders()
     {
         $Orders = [];
-        foreach ($this->getShipmentItems() as $ShipmentItem) {
-            $Order = $ShipmentItem->getOrder();
+        foreach ($this->getOrderItems() as $OrderItem) {
+            $Order = $OrderItem->getOrder();
             if (is_object($Order)) {
                 $name = $Order->getName01(); // XXX lazy loading
                 $Orders[$Order->getId()] = $Order;
@@ -1275,5 +1217,53 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getShippingStatus()
     {
         return $this->ShippingStatus;
+    }
+
+    /**
+     * Set timeId
+     *
+     * @param integer $timeId
+     *
+     * @return Shipping
+     */
+    public function setTimeId($timeId)
+    {
+        $this->time_id = $timeId;
+
+        return $this;
+    }
+
+    /**
+     * Get timeId
+     *
+     * @return integer
+     */
+    public function getTimeId()
+    {
+        return $this->time_id;
+    }
+
+    /**
+     * Set feeId
+     *
+     * @param integer $feeId
+     *
+     * @return Shipping
+     */
+    public function setFeeId($feeId)
+    {
+        $this->fee_id = $feeId;
+
+        return $this;
+    }
+
+    /**
+     * Get feeId
+     *
+     * @return integer
+     */
+    public function getFeeId()
+    {
+        return $this->fee_id;
     }
 }

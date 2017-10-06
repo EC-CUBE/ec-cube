@@ -109,7 +109,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="edit_box__body_inner" class="col-md-9">
                             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    {% if TargetCategory.level < app.config.category_nest_level %}
+                                    {% if TargetCategory.hierarchy < app.config.category_nest_level %}
                                         <div class="col-md-12 form-inline">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}

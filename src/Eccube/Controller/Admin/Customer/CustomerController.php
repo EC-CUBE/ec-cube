@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -51,7 +50,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=CustomerController::class)
  */
 class CustomerController extends AbstractController
@@ -296,7 +294,9 @@ class CustomerController extends AbstractController
             $app->addSuccess('admin.customer.delete.complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
-            $app->addError('admin.customer.delete.failed', 'admin');
+
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '会員']);
+            $app->addError($message, 'admin');
         }
 
         log_info('会員削除完了', array($id));

@@ -66,15 +66,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endif %}
                     <div class="ec-orderOrder__items">
                         {% set remessage = '' %}
-                        {% for OrderDetail in Order.OrderDetails %}
+                        {% for OrderItem in Order.OrderItems %}
                             <div class="ec-imageGrid">
                                 <div class="ec-imageGrid__img">
-                                    {% if OrderDetail.Product is null %}
+                                    {% if OrderItem.Product is null %}
                                         <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                     {% else %}
-                                        {% if OrderDetail.enable %}
-                                            <a href="{{ url('product_detail', { id : OrderDetail.Product.id } ) }}">
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.product.MainListImage|no_image_product }}" />
+                                        {% if OrderItem.enable %}
+                                            <a href="{{ url('product_detail', { id : OrderItem.Product.id } ) }}">
+                                                <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}" />
                                             </a>
                                         {% else %}
                                             <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
@@ -83,27 +83,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                                 <div class="ec-imageGrid__content">
                                     <p>
-                                        {% if OrderDetail.Product is null %}
-                                            {{ OrderDetail.product_name }}
+                                        {% if OrderItem.Product is null %}
+                                            {{ OrderItem.product_name }}
                                         {% else %}
-                                            {% if OrderDetail.enable %}
-                                                <a href="{{ url('product_detail', {'id': OrderDetail.Product.id}) }}">
-                                                    {{ OrderDetail.product_name }}
+                                            {% if OrderItem.enable %}
+                                                <a href="{{ url('product_detail', {'id': OrderItem.Product.id}) }}">
+                                                    {{ OrderItem.product_name }}
                                                 </a>
                                             {% else %}
-                                                {{ OrderDetail.product_name }}
+                                                {{ OrderItem.product_name }}
                                             {% endif %}
                                         {% endif %}
                                     </p>
-                                    {% if OrderDetail.classcategory_name1 is not empty %}
-                                        {{ OrderDetail.classcategory_name1 }}
+                                    {% if OrderItem.classcategory_name1 is not empty %}
+                                        {{ OrderItem.classcategory_name1 }}
                                     {% endif %}
-                                    {% if OrderDetail.classcategory_name2 is not empty %}
-                                        / {{ OrderDetail.classcategory_name2 }}
+                                    {% if OrderItem.classcategory_name2 is not empty %}
+                                        / {{ OrderItem.classcategory_name2 }}
                                     {% endif %}
-                                    <p>{{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity|number_format }}</p>
-                                    {% if OrderDetail.product and OrderDetail.price_inc_tax != OrderDetail.productClass.price02IncTax %}
-                                        <p class="ec-color-accent">【現在価格】{{ OrderDetail.productClass.price02IncTax|price }}</p>
+                                    <p>{{ OrderItem.price_inc_tax|price }} × {{ OrderItem.quantity|number_format }}</p>
+                                    {% if OrderItem.product and OrderItem.price_inc_tax != OrderItem.productClass.price02IncTax %}
+                                        <p class="ec-color-accent">【現在価格】{{ OrderItem.productClass.price02IncTax|price }}</p>
                                         {% set remessage = true %}
                                     {% endif %}
                                 </div>
@@ -115,31 +115,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-rectHeading">
                         <h2>配送情報</h2>
                     </div>
-                    {% set OrderDetail = Order.OrderDetails.0 %}
+                    {% set OrderItem = Order.OrderItems.0 %}
                     {% for Shipping in Order.Shippings %}
                         <div class="ec-orderDelivery__title">お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
-                        {% for shipmentItem in Shipping.shipmentItems %}
+                        {% for orderItem in Shipping.orderItems %}
                             <div class="ec-orderDelivery__item">
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
-                                        {% if shipmentItem.product is null %}
+                                        {% if orderItem.product is null %}
                                             <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                         {% else %}
-                                            {% if shipmentItem.product.enable %}
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" />
+                                            {% if orderItem.product.enable %}
+                                                <img src="{{ app.config.image_save_urlpath }}/{{ orderItem.product.MainListImage|no_image_product }}" alt="{{ orderItem.productName }}" />
                                             {% else %}
                                                 <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                             {% endif %}
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">
-                                        <p>{{ shipmentItem.productName }} ×{{ shipmentItem.quantity }}</p>
-                                        {% if shipmentItem.ProductClass is not null %}
-                                            {% if shipmentItem.ProductClass.ClassCategory1 is not null %}
-                                                {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
+                                        <p>{{ orderItem.productName }} ×{{ orderItem.quantity }}</p>
+                                        {% if orderItem.ProductClass is not null %}
+                                            {% if orderItem.ProductClass.ClassCategory1 is not null %}
+                                                {{ orderItem.productClass.classCategory1.className }}：{{ orderItem.productClass.classCategory1 }}
                                             {% endif %}
-                                            {% if shipmentItem.ProductClass.ClassCategory2 %}
-                                                <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                            {% if orderItem.ProductClass.ClassCategory2 %}
+                                                <br>{{ orderItem.productClass.classCategory2.className }}：{{ orderItem.productClass.classCategory2 }}
                                             {% endif %}
                                         {% endif %}
                                     </div>

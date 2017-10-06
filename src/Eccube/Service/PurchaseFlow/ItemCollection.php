@@ -31,32 +31,32 @@ class ItemCollection extends ArrayCollection
     public function getProductClasses()
     {
         return $this->filter(
-            function (ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isProduct();
+            function (ItemInterface $OrderItem) {
+                return $OrderItem->isProduct();
             });
     }
 
     public function getDeliveryFees()
     {
         return $this->filter(
-            function (ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isDeliveryFee();
+            function (ItemInterface $OrderItem) {
+                return $OrderItem->isDeliveryFee();
             });
     }
 
     public function getCharges()
     {
         return $this->filter(
-            function (ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isCharge();
+            function (ItemInterface $OrderItem) {
+                return $OrderItem->isCharge();
             });
     }
 
     public function getDiscounts()
     {
         return $this->filter(
-            function (ItemInterface $ShipmentItem) {
-                return $ShipmentItem->isDiscount();
+            function (ItemInterface $OrderItem) {
+                return $OrderItem->isDiscount();
             });
     }
 
@@ -67,13 +67,13 @@ class ItemCollection extends ArrayCollection
      */
     public function hasProductByName($productName)
     {
-        $ShipmentItems = $this->filter(
-            function (ItemInterface $ShipmentItem) use ($productName) {
-                /* @var ShipmentItem $ShipmentItem */
-                return $ShipmentItem->getProductName() == $productName;
+        $OrderItems = $this->filter(
+            function (ItemInterface $OrderItem) use ($productName) {
+                /* @var OrderItem $OrderItem */
+                return $OrderItem->getProductName() == $productName;
             });
 
-        return !$ShipmentItems->isEmpty();
+        return !$OrderItems->isEmpty();
     }
 
     /**
@@ -85,9 +85,9 @@ class ItemCollection extends ArrayCollection
      */
     public function hasItemByOrderItemType($OrderItemType)
     {
-        $filteredItems = $this->filter(function (ItemInterface $ShipmentItem) use ($OrderItemType) {
-            /* @var ShipmentItem $ShipmentItem */
-            return $ShipmentItem->getOrderItemType() && $ShipmentItem->getOrderItemType()->getId() == $OrderItemType->getId();
+        $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
+            /* @var OrderItem $OrderItem */
+            return $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId();
         });
 
         return !$filteredItems->isEmpty();

@@ -33,6 +33,31 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
         // プラグインディレクトリを探索.
         $pluginConfigs = PluginConfigManager::getPluginConfigAll($app['debug']);
 
+        $enabledPlugins = $app['orm.em']->getRepository('Eccube\Entity\Plugin')->findAllEnabled();
+
+        $app['eccube.routers.plugin'] = function ($app) use ($enabledPlugins) {
+            $pluginDirs = array_map(function($plugin) use ($app) {
+                return $app['config']['root_dir'].'/app/Plugin/'.$plugin->getCode();
+            }, $enabledPlugins);
+
+            $routers = [];
+
+            if ((empty($pluginDirs)) === false) {
+                $dirs = Finder::create()
+                    ->in($pluginDirs)
+                    ->name('Controller')
+                    ->directories();
+
+                foreach ($dirs as $dir) {
+                    $realPath = $dir->getRealPath();
+                    $pluginCode = basename(dirname($realPath));
+                    $routers[] = $app['eccube.router']($realPath, 'Plugin'.$pluginCode);
+                }
+            }
+
+            return $routers;
+        };
+
         foreach ($pluginConfigs as $code => $pluginConfig) {
             $config = $pluginConfig['config'];
 
@@ -43,20 +68,6 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                     );
                     return $eccubeConfig;
                 });
-            }
-
-            // Type: ServiceProvider
-            if (isset($config['service'])) {
-                foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
-                    if (!class_exists($class)) {
-                        $app['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
-                            'class' => $class,
-                        ));
-                        continue;
-                    }
-                    $app->register(new $class($this));
-                }
             }
         }
     }
@@ -309,7 +320,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                 ->findOneBy(array('code' => $config['code']));
 
             // const
-            if ($plugin && $plugin->getEnable() == Constant::DISABLED) {
+            if (is_null($plugin) || $plugin->getEnable() == Constant::DISABLED) {
                 // プラグインが無効化されていれば読み込まない
                 continue;
             }
@@ -342,6 +353,40 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                                 $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
                             }
                         }
+                    }
+                }
+            }
+
+            $this->registerServiceProviders($app, $config);
+        }
+    }
+
+    private function registerServiceProviders($app, $config)
+    {
+        $code = $config['code'];
+        if (isset($config['service'])) {
+            // config.ymlの`service`定義から登録する
+            foreach ($config['service'] as $service) {
+                $class = '\\Plugin\\'.$code.'\\ServiceProvider\\'.$service;
+                if (!class_exists($class)) {
+                    $app['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
+                        'class' => $class,
+                    ));
+                    continue;
+                }
+                $app->register(new $class($app));
+            }
+        } else {
+            // ServiceProviderディレクトリ以下のServiceProviderクラスを登録する
+            $serviceProviderDir = $app['config']['root_dir'].'/app/Plugin/'.$code.'/ServiceProvider';
+            if (file_exists($serviceProviderDir)) {
+                $serviceProviderFiles = Finder::create()
+                    ->in($app['config']['root_dir'].'/app/Plugin/'.$code.'/ServiceProvider')
+                    ->files();
+                foreach ($serviceProviderFiles as $file) {
+                    $class = '\\Plugin\\'.$code.'\\ServiceProvider\\'.$file->getBasename('.php');
+                    if (class_exists($class)) {
+                        $app->register(new $class($app));
                     }
                 }
             }

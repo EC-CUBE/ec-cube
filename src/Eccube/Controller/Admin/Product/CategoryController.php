@@ -25,7 +25,6 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -35,9 +34,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CategoryType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Service\CsvExportService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +45,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Component
  * @Route(service=CategoryController::class)
  */
 class CategoryController extends AbstractController
@@ -113,9 +111,9 @@ class CategoryController extends AbstractController
             $TargetCategory = new \Eccube\Entity\Category();
             $TargetCategory->setParent($Parent);
             if ($Parent) {
-                $TargetCategory->setLevel($Parent->getLevel() + 1);
+                $TargetCategory->setHierarchy($Parent->getHierarchy() + 1);
             } else {
-                $TargetCategory->setLevel(1);
+                $TargetCategory->setHierarchy(1);
             }
         }
 
@@ -139,36 +137,31 @@ class CategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->appConfig['category_nest_level'] < $TargetCategory->getLevel()) {
+                if ($this->appConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));
-                $status = $this->categoryRepository->save($TargetCategory);
 
-                if ($status) {
+                $this->categoryRepository->save($TargetCategory);
 
-                    log_info('カテゴリ登録完了', array($id));
+                log_info('カテゴリ登録完了', array($id));
 
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'Parent' => $Parent,
-                            'TargetCategory' => $TargetCategory,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Parent' => $Parent,
+                        'TargetCategory' => $TargetCategory,
+                    ),
+                    $request
+                );
+                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                    $app->addSuccess('admin.category.save.complete', 'admin');
+                $app->addSuccess('admin.category.save.complete', 'admin');
 
-                    if ($Parent) {
-                        return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
-                    } else {
-                        return $app->redirect($app->url('admin_product_category'));
-                    }
+                if ($Parent) {
+                    return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
                 } else {
-                    log_info('カテゴリ登録エラー', array($id));
-                    $app->addError('admin.category.save.error', 'admin');
+                    return $app->redirect($app->url('admin_product_category'));
                 }
             }
         }
@@ -204,25 +197,26 @@ class CategoryController extends AbstractController
 
         log_info('カテゴリ削除開始', array($id));
 
-        $status = $this->categoryRepository->delete($TargetCategory);
-
-        if ($status === true) {
-
-            log_info('カテゴリ削除完了', array($id));
+        try {
+            $this->categoryRepository->delete($TargetCategory);
 
             $event = new EventArgs(
                 array(
                     'Parent' => $Parent,
                     'TargetCategory' => $TargetCategory,
-                ),
-                $request
+                ), $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.category.delete.complete', 'admin');
-        } else {
-            log_info('カテゴリ削除エラー', array($id));
-            $app->addError('admin.category.delete.error', 'admin');
+
+            log_info('カテゴリ削除完了', array($id));
+
+        } catch (\Exception $e) {
+            log_info('カテゴリ削除エラー', [$id, $e]);
+
+            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => 'カテゴリ']);
+            $app->addError($message, 'admin');
         }
 
         if ($Parent) {

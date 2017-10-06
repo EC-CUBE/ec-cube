@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Entity;
 
+use Doctrine\ORM\Mapping\Id;
 use Eccube\Entity\AbstractEntity;
 
 /**
@@ -105,6 +106,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 
     public function testChildrens()
     {
+        $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
         $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
@@ -113,7 +115,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => 4,
+            'field4' => $Date,
             'testField4' => 5,
             'TestChildrens' => $TestChildrens
         );
@@ -122,10 +124,109 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->objEntity->getField1(), 1);
         $this->assertEquals($this->objEntity->getField2(), 2);
         $this->assertEquals($this->objEntity->field3, 3);
-        $this->assertEquals($this->objEntity->getField4(), 4);
+        $this->assertEquals($this->objEntity->getField4(), $Date);
         $this->assertEquals($this->objEntity->getTestField4(), 5);
         $expected = $arrProps;
         $actual = $this->objEntity->toArray();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testChildrensWithToNormalizedArray()
+    {
+        $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
+        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens[] = new TestChildren('child1');
+        $TestChildrens[] = new TestChildren('child2');
+        $TestChildrens[] = new TestChildren('child3');
+        $arrProps = array(
+            'field1' => 1,
+            'field2' => 2,
+            'field3' => 3,
+            'field4' => $Date,
+            'testField4' => 5,
+            'TestChildrens' => $TestChildrens
+        );
+
+        $this->objEntity = new TestChildEntity($arrProps);
+        $this->assertEquals($this->objEntity->getField1(), 1);
+        $this->assertEquals($this->objEntity->getField2(), 2);
+        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals($this->objEntity->getField4(), $Date);
+        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $expected = $arrProps;
+        $expected['field4'] = '2017-09-25T00:00:00Z';
+        $expected['TestChildrens'] = [
+            ["childField" => "child1"],
+            ["childField" => "child2"],
+            ["childField" => "child3"],
+        ];
+        $actual = $this->objEntity->toNormalizedArray();
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testChildrensWithToJSON()
+    {
+        $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
+        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens[] = new TestChildren('child1');
+        $TestChildrens[] = new TestChildren('child2');
+        $TestChildrens[] = new TestChildren('child3');
+        $arrProps = array(
+            'field1' => 1,
+            'field2' => 2,
+            'field3' => 3,
+            'field4' => $Date,
+            'testField4' => 5,
+            'TestChildrens' => $TestChildrens
+        );
+
+        $this->objEntity = new TestChildEntity($arrProps);
+        $this->assertEquals($this->objEntity->getField1(), 1);
+        $this->assertEquals($this->objEntity->getField2(), 2);
+        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals($this->objEntity->getField4(), $Date);
+        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $expected = $arrProps;
+        $expected['field4'] = '2017-09-25T00:00:00Z';
+        $expected['TestChildrens'] = [
+            ["childField" => "child1"],
+            ["childField" => "child2"],
+            ["childField" => "child3"],
+        ];
+        $actual = $this->objEntity->toJSON();
+
+        $this->assertEquals($expected, json_decode($actual, true));
+    }
+
+    public function testChildrensWithToXML()
+    {
+        $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
+        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens[] = new TestChildren('child1');
+        $TestChildrens[] = new TestChildren('child2');
+        $TestChildrens[] = new TestChildren('child3');
+        $arrProps = array(
+            'field1' => 1,
+            'field2' => 2,
+            'field3' => 3,
+            'field4' => $Date,
+            'testField4' => 5,
+            'TestChildrens' => $TestChildrens
+        );
+
+        $this->objEntity = new TestChildEntity($arrProps);
+        $this->assertEquals($this->objEntity->getField1(), 1);
+        $this->assertEquals($this->objEntity->getField2(), 2);
+        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals($this->objEntity->getField4(), $Date);
+        $this->assertEquals($this->objEntity->getTestField4(), 5);
+
+        $expected = '<?xml version="1.0"?>
+<TestChildEntity><field1>1</field1><field2>2</field2><field3>3</field3><testField4>5</testField4><field4>2017-09-25T00:00:00Z</field4><TestChildrens><childField>child1</childField></TestChildrens><TestChildrens><childField>child2</childField></TestChildrens><TestChildrens><childField>child3</childField></TestChildrens></TestChildEntity>
+';
+        $actual = $this->objEntity->toXML();
+
         $this->assertEquals($expected, $actual);
     }
 
@@ -297,8 +398,11 @@ class TestChildEntity extends TestExtendsEntity
     }
 }
 
-class TestChildren
+class TestChildren extends AbstractEntity
 {
+    /**
+     * @Id
+     */
     private $childField;
 
     public function __construct($childField)

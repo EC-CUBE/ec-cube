@@ -129,9 +129,11 @@ class {{ provider_class }} implements \Pimple\ServiceProviderInterface
             );
         }
 
-        $scanDirs = array_reduce($this->scanners, function($result, Scanner $wiring) {
-            return array_merge($result, $wiring->getScanDirs());
-        }, []);
+        $scanDirs = array_filter(array_reduce($this->scanners, function($result, Scanner $scanner) {
+            return array_merge($result, $scanner->getScanDirs());
+        }, []), function($dir) {
+            return file_exists($dir);
+        });
 
         $classes = $this->findClasses($scanDirs);
 

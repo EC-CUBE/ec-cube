@@ -23,8 +23,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.master.sex'] = function () use ($app) {
             return $app['Eccube\Repository\Master\SexRepository'];
         };
-        $app['eccube.repository.master.disp'] = function () use ($app) {
-            return $app['Eccube\Repository\Master\DispRepository'];
+        $app['eccube.repository.master.product_status'] = function () use ($app) {
+            return $app['Eccube\Repository\Master\ProductStatusRepository'];
         };
         $app['eccube.repository.master.product_type'] = function () use ($app) {
             return $app['Eccube\Repository\Master\ProductTypeRepository'];
@@ -113,8 +113,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.tax_rule'] = function () use ($app) {
             return $app['Eccube\Repository\TaxRuleRepository'];
         };
-        $app['eccube.repository.page_layout'] = function () use ($app) {
-            return $app['Eccube\Repository\PageLayoutRepository'];
+        $app['eccube.repository.page'] = function () use ($app) {
+            return $app['Eccube\Repository\PageRepository'];
         };
         $app['eccube.repository.block'] = function () use ($app) {
             return $app['Eccube\Repository\BlockRepository'];
@@ -128,8 +128,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.shipping'] = function () use ($app) {
             return $app['Eccube\Repository\ShippingRepository'];
         };
-        $app['eccube.repository.shipment_item'] = function () use ($app) {
-            return $app['Eccube\Repository\ShipmentItemRepository'];
+        $app['eccube.repository.order_item'] = function () use ($app) {
+            return $app['Eccube\Repository\OrderItemRepository'];
         };
         $app['eccube.repository.master.customer_status'] = function () use ($app) {
             return $app['Eccube\Repository\Master\CustomerStatusRepository'];

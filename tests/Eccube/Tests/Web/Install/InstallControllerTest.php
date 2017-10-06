@@ -55,21 +55,12 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function testRoutingStep3()
     {
-        if ($this->config['database']['driver'] == 'pdo_sqlite') {
-            $this->markTestSkipped('Can not support for sqlite3');
-        }
-
-        $this->app->flush();
-        $crawler = $this->client->request('GET', $this->app->url('install_step3'));
+        $this->client->request('GET', $this->app->url('install_step3'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingStep4()
     {
-        if ($this->config['database']['driver'] == 'pdo_sqlite') {
-            $this->markTestSkipped('Can not support for sqlite3');
-        }
-
         $this->client->request('GET', $this->app->url('install_step4'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -82,7 +73,6 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function testRoutingComplete()
     {
-        $this->app->flush();
         $this->client->request('GET', $this->app->url('install_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }

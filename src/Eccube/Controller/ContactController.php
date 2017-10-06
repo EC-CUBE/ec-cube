@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
@@ -38,7 +37,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Component
  * @Route(service=ContactController::class)
  */
 class ContactController

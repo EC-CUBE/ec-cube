@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Transaction;
 
+use Doctrine\DBAL\Connection;
 use Eccube\Application;
 use Eccube\Tests\Mock\CsrfTokenMock;
 use Silex\WebTestCase;
@@ -20,10 +21,16 @@ use Silex\WebTestCase;
  */
 class TransactionListenerTest extends WebTestCase
 {
+    protected function isSqlite()
+    {
+        return $this->app['db']->getDatabasePlatform()->getName() === 'sqlite';
+    }
+
     public function setUp()
     {
         parent::setUp();
-        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+
+        if ($this->isSqlite()) {
             // Connection が別物になってしまうため
             $this->markTestSkipped('Can not support for sqlite3');
         }
@@ -80,7 +87,7 @@ class TransactionListenerTest extends WebTestCase
      */
     public function testTran3()
     {
-        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+        if ($this->isSqlite()) {
             $message = 'sqlite3 is not supported';
             $this->markTestSkipped($message);
         }
@@ -179,7 +186,7 @@ class TransactionListenerTest extends WebTestCase
      */
     public function testTran7()
     {
-        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+        if ($this->isSqlite()) {
             $message = 'sqlite3 is not supported';
             $this->markTestSkipped($message);
         }
@@ -206,7 +213,7 @@ class TransactionListenerTest extends WebTestCase
      */
     public function testTran8()
     {
-        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+        if ($this->isSqlite()) {
             $message = 'sqlite3 is not supported';
             $this->markTestSkipped($message);
         }

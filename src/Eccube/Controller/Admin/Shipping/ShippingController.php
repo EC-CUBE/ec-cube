@@ -3,7 +3,6 @@
 namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Annotation\Component;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -15,10 +14,10 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\SearchShippingType;
-use Eccube\Form\Type\Admin\ShipmentItemType;
+use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\ShippingType;
 
-use Eccube\Repository\Master\DispRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\ShippingRepository;
@@ -32,7 +31,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * @Component
  * @Route(service=ShippingController::class)
  */
 class ShippingController
@@ -62,10 +60,10 @@ class ShippingController
     protected $pageMaxRepository;
 
     /**
-     * @Inject(DispRepository::class)
-     * @var DispRepository
+     * @Inject(ProductStatusRepository::class)
+     * @var ProductStatusRepository
      */
-    protected $dispRepository;
+    protected $productStatusRepository;
 
     /**
      * @Inject("eccube.event.dispatcher")
@@ -108,7 +106,7 @@ class ShippingController
 
         $pagination = array();
 
-        $disps = $this->dispRepository->findAll();
+        $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
         $page_count = $this->appConfig['default_page_count'];
         $page_status = null;
@@ -212,7 +210,7 @@ class ShippingController
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
-            'disps' => $disps,
+            'productStatuses' => $ProductStatuses,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_status' => $page_status,

@@ -25,7 +25,6 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Annotation\Component;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -41,9 +40,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * @Component
  * @Route(service=CustomerEditController::class)
  */
 class CustomerEditController extends AbstractController
@@ -77,6 +77,12 @@ class CustomerEditController extends AbstractController
      * @var CustomerRepository
      */
     protected $customerRepository;
+
+    /**
+     * @Inject("security.encoder_factory")
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
 
     /**
      * @Route("/{_admin}/customer/new", name="admin_customer_new")
@@ -125,13 +131,11 @@ class CustomerEditController extends AbstractController
             if ($form->isValid()) {
                 log_info('会員登録開始', array($Customer->getId()));
 
+                $encoder = $this->encoderFactory->getEncoder($Customer);
+
                 if ($Customer->getId() === null) {
-                    $Customer->setSalt(
-                        $this->customerRepository->createSalt(5)
-                    );
-                    $Customer->setSecretKey(
-                        $this->customerRepository->getUniqueSecretKey($app)
-                    );
+                    $Customer->setSalt($encoder->createSalt());
+                    $Customer->setSecretKey($this->customerRepository->getUniqueSecretKey());
 
                     $CustomerAddress->setName01($Customer->getName01())
                         ->setName02($Customer->getName02())
@@ -159,11 +163,9 @@ class CustomerEditController extends AbstractController
                     $Customer->setPassword($previous_password);
                 } else {
                     if ($Customer->getSalt() === null) {
-                        $Customer->setSalt($this->customerRepository->createSalt(5));
+                        $Customer->setSalt($encoder->createSalt());
                     }
-                    $Customer->setPassword(
-                        $this->customerRepository->encryptPassword($app, $Customer)
-                    );
+                    $Customer->setPassword($encoder->encodePassword($Customer->getPassword(), $Customer->getSalt()));
                 }
 
                 $this->entityManager->persist($Customer);

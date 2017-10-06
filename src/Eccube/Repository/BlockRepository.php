@@ -155,11 +155,11 @@ class BlockRepository extends AbstractRepository
             }
         }
 
-        $PageLayouts = $qb
+        $Pages = $qb
             ->getQuery()
             ->getResult();
 
-        return $PageLayouts;
+        return $Pages;
     }
 
     /**

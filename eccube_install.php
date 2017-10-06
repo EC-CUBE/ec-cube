@@ -30,30 +30,21 @@ if (in_array('-v', $argv) || in_array('--version', $argv)) {
 
 out('EC-CUBE3 installer use database driver of ', null, false);
 
-$database_driver = 'pdo_sqlite';
-switch($argv[1]) {
+switch ($argv[1]) {
     case 'mysql':
-        $database_driver = 'pdo_mysql';
+        $database = 'mysql';
         break;
     case 'pgsql':
-        $database_driver = 'pdo_pgsql';
+    case 'postgres':
+    case 'postgresql':
+        $database = 'pgsql';
         break;
-    default:
     case 'sqlite':
     case 'sqlite3':
-    case 'sqlite3-in-memory':
-        $database_driver = 'pdo_sqlite';
+    default:
+        $database = 'sqlite';
 }
-out($database_driver);
-
-initializeDefaultVariables($database_driver);
-
-if (in_array('-V', $argv) || in_array('--verbose', $argv)) {
-    displayEnvironmentVariables();
-}
-
-$database = getDatabaseConfig($database_driver);
-$connectionParams = $database['database'];
+out($database);
 
 if ($argv[2] != 'none') {
     composerSetup();
@@ -62,22 +53,40 @@ if ($argv[2] != 'none') {
 
 require __DIR__.'/autoload.php';
 
+initializeDefaultVariables($database);
+
+if (in_array('-V', $argv) || in_array('--verbose', $argv)) {
+    displayEnvironmentVariables();
+}
+
 out('update permissions...');
 updatePermissions($argv);
 
-createConfigFiles($database_driver);
-
 if (!in_array('--skip-createdb', $argv)) {
-    createDatabase($connectionParams);
+    $params = getDatabaseConfig();
+    if ($params['driver'] === 'pdo_sqlite') {
+        $dbname = $params['path'];
+    } else {
+        $dbname = $params['dbname'];
+    }
+    $conn = createConnection($params, true);
+    createDatabase($conn, $dbname);
 }
+
+out('Created database connection...', 'info');
+
+$conn = createConnection(getDatabaseConfig());
 
 if (!in_array('--skip-initdb', $argv)) {
-    $app = createApplication();
-    initializeDatabase($app);
+    $em = createEntityManager($conn);
+    initializeDatabase($em);
 }
 
+createEnvFile();
+copyConfigFiles();
+
 out('EC-CUBE3 install finished successfully!', 'success');
-$root_urlpath = getenv('ROOT_URLPATH');
+$root_urlpath = env('ROOT_URLPATH');
 if (PHP_VERSION_ID >= 50400 && empty($root_urlpath)) {
     out('PHP built-in web server to run applications, `php -S localhost:8080`', 'info');
     out('Open your browser and access the http://localhost:8080/', 'info');
@@ -115,91 +124,92 @@ EOF;
     }
 }
 
-function initializeDefaultVariables($database_driver)
+function initializeDefaultVariables($database)
 {
-    $database_url = getenv('DATABASE_URL');
+    // heroku用定義
+    $database_url = env('DATABASE_URL');
     if ($database_url) {
         $url = parse_url($database_url);
-        putenv('DBSERVER='.$url['host']);
-        putenv('DBNAME='.substr($url['path'], 1));
-        putenv('DBUSER='.$url['user']);
-        putenv('DBPORT='.$url['port']);
-        putenv('DBPASS='.$url['pass']);
+        putenv('DB_DEFAULT='.$url['scheme']);
+        putenv('DB_HOST='.$url['host']);
+        putenv('DB_DATABASE='.substr($url['path'], 1));
+        putenv('DB_USERNAME='.$url['user']);
+        putenv('DB_PORT='.$url['port']);
+        putenv('DB_PASSWORD='.$url['pass']);
     }
-    switch ($database_driver) {
-        case 'pdo_pgsql':
-            putenv('ROOTUSER='.(getenv('ROOTUSER') ? getenv('ROOTUSER') : (getenv('DBUSER') ? getenv('DBUSER') : 'postgres')));
-            putenv('ROOTPASS='.(getenv('ROOTPASS') ? getenv('ROOTPASS') : (getenv('DBPASS') ? getenv('DBPASS') : 'password')));
-            putenv('DBSERVER='.(getenv('DBSERVER') ? getenv('DBSERVER') : 'localhost'));
-            putenv('DBNAME='.(getenv('DBNAME') ? getenv('DBNAME') : 'cube3_dev'));
-            putenv('DBUSER='.(getenv('DBUSER') ? getenv('DBUSER') : 'cube3_dev_user'));
-            putenv('DBPORT='.(getenv('DBPORT') ? getenv('DBPORT') : '5432'));
-            putenv('DBPASS='.(getenv('DBPASS') ? getenv('DBPASS') : 'password'));
+
+    switch ($database) {
+        case 'pgsql':
+            putenv('ROOTUSER='.env('ROOTUSER', env('DB_USERNAME', 'postgres')));
+            putenv('ROOTPASS='.env('ROOTPASS', env('DB_PASSWORD', 'password')));
             break;
-        case 'pdo_mysql':
-            putenv('ROOTUSER='.(getenv('ROOTUSER') ? getenv('ROOTUSER') : (getenv('DBUSER') ? getenv('DBUSER') : 'root')));
-            putenv('DBSERVER='.(getenv('DBSERVER') ? getenv('DBSERVER') : 'localhost'));
-            putenv('DBNAME='.(getenv('DBNAME') ? getenv('DBNAME') : 'cube3_dev'));
-            putenv('DBUSER='.(getenv('DBUSER') ? getenv('DBUSER') : 'cube3_dev_user'));
-            putenv('DBPORT='.(getenv('DBPORT') ? getenv('DBPORT') : '3306'));
-            putenv('DBPASS='.(getenv('DBPASS') ? getenv('DBPASS') : 'password'));
-            if (getenv('TRAVIS')) {
-                putenv('DBPASS=');
+        case 'mysql':
+            putenv('ROOTUSER='.env('ROOTUSER', env('DB_USERNAME', 'root')));
+            putenv('ROOTPASS='.env('ROOTPASS', env('DB_PASSWORD', 'password')));
+            if (env('TRAVIS')) {
                 putenv('ROOTPASS=');
-            } else {
-                putenv('DBPASS='.(getenv('DBPASS') ? getenv('DBPASS') : 'password'));
-                putenv('ROOTPASS='.(getenv('ROOTPASS') ? getenv('ROOTPASS') : (getenv('DBPASS') ? getenv('DBPASS') : 'password')));
+                putenv('DB_PASSWORD=');
             }
             break;
-        default:
-        case 'pdo_sqlite':
+        case 'sqlite':
+            putenv('DB_DATABASE='.__DIR__.'/app/config/eccube/eccube.db');
             break;
+        default:
     }
-    putenv('SHOP_NAME='.(getenv('SHOP_NAME') ? getenv('SHOP_NAME') : 'EC-CUBE SHOP'));
-    putenv('ADMIN_MAIL='.(getenv('ADMIN_MAIL') ? getenv('ADMIN_MAIL') : 'admin@example.com'));
-    putenv('ADMIN_USER='.(getenv('ADMIN_USER') ? getenv('ADMIN_USER') : 'admin'));
-    putenv('ADMIN_PASS='.(getenv('ADMIN_PASS') ? getenv('ADMIN_PASS') : 'password'));
-    putenv('MAIL_BACKEND='.(getenv('MAIL_BACKEND') ? getenv('MAIL_BACKEND') : 'smtp'));
-    putenv('MAIL_HOST='.(getenv('MAIL_HOST') ? getenv('MAIL_HOST') : 'localhost'));
-    putenv('MAIL_PORT='.(getenv('MAIL_PORT') ? getenv('MAIL_PORT') : 25));
-    putenv('MAIL_USER='.(getenv('MAIL_USER') ? getenv('MAIL_USER') : null));
-    putenv('MAIL_PASS='.(getenv('MAIL_PASS') ? getenv('MAIL_PASS') : null));
-    putenv('ADMIN_ROUTE='.(getenv('ADMIN_ROUTE') ? getenv('ADMIN_ROUTE') : 'admin'));
-    putenv('ROOT_URLPATH='.(getenv('ROOT_URLPATH') ? getenv('ROOT_URLPATH') : null));
-    putenv('AUTH_MAGIC='.(getenv('AUTH_MAGIC') ? getenv('AUTH_MAGIC') :
-                          substr(str_replace(array('/', '+', '='), '', base64_encode(openssl_random_pseudo_bytes(32 * 2))), 0, 32)));
+    putenv('DB_DEFAULT='.$database);
+    putenv('AUTH_MAGIC='.env('AUTH_MAGIC', \Eccube\Util\Str::random(32)));
+    putenv('ADMIN_USER='.env('ADMIN_USER', 'admin'));
+    putenv('ADMIN_MAIL='.env('ADMIN_MAIL', 'admin@example.com'));
+    putenv('SHOP_NAME='.env('SHOP_NAME', 'EC-CUBE SHOP'));
 }
 
 function getExampleVariables()
 {
-    return array(
+    return [
         'ADMIN_USER' => 'admin',
         'ADMIN_MAIL' => 'admin@example.com',
         'SHOP_NAME' => 'EC-CUBE SHOP',
-        'ADMIN_ROUTE' => 'admin',
-        'ROOT_URLPATH' => '<ec-cube install path>',
-        'DBSERVER' => '127.0.0.1',
-        'DBNAME' => 'cube3_dev',
-        'DBUSER' => 'cube3_dev_user',
-        'DBPASS' => 'password',
-        'DBPORT' => '<database port>',
         'ROOTUSER' => 'root|postgres',
         'ROOTPASS' => 'password',
-        'MAIL_BACKEND' => 'smtp',
+        'AUTH_MAGIC' => '<auth magic>',
+        'FORCE_SSL' => 'false',
+        'ADMIN_ALLOW_HOSTS' => '[]',
+        'COOKIE_LIFETIME' => '0',
+        'COOKIE_NAME' => 'eccube',
+        'LOCALE' => 'ja',
+        'TIMEZONE' => 'Asia/Tokyo',
+        'CURRENCY' => 'JPY',
+        'ROOT_URLPATH' => '<eccube root url>',
+        'TEMPLATE_CODE' => 'default',
+        'ADMIN_ROUTE' => 'admin',
+        'USER_DATA_ROUTE' => 'user_data',
+        'TRUSTED_PROXIES_CONNECTION_ONLY' => 'false',
+        'TRUSTED_PROXIES' => '["127.0.0.1/8", "::1"]',
+        'DB_DEFAULT' => 'mysql',
+        'DB_HOST' => '127.0.0.1',
+        'DB_PORT' => '<database port>',
+        'DB_DATABASE' => 'eccube_db',
+        'DB_USERNAME' => 'eccube_db_user',
+        'DB_PASSWORD' => 'password',
+        'DB_CHARASET' => 'utf8',
+        'DB_COLLATE' => 'utf8_general_ci',
+        'MAIL_TRANSPORT' => 'smtp',
         'MAIL_HOST' => 'localhost',
-        'MAIL_PORT' => '25',
-        'MAIL_USER' => '<SMTP AUTH user>',
-        'MAIL_PASS' => '<SMTP AUTH password>',
-        'AUTH_MAGIC' => '<auth_magic>'
-    );
+        'MAIL_PORT' => '1025',
+        'MAIL_USERNAME' => '<SMTP AUTH user>',
+        'MAIL_PASSWORD' => '<SMTP AUTH password>',
+        'MAIL_ENCRYPTION' => null,
+        'MAIL_AUTH_MODE' => null,
+        'MAIL_CHARSET_ISO_2022_JP' => 'false',
+        'MAIL_SPOOL' => 'false',
+    ];
 }
-
 
 function displayEnvironmentVariables()
 {
     echo 'Environment variables:'.PHP_EOL;
     foreach (array_keys(getExampleVariables()) as $name) {
-        echo $name.'='.getenv($name).PHP_EOL;
+        echo $name.'='.env($name).PHP_EOL;
     }
 }
 
@@ -229,36 +239,22 @@ function composerInstall()
     passthru($command);
 }
 
-function createDatabase(array $connectionParams)
+function getDatabaseConfig()
 {
-    $dbname = $connectionParams['dbname'];
-    switch ($connectionParams['driver']) {
-        case 'pdo_pgsql':
-            $connectionParams['dbname'] = 'postgres';
-            $connectionParams['user'] = getenv('ROOTUSER');
-            $connectionParams['password'] = getenv('ROOTPASS');
-            break;
-        case 'pdo_mysql':
-            $connectionParams['dbname'] = 'mysql';
-            $connectionParams['user'] = getenv('ROOTUSER');
-            $connectionParams['password'] = getenv('ROOTPASS');
-            break;
-        default:
-        case 'pdo_sqlite':
-            $connectionParams['dbname'] = '';
-            if (file_exists($dbname)) {
-                out('remove database to '.$dbname, 'info');
-                unlink($dbname);
-            }
-            break;
-    }
+    $config = require __DIR__.'/src/Eccube/Resource/config/database.php';
+    $default = $config['database']['default'];
 
-    $config = new \Doctrine\DBAL\Configuration();
-    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+    return $config['database'][$default];
+}
+
+function createDatabase(\Doctrine\DBAL\Connection $conn, $dbname)
+{
     $sm = $conn->getSchemaManager();
-    out('Created database connection...', 'info');
 
-    if ($connectionParams['driver'] != 'pdo_sqlite') {
+    if ($conn->getDatabasePlatform()->getName() === 'sqlite') {
+        out('unlink database to '.$dbname, 'info');
+        unlink($dbname);
+    } else {
         $databases = $sm->listDatabases();
         if (in_array($dbname, $databases)) {
             out('database exists '.$dbname, 'info');
@@ -270,34 +266,50 @@ function createDatabase(array $connectionParams)
     $sm->createDatabase($dbname);
 }
 
-/**
- * @return \Eccube\Application
- */
-function createApplication()
+function createConnection(array $params, $noDb = false)
 {
-    $app = \Eccube\Application::getInstance();
-    $app['debug'] = true;
-    $app['annotations'] = function () {
-        return new \Doctrine\Common\Annotations\AnnotationReader();
-    };
-    $app->initDoctrine();
-    $app->boot();
-    return $app;
+    if ($noDb) {
+        unset($params['dbname']);
+    }
+    return \Doctrine\DBAL\DriverManager::getConnection($params);
 }
 
-function initializeDatabase(\Eccube\Application $app)
+function createEntityManager(\Doctrine\DBAL\Connection $conn)
 {
-    // Get an instance of your entity manager
-    $entityManager = $app['orm.em'];
+    $paths = [
+        __DIR__.'/src/Eccube/Entity',
+        __DIR__.'/app/Acme/Entity',
+    ];
+    // todo プロキシ, プラグインの対応
+    $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($paths, true, null, null, false);
 
+    return \Doctrine\ORM\EntityManager::create($conn, $config);
+}
+
+function createMigration(\Doctrine\DBAL\Connection $conn)
+{
+    $config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($conn);
+    $config->setMigrationsNamespace('DoctrineMigrations');
+    $migrationDir = __DIR__.'/src/Eccube/Resource/doctrine/migration';
+    $config->setMigrationsDirectory($migrationDir);
+    $config->registerMigrationsFromDirectory($migrationDir);
+
+    $migration = new \Doctrine\DBAL\Migrations\Migration($config);
+    $migration->setNoMigrationException(true);
+
+    return $migration;
+}
+
+function initializeDatabase(\Doctrine\ORM\EntityManager $em)
+{
     // Clear Doctrine to be safe
-    $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
-    $entityManager->clear();
+    $em->getConnection()->getConfiguration()->setSQLLogger(null);
+    $em->clear();
     gc_collect_cycles();
 
     // Schema Tool to process our entities
-    $tool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
-    $classes = $entityManager->getMetaDataFactory()->getAllMetaData();
+    $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
+    $classes = $em->getMetaDataFactory()->getAllMetaData();
 
     // Drop all classes and re-build them for each test case
     out('Dropping database schema...', 'info');
@@ -305,39 +317,39 @@ function initializeDatabase(\Eccube\Application $app)
     out('Creating database schema...', 'info');
     $tool->createSchema($classes);
     out('Database schema created successfully!', 'success');
-    $config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($app['db']);
-    $config->setMigrationsNamespace('DoctrineMigrations');
 
     $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
     $loader->loadFromDirectory(__DIR__.'/src/Eccube/Resource/doctrine/import_csv');
-    $Executor = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($entityManager);
+    $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
     $fixtures = $loader->getFixtures();
-    $Executor->execute($fixtures);
+    $executer->execute($fixtures);
 
-    $migrationDir = __DIR__.'/src/Eccube/Resource/doctrine/migration';
-    $config->setMigrationsDirectory($migrationDir);
-    $config->registerMigrationsFromDirectory($migrationDir);
-
-    $migration = new \Doctrine\DBAL\Migrations\Migration($config);
-    $migration->setNoMigrationException(true);
+    out('Migrating database schema...', 'info');
+    $migration = createMigration($em->getConnection());
     $migration->migrate();
     out('Database migration successfully!', 'success');
 
-    $login_id = getenv('ADMIN_USER');
-    $login_password = getenv('ADMIN_PASS');
-    $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
-    $salt = \Eccube\Util\Str::random(32);
-    $encodedPassword = $passwordEncoder->encodePassword($login_password, $salt);
-
     out('Creating admin accounts...', 'info');
-    $member_id = ('postgresql' === $app['db']->getDatabasePlatform()->getName())
-        ? $app['db']->fetchColumn("select nextval('dtb_member_member_id_seq')")
+    $login_id = env('ADMIN_USER');
+    $login_password = env('ADMIN_PASS');
+
+    $encoder = new \Eccube\Security\Core\Encoder\PasswordEncoder([
+        'auth_type' => '',
+        'auth_magic' => env('AUTH_MAGIC'),
+        'password_hash_algos' => 'sha256',
+    ]);
+    $salt = \Eccube\Util\Str::random(32);
+    $password = $encoder->encodePassword($login_password, $salt);
+
+    $conn = $em->getConnection();
+    $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        ? $conn->fetchColumn("select nextval('dtb_member_member_id_seq')")
         : null;
 
-    $app['db']->insert('dtb_member', [
+    $conn->insert('dtb_member', [
         'member_id' => $member_id,
         'login_id' => $login_id,
-        'password' => $encodedPassword,
+        'password' => $password,
         'salt' => $salt,
         'work' => 1,
         'authority' => 0,
@@ -347,20 +359,20 @@ function initializeDatabase(\Eccube\Application $app)
         'create_date' => new \DateTime(),
         'name' => '管理者',
         'department' => 'EC-CUBE SHOP',
-        'discriminator_type' => 'member'
+        'discriminator_type' => 'member',
     ], [
         'update_date' => Doctrine\DBAL\Types\Type::DATETIME,
         'create_date' => Doctrine\DBAL\Types\Type::DATETIME,
     ]);
 
-    $shop_name = getenv('SHOP_NAME');
-    $admin_mail = getenv('ADMIN_MAIL');
+    $shop_name = env('SHOP_NAME');
+    $admin_mail = env('ADMIN_MAIL');
 
-    $id = ('postgresql' === $app['db']->getDatabasePlatform()->getName())
-        ? $app['db']->fetchColumn("select nextval('dtb_base_info_id_seq')")
+    $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
         : null;
 
-    $app['db']->insert('dtb_base_info', [
+    $conn->insert('dtb_base_info', [
         'id' => $id,
         'shop_name' => $shop_name,
         'email01' => $admin_mail,
@@ -368,9 +380,9 @@ function initializeDatabase(\Eccube\Application $app)
         'email03' => $admin_mail,
         'email04' => $admin_mail,
         'update_date' => new \DateTime(),
-        'discriminator_type' => 'baseinfo'
+        'discriminator_type' => 'baseinfo',
     ], [
-        'update_date' => \Doctrine\DBAL\Types\Type::DATETIME
+        'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
     ]);
 }
 
@@ -409,109 +421,48 @@ function updatePermissions($argv)
     }
 }
 
-function createConfigFiles($database_driver)
+function copyConfigFiles()
 {
-    $config_path = __DIR__.'/app/config/eccube';
-    createPhp(getConfig(), $config_path.'/config.php');
-    createPhp(getDatabaseConfig($database_driver), $config_path.'/database.php');
-    createPhp(getMailConfig(), $config_path.'/mail.php');
-    createPhp(getPathConfig(), $config_path.'/path.php');
-}
-
-function createPhp($config, $path)
-{
-    $content = var_export($config, true);
-    $content = '<?php return '.$content.';'.PHP_EOL;
+    $src = __DIR__.'/src/Eccube/Resource/config';
+    $dist = __DIR__.'/app/config/eccube';
     $fs = new \Symfony\Component\Filesystem\Filesystem();
-    $fs->dumpFile($path, $content);
+    $fs->mirror($src, $dist, null, ['override' => true]);
 }
 
-function getConfig()
+function createEnvFile()
 {
-    $config = array (
-        'auth_magic' => getenv('AUTH_MAGIC'),
-        'password_hash_algos' => 'sha256',
-        'shop_name' => getenv('SHOP_NAME'),
-        'force_ssl' => NULL,
-        'admin_allow_host' =>
-        array (
-        ),
-        'cookie_lifetime' => 0,
-        'locale' => 'ja',
-        'timezone' => 'Asia/Tokyo',
-        'currency' => 'JPY',
-        'eccube_install' => 1,
-    );
-    return $config;
-}
+    $content = '';
+    foreach (array_keys(getExampleVariables()) as $key) {
 
-function getDatabaseConfig($database_driver)
-{
-    $database = array (
-        'database' =>
-        array (
-            'driver' => $database_driver,
-        )
-    );
-
-    switch ($database_driver) {
-        case 'pdo_sqlite':
-            $database['database']['dbname'] = $database['database']['path'] = __DIR__.'/app/config/eccube/eccube.db';
-
-            break;
-        case 'pdo_pgsql':
-        case 'pdo_mysql':
-            $database['database']['host'] = getenv('DBSERVER');
-            $database['database']['dbname'] = getenv('DBNAME');
-            $database['database']['user'] = getenv('DBUSER');
-            $database['database']['port'] = getenv('DBPORT');
-            $database['database']['password'] = getenv('DBPASS');
-            $database['database']['port'] = getenv('DBPORT');
-            break;
+        // 環境変数が未定義の場合はスキップ.
+        $value = getenv($key);
+        if ($value === false) {
+            continue;
+        }
+        // インストール時のみ必要な環境はスキップ.
+        $installOnly = ['ADMIN_USER', 'ADMIN_MAIL', 'SHOP_NAME'];
+        if (in_array($key, $installOnly)) {
+            continue;
+        }
+        $value = env($key);
+        if ($value === true) {
+            $value = 'true';
+        }
+        if ($value === false) {
+            $value = 'false';
+        }
+        if ($value === null) {
+            $value = 'null';
+        }
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+        $content .= sprintf('%s=%s', $key, $value).PHP_EOL;
     }
-    $database['database']['charset'] = 'utf8';
-    $database['database']['defaultTableOptions'] = array('collate' => 'utf8_general_ci');
-    return $database;
-}
 
-function getMailConfig()
-{
-    $mail = array (
-        'mail' =>
-        array (
-            'transport' => getenv('MAIL_BACKEND'),
-            'host' => getenv('MAIL_HOST'),
-            'port' => getenv('MAIL_PORT'),
-            'username' => getenv('MAIL_USER'),
-            'password' => getenv('MAIL_PASS'),
-            'encryption' => NULL,
-            'auth_mode' => NULL,
-            'charset_iso_2022_jp' => false,
-        ),
-    );
-    return $mail;
-}
+    $content .= 'ECCUBE_INSTALL=1';
 
-/**
- * @see \Eccube\Controller\Install\InstallController::createPathYamlFile()
- */
-function getPathConfig()
-{
-    $ADMIN_ROUTE = getenv('ADMIN_ROUTE');
-    $TEMPLATE_CODE = 'default';
-    $USER_DATA_ROUTE = 'user_data';
-    $ROOT_DIR = '%ROOT_DIR%';
-    $ROOT_URLPATH = getenv('ROOT_URLPATH');
-    $ROOT_PUBLIC_URLPATH = $ROOT_URLPATH.RELATIVE_PUBLIC_DIR_PATH;
-
-    $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}', '${ROOT_PUBLIC_URLPATH}');
-    $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH, $ROOT_PUBLIC_URLPATH);
-
-    $config = require __DIR__.'/src/Eccube/Resource/config/path.php';
-    foreach ($config as &$value) {
-        $value = str_replace($target, $replace, $value);
-    }
-    return $config;
+    file_put_contents(__DIR__.'/app/config/eccube/.env', $content);
 }
 
 /**
@@ -544,7 +495,7 @@ function out($text, $color = null, $newLine = true)
     $styles = array(
         'success' => "\033[0;32m%s\033[0m",
         'error' => "\033[31;31m%s\033[0m",
-        'info' => "\033[33;33m%s\033[0m"
+        'info' => "\033[33;33m%s\033[0m",
     );
     $format = '%s';
     if (isset($styles[$color]) && USE_ANSI) {

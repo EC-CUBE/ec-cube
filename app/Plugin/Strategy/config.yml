@@ -1,5 +1,3 @@
 name: 集計Strategy拡張のサンプル
 code: Strategy
 version: 1.0.0
-service:
-    - StrategyServiceProvider

@@ -200,12 +200,12 @@ class MainEditType extends AbstractType
                 },
             ])
             ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
-                $PageLayout = $event->getData();
-                if (is_null($PageLayout->getId())) {
+                $Page = $event->getData();
+                if (is_null($Page->getId())) {
                     return;
                 }
                 $form = $event->getForm();
-                $Layouts = $PageLayout->getLayouts();
+                $Layouts = $Page->getLayouts();
                 foreach ($Layouts as $Layout) {
                     if ($Layout->getDeviceType()->getId() == DeviceType::DEVICE_TYPE_PC) {
                         $form['PcLayout']->setData($Layout);
@@ -223,7 +223,7 @@ class MainEditType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('p')
-                    ->from('Eccube\\Entity\\PageLayout', 'p')
+                    ->from('Eccube\\Entity\\Page', 'p')
                     ->where('p.url = :url')
                     ->setParameter('url', $url)
                     ->andWhere('p.DeviceType = :DeviceType')
@@ -238,10 +238,10 @@ class MainEditType extends AbstractType
                         ->setParameter('page_id', $page_id);
                 }
 
-                $PageLayout = $qb
+                $Page = $qb
                     ->getQuery()
                     ->getResult();
-                if (count($PageLayout) > 0) {
+                if (count($Page) > 0) {
                     $form['url']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
             });
@@ -253,7 +253,7 @@ class MainEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\PageLayout',
+            'data_class' => 'Eccube\Entity\Page',
         ));
     }
 

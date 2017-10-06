@@ -105,7 +105,7 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     public function getNameWithLevel()
     {
-        return str_repeat('　', $this->getLevel() - 1) . $this->getName();
+        return str_repeat('　', $this->getHierarchy() - 1) . $this->getName();
     }
 
     public function getDescendants()
@@ -171,7 +171,7 @@ class Category extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\Column(name="hierarchy", type="integer")
      */
-    private $level;
+    private $hierarchy;
 
     /**
      * @var int
@@ -275,27 +275,27 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set level.
+     * Set hierarchy.
      *
-     * @param int $level
+     * @param int $hierarchy
      *
      * @return Category
      */
-    public function setLevel($level)
+    public function setHierarchy($hierarchy)
     {
-        $this->level = $level;
+        $this->hierarchy = $hierarchy;
 
         return $this;
     }
 
     /**
-     * Get level.
+     * Get hierarchy.
      *
      * @return int
      */
-    public function getLevel()
+    public function getHierarchy()
     {
-        return $this->level;
+        return $this->hierarchy;
     }
 
     /**
