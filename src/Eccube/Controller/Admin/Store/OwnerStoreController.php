@@ -22,7 +22,7 @@
  */
 
 
-namespace Acme\Controller\Admin\Store;
+namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
