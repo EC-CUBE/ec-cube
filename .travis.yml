@@ -42,7 +42,7 @@ matrix:
     - env: DB=sqlite
     # カバレッジレポートはphp7.1のmatrixで実行
     - php: 7.1
-      env: ECCUBE_DB=pgsql ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password COVERAGE=true
+      env: DB=pgsql ECCUBE_DB_USERNAME=postgres ECCUBE_DB_PASSWORD=password COVERAGE=true
     # php7.2
     - php: 7.2
 
