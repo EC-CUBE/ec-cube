@@ -190,7 +190,6 @@ class InstallController
         if (empty($sessionData['shop_name'])) {
             // 再インストールの場合は設定ファイルから復旧
             if (file_exists($this->configDir.'/config.php')) {
-                (new Dotenv())->load($this->configDir.'/.env');
                 // ショップ名/メールアドレス
                 $config = require $this->configDir.'/database.php';
                 $conn = $this->createConnection($config['database'][$config['database']['default']]);
@@ -269,7 +268,6 @@ class InstallController
             // 再インストールの場合は設定ファイルから復旧.
             $file = $this->configDir.'/database.php';
             if (file_exists($file)) {
-                (new Dotenv())->load($this->configDir.'/.env');
                 // データベース設定
                 $config = require $file;
                 $database = $config['database'][$config['database']['default']];
@@ -294,7 +292,11 @@ class InstallController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->setSessionData($session, $form->getData());
+            $data = $form->getData();
+            if ($data['database'] === 'pdo_sqlite') {
+                $data['database_name'] = $this->configDir.'/eccube.db';
+            }
+            $this->setSessionData($session, $data);
 
             return $app->redirect($app->path('install_step5'));
         }
@@ -328,9 +330,7 @@ class InstallController
 
             $this->copyConfigFiles();
             $data = array_merge(['root_urlpath' => $request->getBasePath()], $sessionData);
-            $this->createEnvFile($data, !$noUpdate);
-
-            (new Dotenv())->load($this->configDir.'/.env');
+            $this->replaceConfigFiles($data, !$noUpdate);
 
             $params = require $this->configDir.'/database.php';
             $conn = $this->createConnection($params['database'][$params['database']['default']]);
@@ -384,7 +384,6 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        (new Dotenv())->load($this->configDir.'/.env');
         $config = require $this->configDir.'/config.php';
         if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
             Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')),
@@ -644,76 +643,70 @@ class InstallController
 
     private function copyConfigFiles()
     {
-        $src = $this->rootDir.'/src/Eccube/Resource/config';
-        $dist = $this->configDir;
+        $from = $this->configDistDir;
+        $to = $this->configDir;
         $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->mirror($src, $dist, null, ['override' => true]);
+        $fs->mirror($from, $to, null, ['override' => true]);
     }
 
-    private function createEnvFile(array $data, $updateAuthMagic = true)
+    private function replaceConfigFiles($data, $updateAuthMagic = true)
     {
-        $values = [];
-        $path = $this->configDir.'/.env';
-        if (file_exists($path)) {
-            $values = (new Dotenv())->parse(file_get_contents($path), $path);
-        }
-
         $values['ECCUBE_INSTALL'] = 1;
-        $values['ROOT_URLPATH'] = $data['root_urlpath'];
+        $values['ECCUBE_ROOT_URLPATH'] = $data['root_urlpath'];
 
         if ($updateAuthMagic) {
-            $values['AUTH_MAGIC'] = Str::random(32);
+            $values['ECCUBE_AUTH_MAGIC'] = Str::random(32);
         } else {
-            if (empty($values['AUTH_MAGIC'])) {
-                $values['AUTH_MAGIC'] = Str::random(32);
+            if (empty($values['ECCUBE_AUTH_MAGIC'])) {
+                $values['ECCUBE_AUTH_MAGIC'] = Str::random(32);
             }
         }
         if (isset($data['force_ssl'])) {
-            $values['FORCE_SSL'] = $data['force_ssl'];
+            $values['ECCUBE_FORCE_SSL'] = $data['force_ssl'];
         }
         if (isset($data['admin_dir'])) {
-            $values['ADMIN_ROUTE'] = $data['admin_dir'];
+            $values['ECCUBE_ADMIN_ROUTE'] = $data['admin_dir'];
         }
         if (isset($data['database'])) {
-            $values['DB_DEFAULT'] = str_replace('pdo_', '', $data['database']);
+            $values['ECCUBE_DB_DEFAULT'] = str_replace('pdo_', '', $data['database']);
         }
         if (isset($data['database_host'])) {
-            $values['DB_HOST'] = $data['database_host'];
+            $values['ECCUBE_DB_HOST'] = $data['database_host'];
         }
         if (isset($data['database_port'])) {
-            $values['DB_PORT'] = $data['database_port'];
+            $values['ECCUBE_DB_PORT'] = $data['database_port'];
         }
         if (isset($data['database_name'])) {
-            $values['DB_DATABASE'] = $data['database_name'];
+            $values['ECCUBE_DB_DATABASE'] = $data['database_name'];
         }
         if (isset($data['database_user'])) {
-            $values['DB_USERNAME'] = $data['database_user'];
+            $values['ECCUBE_DB_USERNAME'] = $data['database_user'];
         }
         if (isset($data['database_password'])) {
-            $values['DB_PASSWORD'] = $data['database_password'];
+            $values['ECCUBE_DB_PASSWORD'] = $data['database_password'];
         }
         if (isset($data['mail_backend'])) {
-            $values['MAIL_TRANSPORT'] = $data['mail_backend'];
+            $values['ECCUBE_MAIL_TRANSPORT'] = $data['mail_backend'];
         }
         if (isset($data['smtp_host'])) {
-            $values['MAIL_HOST'] = $data['smtp_host'];
+            $values['ECCUBE_MAIL_HOST'] = $data['smtp_host'];
         }
         if (isset($data['smtp_port'])) {
-            $values['MAIL_PORT'] = $data['smtp_port'];
+            $values['ECCUBE_MAIL_PORT'] = $data['smtp_port'];
         }
         if (isset($data['smtp_username'])) {
-            $values['MAIL_USERNAME'] = $data['smtp_username'];
+            $values['ECCUBE_MAIL_USERNAME'] = $data['smtp_username'];
         }
         if (isset($data['smtp_password'])) {
-            $values['MAIL_PASSWORD'] = $data['smtp_password'];
+            $values['ECCUBE_MAIL_PASSWORD'] = $data['smtp_password'];
         }
         if (isset($data['admin_allow_hosts'])) {
-            $values['ADMIN_ALLOW_HOSTS'] = $data['admin_allow_hosts'];
+            $values['ECCUBE_ADMIN_ALLOW_HOSTS'] = $data['admin_allow_hosts'];
         }
         if (isset($data['admin_allow_hosts'])) {
             $hosts = Str::convertLineFeed($data['admin_allow_hosts']);
             if ($hosts) {
-                $values['ADMIN_ALLOW_HOSTS'] = explode("\n", $hosts);
+                $values['ECCUBE_ADMIN_ALLOW_HOSTS'] = explode("\n", $hosts);
             }
         }
         if (isset($data['trusted_proxies'])) {
@@ -721,33 +714,49 @@ class InstallController
             if ($proxies) {
                 $proxies = explode("\n", $proxies);
                 // ループバックアドレスを含める
-                $values['TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
+                $values['ECCUBE_TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
             }
         }
-        if (isset($data['trusted_proxies_connection_only']) && $data['trusted_proxies_connection_only']) {
+        if (isset($data['ECCUBE_trusted_proxies_connection_only']) && $data['trusted_proxies_connection_only']) {
             // ループバックアドレスを含める
-            $values['TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
+            $values['ECCUBE_TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
         }
 
-        $content = '';
-        $format = '%s=%s'.PHP_EOL;
-        foreach ($values as $key => $value) {
-            if ($value === true) {
-                $value = 'true';
+        foreach ($values as &$value) {
+            if (is_bool($value)
+                || is_null($value)
+                || is_array($value)
+                || is_numeric($value)
+            ) {
+                $value = var_export($value, true);
+            } else {
+                $value = "'".$value."'";
             }
-            if ($value === false) {
-                $value = 'false';
-            }
-            if ($value === null) {
-                $value = 'null';
-            }
-            if (is_array($value)) {
-                $value = implode(',', $value);
-            }
-            $content .= sprintf($format, $key, $value);
         }
 
-        file_put_contents($path, $content);
+        $dir = $this->configDir;
+        $files = [
+            $dir.'/config.php',
+            $dir.'/database.php',
+            $dir.'/mail.php',
+            $dir.'/path.php',
+        ];
+
+        $patternFormat = "/(env\('%s'.*?\),)/s";
+        $replacementFormat = "env('%s', %s),";
+
+        foreach ($files as $file) {
+            $content = file_get_contents($file);
+            foreach ($values as $k => $v) {
+                $pattern = sprintf($patternFormat, $k);
+                $replace = sprintf($replacementFormat, $k, $v);
+                $content = preg_replace($pattern, $replace, $content);
+                if (is_null($content)) {
+                    throw new \Exception();
+                }
+            }
+            file_put_contents($file, $content);
+        }
     }
 
     private function sendAppData($params)
