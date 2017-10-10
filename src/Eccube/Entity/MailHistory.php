@@ -42,7 +42,7 @@ class MailHistory extends AbstractEntity
      */
     public function __toString()
     {
-        return $this->getSubject();
+        return (string) $this->getSubject();
     }
 
     /**

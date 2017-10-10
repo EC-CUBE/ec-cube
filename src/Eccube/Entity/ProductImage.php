@@ -20,7 +20,7 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getFileName();
+        return (string) $this->getFileName();
     }
 
     /**
