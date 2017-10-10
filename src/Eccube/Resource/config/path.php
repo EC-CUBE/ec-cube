@@ -1,9 +1,9 @@
 <?php return [
   'root_dir' => '%ROOT_DIR%',
-  'root_urlpath' => env('ROOT_URLPATH', null),
-  'template_code' => env('TEMPLATE_CODE','default'),
-  'admin_route' => env('ADMIN_ROUTE','admin'),
-  'user_data_route' => env('USER_DATA_ROUTE', 'user_data'),
+  'root_urlpath' => env('ECCUBE_ROOT_URLPATH', null),
+  'template_code' => env('ECCUBE_TEMPLATE_CODE','default'),
+  'admin_route' => env('ECCUBE_ADMIN_ROUTE','admin'),
+  'user_data_route' => env('ECCUBE_USER_DATA_ROUTE', 'user_data'),
   'public_path' => '/html',
   'public_path_realdir' => '%ROOT_DIR%/html',
   'image_save_realdir' => '%ROOT_DIR%/html/upload/save_image',

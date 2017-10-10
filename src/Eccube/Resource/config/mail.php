@@ -1,13 +1,13 @@
 <?php return [
     'mail' => [
-        'transport' => env('MAIL_TRANSPORT', 'smtp'),
-        'host' => env('MAIL_HOST', '127.0.0.1'),
-        'port' => env('MAIL_PORT', '1025'),
-        'username' => env('MAIL_USERNAME'),
-        'password' => env('MAIL_PASSWORD'),
-        'encryption' => env('MAIL_ENCRYPTION'),
-        'auth_mode' => env('MAIL_AUTH_MODE'),
-        'charset_iso_2022_jp' => env('MAIL_CHARSET_ISO_2022_JP', false),
-        'spool' => env('MAIL_SPOOL', false),
+        'transport' => env('ECCUBE_MAIL_TRANSPORT', 'smtp'),
+        'host' => env('ECCUBE_MAIL_HOST', '127.0.0.1'),
+        'port' => env('ECCUBE_MAIL_PORT', '1025'),
+        'username' => env('ECCUBE_MAIL_USERNAME'),
+        'password' => env('ECCUBE_MAIL_PASSWORD'),
+        'encryption' => env('ECCUBE_MAIL_ENCRYPTION'),
+        'auth_mode' => env('ECCUBE_MAIL_AUTH_MODE'),
+        'charset_iso_2022_jp' => env('ECCUBE_MAIL_CHARSET_ISO_2022_JP', false),
+        'spool' => env('ECCUBE_MAIL_SPOOL', false),
     ],
 ];
