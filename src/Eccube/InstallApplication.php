@@ -23,8 +23,8 @@
 
 namespace Eccube;
 
-use Eccube\Application\ApplicationTrait;
-use Eccube\ServiceProvider\DiServiceProvider;
+use Eccube\DI\AutoWiring\FormTypeAutoWiring;
+use Eccube\DI\DIServiceProvider;
 
 class InstallApplication extends \Silex\Application
 {
@@ -130,9 +130,9 @@ class InstallApplication extends \Silex\Application
             ));
         });
 
-        $app->register(new DiServiceProvider(), [
-            'eccube.di.scanners' => [
-                new \Eccube\Di\Scanner\FormTypeScanner([
+        $app->register(new DIServiceProvider(), [
+            'eccube.di.wirings' => [
+                new FormTypeAutoWiring([
                     __DIR__.'/Form/Type/Install'
                 ])
             ],

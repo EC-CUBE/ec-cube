@@ -24,13 +24,13 @@
 namespace Eccube;
 
 use Doctrine\DBAL\Types\Type;
-use Eccube\Di\Scanner\RouteScanner;
-use Eccube\Di\Scanner\EntityEventScanner;
-use Eccube\Di\Scanner\FormExtensionScanner;
-use Eccube\Di\Scanner\FormTypeScanner;
-use Eccube\Di\Scanner\QueryExtensionScanner;
-use Eccube\Di\Scanner\RepositoryScanner;
-use Eccube\Di\Scanner\ServiceScanner;
+use Eccube\DI\AutoWiring\EntityEventAutowiring;
+use Eccube\DI\AutoWiring\FormExtensionAutoWiring;
+use Eccube\DI\AutoWiring\FormTypeAutoWiring;
+use Eccube\DI\AutoWiring\QueryExtensionAutoWiring;
+use Eccube\DI\AutoWiring\RepositoryAutoWiring;
+use Eccube\DI\AutoWiring\RouteAutoWiring;
+use Eccube\DI\AutoWiring\ServiceAutoWiring;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
@@ -40,7 +40,7 @@ use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
-use Eccube\ServiceProvider\DiServiceProvider;
+use Eccube\DI\DIServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Eccube\ServiceProvider\TwigLintServiceProvider;
@@ -247,28 +247,28 @@ class Application extends \Silex\Application
         });
 
         // init ec-cube service provider
-        $this->register(new DiServiceProvider(), [
-            'eccube.di.scanners' => [
-                new RouteScanner(array_merge([
+        $this->register(new DIServiceProvider(), [
+            'eccube.di.wirings' => [
+                new RouteAutoWiring(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Controller',
                     $this['config']['root_dir'].'/src/Eccube/Controller'
                 ], $pluginSubDirs('Controller'))),
-                new FormTypeScanner(array_merge([
+                new FormTypeAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
                 ], $pluginSubDirs('Form/Type'))),
-                new FormExtensionScanner(array_merge([
+                new FormExtensionAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Form/Extension'
                 ], $pluginSubDirs('Form/Extension'))),
-                new ServiceScanner(array_merge([
+                new ServiceAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Service'
                 ], $pluginSubDirs('Service'))),
-                new RepositoryScanner(array_merge([
+                new RepositoryAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
                 ], $pluginSubDirs('Repository'))),
-                new QueryExtensionScanner(array_merge([
+                new QueryExtensionAutoWiring(array_merge([
                     $this['config']['root_dir'].'/src/Eccube/Repository'
                 ], $pluginSubDirs('Repository'))),
-                new EntityEventScanner(array_merge([
+                new EntityEventAutowiring(array_merge([
                     $this['config']['root_dir'].'/app/Acme/Entity'
                 ], $pluginSubDirs('Entity')))
             ],
