@@ -121,7 +121,7 @@ class Application extends \Silex\Application
     public function initConfig()
     {
         // load .env
-        $envFile = __DIR__.'/../../app/config/eccube/.env';
+        $envFile = __DIR__.'/../../.env';
         if (file_exists($envFile)) {
             (new Dotenv())->load($envFile);
         }
