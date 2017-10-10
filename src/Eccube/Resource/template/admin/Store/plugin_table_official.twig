@@ -25,17 +25,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>プラグイン</th>
-                    <th>バージョン</th>
-                    <th>コード</th>
+                    <th>プラグイン名</th>
+                    <th>プラグインアイコン画像</th>
+                    <th>プラグインバージョン</th>
+                    <th>プラグインコード</th>
                     <th>アップデート</th>
                     <th>設定</th>
+                    <th>制作者</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for Plugin in Plugins %}
+                {% for key,Plugin in Plugins %}
                     {% set form = plugin_forms[Plugin.id] %}
-                    <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" enctype="multipart/form-data">
+                    {% set pluginDetail = officialPluginsDetail[key] %}
                         <tr class="{% if Plugin.enable == 0 %}active{% endif %}">
                             <td class="tp">
                                 <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
@@ -53,7 +55,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     削除
                                 </a>
                             </td>
-                            <td class="tv text-center">{{ Plugin.version }}</td>
+                            <td class="tc">
+                                <div class="plugin-logo">
+                                    <a href="{{ pluginDetail.product_url }}" target="_blank"><img class="img-rounded" src="{{ pluginDetail.product_image_url }}"></a>
+                                </div>
+                            </td>
+                            <td class="tv text-center" style="width: 136px">{{ Plugin.version }}</td>
                             <td class="tc"><p>{{ Plugin.code }}</p>
                                 {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
                                     <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">詳細を表示</a>
@@ -69,20 +76,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <a class="btn btn-primary btn-xs" href="#" onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
                                     アップロード
                                 </a>
-                            {#{% else %}#}
-                                {#{% if Plugin.updateStatus == 3 %}#}
-                                    {#<p>新バージョンのプラグインが利用可能です。#}
-                                        {#<a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">今すぐ更新</a>#}
-                                    {#</p>#}
-                                    {#<ul class="plugin-meta dl-horizontal">#}
-                                        {#<li class="plugin-version">プラグインバージョン : {{ Plugin.newVersion }}</li>#}
-                                        {#<li class="plugin-version">EC-CUBE対応バージョン : {{ Plugin.eccubeVersionAsString }}</li>#}
-                                        {#<li class="plugin-update">更新日 : {{ Plugin.lastUpdateDate|time_ago }}</li>#}
-                                    {#</ul>#}
-                                {#{% else %}#}
-                                    {#<p>アップデート対象プラグインはありません。</p>#}
-                                {#{% endif %}#}
-                                {#<p><a href="{{ Plugin.productUrl }}" target="_blank">詳細情報</a></p>#}
+                            {% else %}
+                                {% if pluginDetail.update_status == 1 %}
+                                    新バージョンのプラグインが利用可能です。
+                                    <span {% if Plugin.enable %}data-toggle="tooltip" data-placement="top" title="無効にする状態で利用可能"{% endif %}>
+                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">アップデート</a>
+                                    </span>
+                                    <ul class="plugin-meta dl-horizontal">
+                                        <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
+                                        <li class="plugin-version">EC-CUBE対応バージョン : {% for version in pluginDetail.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</li>
+                                        <li class="plugin-update">更新日 : {{ pluginDetail.last_update_date|time_ago }}</li>
+                                    </ul>
+                                {% else %}
+                                    <p>アップデート対象プラグインはありません。</p>
+                                {% endif %}
+                                <p><a href="{{ pluginDetail.product_url }}" target="_blank">詳細情報</a></p>
                             {% endif %}
                             </td>
                             <td class="ta text-center">
@@ -90,8 +98,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                    <a href='{{configPages[Plugin.code]}}'>設定</a>
                                 {% endif %}
                             </td>
+                            <td class="tv">
+                                <a href="{{ pluginDetail.developer_url }}" target="_blank">{{ pluginDetail.developer }}</a>
+                            </td>
                         </tr>
-                    </form>
                 {% endfor %}
                 </tbody>
             </table>
@@ -102,3 +112,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         インストールされているプラグインはありません。
     </div>
 {% endif %}
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

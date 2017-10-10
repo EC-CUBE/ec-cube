@@ -22,7 +22,7 @@
  */
 
 
-namespace Acme\Controller\Admin\Store;
+namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
@@ -32,7 +32,10 @@ use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Process\Process;
 
 /**
  * @Route(service=OwnerStoreController::class)
@@ -123,7 +126,7 @@ class OwnerStoreController extends AbstractController
                         $i++;
                     }
                 } else {
-                    $message = $data['error_code'].' : '.$data['error_message'];
+                    $message = $data['error_code'] . ' : ' . $data['error_message'];
                 }
             } else {
                 $success = 0;
@@ -137,6 +140,64 @@ class OwnerStoreController extends AbstractController
             'promotionItems' => $promotionItems,
             'message' => $message,
         ];
+    }
+
+    /**
+     * Api Install plugin by composer connect with packagist
+     *
+     * @Route("/{_admin}/store/plugin/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     *
+     * @param Application $app
+     * @param Request     $request
+     * @param string      $pluginCode
+     * @return RedirectResponse
+     */
+    public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
+    {
+        // Check plugin code
+        $url = $this->appConfig['owners_store_url'].'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        list($json, $info) = $this->getRequestApi($url, $app);
+        $existFlg = false;
+        $data = json_decode($json, true);
+        if ($data && isset($data['success'])) {
+            $success = $data['success'];
+            if ($success == '1') {
+                foreach ($data['item'] as $item) {
+                    if ($item['product_code'] == $pluginCode) {
+                        $existFlg = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if ($existFlg === false) {
+            $app->log(sprintf('%s plugin not found!', $pluginCode));
+            $app->addError('admin.plugin.not.found', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin_owners_search'));
+        }
+
+        try {
+            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
+            $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
+
+            $install = new Process($execute);
+            $install->setTimeout(null);
+            $install->run();
+            if ($install->isSuccessful()) {
+                $app->addSuccess('admin.plugin.install.complete', 'admin');
+                $app->log(sprintf('Install %s plugin successful!', $pluginCode));
+
+                return $app->redirect($app->url('admin_store_plugin'));
+            }
+            $app->addError('admin.plugin.install.fail', 'admin');
+        } catch (Exception $exception) {
+            $app->addError($exception->getMessage(), 'admin');
+            $app->log($exception->getCode().' : '.$exception->getMessage());
+        }
+        $app->log(sprintf('Install %s plugin fail!', $pluginCode));
+
+        return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
 
     /**

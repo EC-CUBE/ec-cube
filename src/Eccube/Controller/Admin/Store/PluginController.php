@@ -136,7 +136,6 @@ class PluginController extends AbstractController
         $unofficialPlugins = array();
 
         foreach ($Plugins as $Plugin) {
-
             $form = $this->formFactory
                 ->createNamedBuilder(
                     'form'.$Plugin->getId(),
@@ -147,7 +146,6 @@ class PluginController extends AbstractController
                     )
                 )
                 ->getForm();
-
             $pluginForms[$Plugin->getId()] = $form->createView();
 
             try {
@@ -163,43 +161,31 @@ class PluginController extends AbstractController
             } else {
                 $officialPlugins[] = $Plugin;
             }
-
         }
 
+        // Todo: Need new authentication mechanism
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
+//        if (!is_null($authKey)) {
 
-        if (!is_null($authKey)) {
+        // オーナーズストア通信
+        $url = $this->appConfig['owners_store_url'].'?method=list';
+        list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
-            // オーナーズストア通信
-            $url = $this->appConfig['owners_store_url'].'?method=list';
-            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
-
-            if ($json) {
-
-                // 接続成功時
-
-                $data = json_decode($json, true);
-
-                if (isset($data['success'])) {
-                    $success = $data['success'];
-                    if ($success == '1') {
-
-                        // 既にインストールされているかどうか確認
-                        foreach ($data['item'] as $item) {
-                            foreach ($officialPlugins as $plugin) {
-                                if ($plugin->getSource() == $item['product_id']) {
-                                    // 商品IDが同一の情報を設定
-                                    $plugin->setNewVersion($item['version']);
-                                    $plugin->setLastUpdateDate($item['last_update_date']);
-                                    $plugin->setProductUrl($item['product_url']);
-                                    $plugin->setEccubeVersion($item['eccube_version']);
-
-                                    if ($plugin->getVersion() != $item['version']) {
-                                        // バージョンが異なる
-                                        $plugin->setUpdateStatus(3);
-                                        break;
-                                    }
+        $officialPluginsDetail = [];
+        if ($json) {
+            // 接続成功時
+            $data = json_decode($json, true);
+            if (isset($data['success'])) {
+                $success = $data['success'];
+                if ($success == '1') {
+                    foreach ($data['item'] as $item) {
+                        foreach ($officialPlugins as $key => $plugin) {
+                            if ($plugin->getSource() == $item['product_id']) {
+                                $officialPluginsDetail[$key] = $item;
+                                $officialPluginsDetail[$key]['update_status'] = 0;
+                                if ($plugin->getVersion() != $item['version']) {
+                                    $officialPluginsDetail[$key]['update_status'] = 1;
                                 }
                             }
                         }
@@ -215,6 +201,7 @@ class PluginController extends AbstractController
             'configPages' => $configPages,
             'unregisterdPlugins' => $unregisterdPlugins,
             'unregisterdPluginsConfigPages' => $unregisterdPluginsConfigPages,
+            'officialPluginsDetail' => $officialPluginsDetail,
         ];
     }
 
