@@ -20,53 +20,30 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
     <title>{{ error_title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
-    <link rel="stylesheet" href="{{ app.config.front_urlpath }}/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
-    <link rel="stylesheet" href="{{ app.config.front_urlpath }}/css/default.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"><!-- for original theme CSS -->
-
+    <link rel="stylesheet" href="{{ app.config.front_urlpath }}/assets/css/style.css">
 </head>
 <body>
-<div id="wrapper" class="error_page">
-    <div id="contents" class="theme_main_only">
-        <div class="container-fluid inner">
-            <div id="main">
-                <div class="container-fluid">
-                    <div class="message_box">
-                        <div class="row no-padding">
-                            <div class="col-sm-6 col-sm-offset-3">
-                                <div class="icon"><svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg></div>
-                                <h1>{{ error_title }}</h1>
-                                <p>{{ error_message }}</p>
-                            </div>
-                        </div>
+<div class="ec-layoutRole">
+    <div class="ec-404Role">
+        <div class="ec-off4Grid">
+            <div class="ec-off4Grid__cell">
+                <div style="font-size:100px;text-align:center;">
+                    <div class="ec-404Role__icon ec-icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-pale.svg" alt="">
                     </div>
                 </div>
+                <p class="ec-404Role__title ec-reportHeading">{{ error_title }}
+                </p>
+                <p class="ec-404Role__description ec-reportDescription">{{ error_message }}
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ app.config.front_urlpath }}/js/vendor/jquery-1.11.3.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"><\/script>')</script>
-<script src="{{ app.config.front_urlpath }}/js/function.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
-<script>
-    $(function () {
-        $.ajax({
-            url: '{{ app.config.front_urlpath }}/img/common/svg.html',
-            type: 'GET',
-            dataType: 'html',
-        }).done(function(data){
-            $('body').prepend(data);
-        }).fail(function(data){
-        });
-    });
-</script>
-
 </body>
 </html>
