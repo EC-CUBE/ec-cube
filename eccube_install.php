@@ -155,6 +155,7 @@ function initializeDefaultVariables($database)
     putenv('ECCUBE_DB_DEFAULT='.$database);
     putenv('ECCUBE_AUTH_MAGIC='.env('ECCUBE_AUTH_MAGIC', \Eccube\Util\Str::random(32)));
     putenv('ECCUBE_ADMIN_USER='.env('ECCUBE_ADMIN_USER', 'admin'));
+    putenv('ECCUBE_ADMIN_PASS='.env('ECCUBE_ADMIN_PASS', 'password'));
     putenv('ECCUBE_ADMIN_MAIL='.env('ECCUBE_ADMIN_MAIL', 'admin@example.com'));
     putenv('ECCUBE_SHOP_NAME='.env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP'));
 }
