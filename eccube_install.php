@@ -82,11 +82,11 @@ if (!in_array('--skip-initdb', $argv)) {
     initializeDatabase($em);
 }
 
-createEnvFile();
 copyConfigFiles();
+replaceConfigFiles();
 
 out('EC-CUBE3 install finished successfully!', 'success');
-$root_urlpath = env('ROOT_URLPATH');
+$root_urlpath = env('ECCUBE_ROOT_URLPATH');
 if (PHP_VERSION_ID >= 50400 && empty($root_urlpath)) {
     out('PHP built-in web server to run applications, `php -S localhost:8080`', 'info');
     out('Open your browser and access the http://localhost:8080/', 'info');
@@ -130,78 +130,74 @@ function initializeDefaultVariables($database)
     $database_url = env('DATABASE_URL');
     if ($database_url) {
         $url = parse_url($database_url);
-        putenv('DB_DEFAULT='.$url['scheme']);
-        putenv('DB_HOST='.$url['host']);
-        putenv('DB_DATABASE='.substr($url['path'], 1));
-        putenv('DB_USERNAME='.$url['user']);
-        putenv('DB_PORT='.$url['port']);
-        putenv('DB_PASSWORD='.$url['pass']);
+        putenv('ECCUBE_DB_DEFAULT='.$url['scheme']);
+        putenv('ECCUBE_DB_HOST='.$url['host']);
+        putenv('ECCUBE_DB_DATABASE='.substr($url['path'], 1));
+        putenv('ECCUBE_DB_USERNAME='.$url['user']);
+        putenv('ECCUBE_DB_PORT='.$url['port']);
+        putenv('ECCUBE_DB_PASSWORD='.$url['pass']);
     }
 
     switch ($database) {
         case 'pgsql':
-            putenv('ROOTUSER='.env('ROOTUSER', env('DB_USERNAME', 'postgres')));
-            putenv('ROOTPASS='.env('ROOTPASS', env('DB_PASSWORD', 'password')));
+            putenv('ECCUBE_ROOTUSER='.env('ECCUBE_ROOTUSER', env('ECCUBE_DB_USERNAME', 'postgres')));
+            putenv('ECCUBE_ROOTPASS='.env('ECCUBE_ROOTPASS', env('ECCUBE_DB_PASSWORD', 'password')));
             break;
         case 'mysql':
-            putenv('ROOTUSER='.env('ROOTUSER', env('DB_USERNAME', 'root')));
-            putenv('ROOTPASS='.env('ROOTPASS', env('DB_PASSWORD', 'password')));
-            if (env('TRAVIS')) {
-                putenv('ROOTPASS=');
-                putenv('DB_PASSWORD=');
-            }
+            putenv('ECCUBE_ROOTUSER='.env('ROOTUSER', env('ECCUBE_DB_USERNAME', 'root')));
+            putenv('ECCUBE_ROOTPASS='.env('ROOTPASS', env('ECCUBE_DB_PASSWORD', 'password')));
             break;
         case 'sqlite':
-            putenv('DB_DATABASE='.__DIR__.'/app/config/eccube/eccube.db');
+            putenv('ECCUBE_DB_DATABASE='.__DIR__.'/app/config/eccube/eccube.db');
             break;
         default:
     }
-    putenv('DB_DEFAULT='.$database);
-    putenv('AUTH_MAGIC='.env('AUTH_MAGIC', \Eccube\Util\Str::random(32)));
-    putenv('ADMIN_USER='.env('ADMIN_USER', 'admin'));
-    putenv('ADMIN_MAIL='.env('ADMIN_MAIL', 'admin@example.com'));
-    putenv('SHOP_NAME='.env('SHOP_NAME', 'EC-CUBE SHOP'));
+    putenv('ECCUBE_DB_DEFAULT='.$database);
+    putenv('ECCUBE_AUTH_MAGIC='.env('ECCUBE_AUTH_MAGIC', \Eccube\Util\Str::random(32)));
+    putenv('ECCUBE_ADMIN_USER='.env('ECCUBE_ADMIN_USER', 'admin'));
+    putenv('ECCUBE_ADMIN_MAIL='.env('ECCUBE_ADMIN_MAIL', 'admin@example.com'));
+    putenv('ECCUBE_SHOP_NAME='.env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP'));
 }
 
 function getExampleVariables()
 {
     return [
-        'ADMIN_USER' => 'admin',
-        'ADMIN_MAIL' => 'admin@example.com',
-        'SHOP_NAME' => 'EC-CUBE SHOP',
-        'ROOTUSER' => 'root|postgres',
-        'ROOTPASS' => 'password',
-        'AUTH_MAGIC' => '<auth magic>',
-        'FORCE_SSL' => 'false',
-        'ADMIN_ALLOW_HOSTS' => '[]',
-        'COOKIE_LIFETIME' => '0',
-        'COOKIE_NAME' => 'eccube',
-        'LOCALE' => 'ja',
-        'TIMEZONE' => 'Asia/Tokyo',
-        'CURRENCY' => 'JPY',
-        'ROOT_URLPATH' => '<eccube root url>',
-        'TEMPLATE_CODE' => 'default',
-        'ADMIN_ROUTE' => 'admin',
-        'USER_DATA_ROUTE' => 'user_data',
-        'TRUSTED_PROXIES_CONNECTION_ONLY' => 'false',
-        'TRUSTED_PROXIES' => '["127.0.0.1/8", "::1"]',
-        'DB_DEFAULT' => 'mysql',
-        'DB_HOST' => '127.0.0.1',
-        'DB_PORT' => '<database port>',
-        'DB_DATABASE' => 'eccube_db',
-        'DB_USERNAME' => 'eccube_db_user',
-        'DB_PASSWORD' => 'password',
-        'DB_CHARASET' => 'utf8',
-        'DB_COLLATE' => 'utf8_general_ci',
-        'MAIL_TRANSPORT' => 'smtp',
-        'MAIL_HOST' => 'localhost',
-        'MAIL_PORT' => '1025',
-        'MAIL_USERNAME' => '<SMTP AUTH user>',
-        'MAIL_PASSWORD' => '<SMTP AUTH password>',
-        'MAIL_ENCRYPTION' => null,
-        'MAIL_AUTH_MODE' => null,
-        'MAIL_CHARSET_ISO_2022_JP' => 'false',
-        'MAIL_SPOOL' => 'false',
+        'ECCUBE_ADMIN_USER' => 'admin',
+        'ECCUBE_ADMIN_MAIL' => 'admin@example.com',
+        'ECCUBE_SHOP_NAME' => 'EC-CUBE SHOP',
+        'ECCUBE_ROOTUSER' => 'root|postgres',
+        'ECCUBE_ROOTPASS' => 'password',
+        'ECCUBE_AUTH_MAGIC' => '<auth magic>',
+        'ECCUBE_FORCE_SSL' => 'false',
+        'ECCUBE_ADMIN_ALLOW_HOSTS' => '[]',
+        'ECCUBE_COOKIE_LIFETIME' => '0',
+        'ECCUBE_COOKIE_NAME' => 'eccube',
+        'ECCUBE_LOCALE' => 'ja',
+        'ECCUBE_TIMEZONE' => 'Asia/Tokyo',
+        'ECCUBE_CURRENCY' => 'JPY',
+        'ECCUBE_ROOT_URLPATH' => '<eccube root url>',
+        'ECCUBE_TEMPLATE_CODE' => 'default',
+        'ECCUBE_ADMIN_ROUTE' => 'admin',
+        'ECCUBE_USER_DATA_ROUTE' => 'user_data',
+        'ECCUBE_TRUSTED_PROXIES_CONNECTION_ONLY' => 'false',
+        'ECCUBE_TRUSTED_PROXIES' => '["127.0.0.1/8", "::1"]',
+        'ECCUBE_DB_DEFAULT' => 'mysql',
+        'ECCUBE_DB_HOST' => '127.0.0.1',
+        'ECCUBE_DB_PORT' => '<database port>',
+        'ECCUBE_DB_DATABASE' => 'eccube_db',
+        'ECCUBE_DB_USERNAME' => 'eccube_db_user',
+        'ECCUBE_DB_PASSWORD' => 'password',
+        'ECCUBE_DB_CHARASET' => 'utf8',
+        'ECCUBE_DB_COLLATE' => 'utf8_general_ci',
+        'ECCUBE_MAIL_TRANSPORT' => 'smtp',
+        'ECCUBE_MAIL_HOST' => 'localhost',
+        'ECCUBE_MAIL_PORT' => '1025',
+        'ECCUBE_MAIL_USERNAME' => '<SMTP AUTH user>',
+        'ECCUBE_MAIL_PASSWORD' => '<SMTP AUTH password>',
+        'ECCUBE_MAIL_ENCRYPTION' => null,
+        'ECCUBE_MAIL_AUTH_MODE' => null,
+        'ECCUBE_MAIL_CHARSET_ISO_2022_JP' => 'false',
+        'ECCUBE_MAIL_SPOOL' => 'false',
     ];
 }
 
@@ -253,7 +249,9 @@ function createDatabase(\Doctrine\DBAL\Connection $conn, $dbname)
 
     if ($conn->getDatabasePlatform()->getName() === 'sqlite') {
         out('unlink database to '.$dbname, 'info');
-        unlink($dbname);
+        if (file_exists($dbname)) {
+            unlink($dbname);
+        }
     } else {
         $databases = $sm->listDatabases();
         if (in_array($dbname, $databases)) {
@@ -330,12 +328,12 @@ function initializeDatabase(\Doctrine\ORM\EntityManager $em)
     out('Database migration successfully!', 'success');
 
     out('Creating admin accounts...', 'info');
-    $login_id = env('ADMIN_USER');
-    $login_password = env('ADMIN_PASS');
+    $login_id = env('ECCUBE_ADMIN_USER');
+    $login_password = env('ECCUBE_ADMIN_PASS');
 
     $encoder = new \Eccube\Security\Core\Encoder\PasswordEncoder([
         'auth_type' => '',
-        'auth_magic' => env('AUTH_MAGIC'),
+        'auth_magic' => env('ECCUBE_AUTH_MAGIC'),
         'password_hash_algos' => 'sha256',
     ]);
     $salt = \Eccube\Util\Str::random(32);
@@ -365,8 +363,8 @@ function initializeDatabase(\Doctrine\ORM\EntityManager $em)
         'create_date' => Doctrine\DBAL\Types\Type::DATETIME,
     ]);
 
-    $shop_name = env('SHOP_NAME');
-    $admin_mail = env('ADMIN_MAIL');
+    $shop_name = env('ECCUBE_SHOP_NAME');
+    $admin_mail = env('ECCUBE_ADMIN_MAIL');
 
     $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
         ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
@@ -429,42 +427,75 @@ function copyConfigFiles()
     $fs->mirror($src, $dist, null, ['override' => true]);
 }
 
-function createEnvFile()
+function replaceConfig($keys, $content)
 {
-    $content = '';
-    foreach (array_keys(getExampleVariables()) as $key) {
+    $patternFormat = "/(env\('%s'.*?\),)/s";
+    $replacementFormat = "env('%s', %s),";
 
+    foreach ($keys as $key) {
         // 環境変数が未定義の場合はスキップ.
         $value = getenv($key);
         if ($value === false) {
             continue;
         }
         // インストール時のみ必要な環境はスキップ.
-        $installOnly = ['ADMIN_USER', 'ADMIN_MAIL', 'SHOP_NAME'];
+        $installOnly = [
+            'ECCUBE_ADMIN_USER',
+            'ECCUBE_ADMIN_MAIL',
+            'ECCUBE_SHOP_NAME',
+        ];
         if (in_array($key, $installOnly)) {
             continue;
         }
+
         $value = env($key);
-        if ($value === true) {
-            $value = 'true';
+
+        if (is_bool($value)
+            || is_null($value)
+            || is_array($value)
+            || is_numeric($value)
+        ) {
+            $value = var_export($value, true);
+        } else {
+            $value = "'".$value."'";
         }
-        if ($value === false) {
-            $value = 'false';
+
+        $pattern = sprintf($patternFormat, $key);
+        $replacement = sprintf($replacementFormat, $key, $value);
+
+        $content = preg_replace($pattern, $replacement, $content);
+        if (is_null($content)) {
+            out('config replace failed.', 'error');
+            out("-> $key : $value", 'error');
+            exit(1);
         }
-        if ($value === null) {
-            $value = 'null';
-        }
-        if (is_array($value)) {
-            $value = json_encode($value);
-        }
-        $content .= sprintf('%s=%s', $key, $value).PHP_EOL;
     }
 
-    $content .= 'ECCUBE_INSTALL=1';
-
-    file_put_contents(__DIR__.'/app/config/eccube/.env', $content);
+    return $content;
 }
 
+function replaceConfigFiles()
+{
+    $dir = __DIR__.'/app/config/eccube';
+    $files = [
+        $dir.'/config.php',
+        $dir.'/database.php',
+        $dir.'/mail.php',
+        $dir.'/path.php',
+    ];
+    $keys = array_keys(getExampleVariables());
+
+    putenv('ECCUBE_INSTALL=1');
+    $keys[] = 'ECCUBE_INSTALL';
+
+    foreach ($files as $file) {
+        $content = file_get_contents($file);
+        $replaced = replaceConfig($keys, $content);
+        if ($content !== $replaced) {
+            file_put_contents($file, $replaced);
+        }
+    }
+}
 /**
  * @link https://github.com/composer/windows-setup/blob/master/src/php/installer.php
  */
