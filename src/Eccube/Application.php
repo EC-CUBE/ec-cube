@@ -284,7 +284,6 @@ class Application extends \Silex\Application
                     $this['config']['vendor_dir'].'/Controller',
                     $this['config']['root_dir'].'/src/Eccube/Controller',
                 ], $pluginSubDirs('Controller'))),
-<<<<<<< HEAD
                 new FormTypeAutoWiring(array_merge([
                     $this['config']['vendor_dir'].'/Form/Type',
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
