@@ -752,7 +752,6 @@ class ShoppingService
         }
         $deliveryFee = $this->deliveryFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
         if ($deliveryFee) {
-            $Shipping->setDeliveryFee($deliveryFee);
             $Shipping->setFeeId($deliveryFee->getId());
         }
         $Shipping->setDelivery($Delivery);
