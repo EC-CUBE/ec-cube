@@ -26,8 +26,8 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
     public function register(Container $app)
     {
         // EventDispatcher
-        $app['eccube.event.dispatcher'] = function () {
-            return new EventDispatcher();
+        $app['eccube.event.dispatcher'] = function () use ($app) {
+            return $app['dispatcher'];
         };
 
         // プラグインディレクトリを探索.
