@@ -430,8 +430,8 @@ function copyConfigFiles()
 
 function replaceConfig($keys, $content)
 {
-    $patternFormat = "/(env\('%s'.*?\),)/s";
-    $replacementFormat = "env('%s', %s),";
+    $patternFormat = "/(env\('%s'.*?\))/s";
+    $replacementFormat = "env('%s', %s)";
 
     foreach ($keys as $key) {
         // 環境変数が未定義の場合はスキップ.
