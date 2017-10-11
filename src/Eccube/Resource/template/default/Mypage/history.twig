@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="ec-layoutRole__main">
-        <div class="ec-role">
+        <div class="ec-mypageRole">
             <div class="ec-pageHeader">
                 <h1>マイページ/ご注文履歴詳細</h1>
             </div>
@@ -72,13 +72,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if OrderItem.Product is null %}
                                         <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                     {% else %}
-                                        {% if OrderItem.enable %}
-                                            <a href="{{ url('product_detail', { id : OrderItem.Product.id } ) }}">
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}" />
-                                            </a>
-                                        {% else %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
-                                        {% endif %}
+                                        <a href="{{ url('product_detail', { id : OrderItem.Product.id } ) }}">
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}" />
+                                        </a>
                                     {% endif %}
                                 </div>
                                 <div class="ec-imageGrid__content">
@@ -86,13 +82,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% if OrderItem.Product is null %}
                                             {{ OrderItem.product_name }}
                                         {% else %}
-                                            {% if OrderItem.enable %}
-                                                <a href="{{ url('product_detail', {'id': OrderItem.Product.id}) }}">
-                                                    {{ OrderItem.product_name }}
-                                                </a>
-                                            {% else %}
+                                            <a href="{{ url('product_detail', {'id': OrderItem.Product.id}) }}">
                                                 {{ OrderItem.product_name }}
-                                            {% endif %}
+                                            </a>
                                         {% endif %}
                                     </p>
                                     {% if OrderItem.classcategory_name1 is not empty %}
@@ -125,11 +117,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% if orderItem.product is null %}
                                             <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                         {% else %}
-                                            {% if orderItem.product.enable %}
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ orderItem.product.MainListImage|no_image_product }}" alt="{{ orderItem.productName }}" />
-                                            {% else %}
-                                                <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
-                                            {% endif %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ orderItem.product.MainListImage|no_image_product }}" alt="{{ orderItem.productName }}" />
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">
@@ -194,8 +182,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% else %}
                             <p class="ec-reportDescription">メール履歴がありません。</p>
                         {% endfor %}
+                        <a href="{{ url('mypage') }}" class="ec-inlineBtn">戻る</a>
                     </div>
-                    <a href="{{ url('mypage') }}" class="ec-inlineBtn">戻る</a>
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
@@ -213,6 +201,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dl>
                     <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
                     <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="ec-blockBtn--action" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">再注文する</a>
+
                 </div>
                 {% if remessage %}
                     <p class="ec-color-accent">

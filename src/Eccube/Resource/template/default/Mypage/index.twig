@@ -26,68 +26,64 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block main %}
-    <div class="ec-role">
+    <div class="ec-mypageRole">
         <div class="ec-pageHeader">
             <h1>マイページ/ご注文履歴</h1>
         </div>
         {% include 'Mypage/navi.twig' %}
     </div>
-    {% if pagination.totalItemCount > 0 %}
-        <div class="ec-role">
-            <p><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
-        </div>
-        {% for Order in pagination %}
-            <div class="ec-historyRole">
-                <div class="ec-historyRole__contents">
+    <div class="ec-mypageRole">
+        {% if pagination.totalItemCount > 0 %}
+            <p class="ec-para-nomal"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
+            {% for Order in pagination %}
+                <div class="ec-historyRole">
+                    <div class="ec-historyRole__contents">
 
-                    <div class="ec-historyRole__header">
-                        <div class="ec-historyListHeader">
-                            <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
-                            <dl class="ec-definitions">
-                                <dt>ご注文番号：</dt>
-                                <dd>{{ Order.id }}</dd>
-                            </dl>
-                            <dl class="ec-definitions">
-                                <dt>ご注文状況：</dt>
-                                <dd>{{ Order.CustomerOrderStatus }}</dd>
-                            </dl>
-                            <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
+                        <div class="ec-historyRole__header">
+                            <div class="ec-historyListHeader">
+                                <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
+                                <dl class="ec-definitions">
+                                    <dt>ご注文番号：</dt>
+                                    <dd>{{ Order.id }}</dd>
+                                </dl>
+                                <dl class="ec-definitions">
+                                    <dt>ご注文状況：</dt>
+                                    <dd>{{ Order.CustomerOrderStatus }}</dd>
+                                </dl>
+                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
+                            </div>
+                        </div>
+                        <div class="ec-historyRole__detail">
+                            {% for OrderItem in Order.OrderItems %}
+                                <div class="ec-imageGrid">
+                                    <div class="ec-imageGrid__img">
+                                        {% if OrderItem.Product is null %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
+                                        {% else %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="ec-imageGrid__content">
+                                        <p class="ec-historyRole__detailTitle">{{ OrderItem.product_name }}</p>
+                                        {% if OrderItem.class_category_name1 is not empty %}
+                                            {{ OrderItem.class_category_name1 }}
+                                        {% endif %}
+                                        {% if OrderItem.class_category_name1 is not empty %}
+                                            / {{ OrderItem.class_category_name2 }}
+                                        {% endif %}
+                                        <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }} ×{{ OrderItem.quantity }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="ec-historyRole__detail">
-                        {% for OrderItem in Order.OrderItems %}
-                            <div class="ec-imageGrid">
-                                <div class="ec-imageGrid__img">
-                                    {% if OrderItem.Product is null %}
-                                        <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
-                                    {% else %}
-                                        {% if OrderItem.enable %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}">
-                                        {% else %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
-                                <div class="ec-imageGrid__content">
-                                    <p class="ec-font-bold">{{ OrderItem.product_name }}</p>
-                                    {% if OrderItem.class_category_name1 is not empty %}
-                                        {{ OrderItem.class_category_name1 }}
-                                    {% endif %}
-                                    {% if OrderItem.class_category_name1 is not empty %}
-                                        / {{ OrderItem.class_category_name2 }}
-                                    {% endif %}
-                                    <p>{{ OrderItem.price_inc_tax|price }} ×{{ OrderItem.quantity }}</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
                 </div>
+            {% endfor %}
+            <div class="ec-pagerRole">
+                {% include "pagination.twig" with {'pages': pagination.paginationData} %}
             </div>
-        {% endfor %}
-        <div class="ec-pagerRole">
-            {% include "pagination.twig" with {'pages': pagination.paginationData} %}
-        </div>
-    {% else %}
-        <div class="ec-welcomeMsg">ご注文履歴がありません。</div>
-    {% endif %}
+        {% else %}
+            <div class="text-center">ご注文履歴がありません。</div>
+        {% endif %}
+    </div>
 {% endblock %}

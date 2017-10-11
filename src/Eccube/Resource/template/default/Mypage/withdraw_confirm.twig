@@ -27,13 +27,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="ec-layoutRole__main">
-        <div class="ec-role">
+        <div class="ec-mypageRole">
             <div class="ec-pageHeader">
                 <h1>マイページ/退会手続き</h1>
             </div>
             {{ include('Mypage/navi.twig') }}
         </div>
-        <div class="ec-role">
+        <div class="ec-mypageRole">
             <div class="ec-withdrawConfirmRole">
                 <div class="ec-off3Grid">
                     <div class="ec-off3Grid__cell">
@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_widget(form._token) }}
                     <div class="ec-off4Grid">
                         <div class="ec-off4Grid__cell"><a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel" href="{{ url('mypage') }}">いいえ、退会しません</a>
-                            <button type="submit" class="ec-blockBtn" name="mode" value="complete">はい、退会します</a>
+                            <button type="submit" class="ec-blockBtn" name="mode" value="complete">はい、退会します</button>
                         </div>
                     </div>
                 </form>
