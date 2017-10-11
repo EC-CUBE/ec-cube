@@ -95,6 +95,11 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
 
+        // Proxyのクラスをロードせずにスキーマを更新するために、
+        // インストール時には一時的なディレクトリにProxyを生成する
+        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
+        @mkdir($tmpProxyOutputDir);
+
         try {
             PluginConfigManager::removePluginConfigCache();
             Cache::clear($this->app, false);
@@ -114,7 +119,12 @@ class PluginService
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
-            $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
+            $plugin = $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
+
+            // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
+            $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
+            $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
+
             ConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
@@ -123,6 +133,11 @@ class PluginService
 
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
+        } finally {
+            foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
+                unlink($f);
+            }
+            rmdir($tmpProxyOutputDir);
         }
 
         return true;
@@ -323,6 +338,10 @@ class PluginService
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+
+        // スキーマを更新する
+        $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
+
         ConfigManager::writePluginConfigCache();
         return true;
     }
@@ -346,25 +365,44 @@ class PluginService
         return $this->enable($plugin, false);
     }
 
-    private function regenerateProxy(Plugin $plugin)
+    /**
+     * Proxyを再生成します.
+     * @param Plugin $plugin プラグイン
+     * @param boolean $temporary プラグインが無効状態でも一時的に生成するかどうか
+     * @param string|null $outputDir 出力先
+     * @return array 生成されたファイルのパス
+     */
+    private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null)
     {
-        $enabledPluginEntityDirs = array_map(function($p) {
-            return $this->appConfig['root_dir'].'/app/Plugin/'.$p->getCode().'/Entity';
-        }, $this->pluginRepository->findAllEnabled());
+        if (is_null($outputDir)) {
+            $outputDir = $this->appConfig['root_dir'].'/app/proxy/entity';
+        }
+        @mkdir($outputDir);
 
-        $entityDir = $this->appConfig['root_dir'].'/app/Plugin/'.$plugin->getCode().'/Entity';
-        if ($plugin->getEnable() === Constant::ENABLED) {
-            $enabledPluginEntityDirs[] = $entityDir;
+        $enabledPluginCodes = array_map(
+            function($p) { return $p->getCode(); },
+            $this->pluginRepository->findAllEnabled()
+        );
+
+        $excludes = [];
+        if ($temporary || $plugin->getEnable() === Constant::ENABLED) {
+            $enabledPluginCodes[] = $plugin->getCode();
         } else {
-            $index = array_search($entityDir, $enabledPluginEntityDirs);
-            if ($index >=0 ) {
-                array_splice($enabledPluginEntityDirs, $index, 1);
+            $index = array_search($plugin->getCode(), $enabledPluginCodes);
+            if ($index >= 0) {
+                array_splice($enabledPluginCodes, $index, 1);
+                $excludes = [$this->appConfig['root_dir']."/app/Plugin/".$plugin->getCode()."/Entity"];
             }
         }
 
+        $enabledPluginEntityDirs = array_map(function($code) {
+            return $this->appConfig['root_dir']."/app/Plugin/${code}/Entity";
+        }, $enabledPluginCodes);
+
         return $this->entityProxyService->generate(
             array_merge([$this->appConfig['root_dir'].'/app/Acme/Entity'], $enabledPluginEntityDirs),
-            $this->appConfig['root_dir'].'/app/proxy/entity'
+            $excludes,
+            $outputDir
         );
     }
 
@@ -379,10 +417,11 @@ class PluginService
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
 
-            $generatedFiles = $this->regenerateProxy($plugin);
-            $this->schemaService->updateSchema($generatedFiles);
-
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
+
+            // Proxyだけ再生成してスキーマは更新しない
+            $this->regenerateProxy($plugin, false);
+
             $em->flush();
             $em->getConnection()->commit();
             PluginConfigManager::writePluginConfigCache();

@@ -42,7 +42,7 @@ class SchemaService
      */
     protected $entityManager;
 
-    public function updateSchema($generatedFiles)
+    public function updateSchema($generatedFiles, $proxiesDirectory)
     {
         $outputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
         mkdir($outputDir);
@@ -58,7 +58,7 @@ class SchemaService
                     );
                     $newDriver->setFileExtension($oldDriver->getFileExtension());
                     $newDriver->addExcludePaths($oldDriver->getExcludePaths());
-                    $newDriver->setTraitProxiesDirectory(realpath(__DIR__.'/../../../app/proxy/entity'));
+                    $newDriver->setTraitProxiesDirectory($proxiesDirectory);
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
                     $chain->addDriver($newDriver, $namespace);

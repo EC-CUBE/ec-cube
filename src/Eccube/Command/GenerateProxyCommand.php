@@ -53,6 +53,7 @@ class GenerateProxyCommand extends Command
 
         $entityProxyService->generate(
             array_merge([$app['config']['root_dir'].'/app/Acme/Entity'], $dirs),
+            [],
             $app['config']['root_dir'].'/app/proxy/entity',
             $output
         );
