@@ -26,7 +26,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
-use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 use Eccube\Tests\EccubeTestCase;
@@ -99,7 +99,7 @@ class ValidatableItemProcessorTest_FailValidator extends ValidatableItemProcesso
 
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
-        throw new ItemValidateException();
+        throw new InvalidItemException();
     }
 
     protected function handle(ItemInterface $item, PurchaseContext $context)

@@ -3,7 +3,7 @@
 namespace Plugin\PurchaseProcessors\Processor;
 
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
@@ -13,7 +13,7 @@ class ValidatableEmptyProcessor extends ValidatableItemProcessor
     {
         $error = false;
         if ($error) {
-            throw new ItemValidateException('ValidatableEmptyProcessorのエラーです');
+            throw new InvalidItemException('ValidatableEmptyProcessorのエラーです');
         }
     }
 

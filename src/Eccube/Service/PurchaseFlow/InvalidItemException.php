@@ -25,7 +25,7 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ProductClass;
 
-class ItemValidateException extends \Exception
+class InvalidItemException extends \Exception
 {
     private $messageArgs = [];
 
@@ -44,7 +44,7 @@ class ItemValidateException extends \Exception
     }
 
     /**
-     * @return ItemValidateException
+     * @return InvalidItemException
      */
     public static function fromProductClass($errorCode, ProductClass $ProductClass)
     {
