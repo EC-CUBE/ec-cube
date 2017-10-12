@@ -24,26 +24,8 @@
 
 namespace Eccube\ServiceProvider;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\ItemHolderInterface;
-use Eccube\EventListener\ForwardOnlyListener;
-use Eccube\EventListener\TransactionListener;
 use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor;
-use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor;
-use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor;
-use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
-use Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator;
-use Eccube\Service\PurchaseFlow\Processor\PaymentProcessor;
-use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
-use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
-use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
-use Eccube\Service\PurchaseFlow\Processor\StockValidator;
-use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
-use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -77,18 +59,11 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
             return $templates;
         };
-
-        $app['eccube.queries'] = function () {
-            return new \Eccube\Doctrine\Query\Queries();
-        };
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         // Add event subscriber to TaxRuleEvent
         $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app[TaxRuleService::class]));
-
-        $dispatcher->addSubscriber(new ForwardOnlyListener());
-        $dispatcher->addSubscriber(new TransactionListener($app));
     }
 }

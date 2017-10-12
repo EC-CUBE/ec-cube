@@ -43,10 +43,13 @@ use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
 use Eccube\DI\DIServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
+use Eccube\ServiceProvider\FowwardOnlyServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
 use Eccube\ServiceProvider\PagenatorServiceProvider;
 use Eccube\ServiceProvider\PaymentServiceProvider;
 use Eccube\ServiceProvider\PurchaseFlowServiceProvider;
+use Eccube\ServiceProvider\QueriesServiceProvider;
+use Eccube\ServiceProvider\TransactionServiceProvider;
 use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
@@ -319,6 +322,9 @@ class Application extends \Silex\Application
         $this->register(new PagenatorServiceProvider());
         $this->register(new PaymentServiceProvider());
         $this->register(new PurchaseFlowServiceProvider());
+        $this->register(new FowwardOnlyServiceProvider());
+        $this->register(new TransactionServiceProvider());
+        $this->register(new QueriesServiceProvider());
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
