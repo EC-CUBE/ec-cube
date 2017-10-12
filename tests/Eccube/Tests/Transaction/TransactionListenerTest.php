@@ -265,7 +265,9 @@ class TransactionListenerTest extends WebTestCase
      */
     public function createApplication()
     {
-        $app = Application::getInstance();
+        $app = Application::getInstance([
+            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
+        ]);
         $app['debug'] = true;
 
         // ログの内容をERRORレベルでしか出力しないように設定を上書き

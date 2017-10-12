@@ -85,7 +85,6 @@
         "psr-4": {
             "Eccube\\Entity\\": "app/proxy/entity",
             "Eccube\\": "src/Eccube",
-            "Acme\\": "app/Acme",
             "Plugin\\": "app/Plugin",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
         },

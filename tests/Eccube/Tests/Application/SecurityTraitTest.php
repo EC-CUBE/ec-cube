@@ -11,6 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
+use Eccube\Application;
 use Eccube\Tests\EccubeTestCase;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,7 +84,9 @@ class SecurityTraitTest extends EccubeTestCase
 
     public function createApplication($users = array())
     {
-        $app = \Eccube\Application::getInstance();
+        $app = Application::getInstance([
+            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
+        ]);
         $app['debug'] = true;
         if (!$app->offsetExists('config')) {
             // ログの内容をERRORレベルでしか出力しないように設定を上書き

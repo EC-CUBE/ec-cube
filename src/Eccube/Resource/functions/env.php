@@ -8,10 +8,6 @@ function env($key, $default = null)
         return $default;
     }
 
-    if (is_array($value)) {
-        return $value;
-    }
-
     switch (strtolower($value))
     {
         case 'true':
@@ -26,7 +22,7 @@ function env($key, $default = null)
         return $value;
     }
 
-    $decoded = json_decode($value);
+    $decoded = json_decode($value, true);
     if ($decoded !== null) {
         return $decoded;
     }

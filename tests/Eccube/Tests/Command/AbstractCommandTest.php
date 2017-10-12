@@ -143,7 +143,9 @@ abstract class AbstractCommandTest extends EccubeTestCase
 
     public function createApplication()
     {
-        $app = Application::getInstance();
+        $app = Application::getInstance([
+            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
+        ]);
         $app['debug'] = true;
         $app->initialize();
         // Console

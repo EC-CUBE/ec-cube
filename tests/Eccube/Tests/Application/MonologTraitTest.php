@@ -36,7 +36,7 @@ class MonologTraitTest extends \PHPUnit_Framework_TestCase
 
     public function createApplication()
     {
-        $app = new \Eccube\Application();
+        $app = new \Eccube\Application(['eccube.autoloader' => $GLOBALS['eccube.autoloader']]);
         $app->register(new MonologServiceProvider(), array(
             'monolog.handler' => function () use ($app) {
                 return new TestHandler($app['monolog.level']);

@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require __DIR__.'/autoload.php';
+$loader = require __DIR__.'/autoload.php';
 
 ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
@@ -33,7 +33,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-$app = \Eccube\Application::getInstance();
+$app = \Eccube\Application::getInstance(['eccube.autoloader' => $loader]);
 
 // インストールされてなければインストーラにリダイレクト
 if ($app['config']['eccube_install']) {

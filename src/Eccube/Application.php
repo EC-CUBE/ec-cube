@@ -23,6 +23,7 @@
 
 namespace Eccube;
 
+use Composer\Autoload\ClassLoader;
 use Doctrine\DBAL\Types\Type;
 use Eccube\DI\AutoWiring\EntityEventAutowiring;
 use Eccube\DI\AutoWiring\FormExtensionAutoWiring;
@@ -102,6 +103,9 @@ class Application extends \Silex\Application
 
         // init monolog
         $this->initLogger();
+
+        // init class loader.
+        $this->initClassLoader();
     }
 
     /**
@@ -117,7 +121,7 @@ class Application extends \Silex\Application
     public function initConfig()
     {
         // load .env
-        $envFile = __DIR__.'/../../app/config/eccube/.env';
+        $envFile = __DIR__.'/../../.env';
         if (file_exists($envFile)) {
             (new Dotenv())->load($envFile);
         }
@@ -144,6 +148,33 @@ class Application extends \Silex\Application
     {
         $app = $this;
         $this->register(new ServiceProvider\LogServiceProvider($app));
+    }
+
+    public function initClassLoader()
+    {
+        if (!isset($this['config']['vendor_name'])) {
+            $this['logger']->log('config.vendor_name is not set.');
+
+            return;
+        }
+
+        $name = $this['config']['vendor_name'];
+        $dir = $this['config']['root_dir'].'/app/'.$name;
+
+        if (false === file_exists($dir)) {
+            $this['logger']->log(sprintf('%s is not exists.', $dir));
+
+            return;
+        }
+
+        $path = realpath($dir);
+
+        $loader = $this['eccube.autoloader'];
+        $loader->addPsr4($name.'\\', $path);
+
+        $config = $this['config'];
+        $config['vendor_dir'] = $path;
+        $this->overwrite('config', $config);
     }
 
     public function initialize()
@@ -250,26 +281,30 @@ class Application extends \Silex\Application
         $this->register(new DIServiceProvider(), [
             'eccube.di.wirings' => [
                 new RouteAutoWiring(array_merge([
-                    $this['config']['root_dir'].'/app/Acme/Controller',
-                    $this['config']['root_dir'].'/src/Eccube/Controller'
+                    $this['config']['vendor_dir'].'/Controller',
+                    $this['config']['root_dir'].'/src/Eccube/Controller',
                 ], $pluginSubDirs('Controller'))),
                 new FormTypeAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Form/Type',
                     $this['config']['root_dir'].'/src/Eccube/Form/Type'
                 ], $pluginSubDirs('Form/Type'))),
                 new FormExtensionAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Form/Extension',
                     $this['config']['root_dir'].'/src/Eccube/Form/Extension'
                 ], $pluginSubDirs('Form/Extension'))),
                 new ServiceAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Service',
                     $this['config']['root_dir'].'/src/Eccube/Service'
                 ], $pluginSubDirs('Service'))),
                 new RepositoryAutoWiring(array_merge([
+                    $this['config']['vendor_dir'].'/Repository',
                     $this['config']['root_dir'].'/src/Eccube/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new QueryExtensionAutoWiring(array_merge([
-                    $this['config']['root_dir'].'/src/Eccube/Repository'
+                    $this['config']['vendor_dir'].'/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new EntityEventAutowiring(array_merge([
-                    $this['config']['root_dir'].'/app/Acme/Entity'
+                    $this['config']['vendor_dir'].'/Entity'
                 ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
@@ -318,19 +353,21 @@ class Application extends \Silex\Application
 
         $this['eccube.routers.plugin'] = [];
 
-        $this['eccube.router.extend'] = function ($app) {
-            // TODO ディレクトリ名は暫定
-            $resource = $app['config']['root_dir'].'/app/Acme/Controller';
-            $cachePrefix = 'Extend';
+        if (isset($this['config']['vendor_dir']) && file_exists($this['config']['vendor_dir'].'/Controller')) {
+            $this['eccube.router.extend'] = function ($app) {
+                $resource = $app['config']['vendor_dir'].'/Controller';
+                $cachePrefix = 'Extend';
 
-            $router = $app['eccube.router']($resource, $cachePrefix);
+                $router = $app['eccube.router']($resource, $cachePrefix);
 
-            return $router;
-        };
-
+                return $router;
+            };
+        }
         $this->extend('request_matcher', function ($matcher, $app) {
             $matchers = [];
-            $matchers[] = $app['eccube.router.extend'];
+            if (isset($app['eccube.router.extend'])) {
+                $matchers[] = $app['eccube.router.extend'];
+            }
             foreach ($app['eccube.routers.plugin'] as $router) {
                 $matchers[] = $router;
             };
@@ -342,7 +379,9 @@ class Application extends \Silex\Application
 
         $this->extend('url_generator', function ($generator, $app) {
             $generators = [];
-            $generators[] = $app['eccube.router.extend'];
+            if (isset($app['eccube.router.extend'])) {
+                $generators[] = $app['eccube.router.extend'];
+            }
             foreach ($app['eccube.routers.plugin'] as $router) {
                 $generators[] = $router;
             };
@@ -354,7 +393,9 @@ class Application extends \Silex\Application
 
         // Route CollectionにEC-CUBEで定義したルーティングを追加(debug tool barに出力するため)
         $this->extend('routes', function ($routes, $app) {
-            $routes->addCollection($app['eccube.router.extend']->getRouteCollection());
+            if (isset($app['eccube.router.extend'])) {
+                $routes->addCollection($app['eccube.router.extend']->getRouteCollection());
+            }
             foreach ($app['eccube.routers.plugin'] as $router) {
                 $routes->addCollection($router->getRouteCollection());
             };
@@ -631,15 +672,17 @@ class Application extends \Silex\Application
              'use_simple_annotation_reader' => false,
          );
 
-        // TODO namespace は暫定
-        $ormMappings[] = array(
-            'type' => 'annotation',
-            'namespace' => 'Acme\Entity',
-            'path' => array(
-                __DIR__.'/../../app/Acme/Entity',
-            ),
-            'use_simple_annotation_reader' => false,
-        );
+        if (isset($this['config']['vendor_dir']) && file_exists($this['config']['vendor_dir'].'/Entity')) {
+
+            $ormMappings[] = array(
+                'type' => 'annotation',
+                'namespace' => $this['config']['vendor_name'].'\Entity',
+                'path' => array(
+                    $this['config']['vendor_dir'].'/Entity',
+                ),
+                'use_simple_annotation_reader' => false,
+            );
+        }
 
         foreach ($pluginConfigs as $code) {
             $config = $code['config'];

@@ -42,7 +42,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
-require_once __DIR__.'/autoload.php';
+$loader = require_once __DIR__.'/autoload.php';
 
 Debug::enable();
 
@@ -52,7 +52,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-$app = \Eccube\Application::getInstance();
+$app = \Eccube\Application::getInstance(['eccube.autoloader' => $loader]);
 
 // debug enable.
 $app['debug'] = true;
