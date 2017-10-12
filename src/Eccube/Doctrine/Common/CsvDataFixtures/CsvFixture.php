@@ -27,6 +27,12 @@ class CsvFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        // 日本語windowsの場合はインストール時にエラーとなるので英語のロケールをセット
+        // ロケールがミスマッチしてSplFileObject::READ_CSVができないのを回避
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            setLocale(LC_ALL, 'English_United States.1252');
+        }
+
         // CSV Reader に設定
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY |\SplFileObject::DROP_NEW_LINE);
 
