@@ -9,7 +9,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ItemProcessor;
-use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -144,7 +144,7 @@ class PurchaseFlowTest_FailProcessor extends ValidatableItemProcessor
 
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
-        throw new ItemValidateException($this->errorMessage);
+        throw new InvalidItemException($this->errorMessage);
     }
 }
 
@@ -165,6 +165,6 @@ class PurchaseFlowTest_FailItemHolderProcessor extends ValidatableItemHolderProc
     protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         // TODO ItemHolerValidateException が必要か検討
-        throw new ItemValidateException($this->errorMessage);
+        throw new InvalidItemException($this->errorMessage);
     }
 }

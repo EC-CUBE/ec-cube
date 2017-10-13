@@ -3,7 +3,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
@@ -25,7 +25,7 @@ class SaleLimitValidator extends ValidatableItemProcessor
 
         $quantity = $item->getQuantity();
         if ($limit < $quantity) {
-            throw ItemValidateException::fromProductClass('cart.over.sale_limit', $item->getProductClass());
+            throw InvalidItemException::fromProductClass('cart.over.sale_limit', $item->getProductClass());
         }
     }
 

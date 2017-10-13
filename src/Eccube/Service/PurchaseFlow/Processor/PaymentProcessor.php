@@ -28,7 +28,7 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\ProductType;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 
@@ -84,7 +84,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
 
         // 共通項がなければエラー
         if (empty($paymentIds)) {
-            throw new ItemValidateException('支払い方法が異なる');
+            throw new InvalidItemException('支払い方法が異なる');
         }
     }
 

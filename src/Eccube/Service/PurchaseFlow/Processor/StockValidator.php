@@ -3,7 +3,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\PurchaseFlow\ItemValidateException;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
@@ -23,10 +23,10 @@ class StockValidator extends ValidatableItemProcessor
         $stock = $item->getProductClass()->getStock();
         $quantity = $item->getQuantity();
         if ($stock == 0) {
-            throw ItemValidateException::fromProductClass('cart.zero.stock', $item->getProductClass());
+            throw InvalidItemException::fromProductClass('cart.zero.stock', $item->getProductClass());
         }
         if ($stock < $quantity) {
-            throw ItemValidateException::fromProductClass('cart.over.stock', $item->getProductClass());
+            throw InvalidItemException::fromProductClass('cart.over.stock', $item->getProductClass());
         }
     }
 

@@ -40,7 +40,7 @@ abstract class ValidatableItemProcessor implements ItemProcessor
             $this->validate($item, $context);
 
             return ProcessResult::success();
-        } catch (ItemValidateException $e) {
+        } catch (InvalidItemException $e) {
             if ($item instanceof CartItem) {
                 $this->handle($item, $context);
             }
