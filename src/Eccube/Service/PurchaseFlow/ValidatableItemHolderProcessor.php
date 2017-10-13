@@ -18,7 +18,7 @@ abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
             $this->validate($itemHolder, $context);
 
             return ProcessResult::success();
-        } catch (ItemValidateException $e) {
+        } catch (InvalidItemException $e) {
             return ProcessResult::error($e->getMessage());
         }
     }
