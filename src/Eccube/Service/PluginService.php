@@ -90,19 +90,16 @@ class PluginService
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
 
+    // ファイル指定してのプラグインインストール
     public function install($path, $source = 0)
     {
         $pluginBaseDir = null;
         $tmp = null;
 
-        // Proxyのクラスをロードせずにスキーマを更新するために、
-        // インストール時には一時的なディレクトリにProxyを生成する
-        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
-        @mkdir($tmpProxyOutputDir);
-
         try {
-            PluginConfigManager::removePluginConfigCache();
-            Cache::clear($this->app, false);
+            // プラグイン配置前に実施する処理
+            $this->preInstall();
+
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
@@ -119,13 +116,8 @@ class PluginService
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
-            $plugin = $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
-
-            // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
-            $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
-            $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
-
-            ConfigManager::writePluginConfigCache();
+            // プラグイン配置後に実施する処理
+            $this->postInstall($config, $event, $source);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -133,14 +125,42 @@ class PluginService
 
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
+        }
+
+        return true;
+    }
+
+    // インストール事前処理
+    public function preInstall()
+    {
+        // キャッシュの削除
+        PluginConfigManager::removePluginConfigCache();
+        Cache::clear($this->app, false);
+    }
+
+    // インストール事後処理
+    public function postInstall($config, $event, $source)
+    {
+        // Proxyのクラスをロードせずにスキーマを更新するために、
+        // インストール時には一時的なディレクトリにProxyを生成する
+        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
+        @mkdir($tmpProxyOutputDir);
+
+        try {
+            // dbにプラグイン登録
+            $plugin = $this->registerPlugin($config, $event, $source);
+
+            // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
+            $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
+            $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
+
+            ConfigManager::writePluginConfigCache();
         } finally {
             foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
                 unlink($f);
             }
             rmdir($tmpProxyOutputDir);
         }
-
-        return true;
     }
 
     public function createTempDir()
