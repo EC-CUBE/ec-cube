@@ -24,6 +24,7 @@
 
 namespace Eccube\ServiceProvider;
 
+use Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\TaxRuleService;
@@ -53,6 +54,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             return new ParameterBag();
         };
 
+        // Application::initRenderingと一緒に修正
         $app['eccube.twig.block.templates'] = function () {
             $templates = new ArrayCollection();
             $templates[] = 'render_block.twig';
@@ -64,6 +66,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         // Add event subscriber to TaxRuleEvent
-        $app['orm.em']->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($app[TaxRuleService::class]));
+        // initDoctrineのタイミングでは、TaxRuleServiceが定義されていないため, ここで追加.
+        $app['orm.em']->getEventManager()->addEventSubscriber(new TaxRuleEventSubscriber($app[TaxRuleService::class]));
     }
 }
