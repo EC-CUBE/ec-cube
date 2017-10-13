@@ -26,8 +26,13 @@ class CsvFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            setLocale(LC_ALL, 'English_United States.1252');
+        }
+
         // CSV Reader に設定
-        $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY |\SplFileObject::DROP_NEW_LINE);
+        $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE);
 
         // ヘッダ行を取得
         $headers = $this->file->current();
