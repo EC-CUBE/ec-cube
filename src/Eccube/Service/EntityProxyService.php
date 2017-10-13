@@ -29,11 +29,12 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\EntityExtension;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\FileGenerator;
 use Zend\Code\Reflection\ClassReflection;
 
 /**
@@ -71,40 +72,24 @@ class EntityProxyService
         foreach ($targetEntities as $targetEntity) {
             $traits = isset($addTraits[$targetEntity]) ? $addTraits[$targetEntity] : [];
             $rc = new ClassReflection($targetEntity);
-            $generator = ClassGenerator::fromReflection($rc);
-            $uses = FileGenerator::fromReflectedFileName($rc->getFileName())->getUses();
 
-            foreach ($uses as $use) {
-                $generator->addUse($use[0], $use[1]);
-            }
+            $entityTokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
 
             if (isset($removeTrails[$targetEntity])) {
                 foreach ($removeTrails[$targetEntity] as $trait) {
-                    $this->removePropertiesFromProxy($trait, $generator);
+                    $this->removeTrait($entityTokens, $trait);
                 }
             }
 
             foreach ($traits as $trait) {
-                $this->removePropertiesFromProxy($trait, $generator);
-                $generator->addTrait('\\' . $trait);
+                $this->addTrait($entityTokens, $trait);
             }
-
-            // extendしたクラスが相対パスになるので
-            $extendClass = $generator->getExtendedClass();
-            $generator->setExtendedClass('\\'.$extendClass);
-
-            // interfaceが相対パスになるので
-            $interfaces = $generator->getImplementedInterfaces();
-            foreach ($interfaces as &$interface) {
-                $interface = '\\'.$interface;
-            }
-            $generator->setImplementedInterfaces($interfaces);
 
             $file = basename($rc->getFileName());
 
-            $code = $generator->generate();
+            $code = $entityTokens->generateCode();
             $generatedFiles[] = $outputFile = $outputDir.'/'.$file;
-            file_put_contents($outputFile, '<?php '.PHP_EOL.$code);
+            file_put_contents($outputFile, $code);
             $output->writeln('gen -> '.$outputFile);
         }
 
@@ -169,29 +154,85 @@ class EntityProxyService
     }
 
     /**
-     * @param $trait
-     * @param $generator
+     * EntityにTraitを追加.
+     *
+     * @param $entityTokens Tokens Entityのトークン
+     * @param $trait string 追加するTraitのFQCN
      */
-    private function removePropertiesFromProxy($trait, $generator)
+    private function addTrait($entityTokens, $trait)
     {
-        $rt = new ClassReflection($trait);
-        foreach ($rt->getProperties() as $prop) {
-            // すでにProxyがある場合, $generatorにuse XxxTrait;が存在せず,
-            // traitに定義されているフィールド,メソッドがクラス側に追加されてしまう
-            if ($generator->hasProperty($prop->getName())) {
-                // $generator->removeProperty()はzend-code 2.6.3 では未実装なのでリフレクションで削除.
-                $generatorRefObj = new \ReflectionObject($generator);
-                $generatorRefProp = $generatorRefObj->getProperty('properties');
-                $generatorRefProp->setAccessible(true);
-                $properies = $generatorRefProp->getValue($generator);
-                unset($properies[$prop->getName()]);
-                $generatorRefProp->setValue($generator, $properies);
+        $newTraitTokens = $this->convertFQCNToTokens($trait);
+
+        // Traitのuse句があるかどうか
+        $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+
+        if ($useTraitIndex > 0) {
+            $useTraitEndIndex = $entityTokens->getNextTokenOfKind($useTraitIndex, [';']);
+            $alreadyUseTrait = $entityTokens->findSequence($newTraitTokens, $useTraitIndex, $useTraitEndIndex);
+            if (is_null($alreadyUseTrait)) {
+                $entityTokens->insertAt($useTraitEndIndex, array_merge(
+                    [new Token(','), new Token([T_WHITESPACE, ' '])],
+                    $newTraitTokens
+                ));
+            }
+        } else {
+            $useTraitTokens = array_merge(
+                [
+                    new Token([T_WHITESPACE, PHP_EOL.'    ']),
+                    new Token([CT::T_USE_TRAIT, 'use']),
+                    new Token([T_WHITESPACE, ' '])
+                ],
+                $newTraitTokens,
+                [new Token(';'), new Token([T_WHITESPACE, PHP_EOL])]);
+
+            // `class X extens AbstractEntity {`の後にtraitを追加
+            $classTokens = $entityTokens->findSequence([[T_CLASS], [T_STRING]]);
+            $classTokenEnd = $entityTokens->getNextTokenOfKind(array_keys($classTokens)[0], ['{']);
+            $entityTokens->insertAt($classTokenEnd + 1, $useTraitTokens);
+        }
+    }
+
+    /**
+     * EntityからTraitを削除.
+     * @param $entityTokens Tokens Entityのトークン
+     * @param $trait string 削除するTraitのFQCN
+     */
+    private function removeTrait($entityTokens, $trait)
+    {
+        $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
+        if ($useTraitIndex > 0) {
+            $useTraitEndIndex = $entityTokens->getNextTokenOfKind($useTraitIndex, [';']);
+            $traitsTokens = array_slice($entityTokens->toArray(), $useTraitIndex + 1, $useTraitEndIndex - $useTraitIndex - 1);
+
+            // Trait名の配列に変換
+            $traitNames = explode(',', implode(array_map(function($token) {
+                return $token->getContent();
+            }, array_filter($traitsTokens, function($token) {
+                return $token->getId() != T_WHITESPACE;
+            }))));
+
+            // 削除対象を取り除く
+            array_splice($traitNames, array_search($trait, $traitNames), 1);
+
+            // use句をすべて削除
+            $entityTokens->clearRange($useTraitIndex, $useTraitEndIndex + 1);
+
+            // traitを追加し直す
+            foreach ($traitNames as $t) {
+                $this->addTrait($entityTokens, $t);
             }
         }
-        foreach ($rt->getMethods() as $method) {
-            if ($generator->hasMethod($method->getName())) {
-                $generator->removeMethod($method->getName());
+    }
+
+    private function convertFQCNToTokens($fqcn)
+    {
+        $result = [];
+        foreach (explode('\\', $fqcn) as $part) {
+            if ($part) {
+                $result[] = new Token([T_NS_SEPARATOR, '\\']);
+                $result[] = new Token([T_STRING, $part]);
             }
         }
+        return $result;
     }
 }
