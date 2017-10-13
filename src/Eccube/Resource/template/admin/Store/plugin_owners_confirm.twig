@@ -20,23 +20,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% set version_check = item.version_check  %}
-<div class="plugin-panel {% if version_check == 0 %}plugin-panel-not{% endif %} {% if item.promotion == 1 %}plugin-panel-pr{% endif %}">
+<div class="plugin-panel {% if version_check == 0 %}plugin-panel-not{% endif %}">
     <div class="plugin-logo">
         <a href="{{ item.product_url }}" target="_blank"><img class="img-rounded" src="{{ item.product_image_url }}"></a>
     </div>
     <div class="plugin-content-top">
         <div class="plugin-title">
-            <span class="pull-right">
-                {% if item.update_status == 2 %}
-                    <h4><span class="label label-success">インストール済み</span></h4>
-                {% elseif item.update_status == 3 %}
-                    <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': item.product_id, 'version': item.version}) }}">アップデート</a>
-                {% elseif item.update_status == 4 %}
-                    <a class="btn btn-success btn-xs" href="{{ item.product_url }}" target="_blank">購入</a>
-                {% else %}
-                    <a class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_install_confirm', {'pluginId': item.product_id}) }}">インストール</a>
-                {% endif %}
-            </span>
             <a class="plugin-name" href="{{ item.product_url }}" target="_blank">{{ item.name }}</a>
         </div>
         <div class="plugin-description">

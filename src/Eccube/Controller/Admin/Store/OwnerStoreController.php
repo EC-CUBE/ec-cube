@@ -35,6 +35,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Process\Process;
 
 /**
@@ -143,13 +144,54 @@ class OwnerStoreController extends AbstractController
     }
 
     /**
-     * Api Install plugin by composer connect with packagist
+     * Do confirm page
+     *
+     * @Route("/{_admin}/store/plugin/confirm/{pluginId}" , name="admin_store_plugin_install_confirm")
+     * @Template("Store/plugin_confirm.twig")
+     * @param Application $application
+     * @param Request     $request
+     * @param string      $pluginId
+     * @return array
+     */
+    public function doConfirm(Application $application, Request $request, $pluginId)
+    {
+        // Owner's store communication
+        $url = $this->appConfig['owners_store_url'].'?method=list';
+        list($json, $info) = $this->getRequestApi($url, $application);
+        $data = json_decode($json, true);
+        $items = $data['item'];
+
+        // Find plugin
+        $index = array_search($pluginId, array_column($items, 'product_id'));
+        if ($index === false) {
+            throw new NotFoundHttpException();
+        }
+
+        $arrPlugin = [];
+
+        $plugin = $items[$index];
+        $plugin['version_check'] = 0;
+        if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
+            // Match version
+            $plugin['version_check'] = 1;
+        }
+        $arrPlugin[] = $plugin;
+
+        return [
+            'items' => $arrPlugin,
+        ];
+    }
+
+    /**
+     * Api Install plugin by composer connect with package repo
      *
      * @Route("/{_admin}/store/plugin/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
      * @param Application $app
      * @param Request     $request
      * @param string      $pluginCode
+     * @param string      $eccubeVersion
+     * @param string      $version
      * @return RedirectResponse
      */
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
