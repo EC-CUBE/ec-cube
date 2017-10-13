@@ -13,12 +13,14 @@ class TransactionServiceProvider implements EventListenerProviderInterface, Serv
 {
     public function register(Container $app)
     {
-        $app['eccube.listener.transaction'] = function (Container $app) {
-            $listener = new TransactionListener($app['orm.em'], $app['logger']);
+        $app['eccube.listener.transaction.enabled'] = true;
 
-            if ($app->isTestMode()) {
-                $listener->disable();
-            }
+        $app['eccube.listener.transaction'] = function (Container $app) {
+            $listener = new TransactionListener(
+                $app['orm.em'],
+                $app['logger'],
+                $app['eccube.listener.transaction.enabled']
+            );
 
             return $listener;
         };

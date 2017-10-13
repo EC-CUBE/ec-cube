@@ -975,26 +975,6 @@ class Application extends \Silex\Application
     }
 
     /**
-     * PHPUnit を実行中かどうかを設定する.
-     *
-     * @param boolean $testMode PHPUnit を実行中の場合 true
-     */
-    public function setTestMode($testMode)
-    {
-        $this->testMode = $testMode;
-    }
-
-    /**
-     * PHPUnit を実行中かどうか.
-     *
-     * @return boolean PHPUnit を実行中の場合 true
-     */
-    public function isTestMode()
-    {
-        return $this->testMode;
-    }
-
-    /**
      *
      * データベースの接続を確認
      * 成功 : trueを返却
