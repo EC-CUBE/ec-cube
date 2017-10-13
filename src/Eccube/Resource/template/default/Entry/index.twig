@@ -181,8 +181,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dt>
                             <dd>
                                 <div class="ec-birth{{ has_errors(form.birth) ? ' error'}}">
-                                    {{ form_widget(form.birth.year) }}<span>-</span>
-                                    {{ form_widget(form.birth.month) }}<span>-</span>
+                                    {{ form_widget(form.birth.year) }}<span>/</span>
+                                    {{ form_widget(form.birth.month) }}<span>/</span>
                                     {{ form_widget(form.birth.day) }}
                                     {{ form_errors(form.birth) }}
                                 </div>
