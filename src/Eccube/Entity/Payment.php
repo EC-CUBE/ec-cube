@@ -46,14 +46,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @return boolean
-     */
-    public function isVisible()
-    {
-        return $this->visible;
-    }
-
-    /**
      * @var int
      *
      * @ORM\Column(name="payment_id", type="integer", options={"unsigned":true})
@@ -179,9 +171,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -189,13 +181,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set method
+     * Set method.
      *
-     * @param string $method
+     * @param string|null $method
      *
      * @return Payment
      */
-    public function setMethod($method)
+    public function setMethod($method = null)
     {
         $this->method = $method;
 
@@ -203,9 +195,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get method
+     * Get method.
      *
-     * @return string
+     * @return string|null
      */
     public function getMethod()
     {
@@ -213,13 +205,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set charge
+     * Set charge.
      *
-     * @param string $charge
+     * @param string|null $charge
      *
      * @return Payment
      */
-    public function setCharge($charge)
+    public function setCharge($charge = null)
     {
         $this->charge = $charge;
 
@@ -227,9 +219,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get charge
+     * Get charge.
      *
-     * @return string
+     * @return string|null
      */
     public function getCharge()
     {
@@ -237,13 +229,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set ruleMax
+     * Set ruleMax.
      *
-     * @param string $ruleMax
+     * @param string|null $ruleMax
      *
      * @return Payment
      */
-    public function setRuleMax($ruleMax)
+    public function setRuleMax($ruleMax = null)
     {
         $this->rule_max = $ruleMax;
 
@@ -251,9 +243,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get ruleMax
+     * Get ruleMax.
      *
-     * @return string
+     * @return string|null
      */
     public function getRuleMax()
     {
@@ -261,13 +253,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param integer $rank
+     * @param int|null $rank
      *
      * @return Payment
      */
-    public function setRank($rank)
+    public function setRank($rank = null)
     {
         $this->rank = $rank;
 
@@ -275,9 +267,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int|null
      */
     public function getRank()
     {
@@ -285,9 +277,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fixFlg
+     * Set fixFlg.
      *
-     * @param integer $fixFlg
+     * @param boolean $fixFlg
      *
      * @return Payment
      */
@@ -299,9 +291,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fixFlg
+     * Get fixFlg.
      *
-     * @return integer
+     * @return boolean
      */
     public function getFixFlg()
     {
@@ -309,13 +301,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set paymentImage
+     * Set paymentImage.
      *
-     * @param string $paymentImage
+     * @param string|null $paymentImage
      *
      * @return Payment
      */
-    public function setPaymentImage($paymentImage)
+    public function setPaymentImage($paymentImage = null)
     {
         $this->payment_image = $paymentImage;
 
@@ -323,9 +315,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get paymentImage
+     * Get paymentImage.
      *
-     * @return string
+     * @return string|null
      */
     public function getPaymentImage()
     {
@@ -333,9 +325,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set chargeFlg
+     * Set chargeFlg.
      *
-     * @param integer $chargeFlg
+     * @param boolean $chargeFlg
      *
      * @return Payment
      */
@@ -347,9 +339,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get chargeFlg
+     * Get chargeFlg.
      *
-     * @return integer
+     * @return boolean
      */
     public function getChargeFlg()
     {
@@ -357,13 +349,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set ruleMin
+     * Set ruleMin.
      *
-     * @param string $ruleMin
+     * @param string|null $ruleMin
      *
      * @return Payment
      */
-    public function setRuleMin($ruleMin)
+    public function setRuleMin($ruleMin = null)
     {
         $this->rule_min = $ruleMin;
 
@@ -371,9 +363,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get ruleMin
+     * Get ruleMin.
      *
-     * @return string
+     * @return string|null
      */
     public function getRuleMin()
     {
@@ -381,13 +373,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set methodClass
+     * Set methodClass.
      *
-     * @param string $methodClass
+     * @param string|null $methodClass
      *
      * @return Payment
      */
-    public function setMethodClass($methodClass)
+    public function setMethodClass($methodClass = null)
     {
         $this->method_class = $methodClass;
 
@@ -395,9 +387,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get methodClass
+     * Get methodClass.
      *
-     * @return string
+     * @return string|null
      */
     public function getMethodClass()
     {
@@ -405,13 +397,13 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set serviceClass
+     * Set serviceClass.
      *
-     * @param string $serviceClass
+     * @param string|null $serviceClass
      *
      * @return Payment
      */
-    public function setServiceClass($serviceClass)
+    public function setServiceClass($serviceClass = null)
     {
         $this->service_class = $serviceClass;
 
@@ -419,9 +411,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get serviceClass
+     * Get serviceClass.
      *
-     * @return string
+     * @return string|null
      */
     public function getServiceClass()
     {
@@ -429,31 +421,25 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set visible
-     *
-     * @param boolean $visible
-     *
-     * @return Payment
-     */
-    public function setVisible($visible)
-    {
-        $this->visible = $visible;
-
-        return $this;
-    }
-
-    /**
-     * Get visible
-     *
      * @return boolean
      */
-    public function getVisible()
+    public function isVisible()
     {
         return $this->visible;
     }
 
     /**
-     * Set createDate
+     * @param boolean $visible
+     * @return Payment
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+        return $this;
+    }
+
+    /**
+     * Set createDate.
      *
      * @param \DateTime $createDate
      *
@@ -467,7 +453,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get createDate
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -477,7 +463,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set updateDate
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
      *
@@ -491,7 +477,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get updateDate
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -501,7 +487,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add paymentOption
+     * Add paymentOption.
      *
      * @param \Eccube\Entity\PaymentOption $paymentOption
      *
@@ -515,17 +501,19 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Remove paymentOption
+     * Remove paymentOption.
      *
      * @param \Eccube\Entity\PaymentOption $paymentOption
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removePaymentOption(\Eccube\Entity\PaymentOption $paymentOption)
     {
-        $this->PaymentOptions->removeElement($paymentOption);
+        return $this->PaymentOptions->removeElement($paymentOption);
     }
 
     /**
-     * Get paymentOptions
+     * Get paymentOptions.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -535,9 +523,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set creator
+     * Set creator.
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
      *
      * @return Payment
      */
@@ -549,9 +537,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

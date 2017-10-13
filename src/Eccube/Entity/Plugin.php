@@ -118,9 +118,9 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -128,7 +128,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -142,7 +142,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -152,7 +152,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set code
+     * Set code.
      *
      * @param string $code
      *
@@ -166,7 +166,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get code
+     * Get code.
      *
      * @return string
      */
@@ -176,7 +176,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set className
+     * Set className.
      *
      * @param string $className
      *
@@ -190,7 +190,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get className
+     * Get className.
      *
      * @return string
      */
@@ -200,7 +200,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set enable
+     * Set enable.
      *
      * @param boolean $enable
      *
@@ -214,7 +214,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get enable
+     * Get enable.
      *
      * @return boolean
      */
@@ -224,7 +224,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set version
+     * Set version.
      *
      * @param string $version
      *
@@ -238,7 +238,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get version
+     * Get version.
      *
      * @return string
      */
@@ -248,7 +248,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set source
+     * Set source.
      *
      * @param string $source
      *
@@ -262,7 +262,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get source
+     * Get source.
      *
      * @return string
      */
@@ -272,7 +272,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set createDate
+     * Set createDate.
      *
      * @param \DateTime $createDate
      *
@@ -286,7 +286,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get createDate
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -296,7 +296,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set updateDate
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
      *
@@ -310,7 +310,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get updateDate
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -320,7 +320,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add pluginEventHandler
+     * Add pluginEventHandler.
      *
      * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
      *
@@ -334,17 +334,19 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Remove pluginEventHandler
+     * Remove pluginEventHandler.
      *
      * @param \Eccube\Entity\PluginEventHandler $pluginEventHandler
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removePluginEventHandler(\Eccube\Entity\PluginEventHandler $pluginEventHandler)
     {
-        $this->PluginEventHandlers->removeElement($pluginEventHandler);
+        return $this->PluginEventHandlers->removeElement($pluginEventHandler);
     }
 
     /**
-     * Get pluginEventHandlers
+     * Get pluginEventHandlers.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

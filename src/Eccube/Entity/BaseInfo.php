@@ -330,9 +330,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -340,13 +340,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set companyName
+     * Set companyName.
      *
-     * @param string $companyName
+     * @param string|null $companyName
      *
      * @return BaseInfo
      */
-    public function setCompanyName($companyName)
+    public function setCompanyName($companyName = null)
     {
         $this->company_name = $companyName;
 
@@ -354,9 +354,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get companyName
+     * Get companyName.
      *
-     * @return string
+     * @return string|null
      */
     public function getCompanyName()
     {
@@ -364,13 +364,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set companyKana
+     * Set companyKana.
      *
-     * @param string $companyKana
+     * @param string|null $companyKana
      *
      * @return BaseInfo
      */
-    public function setCompanyKana($companyKana)
+    public function setCompanyKana($companyKana = null)
     {
         $this->company_kana = $companyKana;
 
@@ -378,9 +378,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get companyKana
+     * Get companyKana.
      *
-     * @return string
+     * @return string|null
      */
     public function getCompanyKana()
     {
@@ -388,13 +388,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip01
+     * Set zip01.
      *
-     * @param string $zip01
+     * @param string|null $zip01
      *
      * @return BaseInfo
      */
-    public function setZip01($zip01)
+    public function setZip01($zip01 = null)
     {
         $this->zip01 = $zip01;
 
@@ -402,9 +402,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zip01
+     * Get zip01.
      *
-     * @return string
+     * @return string|null
      */
     public function getZip01()
     {
@@ -412,13 +412,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zip02
+     * Set zip02.
      *
-     * @param string $zip02
+     * @param string|null $zip02
      *
      * @return BaseInfo
      */
-    public function setZip02($zip02)
+    public function setZip02($zip02 = null)
     {
         $this->zip02 = $zip02;
 
@@ -426,9 +426,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zip02
+     * Get zip02.
      *
-     * @return string
+     * @return string|null
      */
     public function getZip02()
     {
@@ -436,13 +436,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set zipcode
+     * Set zipcode.
      *
-     * @param string $zipcode
+     * @param string|null $zipcode
      *
      * @return BaseInfo
      */
-    public function setZipcode($zipcode)
+    public function setZipcode($zipcode = null)
     {
         $this->zipcode = $zipcode;
 
@@ -450,9 +450,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get zipcode
+     * Get zipcode.
      *
-     * @return string
+     * @return string|null
      */
     public function getZipcode()
     {
@@ -460,13 +460,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set addr01
+     * Set addr01.
      *
-     * @param string $addr01
+     * @param string|null $addr01
      *
      * @return BaseInfo
      */
-    public function setAddr01($addr01)
+    public function setAddr01($addr01 = null)
     {
         $this->addr01 = $addr01;
 
@@ -474,9 +474,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get addr01
+     * Get addr01.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddr01()
     {
@@ -484,13 +484,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set addr02
+     * Set addr02.
      *
-     * @param string $addr02
+     * @param string|null $addr02
      *
      * @return BaseInfo
      */
-    public function setAddr02($addr02)
+    public function setAddr02($addr02 = null)
     {
         $this->addr02 = $addr02;
 
@@ -498,9 +498,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get addr02
+     * Get addr02.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddr02()
     {
@@ -508,13 +508,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel01
+     * Set tel01.
      *
-     * @param string $tel01
+     * @param string|null $tel01
      *
      * @return BaseInfo
      */
-    public function setTel01($tel01)
+    public function setTel01($tel01 = null)
     {
         $this->tel01 = $tel01;
 
@@ -522,9 +522,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel01
+     * Get tel01.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel01()
     {
@@ -532,13 +532,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel02
+     * Set tel02.
      *
-     * @param string $tel02
+     * @param string|null $tel02
      *
      * @return BaseInfo
      */
-    public function setTel02($tel02)
+    public function setTel02($tel02 = null)
     {
         $this->tel02 = $tel02;
 
@@ -546,9 +546,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel02
+     * Get tel02.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel02()
     {
@@ -556,13 +556,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set tel03
+     * Set tel03.
      *
-     * @param string $tel03
+     * @param string|null $tel03
      *
      * @return BaseInfo
      */
-    public function setTel03($tel03)
+    public function setTel03($tel03 = null)
     {
         $this->tel03 = $tel03;
 
@@ -570,9 +570,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get tel03
+     * Get tel03.
      *
-     * @return string
+     * @return string|null
      */
     public function getTel03()
     {
@@ -580,13 +580,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax01
+     * Set fax01.
      *
-     * @param string $fax01
+     * @param string|null $fax01
      *
      * @return BaseInfo
      */
-    public function setFax01($fax01)
+    public function setFax01($fax01 = null)
     {
         $this->fax01 = $fax01;
 
@@ -594,9 +594,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax01
+     * Get fax01.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax01()
     {
@@ -604,13 +604,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax02
+     * Set fax02.
      *
-     * @param string $fax02
+     * @param string|null $fax02
      *
      * @return BaseInfo
      */
-    public function setFax02($fax02)
+    public function setFax02($fax02 = null)
     {
         $this->fax02 = $fax02;
 
@@ -618,9 +618,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax02
+     * Get fax02.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax02()
     {
@@ -628,13 +628,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fax03
+     * Set fax03.
      *
-     * @param string $fax03
+     * @param string|null $fax03
      *
      * @return BaseInfo
      */
-    public function setFax03($fax03)
+    public function setFax03($fax03 = null)
     {
         $this->fax03 = $fax03;
 
@@ -642,9 +642,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fax03
+     * Get fax03.
      *
-     * @return string
+     * @return string|null
      */
     public function getFax03()
     {
@@ -652,13 +652,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set businessHour
+     * Set businessHour.
      *
-     * @param string $businessHour
+     * @param string|null $businessHour
      *
      * @return BaseInfo
      */
-    public function setBusinessHour($businessHour)
+    public function setBusinessHour($businessHour = null)
     {
         $this->business_hour = $businessHour;
 
@@ -666,9 +666,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get businessHour
+     * Get businessHour.
      *
-     * @return string
+     * @return string|null
      */
     public function getBusinessHour()
     {
@@ -676,13 +676,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email01
+     * Set email01.
      *
-     * @param string $email01
+     * @param string|null $email01
      *
      * @return BaseInfo
      */
-    public function setEmail01($email01)
+    public function setEmail01($email01 = null)
     {
         $this->email01 = $email01;
 
@@ -690,9 +690,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email01
+     * Get email01.
      *
-     * @return string
+     * @return string|null
      */
     public function getEmail01()
     {
@@ -700,13 +700,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email02
+     * Set email02.
      *
-     * @param string $email02
+     * @param string|null $email02
      *
      * @return BaseInfo
      */
-    public function setEmail02($email02)
+    public function setEmail02($email02 = null)
     {
         $this->email02 = $email02;
 
@@ -714,9 +714,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email02
+     * Get email02.
      *
-     * @return string
+     * @return string|null
      */
     public function getEmail02()
     {
@@ -724,13 +724,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email03
+     * Set email03.
      *
-     * @param string $email03
+     * @param string|null $email03
      *
      * @return BaseInfo
      */
-    public function setEmail03($email03)
+    public function setEmail03($email03 = null)
     {
         $this->email03 = $email03;
 
@@ -738,9 +738,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email03
+     * Get email03.
      *
-     * @return string
+     * @return string|null
      */
     public function getEmail03()
     {
@@ -748,13 +748,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set email04
+     * Set email04.
      *
-     * @param string $email04
+     * @param string|null $email04
      *
      * @return BaseInfo
      */
-    public function setEmail04($email04)
+    public function setEmail04($email04 = null)
     {
         $this->email04 = $email04;
 
@@ -762,9 +762,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get email04
+     * Get email04.
      *
-     * @return string
+     * @return string|null
      */
     public function getEmail04()
     {
@@ -772,13 +772,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shopName
+     * Set shopName.
      *
-     * @param string $shopName
+     * @param string|null $shopName
      *
      * @return BaseInfo
      */
-    public function setShopName($shopName)
+    public function setShopName($shopName = null)
     {
         $this->shop_name = $shopName;
 
@@ -786,9 +786,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get shopName
+     * Get shopName.
      *
-     * @return string
+     * @return string|null
      */
     public function getShopName()
     {
@@ -796,13 +796,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shopKana
+     * Set shopKana.
      *
-     * @param string $shopKana
+     * @param string|null $shopKana
      *
      * @return BaseInfo
      */
-    public function setShopKana($shopKana)
+    public function setShopKana($shopKana = null)
     {
         $this->shop_kana = $shopKana;
 
@@ -810,9 +810,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get shopKana
+     * Get shopKana.
      *
-     * @return string
+     * @return string|null
      */
     public function getShopKana()
     {
@@ -820,13 +820,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shopNameEng
+     * Set shopNameEng.
      *
-     * @param string $shopNameEng
+     * @param string|null $shopNameEng
      *
      * @return BaseInfo
      */
-    public function setShopNameEng($shopNameEng)
+    public function setShopNameEng($shopNameEng = null)
     {
         $this->shop_name_eng = $shopNameEng;
 
@@ -834,9 +834,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get shopNameEng
+     * Get shopNameEng.
      *
-     * @return string
+     * @return string|null
      */
     public function getShopNameEng()
     {
@@ -844,7 +844,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set updateDate
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
      *
@@ -858,7 +858,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get updateDate
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -868,13 +868,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set goodTraded
+     * Set goodTraded.
      *
-     * @param string $goodTraded
+     * @param string|null $goodTraded
      *
      * @return BaseInfo
      */
-    public function setGoodTraded($goodTraded)
+    public function setGoodTraded($goodTraded = null)
     {
         $this->good_traded = $goodTraded;
 
@@ -882,9 +882,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get goodTraded
+     * Get goodTraded.
      *
-     * @return string
+     * @return string|null
      */
     public function getGoodTraded()
     {
@@ -892,13 +892,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set message
+     * Set message.
      *
-     * @param string $message
+     * @param string|null $message
      *
      * @return BaseInfo
      */
-    public function setMessage($message)
+    public function setMessage($message = null)
     {
         $this->message = $message;
 
@@ -906,9 +906,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get message
+     * Get message.
      *
-     * @return string
+     * @return string|null
      */
     public function getMessage()
     {
@@ -916,13 +916,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set latitude
+     * Set latitude.
      *
-     * @param string $latitude
+     * @param string|null $latitude
      *
      * @return BaseInfo
      */
-    public function setLatitude($latitude)
+    public function setLatitude($latitude = null)
     {
         $this->latitude = $latitude;
 
@@ -930,9 +930,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get latitude
+     * Get latitude.
      *
-     * @return string
+     * @return string|null
      */
     public function getLatitude()
     {
@@ -940,13 +940,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set longitude
+     * Set longitude.
      *
-     * @param string $longitude
+     * @param string|null $longitude
      *
      * @return BaseInfo
      */
-    public function setLongitude($longitude)
+    public function setLongitude($longitude = null)
     {
         $this->longitude = $longitude;
 
@@ -954,9 +954,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get longitude
+     * Get longitude.
      *
-     * @return string
+     * @return string|null
      */
     public function getLongitude()
     {
@@ -964,13 +964,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliveryFreeAmount
+     * Set deliveryFreeAmount.
      *
-     * @param string $deliveryFreeAmount
+     * @param string|null $deliveryFreeAmount
      *
      * @return BaseInfo
      */
-    public function setDeliveryFreeAmount($deliveryFreeAmount)
+    public function setDeliveryFreeAmount($deliveryFreeAmount = null)
     {
         $this->delivery_free_amount = $deliveryFreeAmount;
 
@@ -978,9 +978,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get deliveryFreeAmount
+     * Get deliveryFreeAmount.
      *
-     * @return string
+     * @return string|null
      */
     public function getDeliveryFreeAmount()
     {
@@ -988,13 +988,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliveryFreeQuantity
+     * Set deliveryFreeQuantity.
      *
-     * @param integer $deliveryFreeQuantity
+     * @param int|null $deliveryFreeQuantity
      *
      * @return BaseInfo
      */
-    public function setDeliveryFreeQuantity($deliveryFreeQuantity)
+    public function setDeliveryFreeQuantity($deliveryFreeQuantity = null)
     {
         $this->delivery_free_quantity = $deliveryFreeQuantity;
 
@@ -1002,9 +1002,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get deliveryFreeQuantity
+     * Get deliveryFreeQuantity.
      *
-     * @return integer
+     * @return int|null
      */
     public function getDeliveryFreeQuantity()
     {
@@ -1012,7 +1012,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionMultipleShipping
+     * Set optionMultipleShipping.
      *
      * @param boolean $optionMultipleShipping
      *
@@ -1026,7 +1026,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionMultipleShipping
+     * Get optionMultipleShipping.
      *
      * @return boolean
      */
@@ -1036,7 +1036,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionMypageOrderStatusDisplay
+     * Set optionMypageOrderStatusDisplay.
      *
      * @param boolean $optionMypageOrderStatusDisplay
      *
@@ -1050,7 +1050,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionMypageOrderStatusDisplay
+     * Get optionMypageOrderStatusDisplay.
      *
      * @return boolean
      */
@@ -1060,7 +1060,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set nostockHidden
+     * Set nostockHidden.
      *
      * @param integer $nostockHidden
      *
@@ -1074,7 +1074,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get nostockHidden
+     * Get nostockHidden.
      *
      * @return boolean
      */
@@ -1084,7 +1084,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionFavoriteProduct
+     * Set optionFavoriteProduct.
      *
      * @param boolean $optionFavoriteProduct
      *
@@ -1098,7 +1098,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionFavoriteProduct
+     * Get optionFavoriteProduct.
      *
      * @return boolean
      */
@@ -1108,7 +1108,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionProductDeliveryFee
+     * Set optionProductDeliveryFee.
      *
      * @param boolean $optionProductDeliveryFee
      *
@@ -1122,7 +1122,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionProductDeliveryFee
+     * Get optionProductDeliveryFee.
      *
      * @return boolean
      */
@@ -1132,7 +1132,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionProductTaxRule
+     * Set optionProductTaxRule.
      *
      * @param boolean $optionProductTaxRule
      *
@@ -1146,7 +1146,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionProductTaxRule
+     * Get optionProductTaxRule.
      *
      * @return boolean
      */
@@ -1156,7 +1156,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionCustomerActivate
+     * Set optionCustomerActivate.
      *
      * @param boolean $optionCustomerActivate
      *
@@ -1170,7 +1170,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionCustomerActivate
+     * Get optionCustomerActivate.
      *
      * @return boolean
      */
@@ -1180,7 +1180,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set optionRememberMe
+     * Set optionRememberMe.
      *
      * @param boolean $optionRememberMe
      *
@@ -1194,7 +1194,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get optionRememberMe
+     * Get optionRememberMe.
      *
      * @return boolean
      */
@@ -1204,13 +1204,13 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set authenticationKey
+     * Set authenticationKey.
      *
-     * @param string $authenticationKey
+     * @param string|null $authenticationKey
      *
      * @return BaseInfo
      */
-    public function setAuthenticationKey($authenticationKey)
+    public function setAuthenticationKey($authenticationKey = null)
     {
         $this->authentication_key = $authenticationKey;
 
@@ -1218,9 +1218,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get authenticationKey
+     * Get authenticationKey.
      *
-     * @return string
+     * @return string|null
      */
     public function getAuthenticationKey()
     {
@@ -1228,9 +1228,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set country
+     * Set country.
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param \Eccube\Entity\Master\Country|null $country
      *
      * @return BaseInfo
      */
@@ -1242,9 +1242,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get country
+     * Get country.
      *
-     * @return \Eccube\Entity\Master\Country
+     * @return \Eccube\Entity\Master\Country|null
      */
     public function getCountry()
     {
@@ -1252,9 +1252,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set pref
+     * Set pref.
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param \Eccube\Entity\Master\Pref|null $pref
      *
      * @return BaseInfo
      */
@@ -1266,9 +1266,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get pref
+     * Get pref.
      *
-     * @return \Eccube\Entity\Master\Pref
+     * @return \Eccube\Entity\Master\Pref|null
      */
     public function getPref()
     {

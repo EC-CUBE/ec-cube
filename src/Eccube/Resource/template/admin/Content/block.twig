@@ -55,7 +55,7 @@
                                                         <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">編集</a>
                                                     </li>
                                                     <li>
-                                                        {% if Block.deletable_flg == 1 %}
+                                                        {% if Block.deletable_flg %}
                                                             <a href="{{ url('admin_content_block_delete', { 'id': Block.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このブロックを削除してもよろしいですか？">削除</a>
                                                         {% else %}
                                                             <a>削除</a>

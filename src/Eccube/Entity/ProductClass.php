@@ -180,14 +180,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @return boolean
-     */
-    public function isVisible()
-    {
-        return $this->visible;
-    }
-
-    /**
      * @var int
      *
      * @ORM\Column(name="product_class_id", type="integer", options={"unsigned":true})
@@ -353,9 +345,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -363,13 +355,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set code
+     * Set code.
      *
-     * @param string $code
+     * @param string|null $code
      *
      * @return ProductClass
      */
-    public function setCode($code)
+    public function setCode($code = null)
     {
         $this->code = $code;
 
@@ -377,9 +369,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get code
+     * Get code.
      *
-     * @return string
+     * @return string|null
      */
     public function getCode()
     {
@@ -387,13 +379,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set stock
+     * Set stock.
      *
-     * @param string $stock
+     * @param string|null $stock
      *
      * @return ProductClass
      */
-    public function setStock($stock)
+    public function setStock($stock = null)
     {
         $this->stock = $stock;
 
@@ -401,9 +393,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get stock
+     * Get stock.
      *
-     * @return string
+     * @return string|null
      */
     public function getStock()
     {
@@ -411,7 +403,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set stockUnlimited
+     * Set stockUnlimited.
      *
      * @param boolean $stockUnlimited
      *
@@ -425,7 +417,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get stockUnlimited
+     * Get stockUnlimited.
      *
      * @return boolean
      */
@@ -435,13 +427,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set saleLimit
+     * Set saleLimit.
      *
-     * @param string $saleLimit
+     * @param string|null $saleLimit
      *
      * @return ProductClass
      */
-    public function setSaleLimit($saleLimit)
+    public function setSaleLimit($saleLimit = null)
     {
         $this->sale_limit = $saleLimit;
 
@@ -449,9 +441,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get saleLimit
+     * Get saleLimit.
      *
-     * @return string
+     * @return string|null
      */
     public function getSaleLimit()
     {
@@ -459,13 +451,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set price01
+     * Set price01.
      *
-     * @param string $price01
+     * @param string|null $price01
      *
      * @return ProductClass
      */
-    public function setPrice01($price01)
+    public function setPrice01($price01 = null)
     {
         $this->price01 = $price01;
 
@@ -473,9 +465,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get price01
+     * Get price01.
      *
-     * @return string
+     * @return string|null
      */
     public function getPrice01()
     {
@@ -483,7 +475,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set price02
+     * Set price02.
      *
      * @param string $price02
      *
@@ -497,7 +489,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get price02
+     * Get price02.
      *
      * @return string
      */
@@ -507,13 +499,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliveryFee
+     * Set deliveryFee.
      *
-     * @param string $deliveryFee
+     * @param string|null $deliveryFee
      *
      * @return ProductClass
      */
-    public function setDeliveryFee($deliveryFee)
+    public function setDeliveryFee($deliveryFee = null)
     {
         $this->delivery_fee = $deliveryFee;
 
@@ -521,9 +513,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get deliveryFee
+     * Get deliveryFee.
      *
-     * @return string
+     * @return string|null
      */
     public function getDeliveryFee()
     {
@@ -531,31 +523,25 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set visible
-     *
-     * @param boolean $visible
-     *
-     * @return ProductClass
-     */
-    public function setVisible($visible)
-    {
-        $this->visible = $visible;
-
-        return $this;
-    }
-
-    /**
-     * Get visible
-     *
      * @return boolean
      */
-    public function getVisible()
+    public function isVisible()
     {
         return $this->visible;
     }
 
     /**
-     * Set createDate
+     * @param boolean $visible
+     * @return ProductClass
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+        return $this;
+    }
+
+    /**
+     * Set createDate.
      *
      * @param \DateTime $createDate
      *
@@ -569,7 +555,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get createDate
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -579,7 +565,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set updateDate
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
      *
@@ -593,7 +579,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get updateDate
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -603,21 +589,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set currencyCode
-     *
-     * @param string $currencyCode
-     *
-     * @return ProductClass
-     */
-    public function setCurrencyCode($currencyCode)
-    {
-        $this->currency_code = $currencyCode;
-
-        return $this;
-    }
-
-    /**
-     * Get currencyCode
+     * Get currencyCode.
      *
      * @return string
      */
@@ -627,9 +599,23 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set productStock
+     * Set currencyCode.
      *
-     * @param \Eccube\Entity\ProductStock $productStock
+     * @param string|null $currencyCode
+     *
+     * @return $this
+     */
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currency_code = $currencyCode;
+
+        return $this;
+    }
+
+    /**
+     * Set productStock.
+     *
+     * @param \Eccube\Entity\ProductStock|null $productStock
      *
      * @return ProductClass
      */
@@ -641,9 +627,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get productStock
+     * Get productStock.
      *
-     * @return \Eccube\Entity\ProductStock
+     * @return \Eccube\Entity\ProductStock|null
      */
     public function getProductStock()
     {
@@ -651,9 +637,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set taxRule
+     * Set taxRule.
      *
-     * @param \Eccube\Entity\TaxRule $taxRule
+     * @param \Eccube\Entity\TaxRule|null $taxRule
      *
      * @return ProductClass
      */
@@ -665,9 +651,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get taxRule
+     * Get taxRule.
      *
-     * @return \Eccube\Entity\TaxRule
+     * @return \Eccube\Entity\TaxRule|null
      */
     public function getTaxRule()
     {
@@ -675,9 +661,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set product
+     * Set product.
      *
-     * @param \Eccube\Entity\Product $product
+     * @param \Eccube\Entity\Product|null $product
      *
      * @return ProductClass
      */
@@ -689,9 +675,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get product
+     * Get product.
      *
-     * @return \Eccube\Entity\Product
+     * @return \Eccube\Entity\Product|null
      */
     public function getProduct()
     {
@@ -699,9 +685,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set productType
+     * Set productType.
      *
-     * @param \Eccube\Entity\Master\ProductType $productType
+     * @param \Eccube\Entity\Master\ProductType|null $productType
      *
      * @return ProductClass
      */
@@ -713,9 +699,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get productType
+     * Get productType.
      *
-     * @return \Eccube\Entity\Master\ProductType
+     * @return \Eccube\Entity\Master\ProductType|null
      */
     public function getProductType()
     {
@@ -723,9 +709,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set classCategory1
+     * Set classCategory1.
      *
-     * @param \Eccube\Entity\ClassCategory $classCategory1
+     * @param \Eccube\Entity\ClassCategory|null $classCategory1
      *
      * @return ProductClass
      */
@@ -737,9 +723,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get classCategory1
+     * Get classCategory1.
      *
-     * @return \Eccube\Entity\ClassCategory
+     * @return \Eccube\Entity\ClassCategory|null
      */
     public function getClassCategory1()
     {
@@ -747,9 +733,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set classCategory2
+     * Set classCategory2.
      *
-     * @param \Eccube\Entity\ClassCategory $classCategory2
+     * @param \Eccube\Entity\ClassCategory|null $classCategory2
      *
      * @return ProductClass
      */
@@ -761,9 +747,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get classCategory2
+     * Get classCategory2.
      *
-     * @return \Eccube\Entity\ClassCategory
+     * @return \Eccube\Entity\ClassCategory|null
      */
     public function getClassCategory2()
     {
@@ -771,9 +757,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliveryDate
+     * Set deliveryDate.
      *
-     * @param \Eccube\Entity\DeliveryDate $deliveryDate
+     * @param \Eccube\Entity\DeliveryDate|null $deliveryDate
      *
      * @return ProductClass
      */
@@ -785,9 +771,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get deliveryDate
+     * Get deliveryDate.
      *
-     * @return \Eccube\Entity\DeliveryDate
+     * @return \Eccube\Entity\DeliveryDate|null
      */
     public function getDeliveryDate()
     {
@@ -795,9 +781,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set creator
+     * Set creator.
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
      *
      * @return ProductClass
      */
@@ -809,9 +795,9 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {

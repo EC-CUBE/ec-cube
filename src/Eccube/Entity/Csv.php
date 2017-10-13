@@ -102,9 +102,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -112,7 +112,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set entityName
+     * Set entityName.
      *
      * @param string $entityName
      *
@@ -126,7 +126,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get entityName
+     * Get entityName.
      *
      * @return string
      */
@@ -136,7 +136,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fieldName
+     * Set fieldName.
      *
      * @param string $fieldName
      *
@@ -150,7 +150,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get fieldName
+     * Get fieldName.
      *
      * @return string
      */
@@ -160,13 +160,13 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set referenceFieldName
+     * Set referenceFieldName.
      *
-     * @param string $referenceFieldName
+     * @param string|null $referenceFieldName
      *
      * @return Csv
      */
-    public function setReferenceFieldName($referenceFieldName)
+    public function setReferenceFieldName($referenceFieldName = null)
     {
         $this->reference_field_name = $referenceFieldName;
 
@@ -174,9 +174,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get referenceFieldName
+     * Get referenceFieldName.
      *
-     * @return string
+     * @return string|null
      */
     public function getReferenceFieldName()
     {
@@ -184,7 +184,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set dispName
+     * Set dispName.
      *
      * @param string $dispName
      *
@@ -198,7 +198,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get dispName
+     * Get dispName.
      *
      * @return string
      */
@@ -208,9 +208,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set rank.
      *
-     * @param integer $rank
+     * @param int $rank
      *
      * @return Csv
      */
@@ -222,9 +222,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get rank
+     * Get rank.
      *
-     * @return integer
+     * @return int
      */
     public function getRank()
     {
@@ -232,7 +232,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set enableFlg
+     * Set enableFlg.
      *
      * @param boolean $enableFlg
      *
@@ -246,7 +246,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get enableFlg
+     * Get enableFlg.
      *
      * @return boolean
      */
@@ -256,7 +256,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set createDate
+     * Set createDate.
      *
      * @param \DateTime $createDate
      *
@@ -270,7 +270,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get createDate
+     * Get createDate.
      *
      * @return \DateTime
      */
@@ -280,7 +280,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set updateDate
+     * Set updateDate.
      *
      * @param \DateTime $updateDate
      *
@@ -294,7 +294,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get updateDate
+     * Get updateDate.
      *
      * @return \DateTime
      */
@@ -304,9 +304,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set csvType
+     * Set csvType.
      *
-     * @param \Eccube\Entity\Master\CsvType $csvType
+     * @param \Eccube\Entity\Master\CsvType|null $csvType
      *
      * @return Csv
      */
@@ -318,9 +318,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get csvType
+     * Get csvType.
      *
-     * @return \Eccube\Entity\Master\CsvType
+     * @return \Eccube\Entity\Master\CsvType|null
      */
     public function getCsvType()
     {
@@ -328,9 +328,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set creator
+     * Set creator.
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param \Eccube\Entity\Member|null $creator
      *
      * @return Csv
      */
@@ -342,9 +342,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get creator
+     * Get creator.
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member|null
      */
     public function getCreator()
     {
