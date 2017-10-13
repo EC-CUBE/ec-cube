@@ -468,7 +468,7 @@ class Application extends \Silex\Application
     public function initRendering()
     {
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.form.templates' => array('Form/form_layout.twig'),
+            'twig.form.templates' => array('Form/form_div_layout.twig'),
         ));
         $this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));

@@ -53,7 +53,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% else %}
         <div class="ec-searchnavRole">
             <form name="form1" id="form1" method="get" action="?">
-                {{ form_widget(search_form) }}
+                {{ form_widget(search_form.category_id, { type : 'hidden' }) }}
+                {{ form_widget(search_form.name, { type : 'hidden' }) }}
+                {{ form_widget(search_form.disp_number, { type : 'hidden' }) }}
+                {{ form_widget(search_form.orderby, { type : 'hidden' }) }}
+                {{ form_widget(search_form, { type : 'hidden' }) }}
             </form>
             <div class="ec-searchnavRole__topicpath">
                 <ol class="ec-topicpath">
