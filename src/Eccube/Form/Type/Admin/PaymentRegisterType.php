@@ -98,7 +98,7 @@ class PaymentRegisterType extends AbstractType
                 $form = $event->getForm();
                 /** @var \Eccube\Entity\Payment $Payment */
                 $Payment = $event->getData();
-                if (is_null($Payment) || $Payment->getChargeFlg() == 1) {
+                if (is_null($Payment) || $Payment->getChargeFlg()) {
                     $form->add('charge', PriceType::class, array(
                         'label' => '手数料',
                     ));

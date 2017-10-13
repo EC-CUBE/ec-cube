@@ -97,11 +97,11 @@ class News extends AbstractEntity
     private $select = 0;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="link_method", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="link_method", type="boolean", options={"default":false})
      */
-    private $link_method = 0;
+    private $link_method = false;
 
     /**
      * @var \DateTime
@@ -129,9 +129,9 @@ class News extends AbstractEntity
 
 
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -139,13 +139,13 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set date.
+     * Set date
      *
-     * @param \DateTime|null $date
+     * @param \DateTime $date
      *
      * @return News
      */
-    public function setDate($date = null)
+    public function setDate($date)
     {
         $this->date = $date;
 
@@ -153,9 +153,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get date.
+     * Get date
      *
-     * @return \DateTime|null
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -163,9 +163,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set rank
      *
-     * @param int $rank
+     * @param integer $rank
      *
      * @return News
      */
@@ -177,9 +177,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get rank.
+     * Get rank
      *
-     * @return int
+     * @return integer
      */
     public function getRank()
     {
@@ -187,7 +187,7 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set title.
+     * Set title
      *
      * @param string $title
      *
@@ -201,7 +201,7 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get title.
+     * Get title
      *
      * @return string
      */
@@ -211,13 +211,13 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set comment.
+     * Set comment
      *
-     * @param string|null $comment
+     * @param string $comment
      *
      * @return News
      */
-    public function setComment($comment = null)
+    public function setComment($comment)
     {
         $this->comment = $comment;
 
@@ -225,9 +225,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get comment.
+     * Get comment
      *
-     * @return string|null
+     * @return string
      */
     public function getComment()
     {
@@ -235,13 +235,13 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set url.
+     * Set url
      *
-     * @param string|null $url
+     * @param string $url
      *
      * @return News
      */
-    public function setUrl($url = null)
+    public function setUrl($url)
     {
         $this->url = $url;
 
@@ -249,9 +249,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get url.
+     * Get url
      *
-     * @return string|null
+     * @return string
      */
     public function getUrl()
     {
@@ -283,9 +283,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set linkMethod.
+     * Set linkMethod
      *
-     * @param int $linkMethod
+     * @param boolean $linkMethod
      *
      * @return News
      */
@@ -297,9 +297,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get linkMethod.
+     * Get linkMethod
      *
-     * @return int
+     * @return boolean
      */
     public function getLinkMethod()
     {
@@ -307,7 +307,7 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set createDate.
+     * Set createDate
      *
      * @param \DateTime $createDate
      *
@@ -321,7 +321,7 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get createDate.
+     * Get createDate
      *
      * @return \DateTime
      */
@@ -331,7 +331,7 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set updateDate.
+     * Set updateDate
      *
      * @param \DateTime $updateDate
      *
@@ -345,7 +345,7 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get updateDate.
+     * Get updateDate
      *
      * @return \DateTime
      */
@@ -355,9 +355,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set creator.
+     * Set creator
      *
-     * @param \Eccube\Entity\Member|null $creator
+     * @param \Eccube\Entity\Member $creator
      *
      * @return News
      */
@@ -369,9 +369,9 @@ class News extends AbstractEntity
     }
 
     /**
-     * Get creator.
+     * Get creator
      *
-     * @return \Eccube\Entity\Member|null
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

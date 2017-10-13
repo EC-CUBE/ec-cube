@@ -516,7 +516,7 @@ class PluginGenerator extends AbstractPluginGenerator
         $Plugin->setCode($code);
         $Plugin->setClassName('');
         $Plugin->setVersion($paramList['version']['value']);
-        $Plugin->setEnable(Constant::DISABLED);
+        $Plugin->setEnable(false);
         $Plugin->setSource(0);
         $Plugin->setDelFlg(Constant::DISABLED);
 

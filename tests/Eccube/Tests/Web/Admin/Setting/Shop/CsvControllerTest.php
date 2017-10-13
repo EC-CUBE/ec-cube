@@ -36,7 +36,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $Csv = $this->app['eccube.repository.csv']->find(1);
         $Csv->setRank(1);
-        $Csv->setEnableFlg(Constant::DISABLED);
+        $Csv->setEnableFlg(false);
         $this->app['orm.em']->flush();
     }
 
@@ -52,7 +52,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(1);
         $this->assertNotEmpty($CsvType);
 
-        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED), array('rank' => 'ASC'));
+        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => true), array('rank' => 'ASC'));
         $this->assertNotEmpty($Csv);
     }
 
@@ -63,12 +63,12 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
         $Csv = $this->app['eccube.repository.csv']->find(1);
         $Csv->setRank(1);
-        $Csv->setEnableFlg(Constant::DISABLED);
+        $Csv->setEnableFlg(false);
 
         $this->app['orm.em']->flush();
 
         $Csv2 = $this->app['eccube.repository.csv']->find(1);
-        $this->assertEquals(Constant::DISABLED, $Csv2->getEnableFlg());
+        $this->assertEquals(false, $Csv2->getEnableFlg());
 
         $this->app['orm.em']->getConnection()->rollback();
     }
@@ -131,7 +131,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $Csv->setFieldName($field);
         $Csv->setReferenceFieldName($ref);
         $Csv->setDispName('Test');
-        $Csv->setEnableFlg(Constant::DISABLED);
+        $Csv->setEnableFlg(false);
         $Csv->setRank($rank);
 
         $this->app['orm.em']->persist($Csv);

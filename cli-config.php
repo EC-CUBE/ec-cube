@@ -21,11 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once __DIR__.'/autoload.php';
+$loader = require_once __DIR__.'/autoload.php';
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
-$app = \Eccube\Application::getInstance();
+$app = \Eccube\Application::getInstance(['eccube.autoloader' => $loader]);
 $app->initialize();
 $app->boot();
 

@@ -25,7 +25,6 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\News;
 use Eccube\Event\EccubeEvents;
@@ -120,7 +119,7 @@ class NewsController extends AbstractController
             $News = new \Eccube\Entity\News();
         }
 
-        $News->setLinkMethod((bool)$News->getLinkMethod());
+        $News->setLinkMethod($News->getLinkMethod());
 
         $builder = $this->formFactory
             ->createBuilder(NewsType::class, $News);
@@ -139,7 +138,7 @@ class NewsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$News->getUrl()) {
-                $News->setLinkMethod(Constant::DISABLED);
+                $News->setLinkMethod(false);
             }
             $this->newsRepository->save($News);
 

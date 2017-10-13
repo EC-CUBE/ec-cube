@@ -28,7 +28,6 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
@@ -108,7 +107,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // 商品単位税率設定がOFFの場合
-        if ($this->baseInfoRepository->get()->getOptionProductTaxRule() !== Constant::ENABLED) {
+        if (!$this->baseInfoRepository->get()->getOptionProductTaxRule()) {
             $Product = null;
             $ProductClass = null;
         }

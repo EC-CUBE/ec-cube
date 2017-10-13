@@ -22,7 +22,6 @@
  */
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Member;
@@ -83,7 +82,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setProductType($ProductType)
             ->setCode('test code')
             ->setStock(100)
-            ->setStockUnlimited(Constant::DISABLED)
+            ->setStockUnlimited(false)
             ->setSaleLimit($this->faker->numberBetween(1, 99))
             ->setPrice01($this->faker->randomNumber(4))
             ->setPrice02($this->faker->randomNumber(4))
@@ -176,7 +175,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setProductType($ProductType)
             ->setCode('test')
             ->setStock(100)
-            ->setStockUnlimited(0)
+            ->setStockUnlimited(false)
             ->setSaleLimit(10)
             ->setPrice01(10000)
             ->setPrice02(5000)

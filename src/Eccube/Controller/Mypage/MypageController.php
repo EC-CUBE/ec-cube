@@ -27,11 +27,9 @@ namespace Eccube\Controller\Mypage;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\CustomerFavoriteProduct;
-use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -303,7 +301,7 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        if ($this->BaseInfo->getOptionFavoriteProduct() == Constant::DISABLED) {
+        if (!$this->BaseInfo->getOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
         }
         $Customer = $app->user();

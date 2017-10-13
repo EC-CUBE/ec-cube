@@ -282,7 +282,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->getEnable()) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
             $this->pluginService->enable($Plugin);
@@ -302,7 +302,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->getEnable()) {
             $this->pluginService->disable($Plugin);
             $app->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {

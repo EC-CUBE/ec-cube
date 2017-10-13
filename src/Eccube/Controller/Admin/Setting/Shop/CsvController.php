@@ -27,7 +27,6 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
@@ -96,7 +95,7 @@ class CsvController extends AbstractController
         );
 
         $CsvNotOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enable_flg' => Constant::DISABLED),
+            array('CsvType' => $CsvType, 'enable_flg' => false),
             array('rank' => 'ASC')
         );
 
@@ -114,7 +113,7 @@ class CsvController extends AbstractController
         );
 
         $CsvOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED),
+            array('CsvType' => $CsvType, 'enable_flg' => true),
             array('rank' => 'ASC')
         );
 
@@ -152,7 +151,7 @@ class CsvController extends AbstractController
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
                     $c->setRank($rank);
-                    $c->setEnableFlg(Constant::DISABLED);
+                    $c->setEnableFlg(false);
                     $rank++;
                 }
             }
@@ -163,7 +162,7 @@ class CsvController extends AbstractController
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
                     $c->setRank($rank);
-                    $c->setEnableFlg(Constant::ENABLED);
+                    $c->setEnableFlg(true);
                     $rank++;
                 }
             }

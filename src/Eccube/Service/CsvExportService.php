@@ -27,7 +27,6 @@ namespace Eccube\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Common\Constant;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
@@ -200,7 +199,7 @@ class CsvExportService
 
         $criteria = array(
             'CsvType' => $CsvType,
-            'enable_flg' => Constant::ENABLED
+            'enable_flg' => true,
         );
         $orderBy = array(
             'rank' => 'ASC'
