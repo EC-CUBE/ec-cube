@@ -48,7 +48,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -315,17 +317,40 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを削除します。
+     * Update new ways to remove plugin: using composer command
      *
      * @Method("DELETE")
      * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
 
-        $this->pluginService->uninstall($Plugin);
+        if ($Plugin->getEnable() == Constant::ENABLED) {
+            $this->pluginService->disable($Plugin);
+        }
 
-        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        $pluginCode = $Plugin->getCode();
+        try {
+            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
+            $execute .= sprintf(' composer remove ec-cube/%s', $pluginCode);
+
+            $install = new Process($execute);
+            $install->setTimeout(null);
+            $install->run();
+            if ($install->isSuccessful()) {
+                $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+            } else {
+                $app->log($install->getErrorOutput());
+                $app->addError('admin.plugin.uninstall.error', 'admin');
+            }
+        } catch (\Exception $exception) {
+            $app->addError($exception->getMessage(), 'admin');
+            $app->log($exception->getCode().' : '.$exception->getMessage());
+        }
 
         return $app->redirect($app->url('admin_store_plugin'));
     }
