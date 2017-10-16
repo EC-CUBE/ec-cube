@@ -9,7 +9,7 @@ use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class FowwardOnlyServiceProvider implements EventListenerProviderInterface, ServiceProviderInterface
+class ForwardOnlyServiceProvider implements EventListenerProviderInterface, ServiceProviderInterface
 {
     public function register(Container $app)
     {
