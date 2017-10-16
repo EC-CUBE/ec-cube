@@ -194,9 +194,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dt>
                             <dd>
                                 <div class="ec-radio{{ has_errors(form.sex) ? ' error' }}">
-                                    {% for key, child in form.sex %}
-                                        {{ form_widget(child) }}
-                                    {% endfor %}
+                                    {{ form_widget(form.sex) }}
                                     {{ form_errors(form.sex) }}
                                 </div>
                             </dd>

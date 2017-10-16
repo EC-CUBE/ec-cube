@@ -354,10 +354,11 @@ $(function() {
                 </div>
                 <div class="ec-blockRadio">
                     {% for key, child in form.Payment %}
-                        {% if form.Payment.vars.choices[key].data.visible %}
-                            {{ form_widget(child, {'attr': {'class': 'payment' }}) }}
-                            {% if form.Payment.vars.choices[key].data.payment_image is not null %}
-                                <img src="{{ app.config.image_save_urlpath }}/{{ form.Payment.vars.choices[key].data.payment_image }}">
+                        {% set Payment = form.Payment.vars.choices[key].data %}
+                        {% if Payment.visible %}
+                            <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
+                            {% if Payment.payment_image is not null %}
+                                <img src="{{ app.config.image_save_urlpath }}/{{ Payment.payment_image }}">
                             {% endif %}
                         {% endif %}
                     {% endfor %}
