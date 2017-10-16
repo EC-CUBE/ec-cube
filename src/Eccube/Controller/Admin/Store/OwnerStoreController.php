@@ -182,7 +182,8 @@ class OwnerStoreController extends AbstractController
             $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
 
             $install = new Process($execute);
-            $install->setTimeout(null);
+            set_time_limit(0); // for xamp environment
+            $install->setTimeout(null); // for PHP server build-in
             $install->run();
             if ($install->isSuccessful()) {
                 $app->addSuccess('admin.plugin.install.complete', 'admin');

@@ -43,6 +43,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -330,7 +331,9 @@ class PluginController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
-            $this->pluginService->disable($Plugin);
+            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
         }
 
         $pluginCode = $Plugin->getCode();
@@ -339,7 +342,8 @@ class PluginController extends AbstractController
             $execute .= sprintf(' composer remove ec-cube/%s', $pluginCode);
 
             $install = new Process($execute);
-            $install->setTimeout(null);
+            set_time_limit(0); // for xamp environment
+            $install->setTimeout(null); // for PHP server build-in
             $install->run();
             if ($install->isSuccessful()) {
                 $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
