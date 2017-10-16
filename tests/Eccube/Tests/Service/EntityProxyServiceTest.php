@@ -99,6 +99,122 @@ class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
         $tokens = Tokens::fromCode(file_get_contents($generatedFile));
         self::assertNull($tokens->findSequence($traitTokens), 'Traitが外されているはず');
     }
+
+    public function testAddTrait()
+    {
+
+        $entityTokens = Tokens::fromCode(<<< EOT
+<?php
+class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
+{
+}
+EOT
+);
+        $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
+        $method->setAccessible(true);
+        $method->invoke(new EntityProxyService(), $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
+
+        $traitTokens = [
+            [CT::T_USE_TRAIT],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Eccube'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Tests'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Service'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'EntityProxyServiceTest_Trait'],
+        ];
+
+        self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitはあるはず');
+    }
+
+    public function testAddMoreTrait()
+    {
+
+        $entityTokens = Tokens::fromCode(<<< EOT
+<?php
+class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
+{
+    use \\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait;
+}
+EOT
+        );
+        $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
+        $method->setAccessible(true);
+        $method->invoke(new EntityProxyService(), $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait');
+
+        $traitTokens = [
+            [CT::T_USE_TRAIT],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Eccube'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Tests'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Service'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'EntityProxyServiceTest_Trait'],
+            ',',
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Eccube'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Tests'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Service'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'EntityProxyServiceTest_ExTrait'],
+        ];
+
+        self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitはあるはず');
+    }
+
+    public function testRemoveTrait()
+    {
+        $entityTokens = Tokens::fromCode(<<< EOT
+<?php
+class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
+{
+    use \\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait, \\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait;
+}
+EOT
+        );
+        $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
+        $method->setAccessible(true);
+        $method->invoke(new EntityProxyService(), $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait');
+
+        $traitTokens = [
+            [CT::T_USE_TRAIT],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Eccube'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Tests'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'Service'],
+            [T_NS_SEPARATOR],
+            [T_STRING, 'EntityProxyServiceTest_Trait'],
+            ';'
+        ];
+
+        self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitが削除されているはず');
+    }
+
+    public function testRemoveLastTrait()
+    {
+        $entityTokens = Tokens::fromCode(<<< EOT
+<?php
+class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
+{
+    use \\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait;
+}
+EOT
+        );
+        $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
+        $method->setAccessible(true);
+        $method->invoke(new EntityProxyService(), $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
+
+        self::assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
+    }
+
 }
 
 /**
