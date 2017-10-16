@@ -11,6 +11,12 @@
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/EC-CUBE/sensio-framework-extra-service-provider"
+        }
+    ],
     "require": {
         "php": "^5.6 || ^7.0",
         "ext-mbstring": "*",
@@ -32,7 +38,7 @@
         "saxulum/saxulum-webprofiler-provider": "^2.0",
         "sergiors/annotations-service-provider": "dev-master",
         "sergiors/routing-service-provider": "dev-master",
-        "sergiors/sensio-framework-extra-service-provider": "dev-master",
+        "sergiors/sensio-framework-extra-service-provider": "dev-support-php5",
         "sergiors/templating-service-provider": "^2.0",
         "silex/silex": "^2.2",
         "silex/web-profiler": "^2.0",
