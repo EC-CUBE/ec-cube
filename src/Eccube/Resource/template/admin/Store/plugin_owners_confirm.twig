@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% set version_check = item.is_supported_eccube_version  %}
-<div class="plugin-panel {% if version_check == 0 %}plugin-panel-not{% endif %}">
+{% set is_supported_eccube_version = item.is_supported_eccube_version  %}
+<div class="plugin-panel {% if is_supported_eccube_version == 0 %}plugin-panel-not{% endif %}">
     <div class="plugin-logo">
         <a href="{{ item.product_url }}" target="_blank"><img class="img-rounded" src="{{ item.product_image_url }}"></a>
     </div>
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <dt class="plugin-size">ファイルサイズ</dt><dd>約 {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
             <dt class="plugin-licence">ライセンス</dt><dd>{{ item.licence }}</dd>
         </dl>
-        {% if version_check == 0 %}
+        {% if is_supported_eccube_version == 0 %}
             <p class="text-danger">このプラグインはEC-CUBE {{ constant('Eccube\\Common\\Constant::VERSION') }}をサポートしていないため、正常に動作しない可能性があります。</p>
         {% endif %}
         <p class="plugin-developer">
