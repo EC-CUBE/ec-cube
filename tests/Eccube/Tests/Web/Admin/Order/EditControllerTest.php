@@ -23,8 +23,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Entity\Order;
-
 class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;

@@ -60,6 +60,7 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('get_product', array($this, 'getProduct')),
+            new \Twig_SimpleFunction('php_*', array($this, 'getPhpFunctions'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('has_errors', array($this, 'hasErrors')),
         );
     }
@@ -204,6 +205,25 @@ class EccubeExtension extends \Twig_Extension
         } catch (\Exception $e) {
             return null;
         }
+
+        return null;
+    }
+
+    /**
+     * Twigでphp関数を使用できるようにする。
+     *
+     * @return mixed|null
+     */
+    public function getPhpFunctions()
+    {
+        $arg_list = func_get_args();
+        $function = array_shift($arg_list);
+
+        if (is_callable($function)) {
+            return call_user_func_array($function, $arg_list);
+        }
+
+        trigger_error('Called to an undefined function : php_'.$function, E_USER_WARNING);
 
         return null;
     }
