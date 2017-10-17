@@ -148,37 +148,36 @@ class OwnerStoreController extends AbstractController
      *
      * @Route("/{_admin}/store/plugin/confirm/{pluginId}" , name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
-     * @param Application $application
+     * @param Application $app
      * @param Request     $request
      * @param string      $pluginId
      * @return array
      */
-    public function doConfirm(Application $application, Request $request, $pluginId)
+    public function doConfirm(Application $app, Request $request, $pluginId)
     {
         // Owner's store communication
         $url = $this->appConfig['owners_store_url'].'?method=list';
-        list($json, $info) = $this->getRequestApi($url, $application);
+        list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
 
-        // Find plugin
+        // Find plugin in api
         $index = array_search($pluginId, array_column($items, 'product_id'));
         if ($index === false) {
             throw new NotFoundHttpException();
         }
-
-        $arrPlugin = [];
-
+        // Get target plugin in return of api
         $plugin = $items[$index];
-        $plugin['version_check'] = 0;
+
+        // Check the eccube version that the plugin supports.
+        $plugin['is_supported_eccube_version'] = 0;
         if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
             // Match version
-            $plugin['version_check'] = 1;
+            $plugin['is_supported_eccube_version'] = 1;
         }
-        $arrPlugin[] = $plugin;
 
         return [
-            'items' => $arrPlugin,
+            'item' => $plugin,
         ];
     }
 
