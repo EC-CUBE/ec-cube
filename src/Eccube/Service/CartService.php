@@ -190,6 +190,7 @@ class CartService
         $this->getCart()
             ->setPreOrderId(null)
             ->setLock(false)
+            ->setTotalPrice(0)
             ->clearCartItems();
 
         return $this;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "09e0f6e7cc760b6ee192ac0b7dbcf399",
+    "content-hash": "f820c0708a5751820d5d7cff56b055a5",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1233,7 +1233,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -2289,15 +2289,15 @@
         },
         {
             "name": "sergiors/sensio-framework-extra-service-provider",
-            "version": "dev-master",
+            "version": "dev-support-php5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sergiors/sensio-framework-extra-service-provider.git",
+                "url": "https://github.com/EC-CUBE/sensio-framework-extra-service-provider.git",
                 "reference": "89f572212cb76dad40283d59edb3373fbe6ac55e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sergiors/sensio-framework-extra-service-provider/zipball/89f572212cb76dad40283d59edb3373fbe6ac55e",
+                "url": "https://api.github.com/repos/EC-CUBE/sensio-framework-extra-service-provider/zipball/89f572212cb76dad40283d59edb3373fbe6ac55e",
                 "reference": "89f572212cb76dad40283d59edb3373fbe6ac55e",
                 "shasum": ""
             },
@@ -2331,7 +2331,11 @@
                     "Sergiors\\Silex\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Sergiors\\Silex\\Tests\\": "tests"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -2342,6 +2346,9 @@
                 }
             ],
             "description": "SensioFrameworkExtraBundle for Silex",
+            "support": {
+                "source": "https://github.com/EC-CUBE/sensio-framework-extra-service-provider/tree/dev-support-php5"
+            },
             "time": "2016-12-05T06:41:02+00:00"
         },
         {

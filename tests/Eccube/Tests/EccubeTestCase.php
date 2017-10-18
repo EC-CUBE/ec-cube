@@ -49,7 +49,6 @@ abstract class EccubeTestCase extends WebTestCase
 
         parent::setUp();
 
-        $this->app->setTestMode(true);
         if ($this->isSqliteInMemory()) {
             $this->initializeDatabase();
         }
@@ -304,6 +303,7 @@ abstract class EccubeTestCase extends WebTestCase
         $app->initializePlugin();
 
         $app['eccube.di.debug'] = false;
+        $app['eccube.listener.transaction.enabled'] = false;;
 
         $app['session.test'] = true;
         unset($app['exception_handler']);
