@@ -23,7 +23,8 @@
 
 namespace Eccube\EventListener;
 
-use Eccube\Application;
+use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -37,16 +38,41 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class TransactionListener implements EventSubscriberInterface
 {
-    private $app;
+    /**
+     * @var EntityManager
+     */
+    protected $em;
 
     /**
-     * Constructor function.
-     *
-     * @param Application $app
+     * @var Logger
      */
-    public function __construct(Application $app)
+    protected $logger;
+
+    /**
+     * @var bool
+     */
+    protected $isEnabled = true;
+
+    /**
+     * TransactionListener constructor.
+     *
+     * @param EntityManager $em
+     * @param Logger $logger
+     * @param bool $isEnabled
+     */
+    public function __construct(EntityManager $em, Logger $logger, $isEnabled = true)
     {
-        $this->app = $app;
+        $this->em = $em;
+        $this->logger = $logger;
+        $this->isEnabled = $isEnabled;
+    }
+
+    /**
+     * Disable transaction listener.
+     */
+    public function disable()
+    {
+        $this->isEnabled = false;
     }
 
     /**
@@ -56,17 +82,19 @@ class TransactionListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$this->isEnabled) {
+            $this->logger->debug('Transaction Listener is disabled.');
+
+            return;
+        }
+
         if (!$event->isMasterRequest()) {
             return;
         }
 
-        $app = $this->app;
-        if (!$app->isTestMode()) {
-            $app['orm.em']->getConnection()->setAutoCommit(false);
-            $app['orm.em']->beginTransaction();
-        } else {
-            $this->app->log('TestCase to onKernelRequest of beginTransaction');
-        }
+        $this->em->getConnection()->setAutoCommit(false);
+        $this->em->beginTransaction();
+        $this->logger->debug('Begin Transaction.');
     }
 
     /**
@@ -76,17 +104,21 @@ class TransactionListener implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
+        if (!$this->isEnabled) {
+            $this->logger->debug('Transaction Listener is disabled.');
+
+            return;
+        }
+
         if (!$event->isMasterRequest()) {
             return;
         }
 
-        $app = $this->app;
-        if (!$app->isTestMode()) {
-            if ($app['orm.em']->getConnection()->isTransactionActive()) {
-                $app['orm.em']->rollback();
-            }
+        if ($this->em->getConnection()->isTransactionActive()) {
+            $this->em->rollback();
+            $this->logger->debug('Rollback executed.');
         } else {
-            $this->app->log('TestCase to onKernelException of rollback');
+            $this->logger->debug('Transaction is not active. Rollback skipped.');
         }
     }
 
@@ -97,18 +129,21 @@ class TransactionListener implements EventSubscriberInterface
      */
     public function onKernelTerminate(PostResponseEvent $event)
     {
-        $app = $this->app;
+        if (!$this->isEnabled) {
+            $this->logger->debug('Transaction Listener is disabled.');
 
-        if (!$app->isTestMode()) {
-            if ($app['orm.em']->getConnection()->isTransactionActive()) {
-                if ($app['orm.em']->getConnection()->isRollbackOnly()) {
-                    $app['orm.em']->rollback();
-                } else {
-                    $app['orm.em']->commit();
-                }
+            return;
+        }
+        if ($this->em->getConnection()->isTransactionActive()) {
+            if ($this->em->getConnection()->isRollbackOnly()) {
+                $this->em->rollback();
+                $this->logger->debug('Rollback executed.');
+            } else {
+                $this->em->commit();
+                $this->logger->debug('Commit executed.');
             }
         } else {
-            $this->app->log('TestCase to onKernelTerminate of commit.');
+            $this->logger->debug('Transaction is not active. Rollback skipped.');
         }
     }
 

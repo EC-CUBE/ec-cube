@@ -11,112 +11,56 @@
 
 namespace Eccube\Tests\Application;
 
-use Eccube\Application;
+use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
-use Silex\Provider\SecurityServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * SecurityTrait test cases.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- *
- * @requires PHP 5.4
- */
 class SecurityTraitTest extends EccubeTestCase
 {
     public function testUser()
     {
-        // FIXME 正しい EncodePassword が実装されたら有効にする
-        $this->markTestIncomplete('EncodePassword is not implemented.');
-        $request = Request::create('/');
-
-        $app = $this->createApplication(array(
-            'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
-        ));
-        $app->get('/', function () { return 'foo'; });
-        $app->handle($request);
-        $this->assertNull($app->user());
-
-        $request->headers->set('PHP_AUTH_USER', 'fabien');
-        $request->headers->set('PHP_AUTH_PW', 'foo');
-        $app->handle($request);
-        $this->assertInstanceOf('Symfony\Component\Security\Core\User\UserInterface', $app->user());
-        $this->assertEquals('fabien', $app->user()->getUsername());
+        self::assertNull($this->app->user());
+        self::assertNull($this->app['user']);
     }
 
-    public function testUserWithNoToken()
+    public function testUserWithCustomerLogin()
     {
-        $request = Request::create('/');
+        $user = $this->createCustomer();
+        $this->loginTo($user);
 
-        $app = $this->createApplication();
-        $app->get('/', function () { return 'foo'; });
-        $app->handle($request);
-        $this->assertNull($app->user());
+        self::assertSame($user, $this->app->user());
+        self::assertSame($user, $this->app['user']);
     }
 
-    public function testUserWithInvalidUser()
+    public function testUserWithMemberLogin()
     {
-        $request = Request::create('/');
+        $user = $this->createCustomer();
+        $this->loginTo($user);
 
-        $app = $this->createApplication();
-        $app->boot();
-        $app['security.token_storage']->setToken(new UsernamePasswordToken('foo', 'foo', 'foo'));
-
-        $app->get('/', function () { return 'foo'; });
-        $app->handle($request);
-        $this->assertNull($app->user());
+        self::assertSame($user, $this->app->user());
+        self::assertSame($user, $this->app['user']);
     }
 
-    public function testEncodePassword()
+    protected function loginTo(UserInterface $User)
     {
-        // FIXME 正しい EncodePassword が実装されたら有効にする
-        $this->markTestIncomplete('EncodePassword is not implemented.');
-        $app = $this->createApplication(array(
-            'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
-        ));
-
-        $user = new User('foo', 'bar');
-        $this->assertEquals('5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', $app->encodePassword($user, 'foo'));
-    }
-
-    public function createApplication($users = array())
-    {
-        $app = Application::getInstance([
-            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
-        ]);
-        $app['debug'] = true;
-        if (!$app->offsetExists('config')) {
-            // ログの内容をERRORレベルでしか出力しないように設定を上書き
-            $app->extend('config', function ($config, $app) {
-            $config['log']['log_level'] = 'ERROR';
-            $config['log']['action_level'] = 'ERROR';
-            $config['log']['passthru_level'] = 'ERROR';
-
-            $channel = $config['log']['channel'];
-            foreach (array('monolog', 'front', 'admin') as $key) {
-                $channel[$key]['log_level'] = 'ERROR';
-                $channel[$key]['action_level'] = 'ERROR';
-                $channel[$key]['passthru_level'] = 'ERROR';
-            }
-            $config['log']['channel'] = $channel;
-
-            return $config;
-                });
-            $app->initLogger();
+        $firewall = 'admin';
+        $role = array('ROLE_ADMIN');
+        if ($User instanceof Customer) {
+            $firewall = 'customer';
+            $role = array('ROLE_USER');
         }
-        $app->register(new SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'default' => array(
-                    'http' => true,
-                    'users' => $users,
-                ),
-            ),
-        ));
+        $token = new UsernamePasswordToken($User, null, $firewall, $role);
 
-        $app->initialize();
-        return $app;
+        $this->app['security.token_storage']->setToken($token);
+        $this->app['session']->set('_security_'.$firewall, serialize($token));
+        $this->app['session']->save();
+
+        $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
+        $client = $this->createClient();
+        $client->getCookieJar()->set($cookie);
+
+        return $client;
     }
 }

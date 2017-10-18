@@ -43,7 +43,13 @@ use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
 use Eccube\DI\DIServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
+use Eccube\ServiceProvider\ForwardOnlyServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
+use Eccube\ServiceProvider\PagenatorServiceProvider;
+use Eccube\ServiceProvider\PaymentServiceProvider;
+use Eccube\ServiceProvider\PurchaseFlowServiceProvider;
+use Eccube\ServiceProvider\QueriesServiceProvider;
+use Eccube\ServiceProvider\TransactionServiceProvider;
 use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
@@ -313,6 +319,12 @@ class Application extends \Silex\Application
         $this->register(new CompatRepositoryProvider());
         $this->register(new CompatServiceProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());
+        $this->register(new PagenatorServiceProvider());
+        $this->register(new PaymentServiceProvider());
+        $this->register(new PurchaseFlowServiceProvider());
+        $this->register(new ForwardOnlyServiceProvider());
+        $this->register(new TransactionServiceProvider());
+        $this->register(new QueriesServiceProvider());
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
@@ -960,26 +972,6 @@ class Application extends \Silex\Application
             }
         }
         $this->initializedPlugin = true;
-    }
-
-    /**
-     * PHPUnit を実行中かどうかを設定する.
-     *
-     * @param boolean $testMode PHPUnit を実行中の場合 true
-     */
-    public function setTestMode($testMode)
-    {
-        $this->testMode = $testMode;
-    }
-
-    /**
-     * PHPUnit を実行中かどうか.
-     *
-     * @return boolean PHPUnit を実行中の場合 true
-     */
-    public function isTestMode()
-    {
-        return $this->testMode;
     }
 
     /**
