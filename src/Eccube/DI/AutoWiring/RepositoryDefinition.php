@@ -28,14 +28,18 @@ use Eccube\DI\ComponentDefinition;
 
 class RepositoryDefinition extends ComponentDefinition
 {
+    private $entityClass;
+
     /**
      * RepositoryDefinition constructor.
      * @param $id
      * @param $refClass
+     * @param $entityClass
      */
-    public function __construct($id, $refClass)
+    public function __construct($id, $refClass, $entityClass)
     {
         parent::__construct($id, $refClass);
+        $this->entityClass = $entityClass;
     }
 
     /**
@@ -43,7 +47,26 @@ class RepositoryDefinition extends ComponentDefinition
      */
     public function getEntityName()
     {
+        // Entityが指定されいれば返す
+        if ($this->entityClass) {
+            return $this->entityClass;
+        }
+
         $class = $this->getRefClass()->getName();
+
+        $partsOfFqcn = explode('\\', $class);
+
+        // 同じパッケージのEntityがあれば返す
+        if (count($partsOfFqcn) > 2) {
+            $parentNamespace = implode('\\', array_slice($partsOfFqcn, 0, count($partsOfFqcn)-2));
+            $entityName = preg_replace('/(.*)Repository/', '$1', $partsOfFqcn[count($partsOfFqcn) -1]);
+            $result = $parentNamespace . '\\Entity\\' . $entityName;
+            if (class_exists($result)) {
+                return $result;
+            }
+        }
+
+        // Eccube\Entity以下のEntityを返す
         $ns = 'Eccube\\Entity\\';
         if (strpos($class, 'Master') !== false) {
             $ns .= 'Master\\';

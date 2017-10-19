@@ -23,29 +23,23 @@
 
 namespace Eccube\Tests\DI\AutoWiring;
 
-use Eccube\DI\AutoWiring\RepositoryAutoWiring;
+use Eccube\DI\AutoWiring\RepositoryDefinition;
+use Eccube\Repository\ProductRepository;
 use Eccube\Tests\DI\Test\Repository\TestRepository;
-use Eccube\Tests\DI\Test\RepositoryClazz;
 
-class RepositoryAutoWiringTest extends AbstractAutowiringTest
+class RepositoryDefinitionTest extends \PHPUnit_Framework_TestCase
 {
-
-    protected function getAutoWiring()
+    public function testGetEntityName_Ecucube_Entity()
     {
-        return new RepositoryAutoWiring([__DIR__.'/../Test']);
+        $refClass = new \ReflectionClass(ProductRepository::class);
+        $def = new RepositoryDefinition(ProductRepository::class, $refClass, null);
+        self::assertEquals("Eccube\\Entity\\Product", $def->getEntityName());
     }
 
-    public function testRepository()
+    public function testGetEntityName_Test()
     {
-        $this->di->build($this->container);
-
-        self::assertArrayHasKey(RepositoryClazz::class, $this->container);
-    }
-
-    public function testRepository2()
-    {
-        $this->di->build($this->container);
-
-        self::assertArrayHasKey(TestRepository::class, $this->container);
+        $refClass = new \ReflectionClass(TestRepository::class);
+        $def = new RepositoryDefinition(TestRepository::class, $refClass, null);
+        self::assertEquals("Eccube\\Tests\\DI\\Test\\Entity\\Test", $def->getEntityName());
     }
 }

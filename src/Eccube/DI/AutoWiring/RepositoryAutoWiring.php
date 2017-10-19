@@ -52,7 +52,7 @@ class RepositoryAutoWiring extends ComponentAutoWiring
      */
     public function createComponentDefinition($anno, $refClass)
     {
-        return new RepositoryDefinition($refClass->getName(), $refClass);
+        return new RepositoryDefinition($refClass->getName(), $refClass, $anno->value);
     }
 
     /**
