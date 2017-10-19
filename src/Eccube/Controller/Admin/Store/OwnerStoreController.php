@@ -176,8 +176,12 @@ class OwnerStoreController extends AbstractController
             $plugin['is_supported_eccube_version'] = 1;
         }
 
+        $arrDependency = [];
+        $app['eccube.service.plugin']->getDependency($plugin, $items, $arrDependency);
+
         return [
             'item' => $plugin,
+            'arrDependency' => $arrDependency,
         ];
     }
 

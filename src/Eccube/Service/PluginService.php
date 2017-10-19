@@ -89,6 +89,7 @@ class PluginService
 
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
+    const VENDOR_NAME = 'ec-cube';
 
     public function install($path, $source = 0)
     {
@@ -540,5 +541,74 @@ class PluginService
             $em->getConnection()->rollback();
             throw $e;
         }
+    }
+
+    /**
+     * Do check dependency plugin
+     *
+     * @param array $plugin
+     * @param array $arrPlugin
+     * @param array $arrDependency
+     * @return void
+     */
+    public function getDependency(&$plugin, $arrPlugin, &$arrDependency)
+    {
+        $plugin['depend'] = [];
+        // Check dependency
+        if (!isset($plugin['require']) || empty($plugin['require'])) {
+            return;
+        }
+
+        $require = $plugin['require'];
+        // Check dependency
+        foreach ($require as $pluginName => $version) {
+            $dependPlugin = $this->buildInfo($arrPlugin, $pluginName);
+            if (!$dependPlugin) {
+                continue;
+            }
+            $plugin['depend'][] = [
+                'name' => $dependPlugin['name'],
+                'version' => $version,
+            ];
+
+            // Check duplicate in dependency
+            $index = array_search($dependPlugin['product_code'], array_column($arrDependency, 'product_code'));
+            if ($index === false) {
+                $cnt = count($arrDependency);
+                $arrDependency[$cnt] = $dependPlugin;
+                // Check child dependency
+                $this->getDependency($dependPlugin, $arrPlugin, $arrDependency);
+                // Re-update depend plugin
+                $arrDependency[$cnt] = array_merge($arrDependency[$cnt], $dependPlugin);
+            }
+        }
+    }
+
+    /**
+     * Get plugin information
+     *
+     * @param array  $arrPlugin
+     * @param string $pluginName
+     * @return array|null
+     */
+    public function buildInfo($arrPlugin, $pluginName)
+    {
+        $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginName);
+        // Find plugin in api
+        $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
+        if ($index === false) {
+            return;
+        }
+        // Get target plugin in return of api
+        $plugin = $arrPlugin[$index];
+
+        // Check the eccube version that the plugin supports.
+        $plugin['is_supported_eccube_version'] = 0;
+        if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
+            // Match version
+            $plugin['is_supported_eccube_version'] = 1;
+        }
+
+        return $plugin;
     }
 }

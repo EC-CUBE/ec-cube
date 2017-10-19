@@ -57,6 +57,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div><!-- .plugin-block -->
                         </div><!-- .col-xs-12 -->
                     </div><!-- .row -->
+
+                    {% if arrDependency is not empty %}
+                    <div class="box-header">
+                        <h3 class="box-title">成人チェックプラグインをインストールするために、以下のプラグインもインストールします。</h3>
+                    </div><!-- /.box-header -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="plugin-block">
+                                <div class="row grid">
+                                    {% for plugin in arrDependency %}
+                                    <div class="col-xs-12 grid-item">
+                                        {% include 'Store/plugin_owners_confirm.twig' with {'item': plugin} only %}
+                                    </div>
+                                    {% endfor %}
+                                </div><!-- .row -->
+                            </div><!-- .plugin-block -->
+                        </div><!-- .col-xs-12 -->
+                    </div><!-- .row -->
+                    {% endif %}
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                     <div class="row">
