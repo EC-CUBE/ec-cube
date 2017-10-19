@@ -342,8 +342,7 @@ class PluginController extends AbstractController
             $execute .= sprintf(' composer remove ec-cube/%s', $pluginCode);
 
             $install = new Process($execute);
-            set_time_limit(0); // for xamp environment
-            $install->setTimeout(null); // for PHP server build-in
+            $install->setTimeout(null);
             $install->run();
             if ($install->isSuccessful()) {
                 $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
