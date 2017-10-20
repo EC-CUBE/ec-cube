@@ -55,7 +55,7 @@ EOF
         $faker = Faker::create($locale);
         for ($i = 0; $i < $numberOfCustomer; $i++) {
             $email = microtime(true).'.'.$faker->safeEmail;
-            $Customer = $this->app['eccube.fixture.generator']($locale)->createCustomer($email);
+            $Customer = $this->app['eccube.fixture.generator.locale']($locale)->createCustomer($email);
             $Customer->setBirth($faker->dateTimeBetween('-110 years', '- 5 years'));
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:
@@ -75,7 +75,7 @@ EOF
             $Customers[] = $Customer;
         }
         for ($i = 0; $i < $numberOfProducts; $i++) {
-            $Product = $this->app['eccube.fixture.generator']($locale)->createProduct(null, 3, $notImage ? null : $imageType);
+            $Product = $this->app['eccube.fixture.generator.locale']($locale)->createProduct(null, 3, $notImage ? null : $imageType);
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:
                     break;
@@ -101,7 +101,7 @@ EOF
             $charge = $faker->randomNumber(4);
             $discount = $faker->randomNumber(4);
             for ($i = 0; $i < $numberOfOrder; $i++) {
-                $Order = $this->app['eccube.fixture.generator']($locale)->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
+                $Order = $this->app['eccube.fixture.generator.locale']($locale)->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
                 $Status = $this->app['eccube.repository.order_status']->find($faker->numberBetween(1, 8));
                 $Order->setOrderStatus($Status);
                 $Order->setOrderDate($faker->dateTimeThisYear());
