@@ -154,6 +154,8 @@ return [
     'admin.plugin.already.enable' => 'すでに有効化されています。',
     'admin.plugin.already.disable' => 'すでに無効化されています。',
     'admin.plugin.uninstall.complete' => 'プラグインを削除しました。',
+    'admin.plugin.uninstall.error' => 'プラグインを削除できませんでした。',
+    'admin.plugin.uninstall.error.not_disable' => 'プラグインを無効化してください。',
     'admin.plugin.update.complete' => '更新が完了しました。',
     'plugin already installed.' => 'プラグインは既にインストールされています。',
     'admin.plugin.not.found' => 'プラグインが見つかりません。',
