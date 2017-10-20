@@ -84,12 +84,12 @@ class EditControllerTest extends AbstractAdminWebTestCase
                 'fax03' => $tel[2],
             ),
             'email' => $email,
-            'message' => $faker->text,
+            'message' => $faker->realText,
             'Payment' => 1,
             'discount' => 0,
             'delivery_fee_total' => 0,
             'charge' => 0,
-            'note' => $faker->text,
+            'note' => $faker->realText,
             'OrderItems' => array(
                 array(
                     'Product' => $Product->getId(),

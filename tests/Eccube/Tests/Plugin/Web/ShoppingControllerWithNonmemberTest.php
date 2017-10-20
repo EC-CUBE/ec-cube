@@ -209,7 +209,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
                             ),
                       ),
                       'Payment' => 1,
-                      'message' => $faker->text(),
+                      'message' => $faker->realText(),
                       '_token' => 'dummy'
                   )
             )

@@ -76,7 +76,7 @@ class ContactControllerTest extends AbstractWebTestCase
                 'tel03' => $tel[2],
             ),
             'email' => $email,
-            'contents' => $faker->text(),
+            'contents' => $faker->realText(),
             '_token' => 'dummy'
         );
         return $form;
