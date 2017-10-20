@@ -103,6 +103,7 @@ class OwnerStoreController extends AbstractController
                     }
 
                     // EC-CUBE version check
+                    $arrDependency = [];
                     foreach ($items as &$item) {
                         // Not applicable version
                         $item['version_check'] = 0;
@@ -114,8 +115,11 @@ class OwnerStoreController extends AbstractController
                             // Not purchased with paid items
                             $item['update_status'] = 4;
                         }
+                        // Add plugin dependency
+                        $app['eccube.service.plugin']->getDependency($item, $items, $arrDependency);
                     }
                     unset($item);
+                    unset($arrDependency);
 
                     // Promotion item
                     $i = 0;
