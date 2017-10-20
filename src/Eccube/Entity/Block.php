@@ -187,7 +187,7 @@ class Block extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getLogicFlg()
+    public function isLogicFlg()
     {
         return $this->logic_flg;
     }
@@ -211,7 +211,7 @@ class Block extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getDeletableFlg()
+    public function isDeletableFlg()
     {
         return $this->deletable_flg;
     }

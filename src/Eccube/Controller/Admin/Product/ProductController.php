@@ -370,7 +370,7 @@ class ProductController extends AbstractController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
-                if ($this->BaseInfo->getOptionProductTaxRule() && $ProductClass->getTaxRule()) {
+                if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
                 $ProductStock = $ProductClasses[0]->getProductStock();
@@ -397,7 +397,7 @@ class ProductController extends AbstractController
         $form = $builder->getForm();
 
         if (!$has_class) {
-            $ProductClass->setStockUnlimited($ProductClass->getStockUnlimited());
+            $ProductClass->setStockUnlimited($ProductClass->isStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -434,7 +434,7 @@ class ProductController extends AbstractController
                     $ProductClass = $form['class']->getData();
 
                     // 個別消費税
-                    if ($this->BaseInfo->getOptionProductTaxRule()) {
+                    if ($this->BaseInfo->isOptionProductTaxRule()) {
                         if ($ProductClass->getTaxRate() !== null) {
                             if ($ProductClass->getTaxRule()) {
                                 $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
@@ -456,7 +456,7 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductClass);
 
                     // 在庫情報を作成
-                    if (!$ProductClass->getStockUnlimited()) {
+                    if (!$ProductClass->isStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
                     } else {
                         // 在庫無制限時はnullを設定

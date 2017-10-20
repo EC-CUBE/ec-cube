@@ -278,7 +278,7 @@ class CsvImportController
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
                             $ProductClassOrg = $this->createProductClass($row, $Product, $app, $data);
-                            if ($this->BaseInfo->getOptionProductDeliveryFee()) {
+                            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                 if ($row['送料'] != '') {
                                     $deliveryFee = str_replace(',', '', $row['送料']);
                                     if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -364,7 +364,7 @@ class CsvImportController
                                 ) {
                                     $this->updateProductClass($row, $Product, $pc, $app, $data);
 
-                                    if ($this->BaseInfo->getOptionProductDeliveryFee()) {
+                                    if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -435,7 +435,7 @@ class CsvImportController
                                     }
                                     $ProductClass = $this->createProductClass($row, $Product, $app, $data, $ClassCategory1, $ClassCategory2);
 
-                                    if ($this->BaseInfo->getOptionProductDeliveryFee()) {
+                                    if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -983,7 +983,7 @@ class CsvImportController
         $ProductClass->setProductStock($ProductStock);
         $ProductStock->setProductClass($ProductClass);
 
-        if (!$ProductClass->getStockUnlimited()) {
+        if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
@@ -1123,7 +1123,7 @@ class CsvImportController
 
         $ProductStock = $ProductClass->getProductStock();
 
-        if (!$ProductClass->getStockUnlimited()) {
+        if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定

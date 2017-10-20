@@ -1030,7 +1030,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionMultipleShipping()
+    public function isOptionMultipleShipping()
     {
         return $this->option_multiple_shipping;
     }
@@ -1054,7 +1054,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionMypageOrderStatusDisplay()
+    public function isOptionMypageOrderStatusDisplay()
     {
         return $this->option_mypage_order_status_display;
     }
@@ -1078,7 +1078,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getNostockHidden()
+    public function isNostockHidden()
     {
         return $this->nostock_hidden;
     }
@@ -1102,7 +1102,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionFavoriteProduct()
+    public function isOptionFavoriteProduct()
     {
         return $this->option_favorite_product;
     }
@@ -1126,7 +1126,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionProductDeliveryFee()
+    public function isOptionProductDeliveryFee()
     {
         return $this->option_product_delivery_fee;
     }
@@ -1150,7 +1150,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionProductTaxRule()
+    public function isOptionProductTaxRule()
     {
         return $this->option_product_tax_rule;
     }
@@ -1174,7 +1174,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionCustomerActivate()
+    public function isOptionCustomerActivate()
     {
         return $this->option_customer_activate;
     }
@@ -1198,7 +1198,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getOptionRememberMe()
+    public function isOptionRememberMe()
     {
         return $this->option_remember_me;
     }

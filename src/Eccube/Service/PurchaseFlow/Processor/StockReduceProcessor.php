@@ -52,7 +52,7 @@ class StockReduceProcessor implements ItemProcessor
             return ProcessResult::success();
         }
         // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
-        if (!$item->getProductClass()->getStockUnlimited()) {
+        if (!$item->getProductClass()->isStockUnlimited()) {
             // 在庫チェックあり
             // 在庫に対してロック(select ... for update)を実行
             $productStock = $this->productStockRepository->find(

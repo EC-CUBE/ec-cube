@@ -731,7 +731,7 @@ class ShoppingController extends AbstractShoppingController
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$this->session->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
-                if (!$this->BaseInfo->getOptionMultipleShipping()) {
+                if (!$this->BaseInfo->isOptionMultipleShipping()) {
                     // 複数配送に設定されていないのに複数配送先ができればエラー
                     $app->addRequestError('cart.product.type.kind');
 

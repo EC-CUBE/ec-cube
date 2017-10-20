@@ -137,7 +137,7 @@ class PaymentController extends AbstractController
             $Payment = $form->getData();
 
             // 手数料を設定できない場合には、手数料を0にする
-            if ($Payment->getChargeFlg() == 2) {
+            if ($Payment->isChargeFlg()) {
                 $Payment->setCharge(0);
             }
 

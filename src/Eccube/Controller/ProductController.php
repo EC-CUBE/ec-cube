@@ -125,7 +125,7 @@ class ProductController
     public function index(Application $app, Request $request)
     {
         // Doctrine SQLFilter
-        if ($this->BaseInfo->getNostockHidden()) {
+        if ($this->BaseInfo->isNostockHidden()) {
             $this->entityManager->getFilters()->enable('nostock_hidden');
         }
 
@@ -306,7 +306,7 @@ class ProductController
         // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
         if (!$is_admin) {
             // 在庫なし商品の非表示オプションが有効な場合.
-            if ($this->BaseInfo->getNostockHidden()) {
+            if ($this->BaseInfo->isNostockHidden()) {
                 if (!$Product->getStockFind()) {
                     throw new NotFoundHttpException();
                 }

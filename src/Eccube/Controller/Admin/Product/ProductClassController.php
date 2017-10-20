@@ -269,7 +269,7 @@ class ProductClassController
             $mergeProductClasses = array();
 
             // 商品税率が設定されている場合、商品税率を項目に設定
-            if ($this->BaseInfo->getOptionProductTaxRule())  {
+            if ($this->BaseInfo->isOptionProductTaxRule())  {
                 foreach ($ProductClasses as $class) {
                     if ($class->getTaxRule()) {
                         $class->setTaxRate($class->getTaxRule()->getTaxRate());
@@ -500,7 +500,7 @@ class ProductClassController
                                 $cp->setProduct($Product);
                                 // 商品在庫
                                 $productStock = $productClass->getProductStock();
-                                if (!$cp->getStockUnlimited()) {
+                                if (!$cp->isStockUnlimited()) {
                                     $productStock->setStock($cp->getStock());
                                 } else {
                                     $productStock->setStock(null);
@@ -745,14 +745,14 @@ class ProductClassController
         $productClassDest->setProductType($productClassOrig->getProductType());
         $productClassDest->setCode($productClassOrig->getCode());
         $productClassDest->setStock($productClassOrig->getStock());
-        $productClassDest->setStockUnlimited($productClassOrig->getStockUnlimited());
+        $productClassDest->setStockUnlimited($productClassOrig->isStockUnlimited());
         $productClassDest->setSaleLimit($productClassOrig->getSaleLimit());
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
 
         // 個別消費税
-        if ($this->BaseInfo->getOptionProductTaxRule()) {
+        if ($this->BaseInfo->isOptionProductTaxRule()) {
             if ($productClassOrig->getTaxRate() !== false && $productClassOrig->getTaxRate() !== null) {
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
                 if ($productClassDest->getTaxRule()) {
@@ -796,7 +796,7 @@ class ProductClassController
             $ProductStock = new ProductStock();
             $ProductClass->setProductStock($ProductStock);
             $ProductStock->setProductClass($ProductClass);
-            if (!$ProductClass->getStockUnlimited()) {
+            if (!$ProductClass->isStockUnlimited()) {
                 $ProductStock->setStock($ProductClass->getStock());
             } else {
                 // 在庫無制限時はnullを設定
@@ -807,7 +807,7 @@ class ProductClassController
         }
 
         // 商品税率が設定されている場合、商品税率をセット
-        if ($this->BaseInfo->getOptionProductTaxRule()) {
+        if ($this->BaseInfo->isOptionProductTaxRule()) {
             // 初期設定の税設定.
             $TaxRule = $this->taxRuleRepository->find(TaxRule::DEFAULT_TAX_RULE_ID);
             // 初期税率設定の計算方法を設定する

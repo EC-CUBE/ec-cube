@@ -35,12 +35,11 @@ use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -134,7 +133,7 @@ class BlockController extends AbstractController
 
         $html = '';
         $previous_filename = null;
-        $deletable = $Block->getDeletableFlg();
+        $deletable = $Block->isDeletableFlg();
 
         if ($id) {
             // テンプレートファイルの取得
@@ -235,7 +234,7 @@ class BlockController extends AbstractController
 
         // ユーザーが作ったブロックのみ削除する
         // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
-        if ($Block->getDeletableFlg() > 0) {
+        if ($Block->isDeletableFlg()) {
             $tplDir = $this->appConfig['block_realdir'];
             $file = $tplDir . '/' . $Block->getFileName() . '.twig';
             $fs = new Filesystem();

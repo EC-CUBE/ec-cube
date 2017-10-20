@@ -471,7 +471,7 @@ class ShoppingService
         // 商品種別に紐づく配送業者を取得
         $deliveries = $this->deliveryRepository->getDeliveries($productTypes);
 
-        if ($this->BaseInfo->getOptionMultipleShipping()) {
+        if ($this->BaseInfo->isOptionMultipleShipping()) {
             // 複数配送対応
 
             // 支払方法を取得
@@ -642,7 +642,7 @@ class ShoppingService
 
         // 商品ごとの配送料合計
         $productDeliveryFeeTotal = 0;
-        if ($this->BaseInfo->getOptionProductDeliveryFee()) {
+        if ($this->BaseInfo->isOptionProductDeliveryFee()) {
             $productDeliveryFeeTotal = $ProductClass->getDeliveryFee() * $quantity;
         }
 
@@ -757,7 +757,7 @@ class ShoppingService
 
         // 商品ごとの配送料合計
         $productDeliveryFeeTotal = 0;
-        if ($this->BaseInfo->getOptionProductDeliveryFee()) {
+        if ($this->BaseInfo->isOptionProductDeliveryFee()) {
             $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
         }
 
@@ -839,7 +839,7 @@ class ShoppingService
             $Shipping->setDeliveryFee($deliveryFee);
             // 商品ごとの配送料合計
             $productDeliveryFeeTotal = 0;
-            if ($this->BaseInfo->getOptionProductDeliveryFee()) {
+            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                 $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
             }
             $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
@@ -979,7 +979,7 @@ class ShoppingService
     {
 
         $productTypes = $this->orderService->getProductTypes($Order);
-        if ($this->BaseInfo->getOptionMultipleShipping() && count($productTypes) > 1) {
+        if ($this->BaseInfo->isOptionMultipleShipping() && count($productTypes) > 1) {
             // 複数配送時の支払方法
 
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);

@@ -301,7 +301,7 @@ class News extends AbstractEntity
      *
      * @return boolean
      */
-    public function getLinkMethod()
+    public function isLinkMethod()
     {
         return $this->link_method;
     }

@@ -295,7 +295,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getFixFlg()
+    public function isFixFlg()
     {
         return $this->fix_flg;
     }
@@ -343,7 +343,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getChargeFlg()
+    public function isChargeFlg()
     {
         return $this->charge_flg;
     }

@@ -119,7 +119,7 @@ class NewsController extends AbstractController
             $News = new \Eccube\Entity\News();
         }
 
-        $News->setLinkMethod($News->getLinkMethod());
+        $News->setLinkMethod($News->isLinkMethod());
 
         $builder = $this->formFactory
             ->createBuilder(NewsType::class, $News);

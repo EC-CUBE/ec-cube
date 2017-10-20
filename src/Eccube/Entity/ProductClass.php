@@ -105,7 +105,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      */
     public function getStockFind()
     {
-        if ($this->getStock() > 0 || $this->getStockUnlimited()) {
+        if ($this->getStock() > 0 || $this->isStockUnlimited()) {
             return true;
         } else {
             return false;
@@ -421,7 +421,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getStockUnlimited()
+    public function isStockUnlimited()
     {
         return $this->stock_unlimited;
     }

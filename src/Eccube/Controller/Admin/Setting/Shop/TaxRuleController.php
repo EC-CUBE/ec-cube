@@ -103,7 +103,7 @@ class TaxRuleController extends AbstractController
 
         $builder
             ->get('option_product_tax_rule')
-            ->setData($this->BaseInfo->getOptionProductTaxRule());
+            ->setData($this->BaseInfo->isOptionProductTaxRule());
 
         if ($TargetTaxRule->isDefaultTaxRule()) {
             // 基本税率設定は適用日時の変更は行わない

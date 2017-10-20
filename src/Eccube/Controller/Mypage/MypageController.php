@@ -301,7 +301,7 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        if (!$this->BaseInfo->getOptionFavoriteProduct()) {
+        if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
         }
         $Customer = $app->user();

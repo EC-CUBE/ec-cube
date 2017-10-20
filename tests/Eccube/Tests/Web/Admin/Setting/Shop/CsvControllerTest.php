@@ -68,7 +68,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
 
         $Csv2 = $this->app['eccube.repository.csv']->find(1);
-        $this->assertEquals(false, $Csv2->getEnableFlg());
+        $this->assertEquals(false, $Csv2->isEnableFlg());
 
         $this->app['orm.em']->getConnection()->rollback();
     }
@@ -108,7 +108,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->app->url('admin_setting_shop_csv', array('id' => $csvType));
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = array($CsvNotOut->getEnableFlg(), $CsvOut->getEnableFlg());
+        $this->actual = array($CsvNotOut->isEnableFlg(), $CsvOut->isEnableFlg());
         $this->expected = array(Constant::ENABLED, Constant::DISABLED);
         $this->verify();
     }

@@ -218,7 +218,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getEnable()
+    public function isEnable()
     {
         return $this->enable;
     }

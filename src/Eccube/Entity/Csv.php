@@ -250,7 +250,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
      *
      * @return boolean
      */
-    public function getEnableFlg()
+    public function isEnableFlg()
     {
         return $this->enable_flg;
     }

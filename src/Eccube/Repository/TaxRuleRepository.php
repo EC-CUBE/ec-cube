@@ -107,7 +107,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // 商品単位税率設定がOFFの場合
-        if (!$this->baseInfoRepository->get()->getOptionProductTaxRule()) {
+        if (!$this->baseInfoRepository->get()->isOptionProductTaxRule()) {
             $Product = null;
             $ProductClass = null;
         }

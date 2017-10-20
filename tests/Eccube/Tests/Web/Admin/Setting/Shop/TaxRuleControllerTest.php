@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -92,7 +91,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function testEditParam()
     {
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $taxRule = $BaseInfo->getOptionProductTaxRule();
+        $taxRule = $BaseInfo->isOptionProductTaxRule();
         $newTaxRule = ($taxRule) ? 0 : 1;
 
         $this->client->request(
@@ -110,14 +109,14 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->expected = $newTaxRule;
-        $this->actual = $BaseInfo->getOptionProductTaxRule();
+        $this->actual = $BaseInfo->isOptionProductTaxRule();
         $this->verify();
     }
 
     public function testEditParamFail()
     {
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $taxRule = $BaseInfo->getOptionProductTaxRule();
+        $taxRule = $BaseInfo->isOptionProductTaxRule();
 
         $this->client->request(
             'POST',
@@ -134,7 +133,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->expected = $taxRule;
-        $this->actual = $BaseInfo->getOptionProductTaxRule();
+        $this->actual = $BaseInfo->isOptionProductTaxRule();
         $this->verify();
     }
 
