@@ -38,5 +38,6 @@ $console->add(new Eccube\Command\CacheClearCommand());
 $console->add(new Eccube\Command\PluginCommand());
 $console->add(new Eccube\Command\ConfigCommand());
 $console->add(new Eccube\Command\GenerateProxyCommand());
+$console->add(new Eccube\Command\GenerateDummyDataCommand());
 
 $console->run();
