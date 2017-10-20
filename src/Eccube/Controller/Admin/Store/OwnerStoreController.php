@@ -222,6 +222,17 @@ class OwnerStoreController extends AbstractController
             $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
             $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
 
+            // 環境に依存せず動作させるために
+            // TODO: サーバー環境に応じて、この処理をやるやらないを切り替える必要あり
+            @ini_set('memory_limit', '1536M');
+            putenv('COMPOSER_HOME='.$app['config']['plugin_realdir'].'/.composer');
+
+            // Composerを他プロセスから動かしプラグインのインストール処理行う
+            // DBのデッドロックを回避するためトランザクションをリセットしておく
+            // TODO: トランザクションを利用しないアノテーションを作成し、コントローラに適用することで、この回避コードを削除する。
+            $app['orm.em']->commit();
+            $app['orm.em']->beginTransaction();
+
             $install = new Process($execute);
             $install->setTimeout(null);
             $install->run();
