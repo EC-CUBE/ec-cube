@@ -30,13 +30,13 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\ComposerProcessService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Process\Process;
 
 /**
  * @Route(service=OwnerStoreController::class)
@@ -218,27 +218,54 @@ class OwnerStoreController extends AbstractController
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
 
-        try {
-            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
-            $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
+        /**
+         * @var ComposerProcessService $composerService
+         */
+        $composerService = $app['eccube.service.composer'];
+        $return = $composerService->execRequire($pluginCode);
+        if ($return) {
+            $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-            $install = new Process($execute);
-            $install->setTimeout(null);
-            $install->run();
-            if ($install->isSuccessful()) {
-                $app->addSuccess('admin.plugin.install.complete', 'admin');
-                $app->log(sprintf('Install %s plugin successful!', $pluginCode));
-
-                return $app->redirect($app->url('admin_store_plugin'));
-            }
-            $app->addError('admin.plugin.install.fail', 'admin');
-        } catch (Exception $exception) {
-            $app->addError($exception->getMessage(), 'admin');
-            $app->log($exception->getCode().' : '.$exception->getMessage());
+            return $app->redirect($app->url('admin_store_plugin'));
         }
-        $app->log(sprintf('Install %s plugin fail!', $pluginCode));
+        $app->addError('admin.plugin.install.fail', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
+    }
+
+    /**
+     * New ways to remove plugin: using composer command
+     *
+     * @Method("DELETE")
+     * @Route("/{_admin}/store/plugin/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
+     */
+    public function apiUninstall(Application $app, Plugin $Plugin)
+    {
+        $this->isTokenValid($app);
+
+        if ($Plugin->getEnable() == Constant::ENABLED) {
+            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+
+        $pluginCode = $Plugin->getCode();
+
+        /**
+         * @var ComposerProcessService $composerService
+         */
+        $composerService = $app['eccube.service.composer'];
+        $return = $composerService->execRemove($pluginCode);
+        if ($return) {
+            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        } else {
+            $app->addError('admin.plugin.uninstall.error', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
     /**

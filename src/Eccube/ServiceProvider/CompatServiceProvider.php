@@ -3,6 +3,7 @@
 namespace Eccube\ServiceProvider;
 
 use Eccube\Service\CartService;
+use Eccube\Service\ComposerProcessService;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
@@ -51,5 +52,11 @@ class CompatServiceProvider implements ServiceProviderInterface
             return $app[SystemService::class];
         };
 
+        // Composer service
+        // Because Inject/Annotation function cannot create construct function
+        // Todo: Change it to inject/annotation at the controller
+        $app['eccube.service.composer'] = function () use ($app) {
+            return new ComposerProcessService($app);
+        };
     }
 }
