@@ -546,17 +546,16 @@ class PluginService
     /**
      * Do check dependency plugin
      *
-     * @param array $plugin
      * @param array $arrPlugin
-     * @param array $arrDependency
-     * @return void
+     * @param array $plugin
+     * @return array|mixed
      */
-    public function getDependency(&$plugin, $arrPlugin, &$arrDependency)
+    public function getDependency($arrPlugin, $plugin)
     {
-        $plugin['depend'] = [];
+        $arrDependency = [];
         // Check dependency
         if (!isset($plugin['require']) || empty($plugin['require'])) {
-            return;
+            return $arrDependency;
         }
 
         $require = $plugin['require'];
@@ -566,38 +565,32 @@ class PluginService
             if (!$dependPlugin) {
                 continue;
             }
-            $plugin['depend'][] = [
-                'name' => $dependPlugin['name'],
-                'version' => $version,
-            ];
 
             // Check duplicate in dependency
             $index = array_search($dependPlugin['product_code'], array_column($arrDependency, 'product_code'));
             if ($index === false) {
-                $cnt = count($arrDependency);
-                $arrDependency[$cnt] = $dependPlugin;
+                $arrDependency[] = $dependPlugin;
                 // Check child dependency
-                $this->getDependency($dependPlugin, $arrPlugin, $arrDependency);
-                // Re-update depend plugin
-                $arrDependency[$cnt] = array_merge($arrDependency[$cnt], $dependPlugin);
+                $arrDependency = array_merge($arrDependency, $this->getDependency($arrPlugin, $dependPlugin));
             }
         }
+
+        return $arrDependency;
     }
 
     /**
      * Get plugin information
      *
      * @param array  $arrPlugin
-     * @param string $pluginName
+     * @param string $pluginCode
      * @return array|null
      */
-    public function buildInfo($arrPlugin, $pluginName)
+    public function buildInfo($arrPlugin, $pluginCode)
     {
-        $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginName);
-        // Find plugin in api
-        $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
+        $plugin = [];
+        $index = $this->checkPluginExist($arrPlugin, $pluginCode);
         if ($index === false) {
-            return;
+            return $plugin;
         }
         // Get target plugin in return of api
         $plugin = $arrPlugin[$index];
@@ -609,6 +602,50 @@ class PluginService
             $plugin['is_supported_eccube_version'] = 1;
         }
 
+        $plugin['depend'] = $this->getDependForEachPlugin($arrPlugin, $plugin);
+
         return $plugin;
+    }
+
+    /**
+     * Get dependency name and version only
+     *
+     * @param array $arrPlugin
+     * @param array $plugin
+     * @return mixed
+     */
+    public function getDependForEachPlugin($arrPlugin, $plugin)
+    {
+        $depend = [];
+        if (isset($plugin['require']) && !empty($plugin['require'])) {
+            foreach ($plugin['require'] as $name => $version) {
+                $ret = $this->checkPluginExist($arrPlugin, $name);
+                if ($ret === false) {
+                    continue;
+                }
+                $depend[] = [
+                    'name' => $arrPlugin[$ret]['name'],
+                    'version' => $version,
+                ];
+            }
+        }
+
+        return $depend;
+    }
+
+    /**
+     * @param $arrPlugin
+     * @param $pluginCode
+     * @return false|int|string
+     */
+    private function checkPluginExist($arrPlugin, $pluginCode)
+    {
+        if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
+            $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
+        }
+        // Find plugin in array
+        $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
+
+        return $index;
     }
 }

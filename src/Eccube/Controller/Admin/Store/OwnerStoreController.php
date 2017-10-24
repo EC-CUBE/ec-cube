@@ -30,6 +30,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\PluginService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -115,11 +116,11 @@ class OwnerStoreController extends AbstractController
                             // Not purchased with paid items
                             $item['update_status'] = 4;
                         }
+
                         // Add plugin dependency
-                        $app['eccube.service.plugin']->getDependency($item, $items, $arrDependency);
+                        $item['depend'] = $app['eccube.service.plugin']->getDependForEachPlugin($items, $item);
                     }
                     unset($item);
-                    unset($arrDependency);
 
                     // Promotion item
                     $i = 0;
@@ -150,14 +151,14 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{_admin}/store/plugin/confirm/{pluginId}" , name="admin_store_plugin_install_confirm")
+     * @Route("/{_admin}/store/plugin/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
      * @param Application $app
      * @param Request     $request
-     * @param string      $pluginId
+     * @param string      $id
      * @return array
      */
-    public function doConfirm(Application $app, Request $request, $pluginId)
+    public function doConfirm(Application $app, Request $request, $id)
     {
         // Owner's store communication
         $url = $this->appConfig['owners_store_url'].'?method=list';
@@ -166,22 +167,20 @@ class OwnerStoreController extends AbstractController
         $items = $data['item'];
 
         // Find plugin in api
-        $index = array_search($pluginId, array_column($items, 'product_id'));
+        $index = array_search($id, array_column($items, 'product_id'));
         if ($index === false) {
             throw new NotFoundHttpException();
         }
-        // Get target plugin in return of api
-        $plugin = $items[$index];
 
-        // Check the eccube version that the plugin supports.
-        $plugin['is_supported_eccube_version'] = 0;
-        if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
-            // Match version
-            $plugin['is_supported_eccube_version'] = 1;
-        }
+        $pluginCode = $items[$index]['product_code'];
 
-        $arrDependency = [];
-        $app['eccube.service.plugin']->getDependency($plugin, $items, $arrDependency);
+        /**
+         * @var PluginService $pluginService
+         */
+        $pluginService =  $app['eccube.service.plugin'];
+        $plugin = $pluginService->buildInfo($items, $pluginCode);
+
+        $arrDependency = $pluginService->getDependency($items, $plugin);
 
         return [
             'item' => $plugin,
