@@ -548,11 +548,16 @@ class PluginService
      *
      * @param array $arrPlugin
      * @param array $plugin
+     * @param array $arrDependency
      * @return array|mixed
      */
-    public function getDependency($arrPlugin, $plugin)
+    public function getDependency($arrPlugin, $plugin, $arrDependency = array())
     {
-        $arrDependency = [];
+        // Prevent infinity loop
+        if (empty($arrDependency)) {
+            $arrDependency[] = $plugin;
+        }
+
         // Check dependency
         if (!isset($plugin['require']) || empty($plugin['require'])) {
             return $arrDependency;
@@ -562,7 +567,8 @@ class PluginService
         // Check dependency
         foreach ($require as $pluginName => $version) {
             $dependPlugin = $this->buildInfo($arrPlugin, $pluginName);
-            if (!$dependPlugin) {
+            // Prevent call self
+            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
                 continue;
             }
 
@@ -571,7 +577,7 @@ class PluginService
             if ($index === false) {
                 $arrDependency[] = $dependPlugin;
                 // Check child dependency
-                $arrDependency = array_merge($arrDependency, $this->getDependency($arrPlugin, $dependPlugin));
+                $arrDependency = $this->getDependency($arrPlugin, $dependPlugin, $arrDependency);
             }
         }
 

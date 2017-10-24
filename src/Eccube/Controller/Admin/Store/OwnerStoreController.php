@@ -180,7 +180,11 @@ class OwnerStoreController extends AbstractController
         $pluginService =  $app['eccube.service.plugin'];
         $plugin = $pluginService->buildInfo($items, $pluginCode);
 
-        $arrDependency = $pluginService->getDependency($items, $plugin);
+        // Prevent infinity loop: A -> B -> A.
+        $arrDependency[] = $plugin;
+        $arrDependency = $pluginService->getDependency($items, $plugin, $arrDependency);
+        // Unset first param
+        unset($arrDependency[0]);
 
         return [
             'item' => $plugin,
