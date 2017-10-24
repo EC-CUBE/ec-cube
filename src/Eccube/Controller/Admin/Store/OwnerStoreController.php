@@ -118,7 +118,7 @@ class OwnerStoreController extends AbstractController
                         }
 
                         // Add plugin dependency
-                        $item['depend'] = $app['eccube.service.plugin']->getDependForEachPlugin($items, $item);
+                        $item['depend'] = $app['eccube.service.plugin']->getRequirePluginName($items, $item);
                     }
                     unset($item);
 

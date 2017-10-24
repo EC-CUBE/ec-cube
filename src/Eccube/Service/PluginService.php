@@ -602,7 +602,7 @@ class PluginService
             $plugin['is_supported_eccube_version'] = 1;
         }
 
-        $plugin['depend'] = $this->getDependForEachPlugin($arrPlugin, $plugin);
+        $plugin['depend'] = $this->getRequirePluginName($arrPlugin, $plugin);
 
         return $plugin;
     }
@@ -614,7 +614,7 @@ class PluginService
      * @param array $plugin
      * @return mixed
      */
-    public function getDependForEachPlugin($arrPlugin, $plugin)
+    public function getRequirePluginName($arrPlugin, $plugin)
     {
         $depend = [];
         if (isset($plugin['require']) && !empty($plugin['require'])) {
