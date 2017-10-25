@@ -22,6 +22,7 @@
  */
 namespace Eccube\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Service;
 use Eccube\Application;
 
@@ -72,10 +73,19 @@ class ComposerProcessService
         $command .= $this->app['config']['root_dir'].' 2>&1';
         $this->app->log($command);
 
+        /**
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
+         */
+        $em = $this->app['orm.em'];
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+        }
         // Execute command
         $output = array();
         exec($command, $output);
-        $this->app->log(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+        $this->app->log(PHP_EOL . implode(PHP_EOL, $output) . PHP_EOL);
 
         return true;
     }
@@ -94,6 +104,16 @@ class ComposerProcessService
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
         $command .= $this->app['config']['root_dir'].' 2>&1';
         $this->app->log($command);
+
+        /**
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
+         */
+        $em = $this->app['orm.em'];
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+        }
 
         // Execute command
         $output = array();
