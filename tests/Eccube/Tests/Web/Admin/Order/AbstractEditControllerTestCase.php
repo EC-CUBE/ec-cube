@@ -119,12 +119,12 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'fax03' => $tel[2],
             ),
             'email' => $email,
-            'message' => $faker->text,
+            'message' => $faker->realText,
             'Payment' => 1,     // XXX ハードコーディング
             'discount' => 0,
             'delivery_fee_total' => 0,
             'charge' => 0,
-            'note' => $faker->text,
+            'note' => $faker->realText,
             'OrderItems' => $OrderItems,
             'Shippings' => $Shippings
         );

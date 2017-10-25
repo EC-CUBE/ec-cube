@@ -224,7 +224,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
                         ),
                     ),
                     'Payment' => 1,
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 )
             )
@@ -278,7 +278,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
                         ),
                     ),
                     'payment' => 1,
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 )
             )
@@ -331,7 +331,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
                         ),
                     ),
                     'Payment' => 1,
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 )
             )
@@ -386,7 +386,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
                         ),
                     ),
                     'Payment' => 100, // payment=100 は無効な値
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 )
             )
@@ -658,7 +658,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
                             ),
                       ),
                       'Payment' => 1,
-                      'message' => $faker->text(),
+                      'message' => $faker->realText(),
                       '_token' => 'dummy'
                   )
             )
