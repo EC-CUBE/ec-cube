@@ -26,7 +26,7 @@ class NewsRepositoryTest extends EccubeTestCase
             $News = new News();
             $News
                 ->setTitle('news-'.$i)
-                ->setComment($faker->text())
+                ->setComment($faker->realText())
                 ->setUrl($faker->url)
                 ->setSelect(1)
                 ->setLinkMethod(1)
@@ -111,7 +111,7 @@ class NewsRepositoryTest extends EccubeTestCase
         $News = new News();
         $News
             ->setTitle('news-10')
-            ->setComment($faker->text())
+            ->setComment($faker->realText())
             ->setUrl($faker->url)
             ->setSelect(1)
             ->setLinkMethod(1);
@@ -130,7 +130,7 @@ class NewsRepositoryTest extends EccubeTestCase
         $News = new News();
         $News
             ->setTitle('news-10')
-            ->setComment($faker->text())
+            ->setComment($faker->realText())
             ->setUrl($faker->url)
             ->setSelect(1)
             ->setLinkMethod(1);

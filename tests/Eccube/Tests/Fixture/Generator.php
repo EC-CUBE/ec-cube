@@ -265,7 +265,7 @@ class Generator {
 
         $Product = new Product();
         if (is_null($product_name)) {
-            $product_name = $faker->word;
+            $product_name = $faker->realText($faker->numberBetween(10, 50));
         }
         $Product
             ->setName($product_name)
@@ -274,7 +274,7 @@ class Generator {
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setDescriptionList($faker->paragraph())
-            ->setDescriptionDetail($faker->text());
+            ->setDescriptionDetail($faker->realText());
         $Product->extendedParameter = "aaaa";
 
         $this->app['orm.em']->persist($Product);
@@ -439,8 +439,8 @@ class Generator {
             ->setPref($Pref)
             ->setPayment($Payments[$faker->numberBetween(0, count($Payments) - 1)])
             ->setPaymentMethod($Order->getPayment()->getMethod())
-            ->setMessage($faker->text())
-            ->setNote($faker->text());
+            ->setMessage($faker->realText())
+            ->setNote($faker->realText());
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush($Order);
         if (!is_object($Delivery)) {

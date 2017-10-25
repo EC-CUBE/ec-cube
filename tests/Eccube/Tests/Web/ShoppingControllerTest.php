@@ -162,7 +162,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                         ),
                     ),
                     'Payment' => 1,
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 ),
                 ['shopping_order_mode' => 'delivery']
@@ -199,7 +199,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                         ),
                     ),
                     'Payment' => 1,
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 ),
                 ['shopping_order_mode' => 'delivery']
@@ -240,7 +240,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                         ),
                     ),
                     'Payment' => 1,
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 ),
                 ['shopping_order_mode' => 'payment']
@@ -276,7 +276,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
                         ),
                     ),
                     'Payment' => 100, // payment=100 は無効な値
-                    'message' => $faker->text(),
+                    'message' => $faker->realText(),
                     '_token' => 'dummy'
                 ),
                 ['shopping_order_mode' => 'payment']
