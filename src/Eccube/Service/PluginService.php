@@ -89,6 +89,7 @@ class PluginService
 
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
+    const VENDOR_NAME = 'ec-cube';
 
     // ファイル指定してのプラグインインストール
     public function install($path, $source = 0)
@@ -560,5 +561,117 @@ class PluginService
             $em->getConnection()->rollback();
             throw $e;
         }
+    }
+
+    /**
+     * Do check dependency plugin
+     *
+     * @param array $arrPlugin
+     * @param array $plugin
+     * @param array $arrDependency
+     * @return array|mixed
+     */
+    public function getDependency($arrPlugin, $plugin, $arrDependency = array())
+    {
+        // Prevent infinity loop
+        if (empty($arrDependency)) {
+            $arrDependency[] = $plugin;
+        }
+
+        // Check dependency
+        if (!isset($plugin['require']) || empty($plugin['require'])) {
+            return $arrDependency;
+        }
+
+        $require = $plugin['require'];
+        // Check dependency
+        foreach ($require as $pluginName => $version) {
+            $dependPlugin = $this->buildInfo($arrPlugin, $pluginName);
+            // Prevent call self
+            if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
+                continue;
+            }
+
+            // Check duplicate in dependency
+            $index = array_search($dependPlugin['product_code'], array_column($arrDependency, 'product_code'));
+            if ($index === false) {
+                $arrDependency[] = $dependPlugin;
+                // Check child dependency
+                $arrDependency = $this->getDependency($arrPlugin, $dependPlugin, $arrDependency);
+            }
+        }
+
+        return $arrDependency;
+    }
+
+    /**
+     * Get plugin information
+     *
+     * @param array  $arrPlugin
+     * @param string $pluginCode
+     * @return array|null
+     */
+    public function buildInfo($arrPlugin, $pluginCode)
+    {
+        $plugin = [];
+        $index = $this->checkPluginExist($arrPlugin, $pluginCode);
+        if ($index === false) {
+            return $plugin;
+        }
+        // Get target plugin in return of api
+        $plugin = $arrPlugin[$index];
+
+        // Check the eccube version that the plugin supports.
+        $plugin['is_supported_eccube_version'] = 0;
+        if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
+            // Match version
+            $plugin['is_supported_eccube_version'] = 1;
+        }
+
+        $plugin['depend'] = $this->getRequirePluginName($arrPlugin, $plugin);
+
+        return $plugin;
+    }
+
+    /**
+     * Get dependency name and version only
+     *
+     * @param array $arrPlugin
+     * @param array $plugin
+     * @return mixed
+     */
+    public function getRequirePluginName($arrPlugin, $plugin)
+    {
+        $depend = [];
+        if (isset($plugin['require']) && !empty($plugin['require'])) {
+            foreach ($plugin['require'] as $name => $version) {
+                $ret = $this->checkPluginExist($arrPlugin, $name);
+                if ($ret === false) {
+                    continue;
+                }
+                $depend[] = [
+                    'name' => $arrPlugin[$ret]['name'],
+                    'version' => $version,
+                ];
+            }
+        }
+
+        return $depend;
+    }
+
+    /**
+     * @param $arrPlugin
+     * @param $pluginCode
+     * @return false|int|string
+     */
+    private function checkPluginExist($arrPlugin, $pluginCode)
+    {
+        if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
+            $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
+        }
+        // Find plugin in array
+        $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
+
+        return $index;
     }
 }
