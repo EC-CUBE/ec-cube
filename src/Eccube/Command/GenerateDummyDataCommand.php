@@ -13,7 +13,8 @@ class GenerateDummyDataCommand extends \Knp\Command\Command
 
     protected $app;
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
             ->setName('dummydata:generate')
             ->setDescription('Dummy data generator')
@@ -38,8 +39,8 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $locale = $input->getOption('with-locale');
         $imageType = $input->getOption('with-image');
         $notImage = $input->getOption('without-image');
