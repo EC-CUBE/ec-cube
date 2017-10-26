@@ -26,6 +26,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Util\EntityUtil;
 
 /**
  * Category
@@ -465,6 +466,9 @@ class Category extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 }

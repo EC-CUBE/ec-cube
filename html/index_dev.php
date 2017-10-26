@@ -84,6 +84,10 @@ $app['config'] = $app->share(function () use ($conf) {
 // config_dev.ymlにmailが設定されていた場合、config_dev.ymlの設定内容を反映
 $app['swiftmailer.options'] = $app['config']['mail'];
 
+if (isset($app['config']['mail']['use_spool']) && is_bool($app['config']['mail']['use_spool'])) {
+    $app['swiftmailer.use_spool'] = $app['config']['mail']['use_spool'];
+}
+
 // Mail
 if (isset($app['config']['delivery_address'])) {
     $app['mailer']->registerPlugin(new \Swift_Plugins_RedirectingPlugin($app['config']['delivery_address']));

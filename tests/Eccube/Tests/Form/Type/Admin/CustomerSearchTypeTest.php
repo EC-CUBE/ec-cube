@@ -53,4 +53,15 @@ class CustomerSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
     }
+    
+    public function testTel_NotValidData()
+    {
+        //意味あんだか良くわからんが一応書いとく
+        $formData = array(
+            'tel' => '+〇三=abcふれ'
+        );
+
+        $this->form->submit($formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }

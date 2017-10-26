@@ -139,7 +139,7 @@ class ProductClassController
                                 'allow_add' => true,
                                 'allow_delete' => true,
                                 'data' => $ProductClasses,
-                             ));
+                            ));
 
                         $event = new EventArgs(
                             array(
@@ -186,6 +186,7 @@ class ProductClassController
             $createProductClasses = $this->createProductClasses($app, $Product, $ClassName1, $ClassName2);
 
             $mergeProductClasses = array();
+            $sortProductClasses = new ArrayCollection();
 
             // 商品税率が設定されている場合、商品税率を項目に設定
             $BaseInfo = $app['eccube.repository.base_info']->get();
@@ -203,11 +204,12 @@ class ProductClassController
                 // 既に登録済みの商品規格にチェックボックスを設定
                 foreach ($ProductClasses as $productClass) {
                     if ($productClass->getClassCategory1() == $createProductClass->getClassCategory1() &&
-                            $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
-                                // チェックボックスを追加
-                                $productClass->setAdd(true);
-                                $flag = true;
-                                break;
+                        $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
+                        // チェックボックスを追加
+                        $productClass->setAdd(true);
+                        $flag = true;
+                        $sortProductClasses->add($productClass);
+                        break;
                     }
                 }
 
@@ -221,8 +223,8 @@ class ProductClassController
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefualtProductClass($app, $mergeProductClass, $ProductClass);
-                $ProductClasses->add($mergeProductClass);
+                $this->setDefualtProductClass($app, $mergeProductClass, $sortProductClasses[0]);
+                $sortProductClasses->add($mergeProductClass);
             }
 
             $builder = $app['form.factory']->createBuilder();
@@ -232,14 +234,14 @@ class ProductClassController
                     'type' => 'admin_product_class',
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'data' => $ProductClasses,
+                    'data' => $sortProductClasses,
                 ));
 
             $event = new EventArgs(
                 array(
                     'builder' => $builder,
                     'Product' => $Product,
-                    'ProductClasses' => $ProductClasses,
+                    'ProductClasses' => $sortProductClasses,
                 ),
                 $request
             );
@@ -286,9 +288,9 @@ class ProductClassController
         /* @var FormBuilder $builder */
         $builder = $app['form.factory']->createBuilder();
         $builder->add('product_classes', 'collection', array(
-                    'type' => 'admin_product_class',
-                    'allow_add' => true,
-                    'allow_delete' => true,
+            'type' => 'admin_product_class',
+            'allow_add' => true,
+            'allow_delete' => true,
         ));
 
         $event = new EventArgs(
@@ -347,7 +349,7 @@ class ProductClassController
 
                     // デフォルトの商品規格を更新
                     $defaultProductClass = $app['eccube.repository.product_class']
-                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
+                        ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
 
                     $defaultProductClass->setDelFlg(Constant::ENABLED);
 
@@ -416,8 +418,8 @@ class ProductClassController
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
-                                    $productClass->getClassCategory1() == $cp->getClassCategory1() &&
-                                    $productClass->getClassCategory2() == $cp->getClassCategory2()) {
+                                $productClass->getClassCategory1() == $cp->getClassCategory1() &&
+                                $productClass->getClassCategory2() == $cp->getClassCategory2()) {
                                 $updateProductClasses[] = $cp;
 
                                 // 商品情報
@@ -443,8 +445,8 @@ class ProductClassController
                         // 登録されている商品規格に削除フラグをセット
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
-                                    $productClass->getClassCategory1() == $rc->getClassCategory1() &&
-                                    $productClass->getClassCategory2() == $rc->getClassCategory2()) {
+                                $productClass->getClassCategory1() == $rc->getClassCategory1() &&
+                                $productClass->getClassCategory2() == $rc->getClassCategory2()) {
 
                                 $productClass->setDelFlg(Constant::ENABLED);
                                 break;
@@ -497,7 +499,7 @@ class ProductClassController
 
                     // デフォルトの商品規格を更新
                     $defaultProductClass = $app['eccube.repository.product_class']
-                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => Constant::ENABLED));
+                        ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => Constant::ENABLED));
 
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
 
@@ -586,12 +588,12 @@ class ProductClassController
 
         $ClassCategories1 = array();
         if ($ClassName1) {
-            $ClassCategories1 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName1));
+            $ClassCategories1 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName1), array('rank' => 'DESC'));
         }
 
         $ClassCategories2 = array();
         if ($ClassName2) {
-            $ClassCategories2 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName2));
+            $ClassCategories2 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName2), array('rank' => 'DESC'));
         }
 
         $ProductClasses = array();
@@ -679,7 +681,7 @@ class ProductClassController
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
-        
+
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {

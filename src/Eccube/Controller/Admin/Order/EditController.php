@@ -28,7 +28,9 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\Form\FormError;
@@ -48,10 +50,13 @@ class EditController extends AbstractController
 
         $TargetOrder = null;
         $OriginOrder = null;
+        $isNewOrder = false;
 
         if (is_null($id)) {
             // 空のエンティティを作成.
             $TargetOrder = $this->newOrder($app);
+            $isNewOrder = true;
+
         } else {
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
@@ -67,15 +72,24 @@ class EditController extends AbstractController
         // 編集前のお届け先のアイテム情報を保持
         $OriginalShipmentItems = new ArrayCollection();
 
+        // Save previous value before calculate
+        $arrOldOrder = array();
+
+        /** @var $OrderDetail OrderDetail*/
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
+            $arrOldOrder['OrderDetails'][$OrderDetail->getId()]['quantity'] = $OrderDetail->getQuantity();
         }
 
         // 編集前の情報を保持
-        foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
+        /** @var $tmpOriginalShippings Shipping*/
+        foreach ($TargetOrder->getShippings() as $key => $tmpOriginalShippings) {
+            $arrOldOrder['Shippings'][$key]['shipping_delivery_date'] = $tmpOriginalShippings->getShippingDeliveryDate();
+            /** @var $tmpOriginalShipmentItem ShipmentItem*/
             foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
                 // アイテム情報
                 $OriginalShipmentItems->add($tmpOriginalShipmentItem);
+                $arrOldOrder['Shippings'][$key]['ShipmentItems'][$tmpOriginalShipmentItem->getId()]['quantity'] = $tmpOriginalShipmentItem->getQuantity();
             }
             // お届け先情報
             $OriginalShippings->add($tmpOriginalShippings);
@@ -235,7 +249,7 @@ class EditController extends AbstractController
 
                         if ($Customer) {
                             // 会員の場合、購入回数、購入金額などを更新
-                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $isNewOrder);
                         }
 
                         $event = new EventArgs(
@@ -331,6 +345,7 @@ class EditController extends AbstractController
             'Order' => $TargetOrder,
             'id' => $id,
             'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
+            'arrOldOrder' => $arrOldOrder,
         ));
     }
 

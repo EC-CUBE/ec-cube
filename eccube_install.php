@@ -82,6 +82,8 @@ if (PHP_VERSION_ID >= 50400 && empty($root_urlpath)) {
     out('PHP built-in web server to run applications, `php -S localhost:8080 -t html`', 'info');
     out('Open your browser and access the http://localhost:8080/', 'info');
 }
+out('Remove the web installer: `rm html/install.php`', 'info');
+
 exit(0);
 
 function displayHelp($argv)
@@ -463,6 +465,7 @@ function getMailConfig()
             'encryption' => NULL,
             'auth_mode' => NULL,
             'charset_iso_2022_jp' => false,
+            'use_spool' => true,
         ),
     );
     return $mail;
