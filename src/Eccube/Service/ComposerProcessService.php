@@ -81,7 +81,9 @@ class ComposerProcessService
         $em = $this->app['orm.em'];
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
         }
+
         // Execute command
         $output = array();
         exec($command, $output);
@@ -92,6 +94,7 @@ class ComposerProcessService
 
     /**
      * This function to remove a plugin by composer remove
+     * Note: Remove with dependency, if not, please add " --no-update-with-dependencies"
      *
      * @param string $packageName
      * @return bool
@@ -101,7 +104,7 @@ class ComposerProcessService
         // Build command
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
-        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
+        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
         $command .= $this->app['config']['root_dir'].' 2>&1';
         $this->app->log($command);
 
@@ -113,6 +116,7 @@ class ComposerProcessService
         $em = $this->app['orm.em'];
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
         }
 
         // Execute command
