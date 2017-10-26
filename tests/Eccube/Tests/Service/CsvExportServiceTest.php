@@ -24,7 +24,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 
         $Csv = $this->app['eccube.repository.csv']->find(1);
         $Csv->setRank(1);
-        $Csv->setEnableFlg(false);
+        $Csv->setEnable(false);
         $this->app['orm.em']->flush();
     }
 
@@ -35,7 +35,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 
         $Csv = $this->app['eccube.repository.csv']->findBy(
             array('CsvType' => CsvType::CSV_TYPE_PRODUCT,
-                  'enable_flg' => true,
+                  'enable' => true,
             )
         );
         $arrHeader = explode(',', file_get_contents($this->url));

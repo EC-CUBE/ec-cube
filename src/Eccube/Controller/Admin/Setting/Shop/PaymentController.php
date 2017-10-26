@@ -136,11 +136,6 @@ class PaymentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $Payment = $form->getData();
 
-            // 手数料を設定できない場合には、手数料を0にする
-            if ($Payment->isChargeFlg()) {
-                $Payment->setCharge(0);
-            }
-
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();

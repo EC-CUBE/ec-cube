@@ -199,7 +199,7 @@ class CsvExportService
 
         $criteria = array(
             'CsvType' => $CsvType,
-            'enable_flg' => true,
+            'enable' => true,
         );
         $orderBy = array(
             'rank' => 'ASC'

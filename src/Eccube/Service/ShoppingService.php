@@ -27,7 +27,6 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
@@ -505,8 +504,7 @@ class ShoppingService
                 $Shipping = new Shipping();
 
                 $this->copyToShippingFromCustomer($Shipping, $Customer)
-                    ->setOrder($Order)
-                    ->setDelFlg(Constant::DISABLED);
+                    ->setOrder($Order);
 
                 // 配送料金の設定
                 $this->setShippingDeliveryFee($Shipping, $Delivery);

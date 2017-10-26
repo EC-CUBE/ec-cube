@@ -85,9 +85,9 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="fix_flg", type="boolean", options={"default":true})
+     * @ORM\Column(name="fixed", type="boolean", options={"default":true})
      */
-    private $fix_flg = true;
+    private $fixed = true;
 
     /**
      * @var string|null
@@ -95,13 +95,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="payment_image", type="string", length=255, nullable=true)
      */
     private $payment_image;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="charge_flg", type="boolean", options={"default":true})
-     */
-    private $charge_flg = true;
 
     /**
      * @var string|null
@@ -277,27 +270,27 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fixFlg.
+     * Set fixed.
      *
-     * @param boolean $fixFlg
+     * @param boolean $fixed
      *
      * @return Payment
      */
-    public function setFixFlg($fixFlg)
+    public function setFixed($fixed)
     {
-        $this->fix_flg = $fixFlg;
+        $this->fixed = $fixed;
 
         return $this;
     }
 
     /**
-     * Get fixFlg.
+     * Get fixed.
      *
      * @return boolean
      */
-    public function isFixFlg()
+    public function isFixed()
     {
-        return $this->fix_flg;
+        return $this->fixed;
     }
 
     /**
@@ -322,30 +315,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
     public function getPaymentImage()
     {
         return $this->payment_image;
-    }
-
-    /**
-     * Set chargeFlg.
-     *
-     * @param boolean $chargeFlg
-     *
-     * @return Payment
-     */
-    public function setChargeFlg($chargeFlg)
-    {
-        $this->charge_flg = $chargeFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get chargeFlg.
-     *
-     * @return boolean
-     */
-    public function isChargeFlg()
-    {
-        return $this->charge_flg;
     }
 
     /**

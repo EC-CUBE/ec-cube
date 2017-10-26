@@ -134,8 +134,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
         {{ form_widget(form._token) }}
-        {{ form_widget(form.charge_flg) }}
-        {{ form_widget(form.fix_flg) }}
+        {{ form_widget(form.fixed) }}
         <div class="row" id="aside_wrap">
             <div id="detail_wrap" class="col-md-9">
                 <div id="detail_box" class="box">

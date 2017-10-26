@@ -95,7 +95,7 @@ class CsvController extends AbstractController
         );
 
         $CsvNotOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enable_flg' => false),
+            array('CsvType' => $CsvType, 'enable' => false),
             array('rank' => 'ASC')
         );
 
@@ -113,7 +113,7 @@ class CsvController extends AbstractController
         );
 
         $CsvOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enable_flg' => true),
+            array('CsvType' => $CsvType, 'enable' => true),
             array('rank' => 'ASC')
         );
 
@@ -151,7 +151,7 @@ class CsvController extends AbstractController
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
                     $c->setRank($rank);
-                    $c->setEnableFlg(false);
+                    $c->setEnable(false);
                     $rank++;
                 }
             }
@@ -162,7 +162,7 @@ class CsvController extends AbstractController
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
                     $c->setRank($rank);
-                    $c->setEnableFlg(true);
+                    $c->setEnable(true);
                     $rank++;
                 }
             }

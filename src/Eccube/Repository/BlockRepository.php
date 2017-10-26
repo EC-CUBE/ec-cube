@@ -67,8 +67,8 @@ class BlockRepository extends AbstractRepository
         $Block = new \Eccube\Entity\Block();
         $Block
             ->setDeviceType($DeviceType)
-            ->setLogicFlg(false)
-            ->setDeletableFlg(true);
+            ->setLogical(false)
+            ->setDeletable(true);
 
         return $Block;
     }

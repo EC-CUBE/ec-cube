@@ -29,9 +29,9 @@ class Page extends \Eccube\Entity\AbstractEntity
     const TARGET_ID_FOOTER = 9;
 
     // 編集可能フラグ
-    const EDIT_FLG_USER = 0;
-    const EDIT_FLG_PREVIEW = 1;
-    const EDIT_FLG_DEFAULT = 2;
+    const EDIT_TYPE_USER = 0;
+    const EDIT_TYPE_PREVIEW = 1;
+    const EDIT_TYPE_DEFAULT = 2;
 
     public function getLayouts()
     {
@@ -74,7 +74,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      * Get BlockPositionByTargetId
      *
      * @param integer $target_id
-     * @return \Eccube\Entity\BlockPosition
+     * @return array
      */
     public function getBlocksPositionByTargetId($target_id)
     {
@@ -304,9 +304,9 @@ class Page extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="edit_flg", type="smallint", options={"unsigned":true,"default":1})
+     * @ORM\Column(name="edit_type", type="smallint", options={"unsigned":true,"default":1})
      */
-    private $edit_flg = 1;
+    private $edit_type = 1;
 
     /**
      * @var string|null
@@ -395,7 +395,7 @@ class Page extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setId($id)
     {
@@ -419,7 +419,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $name
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setName($name = null)
     {
@@ -443,7 +443,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string $url
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setUrl($url)
     {
@@ -467,7 +467,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $fileName
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setFileName($fileName = null)
     {
@@ -487,27 +487,27 @@ class Page extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set editFlg.
+     * Set editType.
      *
-     * @param int $editFlg
+     * @param int $editType
      *
-     * @return PageLayout
+     * @return Page
      */
-    public function setEditFlg($editFlg)
+    public function setEditType($editType)
     {
-        $this->edit_flg = $editFlg;
+        $this->edit_type = $editType;
 
         return $this;
     }
 
     /**
-     * Get editFlg.
+     * Get editType.
      *
      * @return int
      */
-    public function getEditFlg()
+    public function getEditType()
     {
-        return $this->edit_flg;
+        return $this->edit_type;
     }
 
     /**
@@ -515,7 +515,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $author
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setAuthor($author = null)
     {
@@ -539,7 +539,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $description
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setDescription($description = null)
     {
@@ -563,7 +563,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $keyword
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setKeyword($keyword = null)
     {
@@ -587,7 +587,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $updateUrl
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setUpdateUrl($updateUrl = null)
     {
@@ -611,7 +611,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param \DateTime $createDate
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setCreateDate($createDate)
     {
@@ -635,7 +635,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param \DateTime $updateDate
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setUpdateDate($updateDate)
     {
@@ -659,7 +659,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $metaRobots
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setMetaRobots($metaRobots = null)
     {
@@ -683,7 +683,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param \Eccube\Entity\BlockPosition $blockPosition
      *
-     * @return PageLayout
+     * @return Page
      */
     public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
@@ -719,7 +719,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param \Eccube\Entity\PageLayout $PageLayout
      *
-     * @return PageLayout
+     * @return Page
      */
     public function addPageLayout(\Eccube\Entity\PageLayout $PageLayout)
     {
@@ -753,7 +753,7 @@ class Page extends \Eccube\Entity\AbstractEntity
      *
      * @param \Eccube\Entity\Master\DeviceType|null $deviceType
      *
-     * @return PageLayout
+     * @return Page
      */
     public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
     {

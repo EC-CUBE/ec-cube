@@ -1,4 +1,4 @@
-page_id,device_type_id,page_name,url,file_name,edit_flg,author,description,keyword,update_url,create_date,update_date,meta_robots,discriminator_type
+page_id,device_type_id,page_name,url,file_name,edit_type,author,description,keyword,update_url,create_date,update_date,meta_robots,discriminator_type
 "0","10","プレビューデータ","preview",,"1",,,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,"page"
 "1","10","TOPページ","homepage","index","2",,,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,"page"
 "2","10","商品一覧ページ","product_list","Product/list","2",,,,,"2017-03-07 10:14:52","2017-03-07 10:14:52",,"page"

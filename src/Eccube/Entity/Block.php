@@ -46,16 +46,16 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="logic_flg", type="boolean", options={"default":false})
+     * @ORM\Column(name="logical", type="boolean", options={"default":false})
      */
-    private $logic_flg = false;
+    private $logical = false;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="deletable_flg", type="boolean", options={"default":true})
+     * @ORM\Column(name="deletable", type="boolean", options={"default":true})
      */
-    private $deletable_flg = true;
+    private $deletable = true;
 
     /**
      * @var \DateTime
@@ -169,51 +169,51 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set logicFlg
+     * Set logical
      *
-     * @param boolean $logicFlg
+     * @param boolean $logical
      *
      * @return Block
      */
-    public function setLogicFlg($logicFlg)
+    public function setLogical($logical)
     {
-        $this->logic_flg = $logicFlg;
+        $this->logical = $logical;
 
         return $this;
     }
 
     /**
-     * Get logicFlg
+     * Get logical
      *
      * @return boolean
      */
-    public function isLogicFlg()
+    public function isLogical()
     {
-        return $this->logic_flg;
+        return $this->logical;
     }
 
     /**
-     * Set deletableFlg
+     * Set deletable
      *
-     * @param boolean $deletableFlg
+     * @param boolean $deletable
      *
      * @return Block
      */
-    public function setDeletableFlg($deletableFlg)
+    public function setDeletable($deletable)
     {
-        $this->deletable_flg = $deletableFlg;
+        $this->deletable = $deletable;
 
         return $this;
     }
 
     /**
-     * Get deletableFlg
+     * Get deletable
      *
      * @return boolean
      */
-    public function isDeletableFlg()
+    public function isDeletable()
     {
-        return $this->deletable_flg;
+        return $this->deletable;
     }
 
     /**

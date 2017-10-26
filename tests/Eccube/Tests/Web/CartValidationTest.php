@@ -616,7 +616,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId);
 
         // Remove product (delete flg)
-        $Product->setDelFlg(Constant::ENABLED);
+//        $Product->setDelFlg(Constant::ENABLED);
         $ProductClass->setDelFlg(Constant::ENABLED);
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->persist($ProductClass);
