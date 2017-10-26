@@ -153,7 +153,7 @@ $(function() {
                     </ul>
                 </div>
                 {% for error in app.session.flashbag.get('eccube.front.error')  %}
-                    <div id="confirm_flow_box__message" class="message">
+                    <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
                         <p class="errormsg bg-danger">
                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                         </p>
