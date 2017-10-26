@@ -26,6 +26,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\ProductClass;
 use Eccube\Exception\CartException;
 use Eccube\Util\Str;
 
@@ -267,7 +268,11 @@ class CartServiceTest extends AbstractServiceTestCase
                 ->save();
             $this->fail();
         } catch (CartException $e) {
-            $this->expected = 'cart.product.not.status';
+            $productName = $this->getProductName($ProductClass);
+
+            $error = $this->app->trans('cart.product.not.status', array('%product%' => $productName));
+            $this->expected = $error;
+            // $this->expected = 'cart.product.not.status';
             $this->actual = $e->getMessage();
         }
         $this->verify();
@@ -283,8 +288,9 @@ class CartServiceTest extends AbstractServiceTestCase
         try {
             $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 2)->save();
         } catch (CartException $e) {
-            $this->actual = $this->app['eccube.service.cart']->getError();
-            $this->expected = 'cart.over.price_limit';
+            $errors = $this->app['eccube.service.cart']->getErrors();
+            $this->actual = $errors[0];
+            $this->expected = $error = $this->app->trans('cart.over.price_limit');
         }
 
         $this->verify();
@@ -300,8 +306,14 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 20)->save();
 
-        $this->actual = $this->app['eccube.service.cart']->getErrors();
-        $this->expected = array('cart.over.stock');
+        $productName = $this->getProductName($ProductClass);
+
+        $error = $this->app->trans('cart.over.stock', array('%product%' => $productName));
+        $this->expected = $error;
+
+        $errors = $this->app['eccube.service.cart']->getErrors();
+        $this->actual = $errors[0];
+        //$this->expected = array('cart.over.stock');
         $this->verify();
     }
 
@@ -316,8 +328,16 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 7)->save();
 
-        $this->actual = $this->app['eccube.service.cart']->getErrors();
-        $this->expected = array('cart.over.sale_limit');
+//        $this->actual = $this->app['eccube.service.cart']->getErrors();
+ //       $this->expected = array('cart.over.sale_limit');
+
+        $productName = $this->getProductName($ProductClass);
+
+        $error = $this->app->trans('cart.over.sale_limit', array('%product%' => $productName));
+        $this->expected = $error;
+
+        $errors = $this->app['eccube.service.cart']->getErrors();
+        $this->actual = $errors[0];
         $this->verify();
     }
 
@@ -469,5 +489,28 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->expected = 2;
         $this->actual = count($ProductTypes);
         $this->verify();
+    }
+
+
+    /**
+     * 商品名を取得
+     *
+     * @param ProductClass $ProductClass
+     * @return string
+     */
+    private function getProductName(ProductClass $ProductClass)
+    {
+
+        $productName = $ProductClass->getProduct()->getName();
+
+        if ($ProductClass->hasClassCategory1()) {
+            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+        }
+
+        if ($ProductClass->hasClassCategory2()) {
+            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+        }
+
+        return $productName;
     }
 }

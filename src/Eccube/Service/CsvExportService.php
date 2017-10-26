@@ -24,11 +24,10 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Common\Constant;
 use Eccube\Util\EntityUtil;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class CsvExportService
 {
