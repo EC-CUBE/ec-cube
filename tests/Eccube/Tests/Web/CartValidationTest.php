@@ -2878,7 +2878,7 @@ class CartValidationTest extends AbstractWebTestCase
                         ),
                     ),
                 'Payment' => 3,
-                'message' => $faker->text(),
+                'message' => $faker->realText(),
                 '_token' => 'dummy',
             );
         }

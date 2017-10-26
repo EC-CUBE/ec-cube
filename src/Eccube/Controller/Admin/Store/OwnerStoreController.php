@@ -30,6 +30,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\PluginService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -103,6 +104,7 @@ class OwnerStoreController extends AbstractController
                     }
 
                     // EC-CUBE version check
+                    $arrDependency = [];
                     foreach ($items as &$item) {
                         // Not applicable version
                         $item['version_check'] = 0;
@@ -114,6 +116,9 @@ class OwnerStoreController extends AbstractController
                             // Not purchased with paid items
                             $item['update_status'] = 4;
                         }
+
+                        // Add plugin dependency
+                        $item['depend'] = $app['eccube.service.plugin']->getRequirePluginName($items, $item);
                     }
                     unset($item);
 
@@ -146,14 +151,14 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{_admin}/store/plugin/confirm/{pluginId}" , name="admin_store_plugin_install_confirm")
+     * @Route("/{_admin}/store/plugin/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
      * @param Application $app
      * @param Request     $request
-     * @param string      $pluginId
+     * @param string      $id
      * @return array
      */
-    public function doConfirm(Application $app, Request $request, $pluginId)
+    public function doConfirm(Application $app, Request $request, $id)
     {
         // Owner's store communication
         $url = $this->appConfig['owners_store_url'].'?method=list';
@@ -162,22 +167,28 @@ class OwnerStoreController extends AbstractController
         $items = $data['item'];
 
         // Find plugin in api
-        $index = array_search($pluginId, array_column($items, 'product_id'));
+        $index = array_search($id, array_column($items, 'product_id'));
         if ($index === false) {
             throw new NotFoundHttpException();
         }
-        // Get target plugin in return of api
-        $plugin = $items[$index];
 
-        // Check the eccube version that the plugin supports.
-        $plugin['is_supported_eccube_version'] = 0;
-        if (in_array(Constant::VERSION, $plugin['eccube_version'])) {
-            // Match version
-            $plugin['is_supported_eccube_version'] = 1;
-        }
+        $pluginCode = $items[$index]['product_code'];
+
+        /**
+         * @var PluginService $pluginService
+         */
+        $pluginService =  $app['eccube.service.plugin'];
+        $plugin = $pluginService->buildInfo($items, $pluginCode);
+
+        // Prevent infinity loop: A -> B -> A.
+        $arrDependency[] = $plugin;
+        $arrDependency = $pluginService->getDependency($items, $plugin, $arrDependency);
+        // Unset first param
+        unset($arrDependency[0]);
 
         return [
             'item' => $plugin,
+            'arrDependency' => $arrDependency,
         ];
     }
 
@@ -221,6 +232,17 @@ class OwnerStoreController extends AbstractController
         try {
             $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
             $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
+
+            // 環境に依存せず動作させるために
+            // TODO: サーバー環境に応じて、この処理をやるやらないを切り替える必要あり
+            @ini_set('memory_limit', '1536M');
+            putenv('COMPOSER_HOME='.$app['config']['plugin_realdir'].'/.composer');
+
+            // Composerを他プロセスから動かしプラグインのインストール処理行う
+            // DBのデッドロックを回避するためトランザクションをリセットしておく
+            // TODO: トランザクションを利用しないアノテーションを作成し、コントローラに適用することで、この回避コードを削除する。
+            $app['orm.em']->commit();
+            $app['orm.em']->beginTransaction();
 
             $install = new Process($execute);
             $install->setTimeout(null);

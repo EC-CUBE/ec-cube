@@ -54,7 +54,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             '商品名' => "商品名".$faker->word."商品名",
             'ショップ用メモ欄' => "ショップ用メモ欄".$faker->paragraph."ショップ用メモ欄",
             '商品説明(一覧)' => "商品説明(一覧)".$faker->paragraph."商品説明(一覧)",
-            '商品説明(詳細)' => "商品説明(詳細)".$faker->text."商品説明(詳細)",
+            '商品説明(詳細)' => "商品説明(詳細)".$faker->realText."商品説明(詳細)",
             '検索ワード' => "検索ワード".$faker->word."検索ワード",
             'フリーエリア' => "フリーエリア".$faker->paragraph."フリーエリア",
             '商品削除フラグ' => 0,

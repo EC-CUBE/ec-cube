@@ -65,10 +65,10 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
         $TestProduct->setName($this->faker->word)
             ->setStatus($ProductStatus)
-            ->setNote($this->faker->text(50))
-            ->setDescriptionList($this->faker->text(100))
-            ->setDescriptionDetail($this->faker->text(200))
-            ->setFreeArea($this->faker->text(200))
+            ->setNote($this->faker->realText(50))
+            ->setDescriptionList($this->faker->realText(100))
+            ->setDescriptionDetail($this->faker->realText(200))
+            ->setFreeArea($this->faker->realText(200))
             ->setCreator($TestCreator);
 
         $this->app['orm.em']->persist($TestProduct);
