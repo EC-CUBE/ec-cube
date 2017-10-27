@@ -277,9 +277,13 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを有効にします。
+     * Update new mechanism to check dependency plugin
      *
      * @Method("PUT")
      * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function enable(Application $app, Plugin $Plugin)
     {
@@ -288,6 +292,18 @@ class PluginController extends AbstractController
         if ($Plugin->getEnable() == Constant::ENABLED) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
+            $require = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
+            if (!empty($require)) {
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $require[0]]);
+                $dependName = $require[0];
+                if ($DependPlugin) {
+                    $dependName = $DependPlugin->getName();
+                }
+                // Todo: Add message to messages.ja.php and create mechanism for transmit dynamic parameters for flash messages.
+                $app->addError($Plugin->getName().'を有効化するためには、先に'.$dependName.'を有効化してください。', 'admin');
+
+                return $app->redirect($app->url('admin_store_plugin'));
+            }
             $this->pluginService->enable($Plugin);
             $app->addSuccess('admin.plugin.enable.complete', 'admin');
         }

@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -660,6 +661,41 @@ class PluginService
     }
 
     /**
+     * Check require plugin in enable
+     * Todo: Need improve/refactor code.
+     *
+     * @param string $pluginCode
+     * @return bool|mixed
+     */
+    public function findRequirePluginNeedEnable($pluginCode)
+    {
+        $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
+        $jsonText = @file_get_contents($dir.'/composer.json');
+        $arrRequire = [];
+        if ($jsonText) {
+            $json = json_decode($jsonText, true);
+            $require = $json['require'];
+
+            // Remove vendor plugin
+            if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
+                unset($require[self::VENDOR_NAME.'/plugin-installer']);
+            }
+            foreach ($require as $name => $version) {
+                // Check plugin of ec-cube only
+                if (strpos($name, self::VENDOR_NAME.'/') !== false) {
+                    $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
+                    $ret = $this->isEnable($requireCode);
+                    if ($ret) {
+                        continue;
+                    }
+                    $arrRequire[] = $requireCode;
+                }
+            }
+        }
+
+        return $arrRequire;
+    }
+    /**
      * @param $arrPlugin
      * @param $pluginCode
      * @return false|int|string
@@ -673,5 +709,26 @@ class PluginService
         $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
 
         return $index;
+    }
+
+    /**
+     * @param $code
+     * @return bool
+     */
+    private function isEnable($code)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('enable', Constant::ENABLED))
+            ->andWhere(Criteria::expr()->eq('code', $code))
+            ->setMaxResults(1);
+        /**
+         * @var \Doctrine\Common\Collections\Collection $result
+         */
+        $result = $this->pluginRepository->matching($criteria);
+        if ($result->count() < 1) {
+            return false;
+        }
+
+        return true;
     }
 }
