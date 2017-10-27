@@ -66,6 +66,7 @@ class ComposerProcessService
      */
     public function execRequire($packageName)
     {
+        set_time_limit(0);
         // Build command
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
@@ -101,6 +102,7 @@ class ComposerProcessService
      */
     public function execRemove($packageName)
     {
+        set_time_limit(0);
         // Build command
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
