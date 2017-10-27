@@ -375,46 +375,52 @@ class ShoppingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             log_info('配送業者変更処理開始', array($Order->getId()));
 
-            $data = $form->getData();
-
-            $shippings = $data['shippings'];
-
-            $productDeliveryFeeTotal = 0;
-            $BaseInfo = $app['eccube.repository.base_info']->get();
-
-            foreach ($shippings as $Shipping) {
-                $Delivery = $Shipping->getDelivery();
-
-                if ($Delivery) {
-                    $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
-                        'Delivery' => $Delivery,
-                        'Pref' => $Shipping->getPref()
-                    ));
-
-                    // 商品ごとの配送料合計
-                    if ($BaseInfo->getOptionProductDeliveryFee() === Constant::ENABLED) {
-                        $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
-                    }
-
-                    $Shipping->setDeliveryFee($deliveryFee);
-                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
-                    $Shipping->setShippingDeliveryName($Delivery->getName());
-                }
+            // 支払い情報をセット
+            if($form['payment']->isValid()) {
+                $payment = $form['payment']->getData();
+                $Order->setPayment($payment);
+                $Order->setPaymentMethod($payment->getMethod());
+                $Order->setCharge($payment->getCharge());
             }
 
-            // 支払い情報をセット
-            $payment = $data['payment'];
-            $message = $data['message'];
+            // お問い合わせ欄をセット
+            if($form['message']->isValid()) {
+                $message = $form['message']->getData();
+                $Order->setMessage($message);
+            }
 
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setMessage($message);
-            $Order->setCharge($payment->getCharge());
+            // 配送情報をセット
+            if($form['shippings']->isValid()) {
+                $shippings = $form['shippings']->getData();
 
-            $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
+                $productDeliveryFeeTotal = 0;
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+
+                foreach ($shippings as $Shipping) {
+                    $Delivery = $Shipping->getDelivery();
+
+                    if ($Delivery) {
+                        $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
+                            'Delivery' => $Delivery,
+                            'Pref' => $Shipping->getPref()
+                        ));
+
+                        // 商品ごとの配送料合計
+                        if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
+                            $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                        }
+
+                        $Shipping->setDeliveryFee($deliveryFee);
+                        $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
+                        $Shipping->setShippingDeliveryName($Delivery->getName());
+                    }
+                }
+
+                $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
+            }
 
             // 合計金額の再計算
             $Order = $app['eccube.service.shopping']->getAmount($Order);
@@ -422,17 +428,19 @@ class ShoppingController extends AbstractController
             // 受注関連情報を最新状態に更新
             $app['orm.em']->flush();
 
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Order' => $Order,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE, $event);
+            if ($form->isValid()) {
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Order' => $Order,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE, $event);
 
-            log_info('配送業者変更処理完了', array($Order->getId()));
-            return $app->redirect($app->url('shopping'));
+                log_info('配送業者変更処理完了', array($Order->getId()));
+                return $app->redirect($app->url('shopping'));
+            }
         }
 
         log_info('配送業者変更入力チェックエラー', array($Order->getId()));
@@ -473,18 +481,20 @@ class ShoppingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
             log_info('支払い方法変更処理開始', array("id" => $Order->getId()));
+            if ($form['payment']->isValid()) {
+                $payment = $form['payment']->getData();
+                $Order->setPayment($payment);
+                $Order->setPaymentMethod($payment->getMethod());
+                $Order->setCharge($payment->getCharge());
+            }
 
-            $data = $form->getData();
-            $payment = $data['payment'];
-            $message = $data['message'];
-
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setMessage($message);
-            $Order->setCharge($payment->getCharge());
+            if ($form['message']->isValid()) {
+                $message = $form['message']->getData();
+                $Order->setMessage($message);
+            }
 
             // 合計金額の再計算
             $Order = $app['eccube.service.shopping']->getAmount($Order);
@@ -492,18 +502,20 @@ class ShoppingController extends AbstractController
             // 受注関連情報を最新状態に更新
             $app['orm.em']->flush();
 
-            $event = new EventArgs(
-                array(
-                    'form' => $form,
-                    'Order' => $Order,
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE, $event);
+            if ($form->isValid()) {
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Order' => $Order,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE, $event);
 
-            log_info('支払い方法変更処理完了', array("id" => $Order->getId(), "payment" => $payment->getId()));
+                log_info('支払い方法変更処理完了', array("id" => $Order->getId(), "payment" => $payment->getId()));
 
-            return $app->redirect($app->url('shopping'));
+                return $app->redirect($app->url('shopping'));
+            }
         }
 
         log_info('支払い方法変更入力チェックエラー', array("id" => $Order->getId()));
