@@ -24,7 +24,6 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -662,16 +661,19 @@ class PluginService
 
     /**
      * Check require plugin in enable
-     * Todo: Need improve/refactor code.
      *
      * @param string $pluginCode
-     * @return bool|mixed
+     * @return array
      */
     public function findRequirePluginNeedEnable($pluginCode)
     {
         $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
-        $jsonText = @file_get_contents($dir.'/composer.json');
-        $arrRequire = [];
+        $composerFile = $dir.'/composer.json';
+        $requires = [];
+        if (!file_exists($composerFile)) {
+            return $requires;
+        }
+        $jsonText = file_get_contents($composerFile);
         if ($jsonText) {
             $json = json_decode($jsonText, true);
             $require = $json['require'];
@@ -688,12 +690,12 @@ class PluginService
                     if ($ret) {
                         continue;
                     }
-                    $arrRequire[] = $requireCode;
+                    $requires[] = $requireCode;
                 }
             }
         }
 
-        return $arrRequire;
+        return $requires;
     }
     /**
      * @param $arrPlugin
@@ -712,23 +714,19 @@ class PluginService
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     private function isEnable($code)
     {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('enable', Constant::ENABLED))
-            ->andWhere(Criteria::expr()->eq('code', $code))
-            ->setMaxResults(1);
-        /**
-         * @var \Doctrine\Common\Collections\Collection $result
-         */
-        $result = $this->pluginRepository->matching($criteria);
-        if ($result->count() < 1) {
-            return false;
+        $Plugin = $this->pluginRepository->findOneBy([
+            'enable' => Constant::ENABLED,
+            'code' => $code
+        ]);
+        if ($Plugin) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

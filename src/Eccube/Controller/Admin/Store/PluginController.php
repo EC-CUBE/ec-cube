@@ -277,7 +277,6 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを有効にします。
-     * Update new mechanism to check dependency plugin
      *
      * @Method("PUT")
      * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
@@ -292,10 +291,10 @@ class PluginController extends AbstractController
         if ($Plugin->getEnable() == Constant::ENABLED) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
-            $require = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
-            if (!empty($require)) {
-                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $require[0]]);
-                $dependName = $require[0];
+            $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
+            if (!empty($requires)) {
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $requires[0]]);
+                $dependName = $requires[0];
                 if ($DependPlugin) {
                     $dependName = $DependPlugin->getName();
                 }
