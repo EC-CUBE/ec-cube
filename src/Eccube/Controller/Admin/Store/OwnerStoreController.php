@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
@@ -62,6 +63,12 @@ class OwnerStoreController extends AbstractController
      * @var ComposerProcessService
      */
     protected $composerService;
+
+    /**
+     * @var EntityManager
+     * @Inject("orm.em")
+     */
+    protected $em;
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
@@ -241,7 +248,7 @@ class OwnerStoreController extends AbstractController
          * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
          * @var EntityManagerInterface $em
          */
-        $em = $app['orm.em'];
+        $em = $this->em;
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
             $em->getConnection()->beginTransaction();
@@ -285,7 +292,7 @@ class OwnerStoreController extends AbstractController
          * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
          * @var EntityManagerInterface $em
          */
-        $em = $app['orm.em'];
+        $em = $this->em;
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
             $em->getConnection()->beginTransaction();

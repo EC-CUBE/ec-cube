@@ -34,10 +34,10 @@ use Eccube\Application;
 class ComposerProcessService
 {
     /**
-     * @var Application
-     * @Inject(Application::class)
+     * @Inject("config")
+     * @var array
      */
-    protected $app;
+    protected $appConfig;
 
     private $composerFile;
     private $composerSetup;
@@ -57,13 +57,13 @@ class ComposerProcessService
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
-        $command .= $this->app['config']['root_dir'].' 2>&1';
-        $this->app->log($command);
+        $command .= $this->appConfig['root_dir'].' 2>&1';
+        log_info($command);
 
         // Execute command
         $output = array();
         exec($command, $output);
-        $this->app->log(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+        log_info(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
 
         return true;
     }
@@ -83,13 +83,13 @@ class ComposerProcessService
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
-        $command .= $this->app['config']['root_dir'].' 2>&1';
-        $this->app->log($command);
+        $command .= $this->appConfig['root_dir'].' 2>&1';
+        log_info($command);
 
         // Execute command
         $output = array();
         exec($command, $output);
-        $this->app->log(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+        log_info(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
 
         return true;
     }
@@ -111,19 +111,19 @@ class ComposerProcessService
     {
         @ini_set('memory_limit', '1536M');
         // Config for some environment
-        putenv('COMPOSER_HOME='.$this->app['config']['plugin_realdir'].'/.composer');
-        $this->composerFile = $this->app['config']['root_dir'].'/composer.phar';
-        $this->composerSetup = $this->app['config']['root_dir'].'/composer-setup.php';
+        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
+        $this->composerFile = $this->appConfig['root_dir'].'/composer.phar';
+        $this->composerSetup = $this->appConfig['root_dir'].'/composer-setup.php';
 
         if (!file_exists($this->composerFile)) {
             if (!file_exists($this->composerSetup)) {
                 $result = copy('https://getcomposer.org/installer', $this->composerSetup);
-                $this->app->log($this->composerSetup.' : '.$result);
+                log_info($this->composerSetup.' : '.$result);
             }
             $command = $this->getPHP().' '.$this->composerSetup;
             $output = array();
             exec($command, $output);
-            $this->app->log(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+            log_info(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
 
             unlink($this->composerSetup);
         }
