@@ -117,7 +117,7 @@ class PluginEventHandler extends AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Plugin", inversedBy="PluginEventHandlers")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="plugin_id", referencedColumnName="plugin_id")
+     *   @ORM\JoinColumn(name="plugin_id", referencedColumnName="id")
      * })
      */
     private $Plugin;

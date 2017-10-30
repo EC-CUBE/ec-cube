@@ -151,7 +151,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="item_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -239,7 +239,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="OrderItems")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * })
      */
     private $Order;
@@ -249,7 +249,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * })
      */
     private $Product;
@@ -259,7 +259,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="product_class_id")
+     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
      * })
      */
     private $ProductClass;
@@ -269,7 +269,7 @@ class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Shipping", inversedBy="OrderItems")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shipping_id", referencedColumnName="shipping_id")
+     *   @ORM\JoinColumn(name="shipping_id", referencedColumnName="id")
      * })
      */
     private $Shipping;

@@ -67,7 +67,7 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * })
      */
     private $Product;
@@ -77,7 +77,7 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category_id", referencedColumnName="category_id")
+     *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      * })
      */
     private $Category;

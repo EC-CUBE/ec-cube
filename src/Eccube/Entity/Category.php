@@ -153,7 +153,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -216,7 +216,7 @@ class Category extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Children")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_category_id", referencedColumnName="category_id")
+     *   @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id")
      * })
      */
     private $Parent;
@@ -226,7 +226,7 @@ class Category extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
      */
     private $Creator;

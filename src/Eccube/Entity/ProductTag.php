@@ -32,7 +32,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="product_tag_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -50,7 +50,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductTag")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * })
      */
     private $Product;
@@ -70,7 +70,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
      */
     private $Creator;

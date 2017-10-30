@@ -40,7 +40,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="favorite_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -65,7 +65,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id")
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      * })
      */
     private $Customer;
@@ -75,7 +75,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * })
      */
     private $Product;

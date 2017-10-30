@@ -112,7 +112,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var integer
      *
-     * @ORM\Column(name="order_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -385,7 +385,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="Orders")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id")
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      * })
      */
     private $Customer;
@@ -435,7 +435,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="payment_id")
+     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
      * })
      */
     private $Payment;
