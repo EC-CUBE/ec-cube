@@ -671,24 +671,28 @@ class PluginService
          * @var Plugin[] $enabledPlugins
          */
         $enabledPlugins = $this->pluginRepository->findAllEnabled();
-        $arrDependent = [];
+        $dependents = [];
         foreach ($enabledPlugins as $plugin) {
             if ($plugin->getCode() !== $pluginCode) {
                 $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
-                $jsonText = @file_get_contents($dir.'/composer.json');
+                $fileName = $dir.'/composer.json';
+                if (!file_exists($fileName)) {
+                    continue;
+                }
+                $jsonText = file_get_contents($fileName);
                 if ($jsonText) {
                     $json = json_decode($jsonText, true);
                     if (!isset($json['require'])) {
                         continue;
                     }
                     if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
-                        $arrDependent[] = $plugin->getName();
+                        $dependents[] = $plugin->getName();
                     }
                 }
             }
         }
 
-        return $arrDependent;
+        return $dependents;
     }
 
     /**

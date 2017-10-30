@@ -309,9 +309,9 @@ class PluginController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
-            $require = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
-            if (!empty($require)) {
-                $dependName = $require[0];
+            $requires = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
+            if (!empty($requires)) {
+                $dependName = $requires[0];
                 $app->addError($Plugin->getName().'を無効化するためには、先に'.$dependName.'を無効化してください。', 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
