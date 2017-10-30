@@ -660,6 +660,38 @@ class PluginService
     }
 
     /**
+     * Find the dependent plugins that need to be disabled
+     *
+     * @param string $pluginCode
+     * @return array
+     */
+    public function findDependentPluginNeedDisable($pluginCode)
+    {
+        /**
+         * @var Plugin[] $enabledPlugins
+         */
+        $enabledPlugins = $this->pluginRepository->findAllEnabled();
+        $arrDependent = [];
+        foreach ($enabledPlugins as $plugin) {
+            if ($plugin->getCode() !== $pluginCode) {
+                $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
+                $jsonText = @file_get_contents($dir.'/composer.json');
+                if ($jsonText) {
+                    $json = json_decode($jsonText, true);
+                    if (!isset($json['require'])) {
+                        continue;
+                    }
+                    if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                        $arrDependent[] = $plugin->getName();
+                    }
+                }
+            }
+        }
+
+        return $arrDependent;
+    }
+
+    /**
      * @param $arrPlugin
      * @param $pluginCode
      * @return false|int|string
