@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -667,27 +668,29 @@ class PluginService
      */
     public function findDependentPluginNeedDisable($pluginCode)
     {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('enable', Constant::ENABLED))
+            ->andWhere(Criteria::expr()->neq('code', $pluginCode));
+
         /**
          * @var Plugin[] $enabledPlugins
          */
-        $enabledPlugins = $this->pluginRepository->findAllEnabled();
+        $enabledPlugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
         foreach ($enabledPlugins as $plugin) {
-            if ($plugin->getCode() !== $pluginCode) {
-                $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
-                $fileName = $dir.'/composer.json';
-                if (!file_exists($fileName)) {
+            $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
+            $fileName = $dir.'/composer.json';
+            if (!file_exists($fileName)) {
+                continue;
+            }
+            $jsonText = file_get_contents($fileName);
+            if ($jsonText) {
+                $json = json_decode($jsonText, true);
+                if (!isset($json['require'])) {
                     continue;
                 }
-                $jsonText = file_get_contents($fileName);
-                if ($jsonText) {
-                    $json = json_decode($jsonText, true);
-                    if (!isset($json['require'])) {
-                        continue;
-                    }
-                    if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
-                        $dependents[] = $plugin->getName();
-                    }
+                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                    $dependents[] = $plugin->getName();
                 }
             }
         }
