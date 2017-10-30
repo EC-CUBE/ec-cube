@@ -5,7 +5,7 @@
     {% if form.parent %}<span class="help-block">{% else %}<div class="alert">{% endif %}
     <ul class="list-unstyled">
         {%- for error in errors -%}
-            <p class="errormsg text-danger">{{ error.message |trans }}</p>
+            <p class="errormsg text-danger">{{ include(template_from_string(error.message|trans)) }}</p>
         {%- endfor -%}
     </ul>
     {% if form.parent %}</span>{% else %}</div>{% endif %}

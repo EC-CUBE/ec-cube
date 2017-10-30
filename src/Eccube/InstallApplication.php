@@ -80,6 +80,10 @@ class InstallApplication extends ApplicationTrait
             'twig.path' => array(__DIR__.'/Resource/template/install'),
             'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
         ));
+        $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+            $twig->addExtension(new \Twig_Extension_StringLoader());
+            return $twig;
+        }));
 
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
