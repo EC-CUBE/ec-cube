@@ -299,7 +299,6 @@ class PluginController extends AbstractController
                 if ($DependPlugin) {
                     $dependName = $DependPlugin->getName();
                 }
-                // Todo: Add message to messages.ja.php and create mechanism for transmit dynamic parameters for flash messages.
                 $app->addError($Plugin->getName().'を有効化するためには、先に'.$dependName.'を有効化してください。', 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
