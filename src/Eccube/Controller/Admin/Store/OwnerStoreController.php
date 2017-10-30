@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -55,6 +56,12 @@ class OwnerStoreController extends AbstractController
      * @var PluginRepository
      */
     protected $pluginRepository;
+
+    /**
+     * @Inject(ComposerProcessService::class)
+     * @var ComposerProcessService
+     */
+    protected $composerService;
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
@@ -230,10 +237,17 @@ class OwnerStoreController extends AbstractController
         }
 
         /**
-         * @var ComposerProcessService $composerService
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
          */
-        $composerService = $app['eccube.service.composer'];
-        $return = $composerService->execRequire($pluginCode);
+        $em = $app['orm.em'];
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
+        }
+
+        $return = $this->composerService->execRequire($pluginCode);
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -265,11 +279,19 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $Plugin->getCode();
 
+
         /**
-         * @var ComposerProcessService $composerService
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
          */
-        $composerService = $app['eccube.service.composer'];
-        $return = $composerService->execRemove($pluginCode);
+        $em = $app['orm.em'];
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
+        }
+
+        $return = $this->composerService->execRemove($pluginCode);
         if ($return) {
             $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
         } else {

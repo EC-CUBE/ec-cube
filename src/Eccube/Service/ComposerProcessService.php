@@ -22,7 +22,7 @@
  */
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
 
@@ -35,28 +35,13 @@ class ComposerProcessService
 {
     /**
      * @var Application
+     * @Inject(Application::class)
      */
     protected $app;
 
     private $composerFile;
     private $composerSetup;
     private static $vendorName = 'ec-cube';
-
-    /**
-     * ComposerProcessService constructor.
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        @ini_set('memory_limit', '1536M');
-        // Config for some environment
-        putenv('COMPOSER_HOME='.$app['config']['plugin_realdir'].'/.composer');
-        $this->composerFile = $app['config']['root_dir'].'/composer.phar';
-        $this->composerSetup = $app['config']['root_dir'].'/composer-setup.php';
-        $this->app = $app;
-
-        $this->setupComposer();
-    }
 
     /**
      * This function to install a plugin by composer require
@@ -67,6 +52,7 @@ class ComposerProcessService
     public function execRequire($packageName)
     {
         set_time_limit(0);
+        $this->setupComposer();
         // Build command
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
@@ -74,21 +60,10 @@ class ComposerProcessService
         $command .= $this->app['config']['root_dir'].' 2>&1';
         $this->app->log($command);
 
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->app['orm.em'];
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
-
         // Execute command
         $output = array();
         exec($command, $output);
-        $this->app->log(PHP_EOL . implode(PHP_EOL, $output) . PHP_EOL);
+        $this->app->log(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
 
         return true;
     }
@@ -103,23 +78,13 @@ class ComposerProcessService
     public function execRemove($packageName)
     {
         set_time_limit(0);
+        $this->setupComposer();
         // Build command
         $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
         $command .= $this->app['config']['root_dir'].' 2>&1';
         $this->app->log($command);
-
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->app['orm.em'];
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
 
         // Execute command
         $output = array();
@@ -144,6 +109,12 @@ class ComposerProcessService
      */
     private function setupComposer()
     {
+        @ini_set('memory_limit', '1536M');
+        // Config for some environment
+        putenv('COMPOSER_HOME='.$this->app['config']['plugin_realdir'].'/.composer');
+        $this->composerFile = $this->app['config']['root_dir'].'/composer.phar';
+        $this->composerSetup = $this->app['config']['root_dir'].'/composer-setup.php';
+
         if (!file_exists($this->composerFile)) {
             if (!file_exists($this->composerSetup)) {
                 $result = copy('https://getcomposer.org/installer', $this->composerSetup);
