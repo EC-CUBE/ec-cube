@@ -24,6 +24,8 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -31,13 +33,13 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
+use Eccube\Service\ComposerProcessService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Process\Process;
 
 /**
  * @Route(service=OwnerStoreController::class)
@@ -55,6 +57,18 @@ class OwnerStoreController extends AbstractController
      * @var PluginRepository
      */
     protected $pluginRepository;
+
+    /**
+     * @Inject(ComposerProcessService::class)
+     * @var ComposerProcessService
+     */
+    protected $composerService;
+
+    /**
+     * @var EntityManager
+     * @Inject("orm.em")
+     */
+    protected $em;
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
@@ -229,38 +243,69 @@ class OwnerStoreController extends AbstractController
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
 
-        try {
-            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
-            $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
-
-            // 環境に依存せず動作させるために
-            // TODO: サーバー環境に応じて、この処理をやるやらないを切り替える必要あり
-            @ini_set('memory_limit', '1536M');
-            putenv('COMPOSER_HOME='.$app['config']['plugin_realdir'].'/.composer');
-
-            // Composerを他プロセスから動かしプラグインのインストール処理行う
-            // DBのデッドロックを回避するためトランザクションをリセットしておく
-            // TODO: トランザクションを利用しないアノテーションを作成し、コントローラに適用することで、この回避コードを削除する。
-            $app['orm.em']->commit();
-            $app['orm.em']->beginTransaction();
-
-            $install = new Process($execute);
-            $install->setTimeout(null);
-            $install->run();
-            if ($install->isSuccessful()) {
-                $app->addSuccess('admin.plugin.install.complete', 'admin');
-                $app->log(sprintf('Install %s plugin successful!', $pluginCode));
-
-                return $app->redirect($app->url('admin_store_plugin'));
-            }
-            $app->addError('admin.plugin.install.fail', 'admin');
-        } catch (Exception $exception) {
-            $app->addError($exception->getMessage(), 'admin');
-            $app->log($exception->getCode().' : '.$exception->getMessage());
+        /**
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
+         */
+        $em = $this->em;
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
         }
-        $app->log(sprintf('Install %s plugin fail!', $pluginCode));
+
+        $return = $this->composerService->execRequire($pluginCode);
+        if ($return) {
+            $app->addSuccess('admin.plugin.install.complete', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+        $app->addError('admin.plugin.install.fail', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
+    }
+
+    /**
+     * New ways to remove plugin: using composer command
+     *
+     * @Method("DELETE")
+     * @Route("/{_admin}/store/plugin/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
+     */
+    public function apiUninstall(Application $app, Plugin $Plugin)
+    {
+        $this->isTokenValid($app);
+
+        if ($Plugin->getEnable() == Constant::ENABLED) {
+            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+
+        $pluginCode = $Plugin->getCode();
+
+
+        /**
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
+         */
+        $em = $this->em;
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
+        }
+
+        $return = $this->composerService->execRemove($pluginCode);
+        if ($return) {
+            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        } else {
+            $app->addError('admin.plugin.uninstall.error', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
     /**

@@ -43,15 +43,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -318,53 +315,17 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを削除します。
-     * Update new ways to remove plugin: using composer command
      *
      * @Method("DELETE")
      * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
-     * @param Application $app
-     * @param Plugin      $Plugin
-     * @return RedirectResponse
      */
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
-            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+        $this->pluginService->uninstall($Plugin);
 
-            return $app->redirect($app->url('admin_store_plugin'));
-        }
-
-        $pluginCode = $Plugin->getCode();
-        try {
-            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
-            $execute .= sprintf(' composer remove ec-cube/%s', $pluginCode);
-
-            // 環境に依存せず動作させるために
-            // TODO: サーバー環境に応じて、この処理をやるやらないを切り替える必要あり
-            @ini_set('memory_limit', '1536M');
-            putenv('COMPOSER_HOME='.$app['config']['plugin_realdir'].'/.composer');
-
-            // Composerを他プロセスから動かしプラグインのインストール処理行う
-            // DBのデッドロックを回避するためトランザクションをリセットしておく
-            // TODO: トランザクションを利用しないアノテーションを作成し、コントローラに適用することで、この回避コードを削除する。
-            $app['orm.em']->commit();
-            $app['orm.em']->beginTransaction();
-
-            $install = new Process($execute);
-            $install->setTimeout(null);
-            $install->run();
-            if ($install->isSuccessful()) {
-                $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-            } else {
-                $app->log($install->getErrorOutput());
-                $app->addError('admin.plugin.uninstall.error', 'admin');
-            }
-        } catch (\Exception $exception) {
-            $app->addError($exception->getMessage(), 'admin');
-            $app->log($exception->getCode().' : '.$exception->getMessage());
-        }
+        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin'));
     }
