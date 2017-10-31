@@ -661,6 +661,44 @@ class PluginService
     }
 
     /**
+     * Check require plugin in enable
+     *
+     * @param string $pluginCode
+     * @return array
+     */
+    public function findRequirePluginNeedEnable($pluginCode)
+    {
+        $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
+        $composerFile = $dir.'/composer.json';
+        $requires = [];
+        if (!file_exists($composerFile)) {
+            return $requires;
+        }
+        $jsonText = file_get_contents($composerFile);
+        if ($jsonText) {
+            $json = json_decode($jsonText, true);
+            $require = $json['require'];
+
+            // Remove vendor plugin
+            if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
+                unset($require[self::VENDOR_NAME.'/plugin-installer']);
+            }
+            foreach ($require as $name => $version) {
+                // Check plugin of ec-cube only
+                if (strpos($name, self::VENDOR_NAME.'/') !== false) {
+                    $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
+                    $ret = $this->isEnable($requireCode);
+                    if ($ret) {
+                        continue;
+                    }
+                    $requires[] = $requireCode;
+                }
+            }
+        }
+
+        return $requires;
+    }
+    /**
      * Find the dependent plugins that need to be disabled
      *
      * @param string $pluginCode
@@ -712,5 +750,22 @@ class PluginService
         $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
 
         return $index;
+    }
+
+    /**
+     * @param string $code
+     * @return bool
+     */
+    private function isEnable($code)
+    {
+        $Plugin = $this->pluginRepository->findOneBy([
+            'enable' => Constant::ENABLED,
+            'code' => $code
+        ]);
+        if ($Plugin) {
+            return true;
+        }
+
+        return false;
     }
 }
