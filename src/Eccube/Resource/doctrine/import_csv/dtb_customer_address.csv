@@ -1,1 +1,1 @@
-customer_address_id,customer_id,country_id,pref,name01,name02,kana01,kana02,company_name,zip01,zip02,zipcode,addr01,addr02,tel01,tel02,tel03,fax01,fax02,fax03,create_date,update_date,discriminator_type
+id,customer_id,country_id,pref,name01,name02,kana01,kana02,company_name,zip01,zip02,zipcode,addr01,addr02,tel01,tel02,tel03,fax01,fax02,fax03,create_date,update_date,discriminator_type

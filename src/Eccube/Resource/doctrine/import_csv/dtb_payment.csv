@@ -1,4 +1,4 @@
-payment_id,creator_id,payment_method,charge,rule_max,rank,fix_flg,visible,create_date,update_date,payment_image,charge_flg,rule_min,method_class,service_class,discriminator_type
+id,creator_id,payment_method,charge,rule_max,rank,fix_flg,visible,create_date,update_date,payment_image,charge_flg,rule_min,method_class,service_class,discriminator_type
 "1",,"郵便振替","0",,"4","1","1","2017-03-07 10:14:52","2017-03-07 10:14:52",,"1","0","\Eccube\Service\Payment\Method\Cash","\Eccube\Service\PaymentService","payment"
 "2",,"現金書留","0",,"3","1","1","2017-03-07 10:14:52","2017-03-07 10:14:52",,"1","0","\Eccube\Service\Payment\Method\Cash","\Eccube\Service\PaymentService","payment"
 "3",,"銀行振込","0",,"2","1","1","2017-03-07 10:14:52","2017-03-07 10:14:52",,"1","0","\Eccube\Service\Payment\Method\Cash","\Eccube\Service\PaymentService","payment"

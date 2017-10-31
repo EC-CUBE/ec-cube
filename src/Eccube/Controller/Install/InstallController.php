@@ -552,11 +552,11 @@ class InstallController
             ]);
 
             $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-                ? $conn->fetchColumn("select nextval('dtb_member_member_id_seq')")
+                ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
                 : null;
 
             $conn->insert('dtb_member', [
-                'member_id' => $member_id,
+                'id' => $member_id,
                 'login_id' => $data['login_id'],
                 'password' => $password,
                 'salt' => $salt,
@@ -591,7 +591,7 @@ class InstallController
             );
             $encoder = new PasswordEncoder($config);
             $salt = Str::random(32);
-            $stmt = $conn->prepare("SELECT member_id FROM dtb_member WHERE login_id = :login_id;");
+            $stmt = $conn->prepare("SELECT id FROM dtb_member WHERE login_id = :login_id;");
             $stmt->execute([':login_id' => $data['login_id']]);
             $row = $stmt->fetch();
             $password = $encoder->encodePassword($data['login_pass'], $salt);

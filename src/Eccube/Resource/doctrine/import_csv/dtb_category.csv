@@ -1,4 +1,4 @@
-category_id,parent_category_id,creator_id,category_name,hierarchy,rank,create_date,update_date,discriminator_type
+id,parent_category_id,creator_id,category_name,hierarchy,rank,create_date,update_date,discriminator_type
 "1",,,"キッチンツール","1","5","2017-03-07 10:14:52","2017-03-07 10:14:52","category"
 "2",,,"インテリア","1","6","2017-03-07 10:14:52","2017-03-07 10:14:52","category"
 "3","1",,"食器","2","3","2017-03-07 10:14:52","2017-03-07 10:14:52","category"
