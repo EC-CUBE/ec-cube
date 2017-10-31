@@ -16,7 +16,7 @@ class TimeZoneTest extends EccubeTestCase
         // の日時データを登録
         $sql = "
             insert into dtb_product (
-                product_id,
+                id,
                 name,
                 create_date,
                 update_date,
@@ -83,7 +83,7 @@ class TimeZoneTest extends EccubeTestCase
 
         $this->assertEquals($expected, $actual);
 
-        $sql = 'select product_id, create_date from dtb_product where product_id = ?';
+        $sql = 'select id, create_date from dtb_product where id = ?';
         $stmt = $app['db']->executeQuery($sql, [$id]);
         $product = $stmt->fetch();
 
@@ -99,7 +99,7 @@ class TimeZoneTest extends EccubeTestCase
         /** @var \Eccube\Application $app */
         $app = $this->app;
 
-        $sql = 'select create_date from dtb_product where product_id = 999';
+        $sql = 'select create_date from dtb_product where id = 999';
         $stmt = $app['db']->executeQuery($sql);
         $product = $stmt->fetch();
 
@@ -128,7 +128,7 @@ class TimeZoneTest extends EccubeTestCase
         $updateDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 
         $app['db']->insert('dtb_product', [
-            'product_id' => 9999,
+            'id' => 9999,
             'name' => '商品名',
             'create_date' => $createDate,
             'update_date' => $updateDate,
@@ -138,7 +138,7 @@ class TimeZoneTest extends EccubeTestCase
             'create_date' => 'datetimetz',
         ]);
 
-        $sql = 'select product_id, create_date from dtb_product where product_id = 9999';
+        $sql = 'select id, create_date from dtb_product where id = 9999';
         $stmt = $app['db']->executeQuery($sql);
         $product = $stmt->fetch();
 
