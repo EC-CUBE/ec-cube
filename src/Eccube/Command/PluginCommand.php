@@ -147,7 +147,7 @@ EOF
                 $config = $service->readYml($pluginDir.'/config.yml');
                 $event = $service->readYml($pluginDir.'/event.yml');
                 $service->checkSamePlugin($config['code']);
-                $service->registerPlugin($config, $event);
+                $service->postInstall($config, $event, false);
 
                 $output->writeln('success');
 
