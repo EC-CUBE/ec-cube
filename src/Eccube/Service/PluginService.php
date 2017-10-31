@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -697,6 +698,44 @@ class PluginService
 
         return $requires;
     }
+    /**
+     * Find the dependent plugins that need to be disabled
+     *
+     * @param string $pluginCode
+     * @return array
+     */
+    public function findDependentPluginNeedDisable($pluginCode)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('enable', Constant::ENABLED))
+            ->andWhere(Criteria::expr()->neq('code', $pluginCode));
+
+        /**
+         * @var Plugin[] $enabledPlugins
+         */
+        $enabledPlugins = $this->pluginRepository->matching($criteria);
+        $dependents = [];
+        foreach ($enabledPlugins as $plugin) {
+            $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
+            $fileName = $dir.'/composer.json';
+            if (!file_exists($fileName)) {
+                continue;
+            }
+            $jsonText = file_get_contents($fileName);
+            if ($jsonText) {
+                $json = json_decode($jsonText, true);
+                if (!isset($json['require'])) {
+                    continue;
+                }
+                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                    $dependents[] = $plugin->getName();
+                }
+            }
+        }
+
+        return $dependents;
+    }
+
     /**
      * @param $arrPlugin
      * @param $pluginCode

@@ -311,12 +311,23 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/{_admin}/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function disable(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
+            $requires = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
+            if (!empty($requires)) {
+                $dependName = $requires[0];
+                $app->addError($Plugin->getName().'を無効化するためには、先に'.$dependName.'を無効化してください。', 'admin');
+
+                return $app->redirect($app->url('admin_store_plugin'));
+            }
+
             $this->pluginService->disable($Plugin);
             $app->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {
@@ -325,7 +336,6 @@ class PluginController extends AbstractController
 
         return $app->redirect($app->url('admin_store_plugin'));
     }
-
 
     /**
      * 対象のプラグインを削除します。
