@@ -277,6 +277,9 @@ class PluginController extends AbstractController
      *
      * @Method("PUT")
      * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function enable(Application $app, Plugin $Plugin)
     {
@@ -285,6 +288,17 @@ class PluginController extends AbstractController
         if ($Plugin->getEnable() == Constant::ENABLED) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
+            $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
+            if (!empty($requires)) {
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $requires[0]]);
+                $dependName = $requires[0];
+                if ($DependPlugin) {
+                    $dependName = $DependPlugin->getName();
+                }
+                $app->addError($Plugin->getName().'を有効化するためには、先に'.$dependName.'を有効化してください。', 'admin');
+
+                return $app->redirect($app->url('admin_store_plugin'));
+            }
             $this->pluginService->enable($Plugin);
             $app->addSuccess('admin.plugin.enable.complete', 'admin');
         }
