@@ -342,11 +342,11 @@ function initializeDatabase(\Doctrine\ORM\EntityManager $em)
 
     $conn = $em->getConnection();
     $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-        ? $conn->fetchColumn("select nextval('dtb_member_member_id_seq')")
+        ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
         : null;
 
     $conn->insert('dtb_member', [
-        'member_id' => $member_id,
+        'id' => $member_id,
         'login_id' => $login_id,
         'password' => $password,
         'salt' => $salt,

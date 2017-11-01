@@ -72,7 +72,7 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Block", inversedBy="BlockPositions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="block_id", referencedColumnName="block_id")
+     *   @ORM\JoinColumn(name="block_id", referencedColumnName="id")
      * })
      */
     private $Block;
@@ -82,7 +82,7 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="BlockPositions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="page_id")
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      * })
      *
      * @deprecated
@@ -94,7 +94,7 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="BlockPositions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="layout_id", referencedColumnName="layout_id")
+     *   @ORM\JoinColumn(name="layout_id", referencedColumnName="id")
      * })
      */
     private $Layout;

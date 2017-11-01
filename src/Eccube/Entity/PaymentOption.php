@@ -61,7 +61,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="PaymentOptions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="delivery_id")
+     *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
      * })
      */
     private $Delivery;
@@ -71,7 +71,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment", inversedBy="PaymentOptions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="payment_id")
+     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
      * })
      */
     private $Payment;

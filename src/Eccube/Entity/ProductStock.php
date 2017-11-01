@@ -44,7 +44,7 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="product_stock_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -76,7 +76,7 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="ProductStock")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="product_class_id")
+     *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
      * })
      */
     private $ProductClass;
@@ -86,7 +86,7 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
      */
     private $Creator;

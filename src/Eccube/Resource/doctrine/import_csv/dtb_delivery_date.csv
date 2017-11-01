@@ -1,4 +1,4 @@
-date_id,name,value,rank,discriminator_type
+id,name,value,rank,discriminator_type
 "1","即日","0","0","deliverydate"
 "2","1～2日後","1","1","deliverydate"
 "3","3～4日後","3","2","deliverydate"

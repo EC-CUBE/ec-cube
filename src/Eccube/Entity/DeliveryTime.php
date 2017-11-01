@@ -40,7 +40,7 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="time_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -58,7 +58,7 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryTimes")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="delivery_id")
+     *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
      * })
      */
     private $Delivery;

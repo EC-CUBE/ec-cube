@@ -2953,7 +2953,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         // remove product exist
         $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
-        $sql = 'DELETE FROM dtb_tax_rule WHERE dtb_tax_rule.tax_rule_id <> 1';
+        $sql = 'DELETE FROM dtb_tax_rule WHERE dtb_tax_rule.id <> 1';
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $this->deleteAllRows(array(

@@ -182,7 +182,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="product_class_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -284,7 +284,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductClasses")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * })
      */
     private $Product;
@@ -304,7 +304,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassCategory")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="class_category_id1", referencedColumnName="class_category_id", nullable=true)
+     *   @ORM\JoinColumn(name="class_category_id1", referencedColumnName="id", nullable=true)
      * })
      */
     private $ClassCategory1;
@@ -314,7 +314,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassCategory")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="class_category_id2", referencedColumnName="class_category_id", nullable=true)
+     *   @ORM\JoinColumn(name="class_category_id2", referencedColumnName="id", nullable=true)
      * })
      */
     private $ClassCategory2;
@@ -324,7 +324,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryDate")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="delivery_date_id", referencedColumnName="date_id")
+     *   @ORM\JoinColumn(name="delivery_date_id", referencedColumnName="id")
      * })
      */
     private $DeliveryDate;
@@ -334,7 +334,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
      */
     private $Creator;

@@ -112,7 +112,7 @@ class CustomerAddress extends AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="customer_address_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -249,7 +249,7 @@ class CustomerAddress extends AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerAddresses")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="customer_id")
+     *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      * })
      */
     private $Customer;
