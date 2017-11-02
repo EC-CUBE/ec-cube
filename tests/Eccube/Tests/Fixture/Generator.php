@@ -27,6 +27,7 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Tests\EccubeTestCase;
 use Faker\Factory as Faker;
 
 /**
@@ -725,6 +726,58 @@ class Generator {
      */
     protected function getFaker()
     {
-        return Faker::create($this->locale);
+        return new Generator_Faker(Faker::create($this->locale));
+    }
+}
+
+class Generator_Faker extends Faker
+{
+    private $faker;
+
+    public function __construct(\Faker\Generator $faker)
+    {
+        $this->faker = $faker;
+    }
+
+    public function __get($attribute)
+    {
+        return $this->faker->$attribute;
+    }
+
+    public function __call($method, $attributes)
+    {
+        return call_user_func_array([$this->faker, $method], $attributes);
+    }
+
+    public function __isset($name)
+    {
+        if (isset($this->faker->$name)) {
+            return true;
+        }
+
+        foreach ($this->faker->getProviders() as $provider) {
+            if (method_exists($provider, $name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+class Generator_FakerTest extends EccubeTestCase
+{
+    public function testKana01ShouldNotEmptyInJAJP()
+    {
+        $generator = new Generator($this->app, 'ja_JP');
+        $Customer = $generator->createCustomer();
+        self::assertNotEmpty($Customer->getKana01());
+    }
+
+    public function testKana01ShouldEmptyInENUS()
+    {
+        $generator = new Generator($this->app, 'en_US');
+        $Customer = $generator->createCustomer();
+        self::assertEmpty($Customer->getKana01());
     }
 }
