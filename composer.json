@@ -43,6 +43,7 @@
         "silex/silex": "^2.2",
         "silex/web-profiler": "^2.0",
         "swiftmailer/swiftmailer": "^5.4",
+        "symfony/asset": "^3.3",
         "symfony/class-loader": "^3.3",
         "symfony/config": "^3.3",
         "symfony/console": "^3.3",
