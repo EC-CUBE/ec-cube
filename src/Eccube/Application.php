@@ -23,8 +23,8 @@
 
 namespace Eccube;
 
-use Composer\Autoload\ClassLoader;
 use Doctrine\DBAL\Types\Type;
+use Eccube\Common\Constant;
 use Eccube\DI\AutoWiring\EntityEventAutowiring;
 use Eccube\DI\AutoWiring\FormExtensionAutoWiring;
 use Eccube\DI\AutoWiring\FormTypeAutoWiring;
@@ -32,6 +32,7 @@ use Eccube\DI\AutoWiring\QueryExtensionAutoWiring;
 use Eccube\DI\AutoWiring\RepositoryAutoWiring;
 use Eccube\DI\AutoWiring\RouteAutoWiring;
 use Eccube\DI\AutoWiring\ServiceAutoWiring;
+use Eccube\DI\DIServiceProvider;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
@@ -41,7 +42,6 @@ use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
-use Eccube\DI\DIServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\ForwardOnlyServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
@@ -208,6 +208,25 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new \Silex\Provider\AssetServiceProvider(), [
+            // default package settings
+            'assets.version' => Constant::VERSION,
+            'assets.version_format' => '%s?v=%s',
+            'assets.base_path' => $this['config']['front_urlpath'],
+            // additional packages settings
+            'assets.named_packages' => [
+                'admin' => [
+                    'version' => Constant::VERSION,
+                    'version_format' => '%s?v=%s',
+                    'base_path' => $this['config']['admin_urlpath'],
+                ],
+                'save_image' => ['base_path' => $this['config']['image_save_urlpath']],
+                'temp_image' => ['base_path' => $this['config']['image_temp_urlpath']],
+                'user_data' => ['base_path' => $this['config']['user_data_urlpath']],
+                'plugin' => ['base_path' => $this['config']['plugin_urlpath']],
+            ],
+        ]);
+
         $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());
         $this->register(new MobileDetectServiceProvider());
         $this->register(new TwigLintServiceProvider());
