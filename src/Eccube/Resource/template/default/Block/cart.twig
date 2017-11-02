@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set Cart = app['eccube.service.cart'].getCart %}
 
 <div class="ec-cartNavi">
-    <div class="ec-cartNavi__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/cart-dark.svg" alt="cart"></div>
-    <div class="ec-cartNavi__iconClose"><img src="{{ app.config.front_urlpath }}/assets/icon/cross-dark.svg" alt="close"></div>
+    <div class="ec-cartNavi__icon"><img src="{{ asset('assets/icon/cart-dark.svg') }}" alt="cart"></div>
+    <div class="ec-cartNavi__iconClose"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt="close"></div>
     <div class="ec-cartNavi__badge">{{ Cart.total_quantity }}</div>
     <div class="ec-cartNavi__label">合計
         <div class="ec-cartNavi__price">{{ Cart.total_price|price }}</div>
