@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}プラグインを探す{% endblock %}
 
 {% block javascript %}
-    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/masonry.pkgd.min.js"></script>
+    <script src="{{ asset('assets/js/vendor/masonry.pkgd.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             $('.grid').masonry({

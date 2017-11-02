@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="login-box">
         {{ include('alert.twig') }}
         <div class="login-box-body">
-            <p class="login-logo2"><img src="{{ app.config.admin_urlpath }}/assets/img/logo2.png" width="106"></p>
+            <p class="login-logo2"><img src="{{ asset('assets/img/logo2.png', 'admin') }}" width="106"></p>
             <form name="form1" id="form1" method="post" action="{{ path(app.config.admin_route ~ '_login_check') }}">
                 {% if app.session.flashBag.has('eccube.admin.login.target.path') %}
                     {% for targetPath in app.session.flashBag.get('eccube.admin.login.target.path') %}
