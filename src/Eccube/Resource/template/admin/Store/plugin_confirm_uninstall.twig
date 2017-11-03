@@ -1,0 +1,77 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_search'] %}
+
+{% block title %}オーナーズストア{% endblock %}
+{% block sub_title %}プラグインアンインストール{% endblock %}
+
+{% block javascript %}
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/masonry.pkgd.min.js"></script>
+    <script>
+        $(function() {
+            $('.grid').masonry({
+                itemSelector: '.grid-item',
+                columnWidth: '.grid-item'
+            });
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">以下のプラグインを削除します。</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="plugin-block">
+                                <div class="row grid">
+                                    <div class="col-xs-12 grid-item">
+                                        {{ include('Store/plugin_owners_confirm.twig') }}
+                                    </div>
+                                </div><!-- .row -->
+                            </div><!-- .plugin-block -->
+                        </div><!-- .col-xs-12 -->
+                    </div><!-- .row -->
+                </div><!-- /.box-body 1 -->
+
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span class="pull-right">
+                                <a class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_api_uninstall', {'id': item.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このプラグインを削除してもよろしいですか？">削除</a>
+                                <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">戻る</button>
+                            </span>
+                        </div>
+                    </div>
+                </div><!-- /.box-footer -->
+
+            </div><!-- /.box 1-->
+
+        </div><!-- /.col -->
+    </div>
+{% endblock %}
