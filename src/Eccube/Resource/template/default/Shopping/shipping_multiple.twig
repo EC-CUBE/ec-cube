@@ -108,7 +108,7 @@ $(function() {
                             <div id="multiple_list__item_box__body--{{ idx }}" class="tbody">
                                 <div id="multiple_list__item_box_body_inner--{{ idx }}" class="item_box tr">
                                     <div id="multiple_list__item--{{ idx }}" class="td table">
-                                        <div id="multiple_list__image--{{ idx }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderItem.product.MainListImage|no_image_product }}" alt="{{ orderItem.productName }}"/></div>
+                                        <div id="multiple_list__image--{{ idx }}" class="item_photo"><img src="{{ asset(orderItem.product.MainListImage|no_image_product, 'save_image' }}" alt="{{ orderItem.productName }}"/></div>
                                         <dl id="multiple_list__item_detail--{{ idx }}" class="item_detail">
                                             <dt id="multiple_list__product_name--{{ idx }}" class="item_name text-default">
                                                 <strong>{{ orderItem.productName }}</strong></dt>

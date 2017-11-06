@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload.css">
-    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload.css', 'admin') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/fileupload/jquery.fileupload-ui.css', 'admin') }}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <style>
         .ui-state-highlight {
@@ -42,11 +42,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock stylesheet %}
 
 {% block javascript %}
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/vendor/jquery.ui.widget.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.iframe-transport.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
+<script src="{{ asset('assets/js/vendor/fileupload/vendor/jquery.ui.widget.js', 'admin') }}"></script>
+<script src="{{ asset('assets/js/vendor/fileupload/jquery.iframe-transport.js', 'admin') }}"></script>
+<script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload.js', 'admin') }}"></script>
+<script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-process.js', 'admin') }}"></script>
+<script src="{{ asset('assets/js/vendor/fileupload/jquery.fileupload-validate.js', 'admin') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script>
     var hideSvg = function () {
@@ -68,7 +68,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             + '</li>';
     if ($("#{{ form.payment_image.vars.id }}").val() != "") {
         var filename = $("#{{ form.payment_image.vars.id }}").val();
-        var path = '{{ app.config.image_save_urlpath }}/' + filename;
+        var path = '{{ asset('', 'save_image') }}' + filename;
         var $img = $(proto_img.replace(/__path__/g, path));
         $("#{{ form.payment_image.vars.id }}").val(filename);
 
