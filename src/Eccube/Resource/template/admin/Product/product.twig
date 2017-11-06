@@ -79,13 +79,13 @@ $(function() {
     var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
     {% for image in form.images %}
-    var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}/{{ image.vars.value }}'));
+    var $img = $(proto_img.replace(/__path__/g, '{{ asset(image.vars.value, 'save_image') }}'));
     var $widget = $('{{ form_widget(image) }}');
     $widget.val('{{ image.vars.value }}');
     $("#thumb").append($img.append($widget));
     {% endfor %}
     {% for add_image in form.add_images %}
-    var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}/{{ add_image.vars.value }}'));
+    var $img = $(proto_img.replace(/__path__/g, '{{ asset(add_image.vars.value, 'temp_image') }}'));
     var $widget = $('{{ form_widget(add_image) }}');
     $widget.val('{{ add_image.vars.value }}');
     $("#thumb").append($img.append($widget));
@@ -116,8 +116,8 @@ $(function() {
     $("#thumb").on("click", ".delete-image", function () {
         var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
         var src = $(this).prev().attr('src')
-                .replace('{{ app.config.image_temp_urlpath }}/', '')
-                .replace('{{ app.config.image_save_urlpath }}/', '');
+                .replace('{{ asset('', 'temp_image') }}', '')
+                .replace('{{ asset('', 'save_image') }}', '');
         $new_delete_image.val(src);
         $("#thumb").append($new_delete_image);
         $(this).parent("li").remove();
@@ -133,7 +133,7 @@ $(function() {
         done: function (e, data) {
             $('#progress').hide();
             $.each(data.result.files, function (index, file) {
-                var path = '{{ app.config.image_temp_urlpath }}/' + file;
+                var path = '{{ asset('', 'temp_image') }}' + file;
                 var $img = $(proto_img.replace(/__path__/g, path));
                 var $new_img = $(proto_add.replace(/__name__/g, count_add));
                 $new_img.val(file);

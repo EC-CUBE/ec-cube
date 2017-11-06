@@ -140,7 +140,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <li class="ec-cartRow__contentColumn">
                                     <div class="ec-cartRow__img">
                                         <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}" alt="{{ Product.name }}"/>
+                                            <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
                                         </a>
                                     </div>
                                     <div class="ec-cartRow__summary">

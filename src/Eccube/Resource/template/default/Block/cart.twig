@@ -37,7 +37,7 @@ z        {% for CartItem in Cart.CartItems %}
             {% set Product = ProductClass.Product %}
             <div class="ec-cartNaviIsset__cart">
                 <div class="ec-cartNaviIsset__cartImage">
-                    <img src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}" alt="{{ Product.name }}">
+                    <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
                 </div>
                 <div class="ec-cartNaviIsset__cartContent">
                     <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
