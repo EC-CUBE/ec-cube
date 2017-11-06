@@ -21,10 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['store', 'plugin', 'plugin_search'] %}
+{% set menus = ['store', 'plugin', 'plugin_list'] %}
 
 {% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}プラグインアンインストール{% endblock %}
+{% block sub_title %}プラグイン削除{% endblock %}
 
 {% block javascript %}
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/masonry.pkgd.min.js"></script>
