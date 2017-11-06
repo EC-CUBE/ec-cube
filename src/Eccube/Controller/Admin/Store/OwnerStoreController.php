@@ -20,20 +20,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerService;
 use Eccube\Service\PluginService;
-use Eccube\Service\ComposerProcessService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -59,8 +56,8 @@ class OwnerStoreController extends AbstractController
     protected $pluginRepository;
 
     /**
-     * @Inject(ComposerProcessService::class)
-     * @var ComposerProcessService
+     * @Inject(ComposerService::class)
+     * @var ComposerService
      */
     protected $composerService;
 
@@ -69,6 +66,8 @@ class OwnerStoreController extends AbstractController
      * @Inject("orm.em")
      */
     protected $em;
+
+    private static $vendorName = 'ec-cube';
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
@@ -243,18 +242,8 @@ class OwnerStoreController extends AbstractController
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
 
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->em;
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
-
-        $return = $this->composerService->execRequire($pluginCode);
+        $packageName = self::$vendorName.'/'.$pluginCode;
+        $return = $this->composerService->execRequire($packageName);
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -285,25 +274,9 @@ class OwnerStoreController extends AbstractController
         }
 
         $pluginCode = $Plugin->getCode();
-
-
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->em;
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
-
-        $return = $this->composerService->execRemove($pluginCode);
-        if ($return) {
-            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } else {
-            $app->addError('admin.plugin.uninstall.error', 'admin');
-        }
+        $packageName = self::$vendorName.'/'.$pluginCode;
+        $this->composerService->execRemove($packageName);
+        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin'));
     }
