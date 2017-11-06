@@ -151,19 +151,30 @@ class Application extends ApplicationTrait
                 return;
             }
 
-            switch ($code) {
-                case 403:
-                    $title = 'アクセスできません。';
-                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
-                    break;
-                case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
-                    break;
-                default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-                    break;
+            $title = 'システムエラーが発生しました。';
+            $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                switch ($code)
+                {
+                    case 400:
+                    case 401:
+                    case 403:
+                    case 405:
+                    case 406:
+                        $title = 'アクセスできません。';
+                        if ($e->getMessage()) {
+                            $message = $e->getMessage();
+                        } else {
+                            $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                        }
+                        break;
+                    case 404:
+                        $title = 'ページがみつかりません。';
+                        $message = 'URLに間違いがないかご確認ください。';
+                        break;
+                    default:
+                        break;
+                }
             }
 
             return $app->render('error.twig', array(
