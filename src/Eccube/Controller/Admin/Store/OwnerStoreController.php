@@ -93,7 +93,7 @@ class OwnerStoreController extends AbstractController
         $promotionItems = array();
         $message = '';
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
@@ -165,7 +165,7 @@ class OwnerStoreController extends AbstractController
             'items' => $items,
             'promotionItems' => $promotionItems,
             'message' => $message,
-            'url_detail' => $this->appConfig['owners_store_detail'],
+            'url_detail' => $this->appConfig['package_repo_url'].'/detail/',
         ];
     }
 
@@ -182,7 +182,7 @@ class OwnerStoreController extends AbstractController
     public function doConfirm(Application $app, Request $request, $id)
     {
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -224,7 +224,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['owners_store_url'].'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);
@@ -280,7 +280,7 @@ class OwnerStoreController extends AbstractController
     public function deleteConfirm(Application $app, Plugin $Plugin)
     {
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
