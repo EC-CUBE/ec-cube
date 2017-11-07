@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% elseif item.update_status == 4 %}
                     <a class="btn btn-success btn-xs" href="{{ item.product_url }}" target="_blank">購入</a>
                 {% else %}
+                    <a class="btn btn-xs btn-success searchPluginModal" href="{{ url('admin_store_plugin_install_confirm', {'id': item.product_id}) }}" data-id="{{ item.product_id }}">詳細</a>
                     <a class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_install_confirm', {'id': item.product_id}) }}">インストール</a>
                 {% endif %}
             </span>

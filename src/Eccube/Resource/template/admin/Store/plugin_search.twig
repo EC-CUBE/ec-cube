@@ -34,7 +34,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 itemSelector: '.grid-item',
                 columnWidth: '.grid-item'
             });
+
+            $('a.searchPluginModal').on('click', function (e) {
+                e.preventDefault();
+                var obj = $(this);
+                var modal_plugin = $('#searchPluginModal');
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'jsonp',
+                    crossDomain: true,
+                    url: '{{ url_detail }}' + obj.attr('data-id'),
+                    success: function (data) {
+                        $('#search_plugin_modal_box__body', modal_plugin).html(data);
+                        $('a.install', modal_plugin).attr('href', obj.attr('href'));
+                        modal_plugin.modal('show');
+                    },
+                    error: function () {
+                        alert('Plugin not found !');
+                    }
+                });
+            });
         });
+
     </script>
 {% endblock javascript %}
 
@@ -74,5 +95,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div><!-- /.col -->
     </div>
+{% endblock %}
 
+{% block modal %}
+    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div id="search_plugin_modal_box" class="modal-content">
+                <div id="search_plugin_modal_box__header" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">&nbsp;</h4>
+                </div>
+                <div id="search_plugin_modal_box__body" class="modal-body" style="background: #fff">
+
+                </div>
+                <div id="search_plugin_modal_box__button_search" class="modal-footer" style="background: #fff">
+                    <a class="btn btn-default btn-xs help" href="#">資料請求・お問い合わせ</a>
+                    <a class="btn btn-default btn-xs btn-download" href="#">マニュアルダウンロード</a>
+                    <a class="btn btn-warning btn-xs install" href="#">インストール</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
