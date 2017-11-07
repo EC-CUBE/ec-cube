@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     type: 'GET',
                     dataType: 'jsonp',
                     crossDomain: true,
-                    url: '{{ url_detail }}' + id,
+                    url: '{{ app.config.package_repo_url }}/detail/' + id,
                     success: function (data) {
                         showPopup(obj, data, id);
                     },

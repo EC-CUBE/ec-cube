@@ -165,7 +165,6 @@ class OwnerStoreController extends AbstractController
             'items' => $items,
             'promotionItems' => $promotionItems,
             'message' => $message,
-            'url_detail' => $this->appConfig['package_repo_url'].'/detail/',
         ];
     }
 
