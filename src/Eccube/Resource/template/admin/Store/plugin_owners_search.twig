@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <span class="pull-right">
                 <a class="btn btn-xs searchPluginModal" href="{{ url('admin_store_plugin_install_confirm', {'id': item.product_id}) }}" data-id="{{ item.product_id }}">詳細表示</a>
                 {% if item.update_status == 2 %}
-                    <h4 id="plugin-id-{{ item.product_id }}" style="display: inline-block"><span class="label label-success">インストール済み</span></h4>
+                    <h4 id="plugin-id-{{ item.product_id }}"><span class="label label-success">インストール済み</span></h4>
                 {% elseif item.update_status == 3 %}
                     <a id="plugin-id-{{ item.product_id }}" class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': item.product_id, 'version': item.version}) }}">アップデート</a>
                 {% elseif item.update_status == 4 %}
