@@ -29,6 +29,8 @@ use Eccube\Service\ItemValidateException;
 
 class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
+    use PointTrait;
+
     /**
      * @var bool
      */
@@ -54,6 +56,16 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
      * @var integer
      */
     private $delivery_fee_total;
+
+    /**
+     * @var string
+     */
+    private $add_point;
+
+    /**
+     * @var string
+     */
+    private $use_point;
 
     /**
      * @var array

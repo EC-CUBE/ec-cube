@@ -34,5 +34,6 @@ class DIServiceProvider implements ServiceProviderInterface, BootableProviderInt
     public function boot(Application $app)
     {
         $app['eccube.di']->build($app);
+        $e = $app['eccube.entity.event.dispatcher']; // XXX これ入れないと EntityEventDispatcher が登録されない
     }
 }

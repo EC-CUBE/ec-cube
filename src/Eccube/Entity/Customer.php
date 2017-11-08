@@ -247,6 +247,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $reset_expire;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
+     */
+    private $point;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -1344,5 +1351,29 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Set point
+     *
+     * @param string $point
+     *
+     * @return Customer
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string
+     */
+    public function getPoint()
+    {
+        return $this->point;
     }
 }

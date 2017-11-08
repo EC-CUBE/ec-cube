@@ -38,6 +38,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BaseInfo extends \Eccube\Entity\AbstractEntity
 {
+    use PointRateTrait;
+
     /**
      * @var int
      *
