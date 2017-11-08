@@ -193,7 +193,7 @@ class ComposerService
         $consoleApplication->resetComposer();
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
-        $this->workingDir = $this->workingDir ? : $this->appConfig['root_dir'];
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
     }
 
     /**
