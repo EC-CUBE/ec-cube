@@ -121,17 +121,16 @@ class MailController
                     case 'complete':
 
                         $data = $form->getData();
-                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
                         // メール送信
-                        $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
+                        $message = $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
 
                         // 送信履歴を保存.
                         $MailTemplate = $form->get('template')->getData();
                         $MailHistory = new MailHistory();
                         $MailHistory
-                            ->setSubject($data['subject'])
-                            ->setMailBody($body)
+                            ->setSubject($message->getSubject())
+                            ->setMailBody($message->getBody())
                             ->setMailTemplate($MailTemplate)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
@@ -301,17 +300,16 @@ class MailController
 
                             $Order = $app['eccube.repository.order']->find($value);
 
-                            $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
                             // メール送信
-                            $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
+                            $message = $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
 
                             // 送信履歴を保存.
                             $MailTemplate = $form->get('template')->getData();
                             $MailHistory = new MailHistory();
                             $MailHistory
-                                ->setSubject($data['subject'])
-                                ->setMailBody($body)
+                                ->setSubject($message->getSubject())
+                                ->setMailBody($message->getBody())
                                 ->setMailTemplate($MailTemplate)
                                 ->setSendDate(new \DateTime())
                                 ->setOrder($Order);
@@ -336,10 +334,15 @@ class MailController
                 }
             }
         } else {
-            foreach ($_GET as $key => $value) {
-                $ids = str_replace('ids', '', $key) . ',' . $ids;
-            }
-            $ids = substr($ids, 0, -1);
+            $filter = function ($v) {
+                return preg_match('/^ids\d+$/', $v);
+            };
+            $map = function ($v) {
+                return preg_replace('/[^\d+]/', '', $v);
+            };
+            $keys = array_keys($request->query->all());
+            $idArray = array_map($map, array_filter($keys, $filter));
+            $ids = implode(',', $idArray);
         }
 
         return $app->render('Order/mail_all.twig', array(

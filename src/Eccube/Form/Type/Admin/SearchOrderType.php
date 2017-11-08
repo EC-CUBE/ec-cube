@@ -45,41 +45,37 @@ class SearchOrderType extends AbstractType
     {
         $config = $this->config;
         $builder
-            // 受注ID・購入者名・購入者（フリガナ）・購入者会社名
+            // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', 'text', array(
-                'label' => '受注ID・購入者名・購入者（フリガナ）・購入者会社名',
+                'label' => '受注ID・注文者名・注文者（フリガナ）・注文者会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
-            ->add('status', 'order_status', array(
+            ->add('multi_status', 'order_status', array(
                 'label' => '対応状況',
+                'expanded' => true,
+                'multiple' => true,
             ))
             ->add('name', 'text', array(
                 'required' => false,
             ))
-            ->add('kana', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        'message' => 'form.type.admin.notkanastyle',
-                    )),
-                ),
-            ))
-            ->add('email', 'email', array(
+            ->add('email', 'text', array(
                 'required' => false,
             ))
-            ->add('tel', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[\d-]+$/u",
-                        'message' => 'form.type.admin.nottelstyle',
-                    )),
-                ),
-            ))
+            ->add(
+                $builder->create('tel', 'text', array(
+                        'required' => false,
+                        'constraints' => array(
+                            new Assert\Regex(array(
+                                'pattern' => "/^[\d-]+$/u",
+                                'message' => 'form.type.admin.nottelstyle',
+                            )),
+                        ),
+                    ))
+                    ->addEventSubscriber(new \Eccube\EventListener\ConvertTelListener())
+            )
             ->add('sex', 'sex', array(
                 'label' => '性別',
                 'required' => false,
@@ -168,8 +164,21 @@ class SearchOrderType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
+
+        $builder->add(
+            $builder
+                ->create('kana', 'text', array(
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'message' => 'form.type.admin.notkanastyle',
+                        )),
+                    ),
+                ))
+                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+        );
     }
 
     /**

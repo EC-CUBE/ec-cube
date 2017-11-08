@@ -116,8 +116,11 @@ class PageLayoutRepository extends EntityRepository
 
     }
 
-    public function getByUrl(DeviceType $DeviceType, $url)
+    public function getByUrl(DeviceType $DeviceType, $url, $page = null)
     {
+        $options = $this->app['config']['doctrine_cache'];
+        $lifetime = $options['result_cache']['lifetime'];
+
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
@@ -128,11 +131,16 @@ class PageLayoutRepository extends EntityRepository
 
         $ownResult = $qb
             ->getQuery()
+            ->useResultCache(true, $lifetime)
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
                 'url'  => $url,
             ))
             ->getSingleResult();
+
+        if(count($ownResult->getBlockPositions()) && ($url == 'preview') && ($page == 'homepage')) {
+            return $ownResult;
+        }
 
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
@@ -144,17 +152,24 @@ class PageLayoutRepository extends EntityRepository
 
         $anyResults = $qb
             ->getQuery()
+            ->useResultCache(true, $lifetime)
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
             ))
             ->getResult();
 
         $OwnBlockPosition = $ownResult->getBlockPositions();
+        $OwnBlockPositionIds = array();
+        foreach ($OwnBlockPosition as $BlockPosition) {
+            $OwnBlockPositionIds[] =  $BlockPosition->getBlockId();
+        }
+
         foreach ($anyResults as $anyResult) {
             $BlockPositions = $anyResult->getBlockPositions();
             foreach ($BlockPositions as $BlockPosition) {
-                if (!$OwnBlockPosition->contains($BlockPosition)) {
+                if (!in_array($BlockPosition->getBlockId(), $OwnBlockPositionIds)) {
                     $ownResult->addBlockPosition($BlockPosition);
+                    $OwnBlockPositionIds[] = $BlockPosition->getBlockId();
                 }
             }
         }

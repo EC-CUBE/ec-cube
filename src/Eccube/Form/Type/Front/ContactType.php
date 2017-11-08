@@ -62,7 +62,7 @@ class ContactType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('contents', 'textarea', array(
@@ -70,8 +70,7 @@ class ContactType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

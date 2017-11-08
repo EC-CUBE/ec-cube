@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,16 +22,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace DoctrineMigrations;
 
-namespace Eccube\Tests\Web\Admin\Setting;
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-
-class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20170224150000 extends AbstractMigration
 {
-    public function testRoutingAdminSettingCustomerAgreement()
+
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_customer_agreement'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        // this up() migration is auto-generated, please modify it to your needs
+        $t = $schema->getTable('dtb_page_layout');
+        if (!$t->hasColumn('meta_tags')) {
+            $t->addColumn('meta_tags', 'text', array('NotNull' => false));
+        }
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
     }
 }

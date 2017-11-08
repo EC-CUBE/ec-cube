@@ -23,9 +23,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-
-class EditControllerTest extends AbstractAdminWebTestCase
+class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
     protected $Order;
@@ -36,106 +34,10 @@ class EditControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-    }
-
-    public function createFormData($Customer, $Product)
-    {
-        $ProductClasses = $Product->getProductClasses();
-        $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
-
-        $email = $faker->safeEmail;
-        $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
-
-        $order = array(
-            '_token' => 'dummy',
-            'Customer' => $Customer->getId(),
-            'OrderStatus' => 1,
-            'name' => array(
-                'name01' => $faker->lastName,
-                'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName ,
-                'kana02' => $faker->firstKanaName,
-            ),
-            'company_name' => $faker->company,
-            'zip' => array(
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
-                'pref' => '5',
-                'addr01' => $faker->city,
-                'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ),
-            'fax' => array(
-                'fax01' => $tel[0],
-                'fax02' => $tel[1],
-                'fax03' => $tel[2],
-            ),
-            'email' => $email,
-            'message' => $faker->text,
-            'Payment' => 1,
-            'discount' => 0,
-            'delivery_fee_total' => 0,
-            'charge' => 0,
-            'note' => $faker->text,
-            'OrderDetails' => array(
-                array(
-                    'Product' => $Product->getId(),
-                    'ProductClass' => $ProductClasses[0]->getId(),
-                    'price' => $ProductClasses[0]->getPrice02(),
-                    'quantity' => 1,
-                    'tax_rate' => 8
-                )
-            ),
-            'Shippings' => array(
-                array(
-                    'name' => array(
-                        'name01' => $faker->lastName,
-                        'name02' => $faker->firstName,
-                    ),
-                    'kana' => array(
-                        'kana01' => $faker->lastKanaName ,
-                        'kana02' => $faker->firstKanaName,
-                    ),
-                    'company_name' => $faker->company,
-                    'zip' => array(
-                        'zip01' => $faker->postcode1(),
-                        'zip02' => $faker->postcode2(),
-                    ),
-                    'address' => array(
-                        'pref' => '5',
-                        'addr01' => $faker->city,
-                        'addr02' => $faker->streetAddress,
-                    ),
-                    'tel' => array(
-                        'tel01' => $tel[0],
-                        'tel02' => $tel[1],
-                        'tel03' => $tel[2],
-                    ),
-                    'fax' => array(
-                        'fax01' => $tel[0],
-                        'fax02' => $tel[1],
-                        'fax03' => $tel[2],
-                    ),
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                    'shipping_delivery_date' => array(
-                        'year' => $delivery_date->format('Y'),
-                        'month' => $delivery_date->format('n'),
-                        'day' => $delivery_date->format('j')
-                    )
-                )
-            )
-        );
-        return $order;
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        // 複数配送を無効に
+        $BaseInfo->setOptionMultipleShipping(0);
+        $this->app['orm.em']->flush($BaseInfo);
     }
 
     public function testRoutingAdminOrderNew()
@@ -186,6 +88,34 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->expected = $formData['name']['name01'];
         $this->actual = $EditedOrder->getName01();
         $this->verify();
+
+        // 顧客の購入回数と購入金額確認
+        $this->expected =  $EditedOrder->getTotalPrice();
+        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->verify();
+        $this->expected = 1;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
+        $this->verify();
+    }
+
+    public function testNotUpdateLastBuyDate()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $EditedCustomer = $this->app['eccube.repository.customer']->find($Customer->getId());
+        $this->expected = $Customer->getLastBuyDate();
+        $this->actual = $EditedCustomer->getLastBuyDate();
+        $this->verify();
     }
 
     public function testSearchCustomer()
@@ -207,6 +137,74 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->expected = $this->Customer->getName01().$this->Customer->getName02().'('.$this->Customer->getKana01().$this->Customer->getKana02().')';
         $this->actual = $Result[0]['name'];
         $this->verify();
+    }
+
+    public function testOrderCustomerInfo()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+
+        // 顧客の購入回数と購入金額確認
+        $totalPrice = $EditedOrder->getTotalPrice();
+        $this->expected = $totalPrice ;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->verify();
+        $this->expected = 1;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
+        $this->verify();
+
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+
+        // 顧客の購入回数と購入金額確認
+        $this->expected =  $totalPrice + $EditedOrder->getTotalPrice();
+        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->verify();
+        $this->expected = 2;
+        $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
+        $this->verify();
+    }
+
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testSearchCustomerById()
@@ -290,7 +288,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
                 'name02' => $faker->firstName,
             ),
             'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
             ),
             'company_name' => $faker->company,
@@ -342,4 +340,93 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->verify('カートに投入した商品が表示される');
     }
 
+    /**
+     * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1606
+     */
+    public function testOrderProcessingWithTax()
+    {
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        // 管理画面から受注登録
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formData,
+            'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
+
+        //税金計算
+        $totalTax = 0;
+        foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
+            //商品数変更3個追加
+            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
+            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
+            $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+        }
+
+        // Multi用項目を削除
+        foreach($formDataForEdit['Shippings'] as $key => $node){
+            if(isset($node['ShipmentItems'])){
+                unset($formDataForEdit['Shippings'][$key]['ShipmentItems']);
+            }
+        }
+
+        // 管理画面で受注編集する
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formDataForEdit,
+            'mode' => 'register'
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+        $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
+
+        //確認する「トータル税金」
+        $this->expected = $totalTax;
+        $this->actual = $EditedOrderafterEdit->getTax();
+        $this->verify();
+    }
+
+    /**
+     * 受注登録時に会員情報が正しく保存されているかどうかのテスト
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1682
+     */
+    public function testOrderProcessingWithCustomer()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_new'),
+            array(
+                'order' => $this->createFormData($this->Customer, $this->Product),
+                'mode' => 'register'
+            )
+        );
+
+        $url = $crawler->filter('a')->text();
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
+
+        $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
+        $SavedOrder = $this->app['eccube.repository.order']->find($savedOderId);
+
+        $this->expected = $this->Customer->getSex();
+        $this->actual = $SavedOrder->getSex();
+        $this->verify('会員の性別が保存されている');
+
+        $this->expected = $this->Customer->getJob();
+        $this->actual = $SavedOrder->getJob();
+        $this->verify('会員の職業が保存されている');
+
+        $this->expected = $this->Customer->getBirth();
+        $this->actual = $SavedOrder->getBirth();
+        $this->verify('会員の誕生日が保存されている');
+    }
 }

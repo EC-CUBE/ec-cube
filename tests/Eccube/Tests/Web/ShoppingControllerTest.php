@@ -24,20 +24,10 @@
 
 namespace Eccube\Tests\Web;
 
-class ShoppingControllerTest extends AbstractWebTestCase
+use Symfony\Component\DomCrawler\Crawler;
+
+class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->initializeMailCatcher();
-    }
-
-    public function tearDown()
-    {
-        $this->cleanUpMailCatcherMessages();
-        parent::tearDown();
-    }
 
     public function testRoutingShoppingLogin()
     {
@@ -257,6 +247,55 @@ class ShoppingControllerTest extends AbstractWebTestCase
     }
 
     /**
+     * 購入確認画面→支払い方法失敗する、レイアウトヘッダーとフッター確認
+     */
+    public function testOrtderConfirmLayout()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($client);
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // 支払い方法選択
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_payment'),
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 0,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
+            )
+        );
+        // レイアウトヘッダーの部分確認
+        $this->expected = 'header';
+        $this->actual = $crawler->filter('header')->attr('id');
+        $this->verify();
+
+        // レイアウトフッターの部分確認
+        $this->expected = 'footer';
+        $this->actual = $crawler->filter('footer')->attr('id');
+        $this->verify();
+
+        // 確認画面で支払方法エラー表示する確認
+        $this->expected = '有効な値ではありません。';
+        $this->actual = $crawler->filter('P.errormsg')->text();
+        $this->verify();
+    }
+
+    /**
      * 購入確認画面→支払い方法選択(エラー)
      */
     public function testPaymentWithError()
@@ -290,6 +329,35 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->expected = '有効な値ではありません。';
+        $this->actual = $crawler->filter('p.errormsg')->text();
+        $this->verify();
+    }
+
+    /**
+     * 購入確認画面
+     */
+    public function testPaymentEmpty()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->client;
+
+        // カート画面
+        $this->scenarioCartIn($client);
+
+        // 支払い方法のMINとMAXルール変更
+        $PaymentColl = $this->app['eccube.repository.payment']->findAll();
+        foreach($PaymentColl as $Payment){
+                $Payment->setRuleMin(0);
+                $Payment->setRuleMax(0);
+        }
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $email02 = $BaseInfo->getEmail02();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->expected = '合計金額に対して可能な支払い方法がありません。' . $email02 . 'にお問い合わせ下さい。';
         $this->actual = $crawler->filter('p.errormsg')->text();
         $this->verify();
     }
@@ -422,88 +490,29 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 
-
-    public function createShippingFormData()
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1280
+     */
+    public function testShippingEditTitle()
     {
-        $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
+        $this->logIn();
+        $client = $this->client;
+        $this->scenarioCartIn($client);
 
-        $email = $faker->safeEmail;
+        /** @var $crawler Crawler*/
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
 
-        $form = array(
-            'name' => array(
-                'name01' => $faker->lastName,
-                'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName ,
-                'kana02' => $faker->firstKanaName,
-            ),
-            'company_name' => $faker->company,
-            'zip' => array(
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
-                'pref' => '5',
-                'addr01' => $faker->city,
-                'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ),
-            '_token' => 'dummy'
-        );
-        return $form;
-    }
+        $shippingCrawler = $crawler->filter('#shipping_confirm_box--0');
+        $url = $shippingCrawler->selectLink('変更')->link()->getUri();
+        $url = str_replace('shipping_change', 'shipping_edit', $url);
 
-    protected function scenarioCartIn($client)
-    {
-        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
-        return $crawler;
-    }
+        // Get shipping edit
+        $crawler = $client->request('GET', $url);
 
-    protected function scenarioInput($client, $formData)
-    {
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_nonmember'),
-            array('nonmember' => $formData)
-        );
-        $this->app['eccube.service.cart']->lock();
-        return $crawler;
-    }
-
-    protected function scenarioConfirm($client)
-    {
-        $crawler = $client->request('GET', $this->app->path('shopping'));
-        return $crawler;
-    }
-
-    protected function scenarioComplete($client, $confirm_url)
-    {
-        $faker = $this->getFaker();
-        $crawler = $client->request(
-            'POST',
-            $confirm_url,
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
-            )
-        );
-        return $crawler;
+        // Title
+        $this->assertContains('お届け先の追加', $crawler->html());
     }
 }

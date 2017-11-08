@@ -95,6 +95,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 'delFlg' => Constant::DISABLED,
                 'CustomerStatus' => $CustomerStatus,
             ))
+            ->setMaxResults(1)
             ->getQuery();
         $Customer = $query->getOneOrNullResult();
         if (!$Customer) {
@@ -147,18 +148,14 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         if (isset($searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             //スペース除去
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '',$searchData['multi']);
-            if (preg_match('/^\d+$/', $clean_key_multi)) {
-                $qb
-                    ->andWhere('c.id = :customer_id')
-                    ->setParameter('customer_id', $clean_key_multi);
-            } else {
-                $qb
-                    ->andWhere('CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
-                    ->setParameter('name', '%' . $clean_key_multi . '%')
-                    ->setParameter('kana', '%' . $clean_key_multi . '%')
-                    ->setParameter('email', '%' . $clean_key_multi . '%');
-            }
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $id = preg_match('/^\d+$/', $clean_key_multi) ? $clean_key_multi : null;
+            $qb
+                ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
+                ->setParameter('customer_id', $id)
+                ->setParameter('name', '%' . $clean_key_multi . '%')
+                ->setParameter('kana', '%' . $clean_key_multi . '%')
+                ->setParameter('email', '%' . $clean_key_multi . '%');
         }
 
         // Pref
@@ -180,12 +177,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('sexs', $sexs);
         }
 
-        // birth_month
-        // TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-//            $qb
-//                ->andWhere('extract(month from c.birth) = :birth_month')
-//                ->setParameter('birth_month', $searchData['birth_month']);
+            $qb
+                ->andWhere('EXTRACT(MONTH FROM c.birth) = :birth_month')
+                ->setParameter('birth_month', $searchData['birth_month']);
         }
 
         // birth
@@ -395,6 +390,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->where('c.email = :email AND c.Status = :status')
             ->setParameter('email', $email)
             ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setMaxResults(1)
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();
@@ -426,9 +422,9 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      *
      * @param $app
      * @param  Customer $Customer
-     * @param  $orderStatusId
+     * @param  $isNewOrder
      */
-    public function updateBuyData($app, Customer $Customer, $orderStatusId)
+    public function updateBuyData($app, Customer $Customer, $isNewOrder = false)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
@@ -451,11 +447,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == $app['config']['order_cancel'] ||
-                    $orderStatusId == $app['config']['order_pending'] ||
-                    $orderStatusId == $app['config']['order_processing']) {
-                // キャンセル、決済処理中、購入処理中は購入時間は更新しない
-            } else {
+            if($isNewOrder) {
                 $Customer->setLastBuyDate($now);
             }
 

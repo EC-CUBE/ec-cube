@@ -26,8 +26,8 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -67,7 +67,7 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     )),
                     new Assert\Regex(array(
-                        'pattern' => '/^[0-9a-zA-Z_]+$/',
+                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
                     )),
                 )
             ))
@@ -80,7 +80,7 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     )),
                     new Assert\Regex(array(
-                        'pattern' => '/^[0-9a-zA-Z\/_]+$/',
+                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
                     )),
                 )
             ))
@@ -125,6 +125,14 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     ))
                 )
+            ))->add('meta_tags', 'textarea', array(
+                'label' => '追加metaタグ',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['lltext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
@@ -160,8 +168,7 @@ class MainEditType extends AbstractType
                 if (count($PageLayout) > 0) {
                     $form['url']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
     }
 
     /**

@@ -24,9 +24,10 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Eccube\Application;
+use Eccube\Util\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -37,6 +38,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends EntityRepository
 {
+
+    /**
+     * @var \Eccube\Application
+     */
+    protected $app;
+
+    /**
+     * @param Application $app
+     */
+    public function setApplication(Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * get Product.
@@ -50,8 +64,16 @@ class ProductRepository extends EntityRepository
     {
         // Product
         try {
-            $qb = $this->createQueryBuilder('p')
-                ->andWhere('p.id = :id');
+            $qb = $this->createQueryBuilder('p');
+            $qb->addSelect(array('pc', 'cc1', 'cc2', 'pi', 'ps'))
+                ->innerJoin('p.ProductClasses', 'pc')
+                ->leftJoin('pc.ClassCategory1', 'cc1')
+                ->leftJoin('pc.ClassCategory2', 'cc2')
+                ->leftJoin('p.ProductImage', 'pi')
+                ->innerJoin('pc.ProductStock', 'ps')
+                ->where('p.id = :id')
+                ->orderBy('cc1.rank', 'DESC')
+                ->addOrderBy('cc2.rank', 'DESC');
 
             $product = $qb
                 ->getQuery()
@@ -98,22 +120,41 @@ class ProductRepository extends EntityRepository
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR NORMALIZE(p.search_word) LIKE NORMALIZE(:%s)', $key, $key))
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
 
         // Order By
-        // 価格順
-        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+        // 価格低い順
+        $config = $this->app['config'];
+        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_lower']) {
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->groupBy('p');
+            // postgres9.0以下は, groupBy('p.id')が利用できない
+            // mysqlおよびpostgresql9.1以上であればgroupBy('p.id')にすることで性能向上が期待できる.
+            // @see https://github.com/EC-CUBE/ec-cube/issues/1904
+            // $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
+            $qb->addOrderBy('p.id', 'DESC');
+            // 価格高い順
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_higher']) {
+            $qb->addSelect('MAX(pc.price02) as HIDDEN price02_max');
+            $qb->innerJoin('p.ProductClasses', 'pc');
+            $qb->groupBy('p');
+            $qb->orderBy('price02_max', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
             // 新着順
-        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_newer']) {
+            // 在庫切れ商品非表示の設定が有効時対応
+            // @see https://github.com/EC-CUBE/ec-cube/issues/1998
+            if ($this->app['orm.em']->getFilters()->isEnabled('nostock_hidden') == true) {
+                $qb->innerJoin('p.ProductClasses', 'pc');
+            }
             $qb->orderBy('p.create_date', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
         } else {
             if ($categoryJoin === false) {
                 $qb
@@ -250,6 +291,8 @@ class ProductRepository extends EntityRepository
      *
      * @param $Customer
      * @return \Doctrine\ORM\QueryBuilder
+     * @see CustomerFavoriteProductRepository::getQueryBuilderByCustomer()
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getFavoriteProductQueryBuilderByCustomer($Customer)
     {
@@ -259,6 +302,7 @@ class ProductRepository extends EntityRepository
             ->setParameter('Customer', $Customer);
 
         // Order By
+        // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
         $qb->addOrderBy('cfp.create_date', 'DESC');
 
         return $qb;

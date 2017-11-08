@@ -32,6 +32,7 @@ use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
 use Symfony\Component\HttpKernel\EventListener\DumpListener;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -80,13 +81,12 @@ class DebugServiceProvider implements ServiceProviderInterface
             return $cloner;
         });
 
-        $app['data_collector.templates'] = array_merge(
-            $app['data_collector.templates'],
-            array(array('dump', '@Debug/Profiler/dump.html.twig'))
-        );
+        $app['data_collector.templates'] = $app->share($app->extend('data_collector.templates', function ($templates) {
+            return array_merge($templates, array(array('dump', '@Debug/Profiler/dump.html.twig')));
+        }));
 
         $app['data_collector.dump'] = $app->share(function ($app) {
-            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);
+            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format'], null, null, new HtmlDumper());
         });
 
         $app['data_collectors'] = $app->share($app->extend('data_collectors', function ($collectors, $app) {
@@ -124,8 +124,15 @@ class DebugServiceProvider implements ServiceProviderInterface
         // configuration for CLI mode is overridden in HTTP mode on
         // 'kernel.request' event
         VarDumper::setHandler(function ($var) use ($app) {
-            $dumper = new CliDumper();
-            $dumper->dump($app['var_dumper.cloner']->cloneVar($var));
+            $dumper = $app['data_collector.dump'];
+            $cloner = $app['var_dumper.cloner'];
+
+            $handler = function ($var) use ($dumper, $cloner) {
+                $dumper->dump($cloner->cloneVar($var));
+            };
+
+            VarDumper::setHandler($handler);
+            $handler($var);
         });
 
         $app['dispatcher']->addSubscriber(new DumpListener($app['var_dumper.cloner'], $app['data_collector.dump']));

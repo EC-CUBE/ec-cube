@@ -34,11 +34,6 @@ class CacheClearCommand extends \Knp\Command\Command
 
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) {
-        parent::__construct($name);
-        $this->app = $app;
-    }
-
     protected function configure() {
         $this
             ->setName('cache:clear')
@@ -55,6 +50,8 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output) {
 
+        $this->app = $this->getSilexApplication();
+        
         \Eccube\Util\Cache::clear($this->app,$input->getOption('all'));
         $output->writeln(sprintf("%s <info>success</info>", 'cache:clear'));
 

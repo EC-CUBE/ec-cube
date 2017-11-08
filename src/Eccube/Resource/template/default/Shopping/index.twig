@@ -27,10 +27,12 @@ $(function() {
 
     $('.delivery').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
+        return false;
     });
 
     $('.payment').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
+        return false;
     });
 
     $('.btn-shipping').click(function() {
@@ -150,13 +152,31 @@ $(function() {
                     {% endif %}
                     </ul>
                 </div>
-                {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
-                    <div id="confirm_flow_box__message" class="message">
+                {% for error in app.session.flashbag.get('eccube.front.error')  %}
+                    <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
                         <p class="errormsg bg-danger">
                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                         </p>
                     </div>
                 {% endfor %}
+                    {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
+                    {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
+                        {% set idx = loop.index0 %}
+                        {% if productStr[idx] is defined %}
+                            <div id="cart_box__message--{{ loop.index }}" class="message">
+                                <p class="errormsg bg-danger">
+                                    <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>
+                                    {{ error|trans({'%product%':productStr[idx]})|nl2br }}
+                                </p>
+                            </div>
+                        {% else %}
+                            <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
+                                <p class="errormsg bg-danger">
+                                    <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
             </div><!-- /.col -->
         </div><!-- /.row -->
         <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
@@ -278,6 +298,9 @@ $(function() {
                     <div id="payment_list" class="column">
                         <div id="payment_list__body" class="form-group">
                             <ul id="payment_list__list" class="payment_list">
+                            {% if form.payment is empty %}
+                                <p class="errormsg text-danger">合計金額に対して可能な支払い方法がありません。<br>{{ BaseInfo.email02 }}にお問い合わせ下さい。</p>
+                            {% endif %}
                             {% for key, child in form.payment %}
                             <li>
                                 {{ form_widget(child, {'attr': {'class': 'payment' }}) }}

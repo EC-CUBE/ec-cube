@@ -25,11 +25,10 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SecurityType extends AbstractType
 {
@@ -63,7 +62,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->config['stext_len'])),
+                    new Assert\Length(array('max' => $this->config['ltext_len'])),
                 ),
             ))
             ->add('force_ssl', 'checkbox', array(
@@ -86,7 +85,6 @@ class SecurityType extends AbstractType
                     }
                 }
             })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

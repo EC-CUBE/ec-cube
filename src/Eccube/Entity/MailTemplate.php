@@ -24,7 +24,7 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Eccube\Util\EntityUtil;
 
 /**
  * MailTemplate
@@ -36,7 +36,7 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getSubject() ? $this->getSubject() : '';
+        return $this->getName() ? $this->getName() : '';
     }
 
     /**
@@ -304,6 +304,9 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 }

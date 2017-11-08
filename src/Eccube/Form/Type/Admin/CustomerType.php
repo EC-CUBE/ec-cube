@@ -127,8 +127,7 @@ class CustomerType extends AbstractType
                         'max' => $config['ltext_len'],
                     )),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

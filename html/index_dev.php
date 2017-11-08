@@ -42,7 +42,9 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
+//[INFO]index.php,install.phpをEC-CUBEルート直下に移動させる場合は、コメントアウトしている行に置き換える
 require_once __DIR__.'/../autoload.php';
+//require_once __DIR__.'/autoload.php';
 
 Debug::enable();
 
@@ -52,8 +54,11 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-// load configs.
-$app = \Eccube\Application::getInstance();
+// output_config_php = true に設定することで、Config Yaml ファイルを元に Config PHP ファイルが出力されます。
+// app/config/eccube, src/Eccube/Resource/config 以下に書き込み権限が必要です。
+// Config PHP ファイルが存在する場合は、 Config Yaml より優先されます。
+// Yaml ファイルをパースする必要が無いため、高速化が期待できます。
+$app = \Eccube\Application::getInstance(array('output_config_php' => false));
 
 // debug enable.
 $app['debug'] = true;
@@ -78,6 +83,10 @@ $app['config'] = $app->share(function () use ($conf) {
 });
 // config_dev.ymlにmailが設定されていた場合、config_dev.ymlの設定内容を反映
 $app['swiftmailer.options'] = $app['config']['mail'];
+
+if (isset($app['config']['mail']['use_spool']) && is_bool($app['config']['mail']['use_spool'])) {
+    $app['swiftmailer.use_spool'] = $app['config']['mail']['use_spool'];
+}
 
 // Mail
 if (isset($app['config']['delivery_address'])) {

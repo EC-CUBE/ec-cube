@@ -24,6 +24,9 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
+
 /**
  * TaxRule
  */
@@ -306,6 +309,9 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 
@@ -443,7 +449,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      */
     public function compareTo(TaxRule $Target)
     {
-        if ($this->getApplyDate() == $Target->getApplyDate()) {
+        if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
             if ($this->getRank() == $Target->getRank()) {
                 return 0;
             }
@@ -453,7 +459,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
                 return 1;
             }
         } else {
-            if ($this->getApplyDate() > $Target->getApplyDate()) {
+            if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
                 return -1;
             } else {
                 return 1;

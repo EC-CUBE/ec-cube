@@ -26,6 +26,8 @@ namespace Eccube\Entity;
 
 use Eccube\Common\Constant;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Util\EntityUtil;
+
 /**
  * Product
  */
@@ -125,7 +127,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ClassName1
      *
-     * @return bool
+     * @return string
      */
     public function getClassName1()
     {
@@ -135,9 +137,9 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get ClassName1
+     * Get ClassName2
      *
-     * @return bool
+     * @return string
      */
     public function getClassName2()
     {
@@ -149,7 +151,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getClassCategories1
      *
-     * @return bool
+     * @return array
      */
     public function getClassCategories1()
     {
@@ -161,7 +163,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getClassCategories2
      *
-     * @return bool
+     * @return array
      */
     public function getClassCategories2($class_category1)
     {
@@ -343,7 +345,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return min($this->codes);
+        $codes = array();
+        foreach ($this->codes as $code) {
+            if (!is_null($code)) {
+                $codes[] = $code;
+            }
+        }
+        return count($codes) ? min($codes) : null;
     }
 
     /**
@@ -355,7 +363,13 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return max($this->codes);
+        $codes = array();
+        foreach ($this->codes as $code) {
+            if (!is_null($code)) {
+                $codes[] = $code;
+            }
+        }
+        return count($codes) ? max($codes) : null;
     }
 
     /**
@@ -394,10 +408,10 @@ class Product extends \Eccube\Entity\AbstractEntity
                 'classcategory_id2' => $class_category_id2,
                 'name'              => $class_category_name2,
                 'stock_find'        => $ProductClass->getStockFind(),
-                'price01'           => number_format($ProductClass->getPrice01IncTax()),
+                'price01'           => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
                 'price02'           => number_format($ProductClass->getPrice02IncTax()),
                 'product_class_id'  => (string) $ProductClass->getId(),
-                'product_code'      => $ProductClass->getCode(),
+                'product_code'      => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
                 'product_type'      => (string) $ProductClass->getProductType()->getId(),
             );
         }
@@ -891,6 +905,9 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getCreator()
     {
+        if (EntityUtil::isEmpty($this->Creator)) {
+            return null;
+        }
         return $this->Creator;
     }
 

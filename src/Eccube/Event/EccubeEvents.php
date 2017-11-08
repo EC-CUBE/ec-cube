@@ -42,6 +42,9 @@ final class EccubeEvents
 
     // searchNonStockProducts
 
+    // changePassword
+    const ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE = 'admin.admin.change_password.initialize';
+    const ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE = 'admin.admin.change_password.complete';
 
     /**
      * Admin/Content/BlockController
@@ -119,6 +122,7 @@ final class EccubeEvents
     const ADMIN_CUSTOMER_DELETE_COMPLETE = 'admin.customer.delete.complete';
 
     // export
+    const ADMIN_CUSTOMER_CSV_EXPORT = 'admin.customer.csv.export';
 
 
     /**
@@ -182,8 +186,10 @@ final class EccubeEvents
     const ADMIN_ORDER_DELETE_COMPLETE = 'admin.order.delete.complete';
 
     // exportOrder
+    const ADMIN_ORDER_CSV_EXPORT_ORDER = 'admin.order.csv.export.order';
 
     // exportShipping
+    const ADMIN_ORDER_CSV_EXPORT_SHIPPING = 'admin.order.csv.export.shipping';
 
 
     /**
@@ -197,6 +203,7 @@ final class EccubeEvents
     const ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE = 'admin.product.category.delete.complete';
 
     // export
+    const ADMIN_PRODUCT_CATEGORY_CSV_EXPORT = 'admin.product.category.csv.export';
 
 
     /**
@@ -270,6 +277,7 @@ final class EccubeEvents
     const ADMIN_PRODUCT_DISPLAY_COMPLETE = 'admin.product.display.complete';
 
     // export
+    const ADMIN_PRODUCT_CSV_EXPORT = 'admin.product.csv.export';
 
 
     /**

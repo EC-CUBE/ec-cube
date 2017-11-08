@@ -117,7 +117,7 @@ class OrderType extends AbstractType
                 'label' => 'メールアドレス',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('tel', 'tel', array(
@@ -142,7 +142,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('message', 'textarea', array(
-                'label' => '備考',
+                'label' => 'お問い合わせ',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -154,6 +154,8 @@ class OrderType extends AbstractType
                 'label' => '値引き',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -165,6 +167,8 @@ class OrderType extends AbstractType
                 'label' => '送料',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -176,6 +180,8 @@ class OrderType extends AbstractType
                 'label' => '手数料',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -216,13 +222,13 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($app),
+                'type' => 'order_detail',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($app),
+                'type' => 'shipping',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -236,43 +242,69 @@ class OrderType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
 
+            $data = $event->getData();
+            $orderDetails = &$data['OrderDetails'];
+
+            // 数量0フィルター
+            $quantityFilter = function ($v) {
+                return !(isset($v['quantity']) && preg_match('/^0+$/', trim($v['quantity'])));
+            };
+
             if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
 
-                $data = $event->getData();
-
-                $orderDetails = &$data['OrderDetails'];
                 $shippings = &$data['Shippings'];
 
-                $shipmentItems = array();
+                // 数量を抽出
+                $getQuantity = function ($v) {
+                    return (isset($v['quantity']) && preg_match('/^\d+$/', trim($v['quantity']))) ?
+                        trim($v['quantity']) :
+                        0;
+                };
+
                 foreach ($shippings as &$shipping) {
-                    $items = &$shipping['ShipmentItems'];
-                    if (count($items) > 0) {
-                        foreach ($items as &$item) {
-                            $shipmentItems[] = &$item;
-                        }
+                    if (!empty($shipping['ShipmentItems'])) {
+                        $shipping['ShipmentItems'] = array_filter($shipping['ShipmentItems'], $quantityFilter);
                     }
                 }
 
-                if (count($orderDetails) > 0) {
-                    $orderDetailsCount = count($orderDetails);
-                    $shipmentItemsCount = count($shipmentItems);
-                    for ($i = 0; $i < $orderDetailsCount; $i++) {
-                        for ($j = 0; $j < $shipmentItemsCount; $j++) {
-                            $itemidx = &$shipmentItems[$j]['itemidx'];
-                            if ($itemidx == $i) {
-                                $shipmentItem = &$shipmentItems[$j];
-                                $shipmentItem['price'] = $orderDetails[$i]['price'];
-                                $orderDetail = &$orderDetails[$i];
-                                $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
-                                break;
+                if (!empty($orderDetails)) {
+
+                    foreach ($orderDetails as &$orderDetail) {
+
+                        $orderDetail['quantity'] = 0;
+
+                        // 受注詳細と同じ商品規格のみ抽出
+                        $productClassFilter = function ($v) use ($orderDetail) {
+                            return $orderDetail['ProductClass'] === $v['ProductClass'];
+                        };
+
+                        foreach ($shippings as &$shipping) {
+
+                            if (!empty($shipping['ShipmentItems'])) {
+
+                                // 同じ商品規格の受注詳細の価格を適用
+                                $applyPrice = function (&$v) use ($orderDetail) {
+                                    $v['price'] = ($v['ProductClass'] === $orderDetail['ProductClass']) ?
+                                        $orderDetail['price'] :
+                                        $v['price'];
+                                };
+                                array_walk($shipping['ShipmentItems'], $applyPrice);
+
+                                // 数量適用
+                                $relatedShipmentItems = array_filter($shipping['ShipmentItems'], $productClassFilter);
+                                $quantities = array_map($getQuantity, $relatedShipmentItems);
+                                $orderDetail['quantity'] += array_sum($quantities);
                             }
                         }
                     }
                 }
-
-                $event->setData($data);
             }
 
+            if (!empty($orderDetails)) {
+                $data['OrderDetails'] = array_filter($orderDetails, $quantityFilter);
+            }
+
+            $event->setData($data);
         });
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
@@ -282,7 +314,6 @@ class OrderType extends AbstractType
                 $form['charge']->addError(new FormError('商品が追加されていません。'));
             }
         });
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

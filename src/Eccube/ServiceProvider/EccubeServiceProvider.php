@@ -100,6 +100,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.page_max'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
         });
+        $app['eccube.repository.master.product_list_max'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListMax');
+        });
+        $app['eccube.repository.master.product_list_order_by'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
+        });
         $app['eccube.repository.master.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });
@@ -129,7 +135,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
         });
         $app['eccube.repository.category'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Category');
+            $CategoryRepository = $app['orm.em']->getRepository('Eccube\Entity\Category');
+            $CategoryRepository->setApplication($app);
+
+            return $CategoryRepository;
         });
         $app['eccube.repository.customer'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
@@ -150,6 +159,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.product'] = $app->share(function () use ($app) {
             $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
+            $productRepository->setApplication($app);
+
             return $productRepository;
         });
         $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
@@ -161,6 +172,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.product_stock'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductStock');
         });
+        $app['eccube.repository.product_tag'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductTag');
+        });
         $app['eccube.repository.class_name'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ClassName');
         });
@@ -171,7 +185,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
         });
         $app['eccube.repository.base_info'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+            $BaseInfoRepository = $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+            $BaseInfoRepository->setApplication($app);
+
+            return $BaseInfoRepository;
         });
         $app['eccube.repository.tax_rule'] = $app->share(function () use ($app) {
             $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
@@ -190,6 +207,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $blockRepository->setApplication($app);
 
             return $blockRepository;
+        });
+        $app['eccube.repository.block_position'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\BlockPosition');
         });
         $app['eccube.repository.order'] = $app->share(function () use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
@@ -223,7 +243,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         $app['paginator'] = $app->protect(function () {
-            return new \Knp\Component\Pager\Paginator();
+            $paginator = new \Knp\Component\Pager\Paginator();
+            $paginator->subscribe(new \Eccube\EventListener\PaginatorListener());
+
+            return $paginator;
         });
 
         $app['eccube.repository.help'] = $app->share(function () use ($app) {
@@ -247,6 +270,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 // save
                 $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
                 $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+
+                // clear cache
+                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
 
                 // filters
                 $config = $em->getConfiguration();
@@ -301,7 +328,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
             }
-            $types[] = new \Eccube\Form\Type\SearchProductType();
+            $types[] = new \Eccube\Form\Type\SearchProductType($app);
+            $types[] = new \Eccube\Form\Type\SearchProductBlockType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\ShippingItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
@@ -319,6 +347,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             // admin
             $types[] = new \Eccube\Form\Type\Admin\LoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\Admin\ChangePasswordType($app);
             $types[] = new \Eccube\Form\Type\Admin\ProductType($app);
             $types[] = new \Eccube\Form\Type\Admin\ProductClassType($app);
             $types[] = new \Eccube\Form\Type\Admin\SearchProductType($app);
@@ -341,7 +370,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShipmentItemType($app);
-            $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType();
+            $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType($app);
             $types[] = new \Eccube\Form\Type\Admin\TaxRuleType();
             $types[] = new \Eccube\Form\Type\Admin\MainEditType($app);
             $types[] = new \Eccube\Form\Type\Admin\MailType();
@@ -351,8 +380,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\DeliveryFeeType();
             $types[] = new \Eccube\Form\Type\Admin\DeliveryTimeType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\LogType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CacheType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\MasterdataType($app);
+            $types[] = new \Eccube\Form\Type\Admin\MasterdataDataType($app);
             $types[] = new \Eccube\Form\Type\Admin\MasterdataEditType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();

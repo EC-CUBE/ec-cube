@@ -76,6 +76,8 @@ class PaymentController extends AbstractController
 
         $form = $builder->getForm();
 
+        // 既に画像保存されてる場合は取得する
+        $oldPaymentImage = $Payment->getPaymentImage();
         $form->setData($Payment);
 
         // 登録ボタン押下
@@ -123,6 +125,7 @@ class PaymentController extends AbstractController
             'form' => $form->createView(),
             'payment_id' => $id,
             'Payment' => $Payment,
+            'oldPaymentImage' => $oldPaymentImage,
         ));
     }
 
@@ -210,12 +213,15 @@ class PaymentController extends AbstractController
 
         $targetRank = $currentRank + 1;
         $target = $repo->findOneBy(array('rank' => $targetRank));
+        if($target) {
+            $app['orm.em']->persist($target->setRank($currentRank));
+            $app['orm.em']->persist($current->setRank($targetRank));
+            $app['orm.em']->flush();
 
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
-        $app['orm.em']->flush();
-
-        $app->addSuccess('admin.rank.move.complete', 'admin');
+            $app->addSuccess('admin.rank.move.complete', 'admin');
+        } else {
+            $app->addError('admin.rank.up.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
@@ -231,12 +237,15 @@ class PaymentController extends AbstractController
 
         $targetRank = $currentRank - 1;
         $target = $repo->findOneBy(array('rank' => $targetRank));
+        if($target) {
+            $app['orm.em']->persist($target->setRank($currentRank));
+            $app['orm.em']->persist($current->setRank($targetRank));
+            $app['orm.em']->flush();
 
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
-        $app['orm.em']->flush();
-
-        $app->addSuccess('admin.rank.move.complete', 'admin');
+            $app->addSuccess('admin.rank.move.complete', 'admin');
+        } else {
+            $app->addError('admin.rank.down.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }

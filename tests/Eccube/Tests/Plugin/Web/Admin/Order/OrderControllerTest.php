@@ -89,9 +89,6 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             array(
                 'admin_search_order' => array(
                     '_token' => 'dummy',
-                    'status' => 1,
-                    'sex' => array(1, 2),
-                    'payment' => array(1, 2, 3, 4)
                 )
             )
         );
@@ -123,12 +120,73 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'DELETE',
             $this->app->path('admin_order_delete', array('id' => $Order->getId()))
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_page', array('page_no' => 1)).'?resume=1'));
 
         $expected = array(
             EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE,
         );
 
         $this->verifyOutputString($expected);
+    }
+
+    /**
+     * testExportOrder
+     */
+    public function testExportOrder()
+    {
+        // 受注件数を11件にしておく
+        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $Order->setOrderStatus($OrderStatus);
+        $this->app['orm.em']->flush();
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order'),
+            array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'email' => 'user-'
+                )
+            )
+        );
+
+        $this->client->request(
+            'GET',
+            $this->app->path('admin_order_export_order')
+        );
+        $expected = EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER;
+        $this->expectOutputRegex('/'.$expected.'/');
+    }
+
+    /**
+     * testExportShipping
+     */
+    public function testExportShipping()
+    {
+        // 受注件数を11件にしておく
+        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $Order->setOrderStatus($OrderStatus);
+        $this->app['orm.em']->flush();
+
+        // 10件ヒットするはずの検索条件
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order'),
+            array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'email' => 'user-'
+                )
+            )
+        );
+
+        $this->client->request(
+            'GET',
+            $this->app->path('admin_order_export_shipping')
+        );
+        $expected = EccubeEvents::ADMIN_ORDER_CSV_EXPORT_SHIPPING;
+        $this->expectOutputRegex('/'.$expected.'/');
     }
 }

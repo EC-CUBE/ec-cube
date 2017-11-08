@@ -31,17 +31,6 @@ class LoginController
 {
     public function index(Application $app, Request $request)
     {
-        $email = $request->cookies->get('email');
-
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login')
-            ->getForm();
-
-        return $app->render('Block/login.twig', array(
-            'error' => $app['security.last_error']($request),
-            'email' => $email,
-            'form' => $form->createView(),
-        ));
+        return $app->render('Block/login.twig');
     }
 }

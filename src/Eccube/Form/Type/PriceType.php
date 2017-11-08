@@ -57,6 +57,8 @@ class PriceType extends AbstractType
         $resolver->setDefaults(array(
             'currency' => 'JPY',
             'precision' => 0,
+            'scale' => 0,
+            'grouping' => true,
             'constraints' => $constraints,
             'invalid_message' => 'form.type.numeric.invalid'
         ));

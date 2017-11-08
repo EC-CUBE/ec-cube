@@ -23,12 +23,11 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Finder\Finder;
 
 class LogType extends AbstractType
 {
@@ -68,12 +67,14 @@ class LogType extends AbstractType
             ->add('line_max', 'text', array(
                 'label' => '表示行数',
                 'data' => '50',
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\NotBlank(),
+                'attr' => array(
+                    'maxlength' => 5,
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Range(array('min' => 0, 'max' => 50000)),
+                ),
+            ));
     }
 
     /**

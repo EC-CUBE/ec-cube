@@ -64,18 +64,27 @@ class TemplateController extends AbstractController
                 $Template = $app['eccube.repository.template']
                     ->find($form['selected']->getData());
 
-                // path.ymlの再構築
-                $file = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
-                $config = Yaml::parse(file_get_contents($file));
+                // path.(yml|php)の再構築
+                $file = $app['config']['root_dir'].'/app/config/eccube/path';
+                if (file_exists($file.'.php')) {
+                    $config = require $file.'.php';
+                } elseif (file_exists($file.'.yml')) {
+                    $config = Yaml::parse(file_get_contents($file.'.yml'));
+                }
 
                 $templateCode = $Template->getCode();
                 $config['template_code'] = $templateCode;
-                $config['template_realdir'] = $config['root_dir'] . '/app/template/' . $templateCode;
-                $config['template_html_realdir'] = $config['public_path_realdir'] . '/template/' . $templateCode;
-                $config['front_urlpath'] = $config['root_urlpath'] . '/template/' . $templateCode;
-                $config['block_realdir'] =$config['template_realdir'] . '/Block';
+                $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
+                $config['template_html_realdir'] = $config['public_path_realdir'].'/template/'.$templateCode;
+                $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
+                $config['block_realdir'] =$config['template_realdir'].'/Block';
 
-                file_put_contents($file, Yaml::dump($config));
+                if (file_exists($file.'.php')) {
+                    file_put_contents($file.'.php', sprintf('<?php return %s', var_export($config, true)).';');
+                }
+                if (file_exists($file.'.yml')) {
+                    file_put_contents($file.'.yml', Yaml::dump($config));
+                }
 
                 $app->addSuccess('admin.content.template.save.complete', 'admin');
 
@@ -267,36 +276,19 @@ class TemplateController extends AbstractController
                     ));
                 }
 
+                $fs = new Filesystem();
+
                 // appディレクトリの存在チェック.
                 if (!file_exists($appDir)) {
-                    $form['file']->addError(new FormError('appディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs->mkdir($appDir);
                 }
 
                 // htmlディレクトリの存在チェック.
                 if (!file_exists($htmlDir)) {
-                    $form['file']->addError(new FormError('htmlディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs->mkdir($htmlDir);
                 }
 
                 // 一時ディレクトリから該当テンプレートのディレクトリへコピーする.
-                $fs = new Filesystem();
                 $fs->mirror($appDir, $targetRealDir);
                 $fs->mirror($htmlDir, $targetHtmlRealDir);
 

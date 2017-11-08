@@ -2,6 +2,11 @@ Eccube\Entity\PageLayout:
     type: entity
     table: dtb_page_layout
     repositoryClass: Eccube\Repository\PageLayoutRepository
+    indexes:
+        # requires a length on MySQL
+        # dtb_page_layout_url_idx:
+        #     columns:
+        #         - url
     id:
         id:
             type: integer
@@ -46,6 +51,9 @@ Eccube\Entity\PageLayout:
             type: datetime
             nullable: false
         meta_robots:
+            type: text
+            nullable: true
+        meta_tags:
             type: text
             nullable: true
     oneToMany:

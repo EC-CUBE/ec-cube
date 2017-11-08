@@ -114,7 +114,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
                                             {{ form_errors(form.name) }}
-                                            <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
+                                            <button class="btn btn-default btn-sm" type="submit">{% if TargetCategory.id %}カテゴリ更新{% elseif Parent %}子カテゴリ作成{% else %}カテゴリ作成{% endif %}</button>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -165,7 +165,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <li><a>編集中</a></li>
                                                 {% endif %}
 
-                                                {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
+                                                {% if Category.Children|length > 0 or Category.hasProductCategories %}
                                                     <li><a title="子カテゴリが存在するため削除できません。">削除</a></li>
                                                 {% else %}
                                                     <li>

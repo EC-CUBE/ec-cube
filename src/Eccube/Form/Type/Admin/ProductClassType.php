@@ -71,6 +71,9 @@ class ProductClassType extends AbstractType
                     new Assert\Length(array(
                         'max' => 10,
                     )),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 1,
+                    )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
@@ -81,6 +84,8 @@ class ProductClassType extends AbstractType
                 'label' => '通常価格',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -96,6 +101,8 @@ class ProductClassType extends AbstractType
                 'label' => '販売価格',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -122,6 +129,8 @@ class ProductClassType extends AbstractType
                 'label' => '商品送料',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
@@ -155,8 +164,7 @@ class ProductClassType extends AbstractType
                 if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
                     $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
 
         $transformer = new DataTransformer\IntegerToBooleanTransformer();
 

@@ -24,23 +24,14 @@
 
 namespace Eccube\Tests\Web;
 
-class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
+use Symfony\Component\DomCrawler\Crawler;
+
+/**
+ * Class ShoppingControllerWithNonmemberTest
+ * @package Eccube\Tests\Web
+ */
+class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
-
-    protected $Product;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->initializeMailCatcher();
-    }
-
-    public function tearDown()
-    {
-        $this->cleanUpMailCatcherMessages();
-        parent::tearDown();
-    }
-
     public function testRoutingShoppingLogin()
     {
         $client = $this->createClient();
@@ -122,7 +113,8 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $client = $this->createClient();
         $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));  }
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+    }
 
     public function testNonmemberWithCustomerLogin()
     {
@@ -256,9 +248,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $crawler = $client->request('GET', $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $this->expected = 'お届け先の追加';
+        $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
+        $this->assertContains($this->expected, $this->actual);
     }
 
     /**
@@ -313,88 +305,41 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
     public function createNonmemberFormData()
     {
         $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
-
         $email = $faker->safeEmail;
-
-        $form = array(
-            'name' => array(
-                'name01' => $faker->lastName,
-                'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName ,
-                'kana02' => $faker->firstKanaName,
-            ),
-            'company_name' => $faker->company,
-            'zip' => array(
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
-                'pref' => '5',
-                'addr01' => $faker->city,
-                'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ),
-            'email' => array(
-                'first' => $email,
-                'second' => $email,
-            ),
-            '_token' => 'dummy'
+        $form = parent::createShippingFormData();
+        $form['email'] = array(
+            'first' => $email,
+            'second' => $email
         );
         return $form;
     }
 
-    protected function scenarioCartIn($client)
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1280
+     */
+    public function testShippingEditTitle()
     {
-        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
-        return $crawler;
-    }
+        $client = $this->createClient();
+        $this->scenarioCartIn($client);
 
-    protected function scenarioInput($client, $formData)
-    {
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_nonmember'),
-            array('nonmember' => $formData)
-        );
-        $this->app['eccube.service.cart']->lock();
-        return $crawler;
-    }
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
 
-    protected function scenarioConfirm($client)
-    {
-        $crawler = $client->request('GET', $this->app->path('shopping'));
-        return $crawler;
-    }
+        /** @var $crawler Crawler*/
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
 
-    protected function scenarioComplete($client, $confirm_url)
-    {
-        $faker = $this->getFaker();
-        $crawler = $client->request(
-            'POST',
-            $confirm_url,
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
-            )
-        );
-        return $crawler;
+        $shippingCrawler = $crawler->filter('#shipping_confirm_box--0');
+        $url = $shippingCrawler->selectLink('変更')->link()->getUri();
+        $url = str_replace('shipping_edit_change', 'shipping_edit', $url);
+
+        // Get shipping edit
+        $crawler = $client->request('GET', $url);
+        // Title
+        $this->assertContains('お届け先の変更', $crawler->html());
+        // Header
+        $this->assertContains('お届け先の変更', $crawler->filter('title')->html());
     }
 }

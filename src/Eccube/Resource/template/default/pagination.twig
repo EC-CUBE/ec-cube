@@ -19,14 +19,34 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+{% if app.config.pageinrange  is defined %}
+    {% set pageinrange  = app.config.pageinrange %}
+{% else  %}
+    {% set pageinrange  = false %}
+{% endif %}
+
 {% if pages.pageCount > 1 %}
 <div id="pagination_wrap" class="pagination">
     <ul>
+
+        {% if pageinrange and pages.firstPageInRange != 1 %}
+            {# 最初へリンクを表示 #}
+            <li class="pagenation__item-first">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.first})) }}"
+                   aria-label="First"><span aria-hidden="true">最初へ</span></a>
+            </li>
+        {% endif %}
+
         {% if pages.previous is defined %}
             <li class="pagenation__item-previous">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
                    aria-label="Previous"><span aria-hidden="true">前へ</span></a>
             </li>
+        {% endif %}
+
+        {% if pageinrange and pages.firstPageInRange != 1 %}
+            {# 1ページリンクが表示されない場合、「...」を表示 #}
+            <li>...</li>
         {% endif %}
 
         {% for page in pages.pagesInRange %}
@@ -37,10 +57,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
         {% endfor %}
 
+        {% if pageinrange and pages.last != pages.lastPageInRange %}
+            {# 最終ページリンクが表示されない場合、「...」を表示 #}
+            <li>...</li>
+        {% endif %}
+
         {% if pages.next is defined %}
             <li class="pagenation__item-next">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
                    aria-label="Next"><span aria-hidden="true">次へ</span></a>
+            </li>
+        {% endif %}
+
+        {% if pageinrange and pages.last != pages.lastPageInRange %}
+            {# 最後へリンクを表示 #}
+            <li class="pagenation__item-last">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.last})) }}"
+                   aria-label="Last"><span aria-hidden="true">最後へ</span></a>
             </li>
         {% endif %}
     </ul>

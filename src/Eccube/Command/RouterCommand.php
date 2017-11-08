@@ -36,11 +36,6 @@ class RouterCommand extends \Knp\Command\Command
 
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) {
-        parent::__construct($name);
-        $this->app = $app;
-    }
-
     protected function configure() {
         $this
             ->setName('router:debug')
@@ -57,9 +52,9 @@ EOF
             );
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output) {
 
+        $this->app = $this->getSilexApplication();
         $this->app->initialize();
         $this->app->boot();
 

@@ -114,23 +114,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% set ProductClass = CartItem.Object %}
                                 {% set Product = ProductClass.Product %}
 
-                                <div id="cart_item_list__item" class="item_box tr">
-                                    <div id="cart_item_list__cart_remove" class="icon_edit td">
+                                <div id="cart_item_list__item--{{ ProductClass.id }}" class="item_box tr">
+                                    <div id="cart_item_list__cart_remove--{{ ProductClass.id }}" class="icon_edit td">
                                         <a href="{{ url('cart_remove', {'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="カートから商品を削除してもよろしいですか?">
                                             <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
                                         </a>
                                     </div>
                                     <div class="td table">
-                                        <div id="cart_item_list__product_image" class="item_photo">
+                                        <div id="cart_item_list__product_image--{{ ProductClass.id }}" class="item_photo">
                                             <a  target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
                                                 <img src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}" alt="{{ Product.name }}" />
                                             </a>
                                         </div>
                                         <dl class="item_detail">
-                                            <dt id="cart_item_list__product_detail" class="item_name text-default">
+                                            <dt id="cart_item_list__product_detail--{{ ProductClass.id }}" class="item_name text-default">
                                                 <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
                                             </dt>
-                                            <dd id="cart_item_list__class_category" class="item_pattern small">
+                                            <dd id="cart_item_list__class_category--{{ ProductClass.id }}" class="item_pattern small">
                                                 {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
                                                     {{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
                                                 {% endif %}
@@ -138,26 +138,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
                                                 {% endif %}
                                             </dd>
-                                            <dd id="cart_item_list__item_price" class="item_price">￥{{ CartItem.price|number_format }}</dd>
-                                            <dd id="cart_item_list__item_subtotal" class="item_subtotal">小計：￥{{ CartItem.total_price|number_format }}</dd>
+                                            <dd id="cart_item_list__item_price--{{ ProductClass.id }}" class="item_price">￥{{ CartItem.price|number_format }}</dd>
+                                            <dd id="cart_item_list__item_subtotal--{{ ProductClass.id }}" class="item_subtotal">小計：￥{{ CartItem.total_price|number_format }}</dd>
                                         </dl>
                                     </div>
-                                    <div id="cart_item_list__quantity" class="item_quantity td">
+                                    <div id="cart_item_list__quantity--{{ ProductClass.id }}" class="item_quantity td">
                                         {{ CartItem.quantity|number_format }}
-                                        <ul id="cart_item_list__quantity_edit">
+                                        <ul id="cart_item_list__quantity_edit--{{ ProductClass.id }}">
                                             <li>
                                                 {% if CartItem.quantity > 1 %}
-                                                    <a id="cart_item_list__down" href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
+                                                    <a id="cart_item_list__down--{{ ProductClass.id }}" href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
                                                 {% else %}
                                                     <span><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></span>
                                                 {% endif %}
                                             </li>
                                             <li>
-                                                <a id="cart_item_list__up" href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
+                                                <a id="cart_item_list__up--{{ ProductClass.id }}" href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div id="cart_item_list__subtotal" class="item_subtotal td">￥{{ CartItem.total_price|number_format }}</div>
+                                    <div id="cart_item_list__subtotal--{{ ProductClass.id }}" class="item_subtotal td">￥{{ CartItem.total_price|number_format }}</div>
                                 </div><!--/item_box-->
                             {% endfor %}
 
@@ -190,6 +190,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             </div><!-- /.col -->
         </div><!-- /.row -->
-
     </div>
 {% endblock %}

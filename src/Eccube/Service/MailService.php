@@ -51,6 +51,8 @@ class MailService
      */
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
+        log_info('仮会員登録メール送信開始');
+
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
@@ -79,7 +81,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message, $failures);
+
+        log_info('仮会員登録メール送信完了', array('count' => $count));
+
+        return $count;
     }
 
     /**
@@ -89,6 +95,8 @@ class MailService
      */
     public function sendCustomerCompleteMail(\Eccube\Entity\Customer $Customer)
     {
+        log_info('会員登録完了メール送信開始');
+
         $body = $this->app->renderView('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
@@ -115,7 +123,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('会員登録完了メール送信完了', array('count' => $count));
+
+        return $count;
     }
 
 
@@ -127,6 +139,8 @@ class MailService
      */
     public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, $email)
     {
+        log_info('退会手続き完了メール送信開始');
+
         $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
@@ -154,7 +168,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('退会手続き完了メール送信完了', array('count' => $count));
+
+        return $count;
     }
 
 
@@ -165,6 +183,8 @@ class MailService
      */
     public function sendContactMail($formData)
     {
+        log_info('お問い合わせ受付メール送信開始');
+
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
@@ -192,7 +212,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CONTACT, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('お問い合わせ受付メール送信完了', array('count' => $count));
+
+        return $count;
     }
 
     /**
@@ -216,6 +240,8 @@ class MailService
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
+        log_info('受注メール送信開始');
+
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
 
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
@@ -246,7 +272,9 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ORDER, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('受注メール送信完了', array('count' => $count));
 
         return $message;
     }
@@ -260,6 +288,8 @@ class MailService
      */
     public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
+        log_info('仮会員登録再送メール送信開始');
+
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
@@ -287,7 +317,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('仮会員登録再送メール送信完了', array('count' => $count));
+
+        return $count;
     }
 
 
@@ -299,6 +333,7 @@ class MailService
      */
     public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
     {
+        log_info('受注管理通知メール送信開始');
 
         $body = $this->app->renderView('Mail/order.twig', array(
             'header' => $formData['header'],
@@ -328,7 +363,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('受注管理通知メール送信完了', array('count' => $count));
+
+        return $message;
     }
 
     /**
@@ -338,6 +377,8 @@ class MailService
      */
     public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
     {
+        log_info('パスワード再発行メール送信開始');
+
         $body = $this->app->renderView('Mail/forgot_mail.twig', array(
             'Customer' => $Customer,
             'reset_url' => $reset_url
@@ -347,7 +388,6 @@ class MailService
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
@@ -365,7 +405,11 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('パスワード再発行メール送信完了', array('count' => $count));
+
+        return $count;
     }
 
     /**
@@ -375,6 +419,8 @@ class MailService
      */
     public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
     {
+        log_info('パスワード変更完了メール送信開始');
+
         $body = $this->app->renderView('Mail/reset_complete_mail.twig', array(
             'Customer' => $Customer,
             'password' => $password,
@@ -384,7 +430,6 @@ class MailService
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
@@ -402,6 +447,10 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
 
-        $this->app->mail($message);
+        $count = $this->app->mail($message);
+
+        log_info('パスワード変更完了メール送信完了', array('count' => $count));
+
+        return $count;
     }
 }

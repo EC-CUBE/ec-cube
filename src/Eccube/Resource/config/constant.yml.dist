@@ -262,4 +262,6 @@ kana_len: 25
 address1_len: 32
 address2_len: 32
 birth_max: 110
-cacert_pem_url: https://curl.haxx.se/ca/cacert.pem
+product_order_price_lower: 1
+product_order_newer: 2
+product_order_price_higher: 3

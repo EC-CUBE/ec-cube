@@ -57,7 +57,22 @@ class CustomerController extends AbstractController
         $active = false;
 
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
-        $page_count = $app['config']['default_page_count'];
+
+        // 表示件数は順番で取得する、1.SESSION 2.設定ファイル
+        $page_count = $session->get('eccube.admin.customer.search.page_count', $app['config']['default_page_count']);
+
+        $page_count_param = $request->get('page_count');
+        // 表示件数はURLパラメターから取得する
+        if($page_count_param && is_numeric($page_count_param)){
+            foreach($pageMaxis as $pageMax){
+                if($page_count_param == $pageMax->getName()){
+                    $page_count = $pageMax->getName();
+                    // 表示件数入力値正し場合はSESSIONに保存する
+                    $session->set('eccube.admin.customer.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
 
         if ('POST' === $request->getMethod()) {
 
@@ -85,20 +100,31 @@ class CustomerController extends AbstractController
                     $page_count
                 );
 
-                // sessionのデータ保持
-                $session->set('eccube.admin.customer.search', $searchData);
+                // sessionに検索条件を保持.
+                $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.customer.search', $viewData);
+                $session->set('eccube.admin.customer.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no)) {
+            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
                 $session->remove('eccube.admin.customer.search');
+                $session->remove('eccube.admin.customer.search.page_no');
+                $session->remove('eccube.admin.customer.search.page_count');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.customer.search');
-                if (!is_null($searchData)) {
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.customer.search.page_no', $page_no);
+                }
+                $viewData = $session->get('eccube.admin.customer.search');
+                if (!is_null($viewData)) {
+                    // sessionに保持されている検索条件を復元.
+                    $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
+
                     // 表示件数
-                    $pcount = $request->get('page_count');
-                    $page_count = empty($pcount) ? $page_count : $pcount;
+                    $page_count = $request->get('page_count', $page_count);
 
                     $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
 
@@ -116,20 +142,6 @@ class CustomerController extends AbstractController
                         $page_no,
                         $page_count
                     );
-
-                    // セッションから検索条件を復元
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
-                            $sex_ids[] = $Sex->getId();
-                        }
-                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
-                    }
-
-                    if (!is_null($searchData['pref'])) {
-                        $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
-                    }
-                    $searchForm->setData($searchData);
                 }
             }
         }
@@ -178,18 +190,26 @@ class CustomerController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        log_info('会員削除開始', array($id));
+
+        $session = $request->getSession();
+        $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+        $page_no = $page_no ? $page_no : Constant::ENABLED;
+
         $Customer = $app['orm.em']
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
 
         if (!$Customer) {
             $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer'));
+            return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
         $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
+
+        log_info('会員削除完了', array($id));
 
         $event = new EventArgs(
             array(
@@ -201,7 +221,7 @@ class CustomerController extends AbstractController
 
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_customer'));
+        return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
     /**
@@ -234,24 +254,37 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Customer \Eccube\Entity\Customer */
                 $Customer = $entity;
 
-                $row = array();
+                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
 
                 // CSV出力項目と合致するデータを取得.
                 foreach ($Csvs as $Csv) {
                     // 会員データを検索.
-                    $row[] = $csvService->getData($Csv, $Customer);
+                    $ExportCsvRow->setData($csvService->getData($Csv, $Customer));
+
+                    $event = new EventArgs(
+                        array(
+                            'csvService' => $csvService,
+                            'Csv' => $Csv,
+                            'Customer' => $Customer,
+                            'ExportCsvRow' => $ExportCsvRow,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT, $event);
+
+                    $ExportCsvRow->pushData();
                 }
 
                 //$row[] = number_format(memory_get_usage(true));
                 // 出力.
-                $csvService->fputcsv($row);
+                $csvService->fputcsv($ExportCsvRow->getRow());
             });
         });
 
@@ -261,6 +294,8 @@ class CustomerController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
 
         $response->send();
+
+        log_info("会員CSVファイル名", array($filename));
 
         return $response;
     }

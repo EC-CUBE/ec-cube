@@ -1,0 +1,27 @@
+doctrine_cache:
+  metadata_cache:
+    driver: array
+    path:
+    host:
+    port:
+    password:
+  query_cache:
+    driver: array
+    path:
+    host:
+    port:
+    password:
+  result_cache:
+    driver: array
+    path:
+    host:
+    port:
+    password:
+    lifetime: 3600
+    clear_cache: true
+  hydration_cache:
+    driver: array
+    path:
+    host:
+    port:
+    password:

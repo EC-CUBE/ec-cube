@@ -66,7 +66,7 @@ class DeliveryController extends AbstractController
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }
         }
 
@@ -82,6 +82,7 @@ class DeliveryController extends AbstractController
 
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
         if (!in_array($parentPage, $allowdParents)) {
+            // @deprecated 使用されていないコード
             $parentPage  = $app->url('mypage_delivery');
         }
 
@@ -102,8 +103,12 @@ class DeliveryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            log_info('お届け先登録開始', array($id));
+
             $app['orm.em']->persist($CustomerAddress);
             $app['orm.em']->flush();
+
+            log_info('お届け先登録完了', array($id));
 
             $event = new EventArgs(
                 array(
@@ -140,6 +145,8 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        log_info('お届け先削除開始', array($id));
+
         $Customer = $app['user'];
 
         $status = $app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id);
@@ -155,8 +162,12 @@ class DeliveryController extends AbstractController
 
             $app->addSuccess('mypage.address.delete.complete');
 
+            log_info('お届け先削除完了', array($id));
+
         } else {
             $app->addError('mypage.address.delete.failed');
+
+            log_info('お届け先削除失敗', array($id));
         }
 
         return $app->redirect($app->url('mypage_delivery'));

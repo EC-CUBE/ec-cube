@@ -1357,7 +1357,7 @@ textarea.form-control{
     left: 0; top: 50%;
     margin-top: -1.5em;
     padding: 0.8em 0.3em;
-    width: 4%;
+    width: 33px;
     color: #b8bec4;
     font-size: 20px;
     font-size: 2rem;
@@ -1623,6 +1623,7 @@ textarea.form-control{
     }
 	.sortable_list .tableish:not(.ui-sortable) .item_box > div {
 		border-top: 1px solid #d1d8d9;
+		word-break: break-all;
 	}
     .sortable_list .tableish:not(.ui-sortable) .item_box > div:first-child {
         padding-left: 8px;
@@ -3218,4 +3219,8 @@ textarea#log {
     background-color: #000;
     filter: alpha(opacity=50);
     opacity: .5;
+}
+
+#shipping_info__button_new {
+    margin-bottom: 20px;
 }

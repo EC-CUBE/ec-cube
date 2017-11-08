@@ -27,7 +27,6 @@ namespace Eccube\Tests\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Exception\CartException;
-use Eccube\Service\CartService;
 use Eccube\Util\Str;
 
 class CartServiceTest extends AbstractServiceTestCase
@@ -145,7 +144,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->assertEquals(1, $quantity);
     }
 
-    public function testDownProductQuantity_Remove()
+    public function testDownProductQuantity_NotRemove()
     {
         $cartService = $this->app['eccube.service.cart'];
 
@@ -153,8 +152,8 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService->downProductQuantity(1);
 
         $quantity = $cartService->getProductQuantity(1);
-        $this->assertEquals(0, $quantity);
-        $this->assertCount(0, $cartService->getCart()->getCartItems());
+        $this->assertEquals(1, $quantity);
+        $this->assertCount(1, $cartService->getCart()->getCartItems());
     }
 
     public function testRemoveProduct()
@@ -281,10 +280,13 @@ class CartServiceTest extends AbstractServiceTestCase
         $ProductClass->setPrice02($this->app['config']['max_total_fee']);
         $this->app['orm.em']->flush();
 
-        $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 2)->save();
+        try {
+            $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 2)->save();
+        } catch (CartException $e) {
+            $this->actual = $this->app['eccube.service.cart']->getError();
+            $this->expected = 'cart.over.price_limit';
+        }
 
-        $this->actual = $this->app['eccube.service.cart']->getError();
-        $this->expected = 'cart.over.price_limit';
         $this->verify();
     }
 
