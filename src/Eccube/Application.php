@@ -28,6 +28,7 @@ use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
+use Eccube\Util\Mail;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -402,17 +403,14 @@ class Application extends ApplicationTrait
 
     public function initMailer()
     {
-
         // メール送信時の文字エンコード指定(デフォルトはUTF-8)
-        if (isset($this['config']['mail']['charset_iso_2022_jp']) && is_bool($this['config']['mail']['charset_iso_2022_jp'])) {
-            if ($this['config']['mail']['charset_iso_2022_jp'] === true) {
-                \Swift::init(function () {
-                    \Swift_DependencyContainer::getInstance()
-                        ->register('mime.qpheaderencoder')
-                        ->asAliasOf('mime.base64headerencoder');
-                    \Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
-                });
-            }
+        if (Mail::isISO2022JP($this)) {
+            \Swift::init(function () {
+                \Swift_DependencyContainer::getInstance()
+                    ->register('mime.qpheaderencoder')
+                    ->asAliasOf('mime.base64headerencoder');
+                \Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
+            });
         }
 
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
