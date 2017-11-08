@@ -67,7 +67,7 @@ class ComposerService
             'command' => 'info',
             'package' => $pluginName,
         ));
-        $parser = new InfoCommandParser($output);
+        $parser = new ParseOutputCommand($output, ParseOutputCommand::INFO_TYPE);
 
         return $parser->parse();
     }
@@ -89,7 +89,7 @@ class ComposerService
             '--ignore-platform-reqs' => true,
         ));
 
-        $parser = new RequireCommandParser($output);
+        $parser = new ParseOutputCommand($output, ParseOutputCommand::REQUIRE_TYPE);
 
         return $parser->parse();
     }
@@ -149,7 +149,7 @@ class ComposerService
             $commands['setting-value'] = $value;
         }
         $output = $this->runCommand($commands);
-        $parser = new ConfigCommandParser($output);
+        $parser = new ParseOutputCommand($output, ParseOutputCommand::CONFIG_TYPE);
 
         return $parser->parse();
     }
@@ -165,7 +165,7 @@ class ComposerService
             'command' => 'config',
             '--list' => true,
         ));
-        $parser = new ConfigListParser($output);
+        $parser = new ParseOutputCommand($output, ParseOutputCommand::LIST_TYPE);
 
         return $parser->parse();
     }
