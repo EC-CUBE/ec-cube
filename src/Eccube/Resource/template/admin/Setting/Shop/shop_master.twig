@@ -31,21 +31,15 @@
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-    $('#zip-search').click(function(event) {
-        AjaxZip3.zip2addr('shop_master[zip][zip01]', 'shop_master[zip][zip02]', 'shop_master[address][pref]', 'shop_master[address][addr01]');
-    });
-});
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 
 {% block main %}
 
     <div class="row" id="aside_wrap">
-        <form name="form1" role="form" class="form-horizontal" id="point_form" method="post" action="">
+        <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
+            <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
 
             <div id="detail_wrap" class="col-md-9">
@@ -68,7 +62,6 @@ $(function() {
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip.zip01) }}
                                 {{ form_errors(form.zip.zip02) }}
-                                <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
                         {# 住所：都道府県 #}
