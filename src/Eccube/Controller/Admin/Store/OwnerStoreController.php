@@ -308,23 +308,6 @@ class OwnerStoreController extends AbstractController
         }
         $pluginCode = $Plugin->getCode();
 
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->em;
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
-
-        $return = $this->composerService->execRemove($pluginCode);
-        if ($return) {
-            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } else {
-            $app->addError('admin.plugin.uninstall.error', 'admin');
-        }
         $packageName = self::$vendorName.'/'.$pluginCode;
         $this->composerService->execRemove($packageName);
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
