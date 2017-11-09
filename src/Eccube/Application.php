@@ -456,7 +456,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
             'translator.cache_dir' => $this['debug'] ? null : $this['config']['root_dir'].'/app/cache/translator',
-            'locale_fallbacks' => ['ja', 'en'],
+            'locale_fallbacks' => [$this['config']['locale'], 'en'],
         ));
         $this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('php', new \Symfony\Component\Translation\Loader\PhpFileLoader());
