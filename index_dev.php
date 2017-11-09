@@ -94,4 +94,4 @@ $app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
 
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 
-$app->run();
+$app->run($app['eccube.request']);

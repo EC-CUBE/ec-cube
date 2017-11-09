@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="{{ app.config.admin_urlpath }}/assets/js/file_manager.js"></script>
+<script src="{{ asset('assets/js/file_manager.js', 'admin') }}"></script>
 <script>
 {{ tpl_javascript|raw }}
     $(function() {

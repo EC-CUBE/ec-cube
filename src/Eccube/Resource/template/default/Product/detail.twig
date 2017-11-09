@@ -152,17 +152,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="item_visual">
                         {% for ProductImage in Product.ProductImage %}
                             <div class="item"><img
-                                        src="{{ app.config.image_save_urlpath }}/{{ ProductImage|no_image_product }}">
+                                        src="{{ asset(ProductImage, 'save_image') }}">
                             </div>
                         {% else %}
-                            <div class="item"><img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}"/>
+                            <div class="item"><img src="{{ asset(''|no_image_product, 'save_image') }}"/>
                             </div>
                         {% endfor %}
                     </div>
                     <div class="item_nav">
                         {% for ProductImage in Product.ProductImage %}
                             <div class="slideThumb"><img
-                                        src="{{ app.config.image_save_urlpath }}/{{ ProductImage|no_image_product }}">
+                                        src="{{ asset(ProductImage, 'save_image') }}">
                             </div>
                         {% endfor %}
                     </div>

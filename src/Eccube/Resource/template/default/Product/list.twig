@@ -99,7 +99,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <ul class="ec-shelfGrid">
                     {% for Product in pagination %}
                         <li class="ec-shelfGrid__item"><a href="{{ url('product_detail', {'id': Product.id}) }}"><img
-                                        src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
+                                        src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                 <p>{{ Product.name }}</p>
                                 {% if Product.description_list %}
                                     <p>{{ Product.description_list|raw|nl2br }}</p>
