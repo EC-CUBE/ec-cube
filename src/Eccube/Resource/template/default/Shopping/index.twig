@@ -74,7 +74,7 @@ $(function() {
                 name[index] = $(this).text();
             });
             $(name).each(function(index) {
-                input[index] = $('<input id="edit' + index + '" type="text" />').val(name[index]);
+                input[index] = $('<input class="form-control" id="edit' + index + '" type="text" />').val(name[index]);
             });
             $(input).each(function(index) {
                 ref[index].empty().append(input[index]);
@@ -101,8 +101,15 @@ $(function() {
                 url: "{{ url('shopping_customer') }}",
                 type: 'POST',
                 data: postData,
-                dataType: 'json',
-            }).done(function(){
+                dataType: 'json'
+            }).done(function(data){
+                if (data.status == 'OK') {
+                    // kana field
+                    ref[2].empty().text(data.kana01);
+                    ref[3].empty().text(data.kana02);
+                    $('#customer-kana01').val(data.kana01);
+                    $('#customer-kana02').val(data.kana02);
+                }
             }).fail(function(){
                 alert('更新に失敗しました。入力内容を確認してください。');
                 $(ref).each(function(index) {
@@ -210,12 +217,18 @@ $(function() {
                     <p><a id="confirm_box__quantity_edit_button" href="{{ url('cart') }}" class="btn btn-default btn-sm">数量を変更または削除する</a></p>
                     <h2 class="heading02">お客様情報</h2>
                     <div id="customer_detail_box" class="column is-edit">
-                        <p id="customer_detail_box__customer_address" class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様<br>
-                        〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
-                        <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
+                        <div id="customer_detail_box__customer_address" class="address">
+                            <div class="form-group customer-input_name"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様</div>
+                            <div class="form-group customer-input_name"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></div>
+                            <div class="form-group form-inline input_zip">〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>&nbsp;-&nbsp;<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span></div>
+                            <div class="form-group form-inline input_zip"><span class="customer-edit customer-pref">{{ Order.pref }}</span></div>
+                            <div class="form-group"><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span></div>
+                            <div class="form-group"><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></div>
+                            <div class="form-group form-inline input_tel"><span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>&nbsp;-&nbsp;<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>&nbsp;-&nbsp;<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></div>
+                        </div>
                         {% if is_granted('ROLE_USER') == false %}
-                            <div class="customer-edit customer-email">{{ Order.email }}</div>
-                            <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
+                            <div class="form-group customer-edit customer-email">{{ Order.email }}</div>
+                            <div class="form-group customer-edit customer-company_name">{{ Order.companyName }}</div>
                             <div class="mod-button" style="display:none;">
                                 <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
                                 <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
@@ -223,6 +236,8 @@ $(function() {
                             <p class="btn_edit"><button type="button" id="customer" class="btn btn-default btn-sm">変更</button></p>
                             <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
                             <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
+                            <input type="hidden" id="customer-kana01" class="customer-in" name="customer_kana01" value="{{ Order.kana01 }}">
+                            <input type="hidden" id="customer-kana02" class="customer-in" name="customer_kana02" value="{{ Order.kana02 }}">
                             <input type="hidden" id="customer-zip01" class="customer-in" name="customer_zip01" value="{{ Order.zip01 }}">
                             <input type="hidden" id="customer-zip02" class="customer-in" name="customer_zip02" value="{{ Order.zip02 }}">
                             <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">

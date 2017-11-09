@@ -817,83 +817,92 @@ class ShoppingController extends AbstractController
      */
     public function customer(Application $app, Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            try {
-
-                log_info('非会員お客様情報変更処理開始');
-
-                $data = $request->request->all();
-
-                // 入力チェック
-                $errors = $this->customerValidation($app, $data);
-
-                foreach ($errors as $error) {
-                    if ($error->count() != 0) {
-                        log_info('非会員お客様情報変更入力チェックエラー');
-                        $response = new Response(json_encode('NG'), 400);
-                        $response->headers->set('Content-Type', 'application/json');
-                        return $response;
-                    }
-                }
-
-                $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
-                if (!$pref) {
-                    log_info('非会員お客様情報変更入力チェックエラー');
-                    $response = new Response(json_encode('NG'), 400);
-                    $response->headers->set('Content-Type', 'application/json');
-                    return $response;
-                }
-
-                $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-                if (!$Order) {
-                    log_info('カートが存在しません');
-                    $app->addError('front.shopping.order.error');
-                    return $app->redirect($app->url('shopping_error'));
-                }
-
-                $Order
-                    ->setName01($data['customer_name01'])
-                    ->setName02($data['customer_name02'])
-                    ->setCompanyName($data['customer_company_name'])
-                    ->setTel01($data['customer_tel01'])
-                    ->setTel02($data['customer_tel02'])
-                    ->setTel03($data['customer_tel03'])
-                    ->setZip01($data['customer_zip01'])
-                    ->setZip02($data['customer_zip02'])
-                    ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
-                    ->setPref($pref)
-                    ->setAddr01($data['customer_addr01'])
-                    ->setAddr02($data['customer_addr02'])
-                    ->setEmail($data['customer_email']);
-
-                // 配送先を更新
-                $app['orm.em']->flush();
-
-                // 受注関連情報を最新状態に更新
-                $app['orm.em']->refresh($Order);
-
-                $event = new EventArgs(
-                    array(
-                        'Order' => $Order,
-                        'data' => $data,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
-
-                log_info('非会員お客様情報変更処理完了', array($Order->getId()));
-                $response = new Response(json_encode('OK'));
-                $response->headers->set('Content-Type', 'application/json');
-            } catch (\Exception $e) {
-                log_error('予期しないエラー', array($e->getMessage()));
-                $app['monolog']->error($e);
-
-                $response = new Response(json_encode('NG'), 500);
-                $response->headers->set('Content-Type', 'application/json');
-            }
+        if (!$request->isXmlHttpRequest()) {
+            $response = new Response(json_encode(array('status' => 'NG')), 400);
+            $response->headers->set('Content-Type', 'application/json');
 
             return $response;
         }
+
+        try {
+
+            log_info('非会員お客様情報変更処理開始');
+
+            $data = $request->request->all();
+
+            // 入力チェック
+            $errors = $this->customerValidation($app, $data);
+
+            foreach ($errors as $error) {
+                if ($error->count() != 0) {
+                    log_info('非会員お客様情報変更入力チェックエラー');
+                    $response = new Response(json_encode('NG'), 400);
+                    $response->headers->set('Content-Type', 'application/json');
+
+                    return $response;
+                }
+            }
+
+            $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
+            if (!$pref) {
+                log_info('非会員お客様情報変更入力チェックエラー');
+                $response = new Response(json_encode('NG'), 400);
+                $response->headers->set('Content-Type', 'application/json');
+
+                return $response;
+            }
+
+            $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+            if (!$Order) {
+                log_info('カートが存在しません');
+                $app->addError('front.shopping.order.error');
+
+                return $app->redirect($app->url('shopping_error'));
+            }
+
+            $Order
+                ->setName01($data['customer_name01'])
+                ->setName02($data['customer_name02'])
+                ->setCompanyName($data['customer_company_name'])
+                ->setTel01($data['customer_tel01'])
+                ->setTel02($data['customer_tel02'])
+                ->setTel03($data['customer_tel03'])
+                ->setZip01($data['customer_zip01'])
+                ->setZip02($data['customer_zip02'])
+                ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
+                ->setPref($pref)
+                ->setAddr01($data['customer_addr01'])
+                ->setAddr02($data['customer_addr02'])
+                ->setEmail($data['customer_email']);
+
+            // 配送先を更新
+            $app['orm.em']->flush();
+
+            // 受注関連情報を最新状態に更新
+            $app['orm.em']->refresh($Order);
+
+            $event = new EventArgs(
+                array(
+                    'Order' => $Order,
+                    'data' => $data,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
+
+            log_info('非会員お客様情報変更処理完了', array($Order->getId()));
+            $message = array('status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']);
+            $response = new Response(json_encode($message));
+            $response->headers->set('Content-Type', 'application/json');
+        } catch (\Exception $e) {
+            log_error('予期しないエラー', array($e->getMessage()));
+            $app['monolog']->error($e);
+
+            $response = new Response(json_encode(array('status' => 'NG')), 500);
+            $response->headers->set('Content-Type', 'application/json');
+        }
+
+        return $response;
     }
 
     /**
@@ -1510,7 +1519,7 @@ class ShoppingController extends AbstractController
      * @param array $data リクエストパラメータ
      * @return array
      */
-    private function customerValidation(Application $app, array $data)
+    private function customerValidation(Application $app, array &$data)
     {
         // 入力チェック
         $errors = array();
@@ -1526,6 +1535,26 @@ class ShoppingController extends AbstractController
             new Assert\Length(array('max' => $app['config']['name_len'],)),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
+
+        // 互換性確保のためキーが存在する場合にのみバリデーションを行う(kana01は3.0.15から追加)
+        if (array_key_exists('customer_kana01', $data)) {
+            $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+            $errors[] = $app['validator']->validateValue($data['customer_kana01'], array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $app['config']['kana_len'],)),
+                new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
+            ));
+        }
+
+        // 互換性確保のためキーが存在する場合にのみバリデーションを行う(kana01は3.0.15から追加)
+        if (array_key_exists('customer_kana02', $data)) {
+            $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+            $errors[] = $app['validator']->validateValue($data['customer_kana02'], array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $app['config']['kana_len'],)),
+                new Assert\Regex(array('pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u'))
+            ));
+        }
 
         $errors[] = $app['validator']->validateValue($data['customer_company_name'], array(
             new Assert\Length(array('max' => $app['config']['stext_len'])),

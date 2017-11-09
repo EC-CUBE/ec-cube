@@ -24,10 +24,10 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Eccube\Util\EntityUtil;
 
 /**
  * Member
