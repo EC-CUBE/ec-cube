@@ -25,7 +25,6 @@ namespace Eccube\Service\Composer;
 use Composer\Console\Application;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Service\PluginService;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -34,19 +33,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @package Eccube\Service\Composer
  * @Service
  */
-class ComposerService
+class ComposerApiService implements ComposerServiceInterface
 {
     /**
      * @Inject("config")
      * @var array
      */
     protected $appConfig;
-
-    /**
-     * @Inject(PluginService::class)
-     * @var PluginService
-     */
-    protected $pluginService;
 
     /**
      * @var Application $consoleApplication
@@ -181,28 +174,12 @@ class ComposerService
     }
 
     /**
-     * Init composer console application
-     */
-    private function init()
-    {
-        set_time_limit(0);
-        @ini_set('memory_limit', '1536M');
-        // Config for some environment
-        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
-        $consoleApplication = new Application();
-        $consoleApplication->resetComposer();
-        $consoleApplication->setAutoExit(false);
-        $this->consoleApplication = $consoleApplication;
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
-    }
-
-    /**
      * Run composer command
      *
      * @param array $commands
      * @return string
      */
-    private function runCommand($commands)
+    public function runCommand($commands)
     {
         $this->init();
         $commands['--working-dir'] = $this->workingDir;
@@ -220,5 +197,21 @@ class ComposerService
         log_info($log, $commands);
 
         return $log;
+    }
+
+    /**
+     * Init composer console application
+     */
+    private function init()
+    {
+        set_time_limit(0);
+        @ini_set('memory_limit', '1536M');
+        // Config for some environment
+        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
+        $consoleApplication = new Application();
+        $consoleApplication->resetComposer();
+        $consoleApplication->setAutoExit(false);
+        $this->consoleApplication = $consoleApplication;
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
     }
 }

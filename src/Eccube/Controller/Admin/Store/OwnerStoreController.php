@@ -29,7 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerService;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -56,8 +56,8 @@ class OwnerStoreController extends AbstractController
     protected $pluginRepository;
 
     /**
-     * @Inject(ComposerService::class)
-     * @var ComposerService
+     * @Inject(ComposerApiService::class)
+     * @var ComposerApiService
      */
     protected $composerService;
 
@@ -145,7 +145,7 @@ class OwnerStoreController extends AbstractController
                         $i++;
                     }
                 } else {
-                    $message = $data['error_code'] . ' : ' . $data['error_message'];
+                    $message = $data['error_code'].' : '.$data['error_message'];
                 }
             } else {
                 $success = 0;
