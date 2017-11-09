@@ -309,8 +309,12 @@ class OwnerStoreController extends AbstractController
         $pluginCode = $Plugin->getCode();
 
         $packageName = self::$vendorName.'/'.$pluginCode;
-        $this->composerService->execRemove($packageName);
-        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        $return = $this->composerService->execRemove($packageName);
+        if ($return) {
+            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        } else {
+            $app->addError('admin.plugin.uninstall.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_store_plugin'));
     }

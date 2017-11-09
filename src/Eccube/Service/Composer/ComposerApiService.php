@@ -29,7 +29,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
- * Class ComposerService
+ * Class ComposerApiService
  * @package Eccube\Service\Composer
  * @Service
  */
@@ -91,7 +91,7 @@ class ComposerApiService implements ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @return void
+     * @return bool
      */
     public function execRemove($packageName)
     {
@@ -102,6 +102,8 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
         ));
+
+        return true;
     }
 
     /**
