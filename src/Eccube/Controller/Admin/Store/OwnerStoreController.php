@@ -59,6 +59,12 @@ class OwnerStoreController extends AbstractController
     protected $pluginRepository;
 
     /**
+     * @Inject(PluginService::class)
+     * @var PluginService
+     */
+    protected $pluginService;
+
+    /**
      * @Inject(ComposerProcessService::class)
      * @var ComposerProcessService
      */
@@ -87,7 +93,7 @@ class OwnerStoreController extends AbstractController
         $promotionItems = array();
         $message = '';
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
@@ -132,7 +138,7 @@ class OwnerStoreController extends AbstractController
                         }
 
                         // Add plugin dependency
-                        $item['depend'] = $app['eccube.service.plugin']->getRequirePluginName($items, $item);
+                        $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
                     }
                     unset($item);
 
@@ -175,7 +181,7 @@ class OwnerStoreController extends AbstractController
     public function doConfirm(Application $app, Request $request, $id)
     {
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -188,15 +194,11 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $items[$index]['product_code'];
 
-        /**
-         * @var PluginService $pluginService
-         */
-        $pluginService =  $app['eccube.service.plugin'];
-        $plugin = $pluginService->buildInfo($items, $pluginCode);
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
 
         // Prevent infinity loop: A -> B -> A.
         $arrDependency[] = $plugin;
-        $arrDependency = $pluginService->getDependency($items, $plugin, $arrDependency);
+        $arrDependency = $this->pluginService->getDependency($items, $plugin, $arrDependency);
         // Unset first param
         unset($arrDependency[0]);
 
@@ -221,7 +223,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['owners_store_url'].'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);
@@ -266,6 +268,40 @@ class OwnerStoreController extends AbstractController
     }
 
     /**
+     * Do confirm page
+     *
+     * @Route("/{_admin}/store/plugin/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
+     * @Template("Store/plugin_confirm_uninstall.twig")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return array
+     */
+    public function deleteConfirm(Application $app, Plugin $Plugin)
+    {
+        // Owner's store communication
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
+        list($json, $info) = $this->getRequestApi($url, $app);
+        $data = json_decode($json, true);
+        $items = $data['item'];
+
+        // Check plugin in api
+        $pluginSource = $Plugin->getSource();
+        $index = array_search($pluginSource, array_column($items, 'product_id'));
+        if ($index === false) {
+            throw new NotFoundHttpException();
+        }
+
+        // Build info
+        $pluginCode = $Plugin->getCode();
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $plugin['id'] = $Plugin->getId();
+
+        return [
+            'item' => $plugin,
+        ];
+    }
+
+    /**
      * New ways to remove plugin: using composer command
      *
      * @Method("DELETE")
@@ -279,13 +315,9 @@ class OwnerStoreController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
-            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
-
-            return $app->redirect($app->url('admin_store_plugin'));
+            $this->pluginService->disable($Plugin);
         }
-
         $pluginCode = $Plugin->getCode();
-
 
         /**
          * Mysql lock in transaction

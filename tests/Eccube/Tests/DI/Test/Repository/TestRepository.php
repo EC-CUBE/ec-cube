@@ -21,31 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Tests\DI\AutoWiring;
+namespace Eccube\Tests\DI\Test\Repository;
 
-use Eccube\DI\AutoWiring\RepositoryAutoWiring;
-use Eccube\Tests\DI\Test\Repository\TestRepository;
-use Eccube\Tests\DI\Test\RepositoryClazz;
+use Eccube\Annotation\Repository;
 
-class RepositoryAutoWiringTest extends AbstractAutowiringTest
+/**
+ * @Repository
+ */
+class TestRepository
 {
-
-    protected function getAutoWiring()
-    {
-        return new RepositoryAutoWiring([__DIR__.'/../Test']);
-    }
-
-    public function testRepository()
-    {
-        $this->di->build($this->container);
-
-        self::assertArrayHasKey(RepositoryClazz::class, $this->container);
-    }
-
-    public function testRepository2()
-    {
-        $this->di->build($this->container);
-
-        self::assertArrayHasKey(TestRepository::class, $this->container);
-    }
 }

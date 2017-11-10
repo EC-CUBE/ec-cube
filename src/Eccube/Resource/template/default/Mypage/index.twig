@@ -58,9 +58,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
                                         {% if OrderItem.Product is null %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
+                                            <img src="{{ asset(''|no_image_product, 'save_image') }}" />
                                         {% else %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}">
+                                            <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}">
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">

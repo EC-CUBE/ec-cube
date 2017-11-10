@@ -68,7 +68,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% set idx = loop.index0 %}
             <div class="ec-cartRole__error">
                 <div class="ec-alert-warning">
-                    <div class="ec-alert-warning__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-white.svg"></div>
+                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
                     <div class="ec-alert-warning__text">
                         {% if productStr[idx] is defined %}
                             {{ error|trans({'%product%':productStr[idx]})|nl2br }}
@@ -82,7 +82,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% for error in app.session.flashbag.get('eccube.front.cart.error') %}
             <div class="ec-cartRole__error">
                 <div class="ec-alert-warning">
-                    <div class="ec-alert-warning__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-white.svg"></div>
+                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
                     <div class="ec-alert-warning__text">
                         {{ error|trans|nl2br }}
                     </div>
@@ -134,13 +134,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <ul class="ec-cartRow">
                                 <li class="ec-cartRow__delColumn">
                                     <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
-                                        <img src="{{ app.config.front_urlpath }}/assets/icon/cross.svg" alt="delete">
+                                        <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
                                     </a>
                                 </li>
                                 <li class="ec-cartRow__contentColumn">
                                     <div class="ec-cartRow__img">
                                         <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}" alt="{{ Product.name }}"/>
+                                            <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
                                         </a>
                                     </div>
                                     <div class="ec-cartRow__summary">
@@ -163,15 +163,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="ec-cartRow__amountUpDown">
                                         {% if CartItem.quantity > 1 %}
                                             <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton" data-method="put" data-confirm="false">
-                                                <span class="ec-cartRow__amountDownButton__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/minus-dark.svg" alt="reduce"></span>
+                                                <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
                                             </a>
                                         {% else %}
                                             <div class="ec-cartRow__amountDownButtonDisabled">
-                                                <span class="ec-cartRow__amountDownButton__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/minus.svg" alt="reduce"></span>
+                                                <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
                                             </div>
                                         {% endif %}
                                         <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton" data-method="put" data-confirm="false">
-                                            <span class="ec-cartRow__amountUpButton__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/plus-dark.svg" alt="increase"></span>
+                                            <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
                                         </a>
                                     </div>
                                 </li>
@@ -194,7 +194,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="ec-off3Grid">
                     <div class="ec-off3Grid__cell">
                         <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-white.svg"></div>
+                            <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
                             <div class="ec-alert-warning__text">現在カート内に商品はございません。</div>
                         </div>
                     </div>
