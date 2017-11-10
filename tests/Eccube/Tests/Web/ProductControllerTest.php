@@ -54,9 +54,9 @@ class ProductControllerTest extends AbstractWebTestCase
 
         $client = $this->client;
         $client->request('POST',
-            $this->app->url('product_detail', array('id' => '1'))
+            $this->app->url('product_add_favorite', array('id' => '1'))
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_login')));
     }
 
     /**
@@ -116,7 +116,6 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertContains('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
-        $favoriteForm['mode'] = 'add_favorite';
 
         $client->submit($favoriteForm);
         $crawler = $client->followRedirect();
@@ -155,7 +154,6 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertContains('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
-        $favoriteForm['mode'] = 'add_favorite';
 
         $client->submit($favoriteForm);
         $crawler = $client->followRedirect();

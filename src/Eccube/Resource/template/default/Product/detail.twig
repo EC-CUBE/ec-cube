@@ -124,14 +124,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </script>
     <script>
         $(function () {
-            $('#favorite').click(function () {
-                $('#mode').val('add_favorite');
-            });
-
-            $('#add-cart').click(function () {
-                $('#mode').val('add_cart');
-            });
-
             // bfcache無効化
             $(window).bind('pageshow', function (event) {
                 if (event.originalEvent.persisted) {
@@ -244,7 +236,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <form action="?" method="post" id="form1" name="form1">
+                    <form action="{{ url('product_add_cart', {id:Product.id}) }}" method="post" id="form1" name="form1">
                         {% if Product.stock_find %}
                             <div class="ec-productRole__actions">
                                 {% if form.classcategory_id1 is defined %}
@@ -276,7 +268,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </button>
                             </div>
                         {% endif %}
+
+                        {{ form_rest(form) }}
+                    </form>
                         {% if BaseInfo.option_favorite_product %}
+                    <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
                             <div class="ec-productRole__btn">
                                 {% if is_favorite == false %}
                                     <button type="submit" id="favorite" class="ec-blockBtn--cancel">
@@ -288,10 +284,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </button>
                                 {% endif %}
                             </div>
-                        {% endif %}
-
-                        {{ form_rest(form) }}
                     </form>
+                        {% endif %}
                     <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
                     </div>
                 </div>
