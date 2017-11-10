@@ -61,7 +61,7 @@ class ComposerApiService implements ComposerServiceInterface
             'package' => $pluginName,
         ));
 
-        return OutputCommand::parseInfo($output);
+        return OutputParser::parseInfo($output);
     }
 
     /**
@@ -81,7 +81,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--ignore-platform-reqs' => true,
         ));
 
-        return OutputCommand::parseRequire($output);
+        return OutputParser::parseRequire($output);
     }
 
     /**
@@ -142,7 +142,7 @@ class ComposerApiService implements ComposerServiceInterface
         }
         $output = $this->runCommand($commands);
 
-        return OutputCommand::parseConfig($output);
+        return OutputParser::parseConfig($output);
     }
 
     /**
@@ -157,7 +157,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--list' => true,
         ));
 
-        return OutputCommand::parseList($output);
+        return OutputParser::parseList($output);
     }
 
     /**

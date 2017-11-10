@@ -23,10 +23,10 @@
 namespace Eccube\Service\Composer;
 
 /**
- * Class OutputCommand
+ * Class OutputParser
  * @package Eccube\Service\Composer
  */
-class OutputCommand
+class OutputParser
 {
     /**
      * Parse to array
