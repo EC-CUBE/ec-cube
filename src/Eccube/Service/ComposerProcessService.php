@@ -46,16 +46,25 @@ class ComposerProcessService
     /**
      * This function to install a plugin by composer require
      *
-     * @param string $packageName
+     * @param $packageName
+     * @param array $arrDependency
      * @return bool
      */
-    public function execRequire($packageName)
+    public function execRequire($packageName, $arrDependency = array())
     {
         set_time_limit(0);
         $this->setupComposer();
+
         // Build command
-        $packageName = self::$vendorName.'/'.$packageName;
-        $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
+        $packageNames = '';
+        if (!empty($arrDependency)) {
+            foreach ($arrDependency as $item) {
+                $packageNames .= ' ' . self::$vendorName . '/' . $item['product_code'];
+            }
+        }
+
+        $packageNames .= ' ' . self::$vendorName . '/' . $packageName;
+        $command = $this->getPHP().' '.$this->composerFile.' require '.$packageNames;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
         $command .= $this->appConfig['root_dir'].' 2>&1';
         log_info($command);

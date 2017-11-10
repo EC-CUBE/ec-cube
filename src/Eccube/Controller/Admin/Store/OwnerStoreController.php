@@ -256,7 +256,19 @@ class OwnerStoreController extends AbstractController
             $em->getConnection()->beginTransaction();
         }
 
-        $return = $this->composerService->execRequire($pluginCode);
+        $arrDependency = array();
+        if($data && !empty($data['item'])){
+            $items = $data['item'];
+            $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+            $arrDependency[] = $plugin;
+            $arrDependency = $this->pluginService->getDependency($items, $plugin, $arrDependency);
+
+            // Unset first param
+            unset($arrDependency[0]);
+        }
+
+        $return = $this->composerService->execRequire($pluginCode, $arrDependency);
+
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -324,6 +336,7 @@ class OwnerStoreController extends AbstractController
          * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
          * @var EntityManagerInterface $em
          */
+
         $em = $this->em;
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
