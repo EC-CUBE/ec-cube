@@ -103,7 +103,7 @@ class OrderType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-locality'),
+                    'attr' => array('class' => 'p-locality p-street-address'),
                 ),
                 'addr02_options' => array(
                     'required' => false,
@@ -113,7 +113,7 @@ class OrderType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-street-address'),
+                    'attr' => array('class' => 'p-extended-address'),
                 ),
             ))
             ->add('email', 'email', array(
