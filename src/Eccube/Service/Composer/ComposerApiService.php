@@ -60,9 +60,8 @@ class ComposerApiService implements ComposerServiceInterface
             'command' => 'info',
             'package' => $pluginName,
         ));
-        $parser = new ParseOutputCommand($output, ParseOutputCommand::INFO_TYPE);
 
-        return $parser->parse();
+        return OutputCommand::parseInfo($output);
     }
 
     /**
@@ -82,9 +81,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--ignore-platform-reqs' => true,
         ));
 
-        $parser = new ParseOutputCommand($output, ParseOutputCommand::REQUIRE_TYPE);
-
-        return $parser->parse();
+        return OutputCommand::parseRequire($output);
     }
 
     /**
@@ -144,9 +141,8 @@ class ComposerApiService implements ComposerServiceInterface
             $commands['setting-value'] = $value;
         }
         $output = $this->runCommand($commands);
-        $parser = new ParseOutputCommand($output, ParseOutputCommand::CONFIG_TYPE);
 
-        return $parser->parse();
+        return OutputCommand::parseConfig($output);
     }
 
     /**
@@ -160,9 +156,8 @@ class ComposerApiService implements ComposerServiceInterface
             'command' => 'config',
             '--list' => true,
         ));
-        $parser = new ParseOutputCommand($output, ParseOutputCommand::LIST_TYPE);
 
-        return $parser->parse();
+        return OutputCommand::parseList($output);
     }
 
     /**

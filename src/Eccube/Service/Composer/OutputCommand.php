@@ -23,71 +23,20 @@
 namespace Eccube\Service\Composer;
 
 /**
- * Class ParseOutputCommand
+ * Class OutputCommand
  * @package Eccube\Service\Composer
  */
-class ParseOutputCommand
+class OutputCommand
 {
-    const REQUIRE_TYPE = 1;
-    const INFO_TYPE = 2;
-    const CONFIG_TYPE = 3;
-    const LIST_TYPE = 4;
-
-    private $output;
-
-    private $type;
-
-    /**
-     * ParseOutputCommand constructor.
-     * @param string $output
-     * @param int    $type
-     */
-    public function __construct($output, $type)
-    {
-        $this->output = $output;
-        $this->type = $type;
-    }
-
-    /**
-     * Parse function
-     *
-     * @return array
-     */
-    public function parse()
-    {
-        switch ($this->type) {
-            case self::REQUIRE_TYPE:
-                $parseOutput = $this->parseRequire();
-                break;
-
-            case self::INFO_TYPE:
-                $parseOutput = $this->parseInfo();
-                break;
-
-            case self::CONFIG_TYPE:
-                $parseOutput = $this->parseConfig();
-                break;
-
-            case self::LIST_TYPE:
-                $parseOutput = $this->parseList();
-                break;
-
-            default:
-                $parseOutput = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $this->output));
-                break;
-        }
-
-        return $parseOutput;
-    }
-
     /**
      * Parse to array
      *
+     * @param string $output
      * @return array
      */
-    private function parseRequire()
+    public static function parseRequire($output)
     {
-        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $this->output));
+        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $installedLogs = array_filter(
             array_map(
                 function ($line) {
@@ -107,11 +56,12 @@ class ParseOutputCommand
     /**
      * Parse to array
      *
+     * @param string $output
      * @return array
      */
-    private function parseInfo()
+    public static function parseInfo($output)
     {
-        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $this->output));
+        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $infoLogs = array_filter(array_map(function ($line) {
             $matches = array();
             preg_match('/^(name|descrip.|keywords|versions|type|license|source|dist|names)\s*:\s*(.*)$/', $line, $matches);
@@ -121,8 +71,8 @@ class ParseOutputCommand
 
         // 'name' => 'value'
         $result = array_column($infoLogs, 2, 1);
-        $result['requires'] = $this->parseArrayInfoOutput($rowArray, 'requires');
-        $result['requires (dev)'] = $this->parseArrayInfoOutput($rowArray, 'requires (dev)');
+        $result['requires'] = static::parseArrayInfoOutput($rowArray, 'requires');
+        $result['requires (dev)'] = static::parseArrayInfoOutput($rowArray, 'requires (dev)');
 
         return $result;
     }
@@ -130,11 +80,12 @@ class ParseOutputCommand
     /**
      * Parse to array
      *
+     * @param string $output
      * @return array|mixed
      */
-    private function parseConfig()
+    public static function parseConfig($output)
     {
-        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $this->output));
+        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rowArray = array_filter($rowArray, function ($line) {
             return !preg_match('/^<warning>.*/', $line);
         });
@@ -145,11 +96,12 @@ class ParseOutputCommand
     /**
      * Parse to array
      *
+     * @param string $output
      * @return array
      */
-    private function parseList()
+    public static function parseList($output)
     {
-        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $this->output));
+        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rawConfig = array_map(function ($line) {
             $matches = array();
             preg_match('/^\[(.*?)\]\s?(.*)$/', $line, $matches);
@@ -178,7 +130,7 @@ class ParseOutputCommand
      * @param $key
      * @return array
      */
-    private function parseArrayInfoOutput($rowArray, $key)
+    private static function parseArrayInfoOutput($rowArray, $key)
     {
         $result = array();
         $start = false;
