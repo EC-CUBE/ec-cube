@@ -27,7 +27,6 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;

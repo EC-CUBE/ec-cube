@@ -24,7 +24,6 @@
 namespace Eccube\Util;
 
 use Eccube\Application;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class Mail
 {

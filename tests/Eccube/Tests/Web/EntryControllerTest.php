@@ -25,7 +25,6 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\CustomerStatus;
-use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
