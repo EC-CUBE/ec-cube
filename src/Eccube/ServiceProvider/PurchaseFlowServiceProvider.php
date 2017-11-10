@@ -17,6 +17,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor;
+use Eccube\Service\PurchaseFlow\Processor\UsePointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Pimple\Container;
@@ -71,7 +72,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             $processors[] = new PaymentTotalLimitValidator($app['config']['max_total_fee']);
             $processors[] = new DeliveryFeeProcessor($app['orm.em']);
             $processors[] = new PaymentTotalNegativeValidator();
-
+            $processors[] = new UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
             return $processors;
         };
 

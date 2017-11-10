@@ -58,16 +58,6 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     private $delivery_fee_total;
 
     /**
-     * @var string
-     */
-    private $add_point;
-
-    /**
-     * @var string
-     */
-    private $use_point;
-
-    /**
      * @var array
      */
     private $Payments = array();
