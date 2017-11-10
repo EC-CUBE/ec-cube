@@ -178,7 +178,7 @@ class CsvImportController
                             $Product->setFreeArea(null);
                         }
 
-                        if (isset($row['商品削除フラグ']) && Str::isNotBlank($row['フリーエリア'])) {
+                        if (isset($row['商品削除フラグ']) && Str::isNotBlank($row['商品削除フラグ'])) {
                             if ($row['商品削除フラグ'] == (string)Constant::DISABLED || $row['商品削除フラグ'] == (string)Constant::ENABLED) {
                                 $Product->setDelFlg($row['商品削除フラグ']);
                             } else {
@@ -494,31 +494,40 @@ class CsvImportController
                             $Category->setName(Str::trimAll($row['カテゴリ名']));
                         }
 
-                        if ($row['親カテゴリID'] != '') {
-
+                        $ParentCategory = null;
+                        if (isset($row['親カテゴリID']) && Str::isNotBlank($row['親カテゴリID'])) {
                             if (!preg_match('/^\d+$/', $row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
 
+                            /** @var $ParentCategory Category */
                             $ParentCategory = $app['eccube.repository.category']->find($row['親カテゴリID']);
                             if (!$ParentCategory) {
                                 $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
 
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-
-                        } else {
-                            $ParentCategory = null;
                         }
 
                         $Category->setParent($ParentCategory);
-                        if ($ParentCategory) {
-                            $Category->setLevel($ParentCategory->getLevel() + 1);
+
+                        // Level
+                        if (isset($row['階層']) && Str::isNotBlank($row['階層'])) {
+                            if ($ParentCategory == null && $row['階層'] != 1) {
+                                $this->addErrors(($data->key() + 1).'行目の親カテゴリIDが存在しません。');
+
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+                            $level = Str::trimAll($row['階層']);
                         } else {
-                            $Category->setLevel(1);
+                            $level = 1;
+                            if ($ParentCategory) {
+                                $level = $ParentCategory->getLevel() + 1;
+                            }
                         }
+                        $Category->setLevel($level);
 
                         if ($app['config']['category_nest_level'] < $Category->getLevel()) {
                             $this->addErrors(($data->key() + 1).'行目のカテゴリが最大レベルを超えているため設定できません。');
@@ -526,8 +535,29 @@ class CsvImportController
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
-                        $status = $app['eccube.repository.category']->save($Category);
+                        // カテゴリ削除フラグ対応
+                        if ($row['カテゴリ削除フラグ'] == '') {
+                            $Category->setDelFlg(Constant::DISABLED);
+                            $status = $app['eccube.repository.category']->save($Category);
+                        } else {
+                            if ($row['カテゴリ削除フラグ'] == (string)Constant::DISABLED || $row['カテゴリ削除フラグ'] == (string)Constant::ENABLED) {
+                                $Category->setDelFlg($row['カテゴリ削除フラグ']);
+                            } else {
+                                $this->addErrors(($data->key() + 1).'行目のカテゴリ削除フラグが設定されていません。');
 
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+                            if ($row['カテゴリ削除フラグ'] == (string)Constant::ENABLED) {
+                                $status = $app['eccube.repository.category']->delete($Category);
+                                if (!$status) {
+                                    $this->addErrors(($data->key() + 1).'行目のカテゴリが、子カテゴリまたは商品が紐付いているため削除できません。');
+
+                                    return $this->render($app, $form, $headers, $this->categoryTwig);
+                                }
+                            } else {
+                                $status = $app['eccube.repository.category']->save($Category);
+                            }
+                        }
                         if (!$status) {
                             $this->addErrors(($data->key() + 1).'行目のカテゴリが設定できません。');
                         }
@@ -1168,11 +1198,13 @@ class CsvImportController
             'カテゴリID' => 'id',
             'カテゴリ名' => 'category_name',
             '親カテゴリID' => 'parent_category_id',
+            'カテゴリ削除フラグ' => 'category_del_flg',
         );
     }
 
     /**
      * ProductCategory作成
+     *
      * @param \Eccube\Entity\Product $Product
      * @param \Eccube\Entity\Category $Category
      * @return ProductCategory

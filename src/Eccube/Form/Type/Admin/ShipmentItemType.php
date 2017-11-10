@@ -49,6 +49,10 @@ class ShipmentItemType extends AbstractType
         $config = $this->app['config'];
 
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+                'mapped' => false
+            ))
             ->add('new', 'hidden', array(
                 'required' => false,
                 'mapped' => false,
@@ -66,7 +70,7 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('quantity', 'text', array(
+            ->add('quantity', 'integer', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(

@@ -348,6 +348,13 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    //======================================================================
+    // CATEGORY Import Test
+    //======================================================================
+
+    /**
+     * Import csv test
+     */
     public function testCsvCategory()
     {
         $this->filepath = __DIR__.'/categories.csv';
@@ -361,15 +368,19 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Categories);
         $this->verify();
 
-        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u',
-            $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
     }
 
+    /**
+     * Import new csv test
+     */
     public function testCsvCategoryWithNew()
     {
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath);
         $csv = array(
-            array('カテゴリID', 'カテゴリ名', '親カテゴリID'),
-            array('', '新カテゴリ', '')
+            array('カテゴリID', 'カテゴリ名', '親カテゴリID', 'カテゴリ削除フラグ'),
+            array('', '新カテゴリ', '', '')
         );
         $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
 
@@ -381,9 +392,116 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Categories);
         $this->verify();
 
-        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u',
-            $crawler->filter('div.alert-success')->text());
+        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
     }
+
+    /**
+     * Import only exist category name.
+     */
+    public function testCsvCategoryWithOnlyCategoryName()
+    {
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        $csv = array(
+            array('カテゴリ名'),
+            array('新カテゴリ')
+        );
+        $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
+
+        $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
+
+        $Categories = $this->app['eccube.repository.category']->findBy(array('name' => '新カテゴリ'));
+
+        $this->expected = 1;
+        $this->actual = count($Categories);
+        $this->verify();
+
+        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+    }
+
+    /**
+     * Category name is null
+     */
+    public function testCsvCategoryWithCategoryNameIsNull()
+    {
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        $categories = $this->app['eccube.repository.category']->findAll();
+        $this->expected = count($categories);
+
+        $csv = array(
+            array('カテゴリID', 'カテゴリ名'),
+            array(null, null),
+        );
+        $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
+
+        $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
+
+        $arrCategory = $this->app['eccube.repository.category']->findAll();
+        $this->actual = count($arrCategory);
+        $this->verify();
+
+        $this->assertRegexp('/2行目のカテゴリ名が設定されていません。/u', $crawler->filter('div#upload_box__body')->text());
+    }
+
+    /**
+     * Import do not exist category name column.
+     */
+    public function testCsvCategoryWithoutCategoryNameColumn()
+    {
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        $categories = $this->app['eccube.repository.category']->findAll();
+        $this->expected = count($categories);
+
+        $csv = array(
+            array('カテゴリID'),
+            array(''),
+        );
+        $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
+
+        $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
+
+        $arrCategory = $this->app['eccube.repository.category']->findAll();
+        $this->actual = count($arrCategory);
+        $this->verify();
+
+        $this->assertRegexp('/CSVのフォーマットが一致しません。/u', $crawler->filter('div#upload_box__body')->text());
+    }
+
+    /**
+     * Testing the column was mixed.
+     */
+    public function testCsvCategoryWithColumnSorted()
+    {
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        /** @var $faker \Faker\Generator */
+        $faker = $this->getFaker();
+        $categoryName = 'CategoryNameTest';
+        $csv = array(
+            array('カテゴリ名','カテゴリID'),
+            array($categoryName,''),
+        );
+        $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
+
+        $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
+
+        $arrCategory = $this->app['eccube.repository.category']->findBy(array('name' => $categoryName));
+        $this->actual = count($arrCategory);
+        $this->expected = 1;
+        $this->verify();
+
+        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u', $crawler->filter('div.alert-success')->text());
+    }
+
+//======================================================================
+//    CSV export template test
+//======================================================================
 
     public function testCsvTemplateWithCategory()
     {
@@ -392,7 +510,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->app['config'] = $config;
 
-        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID'."\n");
+        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
 
         $crawler = $this->client->request(
             'GET',
