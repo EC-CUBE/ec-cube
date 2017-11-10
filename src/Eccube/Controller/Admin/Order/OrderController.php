@@ -104,6 +104,7 @@ class OrderController extends AbstractController
                 $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
                 $session->set('eccube.admin.order.search', $viewData);
                 $session->set('eccube.admin.order.search.page_no', $page_no);
+                $session->remove('eccube.admin.order.search.sort');
             }
         } else {
             if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
@@ -111,6 +112,7 @@ class OrderController extends AbstractController
                 $session->remove('eccube.admin.order.search');
                 $session->remove('eccube.admin.order.search.page_no');
                 $session->remove('eccube.admin.order.search.page_count');
+                $session->remove('eccube.admin.order.search.sort');
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
@@ -127,6 +129,8 @@ class OrderController extends AbstractController
 
                         $viewData['sort'] = $orderBy[0];
                         $viewData['orderBy'] = $orderBy[1];
+
+                        $session->set('eccube.admin.order.search.sort', $sort);
                     }
 
                     // sessionに保持されている検索条件を復元.

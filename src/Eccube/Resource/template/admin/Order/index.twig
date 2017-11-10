@@ -290,11 +290,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endfor %}
                                         </ul>
                                 </li>
+                                {% set sort_order = app.session.get('eccube.admin.order.search.sort') %}
                                 <li id="result_list_main__csv_menu" class="dropdown">
                                     <a id="result_list_main__csv_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ url('admin_order_export_order') }}">受注CSVダウンロード</a></li>
-                                        <li><a href="{{ url('admin_order_export_shipping') }}">配送CSVダウンロード</a></li>
+                                        <li><a href="{{ url('admin_order_export_order') }}{{ sort_order ? '?sort=' ~ sort_order : '' }}">受注CSVダウンロード</a></li>
+                                        <li><a href="{{ url('admin_order_export_shipping') }}{{ sort_order ? '?sort=' ~ sort_order : '' }}">配送CSVダウンロード</a></li>
                                         <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}">受注CSV出力項目設定</a></li>
                                         <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}">配送CSV出力項目設定</a></li>
                                     </ul>
@@ -316,28 +317,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr id="result_list_main__header">
                                         <th class="text-center"><input type="checkbox" id="check-all"></th>
                                         <th id="result_list_main__header_order_date">受注日<br>
-                                            <a href="{{ url('admin_order', {'sort': 'order_date_sort_asc'}) }}&resume=1"><span class="label label-info">古い順</span></a>
-                                            <a href="{{ url('admin_order', {'sort': 'order_date_sort_desc'}) }}&resume=1"><span class="label label-info">新しい順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'order_date_sort_asc'}) }}&resume=1"><span class="label {{ sort_order == 'order_date_sort_asc' ? 'label-danger' : 'label-info' }}">古い順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'order_date_sort_desc'}) }}&resume=1"><span class="label {{ sort_order == 'order_date_sort_desc' ? 'label-danger' : 'label-info' }}">新しい順</span></a>
                                         </th>
                                         <th id="result_list_main__header_id">注文番号<br>
-                                            <a href="{{ url('admin_order', {'sort': 'id_sort_asc'}) }}&resume=1"><span class="label label-info">古い順</span></a>
-                                            <a href="{{ url('admin_order', {'sort': 'id_sort_desc'}) }}&resume=1"><span class="label label-info">新しい順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'id_sort_asc'}) }}&resume=1"><span class="label {{ sort_order == 'id_sort_asc' ? 'label-danger' : 'label-info' }}">古い順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'id_sort_desc'}) }}&resume=1"><span class="label {{ sort_order == 'id_sort_desc' ? 'label-danger' : 'label-info' }}">新しい順</span></a>
                                         </th>
                                         <th id="result_list_main__header_name">お名前<br>
-                                            <a href="{{ url('admin_order', {'sort': 'name01_sort_asc'}) }}&resume=1"><span class="label label-info">昇順</span></a>
-                                            <a href="{{ url('admin_order', {'sort': 'name01_sort_desc'}) }}&resume=1"><span class="label label-info">降順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'name01_sort_asc'}) }}&resume=1"><span class="label {{ sort_order == 'name01_sort_asc' ? 'label-danger' : 'label-info' }}">昇順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'name01_sort_desc'}) }}&resume=1"><span class="label {{ sort_order == 'name01_sort_desc' ? 'label-danger' : 'label-info' }}">降順</span></a>
                                         </th>
                                         <th id="result_list_main__header_payment_method">支払方法<br>
-                                            <a href="{{ url('admin_order', {'sort': 'payment_method_sort_asc'}) }}&resume=1"><span class="label label-info">昇順</span></a>
-                                            <a href="{{ url('admin_order', {'sort': 'payment_method_sort_desc'}) }}&resume=1"><span class="label label-info">降順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'payment_method_sort_asc'}) }}&resume=1"><span class="label {{ sort_order == 'payment_method_sort_asc' ? 'label-danger' : 'label-info' }}">昇順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'payment_method_sort_desc'}) }}&resume=1"><span class="label {{ sort_order == 'payment_method_sort_desc' ? 'label-danger' : 'label-info' }}">降順</span></a>
                                         </th>
                                         <th id="result_list_main__header_payment_total">購入金額(円)<br>
-                                            <a href="{{ url('admin_order', {'sort': 'payment_total_sort_asc'}) }}&resume=1"><span class="label label-info">低い順</span></a>
-                                            <a href="{{ url('admin_order', {'sort': 'payment_total_sort_desc'}) }}&resume=1"><span class="label label-info">高い順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'payment_total_sort_asc'}) }}&resume=1"><span class="label {{ sort_order == 'payment_total_sort_asc' ? 'label-danger' : 'label-info' }}">低い順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'payment_total_sort_desc'}) }}&resume=1"><span class="label {{ sort_order == 'payment_total_sort_desc' ? 'label-danger' : 'label-info' }}">高い順</span></a>
                                         </th>
                                         <th id="result_list_main__header_commit_date">発送日<br>
-                                            <a href="{{ url('admin_order', {'sort': 'commit_date_sort_asc'}) }}&resume=1"><span class="label label-info">古い順</span></a>
-                                            <a href="{{ url('admin_order', {'sort': 'commit_date_sort_desc'}) }}&resume=1"><span class="label label-info">新しい順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'commit_date_sort_asc'}) }}&resume=1"><span class="label {{ sort_order == 'commit_date_sort_asc' ? 'label-danger' : 'label-info' }}">古い順</span></a>
+                                            <a href="{{ url('admin_order', {'sort': 'commit_date_sort_desc'}) }}&resume=1"><span class="label {{ sort_order == 'commit_date_sort_desc' ? 'label-danger' : 'label-info' }}">新しい順</span></a>
                                         </th>
                                         <th id="result_list_main__header_order_status">対応状況</th>
                                         <th>&nbsp;</th>
