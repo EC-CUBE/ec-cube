@@ -51,10 +51,13 @@ class EditController extends AbstractController
 
         $TargetOrder = null;
         $OriginOrder = null;
+        $isNewOrder = false;
 
         if (is_null($id)) {
             // 空のエンティティを作成.
             $TargetOrder = $this->newOrder($app);
+            $isNewOrder = true;
+
         } else {
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
@@ -77,7 +80,7 @@ class EditController extends AbstractController
         /** @var $OrderDetail OrderDetail*/
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
-            $arrOldOrder['OrderDetails'][]['quantity'] = $OrderDetail->getQuantity();
+            $arrOldOrder['OrderDetails'][$OrderDetail->getId()]['quantity'] = $OrderDetail->getQuantity();
         }
 
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
@@ -92,7 +95,7 @@ class EditController extends AbstractController
             foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
                 // アイテム情報
                 $OriginalShipmentItems->add($tmpOriginalShipmentItem);
-                $arrOldOrder['Shippings'][$key]['ShipmentItems'][]['quantity'] = $tmpOriginalShipmentItem->getQuantity();
+                $arrOldOrder['Shippings'][$key]['ShipmentItems'][$tmpOriginalShipmentItem->getId()]['quantity'] = $tmpOriginalShipmentItem->getQuantity();
             }
             // お届け先情報
             $OriginalShippings->add($tmpOriginalShippings);
@@ -333,7 +336,7 @@ class EditController extends AbstractController
 
                         if ($Customer) {
                             // 会員の場合、購入回数、購入金額などを更新
-                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $isNewOrder);
                         }
 
                         $event = new EventArgs(
