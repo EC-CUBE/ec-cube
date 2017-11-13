@@ -251,7 +251,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
      */
-    private $point;
+    private $point = '0';
 
     /**
      * @var \DateTime
