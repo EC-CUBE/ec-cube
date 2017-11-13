@@ -51,30 +51,17 @@ class UsePointProcessor implements ItemHolderProcessor
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($this->containsPointDiscountItem($itemHolder) == false) {
-            if ($itemHolder->getUsePoint() > 0) {
-                $this->addPointDiscountItem($itemHolder);
-                $this->usePointToCustomer($itemHolder);
+        if ($itemHolder->getUsePoint() > 0) {
+            if ($itemHolder->getUsePoint() > $context->getUser()->getPoint()) {
+                // TODO カートに戻さないように修正する
+                return ProcessResult::error('利用ポイントが所有ポイントを上回っています.');
             }
+
+            $this->removePointDiscountItem($itemHolder);
+            return $this->addPointDiscountItem($itemHolder);
         }
 
         return ProcessResult::success();
-    }
-
-    /**
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return bool
-     */
-    protected function containsPointDiscountItem(ItemHolderInterface $itemHolder)
-    {
-        foreach ($itemHolder->getItems() as $item) {
-            if ($item->isDiscount() && $item->getProductName() == 'ポイント値引') {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -96,6 +83,11 @@ class UsePointProcessor implements ItemHolderProcessor
         $Order = $itemHolder;
 
         $priceOfUsePoint = $Order->getUsePoint() * -1; // TODO ポイント換算率
+        if (($itemHolder->getTotal() + $priceOfUsePoint) < 0) {
+            // TODO カートに戻さないように修正する
+            // TODO 送料・手数料も考慮する
+            return ProcessResult::error('利用ポイントがお支払い金額を上回っています.');
+        }
         $OrderItem = new OrderItem();
         $OrderItem->setProductName('ポイント値引')
             ->setPrice($priceOfUsePoint)
@@ -106,17 +98,20 @@ class UsePointProcessor implements ItemHolderProcessor
             ->setTaxDisplayType($TaxInclude)
             ->setTaxType($Taxion);
         $itemHolder->addItem($OrderItem);
+        return ProcessResult::success();
     }
 
     /**
-     * Customer::point の減算処理.
-     * TODO ここでやるのが適切?？
+     * 既存のポイント明細を削除する.
+     *
+     * @param ItemHolderInterface $itemHolder
      */
-    protected function usePointToCustomer(ItemHolderInterface $itemHolder)
+    protected function removePointDiscountItem(ItemHolderInterface $itemHolder)
     {
-        /** @var Order $Order */
-        $Order = $itemHolder;
-        $Customer = $Order->getCustomer();
-        $Customer->setPoint($Customer->getPoint() + $Order->getUsePoint() * -1);
+        foreach ($itemHolder->getItems() as $item) {
+            if ($item->isDiscount() && $item->getProductName() == 'ポイント値引') {
+                $this->entityManager->remove($item);
+            }
+        }
     }
 }
