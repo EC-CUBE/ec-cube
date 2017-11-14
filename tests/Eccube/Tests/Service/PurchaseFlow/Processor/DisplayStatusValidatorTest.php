@@ -42,7 +42,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
         $this->validator = new DisplayStatusValidator();
         $this->cartItem = new CartItem();
         $this->cartItem->setQuantity(10);
-        $this->cartItem->setObject($this->ProductClass);
+        $this->cartItem->setProductClass($this->ProductClass);
     }
 
     public function testInstance()

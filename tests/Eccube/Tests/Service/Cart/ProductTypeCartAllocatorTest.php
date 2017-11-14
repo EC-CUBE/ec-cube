@@ -44,7 +44,7 @@ class ProductTypeCartAllocatorTest extends EccubeTestCase
         /* @var \Eccube\Entity\ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()[0];
         $CartItem = new CartItem();
-        $CartItem->setObject($ProductClass);
+        $CartItem->setProductClass($ProductClass);
 
         $expected = (string) $ProductClass->getProductType()->getId();
         $actual = $this->allocator->allocate($CartItem);
