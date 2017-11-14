@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -32,6 +33,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\Cart\CartItemComparator;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -63,6 +65,12 @@ class CartService
     protected $productClassRepository;
 
     /**
+     * @var CartItemComparator
+     * @Inject(CartItemComparator::class)
+     */
+    protected $cartItemComparator;
+
+    /**
      * @return ItemHolderInterface|Cart
      */
     public function getCart()
@@ -84,6 +92,12 @@ class CartService
         }
     }
 
+    /**
+     * カートに商品を追加します.
+     * @param $ProductClass ProductClass 商品規格
+     * @param $quantity int 数量
+     * @return bool 商品を追加できた場合はtrue
+     */
     public function addProduct($ProductClass, $quantity = 1)
     {
         if (!$ProductClass instanceof ProductClass) {
@@ -95,6 +109,7 @@ class CartService
                 return false;
             }
         }
+
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
             return false;
@@ -103,18 +118,24 @@ class CartService
         if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
             return false;
         }
-        /** @var Cart $cart */
-        $cart = $this->getCart();
-        $exists = $cart->getCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
 
-        if ($exists) {
-            $exists->setQuantity($exists->getQuantity() + $quantity);
-        } else {
-            $item = new CartItem();
-            $item->setQuantity($quantity);
-            $item->setPrice($ProductClass->getPrice01IncTax());
-            $item->setProductClass($ProductClass);
-            $cart->addItem($item);
+        $newItem = new CartItem();
+        $newItem->setQuantity($quantity);
+        $newItem->setPrice($ProductClass->getPrice01IncTax());
+        $newItem->setProductClass($ProductClass);
+
+        $itemExists = false;
+
+        $cart = $this->getCart();
+        foreach ($cart->getCartItems() as $item) {
+            if ($this->cartItemComparator->compare($newItem, $item)) {
+                $item->setQuantity($item->getQuantity() + $newItem->getQuantity());
+                $itemExists = true;
+                break;
+            }
+        }
+        if (!$itemExists) {
+            $cart->addItem($newItem);
         }
 
         return true;
@@ -134,7 +155,19 @@ class CartService
 
         /** @var Cart $cart */
         $cart = $this->getCart();
-        $cart->removeCartItemByIdentifier(ProductClass::class, $ProductClass->getId());
+
+        $removeItem = new CartItem();
+        $removeItem->setPrice($ProductClass->getPrice01IncTax());
+        $removeItem->setProductClass($ProductClass);
+
+        /* @var ArrayCollection $cartItems */
+        $cartItems = $cart->getCartItems();
+        foreach ($cartItems as $item) {
+            if ($this->cartItemComparator->compare($item, $removeItem)) {
+                $cartItems->removeElement($item);
+                break;
+            }
+        }
 
         return true;
     }
@@ -197,5 +230,13 @@ class CartService
             ->clearCartItems();
 
         return $this;
+    }
+
+    /**
+     * @param CartItemComparator $cartItemComparator
+     */
+    public function setCartItemComparator($cartItemComparator)
+    {
+        $this->cartItemComparator = $cartItemComparator;
     }
 }

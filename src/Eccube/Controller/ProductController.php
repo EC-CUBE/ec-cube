@@ -433,7 +433,7 @@ class ProductController
 
         // 復旧不可のエラーが発生した場合は追加した明細を削除.
         if ($result->hasError()) {
-            $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
+            $this->cartService->removeProduct($addCartData['product_class_id']);
             foreach ($result->getErrors() as $error) {
                 $app->addRequestError($error->getMessage());
             }
