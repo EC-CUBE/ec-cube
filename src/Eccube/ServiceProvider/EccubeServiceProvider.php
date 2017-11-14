@@ -24,9 +24,12 @@
 
 namespace Eccube\ServiceProvider;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\Cart\CartItemComparator;
+use Eccube\Service\Cart\ProductClassComparator;
 use Eccube\Service\TaxRuleService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -60,6 +63,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
             $templates[] = 'render_block.twig';
 
             return $templates;
+        };
+
+        $app[CartItemComparator::class] = function() {
+            return new ProductClassComparator();
         };
     }
 
