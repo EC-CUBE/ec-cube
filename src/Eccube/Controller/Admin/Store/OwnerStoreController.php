@@ -228,7 +228,7 @@ class OwnerStoreController extends AbstractController
         $data = json_decode($json, true);
         if ($data && isset($data['success'])) {
             $success = $data['success'];
-            if ($success == '1') {
+            if ($success == '1' && isset($data['item'])) {
                 foreach ($data['item'] as $item) {
                     if ($item['product_code'] == $pluginCode) {
                         $existFlg = true;
@@ -244,8 +244,26 @@ class OwnerStoreController extends AbstractController
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
 
-        $packageName = self::$vendorName.'/'.$pluginCode;
-        $return = $this->composerService->execRequire($packageName);
+        $arrDependency = array();
+        $items = $data['item'];
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $arrDependency[] = $plugin;
+        $arrDependency = $this->pluginService->getDependency($items, $plugin, $arrDependency);
+
+        // Unset first param
+        unset($arrDependency[0]);
+
+        $packageNames = '';
+        if (!empty($arrDependency)) {
+            foreach ($arrDependency as $item) {
+                $packageNames .= ' ' . self::$vendorName . '/' . $item['product_code'];
+            }
+        }
+
+        $packageNames .= ' '.self::$vendorName.'/'.$pluginCode;
+
+        $return = $this->composerService->execRequire($packageNames);
+
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 

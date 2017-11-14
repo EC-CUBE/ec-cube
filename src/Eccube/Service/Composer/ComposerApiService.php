@@ -72,9 +72,10 @@ class ComposerApiService implements ComposerServiceInterface
      */
     public function execRequire($packageName)
     {
+        $packageName = explode(" ", trim($packageName));
         $output = $this->runCommand(array(
             'command' => 'require',
-            'packages' => array($packageName),
+            'packages' => $packageName,
             '--no-interaction' => true,
             '--profile' => true,
             '--prefer-dist' => true,
