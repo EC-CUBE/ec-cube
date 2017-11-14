@@ -96,7 +96,8 @@ class UsePointProcessor implements ItemHolderProcessor
             ->setQuantity(1)
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)
-            ->setTaxType($Taxion);
+            ->setTaxType($Taxion)
+            ->setOrder($itemHolder);
         $itemHolder->addItem($OrderItem);
         return ProcessResult::success();
     }
