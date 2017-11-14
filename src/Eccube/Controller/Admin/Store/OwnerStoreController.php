@@ -243,27 +243,22 @@ class OwnerStoreController extends AbstractController
 
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
-
-        $arrDependency = array();
+        $dependents = array();
         $items = $data['item'];
         $plugin = $this->pluginService->buildInfo($items, $pluginCode);
-        $arrDependency[] = $plugin;
-        $arrDependency = $this->pluginService->getDependency($items, $plugin, $arrDependency);
+        $dependents[] = $plugin;
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
 
         // Unset first param
-        unset($arrDependency[0]);
-
+        unset($dependents[0]);
         $packageNames = '';
-        if (!empty($arrDependency)) {
-            foreach ($arrDependency as $item) {
-                $packageNames .= ' ' . self::$vendorName . '/' . $item['product_code'];
+        if (!empty($dependents)) {
+            foreach ($dependents as $item) {
+                $packageNames .= self::$vendorName.'/'.$item['product_code'].' ';
             }
         }
-
-        $packageNames .= ' '.self::$vendorName.'/'.$pluginCode;
-
+        $packageNames .= self::$vendorName.'/'.$pluginCode;
         $return = $this->composerService->execRequire($packageNames);
-
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
