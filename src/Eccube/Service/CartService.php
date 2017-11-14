@@ -31,6 +31,7 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\ProductClassRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -56,6 +57,12 @@ class CartService
     protected $cart;
 
     /**
+     * @var ProductClassRepository
+     * @Inject(ProductClassRepository::class)
+     */
+    protected $productClassRepository;
+
+    /**
      * @return ItemHolderInterface|Cart
      */
     public function getCart()
@@ -72,10 +79,8 @@ class CartService
     {
         /** @var CartItem $item */
         foreach ($this->cart->getItems() as $item) {
-            $id = $item->getClassId();
-            $class = $item->getClassName();
-            $entity = $this->em->getRepository($class)->find($id);
-            $item->setObject($entity);
+            $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+            $item->setProductClass($ProductClass);
         }
     }
 
@@ -108,9 +113,7 @@ class CartService
             $item = new CartItem();
             $item->setQuantity($quantity);
             $item->setPrice($ProductClass->getPrice01IncTax());
-            $item->setClassId($ProductClass->getId());
-            $item->setClassName(ProductClass::class);
-            $item->setObject($ProductClass);
+            $item->setProductClass($ProductClass);
             $cart->addItem($item);
         }
 

@@ -24,9 +24,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Exception\CartException;
 use Eccube\Util\Str;
 
 class CartServiceTest extends AbstractServiceTestCase
@@ -96,10 +93,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService = $this->app['eccube.service.cart'];
         $cartService->addProduct(1);
 
+        /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $cartService->getCart()->getCartItems();
 
-        $this->assertEquals('Eccube\Entity\ProductClass', $CartItems[0]->getClassName());
-        $this->assertEquals(1, $CartItems[0]->getClassId());
+        $this->assertEquals(1, $CartItems[0]->getProductClassId());
     }
 
     public function testAddProducts_Quantity()
@@ -166,6 +163,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testRemoveProduct()
     {
+        /* @var \Eccube\Service\CartService $cartService */
         $cartService = $this->app['eccube.service.cart'];
 
         $cartService->addProduct(1, 2);

@@ -69,7 +69,7 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
     private function cartItem(ProductClass $ProductClass)
     {
         $result = new CartItem();
-        $result->setObject($ProductClass);
+        $result->setProductClass($ProductClass);
         return $result;
     }
 }

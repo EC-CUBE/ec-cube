@@ -129,7 +129,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </ol>
 
                         {% for CartItem in Cart.CartItems %}
-                            {% set ProductClass = CartItem.Object %}
+                            {% set ProductClass = CartItem.ProductClass %}
                             {% set Product = ProductClass.Product %}
                             <ul class="ec-cartRow">
                                 <li class="ec-cartRow__delColumn">
