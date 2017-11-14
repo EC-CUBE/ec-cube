@@ -162,9 +162,9 @@ class CartServiceTest extends AbstractServiceTestCase
             $CartItems = $cartService->getCart()->getCartItems();
             self::assertEquals(2, count($CartItems));
             self::assertEquals(1, $CartItems[0]->getProductClassId());
-            self::assertEquals(2, $CartItems[0]->getQuantity());
+            self::assertEquals(1, $CartItems[0]->getQuantity());
             self::assertEquals(1, $CartItems[1]->getProductClassId());
-            self::assertEquals(1, $CartItems[1]->getQuantity());
+            self::assertEquals(2, $CartItems[1]->getQuantity());
         }
     }
 
@@ -216,7 +216,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService->save();
 
         $this->expected = $preOrderId;
-        $this->actual = $this->app['session']->get('cart')->getPreOrderId();
+        $this->actual = $cartService->getCart()->getPreOrderId();
         $this->verify();
     }
 }
