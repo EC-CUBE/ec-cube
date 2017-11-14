@@ -82,7 +82,7 @@ class UsePointProcessor implements ItemHolderProcessor
         /** @var Order $Order */
         $Order = $itemHolder;
 
-        $priceOfUsePoint = $Order->getUsePoint() * -1; // TODO ポイント換算率
+        $priceOfUsePoint = $this->usePointToPrice($Order->getUsePoint());
         if (($itemHolder->getTotal() + $priceOfUsePoint) < 0) {
             // TODO カートに戻さないように修正する
             // TODO 送料・手数料も考慮する
@@ -113,5 +113,16 @@ class UsePointProcessor implements ItemHolderProcessor
                 $this->entityManager->remove($item);
             }
         }
+    }
+
+    /**
+     * 利用ポイントを単価に換算する.
+     *
+     * @param integer $usePoint 利用ポイント
+     * @return integer
+     */
+    protected function usePointToPrice($usePoint)
+    {
+        return ($usePoint * $this->BaseInfo->getPointConversionRate()) * -1;
     }
 }

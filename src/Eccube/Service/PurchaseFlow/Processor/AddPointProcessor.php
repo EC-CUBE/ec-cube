@@ -77,12 +77,24 @@ class AddPointProcessor implements ItemHolderProcessor
         foreach ($itemHolder->getItems() as $item) {
             $rate = $item->getPointRate();
             if ($rate === null) {
-                $rate = $this->BaseInfo->getPointRate();
+                $rate = $this->BaseInfo->getBasicPointRate();
             }
-            // TODO 丸め規則
-            $addPoint += ($item->getPriceIncTax() * ($rate / 100)) * $item->getQuantity();
+            $addPoint += $this->priceToAddPoint($rate, $item->getPriceIncTax(), $item->getQuantity());
         }
         $itemHolder->setAddPoint($addPoint);
         return ProcessResult::success();
+    }
+
+    /**
+     * 単価と数量から加算ポイントに換算する.
+     *
+     * @param integer $pointRate ポイント付与率(%)
+     * @param integer $price 単価
+     * @param integer $quantity 数量
+     * @return integer additional point
+     */
+    protected function priceToAddPoint($pointRate, $price, $quantity)
+    {
+        return round($price * ($pointRate / 100)) * $quantity;
     }
 }
