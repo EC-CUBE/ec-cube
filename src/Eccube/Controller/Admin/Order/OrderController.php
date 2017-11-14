@@ -119,6 +119,7 @@ class OrderController extends AbstractController
                     $session->set('eccube.admin.order.search.page_no', $page_no);
                 }
                 $viewData = $session->get('eccube.admin.order.search');
+                $searchData = null;
                 if (!is_null($viewData)) {
                     // sessionに保持されている検索条件を復元.
                     $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
