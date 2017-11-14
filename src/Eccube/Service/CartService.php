@@ -24,7 +24,6 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -33,6 +32,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -55,6 +55,7 @@ class CartService
 
     /**
      * @var ItemHolderInterface
+     * @deprecated
      */
     protected $cart;
 
@@ -71,25 +72,100 @@ class CartService
     protected $cartItemComparator;
 
     /**
+     * @var CartItemAllocator
+     * @Inject(CartItemAllocator::class)
+     */
+    protected $cartItemAllocator;
+
+    /**
+     * @var Cart[]
+     */
+    protected $carts;
+
+    public function getCarts()
+    {
+        if (is_null($this->carts)) {
+            $this->carts = $this->session->get('carts', []);
+            $this->loadItems();
+        }
+        return $this->carts;
+    }
+
+    /**
      * @return ItemHolderInterface|Cart
      */
     public function getCart()
     {
-        if (is_null($this->cart)) {
-            $this->cart = $this->session->get('cart', new Cart());
-            $this->loadItems();
+        $Carts = $this->getCarts();
+        if (!$Carts) {
+            if (!$this->cart) {
+                $this->cart = new Cart();
+            }
+            return $this->cart;
         }
-
-        return $this->cart;
+        return current($this->getCarts());
     }
 
     protected function loadItems()
     {
-        /** @var CartItem $item */
-        foreach ($this->cart->getItems() as $item) {
-            $ProductClass = $this->productClassRepository->find($item->getProductClassId());
-            $item->setProductClass($ProductClass);
+        foreach ($this->getCarts() as $Cart) {
+            /** @var CartItem $item */
+            foreach ($Cart->getItems() as $item) {
+                /** @var ProductClass $ProductClass */
+                $ProductClass = $this->productClassRepository->find($item->getProductClassId());
+                $item->setProductClass($ProductClass);
+            }
         }
+    }
+
+    /**
+     * @param CartItem[] $cartItems
+     * @return CartItem[]
+     */
+    protected function mergeAllCartItems($cartItems = [])
+    {
+        /** @var CartItem[] $allCartItems */
+        $allCartItems = $cartItems;
+
+        foreach ($this->getCarts() as $Cart) {
+            /** @var CartItem $item */
+            foreach ($Cart->getItems() as $item) {
+                $itemExists = false;
+                foreach ($allCartItems as $itemInArray) {
+                    // 同じ明細があればマージする
+                    if ($this->cartItemComparator->compare($item, $itemInArray)) {
+                        $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
+                        $itemExists = true;
+                        break;
+                    }
+                }
+                if (!$itemExists) {
+                    $allCartItems[] = $item;
+                }
+            }
+        }
+
+        return $allCartItems;
+    }
+
+    protected function restoreCarts($cartItems)
+    {
+        /** @var Cart $Carts */
+        $Carts = [];
+
+        foreach ($cartItems as $item) {
+            $cartId = $this->cartItemAllocator->allocate($item);
+            if (isset($Carts[$cartId])) {
+                $Carts[$cartId]->addCartItem($item);
+            } else {
+                $Cart = new Cart();
+                $Cart->addCartItem($item);
+                $Carts[$cartId] = $Cart;
+            }
+        }
+
+        $this->session->set('carts', $Carts);
+        $this->carts = $Carts;
     }
 
     /**
@@ -124,19 +200,9 @@ class CartService
         $newItem->setPrice($ProductClass->getPrice01IncTax());
         $newItem->setProductClass($ProductClass);
 
-        $itemExists = false;
+        $allCartItems = $this->mergeAllCartItems([$newItem]);
+        $this->restoreCarts($allCartItems);
 
-        $cart = $this->getCart();
-        foreach ($cart->getCartItems() as $item) {
-            if ($this->cartItemComparator->compare($newItem, $item)) {
-                $item->setQuantity($item->getQuantity() + $newItem->getQuantity());
-                $itemExists = true;
-                break;
-            }
-        }
-        if (!$itemExists) {
-            $cart->addItem($newItem);
-        }
 
         return true;
     }
@@ -153,28 +219,27 @@ class CartService
             }
         }
 
-        /** @var Cart $cart */
-        $cart = $this->getCart();
-
         $removeItem = new CartItem();
         $removeItem->setPrice($ProductClass->getPrice01IncTax());
         $removeItem->setProductClass($ProductClass);
 
-        /* @var ArrayCollection $cartItems */
-        $cartItems = $cart->getCartItems();
-        foreach ($cartItems as $item) {
-            if ($this->cartItemComparator->compare($item, $removeItem)) {
-                $cartItems->removeElement($item);
+        $allCartItems = $this->mergeAllCartItems();
+        $foundIndex = -1;
+        foreach ($allCartItems as $index=>$itemInCart) {
+            if ($this->cartItemComparator->compare($itemInCart, $removeItem)) {
+                $foundIndex = $index;
                 break;
             }
         }
+        array_splice($allCartItems, $foundIndex, 1);
+        $this->restoreCarts($allCartItems);
 
         return true;
     }
 
     public function save()
     {
-        return $this->session->set('cart', $this->getCart());
+        return $this->session->set('carts', $this->carts);
     }
 
     public function unlock()

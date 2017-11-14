@@ -28,8 +28,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\Cart\ProductClassComparator;
+use Eccube\Service\Cart\ProductTypeCartAllocator;
 use Eccube\Service\TaxRuleService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -67,6 +69,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
 
         $app[CartItemComparator::class] = function() {
             return new ProductClassComparator();
+        };
+
+        $app[CartItemAllocator::class] = function() {
+            return new ProductTypeCartAllocator();
         };
     }
 

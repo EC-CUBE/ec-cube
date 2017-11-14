@@ -27,11 +27,10 @@ namespace Eccube\Controller;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Entity\BaseInfo;
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -39,7 +38,6 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
@@ -424,11 +422,11 @@ class ProductController
         );
 
         // カートへ追加
-        $Cart = $this->cartService->getCart();
         $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
 
         // 明細の正規化
         $flow = $this->purchaseFlow;
+        $Cart = $this->cartService->getCart();
         $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
 
         // 復旧不可のエラーが発生した場合は追加した明細を削除.
