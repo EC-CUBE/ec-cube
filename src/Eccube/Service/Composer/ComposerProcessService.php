@@ -75,7 +75,7 @@ class ComposerProcessService implements ComposerServiceInterface
         $this->init();
         // Build command
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
-        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
+        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
 

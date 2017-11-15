@@ -706,16 +706,30 @@ class PluginService
      */
     public function findDependentPluginNeedDisable($pluginCode)
     {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('enable', Constant::ENABLED))
-            ->andWhere(Criteria::expr()->neq('code', $pluginCode));
+        return $this->findDependentPlugin($pluginCode, true);
+    }
 
+    /**
+     * Find the other plugin that has requires on it.
+     * Check in both dtb_plugin table and <PluginCode>/composer.json
+     *
+     * @param $pluginCode
+     * @param bool $enableOnly
+     * @return array
+     */
+    public function findDependentPlugin($pluginCode, $enableOnly = false)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->neq('code', $pluginCode));
+        if ($enableOnly) {
+            $criteria->andWhere(Criteria::expr()->eq('enable', Constant::ENABLED));
+        }
         /**
-         * @var Plugin[] $enabledPlugins
+         * @var Plugin[] $plugins
          */
-        $enabledPlugins = $this->pluginRepository->matching($criteria);
+        $plugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
-        foreach ($enabledPlugins as $plugin) {
+        foreach ($plugins as $plugin) {
             $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
             $fileName = $dir.'/composer.json';
             if (!file_exists($fileName)) {
@@ -728,7 +742,7 @@ class PluginService
                     continue;
                 }
                 if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
-                    $dependents[] = $plugin->getName();
+                    $dependents[] = $plugin->getCode();
                 }
             }
         }

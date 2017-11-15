@@ -99,6 +99,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--ignore-platform-reqs' => true,
             '--no-interaction' => true,
             '--profile' => true,
+            '--no-update-with-dependencies' => true,
         ));
 
         return true;

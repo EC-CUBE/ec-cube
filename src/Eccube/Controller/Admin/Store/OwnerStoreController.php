@@ -276,7 +276,7 @@ class OwnerStoreController extends AbstractController
      * @Template("Store/plugin_confirm_uninstall.twig")
      * @param Application $app
      * @param Plugin      $Plugin
-     * @return array
+     * @return array|RedirectResponse
      */
     public function deleteConfirm(Application $app, Plugin $Plugin)
     {
@@ -285,6 +285,23 @@ class OwnerStoreController extends AbstractController
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
+
+        // The plugin depends on it
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+
+            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $app->addError($message, 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
 
         // Check plugin in api
         $pluginSource = $Plugin->getSource();
@@ -320,7 +337,6 @@ class OwnerStoreController extends AbstractController
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();
-
         $packageName = self::$vendorName.'/'.$pluginCode;
         $return = $this->composerService->execRemove($packageName);
         if ($return) {
