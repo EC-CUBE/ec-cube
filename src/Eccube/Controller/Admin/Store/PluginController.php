@@ -364,14 +364,6 @@ class PluginController extends AbstractController
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
-        $pluginCode = $Plugin->getCode();
-        // Check dependent plugin
-        // Don't install ec-cube library
-        $dependents = $this->pluginService->getDependentByCode($pluginCode, PluginService::OTHER_PLUGIN_TYPE);
-        if (!empty($dependents)) {
-            $package = $this->pluginService->parseToComposerCommand($dependents, false);
-            $this->composerService->execRemove($package);
-        }
 
         $this->pluginService->uninstall($Plugin);
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
