@@ -17,7 +17,7 @@ class AddPointProcessorTest extends EccubeTestCase
     {
         parent::setUp();
         $this->BaseInfo = $this->app[BaseInfo::class];
-        $this->BaseInfo->setPointRate(10);
+        $this->BaseInfo->setBasicPointRate(10);
         $this->Cart = new Cart();
         $this->Product = $this->createProduct('テスト商品', 5);
         $this->total = 0;
@@ -39,7 +39,7 @@ class AddPointProcessorTest extends EccubeTestCase
         $actual = $this->Cart->getAddPoint();
         self::assertGreaterThan(0, $actual);
 
-        $expected = $this->total * ($this->BaseInfo->getPointRate() / 100);
+        $expected = $this->total * ($this->BaseInfo->getBasicPointRate() / 100);
         self::assertEquals($expected, $actual);
     }
 }
