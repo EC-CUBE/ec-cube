@@ -154,6 +154,7 @@ class ProductRepository extends EntityRepository
                 $qb->innerJoin('p.ProductClasses', 'pc');
             }
             $qb->orderBy('p.create_date', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
         } else {
             if ($categoryJoin === false) {
                 $qb

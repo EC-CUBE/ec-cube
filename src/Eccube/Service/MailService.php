@@ -26,12 +26,12 @@ namespace Eccube\Service;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Util\Mail;
 
 class MailService
 {
     /** @var \Eccube\Application */
     public $app;
-
 
     /** @var \Eccube\Entity\BaseInfo */
     public $BaseInfo;
@@ -51,7 +51,6 @@ class MailService
      */
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
-
         log_info('仮会員登録メール送信開始');
 
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
@@ -68,6 +67,8 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        Mail::setParameterForCharaset($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -109,6 +110,8 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        Mail::setParameterForCharaset($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -152,6 +155,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -194,6 +199,8 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail02())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        Mail::setParameterForCharaset($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -252,6 +259,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -268,7 +277,6 @@ class MailService
         log_info('受注メール送信完了', array('count' => $count));
 
         return $message;
-
     }
 
 
@@ -295,6 +303,8 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        Mail::setParameterForCharaset($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -340,6 +350,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -379,6 +391,8 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        Mail::setParameterForCharaset($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -420,6 +434,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -437,5 +453,4 @@ class MailService
 
         return $count;
     }
-
 }

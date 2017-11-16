@@ -30,20 +30,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-    $(function() {
-        $('#zip-search').click(function(event) {
-            AjaxZip3.zip2addr('tradelaw[law_zip][law_zip01]', 'tradelaw[law_zip][law_zip02]', 'tradelaw[law_address][law_pref]', 'tradelaw[law_address][law_addr01]');
-        });
-    });
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
 
 <div class="row" id="aside_wrap">
-<form name="tradelaw_form" role="form" id="tradelaw_form" method="post" action="{{ url('admin_setting_shop_tradelaw') }}">
+<form name="tradelaw_form" role="form" id="tradelaw_form" method="post" action="{{ url('admin_setting_shop_tradelaw') }}" class="h-adr">
+    <span class="p-country-name" style="display:none;">Japan</span>
     {{ form_widget(form._token) }}
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box form-horizontal">
@@ -61,7 +55,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             〒{{ form_widget(form.law_zip.law_zip01) }}-{{ form_widget(form.law_zip.law_zip02) }}
                             {{ form_errors(form.law_zip.law_zip01) }}
                             {{ form_errors(form.law_zip.law_zip02) }}
-                            <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                         </div>
                     </div>
 

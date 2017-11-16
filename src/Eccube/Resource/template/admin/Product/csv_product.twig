@@ -80,7 +80,7 @@ $(function() {
                             {{ form_errors(form.import_file) }}
                         </div>
                         {% for error in errors %}
-                            <div id="upload_file_box__upload_error" class="text-danger">{{ error.message }}</div>
+                            <div id="upload_file_box__upload_error--{{ loop.index }}" class="text-danger">{{ error.message }}</div>
                         {% endfor %}
                     </div>
                     <div id="spinner"></div>

@@ -57,7 +57,23 @@ class OrderController extends AbstractController
 
         $disps = $app['eccube.repository.master.disp']->findAll();
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
-        $page_count = $app['config']['default_page_count'];
+
+        // 表示件数は順番で取得する、1.SESSION 2.設定ファイル
+        $page_count = $session->get('eccube.admin.order.search.page_count', $app['config']['default_page_count']);
+
+        $page_count_param = $request->get('page_count');
+        // 表示件数はURLパラメターから取得する
+        if($page_count_param && is_numeric($page_count_param)){
+            foreach($pageMaxis as $pageMax){
+                if($page_count_param == $pageMax->getName()){
+                    $page_count = $pageMax->getName();
+                    // 表示件数入力値正し場合はSESSIONに保存する
+                    $session->set('eccube.admin.order.search.page_count', $page_count);
+                    break;
+                }
+            }
+        }
+
         $active = false;
 
         if ('POST' === $request->getMethod()) {
@@ -84,8 +100,9 @@ class OrderController extends AbstractController
                     $page_count
                 );
 
-                // sessionのデータ保持
-                $session->set('eccube.admin.order.search', $searchData);
+                // sessionに検索条件を保持.
+                $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.order.search', $viewData);
                 $session->set('eccube.admin.order.search.page_no', $page_no);
             }
         } else {
@@ -93,13 +110,19 @@ class OrderController extends AbstractController
                 // sessionを削除
                 $session->remove('eccube.admin.order.search');
                 $session->remove('eccube.admin.order.search.page_no');
+                $session->remove('eccube.admin.order.search.page_count');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.order.search');
                 if (is_null($page_no)) {
                     $page_no = intval($session->get('eccube.admin.order.search.page_no'));
                 } else {
                     $session->set('eccube.admin.order.search.page_no', $page_no);
+                }
+                $viewData = $session->get('eccube.admin.order.search');
+                $searchData = null;
+                if (!is_null($viewData)) {
+                    // sessionに保持されている検索条件を復元.
+                    $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
                 }
                 if (!is_null($searchData)) {
                     // 表示件数
@@ -123,32 +146,9 @@ class OrderController extends AbstractController
                         $page_no,
                         $page_count
                     );
-
-                    if (count($searchData['multi_status']) > 0) {
-                        $statusIds = array();
-                        foreach ($searchData['multi_status'] as $Status) {
-                            $statusIds[] = $Status->getId();
                         }
-                        $searchData['multi_status'] = $app['eccube.repository.master.order_status']->findBy(array('id' => $statusIds));
                     }
-                    if (count($searchData['sex']) > 0) {
-                        $sex_ids = array();
-                        foreach ($searchData['sex'] as $Sex) {
-                            $sex_ids[] = $Sex->getId();
                         }
-                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
-                    }
-                    if (count($searchData['payment']) > 0) {
-                        $payment_ids = array();
-                        foreach ($searchData['payment'] as $Payment) {
-                            $payment_ids[] = $Payment->getId();
-                        }
-                        $searchData['payment'] = $app['eccube.repository.payment']->findBy(array('id' => $payment_ids));
-                    }
-                    $searchForm->setData($searchData);
-                }
-            }
-        }
 
         return $app->render('Order/index.twig', array(
             'searchForm' => $searchForm->createView(),
@@ -187,7 +187,7 @@ class OrderController extends AbstractController
         $Customer = $Order->getCustomer();
         if ($Customer) {
             // 会員の場合、購入回数、購入金額などを更新
-            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
+            $app['eccube.repository.customer']->updateBuyData($app, $Customer);
         }
 
         $event = new EventArgs(

@@ -2,17 +2,11 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * CustomerRepository test cases.
@@ -203,7 +197,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->actual = 1;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_new']);
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
@@ -215,7 +209,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->actual = 0;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_cancel']);
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
