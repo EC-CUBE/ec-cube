@@ -346,18 +346,31 @@ class ProductController
      *
      * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"})
      */
-    public function addFavorite(Application $app, Product $Product)
+    public function addFavorite(Application $app, Request $request, Product $Product)
     {
         $this->checkVisibility($Product);
 
-        // TODO イベント発火
+        $event = new EventArgs(
+            array(
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE, $event);
+
 
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
             $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
             $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
 
-            // TODO イベント発火
+            $event = new EventArgs(
+                array(
+                    'Product' => $Product,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
 
             return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
         } else {
@@ -365,6 +378,14 @@ class ProductController
             //  ログイン後の画面遷移先を設定
             $app->setLoginTargetPath($app->url('product_add_favorite', array('id' => $Product->getId())));
             $this->session->getFlashBag()->set('eccube.add.favorite', true);
+
+            $event = new EventArgs(
+                array(
+                    'Product' => $Product,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
 
             return $app->redirect($app->url('mypage_login'));
         }
@@ -392,15 +413,14 @@ class ProductController
             )
         );
 
-        // TODO イベント発火
-//        $event = new EventArgs(
-//            array(
-//                'builder' => $builder,
-//                'Product' => $Product,
-//            ),
-//            $request
-//        );
-//        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_CART_ADD_INITIALIZE, $event);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -452,19 +472,18 @@ class ProductController
             )
         );
 
-        // TODO イベント発火
-//        $event = new EventArgs(
-//            array(
-//                'form' => $form,
-//                'Product' => $Product,
-//            ),
-//            $request
-//        );
-//        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_COMPLETE, $event);
-//
-//        if ($event->getResponse() !== null) {
-//            return $event->getResponse();
-//        }
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_CART_ADD_COMPLETE, $event);
+
+        if ($event->getResponse() !== null) {
+            return $event->getResponse();
+        }
 
         return $app->redirect($app->url('cart'));
 
