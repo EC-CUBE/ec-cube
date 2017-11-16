@@ -64,6 +64,7 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             $processors[] = new Processor\PaymentTotalNegativeValidator();
             $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
             $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
+            $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
             return $processors;
         };
 
