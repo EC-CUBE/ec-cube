@@ -91,13 +91,14 @@ class PluginService
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
     const VENDOR_NAME = 'ec-cube';
+    const ECCUBE_PLUGIN_TYPE = 1;
+    const OTHER_PLUGIN_TYPE = 2;
 
     // ファイル指定してのプラグインインストール
     public function install($path, $source = 0)
     {
         $pluginBaseDir = null;
         $tmp = null;
-
         try {
             // プラグイン配置前に実施する処理
             $this->preInstall();
@@ -129,7 +130,7 @@ class PluginService
             throw $e;
         }
 
-        return true;
+        return $config['code'];
     }
 
     // インストール事前処理
@@ -702,7 +703,7 @@ class PluginService
      * Find the dependent plugins that need to be disabled
      *
      * @param string $pluginCode
-     * @return array
+     * @return array plugin code
      */
     public function findDependentPluginNeedDisable($pluginCode)
     {
@@ -715,7 +716,7 @@ class PluginService
      *
      * @param $pluginCode
      * @param bool $enableOnly
-     * @return array
+     * @return array plugin code
      */
     public function findDependentPlugin($pluginCode, $enableOnly = false)
     {
@@ -748,6 +749,65 @@ class PluginService
         }
 
         return $dependents;
+    }
+
+    /**
+     * Get dependent plugin by code
+     * It's base on composer.json
+     * Return the plugin code and version in the format of the composer
+     *
+     * @param string   $pluginCode
+     * @param int|null $pluginType
+     * @return array format [packageName1 => version1, packageName2 => version2]
+     */
+    public function getDependentByCode($pluginCode, $pluginType = null)
+    {
+        $pluginDir = $this->calcPluginDir($pluginCode);
+        $jsonFile = $pluginDir.'/composer.json';
+        if (!file_exists($jsonFile)) {
+            return [];
+        }
+        $jsonText = file_get_contents($jsonFile);
+        $json = json_decode($jsonText, true);
+        $dependents = [];
+        if (isset($json['require'])) {
+            $require = $json['require'];
+            switch ($pluginType) {
+                case self::ECCUBE_PLUGIN_TYPE:
+                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
+                    break;
+
+                case self::OTHER_PLUGIN_TYPE:
+                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
+                    break;
+
+                default:
+                    $dependents = $json['require'];
+                    break;
+            }
+        }
+
+        return $dependents;
+    }
+
+    /**
+     * Format array dependent plugin to string
+     * It is used for commands.
+     *
+     * @param array $packages   format [packageName1 => version1, packageName2 => version2]
+     * @param bool  $getVersion
+     * @return string format if version=true: "packageName1:version1 packageName2:version2", if version=false: "packageName1 packageName2"
+     */
+    public function parseToComposerCommand(array $packages, $getVersion = true)
+    {
+        $result = array_keys($packages);
+        if ($getVersion) {
+            $result = array_map(function ($package, $version) {
+                return $package.':'.$version;
+            }, array_keys($packages), array_values($packages));
+        }
+
+        return implode(' ', $result);
     }
 
     /**

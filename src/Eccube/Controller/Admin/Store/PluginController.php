@@ -37,6 +37,7 @@ use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Eccube\Util\Str;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -48,6 +49,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -80,6 +83,12 @@ class PluginController extends AbstractController
      * @var PluginService
      */
     protected $pluginService;
+
+    /**
+     * @Inject(ComposerApiService::class)
+     * @var ComposerApiService
+     */
+    protected $composerService;
 
     /**
      * @Inject("config")
@@ -295,7 +304,8 @@ class PluginController extends AbstractController
                 if ($DependPlugin) {
                     $dependName = $DependPlugin->getName();
                 }
-                $app->addError($Plugin->getName().'を有効化するためには、先に'.$dependName.'を有効化してください。', 'admin');
+                $message = $app->trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+                $app->addError($message, 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
             }
@@ -320,10 +330,15 @@ class PluginController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->getEnable() == Constant::ENABLED) {
-            $requires = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
-            if (!empty($requires)) {
-                $dependName = $requires[0];
-                $app->addError($Plugin->getName().'を無効化するためには、先に'.$dependName.'を無効化してください。', 'admin');
+            $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
+            if (!empty($dependents)) {
+                $dependName = $dependents[0];
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $dependents[0]]);
+                if ($DependPlugin) {
+                    $dependName = $DependPlugin->getName();
+                }
+                $message = $app->trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+                $app->addError($message, 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
             }
@@ -342,13 +357,23 @@ class PluginController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
+        $pluginCode = $Plugin->getCode();
+        // Check dependent plugin
+        // Don't install ec-cube library
+        $dependents = $this->pluginService->getDependentByCode($pluginCode, PluginService::OTHER_PLUGIN_TYPE);
+        if (!empty($dependents)) {
+            $package = $this->pluginService->parseToComposerCommand($dependents, false);
+            $this->composerService->execRemove($package);
+        }
 
         $this->pluginService->uninstall($Plugin);
-
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin'));
@@ -400,59 +425,54 @@ class PluginController extends AbstractController
      *
      * @Route("/{_admin}/store/plugin/install", name="admin_store_plugin_install")
      * @Template("Store/plugin_install.twig")
+     * @param Application $app
+     * @param Request     $request
+     * @return array|RedirectResponse
      */
     public function install(Application $app, Request $request)
     {
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
-
         $errors = array();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $tmpDir = null;
+            try {
+                $service = $this->pluginService;
+                /** @var UploadedFile $formFile */
+                $formFile = $form['plugin_archive']->getData();
+                $tmpDir = $service->createTempDir();
+                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
+                $formFile->move($tmpDir, $tmpFile);
+                $tmpPath = $tmpDir.'/'.$tmpFile;
+                $pluginCode = $service->install($tmpPath);
+                // Remove tmp file
+                $fs = new Filesystem();
+                $fs->remove($tmpDir);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+                // Check dependent plugin
+                // Don't install ec-cube library
+                $dependents = $service->getDependentByCode($pluginCode, PluginService::OTHER_PLUGIN_TYPE);
+                if (!empty($dependents)) {
+                    $package = $this->pluginService->parseToComposerCommand($dependents);
+                    $this->composerService->execRequire($package);
+                }
 
-            if ($form->isValid()) {
+                $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-                $tmpDir = null;
-                try {
-                    $service = $this->pluginService;
-
-                    $formFile = $form['plugin_archive']->getData();
-
-                    $tmpDir = $service->createTempDir();
-                    $tmpFile = sha1(Str::random(32))
-                        .'.'
-                        .$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
-
-                    $formFile->move($tmpDir, $tmpFile);
-
-                    $service->install($tmpDir.'/'.$tmpFile);
-
+                return $app->redirect($app->url('admin_store_plugin'));
+            } catch (PluginException $e) {
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
-
-                    $app->addSuccess('admin.plugin.install.complete', 'admin');
-
-                    return $app->redirect($app->url('admin_store_plugin'));
-
-                } catch (PluginException $e) {
-                    if (!empty($tmpDir) && file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-                    $this->logger->error(
-                        "plugin install failed.",
-                        array(
-                            'original-message' => $e->getMessage(),
-                        )
-                    );
-                    $errors[] = $e;
                 }
-            } else {
-                foreach ($form->getErrors(true) as $error) {
-                    $errors[] = $error;
-                }
+                $this->logger->error("plugin install failed.", array('original-message' => $e->getMessage()));
+                $errors[] = $e->getMessage();
+            }
+        } else {
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error;
             }
         }
 
