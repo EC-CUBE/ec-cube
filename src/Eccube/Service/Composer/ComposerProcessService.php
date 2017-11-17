@@ -24,6 +24,7 @@ namespace Eccube\Service\Composer;
 
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Eccube\Service\SystemService;
 
 /**
  * Class ComposerProcessService
@@ -41,6 +42,12 @@ class ComposerProcessService implements ComposerServiceInterface
     private $workingDir;
     private $composerFile;
     private $composerSetup;
+
+    /**
+     * @Inject(SystemService::class)
+     * @var SystemService
+     */
+    protected $systemService;
 
     /**
      * This function to install a plugin by composer require
