@@ -22,8 +22,8 @@
  */
 namespace Eccube\Service\Composer;
 
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Eccube\Service\SystemService;
 
 /**
  * Class ComposerProcessService
@@ -33,14 +33,24 @@ use Eccube\Annotation\Service;
 class ComposerProcessService implements ComposerServiceInterface
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
+    /**
+     * @var \Eccube\Application
+     */
+    protected $app;
+
     private $workingDir;
     private $composerFile;
     private $composerSetup;
+
+    public function __construct(\Eccube\Application $app)
+    {
+        $this->app = $app;
+        $this->appConfig = $app['config'];
+    }
 
     /**
      * This function to install a plugin by composer require
@@ -51,7 +61,9 @@ class ComposerProcessService implements ComposerServiceInterface
     public function execRequire($packageName)
     {
         set_time_limit(0);
-        $this->init();
+        if(false === $this->init()){
+            return false;
+        }
         // Build command
         $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
@@ -72,7 +84,9 @@ class ComposerProcessService implements ComposerServiceInterface
     public function execRemove($packageName)
     {
         set_time_limit(0);
-        $this->init();
+        if(false === $this->init()){
+            return false;
+        }
         // Build command
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
@@ -123,9 +137,27 @@ class ComposerProcessService implements ComposerServiceInterface
      */
     private function init()
     {
+        /** @var SystemService $systemService */
+        $systemService = $this->app['eccube.service.system'];
+        if (!$systemService->isPhpCommandLine()) {
+            return false;
+        }
+
+        if (!$systemService->isSetGrepMemoryLimit()) {
+            if ($systemService->getGrepMemoryLimit() < SystemService::MEMORY) {
+                return false;
+            }
+        }
+
+        $em = $this->app['orm.em'];
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
+        }
+
         @ini_set('memory_limit', '1536M');
         // Config for some environment
-        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
+        putenv('COMPOSER_HOME=' . $this->appConfig['plugin_realdir'] . '/.composer');
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
         $this->setupComposer();
     }

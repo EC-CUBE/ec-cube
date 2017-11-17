@@ -139,6 +139,7 @@ class SystemService
                 }
             }
         }
+
         return 0;
     }
 
@@ -169,6 +170,7 @@ class SystemService
                 }
             }
         }
+
         return false;
     }
 
