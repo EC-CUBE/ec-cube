@@ -38,6 +38,12 @@ class SystemService
      */
     protected $em;
 
+    /**
+     * 1536 Megabyte
+     * @var int
+     */
+    const MEMORY = 1536;
+
     public function getDbversion()
     {
 
@@ -67,5 +73,117 @@ class SystemService
             ->getSingleScalarResult();
 
         return $prefix.$version;
+    }
+
+    /**
+     * Check permission php.ini and set new memory_limit
+     * @param string $memoryLimit
+     * @return bool
+     */
+    public function isSetMemoryLimit()
+    {
+        // Get path php.ini loaded
+        $iniPath = php_ini_loaded_file();
+        if ($iniPath && is_writable($iniPath)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get memory_limit | Megabyte
+     * @return float|int
+     */
+    public function getMemoryLimit()
+    {
+        $memoryLimit = ini_get('memory_limit');
+        if (preg_match('/^(\d+)(.)$/', $memoryLimit, $matches)) {
+            $memoryValue = $matches[1];
+            $memoryUnit = strtoupper($matches[2]);
+
+            if ($memoryUnit == 'M') {
+                return $memoryValue;
+            } else {
+                if ($memoryUnit == 'K') {
+                    return $memoryValue / 1024;
+                } else {
+                    return $memoryValue * 1024;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get grep memory_limit | Megabyte
+     * @return int|string
+     */
+    public function getGrepMemoryLimit(){
+        $grepMemory = exec('php -i | grep "memory_limit"');
+        if($grepMemory){
+            $grepMemory = explode('=>', $grepMemory);
+            $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
+            $memo = trim($exp[0]);
+            if ($exp[1] == 'M') {
+
+                return $memo;
+            } else {
+                if ($exp[1] == 'GB') {
+
+                    return $memo * 1024;
+                } else {
+
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Check to set new value grep "memory_limit"
+     * @return bool
+     */
+    public function isSetGrepMemoryLimit()
+    {
+        $oldMemory = exec('php -i | grep "memory_limit"');
+        $tmpMem = '2GB';
+
+        if ($oldMemory) {
+            $memory = explode('=>', $oldMemory);
+            $originGrepMemmory = trim($memory[2]);
+
+            if ($originGrepMemmory == $tmpMem) {
+                $tmpMem = '2.5GB';
+            }
+
+            $newMemory = exec('php -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
+            if ($newMemory) {
+                $newMemory = explode('=>', $newMemory);
+                $grepNewMemory = trim($newMemory[2]);
+                if ($grepNewMemory != $originGrepMemmory) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check php command line
+     * @return bool
+     */
+    public function isPhpCommandLine()
+    {
+        if (function_exists('exec') && null != exec('php -v')) {
+            return true;
+        }
+
+        return false;
     }
 }
