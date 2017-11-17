@@ -364,6 +364,20 @@ class PluginController extends AbstractController
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
+        // Check other plugin depend on it
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $app->addError($message, 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
 
         $this->pluginService->uninstall($Plugin);
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
