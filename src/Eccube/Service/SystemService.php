@@ -76,6 +76,16 @@ class SystemService
     }
 
     /**
+     * Get environment php command
+     *
+     * @return string
+     */
+    public function getPHP()
+    {
+        return 'php';
+    }
+
+    /**
      * Check permission php.ini and set new memory_limit
      * @param string $memoryLimit
      * @return bool

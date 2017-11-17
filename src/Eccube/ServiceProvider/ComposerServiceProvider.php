@@ -41,7 +41,6 @@ class ComposerServiceProvider implements ServiceProviderInterface
             if ($systemService->isSetMemoryLimit() || ($systemService->getMemoryLimit() >= SystemService::MEMORY)) {
                 return new ComposerApiService($app);
             } else {
-                $app['eccube.listener.transaction.enabled'] = true;
                 return new ComposerProcessService($app);
             }
         };
