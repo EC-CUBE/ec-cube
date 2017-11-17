@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @Service
@@ -76,15 +77,27 @@ class SystemService
     }
 
     /**
-     * Check permission php.ini and set new memory_limit
-     * @param string $memoryLimit
+     * Get environment php command
+     * @return string
+     */
+    public function getPHP()
+    {
+        return (new PhpExecutableFinder())->find();
+    }
+
+    /**
+     * Try to set new values memory_limit | return true
      * @return bool
      */
     public function isSetMemoryLimit()
     {
-        // Get path php.ini loaded
-        $iniPath = php_ini_loaded_file();
-        if ($iniPath && is_writable($iniPath)) {
+        $setMemory = self::MEMORY;
+        if ($this->getMemoryLimit() == $setMemory) {
+            $setMemory = 2048;
+        }
+
+        @ini_set('memory_limit', $setMemory);
+        if ($this->getMemoryLimit() != $setMemory) {
             return true;
         }
 
@@ -98,6 +111,12 @@ class SystemService
     public function getMemoryLimit()
     {
         $memoryLimit = ini_get('memory_limit');
+
+        // -1 unlimited
+        if ($memoryLimit == -1) {
+            return -1;
+        }
+
         if (preg_match('/^(\d+)(.)$/', $memoryLimit, $matches)) {
             $memoryValue = $matches[1];
             $memoryUnit = strtoupper($matches[2]);
@@ -106,7 +125,7 @@ class SystemService
                 return $memoryValue;
             } else {
                 if ($memoryUnit == 'K') {
-                    return $memoryValue / 1024;
+                    return ($memoryValue == 0) ? 0 : $memoryValue / 1024;
                 } else {
                     return $memoryValue * 1024;
                 }
@@ -120,10 +139,16 @@ class SystemService
      * Get grep memory_limit | Megabyte
      * @return int|string
      */
-    public function getGrepMemoryLimit(){
-        $grepMemory = exec('php -i | grep "memory_limit"');
+    public function getCliMemoryLimit(){
+        $grepMemory = exec($this->getPHP().' -i | grep "memory_limit"');
         if($grepMemory){
             $grepMemory = explode('=>', $grepMemory);
+
+            // -1 unlimited
+            if (trim($grepMemory[2]) == -1) {
+                return -1;
+            }
+
             $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
             $memo = trim($exp[0]);
             if ($exp[1] == 'M') {
@@ -147,9 +172,9 @@ class SystemService
      * Check to set new value grep "memory_limit"
      * @return bool
      */
-    public function isSetGrepMemoryLimit()
+    public function isSetCliMemoryLimit()
     {
-        $oldMemory = exec('php -i | grep "memory_limit"');
+        $oldMemory = exec($this->getPHP().' -i | grep "memory_limit"');
         $tmpMem = '2GB';
 
         if ($oldMemory) {
@@ -160,7 +185,7 @@ class SystemService
                 $tmpMem = '2.5GB';
             }
 
-            $newMemory = exec('php -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
+            $newMemory = exec($this->getPHP().' -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
             if ($newMemory) {
                 $newMemory = explode('=>', $newMemory);
                 $grepNewMemory = trim($newMemory[2]);
@@ -180,8 +205,11 @@ class SystemService
      */
     public function isPhpCommandLine()
     {
-        if (function_exists('exec') && null != exec('php -v')) {
-            return true;
+        $php = exec('which php');
+        if (function_exists('exec') && null != $php) {
+            if (strpos(strtolower($php), 'php') !== false) {
+                return true;
+            }
         }
 
         return false;

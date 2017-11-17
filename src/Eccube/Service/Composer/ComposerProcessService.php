@@ -45,11 +45,13 @@ class ComposerProcessService implements ComposerServiceInterface
     private $workingDir;
     private $composerFile;
     private $composerSetup;
+    private $pathPHP;
 
     public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
         $this->appConfig = $app['config'];
+        $this->pathPHP = $app['eccube.service.system']->getPHP();
     }
 
     /**
@@ -65,7 +67,7 @@ class ComposerProcessService implements ComposerServiceInterface
             return false;
         }
         // Build command
-        $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
+        $command = $this->pathPHP.' '.$this->composerFile.' require '.$packageName;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
@@ -88,7 +90,7 @@ class ComposerProcessService implements ComposerServiceInterface
             return false;
         }
         // Build command
-        $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
+        $command = $this->pathPHP.' '.$this->composerFile.' remove '.$packageName;
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
@@ -123,16 +125,6 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     /**
-     * Get environment php command
-     *
-     * @return string
-     */
-    private function getPHP()
-    {
-        return 'php';
-    }
-
-    /**
      * Set init
      */
     private function init()
@@ -143,8 +135,8 @@ class ComposerProcessService implements ComposerServiceInterface
             return false;
         }
 
-        if (!$systemService->isSetGrepMemoryLimit()) {
-            if ($systemService->getGrepMemoryLimit() < SystemService::MEMORY) {
+        if (!$systemService->isSetCliMemoryLimit()) {
+            if ($systemService->getCliMemoryLimit() < SystemService::MEMORY && $systemService->getCliMemoryLimit() != -1) {
                 return false;
             }
         }
@@ -157,7 +149,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
         @ini_set('memory_limit', '1536M');
         // Config for some environment
-        putenv('COMPOSER_HOME=' . $this->appConfig['plugin_realdir'] . '/.composer');
+        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
         $this->setupComposer();
     }
@@ -174,7 +166,7 @@ class ComposerProcessService implements ComposerServiceInterface
                 $result = copy('https://getcomposer.org/installer', $this->composerSetup);
                 log_info($this->composerSetup.' : '.$result);
             }
-            $command = $this->getPHP().' '.$this->composerSetup;
+            $command = $this->pathPHP.' '.$this->composerSetup;
             $this->runCommand($command);
 
             unlink($this->composerSetup);
