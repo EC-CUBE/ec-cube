@@ -236,7 +236,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ->setDescriptionList('テスト商品 商品説明(リスト)')
             ->setDescriptionDetail('テスト商品 商品説明(詳細)')
             ->setFreeArea('フリー記載')
-            ->setDelFlg(0)
             ->setCreator($TestCreator);
 
         return $TestProduct;
@@ -254,14 +253,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ->setProductType($ProductType)
             ->setCode('test code')
             ->setStock(100)
-            ->setStockUnlimited(0)
+            ->setStockUnlimited(false)
 //            ->setDeliveryDateId(1)
             ->setSaleLimit(10)
             ->setPrice01(10000)
             ->setPrice02(5000)
             ->setDeliveryFee(1000)
-            ->setCreator($TestCreator)
-            ->setDelFlg(0);
+            ->setCreator($TestCreator);
         return $TestClassCategory;
     }
 

@@ -159,7 +159,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)
-            ->setDelFlg(false)
             ->setCreator($TestCreator);
 
         return $TestClassName;
@@ -171,7 +170,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassCategory->setName('立方体')
             ->setRank(100)
             ->setClassName($TestClassName)
-            ->setDelFlg(false)
+            ->setVisible(false)
             ->setCreator($TestCreator);
 
         return $TestClassCategory;

@@ -27,7 +27,6 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
 use Eccube\Event\EccubeEvents;
@@ -302,11 +301,12 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $message = 'admin.delivery.visible.complete';
+        // 表示・非表示を切り替える
         if ($Delivery->isVisible()) {
+            $message = 'admin.delivery.hidden.complete';
             $Delivery->setVisible(false);
         } else {
-            $message = 'admin.delivery.hidden.complete';
+            $message = 'admin.delivery.visible.complete';
             $Delivery->setVisible(true);
         }
         $this->entityManager->persist($Delivery);

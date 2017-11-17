@@ -154,6 +154,8 @@ return [
     'admin.plugin.already.enable' => 'すでに有効化されています。',
     'admin.plugin.already.disable' => 'すでに無効化されています。',
     'admin.plugin.uninstall.complete' => 'プラグインを削除しました。',
+    'admin.plugin.uninstall.depend' => '%name%プラグインは、%depend_name%プラグインに依存しているため削除することができません。
+先に%depend_name%プラグインを削除してください。',
     'admin.plugin.uninstall.error' => 'プラグインを削除できませんでした。',
     'admin.plugin.uninstall.error.not_disable' => 'プラグインを無効化してください。',
     'admin.plugin.update.complete' => '更新が完了しました。',

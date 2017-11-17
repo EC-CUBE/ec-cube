@@ -20,29 +20,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+namespace Eccube\Service\Composer;
 
-
-namespace Eccube\Form\DataTransformer;
-
-use Symfony\Component\Form\DataTransformerInterface;
-
-class IntegerToBooleanTransformer implements DataTransformerInterface
+/**
+ * Interface ComposerServiceInterface
+ * @package Eccube\Service\Composer
+ */
+interface ComposerServiceInterface
 {
     /**
-     * @param  boolean $value
-     * @return integer
+     * Run execute command
+     *
+     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @return array|mixed
      */
-    public function transform($value)
-    {
-        return $value > 0 ? true : false;
-    }
+    public function execRequire($packageName);
 
     /**
-     * @param  integer $value
-     * @return boolean
+     * Run remove command
+     *
+     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @return void|mixed
      */
-    public function reverseTransform($value)
-    {
-        return $value === true ? 1 : 0;
-    }
+    public function execRemove($packageName);
+
+    /**
+     * Run composer command
+     *
+     * @param array|string $commands
+     * @return string|mixed
+     */
+    public function runCommand($commands);
 }

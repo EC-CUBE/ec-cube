@@ -23,7 +23,6 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\TaxRule;
 use Symfony\Component\DomCrawler\Crawler;
@@ -70,7 +69,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createTestProduct($member);
         $className = $this->createClassName($member);
@@ -116,7 +115,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createTestProduct($member);
         $className = $this->createClassName($member);
@@ -166,7 +165,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createTestProduct($member);
         $className = $this->createClassName($member);
@@ -217,7 +216,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createTestProduct($member);
         $className = $this->createClassName($member);
@@ -269,7 +268,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
@@ -307,7 +306,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
@@ -351,7 +350,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
@@ -395,7 +394,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $id = 1;
 
         /* @var Crawler $crawler */
@@ -436,7 +435,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createProduct();
         // class 1
@@ -494,7 +493,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
          * @var BaseInfo $baseInfo
          */
         $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $baseInfo->setOptionProductTaxRule(true);
         $id = 1;
 
         // WHEN

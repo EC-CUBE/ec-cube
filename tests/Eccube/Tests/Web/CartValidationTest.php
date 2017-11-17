@@ -374,7 +374,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -456,7 +456,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -616,7 +616,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId);
 
         // Remove product (delete flg)
-        $Product->setDelFlg(Constant::ENABLED);
+//        $Product->setDelFlg(Constant::ENABLED);
         $ProductClass->setDelFlg(Constant::ENABLED);
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->persist($ProductClass);
@@ -818,7 +818,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1108,7 +1108,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1164,7 +1164,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1456,7 +1456,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1512,7 +1512,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -2684,7 +2684,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
         $this->logIn();
@@ -2761,7 +2761,7 @@ class CartValidationTest extends AbstractWebTestCase
         // GIVE
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
         $this->logIn();

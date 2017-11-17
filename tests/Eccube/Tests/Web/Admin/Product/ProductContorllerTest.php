@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
@@ -289,7 +288,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         // Give
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $BaseInfo->setOptionProductTaxRule(true);
         $formData = $this->createFormData();
 
         $formData['class']['tax_rate'] = $taxRate;
@@ -461,7 +460,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         // Give
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $BaseInfo->setOptionProductTaxRule(true);
         $Product = $this->createProduct(null, 0);
         $ProductClasses = $Product->getProductClasses();
         $ProductClass = $ProductClasses[0];
