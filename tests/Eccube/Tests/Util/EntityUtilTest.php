@@ -33,7 +33,7 @@ class EntityUtilTest extends EccubeTestCase
         $Product = new Product();
         $ProductClass = new ProductClass();
         $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find($this->app['config']['product_type_normal']);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find($this->app['config']['sale_type_normal']);
         $Product
             ->setName('test')
             ->setCreator($Member)

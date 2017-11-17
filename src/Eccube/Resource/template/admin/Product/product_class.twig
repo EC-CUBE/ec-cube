@@ -115,11 +115,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             var tax_rate = $('#form_product_classes_0_tax_rate').val();
             $('input[id$=_tax_rate]').val(tax_rate);
 
-            var product_type = $('#form_product_classes_0_product_type_1').prop('checked');
-            if (product_type) {
-                $('input[id$=_product_type_1]').prop('checked', true);
+            var sale_type = $('#form_product_classes_0_sale_type_1').prop('checked');
+            if (sale_type) {
+                $('input[id$=_sale_type_1]').prop('checked', true);
             } else {
-                $('input[id$=_product_type_2]').prop('checked', true);
+                $('input[id$=_sale_type_2]').prop('checked', true);
             }
 
         });
@@ -222,7 +222,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if BaseInfo.option_product_tax_rule %}
                                     <th id="result_box__header_tax_rate">販売税率</th>
                                     {% endif %}
-                                    <th id="result_box__header_product_type">販売種別</th>
+                                    <th id="result_box__header_sale_type">販売種別</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -280,9 +280,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_errors(product_class_form.tax_rate) }}
                                 </td>
                                 {% endif %}
-                                <td id="result_box__product_type--{{ product_class_form.vars.name }}">
-                                    {{ form_widget(product_class_form.product_type) }}
-                                    {{ form_errors(product_class_form.product_type) }}
+                                <td id="result_box__sale_type--{{ product_class_form.vars.name }}">
+                                    {{ form_widget(product_class_form.sale_type) }}
+                                    {{ form_errors(product_class_form.sale_type) }}
                                 </td>
                             </tr>
                             {% endfor %}

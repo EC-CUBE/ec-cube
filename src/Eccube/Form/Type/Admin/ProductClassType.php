@@ -123,7 +123,7 @@ class ProductClassType extends AbstractType
                 'label' => '商品送料',
                 'required' => false,
             ))
-            ->add('product_type', SaleTypeType::class, array(
+            ->add('sale_type', SaleTypeType::class, array(
                 'label' => '販売種別',
                 'multiple' => false,
                 'expanded' => false,

@@ -1178,7 +1178,7 @@ class CsvImportController
             '商品画像' => 'product_image',
             '商品カテゴリ(ID)' => 'product_category',
             'タグ(ID)' => 'product_tag',
-            '販売種別(ID)' => 'product_type',
+            '販売種別(ID)' => 'sale_type',
             '規格分類1(ID)' => 'class_category1',
             '規格分類2(ID)' => 'class_category2',
             '発送日目安(ID)' => 'deliveryFee',

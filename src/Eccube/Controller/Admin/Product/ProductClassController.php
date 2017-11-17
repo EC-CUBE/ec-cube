@@ -696,7 +696,7 @@ class ProductClassController
      */
     private function newProductClass(Application $app)
     {
-        $SaleType = $this->saleTypeRepository->find($this->appConfig['product_type_normal']);
+        $SaleType = $this->saleTypeRepository->find($this->appConfig['sale_type_normal']);
 
         $ProductClass = new ProductClass();
         $ProductClass->setSaleType($SaleType);

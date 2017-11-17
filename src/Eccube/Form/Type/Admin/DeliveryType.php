@@ -76,7 +76,7 @@ class DeliveryType extends AbstractType
                     new Assert\Url(),
                 ),
             ))
-            ->add('product_type', SaleTypeType::class, array(
+            ->add('sale_type', SaleTypeType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
