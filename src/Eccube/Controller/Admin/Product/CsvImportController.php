@@ -42,7 +42,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDateRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\ProductTypeRepository;
+use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\Master\TagRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
@@ -67,10 +67,10 @@ class CsvImportController
     protected $deliveryDateRepository;
 
     /**
-     * @Inject(ProductTypeRepository::class)
-     * @var ProductTypeRepository
+     * @Inject(SaleTypeRepository::class)
+     * @var SaleTypeRepository
      */
-    protected $productTypeRepository;
+    protected $saleTypeRepository;
 
     /**
      * @Inject(TagRepository::class)
@@ -882,11 +882,11 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
             if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
-                if (!$ProductType) {
+                $SaleType = $this->saleTypeRepository->find($row['商品種別(ID)']);
+                if (!$SaleType) {
                     $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
                 } else {
-                    $ProductClass->setProductType($ProductType);
+                    $ProductClass->setSaleType($SaleType);
                 }
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
@@ -1010,11 +1010,11 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
             if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
-                if (!$ProductType) {
+                $SaleType = $this->saleTypeRepository->find($row['商品種別(ID)']);
+                if (!$SaleType) {
                     $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
                 } else {
-                    $ProductClass->setProductType($ProductType);
+                    $ProductClass->setSaleType($SaleType);
                 }
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');

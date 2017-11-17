@@ -30,7 +30,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDateType;
-use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -123,7 +123,7 @@ class ProductClassType extends AbstractType
                 'label' => '商品送料',
                 'required' => false,
             ))
-            ->add('product_type', ProductTypeType::class, array(
+            ->add('product_type', SaleTypeType::class, array(
                 'label' => '商品種別',
                 'multiple' => false,
                 'expanded' => false,

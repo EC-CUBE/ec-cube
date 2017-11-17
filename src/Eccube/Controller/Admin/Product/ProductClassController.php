@@ -40,7 +40,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductClassType;
 use Eccube\Repository\ClassCategoryRepository;
-use Eccube\Repository\Master\ProductTypeRepository;
+use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -75,10 +75,10 @@ class ProductClassController
     protected $appConfig;
 
     /**
-     * @Inject(ProductTypeRepository::class)
-     * @var ProductTypeRepository
+     * @Inject(SaleTypeRepository::class)
+     * @var SaleTypeRepository
      */
-    protected $productTypeRepository;
+    protected $saleTypeRepository;
 
     /**
      * @Inject(ClassCategoryRepository::class)
@@ -696,10 +696,10 @@ class ProductClassController
      */
     private function newProductClass(Application $app)
     {
-        $ProductType = $this->productTypeRepository->find($this->appConfig['product_type_normal']);
+        $SaleType = $this->saleTypeRepository->find($this->appConfig['product_type_normal']);
 
         $ProductClass = new ProductClass();
-        $ProductClass->setProductType($ProductType);
+        $ProductClass->setSaleType($SaleType);
         return $ProductClass;
     }
 
@@ -743,7 +743,7 @@ class ProductClassController
     private function setDefaultProductClass($app, $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
         $productClassDest->setProduct($productClassOrig->getProduct());
-        $productClassDest->setProductType($productClassOrig->getProductType());
+        $productClassDest->setSaleType($productClassOrig->getSaleType());
         $productClassDest->setCode($productClassOrig->getCode());
         $productClassDest->setStock($productClassOrig->getStock());
         $productClassDest->setStockUnlimited($productClassOrig->getStockUnlimited());

@@ -159,13 +159,13 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
     private function newTestProductClass($TestCreator, $TestProduct, $TestClassCategory1, $TestClassCategory2)
     {
         $TestClassCategory = new \Eccube\Entity\ProductClass();
-        $ProductType = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\ProductType')
+        $SaleType = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\SaleType')
             ->find(1);
         $TestClassCategory->setProduct($TestProduct)
             ->setClassCategory1($TestClassCategory1)
             ->setClassCategory2($TestClassCategory2)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setCode('test code')
             ->setStock(100)
             ->setStockUnlimited(0)

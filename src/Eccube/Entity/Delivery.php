@@ -142,14 +142,14 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     private $Creator;
 
     /**
-     * @var \Eccube\Entity\Master\ProductType
+     * @var \Eccube\Entity\Master\SaleType
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductType")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\SaleType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_type_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sale_type_id", referencedColumnName="id")
      * })
      */
-    private $ProductType;
+    private $SaleType;
 
     /**
      * Constructor
@@ -485,27 +485,27 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set productType.
+     * Set saleType.
      *
-     * @param \Eccube\Entity\Master\ProductType|null $productType
+     * @param \Eccube\Entity\Master\SaleType|null $saleType
      *
      * @return Delivery
      */
-    public function setProductType(\Eccube\Entity\Master\ProductType $productType = null)
+    public function setSaleType(\Eccube\Entity\Master\SaleType $saleType = null)
     {
-        $this->ProductType = $productType;
+        $this->SaleType = $saleType;
 
         return $this;
     }
 
     /**
-     * Get productType.
+     * Get saleType.
      *
-     * @return \Eccube\Entity\Master\ProductType|null
+     * @return \Eccube\Entity\Master\SaleType|null
      */
-    public function getProductType()
+    public function getSaleType()
     {
-        return $this->ProductType;
+        return $this->SaleType;
     }
 
     /**

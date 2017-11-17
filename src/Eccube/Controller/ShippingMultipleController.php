@@ -230,7 +230,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 $OrderItem = $mulitples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Delivery = $OrderItem->getShipping()->getDelivery();
-                $productTypeId = $ProductClass->getProductType()->getId();
+                $saleTypeId = $ProductClass->getSaleType()->getId();
 
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
@@ -243,7 +243,7 @@ class ShippingMultipleController extends AbstractShoppingController
                             ->setDelivery($Delivery)
                             ->setDelFlg(Constant::DISABLED);
 
-                        $ShippingList[$cusAddId][$productTypeId] = $Shipping;
+                        $ShippingList[$cusAddId][$saleTypeId] = $Shipping;
                     }
                 }
             }
@@ -261,7 +261,7 @@ class ShippingMultipleController extends AbstractShoppingController
                 $OrderItem = $mulitples->getData();
                 $ProductClass = $OrderItem->getProductClass();
                 $Product = $OrderItem->getProduct();
-                $productTypeId = $ProductClass->getProductType()->getId();
+                $saleTypeId = $ProductClass->getProductType()->getId();
                 $productClassId = $ProductClass->getId();
 
                 foreach ($mulitples as $items) {
@@ -279,7 +279,7 @@ class ShippingMultipleController extends AbstractShoppingController
                         }
 
                         // 関連付けるお届け先のインスタンスを取得
-                        $Shipping = $ShippingList[$cusAddId][$productTypeId];
+                        $Shipping = $ShippingList[$cusAddId][$saleTypeId];
 
                         // インスタンスを生成して保存
                         $OrderItem = new OrderItem();

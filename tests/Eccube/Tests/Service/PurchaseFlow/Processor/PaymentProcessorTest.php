@@ -5,7 +5,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Delivery;
-use Eccube\Entity\Master\ProductType;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
@@ -56,16 +56,16 @@ class PaymentProcessorTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $ProductType = new ProductType();
-        $ProductType->setId(1000);
-        $ProductType->setName('テスト種別');
-        $ProductType->setRank(1000);
-        $this->app['orm.em']->persist($ProductType);
-        $this->app['orm.em']->flush($ProductType);
+        $SaleType = new SaleType();
+        $SaleType->setId(1000);
+        $SaleType->setName('テスト種別');
+        $SaleType->setRank(1000);
+        $this->app['orm.em']->persist($SaleType);
+        $this->app['orm.em']->flush($SaleType);
 
         $Delivery = new Delivery();
         $Delivery->setName('テスト配送');
-        $Delivery->setProductType($ProductType);
+        $Delivery->setSaleType($SaleType);
         $Delivery->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);
@@ -90,7 +90,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $this->ProductClass1 = $this->Product->getProductClasses()[0];
         $this->ProductClass2 = $this->Product->getProductClasses()[1];
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
-        $this->ProductClass3->setProductType($ProductType);
+        $this->ProductClass3->setSaleType($SaleType);
 
         $this->validator = new PaymentProcessor($this->app[DeliveryRepository::class]);
     }

@@ -30,11 +30,11 @@ class DeliverySettingValidator extends ValidatableItemProcessor
             return;
         }
 
-        $ProductType = $item->getProductClass()->getProductType();
-        $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType, 'visible' => true]);
+        $SaleType = $item->getProductClass()->getSaleType();
+        $Deliveries = $this->deliveryRepository->findBy(['SaleType' => $SaleType, 'visible' => true]);
 
         if (empty($Deliveries)) {
-            throw InvalidItemException::fromProductClass('cart.product.not.producttype', $item->getProductClass());
+            throw InvalidItemException::fromProductClass('cart.product.not.saletype', $item->getProductClass());
         }
     }
 

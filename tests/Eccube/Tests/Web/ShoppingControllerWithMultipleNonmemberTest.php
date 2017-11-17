@@ -1486,14 +1486,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      *  + Product type B x 2 - address 1
      * - Mail content: ◎お届け先2
      */
-    public function testAddMultiShippingWithProductTypeOfOneShippingAreNotSame()
+    public function testAddMultiShippingWithSaleTypeOfOneShippingAreNotSame()
     {
         $client = $this->client;
 
         $Product = $this->createProduct();
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setProductType($ProductType)->setStock(111);
+        $ProductClass->setSaleType($SaleType)->setStock(111);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush();
 
@@ -1609,18 +1609,18 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
      *  + Product 3 type B x 2 - address 1
      * - Mail content: ◎お届け先3
      */
-    public function testAddMultiShippingWithManyProductTypeOfOneShippingAreNotSame()
+    public function testAddMultiShippingWithManySaleTypeOfOneShippingAreNotSame()
     {
         $client = $this->client;
 
         $Product = $this->createProduct();
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setProductType($ProductType)->setStock(111);
+        $ProductClass->setSaleType($SaleType)->setStock(111);
         $this->app['orm.em']->persist($ProductClass);
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setProductType($ProductType)->setStock(111);
+        $ProductClass2->setSaleType($SaleType)->setStock(111);
         $this->app['orm.em']->persist($ProductClass2);
         $this->app['orm.em']->flush();
 
@@ -1912,8 +1912,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product 2 with type B
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass2->setProductType($ProductType)->setStock(111);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass2->setSaleType($SaleType)->setStock(111);
 
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->persist($ProductClass2);

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,27 +21,44 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Service\Cart;
 
-use Eccube\Entity\CartItem;
+namespace Eccube\Form\Type\Master;
+
+use Eccube\Annotation\FormType;
+use Eccube\Form\Type\MasterType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 /**
- * 商品種別ごとにカートを振り分けるCartItemAllocator
+ * @FormType
  */
-class ProductTypeCartAllocator implements CartItemAllocator
+class SaleTypeType extends AbstractType
 {
     /**
-     * 商品の振り分け先となるカートの識別子を決定します。
-     *
-     * @param CartItem $Item カート商品
-     * @return string
+     * {@inheritdoc}
      */
-    public function allocate(CartItem $Item)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $ProductClass = $Item->getProductClass();
-        if ($ProductClass && $ProductClass->getProductType()) {
-            return (string) $ProductClass->getProductType()->getId();
-        }
-        throw new \InvalidArgumentException('ProductClass/ProductType not found');
+        $resolver->setDefaults(array(
+            'class' => 'Eccube\Entity\Master\SaleType',
+            'label' => '商品種別',
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'sale_type';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return MasterType::class;
     }
 }

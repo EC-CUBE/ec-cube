@@ -24,18 +24,18 @@
 namespace Eccube\Tests\Service\Cart;
 
 use Eccube\Entity\CartItem;
-use Eccube\Service\Cart\ProductTypeCartAllocator;
+use Eccube\Service\Cart\SaleTypeCartAllocator;
 use Eccube\Tests\EccubeTestCase;
 
-class ProductTypeCartAllocatorTest extends EccubeTestCase
+class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
-    /** @var ProductTypeCartAllocator */
+    /** @var SaleTypeCartAllocator */
     private $allocator;
 
     public function setUp()
     {
         parent::setUp();
-        $this->allocator = new ProductTypeCartAllocator();
+        $this->allocator = new SaleTypeCartAllocator();
     }
 
     public function testAllocate()
@@ -46,7 +46,7 @@ class ProductTypeCartAllocatorTest extends EccubeTestCase
         $CartItem = new CartItem();
         $CartItem->setProductClass($ProductClass);
 
-        $expected = (string) $ProductClass->getProductType()->getId();
+        $expected = (string) $ProductClass->getSaleType()->getId();
         $actual = $this->allocator->allocate($CartItem);
         self::assertEquals($expected, $actual);
     }

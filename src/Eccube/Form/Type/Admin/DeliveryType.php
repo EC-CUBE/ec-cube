@@ -26,7 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -76,7 +76,7 @@ class DeliveryType extends AbstractType
                     new Assert\Url(),
                 ),
             ))
-            ->add('product_type', ProductTypeType::class, array(
+            ->add('product_type', SaleTypeType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

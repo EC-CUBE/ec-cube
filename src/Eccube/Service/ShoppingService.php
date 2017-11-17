@@ -438,9 +438,9 @@ class ShoppingService
     {
 
         // カートに保持されている商品種別を取得
-        $productTypes = $this->cartService->getProductTypes();
+        $saleTypes = $this->cartService->getSaleTypes();
 
-        return $this->getDeliveries($productTypes);
+        return $this->getDeliveries($saleTypes);
 
     }
 
@@ -454,23 +454,23 @@ class ShoppingService
     {
 
         // 受注情報から商品種別を取得
-        $productTypes = $this->orderService->getProductTypes($Order);
+        $saleTypes = $this->orderService->getSaleTypes($Order);
 
-        return $this->getDeliveries($productTypes);
+        return $this->getDeliveries($saleTypes);
 
     }
 
     /**
      * 配送業者情報を取得
      *
-     * @param $productTypes
+     * @param $saleTypes
      * @return array
      */
-    public function getDeliveries($productTypes)
+    public function getDeliveries($saleTypes)
     {
 
         // 商品種別に紐づく配送業者を取得
-        $deliveries = $this->deliveryRepository->getDeliveries($productTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
             // 複数配送対応
@@ -478,9 +478,9 @@ class ShoppingService
             // 支払方法を取得
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
-            if (count($productTypes) > 1) {
+            if (count($saleTypes) > 1) {
                 // 商品種別が複数ある場合、配送対象となる配送業者を取得
-                $deliveries = $this->deliveryRepository->findAllowedDeliveries($productTypes, $payments);
+                $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
             }
 
         }
@@ -500,9 +500,9 @@ class ShoppingService
      */
     public function getNewShipping(Order $Order, Customer $Customer, $deliveries)
     {
-        $productTypes = array();
+        $saleTypes = array();
         foreach ($deliveries as $Delivery) {
-            if (!in_array($Delivery->getProductType()->getId(), $productTypes)) {
+            if (!in_array($Delivery->getSaleType()->getId(), $saleTypes)) {
                 $Shipping = new Shipping();
 
                 $this->copyToShippingFromCustomer($Shipping, $Customer)
@@ -516,7 +516,7 @@ class ShoppingService
 
                 $Order->addShipping($Shipping);
 
-                $productTypes[] = $Delivery->getProductType()->getId();
+                $saleTypes[] = $Delivery->getProductType()->getId();
             }
         }
 
@@ -629,7 +629,7 @@ class ShoppingService
         // 選択された商品がどのお届け先情報と関連するかチェック
         $Shipping = null;
         foreach ($shippings as $s) {
-            if ($s->getDelivery()->getProductType()->getId() == $ProductClass->getProductType()->getId()) {
+            if ($s->getDelivery()->getSaleType()->getId() == $ProductClass->getSaleType()->getId()) {
                 // 商品種別が同一のお届け先情報と関連させる
                 $Shipping = $s;
                 break;
@@ -638,7 +638,7 @@ class ShoppingService
 
         if (is_null($Shipping)) {
             // お届け先情報と関連していない場合、エラー
-            throw new CartException('shopping.delivery.not.producttype');
+            throw new CartException('shopping.delivery.not.saletype');
         }
 
         // 商品ごとの配送料合計
@@ -979,8 +979,8 @@ class ShoppingService
     public function getFormPayments($deliveries, Order $Order)
     {
 
-        $productTypes = $this->orderService->getProductTypes($Order);
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
+        $saleTypes = $this->orderService->getSaleTypes($Order);
+        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($saleTypes) > 1) {
             // 複数配送時の支払方法
 
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);

@@ -77,15 +77,15 @@ class ShippingType extends AbstractType
 
                 // 配送商品に含まれる商品種別を抽出.
                 $OrderItems = $Shipping->getProductOrderItems();
-                $ProductTypes = array();
+                $SaleTypes = array();
                 foreach ($OrderItems as $OrderItem) {
                     $ProductClass = $OrderItem->getProductClass();
-                    $ProductType = $ProductClass->getProductType();
-                    $ProductTypes[$ProductType->getId()] = $ProductType;
+                    $SaleType = $ProductClass->getSaleType();
+                    $SaleTypes[$SaleType->getId()] = $SaleType;
                 }
 
                 // 商品種別に紐づく配送業者を取得.
-                $Deliveries = $this->deliveryRepository->getDeliveries($ProductTypes);
+                $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
                 // 配送業者のプルダウンにセット.
                 $form = $event->getForm();

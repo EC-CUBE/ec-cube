@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,21 +21,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Service\Cart;
 
-namespace Eccube\Entity\Master;
-
-use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\CartItem;
 
 /**
- * ProductType
- *
- * @ORM\Table(name="mtb_product_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * 商品種別ごとにカートを振り分けるCartItemAllocator
  */
-class ProductType extends \Eccube\Entity\Master\AbstractMasterEntity
+class SaleTypeCartAllocator implements CartItemAllocator
 {
+    /**
+     * 商品の振り分け先となるカートの識別子を決定します。
+     *
+     * @param CartItem $Item カート商品
+     * @return string
+     */
+    public function allocate(CartItem $Item)
+    {
+        $ProductClass = $Item->getProductClass();
+        if ($ProductClass && $ProductClass->getSaleType()) {
+            return (string) $ProductClass->getSaleType()->getId();
+        }
+        throw new \InvalidArgumentException('ProductClass/SaleType not found');
+    }
 }
