@@ -94,6 +94,9 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             $processors = new ArrayCollection();
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
             $processors[] = new Processor\UpdateDatePurchaseProcessor($app['config']);
+            $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
+            $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
+            $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
 
             return $processors;
         };

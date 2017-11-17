@@ -214,6 +214,7 @@ class OrderType extends AbstractType
                         'message' => 'form.type.numeric.invalid'
                     )),
                 ),
+                'attr' => array('readonly' => true)
             ))
             ->add('use_point', NumberType::class, array(
                 'required' => false,

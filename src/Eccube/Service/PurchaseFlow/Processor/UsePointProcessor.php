@@ -15,6 +15,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Util\EntityUtil;
 
 /**
  * 使用ポイント値引明細追加.
@@ -57,6 +58,7 @@ class UsePointProcessor implements ItemHolderProcessor
                 return ProcessResult::error('利用ポイントが所有ポイントを上回っています.');
             }
 
+            // XXX delete/insert ではなく, update/insert の方がいいかも
             $this->removePointDiscountItem($itemHolder);
             return $this->addPointDiscountItem($itemHolder);
         }
@@ -111,6 +113,7 @@ class UsePointProcessor implements ItemHolderProcessor
     {
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isDiscount() && $item->getProductName() == 'ポイント値引') {
+                $itemHolder->removeOrderItem($item);
                 $this->entityManager->remove($item);
             }
         }
