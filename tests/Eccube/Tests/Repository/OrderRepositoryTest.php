@@ -3,12 +3,6 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
-use Eccube\Entity\OrderItem;
 
 /**
  * OrderRepository test cases.
@@ -37,7 +31,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
         $this->app['eccube.repository.order']->changeStatus($orderId, $Status);
 
-        $this->assertNotNull($this->Order->getCommitDate());
+        $this->assertNotNull($this->Order->getShippingDate());
         $this->expected = 5;
         $this->actual = $this->Order->getOrderStatus()->getId();
         $this->verify();
@@ -63,7 +57,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
         $this->app['eccube.repository.order']->changeStatus($orderId, $Status);
 
-        $this->assertNull($this->Order->getCommitDate());
+        $this->assertNull($this->Order->getShippingDate());
         $this->assertNull($this->Order->getPaymentDate());
     }
 
