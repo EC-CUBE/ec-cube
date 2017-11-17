@@ -41,7 +41,7 @@ class PaymentRepositoryTest extends EccubeTestCase
 
         $this->expected = 0;
         $this->actual = count($payments);
-        $this->verify('存在しない商品種別を指定しているため取得できない');
+        $this->verify('存在しない販売種別を指定しているため取得できない');
 
         if (count($saleTypes) > 1) {
             $deliveries = $this->app['eccube.repository.delivery']->findAllowedDeliveries($saleTypes, $payments);
@@ -77,7 +77,7 @@ class PaymentRepositoryTest extends EccubeTestCase
 
         $this->expected = 1;
         $this->actual = count($payments);
-        $this->verify('商品種別共通の支払い方法は'.$this->expected.'種類です');
+        $this->verify('販売種別共通の支払い方法は'.$this->expected.'種類です');
     }
 
     /**
@@ -111,7 +111,7 @@ class PaymentRepositoryTest extends EccubeTestCase
 
         $this->expected = 0;
         $this->actual = count($payments);
-        $this->verify('商品種別共通の支払い方法は'.$this->expected.'種類です');
+        $this->verify('販売種別共通の支払い方法は'.$this->expected.'種類です');
     }
 
     public function testFindAllArray()

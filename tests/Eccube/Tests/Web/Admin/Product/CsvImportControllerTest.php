@@ -61,7 +61,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             '商品画像' => $faker->word.'.jpg,'.$faker->word.'.jpg',
             '商品カテゴリ(ID)' => '5,6',
             'タグ(ID)' => '1,2',
-            '商品種別(ID)' => 1,
+            '販売種別(ID)' => 1,
             '規格分類1(ID)' => 3,
             '規格分類2(ID)' => 6,
             '発送日目安(ID)' => 1,
@@ -333,7 +333,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->app->overwrite('config', $config);
 
-        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),商品種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料'."\n");
+        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料'."\n");
 
         $crawler = $this->client->request(
             'GET',

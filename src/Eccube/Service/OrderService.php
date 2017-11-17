@@ -43,7 +43,7 @@ class OrderService
 
 
     /**
-     * 商品種別を取得
+     * 販売種別を取得
      *
      * @param Order $Order
      * @return array

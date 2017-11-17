@@ -42,7 +42,7 @@ class SaleTypeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\SaleType',
-            'label' => '商品種別',
+            'label' => '販売種別',
         ));
     }
 

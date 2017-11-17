@@ -437,7 +437,7 @@ class ShoppingService
     public function getDeliveriesCart()
     {
 
-        // カートに保持されている商品種別を取得
+        // カートに保持されている販売種別を取得
         $saleTypes = $this->cartService->getSaleTypes();
 
         return $this->getDeliveries($saleTypes);
@@ -453,7 +453,7 @@ class ShoppingService
     public function getDeliveriesOrder(Order $Order)
     {
 
-        // 受注情報から商品種別を取得
+        // 受注情報から販売種別を取得
         $saleTypes = $this->orderService->getSaleTypes($Order);
 
         return $this->getDeliveries($saleTypes);
@@ -469,7 +469,7 @@ class ShoppingService
     public function getDeliveries($saleTypes)
     {
 
-        // 商品種別に紐づく配送業者を取得
+        // 販売種別に紐づく配送業者を取得
         $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
@@ -479,7 +479,7 @@ class ShoppingService
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
             if (count($saleTypes) > 1) {
-                // 商品種別が複数ある場合、配送対象となる配送業者を取得
+                // 販売種別が複数ある場合、配送対象となる配送業者を取得
                 $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
             }
 
@@ -630,7 +630,7 @@ class ShoppingService
         $Shipping = null;
         foreach ($shippings as $s) {
             if ($s->getDelivery()->getSaleType()->getId() == $ProductClass->getSaleType()->getId()) {
-                // 商品種別が同一のお届け先情報と関連させる
+                // 販売種別が同一のお届け先情報と関連させる
                 $Shipping = $s;
                 break;
             }

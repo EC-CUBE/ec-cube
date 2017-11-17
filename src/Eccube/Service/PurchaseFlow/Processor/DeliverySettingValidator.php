@@ -10,7 +10,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 /**
- * 商品種別に配送業者が設定されているかどうか.
+ * 販売種別に配送業者が設定されているかどうか.
  */
 class DeliverySettingValidator extends ValidatableItemProcessor
 {

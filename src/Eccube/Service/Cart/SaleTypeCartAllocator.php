@@ -26,7 +26,7 @@ namespace Eccube\Service\Cart;
 use Eccube\Entity\CartItem;
 
 /**
- * 商品種別ごとにカートを振り分けるCartItemAllocator
+ * 販売種別ごとにカートを振り分けるCartItemAllocator
  */
 class SaleTypeCartAllocator implements CartItemAllocator
 {

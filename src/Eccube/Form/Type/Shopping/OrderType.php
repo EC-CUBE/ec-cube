@@ -101,7 +101,7 @@ class OrderType extends AbstractType
                     return;
                 }
 
-                // 受注明細に含まれる商品種別を抽出.
+                // 受注明細に含まれる販売種別を抽出.
                 $SaleTypes = array_reduce($Order->getOrderItems()->toArray(), function($results, $OrderItem) {
                     /* @var OrderItem $OrderItem */
                     $ProductClass = $OrderItem->getProductClass();
@@ -112,7 +112,7 @@ class OrderType extends AbstractType
                     return $results;
                 }, []);
 
-                // 商品種別に紐づく配送業者を抽出
+                // 販売種別に紐づく配送業者を抽出
                 $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
                 // 利用可能な支払い方法を抽出.
                 $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);

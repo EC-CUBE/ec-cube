@@ -1,3 +1,3 @@
 id,name,rank,discriminator_type
-"1","商品種別A","0","saletype"
-"2","商品種別B","1","saletype"
+"1","販売種別A","0","saletype"
+"2","販売種別B","1","saletype"

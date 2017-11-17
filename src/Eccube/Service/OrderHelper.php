@@ -261,7 +261,7 @@ class OrderHelper
 
     public function setDefaultDelivery(Shipping $Shipping)
     {
-        // 配送商品に含まれる商品種別を抽出.
+        // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
         $SaleTypes = [];
         /** @var OrderItem $OrderItem */
@@ -271,7 +271,7 @@ class OrderHelper
             $SaleTypes[$SaleType->getId()] = $SaleType;
         }
 
-        // 商品種別に紐づく配送業者を取得.
+        // 販売種別に紐づく配送業者を取得.
         $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 初期の配送業者を設定
@@ -291,7 +291,7 @@ class OrderHelper
     {
         $OrderItems = $Order->getOrderItems();
 
-        // 受注明細に含まれる商品種別を抽出.
+        // 受注明細に含まれる販売種別を抽出.
         $SaleTypes = [];
         /** @var OrderItem $OrderItem */
         foreach ($OrderItems as $OrderItem) {
@@ -304,7 +304,7 @@ class OrderHelper
             $SaleTypes[$SaleType->getId()] = $SaleType;
         }
 
-        // 商品種別に紐づく配送業者を抽出
+        // 販売種別に紐づく配送業者を抽出
         $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 利用可能な支払い方法を抽出.

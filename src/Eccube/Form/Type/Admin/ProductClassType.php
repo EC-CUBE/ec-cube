@@ -124,7 +124,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
             ))
             ->add('product_type', SaleTypeType::class, array(
-                'label' => '商品種別',
+                'label' => '販売種別',
                 'multiple' => false,
                 'expanded' => false,
                 'constraints' => array(

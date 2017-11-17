@@ -74,7 +74,7 @@ class DeliveryRepository extends AbstractRepository
     }
 
     /**
-     * 複数の商品種別から配送業者を取得
+     * 複数の販売種別から配送業者を取得
      *
      * @param $saleTypes
      * @return array
