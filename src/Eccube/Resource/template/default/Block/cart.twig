@@ -19,44 +19,44 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% set Cart = app['eccube.service.cart'].getCart %}
-
 <div class="ec-cartNavi">
     <div class="ec-cartNavi__icon"><img src="{{ asset('assets/icon/cart-dark.svg') }}" alt="cart"></div>
     <div class="ec-cartNavi__iconClose"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt="close"></div>
-    <div class="ec-cartNavi__badge">{{ Cart.total_quantity }}</div>
+    <div class="ec-cartNavi__badge">{{ totalQuantity }}</div>
     <div class="ec-cartNavi__label">合計
-        <div class="ec-cartNavi__price">{{ Cart.total_price|price }}</div>
+        <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
     </div>
 </div>
 
-{% if Cart.CartItems|length > 0 %}
+{% if totalQuantity > 0 %}
     <div class="ec-cartNaviIsset">
-        {% for CartItem in Cart.CartItems %}
-            {% set ProductClass = CartItem.ProductClass %}
-            {% set Product = ProductClass.Product %}
-            <div class="ec-cartNaviIsset__cart">
-                <div class="ec-cartNaviIsset__cartImage">
-                    <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
-                </div>
-                <div class="ec-cartNaviIsset__cartContent">
-                    <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
-                        <div class="ec-font-size-1">
-                            {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                {{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
-                            {% endif %}
-                            {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
-                            {% endif %}
+        {% for Cart in Carts %}
+            {% for CartItem in Cart.CartItems %}
+                {% set ProductClass = CartItem.ProductClass %}
+                {% set Product = ProductClass.Product %}
+                <div class="ec-cartNaviIsset__cart">
+                    <div class="ec-cartNaviIsset__cartImage">
+                        <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
+                    </div>
+                    <div class="ec-cartNaviIsset__cartContent">
+                        <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
+                            <div class="ec-font-size-1">
+                                {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                    {{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
+                                {% endif %}
+                                {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                    <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
+                                {% endif %}
+                            </div>
                         </div>
+                        <div class="ec-cartNaviIsset__cartContentPrice">
+                            {{ CartItem.price|price }}
+                            <div class="ec-cartNaviIsset__cartContentTax">税込</div>
+                        </div>
+                        <div class="ec-cartNaviIsset__cartContentNumber">数量：{{ CartItem.quantity }}</div>
                     </div>
-                    <div class="ec-cartNaviIsset__cartContentPrice">
-                        {{ CartItem.price|price }}
-                        <div class="ec-cartNaviIsset__cartContentTax">税込</div>
-                    </div>
-                    <div class="ec-cartNaviIsset__cartContentNumber">数量：{{ CartItem.quantity }}</div>
                 </div>
-            </div>
+            {% endfor %}
         {% endfor %}
         <div class="ec-cartNaviIsset__action">
             <a class="ec-blockBtn--action" href="{{ url('cart') }}">カートへ進む</a>

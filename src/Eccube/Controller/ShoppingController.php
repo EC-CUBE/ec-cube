@@ -286,8 +286,11 @@ class ShoppingController extends AbstractShoppingController
 
         log_info('購入処理完了', array($orderId));
 
+        $hasNextCart = !empty($this->cartService->getCarts());
+
         return [
             'orderId' => $orderId,
+            'hasNextCart' => $hasNextCart,
         ];
     }
 
