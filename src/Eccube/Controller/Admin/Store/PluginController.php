@@ -169,7 +169,7 @@ class PluginController extends AbstractController
 //        if (!is_null($authKey)) {
 
         // オーナーズストア通信
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
         $officialPluginsDetail = [];
@@ -285,7 +285,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->isEnable()) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
             $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
@@ -319,7 +319,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->isEnable()) {
             $requires = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
             if (!empty($requires)) {
                 $dependName = $requires[0];
@@ -480,7 +480,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $this->appConfig['owners_store_url'].'?method=list';
+            $url = $this->appConfig['package_repo_url'].'/search/packages.json';
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
@@ -588,7 +588,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $this->appConfig['owners_store_url'].'?method=download&product_id='.$id;
+            $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?method=download&product_id='.$id;
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
@@ -638,7 +638,7 @@ class PluginController extends AbstractController
                             $fs->remove($tmpDir);
 
                             // ダウンロード完了通知処理(正常終了時)
-                            $url = $this->appConfig['owners_store_url'].'?method=commit&product_id='.$id.'&status=1&version='.$version;
+                            $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?method=commit&product_id='.$id.'&status=1&version='.$version;
                             $this->getRequestApi($request, $authKey, $url, $app);
 
                             return $app->redirect($app->url('admin_store_plugin'));
@@ -661,7 +661,8 @@ class PluginController extends AbstractController
         }
 
         // ダウンロード完了通知処理(エラー発生時)
-        $url = $this->appConfig['owners_store_url']
+        $url = $this->appConfig['package_repo_url']
+            .'/search/packages.json'
             .'?method=commit&product_id='.$id
             .'&status=0&version='.$version
             .'&message='.urlencode($message);

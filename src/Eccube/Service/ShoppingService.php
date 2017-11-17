@@ -23,20 +23,18 @@
 
 namespace Eccube\Service;
 
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -472,7 +470,7 @@ class ShoppingService
         // 販売種別に紐づく配送業者を取得
         $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+        if ($this->BaseInfo->isOptionMultipleShipping()) {
             // 複数配送対応
 
             // 支払方法を取得
@@ -506,8 +504,7 @@ class ShoppingService
                 $Shipping = new Shipping();
 
                 $this->copyToShippingFromCustomer($Shipping, $Customer)
-                    ->setOrder($Order)
-                    ->setDelFlg(Constant::DISABLED);
+                    ->setOrder($Order);
 
                 // 配送料金の設定
                 $this->setShippingDeliveryFee($Shipping, $Delivery);
@@ -643,7 +640,7 @@ class ShoppingService
 
         // 商品ごとの配送料合計
         $productDeliveryFeeTotal = 0;
-        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+        if ($this->BaseInfo->isOptionProductDeliveryFee()) {
             $productDeliveryFeeTotal = $ProductClass->getDeliveryFee() * $quantity;
         }
 
@@ -758,7 +755,7 @@ class ShoppingService
 
         // 商品ごとの配送料合計
         $productDeliveryFeeTotal = 0;
-        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+        if ($this->BaseInfo->isOptionProductDeliveryFee()) {
             $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
         }
 
@@ -840,7 +837,7 @@ class ShoppingService
             $Shipping->setDeliveryFee($deliveryFee);
             // 商品ごとの配送料合計
             $productDeliveryFeeTotal = 0;
-            if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                 $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
             }
             $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
@@ -980,7 +977,7 @@ class ShoppingService
     {
 
         $saleTypes = $this->orderService->getSaleTypes($Order);
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($saleTypes) > 1) {
+        if ($this->BaseInfo->isOptionMultipleShipping() && count($saleTypes) > 1) {
             // 複数配送時の支払方法
 
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);

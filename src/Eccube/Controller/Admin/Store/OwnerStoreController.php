@@ -20,20 +20,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
 namespace Eccube\Controller\Admin\Store;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
-use Eccube\Service\ComposerProcessService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -65,8 +62,8 @@ class OwnerStoreController extends AbstractController
     protected $pluginService;
 
     /**
-     * @Inject(ComposerProcessService::class)
-     * @var ComposerProcessService
+     * @Inject(ComposerApiService::class)
+     * @var ComposerApiService
      */
     protected $composerService;
 
@@ -75,6 +72,8 @@ class OwnerStoreController extends AbstractController
      * @Inject("orm.em")
      */
     protected $em;
+
+    private static $vendorName = 'ec-cube';
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
@@ -93,7 +92,7 @@ class OwnerStoreController extends AbstractController
         $promotionItems = array();
         $message = '';
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
@@ -152,7 +151,7 @@ class OwnerStoreController extends AbstractController
                         $i++;
                     }
                 } else {
-                    $message = $data['error_code'] . ' : ' . $data['error_message'];
+                    $message = $data['error_code'].' : '.$data['error_message'];
                 }
             } else {
                 $success = 0;
@@ -181,7 +180,7 @@ class OwnerStoreController extends AbstractController
     public function doConfirm(Application $app, Request $request, $id)
     {
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -223,13 +222,13 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['owners_store_url'].'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);
         if ($data && isset($data['success'])) {
             $success = $data['success'];
-            if ($success == '1') {
+            if ($success == '1' && isset($data['item'])) {
                 foreach ($data['item'] as $item) {
                     if ($item['product_code'] == $pluginCode) {
                         $existFlg = true;
@@ -244,19 +243,22 @@ class OwnerStoreController extends AbstractController
 
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
+        $dependents = array();
+        $items = $data['item'];
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $dependents[] = $plugin;
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
 
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->em;
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
+        // Unset first param
+        unset($dependents[0]);
+        $packageNames = '';
+        if (!empty($dependents)) {
+            foreach ($dependents as $item) {
+                $packageNames .= self::$vendorName.'/'.$item['product_code'].' ';
+            }
         }
-
-        $return = $this->composerService->execRequire($pluginCode);
+        $packageNames .= self::$vendorName.'/'.$pluginCode;
+        $return = $this->composerService->execRequire($packageNames);
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -274,15 +276,32 @@ class OwnerStoreController extends AbstractController
      * @Template("Store/plugin_confirm_uninstall.twig")
      * @param Application $app
      * @param Plugin      $Plugin
-     * @return array
+     * @return array|RedirectResponse
      */
     public function deleteConfirm(Application $app, Plugin $Plugin)
     {
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
+
+        // The plugin depends on it
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+
+            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $app->addError($message, 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
 
         // Check plugin in api
         $pluginSource = $Plugin->getSource();
@@ -318,19 +337,8 @@ class OwnerStoreController extends AbstractController
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();
-
-        /**
-         * Mysql lock in transaction
-         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-         * @var EntityManagerInterface $em
-         */
-        $em = $this->em;
-        if ($em->getConnection()->isTransactionActive()) {
-            $em->getConnection()->commit();
-            $em->getConnection()->beginTransaction();
-        }
-
-        $return = $this->composerService->execRemove($pluginCode);
+        $packageName = self::$vendorName.'/'.$pluginCode;
+        $return = $this->composerService->execRemove($packageName);
         if ($return) {
             $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
         } else {

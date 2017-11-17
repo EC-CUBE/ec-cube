@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+
 {% extends 'default_frame.twig' %}
 
 {% set menus = ['store', 'plugin', 'plugin_search'] %}
@@ -34,9 +35,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 itemSelector: '.grid-item',
                 columnWidth: '.grid-item'
             });
+
+            $('a.searchPluginModal').on('click', function (e) {
+                e.preventDefault();
+                var obj = $(this);
+                var id = obj.attr('data-id');
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'jsonp',
+                    crossDomain: true,
+                    url: '{{ app.config.package_repo_url }}/detail/' + id,
+                    success: function (data) {
+                        showPopup(obj, data, id);
+                    },
+                    error: function () {
+                        alert('Plugin not found !');
+                    }
+                });
+            });
+
+            function showPopup(obj, data, id) {
+                var modal_plugin = $('#searchPluginModal');
+                var btn_html = obj.closest('div').find('#plugin-id-' + id).get(0).outerHTML;
+
+                $('#search_plugin_modal_box__body', modal_plugin).html(data);
+                $('#search_plugin_modal_box__buttons', modal_plugin).html(btn_html);
+                modal_plugin.modal('show');
+            }
         });
+
     </script>
 {% endblock javascript %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        .display-in-bl {
+            display: inline-block;
+        }
+    </style>
+{% endblock stylesheet %}
 
 {% block main %}
     <div class="row">
@@ -74,5 +111,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div><!-- /.col -->
     </div>
+{% endblock %}
 
+{% block modal %}
+    <div class="modal fade" id="searchPluginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div id="search_plugin_modal_box" class="modal-content">
+                <div id="search_plugin_modal_box__header" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">&nbsp;</h4>
+                </div>
+                <div id="search_plugin_modal_box__body" class="modal-body" style="background: #fff"></div>
+                <div id="search_plugin_modal_box__buttons" class="modal-footer" style="background: #fff"></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -2,16 +2,20 @@
 
 namespace Eccube\Tests\Fixture;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
-use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\ShippingStatus;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Page;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
@@ -21,12 +25,6 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\OrderItem;
-use Eccube\Entity\Member;
-use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\TaxType;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Tests\EccubeTestCase;
 use Faker\Factory as Faker;
 

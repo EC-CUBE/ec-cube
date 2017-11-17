@@ -138,7 +138,6 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)
-            ->setDelFlg(0)
             ->setCreator($TestCreator);
 
         return $TestClassName;
@@ -150,7 +149,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $TestClassCategory->setName('立方体')
             ->setRank(100)
             ->setClassName($TestClassName)
-            ->setDelFlg(0)
+            ->setVisible(false)
             ->setCreator($TestCreator);
 
         return $TestClassCategory;
@@ -168,7 +167,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setSaleType($SaleType)
             ->setCode('test code')
             ->setStock(100)
-            ->setStockUnlimited(0)
+            ->setStockUnlimited(false)
 //            ->setDeliveryDateId(1)
             ->setSaleLimit(10)
             ->setPrice01(10000)

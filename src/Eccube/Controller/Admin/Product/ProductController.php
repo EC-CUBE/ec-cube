@@ -38,16 +38,16 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CategoryRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
@@ -370,7 +370,7 @@ class ProductController extends AbstractController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
-                if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule()) {
+                if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
                 $ProductStock = $ProductClasses[0]->getProductStock();
@@ -397,7 +397,7 @@ class ProductController extends AbstractController
         $form = $builder->getForm();
 
         if (!$has_class) {
-            $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
+            $ProductClass->setStockUnlimited($ProductClass->isStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -434,7 +434,7 @@ class ProductController extends AbstractController
                     $ProductClass = $form['class']->getData();
 
                     // 個別消費税
-                    if ($this->BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+                    if ($this->BaseInfo->isOptionProductTaxRule()) {
                         if ($ProductClass->getTaxRate() !== null) {
                             if ($ProductClass->getTaxRule()) {
                                 $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
@@ -456,7 +456,7 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductClass);
 
                     // 在庫情報を作成
-                    if (!$ProductClass->getStockUnlimited()) {
+                    if (!$ProductClass->isStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
                     } else {
                         // 在庫無制限時はnullを設定
