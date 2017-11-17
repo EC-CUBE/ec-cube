@@ -24,7 +24,6 @@
 
 namespace Eccube\Command\GeneratorCommand;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Symfony\Component\Filesystem\Filesystem;
@@ -516,9 +515,8 @@ class PluginGenerator extends AbstractPluginGenerator
         $Plugin->setCode($code);
         $Plugin->setClassName('');
         $Plugin->setVersion($paramList['version']['value']);
-        $Plugin->setEnable(Constant::DISABLED);
+        $Plugin->setEnable(false);
         $Plugin->setSource(0);
-        $Plugin->setDelFlg(Constant::DISABLED);
 
         $this->app['orm.em']->persist($Plugin);
         $this->app['orm.em']->flush($Plugin);
@@ -544,8 +542,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 ->setEvent($hookKey)
                 ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($hookKey, $functionName))
                 ->setHandler($functionName)
-                ->setHandlerType('NORMAL')
-                ->setDelFlg(Constant::DISABLED);
+                ->setHandlerType('NORMAL');
             $this->app['orm.em']->persist($PluginEventHandler);
             $eventCount++;
         }

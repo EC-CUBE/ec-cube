@@ -26,7 +26,6 @@ namespace Eccube\Tests\Plugin\Web\Mypage;
 
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @group plugin
@@ -174,7 +173,6 @@ class MypageControllerTest extends AbstractWebTestCase
         $CustomerFavoriteProduct->setCustomer($this->app->user());
         $Product = $this->app['eccube.repository.product']->get(1);
         $CustomerFavoriteProduct->setProduct($Product);
-        $CustomerFavoriteProduct->setDelFlg(0);
 
         return $CustomerFavoriteProduct;
     }

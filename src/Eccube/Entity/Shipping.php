@@ -24,10 +24,9 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Service\Calculator\OrderItemCollection;
-use Eccube\Util\EntityUtil;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Shipping

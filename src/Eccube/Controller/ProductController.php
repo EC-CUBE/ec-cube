@@ -28,7 +28,6 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
-use Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
@@ -39,7 +38,6 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
@@ -127,7 +125,7 @@ class ProductController
     public function index(Application $app, Request $request)
     {
         // Doctrine SQLFilter
-        if ($this->BaseInfo->getNostockHidden() === Constant::ENABLED) {
+        if ($this->BaseInfo->isNostockHidden()) {
             $this->entityManager->getFilters()->enable('nostock_hidden');
         }
 
@@ -308,7 +306,7 @@ class ProductController
         // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
         if (!$is_admin) {
             // 在庫なし商品の非表示オプションが有効な場合.
-            if ($this->BaseInfo->getNostockHidden()) {
+            if ($this->BaseInfo->isNostockHidden()) {
                 if (!$Product->getStockFind()) {
                     throw new NotFoundHttpException();
                 }

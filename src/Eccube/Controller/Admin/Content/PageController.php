@@ -37,9 +37,9 @@ use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Util\Str;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -146,7 +146,7 @@ class PageController extends AbstractController
         $fileName = null;
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
-            if ($Page->getEditFlg() == Page::EDIT_FLG_DEFAULT) {
+            if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT) {
                 $editable = false;
                 $PrevPage = clone $Page;
             }
@@ -276,7 +276,7 @@ class PageController extends AbstractController
         }
 
         // ユーザーが作ったページのみ削除する
-        if ($Page->getEditFlg() == Page::EDIT_FLG_USER) {
+        if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
             $templatePath = $this->pageRepository->getWriteTemplatePath(true);
             $file = $templatePath.'/'.$Page->getFileName().'.twig';
             $fs = new Filesystem();

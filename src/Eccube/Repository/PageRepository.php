@@ -172,7 +172,7 @@ class PageRepository extends AbstractRepository
         $Page = new \Eccube\Entity\Page();
         $Page
             ->setDeviceType($DeviceType)
-            ->setEditFlg(Page::EDIT_FLG_USER);
+            ->setEditType(Page::EDIT_TYPE_USER);
 
         return $Page;
     }

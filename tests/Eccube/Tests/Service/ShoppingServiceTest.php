@@ -2,11 +2,8 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
-use Eccube\Exception\ShoppingException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
@@ -64,7 +61,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
         $Order = $this->app['eccube.service.shopping']->getOrder();
@@ -80,7 +77,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         $NonMember = $this->createNonMember();
         $this->app['security.token_storage']->setToken(
@@ -233,7 +230,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         // ProductType 1 と 2 で, 共通する支払い方法を削除しておく
         $PaymentOption = $this
@@ -410,7 +407,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
         $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);
