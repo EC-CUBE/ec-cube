@@ -1,1 +1,1 @@
-id,work,authority,creator_id,name,department,login_id,password,salt,rank,create_date,update_date,login_date,discriminator_type
+id,work_id,authority_id,creator_id,name,department,login_id,password,salt,rank,create_date,update_date,login_date,discriminator_type

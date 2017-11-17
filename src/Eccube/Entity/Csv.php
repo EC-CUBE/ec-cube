@@ -85,7 +85,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="csv_type", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="csv_type_id", referencedColumnName="id")
      * })
      */
     private $CsvType;

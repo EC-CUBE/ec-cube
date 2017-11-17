@@ -256,7 +256,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shipping_country_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
      */
     private $Country;
@@ -266,7 +266,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shipping_pref", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      */
     private $Pref;
@@ -296,7 +296,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ShippingStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shipping_status", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="shipping_status_id", referencedColumnName="id")
      * })
      */
     private $ShippingStatus;
