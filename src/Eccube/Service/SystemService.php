@@ -180,8 +180,11 @@ class SystemService
      */
     public function isPhpCommandLine()
     {
-        if (function_exists('exec') && null != exec('php -v')) {
-            return true;
+        $php = exec('which php');
+        if (function_exists('exec') && null != $php) {
+            if (strpos(strtolower($php), 'php') !== false) {
+                return true;
+            }
         }
 
         return false;
