@@ -156,7 +156,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="work", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
      * })
      */
     private $Work;
@@ -166,7 +166,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="authority", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
      * })
      */
     private $Authority;

@@ -179,7 +179,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="calc_rule", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="rounding_type_id", referencedColumnName="id")
      * })
      */
     private $RoundingType;

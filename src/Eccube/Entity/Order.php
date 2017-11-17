@@ -392,7 +392,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_country_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
      */
     private $Country;
@@ -402,7 +402,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_pref", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      */
     private $Pref;
@@ -412,7 +412,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_sex", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sex_id", referencedColumnName="id")
      * })
      */
     private $Sex;
@@ -422,7 +422,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_job", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      * })
      */
     private $Job;
@@ -462,7 +462,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
      * })
      */
     private $OrderStatus;

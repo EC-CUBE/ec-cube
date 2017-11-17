@@ -584,7 +584,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="product_status_id", referencedColumnName="id")
      * })
      */
     private $Status;
