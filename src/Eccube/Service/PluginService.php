@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -659,6 +660,96 @@ class PluginService
     }
 
     /**
+     * Check require plugin in enable
+     *
+     * @param string $pluginCode
+     * @return array
+     */
+    public function findRequirePluginNeedEnable($pluginCode)
+    {
+        $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
+        $composerFile = $dir.'/composer.json';
+        $requires = [];
+        if (!file_exists($composerFile)) {
+            return $requires;
+        }
+        $jsonText = file_get_contents($composerFile);
+        if ($jsonText) {
+            $json = json_decode($jsonText, true);
+            $require = $json['require'];
+
+            // Remove vendor plugin
+            if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
+                unset($require[self::VENDOR_NAME.'/plugin-installer']);
+            }
+            foreach ($require as $name => $version) {
+                // Check plugin of ec-cube only
+                if (strpos($name, self::VENDOR_NAME.'/') !== false) {
+                    $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
+                    $ret = $this->isEnable($requireCode);
+                    if ($ret) {
+                        continue;
+                    }
+                    $requires[] = $requireCode;
+                }
+            }
+        }
+
+        return $requires;
+    }
+    /**
+     * Find the dependent plugins that need to be disabled
+     *
+     * @param string $pluginCode
+     * @return array
+     */
+    public function findDependentPluginNeedDisable($pluginCode)
+    {
+        return $this->findDependentPlugin($pluginCode, true);
+    }
+
+    /**
+     * Find the other plugin that has requires on it.
+     * Check in both dtb_plugin table and <PluginCode>/composer.json
+     *
+     * @param $pluginCode
+     * @param bool $enableOnly
+     * @return array
+     */
+    public function findDependentPlugin($pluginCode, $enableOnly = false)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->neq('code', $pluginCode));
+        if ($enableOnly) {
+            $criteria->andWhere(Criteria::expr()->eq('enable', Constant::ENABLED));
+        }
+        /**
+         * @var Plugin[] $plugins
+         */
+        $plugins = $this->pluginRepository->matching($criteria);
+        $dependents = [];
+        foreach ($plugins as $plugin) {
+            $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
+            $fileName = $dir.'/composer.json';
+            if (!file_exists($fileName)) {
+                continue;
+            }
+            $jsonText = file_get_contents($fileName);
+            if ($jsonText) {
+                $json = json_decode($jsonText, true);
+                if (!isset($json['require'])) {
+                    continue;
+                }
+                if (array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require'])) {
+                    $dependents[] = $plugin->getCode();
+                }
+            }
+        }
+
+        return $dependents;
+    }
+
+    /**
      * @param $arrPlugin
      * @param $pluginCode
      * @return false|int|string
@@ -672,5 +763,22 @@ class PluginService
         $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
 
         return $index;
+    }
+
+    /**
+     * @param string $code
+     * @return bool
+     */
+    private function isEnable($code)
+    {
+        $Plugin = $this->pluginRepository->findOneBy([
+            'enable' => Constant::ENABLED,
+            'code' => $code
+        ]);
+        if ($Plugin) {
+            return true;
+        }
+
+        return false;
     }
 }

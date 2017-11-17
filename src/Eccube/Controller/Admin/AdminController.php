@@ -367,7 +367,7 @@ class AdminController extends AbstractController
     {
         $sql = 'SELECT
                     t1.status as status,
-                    COUNT(t1.order_id) as count
+                    COUNT(t1.id) as count
                 FROM
                     dtb_order t1
                 WHERE

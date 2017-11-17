@@ -231,7 +231,9 @@ $(function() {
                     {% for orderDetail in Order.orderItems %}
                     <li>
                         <div class="ec-imageGrid">
-                            <div class="ec-imageGrid__img"><img src="{{ app.config.image_save_urlpath }}/{{ (orderDetail.product is null ? null : orderDetail.product.MainListImage)|no_image_product }}"></div>
+                            <div class="ec-imageGrid__img">
+                                <img src="{{ asset((orderDetail.product is null ? null : orderDetail.product.MainListImage)|no_image_product, 'save_image') }}">
+                            </div>
                             <div class="ec-imageGrid__content">
                                 <p>{{ orderDetail.productName }}</p>
                                 {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory1 %}
@@ -358,7 +360,7 @@ $(function() {
                         {% if Payment.visible %}
                             <label>{{ form_widget(child, {'attr': {'class': 'payment' }}) }}<span>{{ child.vars.label }}</span></label>
                             {% if Payment.payment_image is not null %}
-                                <img src="{{ app.config.image_save_urlpath }}/{{ Payment.payment_image }}">
+                                <img src="{{ asset(Payment.payment_image, 'save_image') }}">
                             {% endif %}
                         {% endif %}
                     {% endfor %}

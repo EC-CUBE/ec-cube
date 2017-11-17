@@ -23,8 +23,8 @@
 
 namespace Eccube;
 
-use Composer\Autoload\ClassLoader;
 use Doctrine\DBAL\Types\Type;
+use Eccube\Common\Constant;
 use Eccube\DI\AutoWiring\EntityEventAutowiring;
 use Eccube\DI\AutoWiring\FormExtensionAutoWiring;
 use Eccube\DI\AutoWiring\FormTypeAutoWiring;
@@ -32,6 +32,7 @@ use Eccube\DI\AutoWiring\QueryExtensionAutoWiring;
 use Eccube\DI\AutoWiring\RepositoryAutoWiring;
 use Eccube\DI\AutoWiring\RouteAutoWiring;
 use Eccube\DI\AutoWiring\ServiceAutoWiring;
+use Eccube\DI\DIServiceProvider;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\EventSubscriber\InitSubscriber;
@@ -41,7 +42,6 @@ use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
-use Eccube\DI\DIServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\ForwardOnlyServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
@@ -112,6 +112,9 @@ class Application extends \Silex\Application
 
         // init class loader.
         $this->initClassLoader();
+
+        // init request.
+        $this->initRequest();
     }
 
     /**
@@ -208,6 +211,25 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new \Silex\Provider\AssetServiceProvider(), [
+            // default package settings
+            'assets.version' => Constant::VERSION,
+            'assets.version_format' => '%s?v=%s',
+            'assets.base_path' => '/html/template/'.$this['config']['template_code'],
+            // additional packages settings
+            'assets.named_packages' => [
+                'admin' => [
+                    'version' => Constant::VERSION,
+                    'version_format' => '%s?v=%s',
+                    'base_path' => '/html/template/admin',
+                ],
+                'save_image' => ['base_path' => '/html/upload/save_image'],
+                'temp_image' => ['base_path' => '/html/upload/temp_image'],
+                'user_data' => ['base_path' => '/html/'.$this['config']['user_data_route']],
+                'plugin' => ['base_path' => '/html/plugin'],
+            ],
+        ]);
+
         $this->register(new \Saxulum\Validator\Provider\SaxulumValidatorProvider());
         $this->register(new MobileDetectServiceProvider());
         $this->register(new TwigLintServiceProvider());
@@ -268,8 +290,6 @@ class Application extends \Silex\Application
                 'auto_convert' => true
             ]
         ]);
-        // init proxy
-        $this->initProxy();
 
         $enabledPlugins = $this['orm.em']->getRepository('Eccube\Entity\Plugin')->findAllEnabled();
         $configRootDir = $this['config']['root_dir'];
@@ -327,7 +347,6 @@ class Application extends \Silex\Application
         $this->register(new QueriesServiceProvider());
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
         // ルーティングの設定
         // TODO EccubeRoutingServiceProviderに移植する.
@@ -437,7 +456,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
             'translator.cache_dir' => $this['debug'] ? null : $this['config']['root_dir'].'/app/cache/translator',
-            'locale_fallbacks' => ['ja', 'en'],
+            'locale_fallbacks' => [$this['config']['locale'], 'en'],
         ));
         $this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('php', new \Symfony\Component\Translation\Loader\PhpFileLoader());
@@ -458,7 +477,7 @@ class Application extends \Silex\Application
             'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => $this['config']['cookie_name'],
-                'cookie_path' => $this['config']['root_urlpath'] ?: '/',
+                'cookie_path' => $this['eccube.request']->getBasePath().'/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
                 'cookie_httponly' => true,
@@ -942,11 +961,12 @@ class Application extends \Silex\Application
         $this->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
-    /**
-     * ロードバランサー、プロキシサーバの設定を行う
-     */
-    public function initProxy()
+    protected function initRequest()
     {
+        // PUTやDELETEメソッドを有効にする
+        Request::enableHttpMethodParameterOverride();
+
+        // ロードバランサやプロキシの設定をする
         $config = $this['config'];
         if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
             $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($config) {
@@ -956,6 +976,8 @@ class Application extends \Silex\Application
         } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
             Request::setTrustedProxies($config['trusted_proxies']);
         }
+
+        $this['eccube.request'] = Request::createFromGlobals();
     }
 
     public function initializePlugin()

@@ -21,6 +21,7 @@
         "php": "^5.6 || ^7.0",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.0",
+        "composer/composer": "^1.5",
         "dflydev/doctrine-orm-service-provider": "^2.0",
         "doctrine/data-fixtures": "^1.2",
         "doctrine/migrations": "^1.5",
@@ -43,6 +44,7 @@
         "silex/silex": "^2.2",
         "silex/web-profiler": "^2.0",
         "swiftmailer/swiftmailer": "^5.4",
+        "symfony/asset": "^3.3",
         "symfony/class-loader": "^3.3",
         "symfony/config": "^3.3",
         "symfony/console": "^3.3",
@@ -112,6 +114,8 @@
         },
         "preferred-install": {
             "*": "dist"
-        }
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
     }
 }

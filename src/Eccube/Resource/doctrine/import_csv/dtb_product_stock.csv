@@ -1,4 +1,4 @@
-product_stock_id,product_class_id,creator_id,stock,create_date,update_date,discriminator_type
+id,product_class_id,creator_id,stock,create_date,update_date,discriminator_type
 "1","0",,,"2017-03-07 10:14:52","2017-03-07 10:14:52","productstock"
 "2","1",,,"2017-03-07 10:14:52","2017-03-07 10:14:52","productstock"
 "3","2",,,"2017-03-07 10:14:52","2017-03-07 10:14:52","productstock"

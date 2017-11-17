@@ -20,6 +20,10 @@ class FixtureServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['eccube.fixture.generator'] = function ($app) {
             return new FixtureGenerator($app);
         };
+
+        $app['eccube.fixture.generator.locale'] = $app->protect(function ($locale) use ($app) {
+            return new FixtureGenerator($app, $locale);
+        });
     }
 
     public function boot(Application $app)

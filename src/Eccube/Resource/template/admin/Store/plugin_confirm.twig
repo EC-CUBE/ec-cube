@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}プラグインインストール{% endblock %}
 
 {% block javascript %}
-    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/masonry.pkgd.min.js"></script>
+    <script src="{{ asset('assets/js/vendor/masonry.pkgd.min.js', 'admin') }}"></script>
     <script>
         $(function() {
             $('.grid').masonry({
@@ -84,7 +84,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row">
                         <div class="col-xs-12">
                             <span class="pull-right">
-                                <a class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.product_code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">インストール</a>
+                                <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.product_code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">インストール</a>
                                 <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">戻る</button>
                             </span>
                         </div>

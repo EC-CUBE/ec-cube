@@ -1,4 +1,4 @@
-csv_id,csv_type,creator_id,entity_name,field_name,reference_field_name,disp_name,rank,enable,create_date,update_date,discriminator_type
+id,csv_type,creator_id,entity_name,field_name,reference_field_name,disp_name,rank,enable,create_date,update_date,discriminator_type
 "1","1",,"Eccube\\Entity\\Product","id",,"商品ID","1","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "2","1",,"Eccube\\Entity\\Product","Status","id","公開ステータス(ID)","2","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"
 "3","1",,"Eccube\\Entity\\Product","Status","name","公開ステータス(名称)","3","1","2017-03-07 10:14:55","2017-03-07 10:14:55","csv"

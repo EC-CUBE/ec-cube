@@ -20,24 +20,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Process\Process;
 
 /**
  * @Route(service=OwnerStoreController::class)
@@ -57,6 +56,26 @@ class OwnerStoreController extends AbstractController
     protected $pluginRepository;
 
     /**
+     * @Inject(PluginService::class)
+     * @var PluginService
+     */
+    protected $pluginService;
+
+    /**
+     * @Inject(ComposerApiService::class)
+     * @var ComposerApiService
+     */
+    protected $composerService;
+
+    /**
+     * @var EntityManager
+     * @Inject("orm.em")
+     */
+    protected $em;
+
+    private static $vendorName = 'ec-cube';
+
+    /**
      * Owner's Store Plugin Installation Screen - Search function
      *
      * @Route("/{_admin}/store/plugin/search", name="admin_store_plugin_owners_search")
@@ -73,7 +92,7 @@ class OwnerStoreController extends AbstractController
         $promotionItems = array();
         $message = '';
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
@@ -118,7 +137,7 @@ class OwnerStoreController extends AbstractController
                         }
 
                         // Add plugin dependency
-                        $item['depend'] = $app['eccube.service.plugin']->getRequirePluginName($items, $item);
+                        $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
                     }
                     unset($item);
 
@@ -132,7 +151,7 @@ class OwnerStoreController extends AbstractController
                         $i++;
                     }
                 } else {
-                    $message = $data['error_code'] . ' : ' . $data['error_message'];
+                    $message = $data['error_code'].' : '.$data['error_message'];
                 }
             } else {
                 $success = 0;
@@ -161,7 +180,7 @@ class OwnerStoreController extends AbstractController
     public function doConfirm(Application $app, Request $request, $id)
     {
         // Owner's store communication
-        $url = $this->appConfig['owners_store_url'].'?method=list';
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
@@ -174,15 +193,11 @@ class OwnerStoreController extends AbstractController
 
         $pluginCode = $items[$index]['product_code'];
 
-        /**
-         * @var PluginService $pluginService
-         */
-        $pluginService =  $app['eccube.service.plugin'];
-        $plugin = $pluginService->buildInfo($items, $pluginCode);
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
 
         // Prevent infinity loop: A -> B -> A.
         $arrDependency[] = $plugin;
-        $arrDependency = $pluginService->getDependency($items, $plugin, $arrDependency);
+        $arrDependency = $this->pluginService->getDependency($items, $plugin, $arrDependency);
         // Unset first param
         unset($arrDependency[0]);
 
@@ -207,13 +222,13 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['owners_store_url'].'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);
         if ($data && isset($data['success'])) {
             $success = $data['success'];
-            if ($success == '1') {
+            if ($success == '1' && isset($data['item'])) {
                 foreach ($data['item'] as $item) {
                     if ($item['product_code'] == $pluginCode) {
                         $existFlg = true;
@@ -228,39 +243,109 @@ class OwnerStoreController extends AbstractController
 
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
+        $dependents = array();
+        $items = $data['item'];
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $dependents[] = $plugin;
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
 
-        try {
-            $execute = sprintf('cd %s &&', $this->appConfig['root_dir']);
-            $execute .= sprintf(' composer require ec-cube/%s', $pluginCode);
-
-            // 環境に依存せず動作させるために
-            // TODO: サーバー環境に応じて、この処理をやるやらないを切り替える必要あり
-            @ini_set('memory_limit', '1536M');
-            putenv('COMPOSER_HOME='.$app['config']['plugin_realdir'].'/.composer');
-
-            // Composerを他プロセスから動かしプラグインのインストール処理行う
-            // DBのデッドロックを回避するためトランザクションをリセットしておく
-            // TODO: トランザクションを利用しないアノテーションを作成し、コントローラに適用することで、この回避コードを削除する。
-            $app['orm.em']->commit();
-            $app['orm.em']->beginTransaction();
-
-            $install = new Process($execute);
-            $install->setTimeout(null);
-            $install->run();
-            if ($install->isSuccessful()) {
-                $app->addSuccess('admin.plugin.install.complete', 'admin');
-                $app->log(sprintf('Install %s plugin successful!', $pluginCode));
-
-                return $app->redirect($app->url('admin_store_plugin'));
+        // Unset first param
+        unset($dependents[0]);
+        $packageNames = '';
+        if (!empty($dependents)) {
+            foreach ($dependents as $item) {
+                $packageNames .= self::$vendorName.'/'.$item['product_code'].' ';
             }
-            $app->addError('admin.plugin.install.fail', 'admin');
-        } catch (Exception $exception) {
-            $app->addError($exception->getMessage(), 'admin');
-            $app->log($exception->getCode().' : '.$exception->getMessage());
         }
-        $app->log(sprintf('Install %s plugin fail!', $pluginCode));
+        $packageNames .= self::$vendorName.'/'.$pluginCode;
+        $return = $this->composerService->execRequire($packageNames);
+        if ($return) {
+            $app->addSuccess('admin.plugin.install.complete', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+        $app->addError('admin.plugin.install.fail', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
+    }
+
+    /**
+     * Do confirm page
+     *
+     * @Route("/{_admin}/store/plugin/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
+     * @Template("Store/plugin_confirm_uninstall.twig")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return array|RedirectResponse
+     */
+    public function deleteConfirm(Application $app, Plugin $Plugin)
+    {
+        // Owner's store communication
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
+        list($json, $info) = $this->getRequestApi($url, $app);
+        $data = json_decode($json, true);
+        $items = $data['item'];
+
+        // The plugin depends on it
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+
+            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $app->addError($message, 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+
+        // Check plugin in api
+        $pluginSource = $Plugin->getSource();
+        $index = array_search($pluginSource, array_column($items, 'product_id'));
+        if ($index === false) {
+            throw new NotFoundHttpException();
+        }
+
+        // Build info
+        $pluginCode = $Plugin->getCode();
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $plugin['id'] = $Plugin->getId();
+
+        return [
+            'item' => $plugin,
+        ];
+    }
+
+    /**
+     * New ways to remove plugin: using composer command
+     *
+     * @Method("DELETE")
+     * @Route("/{_admin}/store/plugin/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
+     */
+    public function apiUninstall(Application $app, Plugin $Plugin)
+    {
+        $this->isTokenValid($app);
+
+        if ($Plugin->getEnable() == Constant::ENABLED) {
+            $this->pluginService->disable($Plugin);
+        }
+        $pluginCode = $Plugin->getCode();
+        $packageName = self::$vendorName.'/'.$pluginCode;
+        $return = $this->composerService->execRemove($packageName);
+        if ($return) {
+            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+        } else {
+            $app->addError('admin.plugin.uninstall.error', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
     /**

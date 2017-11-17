@@ -48,7 +48,7 @@ class MailHistory extends AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="send_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -80,7 +80,7 @@ class MailHistory extends AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * })
      */
     private $Order;
@@ -90,7 +90,7 @@ class MailHistory extends AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id", nullable=true)
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $Creator;

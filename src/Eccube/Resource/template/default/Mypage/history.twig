@@ -70,10 +70,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="ec-imageGrid">
                                 <div class="ec-imageGrid__img">
                                     {% if OrderItem.Product is null %}
-                                        <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                        <img src="{{ asset(''|no_image_product, 'save_image') }}" />
                                     {% else %}
                                         <a href="{{ url('product_detail', { id : OrderItem.Product.id } ) }}">
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderItem.product.MainListImage|no_image_product }}" />
+                                            <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}" />
                                         </a>
                                     {% endif %}
                                 </div>
@@ -115,9 +115,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="ec-imageGrid">
                                     <div class="ec-imageGrid__img">
                                         {% if orderItem.product is null %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                            <img src="{{ asset(''|no_image_product, 'save_image') }}" />
                                         {% else %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ orderItem.product.MainListImage|no_image_product }}" alt="{{ orderItem.productName }}" />
+                                            <img src="{{ asset(orderItem.Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}" />
                                         {% endif %}
                                     </div>
                                     <div class="ec-imageGrid__content">

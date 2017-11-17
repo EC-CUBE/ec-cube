@@ -27,6 +27,7 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Tests\EccubeTestCase;
 use Faker\Factory as Faker;
 
 /**
@@ -37,9 +38,11 @@ use Faker\Factory as Faker;
 class Generator {
 
     protected $app;
+    protected $locale;
 
-    public function __construct($app) {
+    public function __construct($app, $locale = 'ja_JP') {
         $this->app = $app;
+        $this->locale = $locale;
     }
 
     /**
@@ -102,21 +105,22 @@ class Generator {
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setKana01($faker->lastKanaName)
-            ->setKana02($faker->firstKanaName)
+            ->setKana01(isset($faker->lastKanaName) ? $faker->lastKanaName : '')
+            ->setKana02(isset($faker->firstKanaName) ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01($faker->postcode1())
-            ->setZip02($faker->postcode2())
+            ->setZip01(isset($faker->postcode1) ? $faker->postcode1 : null)
+            ->setZip02(isset($faker->postcode2) ? $faker->postcode2 : null)
+            ->setZipcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
             ->setTel01($tel[0])
-            ->setTel02($tel[1])
-            ->setTel03($tel[2])
+            ->setTel02(isset($tel[1]) ? $tel[1] : null)
+            ->setTel03(isset($tel[2]) ? $tel[2] : null)
             ->setFax01($fax[0])
-            ->setFax02($fax[1])
-            ->setFax03($fax[2])
+            ->setFax02(isset($fax[1]) ? $fax[1] : null)
+            ->setFax03(isset($fax[2]) ? $fax[2] : null)
             ->setBirth($faker->dateTimeThisDecade())
             ->setSex($Sex)
             ->setJob($Job)
@@ -158,20 +162,21 @@ class Generator {
             ->setCustomer($Customer)
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setKana01($faker->lastKanaName)
-            ->setKana02($faker->firstKanaName)
+            ->setKana01(isset($faker->lastKanaName) ? $faker->lastKanaName : '')
+            ->setKana02(isset($faker->firstKanaName) ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
-            ->setZip01($faker->postcode1())
-            ->setZip02($faker->postcode2())
+            ->setZip01(isset($faker->postcode1) ? $faker->postcode1 : null)
+            ->setZip02(isset($faker->postcode2) ? $faker->postcode2 : null)
+            ->setZipcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
             ->setTel01($tel[0])
-            ->setTel02($tel[1])
-            ->setTel03($tel[2])
+            ->setTel02(isset($tel[1]) ? $tel[1] : null)
+            ->setTel03(isset($tel[2]) ? $tel[2] : null)
             ->setFax01($fax[0])
-            ->setFax02($fax[1])
-            ->setFax03($fax[2]);
+            ->setFax02(isset($fax[1]) ? $fax[1] : null)
+            ->setFax03(isset($fax[2]) ? $fax[2] : null);
         if ($is_nonmember) {
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
@@ -211,21 +216,22 @@ class Generator {
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setKana01($faker->lastKanaName)
-            ->setKana02($faker->firstKanaName)
+            ->setKana01(isset($faker->lastKanaName) ? $faker->lastKanaName : '')
+            ->setKana02(isset($faker->firstKanaName) ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01($faker->postcode1())
-            ->setZip02($faker->postcode2())
+            ->setZip01(isset($faker->postcode1) ? $faker->postcode1 : null)
+            ->setZip02(isset($faker->postcode2) ? $faker->postcode2 : null)
+            ->setZipcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
             ->setAddr02($faker->streetAddress)
             ->setTel01($tel[0])
-            ->setTel02($tel[1])
-            ->setTel03($tel[2])
+            ->setTel02(isset($tel[1]) ? $tel[1] : null)
+            ->setTel03(isset($tel[2]) ? $tel[2] : null)
             ->setFax01($fax[0])
-            ->setFax02($fax[1])
-            ->setFax03($fax[2]);
+            ->setFax02(isset($fax[1]) ? $fax[1] : null)
+            ->setFax03(isset($fax[2]) ? $fax[2] : null);
 
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress->setCustomer($Customer);
@@ -715,12 +721,63 @@ class Generator {
     /**
      * Faker を生成する.
      *
-     * @param string $locale ロケールを指定する. デフォルト ja_JP
      * @return Faker\Generator
      * @link https://github.com/fzaninotto/Faker
      */
-    protected function getFaker($locale = 'ja_JP')
+    protected function getFaker()
     {
-        return Faker::create($locale);
+        return new Generator_Faker(Faker::create($this->locale));
+    }
+}
+
+class Generator_Faker extends Faker
+{
+    private $faker;
+
+    public function __construct(\Faker\Generator $faker)
+    {
+        $this->faker = $faker;
+    }
+
+    public function __get($attribute)
+    {
+        return $this->faker->$attribute;
+    }
+
+    public function __call($method, $attributes)
+    {
+        return call_user_func_array([$this->faker, $method], $attributes);
+    }
+
+    public function __isset($name)
+    {
+        if (isset($this->faker->$name)) {
+            return true;
+        }
+
+        foreach ($this->faker->getProviders() as $provider) {
+            if (method_exists($provider, $name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+class Generator_FakerTest extends EccubeTestCase
+{
+    public function testKana01ShouldNotEmptyInJAJP()
+    {
+        $generator = new Generator($this->app, 'ja_JP');
+        $Customer = $generator->createCustomer();
+        self::assertNotEmpty($Customer->getKana01());
+    }
+
+    public function testKana01ShouldEmptyInENUS()
+    {
+        $generator = new Generator($this->app, 'en_US');
+        $Customer = $generator->createCustomer();
+        self::assertEmpty($Customer->getKana01());
     }
 }

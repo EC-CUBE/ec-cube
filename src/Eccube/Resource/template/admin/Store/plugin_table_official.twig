@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </a>
                                 {% endif %}
                                 /
-                                <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このプラグインを削除してもよろしいですか？">
+                                <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}">
                                     削除
                                 </a>
                             </td>

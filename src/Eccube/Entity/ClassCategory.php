@@ -48,7 +48,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="class_category_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -94,7 +94,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassName", inversedBy="ClassCategories")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="class_name_id", referencedColumnName="class_name_id")
+     *   @ORM\JoinColumn(name="class_name_id", referencedColumnName="id")
      * })
      */
     private $ClassName;
@@ -104,7 +104,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="member_id")
+     *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
      */
     private $Creator;

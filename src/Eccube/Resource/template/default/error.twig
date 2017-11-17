@@ -26,8 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
     <title>{{ error_title }}</title>
-    <link rel="icon" href="{{ app.config.front_urlpath }}/img/common/favicon.ico">
-    <link rel="stylesheet" href="{{ app.config.front_urlpath }}/assets/css/style.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}">
+    <link rel="icon" href="{{ asset('img/common/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.min.css') }}">
 </head>
 <body>
 <div class="ec-layoutRole">
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="ec-off4Grid">
             <div class="ec-off4Grid__cell">
                 <div style="font-size:100px;text-align:center;">
-                    <div class="ec-404Role__icon ec-icon"><img src="{{ app.config.front_urlpath }}/assets/icon/exclamation-pale.svg" alt="">
+                    <div class="ec-404Role__icon ec-icon"><img src="{{ asset('assets/icon/exclamation-pale.svg') }}" alt="">
                     </div>
                 </div>
                 <p class="ec-404Role__title ec-reportHeading">{{ error_title }}
