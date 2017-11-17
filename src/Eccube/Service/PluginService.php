@@ -91,10 +91,26 @@ class PluginService
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
     const VENDOR_NAME = 'ec-cube';
+
+    /**
+     * Plugin type/library of ec-cube
+     */
     const ECCUBE_PLUGIN_TYPE = 1;
+
+    /**
+     * Plugin type/library of other (except ec-cube)
+     */
     const OTHER_PLUGIN_TYPE = 2;
 
-    // ファイル指定してのプラグインインストール
+    /**
+     * ファイル指定してのプラグインインストール
+     *
+     * @param string $path   path to tar.gz/zip plugin file
+     * @param int    $source
+     * @return mixed
+     * @throws PluginException
+     * @throws \Exception
+     */
     public function install($path, $source = 0)
     {
         $pluginBaseDir = null;
@@ -102,30 +118,34 @@ class PluginService
         try {
             // プラグイン配置前に実施する処理
             $this->preInstall();
-
             $tmp = $this->createTempDir();
 
-            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            // 一旦テンポラリに展開
+            $this->unpackPluginArchive($path, $tmp);
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
             $event = $this->readYml($tmp.'/'.self::EVENT_YML);
-            $this->deleteFile($tmp); // テンポラリのファイルを削除
+            // テンポラリのファイルを削除
+            $this->deleteFile($tmp);
 
-            $this->checkSamePlugin($config['code']); // 重複していないかチェック
+            // 重複していないかチェック
+            $this->checkSamePlugin($config['code']);
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
-            $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
+            // 本来の置き場所を作成
+            $this->createPluginDir($pluginBaseDir);
 
-            $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
+            // 問題なければ本当のplugindirへ
+            $this->unpackPluginArchive($path, $pluginBaseDir);
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
-        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
-
+        } catch (\Exception $e) {
+            // インストーラがどんなExceptionを上げるかわからないので
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
         }
@@ -568,60 +588,60 @@ class PluginService
     /**
      * Do check dependency plugin
      *
-     * @param array $arrPlugin
-     * @param array $plugin
-     * @param array $arrDependency
+     * @param array $plugins    get from api
+     * @param array $plugin     format as plugin from api
+     * @param array $dependents template output
      * @return array|mixed
      */
-    public function getDependency($arrPlugin, $plugin, $arrDependency = array())
+    public function getDependency($plugins, $plugin, $dependents = array())
     {
         // Prevent infinity loop
-        if (empty($arrDependency)) {
-            $arrDependency[] = $plugin;
+        if (empty($dependents)) {
+            $dependents[] = $plugin;
         }
 
         // Check dependency
         if (!isset($plugin['require']) || empty($plugin['require'])) {
-            return $arrDependency;
+            return $dependents;
         }
 
         $require = $plugin['require'];
         // Check dependency
         foreach ($require as $pluginName => $version) {
-            $dependPlugin = $this->buildInfo($arrPlugin, $pluginName);
+            $dependPlugin = $this->buildInfo($plugins, $pluginName);
             // Prevent call self
             if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
                 continue;
             }
 
             // Check duplicate in dependency
-            $index = array_search($dependPlugin['product_code'], array_column($arrDependency, 'product_code'));
+            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
             if ($index === false) {
-                $arrDependency[] = $dependPlugin;
+                $dependents[] = $dependPlugin;
                 // Check child dependency
-                $arrDependency = $this->getDependency($arrPlugin, $dependPlugin, $arrDependency);
+                $dependents = $this->getDependency($plugins, $dependPlugin, $dependents);
             }
         }
 
-        return $arrDependency;
+        return $dependents;
     }
 
     /**
      * Get plugin information
      *
-     * @param array  $arrPlugin
+     * @param array  $plugins    get from api
      * @param string $pluginCode
      * @return array|null
      */
-    public function buildInfo($arrPlugin, $pluginCode)
+    public function buildInfo($plugins, $pluginCode)
     {
         $plugin = [];
-        $index = $this->checkPluginExist($arrPlugin, $pluginCode);
+        $index = $this->checkPluginExist($plugins, $pluginCode);
         if ($index === false) {
             return $plugin;
         }
         // Get target plugin in return of api
-        $plugin = $arrPlugin[$index];
+        $plugin = $plugins[$index];
 
         // Check the eccube version that the plugin supports.
         $plugin['is_supported_eccube_version'] = 0;
@@ -630,7 +650,7 @@ class PluginService
             $plugin['is_supported_eccube_version'] = 1;
         }
 
-        $plugin['depend'] = $this->getRequirePluginName($arrPlugin, $plugin);
+        $plugin['depend'] = $this->getRequirePluginName($plugins, $plugin);
 
         return $plugin;
     }
@@ -638,21 +658,21 @@ class PluginService
     /**
      * Get dependency name and version only
      *
-     * @param array $arrPlugin
-     * @param array $plugin
-     * @return mixed
+     * @param array $plugins get from api
+     * @param array $plugin  target plugin from api
+     * @return mixed format [0 => ['name' => pluginName1, 'version' => pluginVersion1], 1 => ['name' => pluginName2, 'version' => pluginVersion2]]
      */
-    public function getRequirePluginName($arrPlugin, $plugin)
+    public function getRequirePluginName($plugins, $plugin)
     {
         $depend = [];
         if (isset($plugin['require']) && !empty($plugin['require'])) {
             foreach ($plugin['require'] as $name => $version) {
-                $ret = $this->checkPluginExist($arrPlugin, $name);
+                $ret = $this->checkPluginExist($plugins, $name);
                 if ($ret === false) {
                     continue;
                 }
                 $depend[] = [
-                    'name' => $arrPlugin[$ret]['name'],
+                    'name' => $plugins[$ret]['name'],
                     'version' => $version,
                 ];
             }
@@ -665,7 +685,7 @@ class PluginService
      * Check require plugin in enable
      *
      * @param string $pluginCode
-     * @return array
+     * @return array plugin code
      */
     public function findRequirePluginNeedEnable($pluginCode)
     {
@@ -714,8 +734,8 @@ class PluginService
      * Find the other plugin that has requires on it.
      * Check in both dtb_plugin table and <PluginCode>/composer.json
      *
-     * @param $pluginCode
-     * @param bool $enableOnly
+     * @param string $pluginCode
+     * @param bool   $enableOnly
      * @return array plugin code
      */
     public function findDependentPlugin($pluginCode, $enableOnly = false)
@@ -811,17 +831,17 @@ class PluginService
     }
 
     /**
-     * @param $arrPlugin
-     * @param $pluginCode
+     * @param array  $plugins get from api
+     * @param string $pluginCode
      * @return false|int|string
      */
-    private function checkPluginExist($arrPlugin, $pluginCode)
+    private function checkPluginExist($plugins, $pluginCode)
     {
         if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array
-        $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
+        $index = array_search($pluginCode, array_column($plugins, 'product_code'));
 
         return $index;
     }

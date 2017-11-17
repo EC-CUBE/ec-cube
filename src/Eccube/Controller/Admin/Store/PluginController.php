@@ -435,7 +435,8 @@ class PluginController extends AbstractController
                 /** @var UploadedFile $formFile */
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $service->createTempDir();
-                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
+                // 拡張子を付けないとpharが動かないので付ける
+                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $tmpPath = $tmpDir.'/'.$tmpFile;
                 $pluginCode = $service->install($tmpPath);
