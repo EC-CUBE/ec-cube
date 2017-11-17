@@ -29,7 +29,6 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
@@ -298,7 +297,7 @@ class PluginService
             $p = new \Eccube\Entity\Plugin();
             // インストール直後はプラグインは有効にしない
             $p->setName($meta['name'])
-                ->setEnable(Constant::DISABLED)
+                ->setEnable(false)
                 ->setClassName(isset($meta['event']) ? $meta['event'] : '')
                 ->setVersion($meta['version'])
                 ->setSource($source)
@@ -407,7 +406,7 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->getEnable() === Constant::ENABLED) {
+        if ($temporary || $plugin->isEnable()) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
@@ -436,7 +435,7 @@ class PluginService
             Cache::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
-            $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
+            $plugin->setEnable($enable ? true : false);
             $em->persist($plugin);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');

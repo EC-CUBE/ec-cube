@@ -27,7 +27,6 @@ namespace Eccube\Controller;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\OrderItem;
@@ -240,8 +239,7 @@ class ShippingMultipleController extends AbstractShoppingController
                         $Shipping = new Shipping();
                         $Shipping
                             ->setFromCustomerAddress($CustomerAddress)
-                            ->setDelivery($Delivery)
-                            ->setDelFlg(Constant::DISABLED);
+                            ->setDelivery($Delivery);
 
                         $ShippingList[$cusAddId][$productTypeId] = $Shipping;
                     }

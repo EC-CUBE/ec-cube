@@ -70,7 +70,7 @@
                                                     {% endif %}
                                                 </li>
                                                 <li>
-                                                    {% if Page.edit_flg == constant('Eccube\\Entity\\Page::EDIT_FLG_USER') %}
+                                                    {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
                                                         <a href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このページを削除してもよろしいですか？">削除</a>
                                                     {% else %}
                                                         <a>削除</a>

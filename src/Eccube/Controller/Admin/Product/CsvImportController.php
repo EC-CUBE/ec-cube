@@ -278,7 +278,7 @@ class CsvImportController
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
                             $ProductClassOrg = $this->createProductClass($row, $Product, $app, $data);
-                            if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                 if ($row['送料'] != '') {
                                     $deliveryFee = str_replace(',', '', $row['送料']);
                                     if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -364,7 +364,7 @@ class CsvImportController
                                 ) {
                                     $this->updateProductClass($row, $Product, $pc, $app, $data);
 
-                                    if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                                    if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -435,7 +435,7 @@ class CsvImportController
                                     }
                                     $ProductClass = $this->createProductClass($row, $Product, $app, $data, $ClassCategory1, $ClassCategory2);
 
-                                    if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                                    if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -919,7 +919,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
             if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
-                $ProductClass->setStockUnlimited(Constant::DISABLED);
+                $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
                     $this->addErrors(($data->key() + 1) . '行目の在庫数が設定されていません。');
@@ -933,7 +933,7 @@ class CsvImportController
                 }
 
             } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
-                $ProductClass->setStockUnlimited(Constant::ENABLED);
+                $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
@@ -983,7 +983,7 @@ class CsvImportController
         $ProductClass->setProductStock($ProductStock);
         $ProductStock->setProductClass($ProductClass);
 
-        if (!$ProductClass->getStockUnlimited()) {
+        if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
@@ -1071,7 +1071,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
             if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
-                $ProductClass->setStockUnlimited(Constant::DISABLED);
+                $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
                     $this->addErrors(($data->key() + 1) . '行目の在庫数が設定されていません。');
@@ -1085,7 +1085,7 @@ class CsvImportController
                 }
 
             } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
-                $ProductClass->setStockUnlimited(Constant::ENABLED);
+                $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
@@ -1123,7 +1123,7 @@ class CsvImportController
 
         $ProductStock = $ProductClass->getProductStock();
 
-        if (!$ProductClass->getStockUnlimited()) {
+        if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定

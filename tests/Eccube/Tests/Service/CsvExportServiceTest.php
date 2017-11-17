@@ -2,9 +2,7 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Service\CsvExportService;
 use org\bovigo\vfs\vfsStream;
 
 class CsvExportServiceTest extends AbstractServiceTestCase
@@ -26,7 +24,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 
         $Csv = $this->app['eccube.repository.csv']->find(1);
         $Csv->setRank(1);
-        $Csv->setEnableFlg(Constant::DISABLED);
+        $Csv->setEnable(false);
         $this->app['orm.em']->flush();
     }
 
@@ -37,7 +35,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 
         $Csv = $this->app['eccube.repository.csv']->findBy(
             array('CsvType' => CsvType::CSV_TYPE_PRODUCT,
-                  'enable_flg' => Constant::ENABLED
+                  'enable' => true,
             )
         );
         $arrHeader = explode(',', file_get_contents($this->url));

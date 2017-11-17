@@ -244,60 +244,60 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $delivery_free_quantity;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_multiple_shipping", type="smallint", nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="option_multiple_shipping", type="boolean", options={"default":false})
      */
-    private $option_multiple_shipping = 0;
+    private $option_multiple_shipping = false;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_mypage_order_status_display", type="smallint", nullable=true, options={"unsigned":true,"default":1})
+     * @ORM\Column(name="option_mypage_order_status_display", type="boolean", options={"default":true})
      */
-    private $option_mypage_order_status_display = 1;
+    private $option_mypage_order_status_display = true;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="nostock_hidden", type="smallint", nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="nostock_hidden", type="boolean", options={"default":false})
      */
-    private $nostock_hidden = 0;
+    private $nostock_hidden = false;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_favorite_product", type="smallint", nullable=true, options={"unsigned":true,"default":1})
+     * @ORM\Column(name="option_favorite_product", type="boolean", options={"default":true})
      */
-    private $option_favorite_product = 1;
+    private $option_favorite_product = true;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_product_delivery_fee", type="smallint", nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="option_product_delivery_fee", type="boolean", options={"default":false})
      */
-    private $option_product_delivery_fee = 0;
+    private $option_product_delivery_fee = false;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_product_tax_rule", type="smallint", nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="option_product_tax_rule", type="boolean", options={"default":false})
      */
-    private $option_product_tax_rule = 0;
+    private $option_product_tax_rule = false;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_customer_activate", type="smallint", nullable=true, options={"unsigned":true,"default":1})
+     * @ORM\Column(name="option_customer_activate", type="boolean", options={"default":true})
      */
-    private $option_customer_activate = 1;
+    private $option_customer_activate = true;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="option_remember_me", type="smallint", nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="option_remember_me", type="boolean", options={"default":false})
      */
-    private $option_remember_me = 0;
+    private $option_remember_me = false;
 
     /**
      * @var string|null
@@ -1014,11 +1014,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionMultipleShipping.
      *
-     * @param int|null $optionMultipleShipping
+     * @param boolean $optionMultipleShipping
      *
      * @return BaseInfo
      */
-    public function setOptionMultipleShipping($optionMultipleShipping = null)
+    public function setOptionMultipleShipping($optionMultipleShipping)
     {
         $this->option_multiple_shipping = $optionMultipleShipping;
 
@@ -1028,9 +1028,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionMultipleShipping.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionMultipleShipping()
+    public function isOptionMultipleShipping()
     {
         return $this->option_multiple_shipping;
     }
@@ -1038,11 +1038,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionMypageOrderStatusDisplay.
      *
-     * @param int|null $optionMypageOrderStatusDisplay
+     * @param boolean $optionMypageOrderStatusDisplay
      *
      * @return BaseInfo
      */
-    public function setOptionMypageOrderStatusDisplay($optionMypageOrderStatusDisplay = null)
+    public function setOptionMypageOrderStatusDisplay($optionMypageOrderStatusDisplay)
     {
         $this->option_mypage_order_status_display = $optionMypageOrderStatusDisplay;
 
@@ -1052,9 +1052,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionMypageOrderStatusDisplay.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionMypageOrderStatusDisplay()
+    public function isOptionMypageOrderStatusDisplay()
     {
         return $this->option_mypage_order_status_display;
     }
@@ -1062,11 +1062,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set nostockHidden.
      *
-     * @param int|null $nostockHidden
+     * @param integer $nostockHidden
      *
      * @return BaseInfo
      */
-    public function setNostockHidden($nostockHidden = null)
+    public function setNostockHidden($nostockHidden)
     {
         $this->nostock_hidden = $nostockHidden;
 
@@ -1076,9 +1076,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get nostockHidden.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getNostockHidden()
+    public function isNostockHidden()
     {
         return $this->nostock_hidden;
     }
@@ -1086,11 +1086,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionFavoriteProduct.
      *
-     * @param int|null $optionFavoriteProduct
+     * @param boolean $optionFavoriteProduct
      *
      * @return BaseInfo
      */
-    public function setOptionFavoriteProduct($optionFavoriteProduct = null)
+    public function setOptionFavoriteProduct($optionFavoriteProduct)
     {
         $this->option_favorite_product = $optionFavoriteProduct;
 
@@ -1100,9 +1100,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionFavoriteProduct.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionFavoriteProduct()
+    public function isOptionFavoriteProduct()
     {
         return $this->option_favorite_product;
     }
@@ -1110,11 +1110,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionProductDeliveryFee.
      *
-     * @param int|null $optionProductDeliveryFee
+     * @param boolean $optionProductDeliveryFee
      *
      * @return BaseInfo
      */
-    public function setOptionProductDeliveryFee($optionProductDeliveryFee = null)
+    public function setOptionProductDeliveryFee($optionProductDeliveryFee)
     {
         $this->option_product_delivery_fee = $optionProductDeliveryFee;
 
@@ -1124,9 +1124,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionProductDeliveryFee.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionProductDeliveryFee()
+    public function isOptionProductDeliveryFee()
     {
         return $this->option_product_delivery_fee;
     }
@@ -1134,11 +1134,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionProductTaxRule.
      *
-     * @param int|null $optionProductTaxRule
+     * @param boolean $optionProductTaxRule
      *
      * @return BaseInfo
      */
-    public function setOptionProductTaxRule($optionProductTaxRule = null)
+    public function setOptionProductTaxRule($optionProductTaxRule)
     {
         $this->option_product_tax_rule = $optionProductTaxRule;
 
@@ -1148,9 +1148,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionProductTaxRule.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionProductTaxRule()
+    public function isOptionProductTaxRule()
     {
         return $this->option_product_tax_rule;
     }
@@ -1158,11 +1158,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionCustomerActivate.
      *
-     * @param int|null $optionCustomerActivate
+     * @param boolean $optionCustomerActivate
      *
      * @return BaseInfo
      */
-    public function setOptionCustomerActivate($optionCustomerActivate = null)
+    public function setOptionCustomerActivate($optionCustomerActivate)
     {
         $this->option_customer_activate = $optionCustomerActivate;
 
@@ -1172,9 +1172,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionCustomerActivate.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionCustomerActivate()
+    public function isOptionCustomerActivate()
     {
         return $this->option_customer_activate;
     }
@@ -1182,11 +1182,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionRememberMe.
      *
-     * @param int|null $optionRememberMe
+     * @param boolean $optionRememberMe
      *
      * @return BaseInfo
      */
-    public function setOptionRememberMe($optionRememberMe = null)
+    public function setOptionRememberMe($optionRememberMe)
     {
         $this->option_remember_me = $optionRememberMe;
 
@@ -1196,9 +1196,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionRememberMe.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getOptionRememberMe()
+    public function isOptionRememberMe()
     {
         return $this->option_remember_me;
     }

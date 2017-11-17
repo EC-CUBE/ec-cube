@@ -2,13 +2,11 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\ReflectionUtil;
 use org\bovigo\vfs\vfsStream;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * BlockRepository test cases.
@@ -32,8 +30,8 @@ class BlockRepositoryTest extends EccubeTestCase
             $Block
                 ->setName('block-'.$i)
                 ->setFileName('block/block-'.$i)
-                ->setLogicFlg(1)
-                ->setDeletableFlg(0)
+                ->setLogical(true)
+                ->setDeletable(false)
                 ->setDeviceType($this->DeviceType);
             $this->app['orm.em']->persist($Block);
             $this->app['orm.em']->flush(); // ここで flush しないと, MySQL で ID が取得できない

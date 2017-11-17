@@ -243,8 +243,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             'rule_max' => $rule_max,
             'payment_image' => 'abc.png',
             'payment_image_file' => 'abc.png',
-            'charge_flg' => '1',
-            'fix_flg' => '1'
+            'fixed' => true,
         );
         return $form;
     }

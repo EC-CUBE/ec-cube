@@ -90,7 +90,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $Page = new Page();
         $Page->setDeviceType($DeviceType);
-        $Page->setEditFlg(Page::EDIT_FLG_USER);
+        $Page->setEditType(Page::EDIT_TYPE_USER);
         $Page->setUrl('dummy');
         $this->app['orm.em']->persist($Page);
         $this->app['orm.em']->flush();
