@@ -27,9 +27,9 @@ class MailHistoryRepositoryTest extends EccubeTestCase
         $MailTemplate = new MailTemplate();
         $MailTemplate
             ->setName($faker->word)
-            ->setHeader($faker->word)
-            ->setFooter($faker->word)
-            ->setSubject($faker->word)
+            ->setMailHeader($faker->word)
+            ->setMailFooter($faker->word)
+            ->setMailSubject($faker->word)
             ->setCreator($this->Member);
         $this->app['orm.em']->persist($MailTemplate);
         $this->app['orm.em']->flush();
@@ -40,7 +40,7 @@ class MailHistoryRepositoryTest extends EccubeTestCase
                 ->setSendDate(new \DateTime())
                 ->setMailBody($faker->realText())
                 ->setCreator($this->Member)
-                ->setSubject('subject-'.$i);
+                ->setMailSubject('mail_subject-'.$i);
 
             $this->app['orm.em']->persist($this->MailHistories[$i]);
             $this->app['orm.em']->flush();
@@ -52,8 +52,8 @@ class MailHistoryRepositoryTest extends EccubeTestCase
         try {
             $MailHistory = $this->app['eccube.repository.mail_history']->getByCustomerAndId($this->Customer, $this->MailHistories[0]->getId());
 
-            $this->expected = 'subject-0';
-            $this->actual = $MailHistory->getSubject();
+            $this->expected = 'mail_subject-0';
+            $this->actual = $MailHistory->getMailSubject();
         } catch (\Doctrine\ORM\NoResultException $e) {
             $this->fail($e->getMessage());
         }

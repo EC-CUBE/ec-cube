@@ -174,7 +174,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% for MailHistory in Order.MailHistories %}
                             <div class="ec-orderMail">
                                 <div class="ec-orderMail__time">{{ MailHistory.send_date|date("Y/m/d H:i:s") }}</div>
-                                <div class="ec-orderMail__link"><a>{{ MailHistory.subject }}</a></div>
+                                <div class="ec-orderMail__link"><a>{{ MailHistory.mail_subject }}</a></div>
                                 <pre class="ec-orderMail__body" style="display: none;">
                                     {{ MailHistory.mail_body|nl2br }}
                                     <p class="ec-orderMail__close"><a>閉じる</a></p></pre>

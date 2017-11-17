@@ -265,7 +265,7 @@ class Generator {
         $Member = $this->app['eccube.repository.member']->find(2);
         $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
-        $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
+        $DeliveryDurations = $this->app['eccube.repository.delivery_duration']->findAll();
 
         $Product = new Product();
         if (is_null($product_name)) {
@@ -338,7 +338,7 @@ class Generator {
                 ->setProductType($ProductType)
                 ->setStockUnlimited(false)
                 ->setPrice02($faker->randomNumber(5))
-                ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
+                ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
                 ->setVisible(true);
@@ -382,7 +382,7 @@ class Generator {
             ->setProduct($Product)
             ->setProductType($ProductType)
             ->setPrice02($faker->randomNumber(5))
-            ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
+            ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())

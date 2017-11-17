@@ -245,7 +245,7 @@ class ShopMasterType extends AbstractType
             ))
 
             // 商品設定
-            ->add('nostock_hidden', ChoiceType::class, array(
+            ->add('option_nostock_hidden', ChoiceType::class, array(
                 'label' => '在庫切れ商品を非表示にする',
                 'choices' => array_flip(array(
                     '0' => '無効',

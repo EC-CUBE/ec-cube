@@ -312,22 +312,22 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    public function testGetFormDeliveryDates()
+    public function testGetFormDeliveryDurations()
     {
-        $DeliveryDate = $this->app['eccube.repository.delivery_date']->find(1);
+        $DeliveryDuration = $this->app['eccube.repository.delivery_duration']->find(1);
         $Order = $this->createOrder($this->Customer);
         foreach ($Order->getOrderItems() as $Item) {
             if (!$Item->isProduct()) {
                 continue;
             }
-            $Item->getProductClass()->setDeliveryDate($DeliveryDate);
+            $Item->getProductClass()->setDeliveryDuration($DeliveryDuration);
         }
         $this->app['orm.em']->flush();
 
-        $DeliveryDates = $this->app['eccube.service.shopping']->getFormDeliveryDates($Order);
+        $DeliveryDurations = $this->app['eccube.service.shopping']->getFormDeliveryDurations($Order);
 
         $this->expected = $this->app['config']['deliv_date_end_max'];
-        $this->actual = count($DeliveryDates);
+        $this->actual = count($DeliveryDurations);
         $this->verify();
 
         $dates = array();
@@ -338,7 +338,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
 
         $this->expected = $dates;
-        $this->actual = $DeliveryDates;
+        $this->actual = $DeliveryDurations;
         $this->verify();
     }
 
@@ -346,10 +346,10 @@ class ShoppingServiceTest extends AbstractServiceTestCase
      * #1732 のテストケース
      * @link https://github.com/EC-CUBE/ec-cube/issues/1732
      */
-    public function testGetFormDeliveryDatesWithStockPending()
+    public function testGetFormDeliveryDurationsWithStockPending()
     {
-        $DeliveryDate1 = $this->app['eccube.repository.delivery_date']->find(1);
-        $DeliveryDate9 = $this->app['eccube.repository.delivery_date']->find(9);
+        $DeliveryDuration1 = $this->app['eccube.repository.delivery_duration']->find(1);
+        $DeliveryDuration9 = $this->app['eccube.repository.delivery_duration']->find(9);
         $Order = $this->createOrder($this->Customer);
         $i = 0;
         foreach ($Order->getOrderItems() as $Item) {
@@ -358,19 +358,19 @@ class ShoppingServiceTest extends AbstractServiceTestCase
             }
             if ($i === 0) {
                 // 1件のみ「お取り寄せ」に設定する
-                $Item->getProductClass()->setDeliveryDate($DeliveryDate9);
+                $Item->getProductClass()->setDeliveryDuration($DeliveryDuration9);
             } else {
-                $Item->getProductClass()->setDeliveryDate($DeliveryDate1);
+                $Item->getProductClass()->setDeliveryDuration($DeliveryDuration1);
             }
 
             $i++;
         }
         $this->app['orm.em']->flush();
 
-        $DeliveryDates = $this->app['eccube.service.shopping']->getFormDeliveryDates($Order);
+        $DeliveryDurations = $this->app['eccube.service.shopping']->getFormDeliveryDurations($Order);
 
         $this->expected = 0;
-        $this->actual = count($DeliveryDates);
+        $this->actual = count($DeliveryDurations);
         $this->verify('お取り寄せを含む場合はお届け日選択不可');
     }
 
