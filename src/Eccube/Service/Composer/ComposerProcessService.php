@@ -53,6 +53,12 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     /**
+     * @Inject(SystemService::class)
+     * @var SystemService
+     */
+    protected $systemService;
+
+    /**
      * This function to install a plugin by composer require
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
