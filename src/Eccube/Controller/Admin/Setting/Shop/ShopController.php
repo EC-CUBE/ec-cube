@@ -112,11 +112,11 @@ class ShopController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.shop.save.complete', 'admin');
+                $app->addSuccess('admin.flash.register_completed', 'admin');
 
                 return $app->redirect($app->url('admin_setting_shop'));
             }
-            $app->addError('admin.shop.save.error', 'admin');
+            $app->addError('admin.flash.register_failed', 'admin');
         }
 
         $this->twigEnvironment->addGlobal('BaseInfo', $CloneInfo);

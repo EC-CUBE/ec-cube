@@ -136,20 +136,20 @@
     ],
     [
         'id' => 'setting',
-        'name' => '設定',
+        'name' => 'admin.nav.setting',
         'has_child' => true,
         'icon' => 'cb-cog',
         'child' =>
             [
                 [
                     'id' => 'shop',
-                    'name' => '基本情報設定',
+                    'name' => 'admin.nav.setting_shop',
                     'has_child' => true,
                     'child' =>
                         [
                             [
                                 'id' => 'shop_index',
-                                'name' => 'ショップマスター',
+                                'name' => 'admin.nav.setting_shop_shop_master',
                                 'url' => 'admin_setting_shop',
                             ],
                             [
