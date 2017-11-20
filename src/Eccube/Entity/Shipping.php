@@ -51,119 +51,119 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="shipping_name01", type="string", length=255)
+     * @ORM\Column(name="name01", type="string", length=255)
      */
     private $name01;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shipping_name02", type="string", length=255)
+     * @ORM\Column(name="name02", type="string", length=255)
      */
     private $name02;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shipping_kana01", type="string", length=255)
+     * @ORM\Column(name="kana01", type="string", length=255)
      */
     private $kana01;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shipping_kana02", type="string", length=255)
+     * @ORM\Column(name="kana02", type="string", length=255)
      */
     private $kana02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_company_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
      */
     private $company_name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_tel01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
      */
     private $tel01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_tel02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
      */
     private $tel02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_tel03", type="string", length=4, nullable=true)
+     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
      */
     private $tel03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_fax01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
      */
     private $fax01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_fax02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
      */
     private $fax02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_fax03", type="string", length=4, nullable=true)
+     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
      */
     private $fax03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_zip01", type="string", length=3, nullable=true)
+     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
      */
     private $zip01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_zip02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
      */
     private $zip02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_zipcode", type="string", length=7, nullable=true)
+     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
      */
     private $zipcode;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_addr01", type="string", length=255, nullable=true)
+     * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
      */
     private $addr01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_addr02", type="string", length=255, nullable=true)
+     * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
      */
     private $addr02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_delivery_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="delivery_name", type="string", length=255, nullable=true)
      */
     private $shipping_delivery_name;
 
@@ -184,30 +184,30 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_delivery_time", type="string", length=255, nullable=true)
+     * @ORM\Column(name="delivery_time", type="string", length=255, nullable=true)
      */
     private $shipping_delivery_time;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="shipping_delivery_date", type="datetimetz", nullable=true)
+     * @ORM\Column(name="delivery_date", type="datetimetz", nullable=true)
      */
     private $shipping_delivery_date;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping_delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
+     * @ORM\Column(name="delivery_fee", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
      */
     private $shipping_delivery_fee = 0;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="shipping_commit_date", type="datetimetz", nullable=true)
+     * @ORM\Column(name="shipping_date", type="datetimetz", nullable=true)
      */
-    private $shipping_commit_date;
+    private $shipping_date;
 
     /**
      * @var string
@@ -215,13 +215,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="tracking_number", type="string", length=255, nullable=true)
      */
     private $tracking_number;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="commit_date", type="datetimetz", nullable=true)
-     */
-    private $commit_date;
 
     /**
      * @var string
@@ -866,27 +859,27 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set shippingCommitDate.
+     * Set shippingDate.
      *
-     * @param \DateTime|null $shippingCommitDate
+     * @param \DateTime|null $shippingDate
      *
      * @return Shipping
      */
-    public function setShippingCommitDate($shippingCommitDate = null)
+    public function setShippingDate($shippingDate = null)
     {
-        $this->shipping_commit_date = $shippingCommitDate;
+        $this->shipping_date = $shippingDate;
 
         return $this;
     }
 
     /**
-     * Get shippingCommitDate.
+     * Get shippingDate.
      *
      * @return \DateTime|null
      */
-    public function getShippingCommitDate()
+    public function getShippingDate()
     {
-        return $this->shipping_commit_date;
+        return $this->shipping_date;
     }
 
     /**
@@ -959,30 +952,6 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
-    }
-
-    /**
-     * Set commitDate.
-     *
-     * @param \DateTime|null $commitDate
-     *
-     * @return Order
-     */
-    public function setCommitDate($commitDate = null)
-    {
-        $this->commit_date = $commitDate;
-
-        return $this;
-    }
-
-    /**
-     * Get commitDate.
-     *
-     * @return \DateTime|null
-     */
-    public function getCommitDate()
-    {
-        return $this->commit_date;
     }
 
     /**

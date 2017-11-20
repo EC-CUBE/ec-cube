@@ -55,177 +55,177 @@ class Help extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_company", type="string", length=255, nullable=true)
+     * @ORM\Column(name="company", type="string", length=255, nullable=true)
      */
-    private $law_company;
+    private $company;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_manager", type="string", length=255, nullable=true)
+     * @ORM\Column(name="manager", type="string", length=255, nullable=true)
      */
-    private $law_manager;
+    private $manager;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_zip01", type="string", length=3, nullable=true)
+     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
      */
-    private $law_zip01;
+    private $zip01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_zip02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
      */
-    private $law_zip02;
+    private $zip02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_zipcode", type="string", length=7, nullable=true)
+     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
      */
-    private $law_zipcode;
+    private $zipcode;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_addr01", type="string", length=255, nullable=true)
+     * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
      */
-    private $law_addr01;
+    private $addr01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_addr02", type="string", length=255, nullable=true)
+     * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
      */
-    private $law_addr02;
+    private $addr02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_tel01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
      */
-    private $law_tel01;
+    private $tel01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_tel02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
      */
-    private $law_tel02;
+    private $tel02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_tel03", type="string", length=4, nullable=true)
+     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
      */
-    private $law_tel03;
+    private $tel03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_fax01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
      */
-    private $law_fax01;
+    private $fax01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_fax02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
      */
-    private $law_fax02;
+    private $fax02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_fax03", type="string", length=4, nullable=true)
+     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
      */
-    private $law_fax03;
+    private $fax03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
-    private $law_email;
+    private $email;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_url", type="string", length=4000, nullable=true)
+     * @ORM\Column(name="url", type="string", length=4000, nullable=true)
      */
-    private $law_url;
+    private $url;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term01", type="text", nullable=true)
+     * @ORM\Column(name="term01", type="text", nullable=true)
      */
-    private $law_term01;
+    private $term01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term02", type="text", nullable=true)
+     * @ORM\Column(name="term02", type="text", nullable=true)
      */
-    private $law_term02;
+    private $term02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term03", type="text", nullable=true)
+     * @ORM\Column(name="term03", type="text", nullable=true)
      */
-    private $law_term03;
+    private $term03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term04", type="text", nullable=true)
+     * @ORM\Column(name="term04", type="text", nullable=true)
      */
-    private $law_term04;
+    private $term04;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term05", type="text", nullable=true)
+     * @ORM\Column(name="term05", type="text", nullable=true)
      */
-    private $law_term05;
+    private $term05;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term06", type="text", nullable=true)
+     * @ORM\Column(name="term06", type="text", nullable=true)
      */
-    private $law_term06;
+    private $term06;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term07", type="text", nullable=true)
+     * @ORM\Column(name="term07", type="text", nullable=true)
      */
-    private $law_term07;
+    private $term07;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term08", type="text", nullable=true)
+     * @ORM\Column(name="term08", type="text", nullable=true)
      */
-    private $law_term08;
+    private $term08;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term09", type="text", nullable=true)
+     * @ORM\Column(name="term09", type="text", nullable=true)
      */
-    private $law_term09;
+    private $term09;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="law_term10", type="text", nullable=true)
+     * @ORM\Column(name="term10", type="text", nullable=true)
      */
-    private $law_term10;
+    private $term10;
 
     /**
      * @var \DateTime
@@ -249,7 +249,7 @@ class Help extends \Eccube\Entity\AbstractEntity
      *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
      */
-    private $LawCountry;
+    private $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
@@ -259,7 +259,7 @@ class Help extends \Eccube\Entity\AbstractEntity
      *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      */
-    private $LawPref;
+    private $Pref;
 
 
     /**
@@ -297,603 +297,603 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set lawCompany.
+     * Set company.
      *
-     * @param string|null $lawCompany
+     * @param string|null $company
      *
      * @return Help
      */
-    public function setLawCompany($lawCompany = null)
+    public function setCompany($company = null)
     {
-        $this->law_company = $lawCompany;
+        $this->company = $company;
 
         return $this;
     }
 
     /**
-     * Get lawCompany.
+     * Get company.
      *
      * @return string|null
      */
-    public function getLawCompany()
+    public function getCompany()
     {
-        return $this->law_company;
+        return $this->company;
     }
 
     /**
-     * Set lawManager.
+     * Set manager.
      *
-     * @param string|null $lawManager
+     * @param string|null $manager
      *
      * @return Help
      */
-    public function setLawManager($lawManager = null)
+    public function setManager($manager = null)
     {
-        $this->law_manager = $lawManager;
+        $this->manager = $manager;
 
         return $this;
     }
 
     /**
-     * Get lawManager.
+     * Get manager.
      *
      * @return string|null
      */
-    public function getLawManager()
+    public function getManager()
     {
-        return $this->law_manager;
+        return $this->manager;
     }
 
     /**
-     * Set lawZip01.
+     * Set zip01.
      *
-     * @param string|null $lawZip01
+     * @param string|null $zip01
      *
      * @return Help
      */
-    public function setLawZip01($lawZip01 = null)
+    public function setZip01($zip01 = null)
     {
-        $this->law_zip01 = $lawZip01;
+        $this->zip01 = $zip01;
 
         return $this;
     }
 
     /**
-     * Get lawZip01.
+     * Get zip01.
      *
      * @return string|null
      */
-    public function getLawZip01()
+    public function getZip01()
     {
-        return $this->law_zip01;
+        return $this->zip01;
     }
 
     /**
-     * Set lawZip02.
+     * Set zip02.
      *
-     * @param string|null $lawZip02
+     * @param string|null $zip02
      *
      * @return Help
      */
-    public function setLawZip02($lawZip02 = null)
+    public function setZip02($zip02 = null)
     {
-        $this->law_zip02 = $lawZip02;
+        $this->zip02 = $zip02;
 
         return $this;
     }
 
     /**
-     * Get lawZip02.
+     * Get zip02.
      *
      * @return string|null
      */
-    public function getLawZip02()
+    public function getZip02()
     {
-        return $this->law_zip02;
+        return $this->zip02;
     }
 
     /**
-     * Set lawZipcode.
+     * Set zipcode.
      *
-     * @param string|null $lawZipcode
+     * @param string|null $zipcode
      *
      * @return Help
      */
-    public function setLawZipcode($lawZipcode = null)
+    public function setZipcode($zipcode = null)
     {
-        $this->law_zipcode = $lawZipcode;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
 
     /**
-     * Get lawZipcode.
+     * Get zipcode.
      *
      * @return string|null
      */
-    public function getLawZipcode()
+    public function getZipcode()
     {
-        return $this->law_zipcode;
+        return $this->zipcode;
     }
 
     /**
-     * Set lawAddr01.
+     * Set addr01.
      *
-     * @param string|null $lawAddr01
+     * @param string|null $addr01
      *
      * @return Help
      */
-    public function setLawAddr01($lawAddr01 = null)
+    public function setAddr01($addr01 = null)
     {
-        $this->law_addr01 = $lawAddr01;
+        $this->addr01 = $addr01;
 
         return $this;
     }
 
     /**
-     * Get lawAddr01.
+     * Get addr01.
      *
      * @return string|null
      */
-    public function getLawAddr01()
+    public function getAddr01()
     {
-        return $this->law_addr01;
+        return $this->addr01;
     }
 
     /**
-     * Set lawAddr02.
+     * Set addr02.
      *
-     * @param string|null $lawAddr02
+     * @param string|null $addr02
      *
      * @return Help
      */
-    public function setLawAddr02($lawAddr02 = null)
+    public function setAddr02($addr02 = null)
     {
-        $this->law_addr02 = $lawAddr02;
+        $this->addr02 = $addr02;
 
         return $this;
     }
 
     /**
-     * Get lawAddr02.
+     * Get addr02.
      *
      * @return string|null
      */
-    public function getLawAddr02()
+    public function getAddr02()
     {
-        return $this->law_addr02;
+        return $this->addr02;
     }
 
     /**
-     * Set lawTel01.
+     * Set tel01.
      *
-     * @param string|null $lawTel01
+     * @param string|null $tel01
      *
      * @return Help
      */
-    public function setLawTel01($lawTel01 = null)
+    public function setTel01($tel01 = null)
     {
-        $this->law_tel01 = $lawTel01;
+        $this->tel01 = $tel01;
 
         return $this;
     }
 
     /**
-     * Get lawTel01.
+     * Get tel01.
      *
      * @return string|null
      */
-    public function getLawTel01()
+    public function getTel01()
     {
-        return $this->law_tel01;
+        return $this->tel01;
     }
 
     /**
-     * Set lawTel02.
+     * Set tel02.
      *
-     * @param string|null $lawTel02
+     * @param string|null $tel02
      *
      * @return Help
      */
-    public function setLawTel02($lawTel02 = null)
+    public function setTel02($tel02 = null)
     {
-        $this->law_tel02 = $lawTel02;
+        $this->tel02 = $tel02;
 
         return $this;
     }
 
     /**
-     * Get lawTel02.
+     * Get tel02.
      *
      * @return string|null
      */
-    public function getLawTel02()
+    public function getTel02()
     {
-        return $this->law_tel02;
+        return $this->tel02;
     }
 
     /**
-     * Set lawTel03.
+     * Set tel03.
      *
-     * @param string|null $lawTel03
+     * @param string|null $tel03
      *
      * @return Help
      */
-    public function setLawTel03($lawTel03 = null)
+    public function setTel03($tel03 = null)
     {
-        $this->law_tel03 = $lawTel03;
+        $this->tel03 = $tel03;
 
         return $this;
     }
 
     /**
-     * Get lawTel03.
+     * Get tel03.
      *
      * @return string|null
      */
-    public function getLawTel03()
+    public function getTel03()
     {
-        return $this->law_tel03;
+        return $this->tel03;
     }
 
     /**
-     * Set lawFax01.
+     * Set fax01.
      *
-     * @param string|null $lawFax01
+     * @param string|null $fax01
      *
      * @return Help
      */
-    public function setLawFax01($lawFax01 = null)
+    public function setFax01($fax01 = null)
     {
-        $this->law_fax01 = $lawFax01;
+        $this->fax01 = $fax01;
 
         return $this;
     }
 
     /**
-     * Get lawFax01.
+     * Get fax01.
      *
      * @return string|null
      */
-    public function getLawFax01()
+    public function getFax01()
     {
-        return $this->law_fax01;
+        return $this->fax01;
     }
 
     /**
-     * Set lawFax02.
+     * Set fax02.
      *
-     * @param string|null $lawFax02
+     * @param string|null $fax02
      *
      * @return Help
      */
-    public function setLawFax02($lawFax02 = null)
+    public function setFax02($fax02 = null)
     {
-        $this->law_fax02 = $lawFax02;
+        $this->fax02 = $fax02;
 
         return $this;
     }
 
     /**
-     * Get lawFax02.
+     * Get fax02.
      *
      * @return string|null
      */
-    public function getLawFax02()
+    public function getFax02()
     {
-        return $this->law_fax02;
+        return $this->fax02;
     }
 
     /**
-     * Set lawFax03.
+     * Set fax03.
      *
-     * @param string|null $lawFax03
+     * @param string|null $fax03
      *
      * @return Help
      */
-    public function setLawFax03($lawFax03 = null)
+    public function setFax03($fax03 = null)
     {
-        $this->law_fax03 = $lawFax03;
+        $this->fax03 = $fax03;
 
         return $this;
     }
 
     /**
-     * Get lawFax03.
+     * Get fax03.
      *
      * @return string|null
      */
-    public function getLawFax03()
+    public function getFax03()
     {
-        return $this->law_fax03;
+        return $this->fax03;
     }
 
     /**
-     * Set lawEmail.
+     * Set email.
      *
-     * @param string|null $lawEmail
+     * @param string|null $email
      *
      * @return Help
      */
-    public function setLawEmail($lawEmail = null)
+    public function setEmail($email = null)
     {
-        $this->law_email = $lawEmail;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get lawEmail.
+     * Get email.
      *
      * @return string|null
      */
-    public function getLawEmail()
+    public function getEmail()
     {
-        return $this->law_email;
+        return $this->email;
     }
 
     /**
-     * Set lawUrl.
+     * Set url.
      *
-     * @param string|null $lawUrl
+     * @param string|null $url
      *
      * @return Help
      */
-    public function setLawUrl($lawUrl = null)
+    public function setUrl($url = null)
     {
-        $this->law_url = $lawUrl;
+        $this->url = $url;
 
         return $this;
     }
 
     /**
-     * Get lawUrl.
+     * Get url.
      *
      * @return string|null
      */
-    public function getLawUrl()
+    public function getUrl()
     {
-        return $this->law_url;
+        return $this->url;
     }
 
     /**
-     * Set lawTerm01.
+     * Set term01.
      *
-     * @param string|null $lawTerm01
+     * @param string|null $term01
      *
      * @return Help
      */
-    public function setLawTerm01($lawTerm01 = null)
+    public function setTerm01($term01 = null)
     {
-        $this->law_term01 = $lawTerm01;
+        $this->term01 = $term01;
 
         return $this;
     }
 
     /**
-     * Get lawTerm01.
+     * Get term01.
      *
      * @return string|null
      */
-    public function getLawTerm01()
+    public function getTerm01()
     {
-        return $this->law_term01;
+        return $this->term01;
     }
 
     /**
-     * Set lawTerm02.
+     * Set term02.
      *
-     * @param string|null $lawTerm02
+     * @param string|null $term02
      *
      * @return Help
      */
-    public function setLawTerm02($lawTerm02 = null)
+    public function setTerm02($term02 = null)
     {
-        $this->law_term02 = $lawTerm02;
+        $this->term02 = $term02;
 
         return $this;
     }
 
     /**
-     * Get lawTerm02.
+     * Get term02.
      *
      * @return string|null
      */
-    public function getLawTerm02()
+    public function getTerm02()
     {
-        return $this->law_term02;
+        return $this->term02;
     }
 
     /**
-     * Set lawTerm03.
+     * Set term03.
      *
-     * @param string|null $lawTerm03
+     * @param string|null $term03
      *
      * @return Help
      */
-    public function setLawTerm03($lawTerm03 = null)
+    public function setTerm03($term03 = null)
     {
-        $this->law_term03 = $lawTerm03;
+        $this->term03 = $term03;
 
         return $this;
     }
 
     /**
-     * Get lawTerm03.
+     * Get term03.
      *
      * @return string|null
      */
-    public function getLawTerm03()
+    public function getTerm03()
     {
-        return $this->law_term03;
+        return $this->term03;
     }
 
     /**
-     * Set lawTerm04.
+     * Set term04.
      *
-     * @param string|null $lawTerm04
+     * @param string|null $term04
      *
      * @return Help
      */
-    public function setLawTerm04($lawTerm04 = null)
+    public function setTerm04($term04 = null)
     {
-        $this->law_term04 = $lawTerm04;
+        $this->term04 = $term04;
 
         return $this;
     }
 
     /**
-     * Get lawTerm04.
+     * Get term04.
      *
      * @return string|null
      */
-    public function getLawTerm04()
+    public function getTerm04()
     {
-        return $this->law_term04;
+        return $this->term04;
     }
 
     /**
-     * Set lawTerm05.
+     * Set term05.
      *
-     * @param string|null $lawTerm05
+     * @param string|null $term05
      *
      * @return Help
      */
-    public function setLawTerm05($lawTerm05 = null)
+    public function setTerm05($term05 = null)
     {
-        $this->law_term05 = $lawTerm05;
+        $this->term05 = $term05;
 
         return $this;
     }
 
     /**
-     * Get lawTerm05.
+     * Get term05.
      *
      * @return string|null
      */
-    public function getLawTerm05()
+    public function getTerm05()
     {
-        return $this->law_term05;
+        return $this->term05;
     }
 
     /**
-     * Set lawTerm06.
+     * Set term06.
      *
-     * @param string|null $lawTerm06
+     * @param string|null $term06
      *
      * @return Help
      */
-    public function setLawTerm06($lawTerm06 = null)
+    public function setTerm06($term06 = null)
     {
-        $this->law_term06 = $lawTerm06;
+        $this->term06 = $term06;
 
         return $this;
     }
 
     /**
-     * Get lawTerm06.
+     * Get term06.
      *
      * @return string|null
      */
-    public function getLawTerm06()
+    public function getTerm06()
     {
-        return $this->law_term06;
+        return $this->term06;
     }
 
     /**
-     * Set lawTerm07.
+     * Set term07.
      *
-     * @param string|null $lawTerm07
+     * @param string|null $term07
      *
      * @return Help
      */
-    public function setLawTerm07($lawTerm07 = null)
+    public function setTerm07($term07 = null)
     {
-        $this->law_term07 = $lawTerm07;
+        $this->term07 = $term07;
 
         return $this;
     }
 
     /**
-     * Get lawTerm07.
+     * Get term07.
      *
      * @return string|null
      */
-    public function getLawTerm07()
+    public function getTerm07()
     {
-        return $this->law_term07;
+        return $this->term07;
     }
 
     /**
-     * Set lawTerm08.
+     * Set term08.
      *
-     * @param string|null $lawTerm08
+     * @param string|null $term08
      *
      * @return Help
      */
-    public function setLawTerm08($lawTerm08 = null)
+    public function setTerm08($term08 = null)
     {
-        $this->law_term08 = $lawTerm08;
+        $this->term08 = $term08;
 
         return $this;
     }
 
     /**
-     * Get lawTerm08.
+     * Get term08.
      *
      * @return string|null
      */
-    public function getLawTerm08()
+    public function getTerm08()
     {
-        return $this->law_term08;
+        return $this->term08;
     }
 
     /**
-     * Set lawTerm09.
+     * Set term09.
      *
-     * @param string|null $lawTerm09
+     * @param string|null $term09
      *
      * @return Help
      */
-    public function setLawTerm09($lawTerm09 = null)
+    public function setTerm09($term09 = null)
     {
-        $this->law_term09 = $lawTerm09;
+        $this->term09 = $term09;
 
         return $this;
     }
 
     /**
-     * Get lawTerm09.
+     * Get term09.
      *
      * @return string|null
      */
-    public function getLawTerm09()
+    public function getTerm09()
     {
-        return $this->law_term09;
+        return $this->term09;
     }
 
     /**
-     * Set lawTerm10.
+     * Set term10.
      *
-     * @param string|null $lawTerm10
+     * @param string|null $term10
      *
      * @return Help
      */
-    public function setLawTerm10($lawTerm10 = null)
+    public function setTerm10($term10 = null)
     {
-        $this->law_term10 = $lawTerm10;
+        $this->term10 = $term10;
 
         return $this;
     }
 
     /**
-     * Get lawTerm10.
+     * Get term10.
      *
      * @return string|null
      */
-    public function getLawTerm10()
+    public function getTerm10()
     {
-        return $this->law_term10;
+        return $this->term10;
     }
 
     /**
@@ -945,50 +945,50 @@ class Help extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set lawCountry.
+     * Set country.
      *
-     * @param \Eccube\Entity\Master\Country|null $lawCountry
+     * @param \Eccube\Entity\Master\Country|null $country
      *
      * @return Help
      */
-    public function setLawCountry(\Eccube\Entity\Master\Country $lawCountry = null)
+    public function setCountry(\Eccube\Entity\Master\Country $country = null)
     {
-        $this->LawCountry = $lawCountry;
+        $this->Country = $country;
 
         return $this;
     }
 
     /**
-     * Get lawCountry.
+     * Get country.
      *
      * @return \Eccube\Entity\Master\Country|null
      */
-    public function getLawCountry()
+    public function getCountry()
     {
-        return $this->LawCountry;
+        return $this->Country;
     }
 
     /**
-     * Set lawPref.
+     * Set pref.
      *
-     * @param \Eccube\Entity\Master\Pref|null $lawPref
+     * @param \Eccube\Entity\Master\Pref|null $pref
      *
      * @return Help
      */
-    public function setLawPref(\Eccube\Entity\Master\Pref $lawPref = null)
+    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
     {
-        $this->LawPref = $lawPref;
+        $this->Pref = $pref;
 
         return $this;
     }
 
     /**
-     * Get lawPref.
+     * Get pref.
      *
      * @return \Eccube\Entity\Master\Pref|null
      */
-    public function getLawPref()
+    public function getPref()
     {
-        return $this->LawPref;
+        return $this->Pref;
     }
 }

@@ -24,10 +24,10 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
+use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
-use Eccube\Form\Type\Master\DeliveryDateType;
 
-class DeliveryDateTypeTest extends AbstractTypeTestCase
+class DeliveryDurationTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -42,7 +42,7 @@ class DeliveryDateTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder(DeliveryDateType::class, null, array(
+            ->createBuilder(DeliveryDurationType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
@@ -52,7 +52,7 @@ class DeliveryDateTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.delivery_date']->find(1));
+        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.delivery_duration']->find(1));
     }
 
     public function testViewData()
@@ -64,7 +64,7 @@ class DeliveryDateTypeTest extends AbstractTypeTestCase
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-        $query = $this->app['eccube.repository.delivery_date']->createQueryBuilder('m')
+        $query = $this->app['eccube.repository.delivery_duration']->createQueryBuilder('m')
             ->orderBy('m.rank', 'ASC')
             ->getQuery();
         $res = $query->getResult();

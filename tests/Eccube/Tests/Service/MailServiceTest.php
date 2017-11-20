@@ -302,9 +302,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $footer = $faker->paragraph;
         $subject = $faker->sentence;
         $formData = array(
-            'header' => $header,
-            'footer' => $footer,
-            'subject' => $subject
+            'mail_header' => $header,
+            'mail_footer' => $footer,
+            'mail_subject' => $subject
         );
         $this->mailService->sendAdminOrderMail($Order, $formData);
 

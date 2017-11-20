@@ -45,7 +45,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'stock_unlimited' => 0,
                 'code' => $faker->word,
                 'sale_limit' => null,
-                'delivery_date' => ''
+                'delivery_duration' => ''
             ),
             'name' => $faker->word,
             'product_image' => null,

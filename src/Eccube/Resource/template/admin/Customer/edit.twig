@@ -236,7 +236,7 @@
                                             {{ Order.total|price }}
                                         </td>
                                         <td id="history_box__commit_date--{{ Order.id }}" class="member_mail">
-                                            {{ Order.commit_date|date_format|default('未発送') }}
+                                            {{ Order.shipping_date|date_format|default('未発送') }}
                                         </td>
                                         <td id="history_box__payment_method--{{ Order.id }}" class="member_mail">
                                             {{ Order.payment_method }}

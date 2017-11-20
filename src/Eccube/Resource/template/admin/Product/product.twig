@@ -345,7 +345,7 @@ function fnClass(action) {
 
                             {{ form_row(form.search_word) }}
                             {% if has_class == false %}
-                                {{ form_row(form.class.delivery_date) }}
+                                {{ form_row(form.class.delivery_duration) }}
                                 {% if BaseInfo.option_product_delivery_fee %}
                                 <div id="sub_detail_box__delivery_fee" class="form-group">
                                     {{ form_label(form.class.delivery_fee) }}

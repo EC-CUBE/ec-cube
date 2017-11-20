@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Eccube\Common\Constant;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -43,9 +42,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Mail = $this->app['orm.em']->getRepository('Eccube\Entity\MailTemplate')->findOrCreate(0);
         $Mail->setName($faker->word);
         $Mail->setFileName('Mail/order.twig');
-        $Mail->setSubject($faker->word);
-        $Mail->setHeader($faker->word);
-        $Mail->setFooter($faker->word);
+        $Mail->setMailSubject($faker->word);
+        $Mail->setMailHeader($faker->word);
+        $Mail->setMailFooter($faker->word);
         $this->app['orm.em']->persist($Mail);
         $this->app['orm.em']->flush();
 
@@ -83,9 +82,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = array(
             '_token' => 'dummy',
             'template' => $MailTemplate->getId(),
-            'subject' => 'Test Subject',
-            'header' => 'Test Header',
-            'footer' => 'Test Footer',
+            'mail_subject' => 'Test Subject',
+            'mail_header' => 'Test Header',
+            'mail_footer' => 'Test Footer',
         );
         $this->client->request(
             'POST',
@@ -96,7 +95,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->app->url('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = $form['subject'];
+        $this->actual = $form['mail_subject'];
         $this->expected = $MailTemplate->getSubject();
         $this->verify();
     }
@@ -107,9 +106,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = array(
             '_token' => 'dummy',
             'template' => $mid,
-            'subject' => 'Test Subject',
-            'header' => 'Test Header',
-            'footer' => 'Test Footer',
+            'mail_subject' => 'Test Subject',
+            'mail_header' => 'Test Header',
+            'mail_footer' => 'Test Footer',
         );
         $this->client->request(
             'POST',
@@ -134,9 +133,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = array(
             '_token' => 'dummy',
             'template' => null,
-            'subject' => null,
-            'header' => null,
-            'footer' => null,
+            'mail_subject' => null,
+            'mail_header' => null,
+            'mail_footer' => null,
         );
         $this->client->request(
             'POST',

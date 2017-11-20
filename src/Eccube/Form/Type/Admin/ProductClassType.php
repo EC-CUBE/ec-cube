@@ -29,7 +29,7 @@ use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
-use Eccube\Form\Type\Master\DeliveryDateType;
+use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\ProductTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
@@ -135,7 +135,7 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('delivery_date', DeliveryDateType::class, array(
+            ->add('delivery_duration', DeliveryDurationType::class, array(
                 'label' => 'お届け可能日',
                 'required' => false,
                 'placeholder' => '指定なし',

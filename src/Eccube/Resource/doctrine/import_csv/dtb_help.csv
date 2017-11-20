@@ -1,4 +1,4 @@
-id,country_id,pref_id,customer_agreement,law_company,law_manager,law_zip01,law_zip02,law_zipcode,law_addr01,law_addr02,law_tel01,law_tel02,law_tel03,law_fax01,law_fax02,law_fax03,law_email,law_url,law_term01,law_term02,law_term03,law_term04,law_term05,law_term06,law_term07,law_term08,law_term09,law_term10,create_date,update_date,discriminator_type
+id,country_id,pref_id,customer_agreement,company,manager,zip01,zip02,zipcode,addr01,addr02,tel01,tel02,tel03,fax01,fax02,fax03,email,url,term01,term02,term03,term04,term05,term06,term07,term08,term09,term10,create_date,update_date,discriminator_type
 "1",,,"第1条 (会員)
 
 1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。

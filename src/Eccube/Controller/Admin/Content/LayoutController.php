@@ -34,9 +34,9 @@ use Eccube\Entity\Layout;
 use Eccube\Form\Type\Master\DeviceTypeType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\LayoutRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -195,7 +195,7 @@ class LayoutController extends AbstractController
                     continue;
                 }
                 // 未使用ブロックはinsertしない
-                if ($data['target_id_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
+                if ($data['section_'.$i] == \Eccube\Entity\Page::TARGET_ID_UNUSED) {
                     continue;
                 }
                 $Block = $this->blockRepository->find($data['block_id_'.$i]);
@@ -204,7 +204,7 @@ class LayoutController extends AbstractController
                     ->setBlockId($data['block_id_'.$i])
                     ->setLayoutId($Layout->getId())
                     ->setBlockRow($data['block_row_'.$i])
-                    ->setTargetId($data['target_id_'.$i])
+                    ->setSection($data['section_'.$i])
                     ->setBlock($Block)
                     ->setLayout($Layout);
                 $Layout->addBlockPosition($BlockPosition);

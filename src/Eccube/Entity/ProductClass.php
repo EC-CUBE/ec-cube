@@ -320,14 +320,14 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $ClassCategory2;
 
     /**
-     * @var \Eccube\Entity\DeliveryDate
+     * @var \Eccube\Entity\DeliveryDuration
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryDate")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\DeliveryDuration")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="delivery_date_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="delivery_duration_id", referencedColumnName="id")
      * })
      */
-    private $DeliveryDate;
+    private $DeliveryDuration;
 
     /**
      * @var \Eccube\Entity\Member
@@ -757,27 +757,27 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliveryDate.
+     * Set deliveryDuration.
      *
-     * @param \Eccube\Entity\DeliveryDate|null $deliveryDate
+     * @param \Eccube\Entity\DeliveryDuration|null $deliveryDuration
      *
      * @return ProductClass
      */
-    public function setDeliveryDate(\Eccube\Entity\DeliveryDate $deliveryDate = null)
+    public function setDeliveryDuration(\Eccube\Entity\DeliveryDuration $deliveryDuration = null)
     {
-        $this->DeliveryDate = $deliveryDate;
+        $this->DeliveryDuration = $deliveryDuration;
 
         return $this;
     }
 
     /**
-     * Get deliveryDate.
+     * Get deliveryDuration.
      *
-     * @return \Eccube\Entity\DeliveryDate|null
+     * @return \Eccube\Entity\DeliveryDuration|null
      */
-    public function getDeliveryDate()
+    public function getDeliveryDuration()
     {
-        return $this->DeliveryDate;
+        return $this->DeliveryDuration;
     }
 
     /**
