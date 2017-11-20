@@ -135,8 +135,8 @@ class ComposerProcessService implements ComposerServiceInterface
             return false;
         }
 
-        if (!$systemService->isSetGrepMemoryLimit()) {
-            if ($systemService->getGrepMemoryLimit() < SystemService::MEMORY) {
+        if (!$systemService->isSetCliMemoryLimit()) {
+            if ($systemService->getCliMemoryLimit() < SystemService::MEMORY) {
                 return false;
             }
         }
@@ -149,7 +149,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
         @ini_set('memory_limit', '1536M');
         // Config for some environment
-        putenv('COMPOSER_HOME=' . $this->appConfig['plugin_realdir'] . '/.composer');
+        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
         $this->setupComposer();
     }

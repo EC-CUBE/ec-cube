@@ -129,8 +129,8 @@ class SystemService
      * Get grep memory_limit | Megabyte
      * @return int|string
      */
-    public function getGrepMemoryLimit(){
-        $grepMemory = exec($this->getPHP() . ' -i | grep "memory_limit"');
+    public function getCliMemoryLimit(){
+        $grepMemory = exec($this->getPHP().' -i | grep "memory_limit"');
         if($grepMemory){
             $grepMemory = explode('=>', $grepMemory);
             $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
@@ -156,9 +156,9 @@ class SystemService
      * Check to set new value grep "memory_limit"
      * @return bool
      */
-    public function isSetGrepMemoryLimit()
+    public function isSetCliMemoryLimit()
     {
-        $oldMemory = exec($this->getPHP() . ' -i | grep "memory_limit"');
+        $oldMemory = exec($this->getPHP().' -i | grep "memory_limit"');
         $tmpMem = '2GB';
 
         if ($oldMemory) {
@@ -169,7 +169,7 @@ class SystemService
                 $tmpMem = '2.5GB';
             }
 
-            $newMemory = exec($this->getPHP() . ' -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
+            $newMemory = exec($this->getPHP().' -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
             if ($newMemory) {
                 $newMemory = explode('=>', $newMemory);
                 $grepNewMemory = trim($newMemory[2]);
