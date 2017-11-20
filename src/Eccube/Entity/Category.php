@@ -176,7 +176,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="integer")
+     * @ORM\Column(name="sort_no", type="integer")
      */
     private $rank;
 

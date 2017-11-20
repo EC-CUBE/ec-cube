@@ -233,7 +233,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var int|null
      *
-     * @ORM\Column(name="rank", type="smallint", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
      */
     private $rank;
 

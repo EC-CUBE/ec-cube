@@ -1,2 +1,2 @@
-id,creator_id,news_date,rank,news_title,news_comment,news_url,news_select,link_method,create_date,update_date,discriminator_type
+id,creator_id,news_date,sort_no,news_title,news_comment,news_url,news_select,link_method,create_date,update_date,discriminator_type
 "1",,"2017-03-07 10:14:52","1","サイトオープンいたしました!","一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！",,"0","1","2017-03-07 10:14:52","2017-03-07 10:14:52","news"

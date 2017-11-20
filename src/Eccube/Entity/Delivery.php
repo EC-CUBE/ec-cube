@@ -85,7 +85,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * @var int|null
      *
-     * @ORM\Column(name="rank", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="integer", nullable=true, options={"unsigned":true})
      */
     private $rank;
 

@@ -49,7 +49,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
      */
     private $rank;
 

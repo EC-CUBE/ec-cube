@@ -64,7 +64,7 @@ class News extends AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
     private $rank;
 
