@@ -260,6 +260,17 @@ class OwnerStoreController extends AbstractController
         $packageNames .= self::$vendorName.'/'.$pluginCode;
         $return = $this->composerService->execRequire($packageNames);
         if ($return) {
+//            $os = php_uname('s');
+//            $host = php_uname('n');
+//            $webServer = $_SERVER['SERVER_SOFTWARE'];
+            $os ='1';
+            $host = '1';
+            $webServer = '1';
+            $url = $this->appConfig['package_repo_url'].'/collect?code='.$pluginCode.
+                '&version='.$version.'&install_date=2017/11/16&core_version='.$eccubeVersion.'&php_version='.phpversion().
+                '&db_version=1&os='. base64_decode($os) .'&host='. base64_decode($host).'&web_server='.base64_decode($webServer).'&composer_version=1&composer_execute_mode=1';
+            $this->getRequestApi($url, $app);
+
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
