@@ -228,7 +228,7 @@ class OwnerStoreController extends AbstractController
         $data = json_decode($json, true);
         if ($data && isset($data['success'])) {
             $success = $data['success'];
-            if ($success == '1') {
+            if ($success == '1' && isset($data['item'])) {
                 foreach ($data['item'] as $item) {
                     if ($item['product_code'] == $pluginCode) {
                         $existFlg = true;
@@ -243,9 +243,22 @@ class OwnerStoreController extends AbstractController
 
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
+        $dependents = array();
+        $items = $data['item'];
+        $plugin = $this->pluginService->buildInfo($items, $pluginCode);
+        $dependents[] = $plugin;
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
 
-        $packageName = self::$vendorName.'/'.$pluginCode;
-        $return = $this->composerService->execRequire($packageName);
+        // Unset first param
+        unset($dependents[0]);
+        $packageNames = '';
+        if (!empty($dependents)) {
+            foreach ($dependents as $item) {
+                $packageNames .= self::$vendorName.'/'.$item['product_code'].' ';
+            }
+        }
+        $packageNames .= self::$vendorName.'/'.$pluginCode;
+        $return = $this->composerService->execRequire($packageNames);
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -263,7 +276,7 @@ class OwnerStoreController extends AbstractController
      * @Template("Store/plugin_confirm_uninstall.twig")
      * @param Application $app
      * @param Plugin      $Plugin
-     * @return array
+     * @return array|RedirectResponse
      */
     public function deleteConfirm(Application $app, Plugin $Plugin)
     {
@@ -272,6 +285,23 @@ class OwnerStoreController extends AbstractController
         list($json, $info) = $this->getRequestApi($url, $app);
         $data = json_decode($json, true);
         $items = $data['item'];
+
+        // The plugin depends on it
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+
+            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $app->addError($message, 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
 
         // Check plugin in api
         $pluginSource = $Plugin->getSource();
@@ -307,7 +337,6 @@ class OwnerStoreController extends AbstractController
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();
-
         $packageName = self::$vendorName.'/'.$pluginCode;
         $return = $this->composerService->execRemove($packageName);
         if ($return) {

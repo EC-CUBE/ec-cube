@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\ProductClass;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
@@ -50,7 +49,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         // お気に入り商品機能を有効化
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+        $BaseInfo->setOptionFavoriteProduct(true);
 
         $client = $this->client;
         $client->request('POST',
@@ -90,11 +89,11 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         // お気に入り商品機能を有効化
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+        $BaseInfo->setOptionFavoriteProduct(true);
         $Product = $this->createProduct('Product no stock', 1);
         /** @var $ProductClass ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setStockUnlimited(Constant::DISABLED);
+        $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock(0);
         $ProductStock = $ProductClass->getProductStock();
         $ProductStock->setStock(0);
@@ -136,7 +135,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         // お気に入り商品機能を有効化
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+        $BaseInfo->setOptionFavoriteProduct(true);
         $Product = $this->createProduct('Product stock', 1);
         $id = $Product->getId();
         $user = $this->createCustomer();

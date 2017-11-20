@@ -24,8 +24,8 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Repository;
 use Doctrine\ORM\Query;
+use Eccube\Annotation\Repository;
 
 /**
  * PaymentRepository
@@ -57,8 +57,7 @@ class PaymentRepository extends AbstractRepository
             $Payment = new \Eccube\Entity\Payment();
             $Payment
                 ->setRank($rank)
-                ->setFixFlg(1)
-                ->setChargeFlg(1)
+                ->setFixed(true)
                 ->setVisible(true);
         } else {
             $Payment = $this->find($id);

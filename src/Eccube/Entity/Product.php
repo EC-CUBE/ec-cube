@@ -86,7 +86,7 @@ class Product extends \Eccube\Entity\AbstractEntity
                 $this->stocks[] = $ProductClass->getStock();
 
                 // stock_unlimited
-                $this->stockUnlimiteds[] = $ProductClass->getStockUnlimited();
+                $this->stockUnlimiteds[] = $ProductClass->isStockUnlimited();
 
                 // price01
                 if (!is_null($ProductClass->getPrice01())) {

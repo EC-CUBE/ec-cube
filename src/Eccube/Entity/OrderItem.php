@@ -24,10 +24,10 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Util\EntityUtil;
+use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
-use Doctrine\ORM\Mapping as ORM;
+use Eccube\Util\EntityUtil;
 
 /**
  * OrderItem

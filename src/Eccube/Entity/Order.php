@@ -24,13 +24,10 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Common\Constant;
+use Doctrine\ORM\Mapping as ORM;
 use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\ItemValidateException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
-use Eccube\Util\EntityUtil;
-use Eccube\Entity\Master\OrderItemType;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Order

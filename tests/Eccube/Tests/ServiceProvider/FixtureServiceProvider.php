@@ -2,11 +2,11 @@
 
 namespace Eccube\Tests\ServiceProvider;
 
+use Eccube\Tests\Fixture\Generator as FixtureGenerator;
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
-use Pimple\ServiceProviderInterface;
-use Eccube\Tests\Fixture\Generator as FixtureGenerator;
 
 /**
  * FixtureServiceProvider

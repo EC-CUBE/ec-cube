@@ -24,10 +24,9 @@
 
 namespace Eccube\Tests\Plugin\Web\Admin\Product;
 
+use Eccube\Entity\Category;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Common\Constant;
-use Eccube\Entity\Category;
 
 /**
  * @group plugin
@@ -78,7 +77,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         foreach ($categories as $category_array) {
             $Category = new Category();
             $Category->setPropertiesFromArray($category_array);
-            $Category->setDelFlg(Constant::DISABLED);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
@@ -90,7 +88,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 $Child = new Category();
                 $Child->setPropertiesFromArray($child_array);
                 $Child->setParent($Category);
-                $Child->setDelFlg(Constant::DISABLED);
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
                 $this->app['orm.em']->persist($Child);
@@ -102,7 +99,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                     $Grandson = new Category();
                     $Grandson->setPropertiesFromArray($grandson_array);
                     $Grandson->setParent($Child);
-                    $Grandson->setDelFlg(Constant::DISABLED);
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
                     $this->app['orm.em']->persist($Grandson);
@@ -118,7 +114,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function remove() {
         $Categories = $this->app['eccube.repository.category']->findAll();
         foreach ($Categories as $Category) {
-            $Category->setDelFlg(Constant::ENABLED);
             $this->app['orm.em']->merge($Category);
         }
         $this->app['orm.em']->flush();
@@ -234,14 +229,12 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $TestCategory->setName('テスト家具')
                 ->setRank(100)
                 ->setHierarchy(100)
-                ->setDelFlg(false)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         } else {
             $TestCategory->setName($TestParentCategory->getName() . '_c')
                 ->setRank($TestParentCategory->getRank() + 1)
                 ->setHierarchy($TestParentCategory->getHierarchy() + 1)
-                ->setDelFlg(false)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         }

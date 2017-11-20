@@ -85,7 +85,7 @@ class UserDataController
             array(
                 'url' => $route,
                 'DeviceType' => $DeviceType,
-                'edit_flg' => Page::EDIT_FLG_USER,
+                'edit_type' => Page::EDIT_TYPE_USER,
             )
         );
 
