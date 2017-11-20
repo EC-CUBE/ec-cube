@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @Service
@@ -77,17 +78,15 @@ class SystemService
 
     /**
      * Get environment php command
-     *
      * @return string
      */
     public function getPHP()
     {
-        return 'php';
+        return (new PhpExecutableFinder())->find();
     }
 
     /**
      * Check permission php.ini and set new memory_limit
-     * @param string $memoryLimit
      * @return bool
      */
     public function isSetMemoryLimit()
@@ -131,7 +130,7 @@ class SystemService
      * @return int|string
      */
     public function getGrepMemoryLimit(){
-        $grepMemory = exec('php -i | grep "memory_limit"');
+        $grepMemory = exec($this->getPHP() . ' -i | grep "memory_limit"');
         if($grepMemory){
             $grepMemory = explode('=>', $grepMemory);
             $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
@@ -159,7 +158,7 @@ class SystemService
      */
     public function isSetGrepMemoryLimit()
     {
-        $oldMemory = exec('php -i | grep "memory_limit"');
+        $oldMemory = exec($this->getPHP() . ' -i | grep "memory_limit"');
         $tmpMem = '2GB';
 
         if ($oldMemory) {
@@ -170,7 +169,7 @@ class SystemService
                 $tmpMem = '2.5GB';
             }
 
-            $newMemory = exec('php -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
+            $newMemory = exec($this->getPHP() . ' -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
             if ($newMemory) {
                 $newMemory = explode('=>', $newMemory);
                 $grepNewMemory = trim($newMemory[2]);
