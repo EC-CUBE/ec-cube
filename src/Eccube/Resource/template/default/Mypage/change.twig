@@ -217,14 +217,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     </dd>
                                 </dl>
-                                <dl>
-                                    <dt>
-                                        {{ form_label(form.point, 'ポイント', {'label_attr': {'class': 'ec-label'}}) }}
-                                    </dt>
-                                    <dd>
-                                        {{ form.vars.value.point }} ポイント
-                                    </dd>
-                                </dl>
+                                {% if BaseInfo.isOptionPoint %}
+                                    <dl>
+                                        <dt>
+                                            {{ form_label(form.point, 'ポイント', {'label_attr': {'class': 'ec-label'}}) }}
+                                        </dt>
+                                        <dd>
+                                            {{ form.vars.value.point }} ポイント
+                                        </dd>
+                                    </dl>
+                                {% endif %}
                                 {# エンティティ拡張の自動出力 #}
                                 {% for f in form %}
                                     {# auto_render有効時に出力 #}

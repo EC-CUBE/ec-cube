@@ -372,14 +372,16 @@ $(function() {
                     {{ form_errors(form.Payment) }}
                 </div>
             </div>
-            <div class="ec-orderPayment">
-                <div class="ec-rectHeading">
-                    <h2>利用ポイント(暫定実装)</h2>
-                    <p>{{ Order.Customer.Point }} ポイントが利用可能です。</p>
-                    {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
-                    {{ form_errors(form.use_point) }}
+            {% if BaseInfo.isOptionPoint %}
+                <div class="ec-orderPayment">
+                    <div class="ec-rectHeading">
+                        <h2>利用ポイント(暫定実装)</h2>
+                        <p>{{ Order.Customer.Point }} ポイントが利用可能です。</p>
+                        {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
+                        {{ form_errors(form.use_point) }}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>お問い合わせ</h2>

@@ -307,11 +307,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $authentication_key;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="option_point", type="smallint", options={"unsigned":true, "default":1}, nullable=true)
+     * @ORM\Column(name="option_point", type="boolean", options={"default":true})
      */
-    private $option_point = 1;
+    private $option_point = true;
 
     /**
      * @var string
@@ -1299,7 +1299,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set optionPoint
      *
-     * @param integer $optionPoint
+     * @param boolean $optionPoint
      *
      * @return BaseInfo
      */
@@ -1313,9 +1313,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get optionPoint
      *
-     * @return integer
+     * @return boolean
      */
-    public function getOptionPoint()
+    public function isOptionPoint()
     {
         return $this->option_point;
     }

@@ -62,15 +62,21 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
             $processors[] = new Processor\DeliveryFeeProcessor($app['orm.em']);
             $processors[] = new Processor\PaymentTotalNegativeValidator();
-            $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
-            $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
-            $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+            if ($app[BaseInfo::class]->isOptionPoint()) {
+                $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+            }
+
             return $processors;
         };
 
         $app['eccube.purchase.flow.shopping.purchase'] = function (Container $app) {
             $processors = new ArrayCollection();
-            $processors[] = new Processor\UsePointToCustomerPurchaseProcessor();
+            if ($app[BaseInfo::class]->isOptionPoint()) {
+                $processors[] = new Processor\UsePointToCustomerPurchaseProcessor();
+            }
+
             return $processors;
         };
 
@@ -94,9 +100,11 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
             $processors = new ArrayCollection();
             $processors[] = new Processor\PaymentTotalLimitValidator($app['config']['max_total_fee']);
             $processors[] = new Processor\UpdateDatePurchaseProcessor($app['config']);
-            $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
-            $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
-            $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+            if ($app[BaseInfo::class]->isOptionPoint()) {
+                $processors[] = new Processor\UsePointProcessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\AddPointProcessor($app['orm.em'], $app[BaseInfo::class]);
+                $processors[] = new Processor\SubstractPointProcessor($app[BaseInfo::class]);
+            }
 
             return $processors;
         };
