@@ -86,14 +86,18 @@ class SystemService
     }
 
     /**
-     * Check permission php.ini and set new memory_limit
+     * Try to set new values memory_limit | return true
      * @return bool
      */
     public function isSetMemoryLimit()
     {
-        // Get path php.ini loaded
-        $iniPath = php_ini_loaded_file();
-        if ($iniPath && is_writable($iniPath)) {
+        $setMemory = self::MEMORY;
+        if ($this->getMemoryLimit() == $setMemory) {
+            $setMemory = 2048;
+        }
+
+        @ini_set('memory_limit', $setMemory);
+        if ($this->getMemoryLimit() != $setMemory) {
             return true;
         }
 
