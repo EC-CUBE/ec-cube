@@ -25,6 +25,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Symfony\Component\Filesystem\Filesystem;
@@ -49,6 +50,9 @@ class PluginServiceTest extends AbstractServiceTestCase
         $prop = $rc->getProperty('schemaService');
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->createMock(SchemaService::class));
+        $prop = $rc->getProperty('composerService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(ComposerApiService::class));
     }
 
     public function tearDown()
