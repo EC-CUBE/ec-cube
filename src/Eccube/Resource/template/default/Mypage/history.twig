@@ -64,6 +64,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <dd>{{ Order.CustomerOrderStatus }}</dd>
                         </div>
                     {% endif %}
+                    <div class="ec-definitions">
+                        <dt>ご利用ポイント：</dt>
+                        <dd>{{ Order.usePoint }}pt</dd>
+                    </div>
+                    <div class="ec-definitions">
+                        <dt>加算ポイント：</dt>
+                        <dd>{{ Order.addPoint }}pt</dd>
+                    </div>
+
                     <div class="ec-orderOrder__items">
                         {% set remessage = '' %}
                         {% for OrderItem in Order.OrderItems %}
