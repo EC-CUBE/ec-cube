@@ -1,4 +1,4 @@
-id,name,duration,rank,discriminator_type
+id,name,duration,sort_no,discriminator_type
 "1","即日","0","0","deliveryduration"
 "2","1～2日後","1","1","deliveryduration"
 "3","3～4日後","3","2","deliveryduration"
