@@ -22,6 +22,7 @@
  */
 namespace Eccube\Controller\Admin\Store;
 
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
@@ -268,29 +269,30 @@ class OwnerStoreController extends AbstractController
         $packageNames .= self::$vendorName.'/'.$pluginCode;
         $return = $this->composerService->execRequire($packageNames);
 
-        // $composerMode = 1 is ComposerApi
-        $composerMode = 1;
-        if ($this->composerService instanceof ComposerProcessService) {
-            $composerMode = 2;
-        }
         if ($return) {
-//            $os = php_uname('s');
-//            $host = php_uname('n');
-            $composerVersion = $this->systemService->composerVersion();
-            $webServer = $request->server->get("SERVER_SOFTWARE");
-            $os ='1';
-            $host = '1';
-            $url = $this->appConfig['package_repo_url'].'/collect?code='.$pluginCode.
-                '&version='.$version.'&install_date=2017/11/16&core_version='.$eccubeVersion.'&php_version='.phpversion().
-                '&db_version=1&os='. base64_decode($os) .'&host='. base64_decode($host).'&web_server='.base64_decode($webServer).'&composer_version='.$composerVersion.'&composer_execute_mode='.$composerMode;
-            $this->getRequestApi($url, $app);
-
+            $url = $this->appConfig['package_repo_url'].'/collect';
+            // $composerMode = 1 is ComposerApi
+            $composerMode = 1;
+            if ($this->composerService instanceof ComposerProcessService) {
+                $composerMode = 2;
+            }
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
+            $data = array(
+                'domain_name' =>$protocol . $request->server->get('HTTP_HOST'),
+                'core_version' => $eccubeVersion,
+                'php_version' => phpversion(),
+                'db_version' => $this->systemService->getDbversion(),
+                'os' => php_uname('s'),
+                'host' => php_uname('n'),
+                'web_server' => $request->server->get("SERVER_SOFTWARE"),
+                'composer_version' => $this->systemService->composerVersion(),
+                'composer_execute_mode' => $composerMode
+            );
+            $this->postRequestApi($url, $app, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
-
             return $app->redirect($app->url('admin_store_plugin'));
         }
         $app->addError('admin.plugin.install.fail', 'admin');
-
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
 
@@ -404,6 +406,31 @@ class OwnerStoreController extends AbstractController
 
         $app->log('http get_info', $info);
 
+        return array($result, $info);
+    }
+
+    /**
+     * API post request processing
+     *
+     * @param string  $url
+     * @param Application $app
+     * @param array $data
+     * @return array
+     */
+    private function postRequestApi($url, $app, $data = array())
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($curl);
+        $info = curl_getinfo($curl);
+        $message = curl_error($curl);
+        $info['message'] = $message;
+        curl_close($curl);
+
+        $app->log('http post_info', $info);
         return array($result, $info);
     }
 
