@@ -107,6 +107,12 @@ class SystemService
     public function getMemoryLimit()
     {
         $memoryLimit = ini_get('memory_limit');
+
+        // -1 unlimited
+        if ($memoryLimit == -1) {
+            return -1;
+        }
+
         if (preg_match('/^(\d+)(.)$/', $memoryLimit, $matches)) {
             $memoryValue = $matches[1];
             $memoryUnit = strtoupper($matches[2]);
@@ -115,7 +121,7 @@ class SystemService
                 return $memoryValue;
             } else {
                 if ($memoryUnit == 'K') {
-                    return $memoryValue / 1024;
+                    return ($memoryValue == 0) ? 0 : $memoryValue / 1024;
                 } else {
                     return $memoryValue * 1024;
                 }
@@ -133,6 +139,12 @@ class SystemService
         $grepMemory = exec($this->getPHP().' -i | grep "memory_limit"');
         if($grepMemory){
             $grepMemory = explode('=>', $grepMemory);
+
+            // -1 unlimited
+            if (trim($grepMemory[2]) == -1) {
+                return -1;
+            }
+
             $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
             $memo = trim($exp[0]);
             if ($exp[1] == 'M') {

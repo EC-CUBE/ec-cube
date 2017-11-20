@@ -136,7 +136,7 @@ class ComposerProcessService implements ComposerServiceInterface
         }
 
         if (!$systemService->isSetCliMemoryLimit()) {
-            if ($systemService->getCliMemoryLimit() < SystemService::MEMORY) {
+            if ($systemService->getCliMemoryLimit() < SystemService::MEMORY && $systemService->getCliMemoryLimit() != -1) {
                 return false;
             }
         }
