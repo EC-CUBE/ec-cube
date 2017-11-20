@@ -23,6 +23,11 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Common\Constant;
+use Eccube\Entity\Delivery;
+use Eccube\Entity\Master\ProductType;
+use Eccube\Entity\PaymentOption;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
 
@@ -113,6 +118,117 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->expected = 0;
         $this->actual = count($payments);
         $this->verify('商品種別共通の支払い方法は'.$this->expected.'種類です');
+    }
+
+    /**
+     * 同じ商品種別ならどの支払い方法でも選択可能
+     * @link https://github.com/EC-CUBE/ec-cube/pull/2325
+     */
+    public function testFindAllowedPayment_SameProductType()
+    {
+        $typeA = $this->createProductType('テスト種別A', 100);
+
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->app['eccube.repository.payment'];
+
+        $payment1 = $paymentRepository->find(1);
+        $payment2 = $paymentRepository->find(2);
+        $payment3 = $paymentRepository->find(3);
+
+        {
+            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
+            $delivery2 = $this->createDelivery('テスト配送2', $typeA, array($payment1));
+
+            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+
+            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
+            self::assertEquals(array(1, 2), $actualIds);
+        }
+        {
+            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
+            $delivery2 = $this->createDelivery('テスト配送2', $typeA, array($payment3));
+
+            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+
+            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
+            self::assertEquals(array(1, 2, 3), $actualIds);
+        }
+    }
+
+    /**
+     * 異なる商品種別なら共通する支払方法のみ選択可能
+     * @link https://github.com/EC-CUBE/ec-cube/pull/2325
+     */
+    public function testFindAllowedPayment_DifferentProductType()
+    {
+        $typeA = $this->createProductType('テスト種別A', 100);
+        $typeB = $this->createProductType('テスト種別B', 101);
+
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->app['eccube.repository.payment'];
+
+        $payment1 = $paymentRepository->find(1);
+        $payment2 = $paymentRepository->find(2);
+        $payment3 = $paymentRepository->find(3);
+
+        // 共通する支払方法がある場合
+        {
+            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
+            $delivery2 = $this->createDelivery('テスト配送2', $typeB, array($payment1));
+
+            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+
+            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
+            self::assertEquals(array(1), $actualIds);
+        }
+
+        // 共通する支払方法がない場合
+        {
+            $delivery1 = $this->createDelivery('テスト配送1', $typeA, array($payment1, $payment2));
+            $delivery2 = $this->createDelivery('テスト配送2', $typeB, array($payment3));
+
+            $actual = $paymentRepository->findAllowedPayments(array($delivery1, $delivery2));
+
+            $actualIds = array_values(array_map(function($p) { return $p['id']; }, $actual));
+            self::assertEquals(array(), $actualIds);
+        }
+    }
+
+    private function createProductType($name, $id)
+    {
+        $productType = new ProductType();
+        $productType->setName($name);
+        $productType->setId($id);
+        $productType->setRank($id);
+        $this->app['orm.em']->persist($productType);
+        $this->app['orm.em']->flush($productType);
+        return $productType;
+    }
+
+    private function createDelivery($name, ProductType $productType, $payments = array())
+    {
+        $newDelivery = new Delivery();
+        $newDelivery->setName($name);
+        $newDelivery->setServiceName($name);
+        $newDelivery->setProductType($productType);
+        $newDelivery->setCreator($this->createMember());
+        $newDelivery->setDelFlg(Constant::DISABLED);
+
+        $this->app['orm.em']->persist($newDelivery);
+        $this->app['orm.em']->flush($newDelivery);
+
+        /** @var Payment $payment */
+        foreach ($payments as $payment) {
+            $option = new PaymentOption();
+            $option->setDeliveryId($newDelivery->getId());
+            $option->setDelivery($newDelivery);
+            $option->setPaymentId($payment->getId());
+            $option->setPayment($payment);
+            $this->app['orm.em']->persist($option);
+            $this->app['orm.em']->flush($option);
+        }
+
+        return $newDelivery;
     }
 
     public function testFindAllArray()
