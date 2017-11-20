@@ -163,7 +163,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         if (!$Creator) {
             $Creator = $this->createMember();
         }
-        $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
+        $DeliveryDurations = $this->app['eccube.repository.delivery_duration']->findAll();
         $ProductClass = new ProductClass();
         $ProductType = $this->app['orm.em']
             ->getRepository('\Eccube\Entity\Master\ProductType')
@@ -180,7 +180,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setPrice01(10000)
             ->setPrice02(5000)
             ->setDeliveryFee(1000)
-            ->setDeliveryDate($DeliveryDates[$this->faker->numberBetween(0, 8)])
+            ->setDeliveryDuration($DeliveryDurations[$this->faker->numberBetween(0, 8)])
             ->setCreator($Creator)
             ->setVisible(true);
 

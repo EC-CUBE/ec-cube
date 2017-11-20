@@ -27,11 +27,11 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="target_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="section", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $target_id;
+    private $section;
 
     /**
      * @var int
@@ -128,27 +128,27 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set targetId.
+     * Set section.
      *
-     * @param int $targetId
+     * @param int $section
      *
      * @return BlockPosition
      */
-    public function setTargetId($targetId)
+    public function setSection($section)
     {
-        $this->target_id = $targetId;
+        $this->section = $section;
 
         return $this;
     }
 
     /**
-     * Get targetId.
+     * Get section.
      *
      * @return int
      */
-    public function getTargetId()
+    public function getSection()
     {
-        return $this->target_id;
+        return $this->section;
     }
 
     /**

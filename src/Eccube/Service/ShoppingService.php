@@ -918,12 +918,12 @@ class ShoppingService
      * @param Order $Order
      * @return array
      */
-    public function getFormDeliveryDates(Order $Order)
+    public function getFormDeliveryDurations(Order $Order)
     {
 
         // お届け日の設定
         $minDate = 0;
-        $deliveryDateFlag = false;
+        $deliveryDurationFlag = false;
 
         // 配送時に最大となる商品日数を取得
         foreach ($Order->getOrderItems() as $item) {
@@ -931,27 +931,27 @@ class ShoppingService
                 continue;
             }
             $ProductClass = $item->getProductClass();
-            $deliveryDate = $ProductClass->getDeliveryDate();
-            if (!is_null($deliveryDate)) {
-                if ($deliveryDate->getValue() < 0) {
+            $deliveryDuration = $ProductClass->getDeliveryDuration();
+            if (!is_null($deliveryDuration)) {
+                if ($deliveryDuration->getDuration() < 0) {
                     // 配送日数がマイナスの場合はお取り寄せなのでスキップする
-                    $deliveryDateFlag = false;
+                    $deliveryDurationFlag = false;
                     break;
                 }
 
-                if ($minDate < $deliveryDate->getValue()) {
-                    $minDate = $deliveryDate->getValue();
+                if ($minDate < $deliveryDuration->getDuration()) {
+                    $minDate = $deliveryDuration->getDuration();
                 }
                 // 配送日数が設定されている
-                $deliveryDateFlag = true;
+                $deliveryDurationFlag = true;
             }
         }
 
         // 配達最大日数期間を設定
-        $deliveryDates = array();
+        $deliveryDurations = array();
 
         // 配送日数が設定されている
-        if ($deliveryDateFlag) {
+        if ($deliveryDurationFlag) {
             $period = new \DatePeriod (
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
@@ -959,11 +959,11 @@ class ShoppingService
             );
 
             foreach ($period as $day) {
-                $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
+                $deliveryDurations[$day->format('Y/m/d')] = $day->format('Y/m/d');
             }
         }
 
-        return $deliveryDates;
+        return $deliveryDurations;
     }
 
     /**
@@ -1239,7 +1239,7 @@ class ShoppingService
         // 送信履歴を保存.
         $MailHistory = new MailHistory();
         $MailHistory
-            ->setSubject($message->getSubject())
+            ->setMailSubject($message->getSubject())
             ->setMailBody($message->getBody())
             ->setSendDate(new \DateTime())
             ->setOrder($Order);

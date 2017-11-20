@@ -740,7 +740,7 @@ class ProductClassController
      * @param $productClassOrig ProductClass コピー元となる商品規格
      */
     private function setDefaultProductClass($app, $productClassDest, $productClassOrig) {
-        $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
+        $productClassDest->setDeliveryDuration($productClassOrig->getDeliveryDuration());
         $productClassDest->setProduct($productClassOrig->getProduct());
         $productClassDest->setProductType($productClassOrig->getProductType());
         $productClassDest->setCode($productClassOrig->getCode());

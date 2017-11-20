@@ -40,7 +40,7 @@ use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
-use Eccube\Repository\DeliveryDateRepository;
+use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\ProductTypeRepository;
 use Eccube\Repository\Master\TagRepository;
@@ -61,10 +61,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CsvImportController
 {
     /**
-     * @Inject(DeliveryDateRepository::class)
-     * @var DeliveryDateRepository
+     * @Inject(DeliveryDurationRepository::class)
+     * @var DeliveryDurationRepository
      */
-    protected $deliveryDateRepository;
+    protected $deliveryDurationRepository;
 
     /**
      * @Inject(ProductTypeRepository::class)
@@ -898,11 +898,11 @@ class CsvImportController
 
         if ($row['発送日目安(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDate = $this->deliveryDateRepository->find($row['発送日目安(ID)']);
-                if (!$DeliveryDate) {
+                $DeliveryDuration = $this->deliveryDurationRepository->find($row['発送日目安(ID)']);
+                if (!$DeliveryDuration) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
                 } else {
-                    $ProductClass->setDeliveryDate($DeliveryDate);
+                    $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
@@ -1050,11 +1050,11 @@ class CsvImportController
 
         if ($row['発送日目安(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDate = $this->deliveryDateRepository->find($row['発送日目安(ID)']);
-                if (!$DeliveryDate) {
+                $DeliveryDuration = $this->deliveryDurationRepository->find($row['発送日目安(ID)']);
+                if (!$DeliveryDuration) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
                 } else {
-                    $ProductClass->setDeliveryDate($DeliveryDate);
+                    $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');

@@ -80,7 +80,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'option_mypage_order_status_display' => '0',
         'option_favorite_product' => 0,
         'option_remember_me' => '0',
-        'nostock_hidden' => '0',
+        'option_nostock_hidden' => '0',
         'latitude' => '',
         'longitude' => '',
          */

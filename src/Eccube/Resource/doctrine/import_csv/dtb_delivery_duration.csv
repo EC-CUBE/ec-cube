@@ -1,0 +1,10 @@
+id,name,duration,sort_no,discriminator_type
+"1","即日","0","0","deliveryduration"
+"2","1～2日後","1","1","deliveryduration"
+"3","3～4日後","3","2","deliveryduration"
+"4","1週間以降","7","3","deliveryduration"
+"5","2週間以降","14","4","deliveryduration"
+"6","3週間以降","21","5","deliveryduration"
+"7","1ヶ月以降","30","6","deliveryduration"
+"8","2ヶ月以降","60","7","deliveryduration"
+"9","お取り寄せ(商品入荷後)","-1","8","deliveryduration"

@@ -199,7 +199,7 @@ class CsvExportService
 
         $criteria = array(
             'CsvType' => $CsvType,
-            'enable' => true,
+            'enabled' => true,
         );
         $orderBy = array(
             'rank' => 'ASC'
