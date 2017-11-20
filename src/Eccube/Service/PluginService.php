@@ -29,12 +29,14 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -87,6 +89,12 @@ class PluginService
      */
     protected $schemaService;
 
+    /**
+     * @Inject(ComposerApiService::class)
+     * @var ComposerApiService
+     */
+    protected $composerService;
+
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
     const VENDOR_NAME = 'ec-cube';
@@ -94,12 +102,12 @@ class PluginService
     /**
      * Plugin type/library of ec-cube
      */
-    const ECCUBE_PLUGIN_TYPE = 1;
+    const ECCUBE_LIBRARY = 1;
 
     /**
      * Plugin type/library of other (except ec-cube)
      */
-    const OTHER_PLUGIN_TYPE = 2;
+    const OTHER_LIBRARY = 2;
 
     /**
      * ファイル指定してのプラグインインストール
@@ -140,6 +148,14 @@ class PluginService
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
+
+            // Check dependent plugin
+            // Don't install ec-cube library
+            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+            if (!empty($dependents)) {
+                $package = $this->parseToComposerCommand($dependents);
+                $this->composerService->execRequire($package);
+            }
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -149,7 +165,7 @@ class PluginService
             throw $e;
         }
 
-        return $config['code'];
+        return true;
     }
 
     // インストール事前処理
@@ -475,6 +491,15 @@ class PluginService
         return true;
     }
 
+    /**
+     * Update plugin
+     *
+     * @param Plugin $plugin
+     * @param string $path
+     * @return bool
+     * @throws PluginException
+     * @throws \Exception
+     */
     public function update(\Eccube\Entity\Plugin $plugin, $path)
     {
         $pluginBaseDir = null;
@@ -501,13 +526,20 @@ class PluginService
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
 
             PluginConfigManager::writePluginConfigCache();
-        } catch (PluginException $e) {
-            foreach (array($tmp) as $dir) {
-                if (file_exists($dir)) {
-                    $fs = new Filesystem();
-                    $fs->remove($dir);
-                }
+
+            // Check dependent plugin
+            // Don't install ec-cube library
+            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+            if (!empty($dependents)) {
+                $package = $this->parseToComposerCommand($dependents);
+                $this->composerService->execRequire($package);
             }
+        } catch (PluginException $e) {
+            $this->deleteDirs([$tmp]);
+            throw $e;
+        } catch (\Exception $e) {
+            // catch exception of composer
+            $this->deleteDirs([$tmp]);
             throw $e;
         }
 
@@ -776,10 +808,13 @@ class PluginService
      * Return the plugin code and version in the format of the composer
      *
      * @param string   $pluginCode
-     * @param int|null $pluginType
+     * @param int|null $libraryType
+     *                      self::ECCUBE_LIBRARY only return library/plugin of eccube
+     *                      self::OTHER_LIBRARY only return library/plugin of 3rd part ex: symfony, composer, ...
+     *                      default : return all library/plugin
      * @return array format [packageName1 => version1, packageName2 => version2]
      */
-    public function getDependentByCode($pluginCode, $pluginType = null)
+    public function getDependentByCode($pluginCode, $libraryType = null)
     {
         $pluginDir = $this->calcPluginDir($pluginCode);
         $jsonFile = $pluginDir.'/composer.json';
@@ -791,12 +826,12 @@ class PluginService
         $dependents = [];
         if (isset($json['require'])) {
             $require = $json['require'];
-            switch ($pluginType) {
-                case self::ECCUBE_PLUGIN_TYPE:
+            switch ($libraryType) {
+                case self::ECCUBE_LIBRARY:
                     $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
                     break;
 
-                case self::OTHER_PLUGIN_TYPE:
+                case self::OTHER_LIBRARY:
                     $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
                     break;
 

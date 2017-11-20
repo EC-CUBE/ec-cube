@@ -37,7 +37,6 @@ use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Eccube\Util\Str;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -83,12 +82,6 @@ class PluginController extends AbstractController
      * @var PluginService
      */
     protected $pluginService;
-
-    /**
-     * @Inject(ComposerApiService::class)
-     * @var ComposerApiService
-     */
-    protected $composerService;
 
     /**
      * @Inject("config")
@@ -249,15 +242,6 @@ class PluginController extends AbstractController
                 $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-
-                // Check dependent plugin
-                // Don't install ec-cube library
-                $pluginCode = $Plugin->getCode();
-                $dependents = $this->pluginService->getDependentByCode($pluginCode, PluginService::OTHER_PLUGIN_TYPE);
-                if (!empty($dependents)) {
-                    $package = $this->pluginService->parseToComposerCommand($dependents);
-                    $this->composerService->execRequire($package);
-                }
                 $app->addSuccess('admin.plugin.update.complete', 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
@@ -453,19 +437,10 @@ class PluginController extends AbstractController
                 $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $tmpPath = $tmpDir.'/'.$tmpFile;
-                $pluginCode = $service->install($tmpPath);
+                $service->install($tmpPath);
                 // Remove tmp file
                 $fs = new Filesystem();
                 $fs->remove($tmpDir);
-
-                // Check dependent plugin
-                // Don't install ec-cube library
-                $dependents = $service->getDependentByCode($pluginCode, PluginService::OTHER_PLUGIN_TYPE);
-                if (!empty($dependents)) {
-                    $package = $this->pluginService->parseToComposerCommand($dependents);
-                    $this->composerService->execRequire($package);
-                }
-
                 $app->addSuccess('admin.plugin.install.complete', 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));

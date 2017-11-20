@@ -117,7 +117,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar->addFromString('config.yml',Yaml::dump($config));
 
         // インストールできるか
-        $this->assertEquals($config['code'], $this->service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
 
         try{
             $this->service->install($tmpfile);
@@ -317,7 +317,7 @@ EOD;
         $tar->addFromString('event.yml',Yaml::dump($event));
 
         // インストールできるか
-        $this->assertEquals($config['code'], $this->service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
         $rep= $this->app['eccube.repository.plugin'];
 
         $plugin=$rep->findOneBy(array('code'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
@@ -470,7 +470,7 @@ EOD;
         $tar->addFromString("PluginManager.php" , $dummyManager);
 
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
-        $this->assertEquals($config['code'], $this->service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->isEnable()); // インストール直後にプラグインがdisableになっているか
         try{
@@ -536,7 +536,7 @@ EOD;
 
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
-        $this->assertEquals($config['code'], $this->service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
         $this->assertRegexp('/Installed/',ob_get_contents()); ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
@@ -579,7 +579,7 @@ EOD;
         $tar->addFromString('config.yml',Yaml::dump($config));
 
         // インストールできるか
-        $this->assertEquals($config['code'], $this->service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
 
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
 
@@ -644,7 +644,7 @@ EOD;
         $tar->addFromString('event.yml', Yaml::dump($event));
 
         // インストールできるか
-        $this->assertEquals($config['code'], $this->service->install($tmpfile));
+        $this->assertTrue($this->service->install($tmpfile));
 
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
         $this->app['orm.em']->refresh($plugin);
@@ -719,13 +719,13 @@ EOD;
         $tar->addFromString('composer.json', $text);
 
         // install
-        $pluginCode = $this->service->install($tmpfile);
+        $this->service->install($tmpfile);
 
         // check require
         $expected = $jsonPHP['require'];
         unset($expected['composer/installers']);
         unset($expected['composer/semver']);
-        $actual = $this->service->getDependentByCode($pluginCode, PluginService::ECCUBE_PLUGIN_TYPE);
+        $actual = $this->service->getDependentByCode($config['code'], PluginService::ECCUBE_LIBRARY);
         $this->assertEquals($expected, $actual);
 
         // check parser
@@ -755,12 +755,12 @@ EOD;
         $tar->addFromString('composer.json', $text);
 
         // install
-        $pluginCode = $this->service->install($tmpfile);
+        $this->service->install($tmpfile);
 
         // check get require
         $expected = $jsonPHP['require'];
         unset($expected['ec-cube/plugin-installer']);
-        $actual = $this->service->getDependentByCode($pluginCode, PluginService::OTHER_PLUGIN_TYPE);
+        $actual = $this->service->getDependentByCode($config['code'], PluginService::OTHER_LIBRARY);
         $this->assertEquals($expected, $actual);
 
         // check parser
@@ -790,11 +790,11 @@ EOD;
         $tar->addFromString('composer.json', $text);
 
         // install
-        $pluginCode = $this->service->install($tmpfile);
+        $this->service->install($tmpfile);
 
         // check require
         $expected = $jsonPHP['require'];
-        $actual = $this->service->getDependentByCode($pluginCode);
+        $actual = $this->service->getDependentByCode($config['code']);
         $this->assertEquals($expected, $actual);
 
         // check parser
