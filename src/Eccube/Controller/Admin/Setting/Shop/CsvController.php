@@ -96,7 +96,7 @@ class CsvController extends AbstractController
 
         $CsvNotOutput = $this->csvRepository->findBy(
             array('CsvType' => $CsvType, 'enabled' => false),
-            array('rank' => 'ASC')
+            array('sort_no' => 'ASC')
         );
 
         $builder->add(
@@ -114,7 +114,7 @@ class CsvController extends AbstractController
 
         $CsvOutput = $this->csvRepository->findBy(
             array('CsvType' => $CsvType, 'enabled' => true),
-            array('rank' => 'ASC')
+            array('sort_no' => 'ASC')
         );
 
         $builder->add(
@@ -150,7 +150,7 @@ class CsvController extends AbstractController
                 $rank = 1;
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
-                    $c->setRank($rank);
+                    $c->setSortNo($rank);
                     $c->setEnabled(false);
                     $rank++;
                 }
@@ -161,7 +161,7 @@ class CsvController extends AbstractController
                 $rank = 1;
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
-                    $c->setRank($rank);
+                    $c->setSortNo($rank);
                     $c->setEnabled(true);
                     $rank++;
                 }

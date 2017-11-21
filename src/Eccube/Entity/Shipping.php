@@ -228,7 +228,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var \DateTime
@@ -883,27 +883,27 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int|null $rank
+     * @param int|null $sortNo
      *
      * @return Shipping
      */
-    public function setRank($rank = null)
+    public function setSortNo($sortNo = null)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int|null
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**

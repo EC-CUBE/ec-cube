@@ -60,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
 
                 $.ajax({
-                    url: '{{ url('admin_setting_shop_delivery_rank_move') }}',
+                    url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
                     data: newRanks
                 }).done(function() {
@@ -88,7 +88,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 {% for Delivery in Deliveries%}
 
-                                    <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-rank="{{ Delivery.rank }}">
+                                    <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-rank="{{ Delivery.sortNo }}">
                                         <div class="icon_sortable td">
                                             <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                         </div>

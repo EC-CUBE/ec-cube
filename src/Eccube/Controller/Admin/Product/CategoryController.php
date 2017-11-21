@@ -228,7 +228,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/category/rank/move", name="admin_product_category_rank_move")
+     * @Route("/{_admin}/product/category/sort_no/move", name="admin_product_category_sort_no_move")
      */
     public function moveRank(Application $app, Request $request)
     {
@@ -238,7 +238,7 @@ class CategoryController extends AbstractController
                 /* @var $Category \Eccube\Entity\Category */
                 $Category = $this->categoryRepository
                     ->find($categoryId);
-                $Category->setRank($rank);
+                $Category->setSortNo($rank);
                 $this->entityManager->persist($Category);
             }
             $this->entityManager->flush();
@@ -276,7 +276,7 @@ class CategoryController extends AbstractController
 
             $qb = $this->categoryRepository
                 ->createQueryBuilder('c')
-                ->orderBy('c.rank', 'DESC');
+                ->orderBy('c.sort_no', 'DESC');
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);

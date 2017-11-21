@@ -757,7 +757,7 @@ class CsvImportController
                 $ProductImage = new ProductImage();
                 $ProductImage->setFileName(Str::trimAll($image));
                 $ProductImage->setProduct($Product);
-                $ProductImage->setRank($rank);
+                $ProductImage->setSortNo($rank);
 
                 $Product->addProductImage($ProductImage);
                 $rank++;
@@ -1218,7 +1218,7 @@ class CsvImportController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setRank($rank);
+        $ProductCategory->setSortNo($rank);
         
         return $ProductCategory;
     }

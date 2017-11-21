@@ -253,7 +253,7 @@ class ClassCategoryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/product/class_category/rank/move", name="admin_product_class_category_rank_move")
+     * @Route("/product/class_category/sort_no/move", name="admin_product_class_category_sort_no_move")
      */
     public function moveRank(Application $app, Request $request)
     {
@@ -262,7 +262,7 @@ class ClassCategoryController extends AbstractController
             foreach ($ranks as $categoryId => $rank) {
                 $ClassCategory = $this->classCategoryRepository
                     ->find($categoryId);
-                $ClassCategory->setRank($rank);
+                $ClassCategory->setSortNo($rank);
                 $this->entityManager->persist($ClassCategory);
             }
             $this->entityManager->flush();

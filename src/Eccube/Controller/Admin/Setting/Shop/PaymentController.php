@@ -88,7 +88,7 @@ class PaymentController extends AbstractController
         $Payments = $this->paymentRepository
             ->findBy(
                 array(),
-                array('rank' => 'DESC')
+                array('sort_no' => 'DESC')
             );
 
         $event = new EventArgs(
@@ -217,9 +217,9 @@ class PaymentController extends AbstractController
         $this->isTokenValid($app);
 
         $rank = 1;
-        $Payments = $this->paymentRepository->findBy(array(), array('rank' => 'ASC'));
+        $Payments = $this->paymentRepository->findBy(array(), array('sort_no' => 'ASC'));
         foreach ($Payments as $Payment) {
-                $Payment->setRank($rank++);
+                $Payment->setSortNo($rank++);
         }
 
         try {
@@ -253,13 +253,13 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $currentRank = $current->getRank();
-        $targetRank = $currentRank + 1;
+        $currentRank = $current->getSortNo();
+        $targetSortNo = $currentRank + 1;
 
-        $target = $this->paymentRepository->findOneBy(array('rank' => $targetRank));
+        $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setRank($currentRank);
-        $current->setRank($targetRank);
+        $target->setSortNo($currentRank);
+        $current->setSortNo($targetSortNo);
 
         $this->entityManager->flush();
 
@@ -276,13 +276,13 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $currentRank = $current->getRank();
-        $targetRank = $currentRank - 1;
+        $currentRank = $current->getSortNo();
+        $targetSortNo = $currentRank - 1;
 
-        $target = $this->paymentRepository->findOneBy(array('rank' => $targetRank));
+        $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setRank($currentRank);
-        $current->setRank($targetRank);
+        $target->setSortNo($currentRank);
+        $current->setSortNo($targetSortNo);
 
         $this->entityManager->flush();
 

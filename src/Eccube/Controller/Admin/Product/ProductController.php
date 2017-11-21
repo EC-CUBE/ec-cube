@@ -506,7 +506,7 @@ class ProductController extends AbstractController
                     $ProductImage
                         ->setFileName($add_image)
                         ->setProduct($Product)
-                        ->setRank(1);
+                        ->setSortNo(1);
                     $Product->addProductImage($ProductImage);
                     $this->entityManager->persist($ProductImage);
 
@@ -546,7 +546,7 @@ class ProductController extends AbstractController
                                 'file_name' => $filename,
                                 'Product' => $Product,
                             ));
-                        $ProductImage->setRank($rank_val);
+                        $ProductImage->setSortNo($rank_val);
                         $this->entityManager->persist($ProductImage);
                     }
                 }
@@ -930,7 +930,7 @@ class ProductController extends AbstractController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setRank($count);
+        $ProductCategory->setSortNo($count);
         
         return $ProductCategory;
     }

@@ -42,16 +42,16 @@ class TagRepository extends AbstractRepository
         $Tag = $this->findOneBy(array('name' => $tag_name));
 
         if (is_null($Tag)) {
-            $RankTop = $this->findOneBy(array(), array('rank' => 'DESC'));
+            $RankTop = $this->findOneBy(array(), array('sort_no' => 'DESC'));
             $rank = 0;
             if (!is_null($RankTop)) {
-                $rank = $RankTop->getRank();
+                $rank = $RankTop->getSortNo();
             }
 
             $Tag = new \Eccube\Entity\Master\Tag();
             $Tag
                 ->setName($tag_name)
-                ->setRank($rank + 1);
+                ->setSortNo($rank + 1);
         }
 
         return $Tag;

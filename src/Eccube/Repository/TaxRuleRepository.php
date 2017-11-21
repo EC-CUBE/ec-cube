@@ -215,7 +215,7 @@ class TaxRuleRepository extends AbstractRepository
                     $rank += 1 << ($index + 1);
                 }
             }
-            $TaxRule->setRank($rank);
+            $TaxRule->setSortNo($rank);
         }
 
         // 適用日降順, rank 降順にソートする

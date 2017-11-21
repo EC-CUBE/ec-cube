@@ -811,7 +811,7 @@ class PluginController extends AbstractController
             $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
             $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
             $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
-            $unregisteredPlugins[$pluginCode]['enable'] = Constant::DISABLED;
+            $unregisteredPlugins[$pluginCode]['enabled'] = Constant::DISABLED;
             $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
         }
 

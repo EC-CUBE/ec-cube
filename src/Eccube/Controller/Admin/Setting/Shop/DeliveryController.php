@@ -98,7 +98,7 @@ class DeliveryController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $Deliveries = $this->deliveryRepository
-            ->findBy([], ['rank' => 'DESC']);
+            ->findBy([], ['sort_no' => 'DESC']);
 
         $event = new EventArgs(
             array(
@@ -268,11 +268,11 @@ class DeliveryController extends AbstractController
 
         $rank = 1;
         $Delivs = $this->deliveryRepository
-            ->findBy([], ['rank' => 'ASC']);
+            ->findBy([], ['sort_no' => 'ASC']);
 
         foreach ($Delivs as $Deliv) {
             if ($Deliv->getId() != $Delivery->getId()) {
-                $Deliv->setRank($rank);
+                $Deliv->setSortNo($rank);
                 $rank++;
             }
         }
@@ -328,7 +328,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/setting/shop/delivery/rank/move", name="admin_setting_shop_delivery_rank_move")
+     * @Route("/{_admin}/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move")
      */
     public function moveRank(Application $app, Request $request)
     {
@@ -340,7 +340,7 @@ class DeliveryController extends AbstractController
         foreach ($ranks as $deliveryId => $rank) {
             $Delivery = $this->deliveryRepository
                 ->find($deliveryId);
-            $Delivery->setRank($rank);
+            $Delivery->setSortNo($rank);
         }
         $this->entityManager->flush();
 

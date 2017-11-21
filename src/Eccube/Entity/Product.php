@@ -550,7 +550,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product", cascade={"remove"})
      * @ORM\OrderBy({
-     *     "rank"="ASC"
+     *     "sort_no"="ASC"
      * })
      */
     private $ProductImage;

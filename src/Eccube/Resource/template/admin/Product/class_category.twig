@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 });
 
                 $.ajax({
-                    url: '{{ url('admin_product_class_category_rank_move') }}',
+                    url: '{{ url('admin_product_class_category_sort_no_move') }}',
                     type: 'POST',
                     data: newRanks,
                 }).done(function(data) {
@@ -113,7 +113,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 {% for ClassCategory in ClassCategories %}
 
-                                    <div id="sortable_list_box__item--{{ ClassCategory.id }}" class="item_box tr" data-category-id="{{ ClassCategory.id }}" data-rank="{{ ClassCategory.rank }}">
+                                    <div id="sortable_list_box__item--{{ ClassCategory.id }}" class="item_box tr" data-category-id="{{ ClassCategory.id }}" data-rank="{{ ClassCategory.sortNo }}">
                                         <div class="icon_sortable td">
                                             <svg class="cb cb-ellipsis-v">
                                                 <use xlink:href="#cb-ellipsis-v"/>

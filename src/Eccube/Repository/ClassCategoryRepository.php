@@ -48,7 +48,7 @@ class ClassCategoryRepository extends AbstractRepository
     public function getList(\Eccube\Entity\ClassName $ClassName = null)
     {
         $qb = $this->createQueryBuilder('cc')
-            ->orderBy('cc.rank', 'DESC'); // TODO ClassName ごとにソートした方が良いかも
+            ->orderBy('cc.sort_no', 'DESC'); // TODO ClassName ごとにソートした方が良いかも
         if ($ClassName) {
             $qb->where('cc.ClassName = :ClassName')->setParameter('ClassName', $ClassName);
         }
@@ -68,13 +68,13 @@ class ClassCategoryRepository extends AbstractRepository
         if (!$ClassCategory->getId()) {
             $ClassName = $ClassCategory->getClassName();
             $rank = $this->createQueryBuilder('cc')
-                ->select('COALESCE(MAX(cc.rank), 0)')
+                ->select('COALESCE(MAX(cc.sort_no), 0)')
                 ->where('cc.ClassName = :ClassName')
                 ->setParameter('ClassName', $ClassName)
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $ClassCategory->setRank($rank + 1);
+            $ClassCategory->setSortNo($rank + 1);
             $ClassCategory->setVisible(true);
         }
 
@@ -95,9 +95,9 @@ class ClassCategoryRepository extends AbstractRepository
     {
         $this->createQueryBuilder('cc')
             ->update()
-            ->set('cc.rank', 'cc.rank - 1')
-            ->where('cc.rank > :rank AND cc.ClassName = :ClassName')
-            ->setParameter('rank', $ClassCategory->getRank())
+            ->set('cc.sort_no', 'cc.sort_no - 1')
+            ->where('cc.sort_no > :sort_no AND cc.ClassName = :ClassName')
+            ->setParameter('sort_no', $ClassCategory->getSortNo())
             ->setParameter('ClassName', $ClassCategory->getClassName())
             ->getQuery()
             ->execute();

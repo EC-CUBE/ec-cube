@@ -62,16 +62,16 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     /**
      * @param  \Doctrine\ORM\EntityManager $em
-     * @param  integer                     $rank
+     * @param  integer                     $SortNo
      * @return \Eccube\Entity\Category
      */
-    public function calcChildrenRank(\Doctrine\ORM\EntityManager $em, $rank)
+    public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
     {
-        $this->setRank($this->getRank() + $rank);
+        $this->setSortNo($this->getSortNo() + $sortNo);
         $em->persist($this);
 
         foreach ($this->getChildren() as $Child) {
-            $Child->calcChildrenRank($em, $rank);
+            $Child->calcChildrenSortNo($em, $sortNo);
         }
 
         return $this;
@@ -178,7 +178,7 @@ class Category extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\Column(name="sort_no", type="integer")
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var \DateTime
@@ -206,7 +206,7 @@ class Category extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\Category", mappedBy="Parent")
      * @ORM\OrderBy({
-     *     "rank"="DESC"
+     *     "sort_no"="DESC"
      * })
      */
     private $Children;
@@ -299,27 +299,27 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return Category
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**

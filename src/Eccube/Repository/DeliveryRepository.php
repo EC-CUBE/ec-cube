@@ -51,18 +51,18 @@ class DeliveryRepository extends AbstractRepository
 
             $ProductType = $em
                 ->getRepository('\Eccube\Entity\Master\ProductType')
-                ->findOneBy(array(), array('rank' => 'DESC'));
+                ->findOneBy(array(), array('sort_no' => 'DESC'));
 
-            $Delivery = $this->findOneBy(array(), array('rank' => 'DESC'));
+            $Delivery = $this->findOneBy(array(), array('sort_no' => 'DESC'));
 
             $rank = 1;
             if ($Delivery) {
-                $rank = $Delivery->getRank() + 1;
+                $rank = $Delivery->getSortNo() + 1;
             }
 
             $Delivery = new \Eccube\Entity\Delivery();
             $Delivery
-                ->setRank($rank)
+                ->setSortNo($rank)
                 ->setVisible(true)
                 ->setProductType($ProductType);
         } else {

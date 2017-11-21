@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for News in NewsList %}
                                         <tr id="news_list_box__item--{{ News.id }}">
                                             <td id="news_list_box__rank--{{ News.id }}">{{ loop.index }}</td>
-                                            <td id="news_list_box__date--{{ News.id }}">{{ News.date|date("Y/m/d") }}</td>
+                                            <td id="news_list_box__date--{{ News.id }}">{{ News.publishDate|date("Y/m/d") }}</td>
                                             <td id="news_list_box__title--{{ News.id }}">{{ News.title }}</td>
                                             <td id="news_list_box__menu_box--{{ News.id }}" class="icon_edit">
                                                 <div id="news_list_box__menu_box_toggle--{{ News.id }}" class="dropdown">
