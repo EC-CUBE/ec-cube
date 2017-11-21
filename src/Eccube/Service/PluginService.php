@@ -36,6 +36,7 @@ use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -88,43 +89,78 @@ class PluginService
      */
     protected $schemaService;
 
+    /**
+     * @Inject(ComposerApiService::class)
+     * @var ComposerApiService
+     */
+    protected $composerService;
+
     const CONFIG_YML = 'config.yml';
     const EVENT_YML = 'event.yml';
     const VENDOR_NAME = 'ec-cube';
 
-    // ファイル指定してのプラグインインストール
+    /**
+     * Plugin type/library of ec-cube
+     */
+    const ECCUBE_LIBRARY = 1;
+
+    /**
+     * Plugin type/library of other (except ec-cube)
+     */
+    const OTHER_LIBRARY = 2;
+
+    /**
+     * ファイル指定してのプラグインインストール
+     *
+     * @param string $path   path to tar.gz/zip plugin file
+     * @param int    $source
+     * @return mixed
+     * @throws PluginException
+     * @throws \Exception
+     */
     public function install($path, $source = 0)
     {
         $pluginBaseDir = null;
         $tmp = null;
-
         try {
             // プラグイン配置前に実施する処理
             $this->preInstall();
-
             $tmp = $this->createTempDir();
 
-            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            // 一旦テンポラリに展開
+            $this->unpackPluginArchive($path, $tmp);
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
             $event = $this->readYml($tmp.'/'.self::EVENT_YML);
-            $this->deleteFile($tmp); // テンポラリのファイルを削除
+            // テンポラリのファイルを削除
+            $this->deleteFile($tmp);
 
-            $this->checkSamePlugin($config['code']); // 重複していないかチェック
+            // 重複していないかチェック
+            $this->checkSamePlugin($config['code']);
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
-            $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
+            // 本来の置き場所を作成
+            $this->createPluginDir($pluginBaseDir);
 
-            $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
+            // 問題なければ本当のplugindirへ
+            $this->unpackPluginArchive($path, $pluginBaseDir);
+
+            // Check dependent plugin
+            // Don't install ec-cube library
+            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+            if (!empty($dependents)) {
+                $package = $this->parseToComposerCommand($dependents);
+                $this->composerService->execRequire($package);
+            }
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
-        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
-
+        } catch (\Exception $e) {
+            // インストーラがどんなExceptionを上げるかわからないので
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
         }
@@ -455,6 +491,15 @@ class PluginService
         return true;
     }
 
+    /**
+     * Update plugin
+     *
+     * @param Plugin $plugin
+     * @param string $path
+     * @return bool
+     * @throws PluginException
+     * @throws \Exception
+     */
     public function update(\Eccube\Entity\Plugin $plugin, $path)
     {
         $pluginBaseDir = null;
@@ -478,16 +523,23 @@ class PluginService
             $this->deleteFile($tmp); // テンポラリのファイルを削除
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
-            $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
 
+            // Check dependent plugin
+            // Don't install ec-cube library
+            $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
+            if (!empty($dependents)) {
+                $package = $this->parseToComposerCommand($dependents);
+                $this->composerService->execRequire($package);
+            }
+
+            $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
             PluginConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
-            foreach (array($tmp) as $dir) {
-                if (file_exists($dir)) {
-                    $fs = new Filesystem();
-                    $fs->remove($dir);
-                }
-            }
+            $this->deleteDirs([$tmp]);
+            throw $e;
+        } catch (\Exception $e) {
+            // catch exception of composer
+            $this->deleteDirs([$tmp]);
             throw $e;
         }
 
@@ -567,60 +619,60 @@ class PluginService
     /**
      * Do check dependency plugin
      *
-     * @param array $arrPlugin
-     * @param array $plugin
-     * @param array $arrDependency
+     * @param array $plugins    get from api
+     * @param array $plugin     format as plugin from api
+     * @param array $dependents template output
      * @return array|mixed
      */
-    public function getDependency($arrPlugin, $plugin, $arrDependency = array())
+    public function getDependency($plugins, $plugin, $dependents = array())
     {
         // Prevent infinity loop
-        if (empty($arrDependency)) {
-            $arrDependency[] = $plugin;
+        if (empty($dependents)) {
+            $dependents[] = $plugin;
         }
 
         // Check dependency
         if (!isset($plugin['require']) || empty($plugin['require'])) {
-            return $arrDependency;
+            return $dependents;
         }
 
         $require = $plugin['require'];
         // Check dependency
         foreach ($require as $pluginName => $version) {
-            $dependPlugin = $this->buildInfo($arrPlugin, $pluginName);
+            $dependPlugin = $this->buildInfo($plugins, $pluginName);
             // Prevent call self
             if (!$dependPlugin || $dependPlugin['product_code'] == $plugin['product_code']) {
                 continue;
             }
 
             // Check duplicate in dependency
-            $index = array_search($dependPlugin['product_code'], array_column($arrDependency, 'product_code'));
+            $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
             if ($index === false) {
-                $arrDependency[] = $dependPlugin;
+                $dependents[] = $dependPlugin;
                 // Check child dependency
-                $arrDependency = $this->getDependency($arrPlugin, $dependPlugin, $arrDependency);
+                $dependents = $this->getDependency($plugins, $dependPlugin, $dependents);
             }
         }
 
-        return $arrDependency;
+        return $dependents;
     }
 
     /**
      * Get plugin information
      *
-     * @param array  $arrPlugin
+     * @param array  $plugins    get from api
      * @param string $pluginCode
      * @return array|null
      */
-    public function buildInfo($arrPlugin, $pluginCode)
+    public function buildInfo($plugins, $pluginCode)
     {
         $plugin = [];
-        $index = $this->checkPluginExist($arrPlugin, $pluginCode);
+        $index = $this->checkPluginExist($plugins, $pluginCode);
         if ($index === false) {
             return $plugin;
         }
         // Get target plugin in return of api
-        $plugin = $arrPlugin[$index];
+        $plugin = $plugins[$index];
 
         // Check the eccube version that the plugin supports.
         $plugin['is_supported_eccube_version'] = 0;
@@ -629,7 +681,7 @@ class PluginService
             $plugin['is_supported_eccube_version'] = 1;
         }
 
-        $plugin['depend'] = $this->getRequirePluginName($arrPlugin, $plugin);
+        $plugin['depend'] = $this->getRequirePluginName($plugins, $plugin);
 
         return $plugin;
     }
@@ -637,21 +689,21 @@ class PluginService
     /**
      * Get dependency name and version only
      *
-     * @param array $arrPlugin
-     * @param array $plugin
-     * @return mixed
+     * @param array $plugins get from api
+     * @param array $plugin  target plugin from api
+     * @return mixed format [0 => ['name' => pluginName1, 'version' => pluginVersion1], 1 => ['name' => pluginName2, 'version' => pluginVersion2]]
      */
-    public function getRequirePluginName($arrPlugin, $plugin)
+    public function getRequirePluginName($plugins, $plugin)
     {
         $depend = [];
         if (isset($plugin['require']) && !empty($plugin['require'])) {
             foreach ($plugin['require'] as $name => $version) {
-                $ret = $this->checkPluginExist($arrPlugin, $name);
+                $ret = $this->checkPluginExist($plugins, $name);
                 if ($ret === false) {
                     continue;
                 }
                 $depend[] = [
-                    'name' => $arrPlugin[$ret]['name'],
+                    'name' => $plugins[$ret]['name'],
                     'version' => $version,
                 ];
             }
@@ -664,7 +716,7 @@ class PluginService
      * Check require plugin in enable
      *
      * @param string $pluginCode
-     * @return array
+     * @return array plugin code
      */
     public function findRequirePluginNeedEnable($pluginCode)
     {
@@ -702,7 +754,7 @@ class PluginService
      * Find the dependent plugins that need to be disabled
      *
      * @param string $pluginCode
-     * @return array
+     * @return array plugin code
      */
     public function findDependentPluginNeedDisable($pluginCode)
     {
@@ -713,9 +765,9 @@ class PluginService
      * Find the other plugin that has requires on it.
      * Check in both dtb_plugin table and <PluginCode>/composer.json
      *
-     * @param $pluginCode
-     * @param bool $enableOnly
-     * @return array
+     * @param string $pluginCode
+     * @param bool   $enableOnly
+     * @return array plugin code
      */
     public function findDependentPlugin($pluginCode, $enableOnly = false)
     {
@@ -751,17 +803,79 @@ class PluginService
     }
 
     /**
-     * @param $arrPlugin
-     * @param $pluginCode
+     * Get dependent plugin by code
+     * It's base on composer.json
+     * Return the plugin code and version in the format of the composer
+     *
+     * @param string   $pluginCode
+     * @param int|null $libraryType
+     *                      self::ECCUBE_LIBRARY only return library/plugin of eccube
+     *                      self::OTHER_LIBRARY only return library/plugin of 3rd part ex: symfony, composer, ...
+     *                      default : return all library/plugin
+     * @return array format [packageName1 => version1, packageName2 => version2]
+     */
+    public function getDependentByCode($pluginCode, $libraryType = null)
+    {
+        $pluginDir = $this->calcPluginDir($pluginCode);
+        $jsonFile = $pluginDir.'/composer.json';
+        if (!file_exists($jsonFile)) {
+            return [];
+        }
+        $jsonText = file_get_contents($jsonFile);
+        $json = json_decode($jsonText, true);
+        $dependents = [];
+        if (isset($json['require'])) {
+            $require = $json['require'];
+            switch ($libraryType) {
+                case self::ECCUBE_LIBRARY:
+                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
+                    break;
+
+                case self::OTHER_LIBRARY:
+                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
+                    break;
+
+                default:
+                    $dependents = $json['require'];
+                    break;
+            }
+        }
+
+        return $dependents;
+    }
+
+    /**
+     * Format array dependent plugin to string
+     * It is used for commands.
+     *
+     * @param array $packages   format [packageName1 => version1, packageName2 => version2]
+     * @param bool  $getVersion
+     * @return string format if version=true: "packageName1:version1 packageName2:version2", if version=false: "packageName1 packageName2"
+     */
+    public function parseToComposerCommand(array $packages, $getVersion = true)
+    {
+        $result = array_keys($packages);
+        if ($getVersion) {
+            $result = array_map(function ($package, $version) {
+                return $package.':'.$version;
+            }, array_keys($packages), array_values($packages));
+        }
+
+        return implode(' ', $result);
+    }
+
+    /**
+     * @param array  $plugins get from api
+     * @param string $pluginCode
      * @return false|int|string
      */
-    private function checkPluginExist($arrPlugin, $pluginCode)
+    private function checkPluginExist($plugins, $pluginCode)
     {
         if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
         // Find plugin in array
-        $index = array_search($pluginCode, array_column($arrPlugin, 'product_code'));
+        $index = array_search($pluginCode, array_column($plugins, 'product_code'));
 
         return $index;
     }

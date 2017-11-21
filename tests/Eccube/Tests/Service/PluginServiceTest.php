@@ -25,6 +25,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Symfony\Component\Filesystem\Filesystem;
@@ -49,6 +50,9 @@ class PluginServiceTest extends AbstractServiceTestCase
         $prop = $rc->getProperty('schemaService');
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->createMock(SchemaService::class));
+        $prop = $rc->getProperty('composerService');
+        $prop->setAccessible(true);
+        $prop->setValue($this->service, $this->createMock(ComposerApiService::class));
     }
 
     public function tearDown()
@@ -696,5 +700,136 @@ EOD;
 
         $pluginConfigs = ConfigManager::getPluginConfigAll();
         $this->assertFalse(array_key_exists($tmpname, $pluginConfigs), 'キャッシュからプラグインが削除されているか');
+    }
+
+    /**
+     * Test getDependentByCode with eccube plugin
+     */
+    public function testGetDependentByCodeEccubePlugin()
+    {
+        $tmpname="dummy".sha1(mt_rand());
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $jsonPHP = $this->createComposerJsonFile($config);
+        $text = json_encode($jsonPHP);
+        $tar->addFromString('composer.json', $text);
+
+        // install
+        $this->service->install($tmpfile);
+
+        // check require
+        $expected = $jsonPHP['require'];
+        unset($expected['composer/installers']);
+        unset($expected['composer/semver']);
+        $actual = $this->service->getDependentByCode($config['code'], PluginService::ECCUBE_LIBRARY);
+        $this->assertEquals($expected, $actual);
+
+        // check parser
+        $actual2 = $this->service->parseToComposerCommand($actual, false);
+        $expected2 = implode(' ', array_keys($expected));
+        $this->assertEquals($expected2, $actual2);
+    }
+
+    /**
+     * Test getDependentByCode with other plugin
+     */
+    public function testGetDependentByCodeOtherPlugin()
+    {
+        $tmpname="dummy".sha1(mt_rand());
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $jsonPHP = $this->createComposerJsonFile($config);
+        $text = json_encode($jsonPHP);
+        $tar->addFromString('composer.json', $text);
+
+        // install
+        $this->service->install($tmpfile);
+
+        // check get require
+        $expected = $jsonPHP['require'];
+        unset($expected['ec-cube/plugin-installer']);
+        $actual = $this->service->getDependentByCode($config['code'], PluginService::OTHER_LIBRARY);
+        $this->assertEquals($expected, $actual);
+
+        // check parser
+        $actual2 = $this->service->parseToComposerCommand($actual, false);
+        $expected2 = implode(' ', array_keys($expected));
+        $this->assertEquals($expected2, $actual2);
+    }
+
+    /**
+     * Test getDependentByCode with all plugin
+     */
+    public function testGetDependentByCodeAllPlugin()
+    {
+        $tmpname="dummy".sha1(mt_rand());
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $jsonPHP = $this->createComposerJsonFile($config);
+        $text = json_encode($jsonPHP);
+        $tar->addFromString('composer.json', $text);
+
+        // install
+        $this->service->install($tmpfile);
+
+        // check require
+        $expected = $jsonPHP['require'];
+        $actual = $this->service->getDependentByCode($config['code']);
+        $this->assertEquals($expected, $actual);
+
+        // check parser
+        $actual2 = $this->service->parseToComposerCommand($actual);
+        $expected2 = '';
+        foreach ($expected as $packages => $version) {
+            $expected2 .= $packages.':'.$version.' ';
+        }
+        $this->assertEquals(trim($expected2), $actual2);
+    }
+
+    /**
+     * @param $config
+     * @return array
+     */
+    private function createComposerJsonFile($config)
+    {
+        /** @var \Faker\Generator $faker */
+        $faker = $this->getFaker();
+        $jsonPHP = [
+            'name' => $config['name'],
+            'description' => $faker->word,
+            'version' => $config['version'],
+            'type' => "eccube-plugin",
+            'require' => [
+                "ec-cube/plugin-installer" => '*',
+                "composer/installers" => '*',
+                "composer/semver" => "*",
+            ],
+        ];
+
+        return $jsonPHP;
     }
 }
