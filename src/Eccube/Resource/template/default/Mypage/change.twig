@@ -223,7 +223,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             {{ form_label(form.point, 'ポイント', {'label_attr': {'class': 'ec-label'}}) }}
                                         </dt>
                                         <dd>
-                                            {{ form.vars.value.point }} ポイント
+                                            {% if form.vars.value.point > 0 %}
+                                                {{ form.vars.value.point }} pt
+                                            {% else  %}
+                                                0 pt
+                                            {% endif %}
                                         </dd>
                                     </dl>
                                 {% endif %}

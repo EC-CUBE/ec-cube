@@ -381,6 +381,8 @@ $(function() {
                         {{ form_errors(form.use_point) }}
                     </div>
                 </div>
+            {% else %}
+                {{ form_widget(form.use_point, {'type': 'hidden'}) }}
             {% endif %}
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">

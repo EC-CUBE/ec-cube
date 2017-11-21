@@ -10,6 +10,7 @@ use Eccube\Entity\Event\EntityEventListener;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Service\MailService;
 
 /**
  * @PreUpdate("Eccube\Entity\Order")
@@ -27,6 +28,12 @@ class UpdatePointEventListener implements EntityEventListener
      * @var EntityManager
      */
     protected $entityManager;
+
+    /**
+     * @Inject(MailService::class)
+     * @var MailService
+     */
+    protected $mailService;
 
     public function execute(LifecycleEventArgs $eventArgs)
     {
@@ -82,17 +89,17 @@ class UpdatePointEventListener implements EntityEventListener
                 $Customer = $newOrder->getCustomer();
                 $newPoint = $Customer->getPoint() + $addCustomerPoint;
                 if ($newPoint < 0) {
-                    // TODO ポイントマイナスなのでメール送信
-                } else {
-                    $Customer->setPoint($newPoint);
-                    // この時点で Customer は Doctrine の更新対象となっていないので, 更新対象に設定する
-                    $meta = $this->entityManager->getClassMetadata(Customer::class);
-                    // Customer の変更内容を設定する
-                    $this->entityManager->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $Customer);
-                    // Customer の ChangeSet を scheduleExtraUpdate に設定する
-                    $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($Customer);
-                    $this->entityManager->getUnitOfWork()->scheduleExtraUpdate($Customer, $changeSet);
+                    // ポイントがマイナスになるためメールを送信する
+                    $this->mailService->sendPointNotifyMail($newOrder, $Customer->getPoint(), $addCustomerPoint);
                 }
+                $Customer->setPoint($newPoint);
+                // この時点で Customer は Doctrine の更新対象となっていないので, 更新対象に設定する
+                $meta = $this->entityManager->getClassMetadata(Customer::class);
+                // Customer の変更内容を設定する
+                $this->entityManager->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $Customer);
+                // Customer の ChangeSet を scheduleExtraUpdate に設定する
+                $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($Customer);
+                $this->entityManager->getUnitOfWork()->scheduleExtraUpdate($Customer, $changeSet);
             }
         }
     }
