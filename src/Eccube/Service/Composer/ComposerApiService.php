@@ -67,7 +67,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run execute command
      *
-     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @return array
      */
     public function execRequire($packageName)
@@ -88,18 +88,18 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run remove command
      *
-     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @return bool
      */
     public function execRemove($packageName)
     {
+        $packageName = explode(' ', trim($packageName));
         $this->runCommand(array(
             'command' => 'remove',
-            'packages' => array($packageName),
+            'packages' => $packageName,
             '--ignore-platform-reqs' => true,
             '--no-interaction' => true,
             '--profile' => true,
-            '--no-update-with-dependencies' => true,
         ));
 
         return true;
