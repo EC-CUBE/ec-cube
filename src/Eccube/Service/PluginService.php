@@ -806,8 +806,6 @@ class PluginService
     }
 
     /**
-     * @param $arrPlugin
-     * @param $pluginCode
      * Get dependent plugin by code
      * It's base on composer.json
      * Return the plugin code and version in the format of the composer
