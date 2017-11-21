@@ -96,7 +96,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $form['mail_subject'];
-        $this->expected = $MailTemplate->getSubject();
+        $this->expected = $MailTemplate->getMailSubject();
         $this->verify();
     }
 

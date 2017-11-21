@@ -27,7 +27,6 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setTitle('news-'.$i)
                 ->setDescription($faker->realText())
                 ->setUrl($faker->url)
-                ->setSelect(1)
                 ->setLinkMethod(1)
                 ->setSortNo($i)
                 ;
@@ -112,7 +111,6 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setTitle('news-10')
             ->setDescription($faker->realText())
             ->setUrl($faker->url)
-            ->setSelect(1)
             ->setLinkMethod(1);
 
         $this->app['eccube.repository.news']->save($News);
@@ -131,7 +129,6 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setTitle('news-10')
             ->setDescription($faker->realText())
             ->setUrl($faker->url)
-            ->setSelect(1)
             ->setLinkMethod(1);
 
         $this->app['eccube.repository.news']->save($News);

@@ -407,7 +407,7 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnable()) {
+        if ($temporary || $plugin->isEnabled()) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);

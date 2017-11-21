@@ -51,7 +51,7 @@ class AbstractMasterEntityTest extends EccubeTestCase
             self::assertInstanceOf(\InvalidArgumentException::class, $e);
         }
         try {
-            $c = TestSexDecorator::rank();
+            $c = TestSexDecorator::sortNo();
             self::fail();
         } catch (\InvalidArgumentException $e) {
             self::assertInstanceOf(\InvalidArgumentException::class, $e);

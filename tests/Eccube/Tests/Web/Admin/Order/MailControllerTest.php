@@ -84,7 +84,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = $form['footer'];
+        $this->expected = $form['mail_footer'];
         $this->actual = $crawler->filter('#mail_footer')->getNode(0)->getAttribute('value');
         $this->verify();
     }

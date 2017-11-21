@@ -414,7 +414,7 @@ EOD;
         // アンインストールできるか
         $this->assertTrue($this->service->uninstall($plugin));
         // ちゃんとファイルが消えているか
-        $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enable'=>1)));
+        $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enabled'=>1)));
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
