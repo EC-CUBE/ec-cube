@@ -188,7 +188,7 @@ class EntryController extends AbstractController
 
                     $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
-                    $activateFlg = $this->BaseInfo->getOptionCustomerActivate();
+                    $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
                     // 仮会員設定が有効な場合は、確認メールを送信し完了画面表示.
                     if ($activateFlg) {

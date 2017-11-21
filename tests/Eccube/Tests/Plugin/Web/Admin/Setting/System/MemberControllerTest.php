@@ -194,7 +194,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             ->setLoginId('takahashi')
             ->setPassword('password')
             ->setRank(100)
-            ->setDelFlg(false)
             ->setSalt('abcdefg')
             ->setAuthority($Authority)
             ->setWork($Work);

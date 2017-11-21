@@ -33,7 +33,6 @@ use Eccube\Form\Type\Master\DeliveryDateType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -84,6 +83,11 @@ class ProductClassType extends AbstractType
                         'message' => 'form.type.numeric.invalid'
                     )),
                 ),
+            ))
+            ->add('stock_unlimited', CheckboxType::class, array(
+                'label' => '無制限',
+                'value' => '1',
+                'required' => false,
             ))
             ->add('sale_limit', NumberType::class, array(
                 'label' => '販売制限数',
@@ -149,16 +153,6 @@ class ProductClassType extends AbstractType
                     $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
                 }
             });
-
-        $transformer = new DataTransformer\IntegerToBooleanTransformer();
-
-        $builder
-            ->add($builder->create('stock_unlimited', CheckboxType::class, array(
-                'label' => '無制限',
-                'value' => '1',
-                'required' => false,
-            ))->addModelTransformer($transformer));
-
 
         $transformer = new DataTransformer\EntityToIdTransformer(
             $this->entityManager,

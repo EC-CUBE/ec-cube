@@ -20,18 +20,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace Eccube\Service;
+namespace Eccube\Service\Composer;
 
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Application;
 
 /**
  * Class ComposerProcessService
- * @package Eccube\Service
+ * @package Eccube\Service\Composer
  * @Service
  */
-class ComposerProcessService
+class ComposerProcessService implements ComposerServiceInterface
 {
     /**
      * @Inject("config")
@@ -39,31 +38,26 @@ class ComposerProcessService
      */
     protected $appConfig;
 
+    private $workingDir;
     private $composerFile;
     private $composerSetup;
-    private static $vendorName = 'ec-cube';
 
     /**
      * This function to install a plugin by composer require
      *
-     * @param string $packageName
+     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
      * @return bool
      */
     public function execRequire($packageName)
     {
         set_time_limit(0);
-        $this->setupComposer();
+        $this->init();
         // Build command
-        $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
-        $command .= $this->appConfig['root_dir'].' 2>&1';
+        $command .= $this->workingDir.' 2>&1';
         log_info($command);
-
-        // Execute command
-        $output = array();
-        exec($command, $output);
-        log_info(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+        $this->runCommand($command);
 
         return true;
     }
@@ -72,26 +66,46 @@ class ComposerProcessService
      * This function to remove a plugin by composer remove
      * Note: Remove with dependency, if not, please add " --no-update-with-dependencies"
      *
-     * @param string $packageName
+     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
      * @return bool
      */
     public function execRemove($packageName)
     {
         set_time_limit(0);
-        $this->setupComposer();
+        $this->init();
         // Build command
-        $packageName = self::$vendorName.'/'.$packageName;
         $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
-        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
-        $command .= $this->appConfig['root_dir'].' 2>&1';
+        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
+        $command .= $this->workingDir.' 2>&1';
         log_info($command);
 
+        // Execute command
+        $this->runCommand($command);
+
+        return true;
+    }
+
+    /**
+     * Run command
+     *
+     * @param string $command
+     * @return void
+     */
+    public function runCommand($command)
+    {
         // Execute command
         $output = array();
         exec($command, $output);
         log_info(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+    }
 
-        return true;
+    /**
+     * Set working dir
+     * @param string $workingDir
+     */
+    public function setWorkingDir($workingDir)
+    {
+        $this->workingDir = $workingDir;
     }
 
     /**
@@ -105,25 +119,31 @@ class ComposerProcessService
     }
 
     /**
-     * Check composer file and setup it
+     * Set init
      */
-    private function setupComposer()
+    private function init()
     {
         @ini_set('memory_limit', '1536M');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
-        $this->composerFile = $this->appConfig['root_dir'].'/composer.phar';
-        $this->composerSetup = $this->appConfig['root_dir'].'/composer-setup.php';
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
+        $this->setupComposer();
+    }
 
+    /**
+     * Check composer file and setup it
+     */
+    private function setupComposer()
+    {
+        $this->composerFile = $this->workingDir.'/composer.phar';
+        $this->composerSetup = $this->workingDir.'/composer-setup.php';
         if (!file_exists($this->composerFile)) {
             if (!file_exists($this->composerSetup)) {
                 $result = copy('https://getcomposer.org/installer', $this->composerSetup);
                 log_info($this->composerSetup.' : '.$result);
             }
             $command = $this->getPHP().' '.$this->composerSetup;
-            $output = array();
-            exec($command, $output);
-            log_info(PHP_EOL.implode(PHP_EOL, $output).PHP_EOL);
+            $this->runCommand($command);
 
             unlink($this->composerSetup);
         }
