@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -59,6 +60,12 @@ class OwnerStoreController extends AbstractController
      * @var PluginService
      */
     protected $pluginService;
+
+    /**
+     * @Inject("eccube.service.composer")
+     * @var ComposerServiceInterface
+     */
+    protected $composerService;
 
     /**
      * @var EntityManager
@@ -251,7 +258,7 @@ class OwnerStoreController extends AbstractController
             }
         }
         $packageNames .= self::$vendorName.'/'.$pluginCode;
-        $return = $app['eccube.service.composer']->execRequire($packageNames);
+        $return = $this->composerService->execRequire($packageNames);
         if ($return) {
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
@@ -331,7 +338,7 @@ class OwnerStoreController extends AbstractController
         }
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
-        $return = $app['eccube.service.composer']->execRemove($packageName);
+        $return = $this->composerService->execRemove($packageName);
         if ($return) {
             $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
         } else {

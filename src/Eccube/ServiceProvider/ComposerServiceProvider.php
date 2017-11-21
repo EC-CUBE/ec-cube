@@ -26,7 +26,6 @@ namespace Eccube\ServiceProvider;
 
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\Composer\ComposerProcessService;
-use Eccube\Service\SystemService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -38,7 +37,8 @@ class ComposerServiceProvider implements ServiceProviderInterface
         $app['eccube.service.composer'] = function () use ($app) {
             /**@var \Eccube\Service\SystemService $systemService */
             $systemService = $app['eccube.service.system'];
-            if ($systemService->isSetMemoryLimit() || $systemService->getMemoryLimit() == -1 || $systemService->getMemoryLimit() >= SystemService::MEMORY) {
+            $composerMemory = $app['config']['composer_memory_limit'];
+            if ($systemService->isSetMemoryLimit() || $systemService->getMemoryLimit() == -1 || $systemService->getMemoryLimit() >= $composerMemory) {
                 return new ComposerApiService($app);
             } else {
                 return new ComposerProcessService($app);

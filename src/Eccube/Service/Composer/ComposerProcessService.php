@@ -129,14 +129,13 @@ class ComposerProcessService implements ComposerServiceInterface
      */
     private function init()
     {
-        /** @var SystemService $systemService */
-        $systemService = $this->app['eccube.service.system'];
-        if (!$systemService->isPhpCommandLine()) {
+        if (!$this->isPhpCommandLine()) {
             return false;
         }
 
-        if (!$systemService->isSetCliMemoryLimit()) {
-            if ($systemService->getCliMemoryLimit() < SystemService::MEMORY && $systemService->getCliMemoryLimit() != -1) {
+        if (!$this->isSetCliMemoryLimit()) {
+            $composerMemory = $this->appConfig['composer_memory_limit'];
+            if ($this->getCliMemoryLimit() < $composerMemory && $this->getCliMemoryLimit() != -1) {
                 return false;
             }
         }
@@ -171,5 +170,85 @@ class ComposerProcessService implements ComposerServiceInterface
 
             unlink($this->composerSetup);
         }
+    }
+
+    /**
+     * Get grep memory_limit | Megabyte
+     * @return int|string
+     */
+    public function getCliMemoryLimit(){
+        $grepMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
+        if($grepMemory){
+            $grepMemory = explode('=>', $grepMemory);
+
+            // -1 unlimited
+            if (trim($grepMemory[2]) == -1) {
+                return -1;
+            }
+
+            $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
+            $memo = trim($exp[0]);
+            if ($exp[1] == 'M') {
+
+                return $memo;
+            } else {
+                if ($exp[1] == 'GB') {
+
+                    return $memo * 1024;
+                } else {
+
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Check to set new value grep "memory_limit"
+     * @return bool
+     */
+    public function isSetCliMemoryLimit()
+    {
+        $oldMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
+        $tmpMem = '2GB';
+
+        if ($oldMemory) {
+            $memory = explode('=>', $oldMemory);
+            $originGrepMemmory = trim($memory[2]);
+
+            if ($originGrepMemmory == $tmpMem) {
+                $tmpMem = '2.5GB';
+            }
+
+            $newMemory = exec($this->pathPHP.' -d memory_limit='.$tmpMem.' -i | grep "memory_limit"');
+            if ($newMemory) {
+                $newMemory = explode('=>', $newMemory);
+                $grepNewMemory = trim($newMemory[2]);
+                if ($grepNewMemory != $originGrepMemmory) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check php command line
+     * @return bool
+     */
+    public function isPhpCommandLine()
+    {
+        $php = exec('which php');
+        if (function_exists('exec') && null != $php) {
+            if (strpos(strtolower($php), 'php') !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
