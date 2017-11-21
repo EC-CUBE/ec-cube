@@ -22,7 +22,6 @@
  */
 namespace Eccube\Controller\Admin\Store;
 
-use Carbon\Carbon;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
@@ -231,7 +230,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
+        $url = $this->appConfig['package_repo_url'] . '/search/packages.json' . '?eccube_version=' . $eccubeVersion . '&plugin_code=' . $pluginCode . '&version=' . $version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);
@@ -260,36 +259,40 @@ class OwnerStoreController extends AbstractController
 
         // Unset first param
         unset($dependents[0]);
-
+        $dependentModifier = [];
         $packageNames = '';
         if (!empty($dependents)) {
             foreach ($dependents as $item) {
-                $packageNames .= self::$vendorName.'/'.$item['product_code'].' ';
+                $packageNames .= self::$vendorName . '/' . $item['product_code'] . ' ';
+                $pluginItem = [
+                    "product_code" => $item['product_code'],
+                    "version" => $item['version']
+                ];
+                array_push($dependentModifier, $pluginItem);
             }
         }
-        $packageNames .= self::$vendorName.'/'.$pluginCode;
+        $packageNames .= self::$vendorName . '/' . $pluginCode;
         $return = $this->composerService->execRequire($packageNames);
 
         if ($return) {
-            $url = $this->appConfig['package_repo_url'].'/collect';
+            $url = $this->appConfig['package_repo_url'] . '/collect';
             // $composerMode = 1 is ComposerApi
-            $composerMode = 1;
+            $composerMode = $this->appConfig['api_mode'];
             if ($this->composerService instanceof ComposerProcessService) {
-                $composerMode = 2;
+                $composerMode = $this->appConfig['exec_mode'];
             }
             $data = array(
                 'code' => $pluginCode,
                 'version' => $version,
-                'download_date' => Carbon::now()->format('Y-m-d H:i:s'),
                 'core_version' => $eccubeVersion,
                 'php_version' => phpversion(),
                 'db_version' => $this->systemService->getDbversion(),
-                'os' => php_uname('s'),
-                'host' => php_uname('n') .' '. $request->server->get("REMOTE_ADDR"),
+                'os' => php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('v'),
+                'host' => $request->getHost() . ' ' . $request->server->get("REMOTE_ADDR"),
                 'web_server' => $request->server->get("SERVER_SOFTWARE"),
-                'composer_version' => $this->systemService->composerVersion(),
+                'composer_version' => $this->composerService->composerVersion(),
                 'composer_execute_mode' => $composerMode,
-                'dependents' => json_encode($dependents)
+                'dependents' => json_encode($dependentModifier)
             );
             $this->postRequestApi($url, $app, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
@@ -420,7 +423,7 @@ class OwnerStoreController extends AbstractController
      * @param array $data
      * @return array
      */
-    private function postRequestApi($url, $app, $data = array())
+    private function postRequestApi($url, $app, $data)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);

@@ -51,4 +51,10 @@ interface ComposerServiceInterface
      * @return string|mixed
      */
     public function runCommand($commands);
+
+    /**
+     * Get version of composer
+     * @return null|string
+     */
+    public function composerVersion();
 }

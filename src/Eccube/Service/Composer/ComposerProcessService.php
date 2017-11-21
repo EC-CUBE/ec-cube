@@ -148,4 +148,20 @@ class ComposerProcessService implements ComposerServiceInterface
             unlink($this->composerSetup);
         }
     }
+
+    /**
+     * Get version of composer
+     * @return null|string
+     */
+    public function composerVersion()
+    {
+        $this->init();
+        $command = $this->getPHP().' '.$this->composerFile.' -V';
+        $composer = exec($command);
+        if (function_exists('exec') && null != $composer) {
+            return $composer;
+        }
+
+        return null;
+    }
 }

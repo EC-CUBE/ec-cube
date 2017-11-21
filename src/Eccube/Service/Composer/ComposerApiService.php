@@ -213,4 +213,16 @@ class ComposerApiService implements ComposerServiceInterface
         $this->consoleApplication = $consoleApplication;
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
     }
+
+    /**
+     * Get version of composer
+     * @return null|string
+     */
+    public function composerVersion(){
+        $this->init();
+        $output = $this->runCommand(array(
+            '--version'=> true
+        ));
+        return $output;
+    }
 }

@@ -68,16 +68,4 @@ class SystemService
 
         return $prefix.$version;
     }
-
-    /**
-     * @return null|string
-     */
-    public function composerVersion(){
-        $composer = exec('composer -V');
-        if (function_exists('exec') && null != $composer) {
-            return $composer;
-        }
-
-        return null;
-    }
 }
