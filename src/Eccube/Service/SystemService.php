@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -38,12 +39,6 @@ class SystemService
      * @Inject("orm.em")
      */
     protected $em;
-
-    /**
-     * 1536 Megabyte
-     * @var int
-     */
-    const MEMORY = 1536;
 
     public function getDbversion()
     {
@@ -87,21 +82,18 @@ class SystemService
 
     /**
      * Try to set new values memory_limit | return true
+     * @param $memory | EX: 1536M
      * @return bool
      */
-    public function isSetMemoryLimit()
+    public function canSetMemoryLimit($memory)
     {
-        $setMemory = self::MEMORY;
-        if ($this->getMemoryLimit() == $setMemory) {
-            $setMemory = 2048;
+        try {
+            ini_set('memory_limit', $memory);
+        } catch (\Exception $exception) {
+            return false;
         }
 
-        @ini_set('memory_limit', $setMemory);
-        if ($this->getMemoryLimit() != $setMemory) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     /**
@@ -110,108 +102,12 @@ class SystemService
      */
     public function getMemoryLimit()
     {
-        $memoryLimit = ini_get('memory_limit');
-
-        // -1 unlimited
-        if ($memoryLimit == -1) {
+        // Data type: bytes
+        $memoryLimit = (new MemoryDataCollector())->getMemoryLimit();
+        if (-1 == $memoryLimit) {
             return -1;
         }
 
-        if (preg_match('/^(\d+)(.)$/', $memoryLimit, $matches)) {
-            $memoryValue = $matches[1];
-            $memoryUnit = strtoupper($matches[2]);
-
-            if ($memoryUnit == 'M') {
-                return $memoryValue;
-            } else {
-                if ($memoryUnit == 'K') {
-                    return ($memoryValue == 0) ? 0 : $memoryValue / 1024;
-                } else {
-                    return $memoryValue * 1024;
-                }
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Get grep memory_limit | Megabyte
-     * @return int|string
-     */
-    public function getCliMemoryLimit(){
-        $grepMemory = exec($this->getPHP().' -i | grep "memory_limit"');
-        if($grepMemory){
-            $grepMemory = explode('=>', $grepMemory);
-
-            // -1 unlimited
-            if (trim($grepMemory[2]) == -1) {
-                return -1;
-            }
-
-            $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
-            $memo = trim($exp[0]);
-            if ($exp[1] == 'M') {
-
-                return $memo;
-            } else {
-                if ($exp[1] == 'GB') {
-
-                    return $memo * 1024;
-                } else {
-
-                    return 0;
-                }
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Check to set new value grep "memory_limit"
-     * @return bool
-     */
-    public function isSetCliMemoryLimit()
-    {
-        $oldMemory = exec($this->getPHP().' -i | grep "memory_limit"');
-        $tmpMem = '2GB';
-
-        if ($oldMemory) {
-            $memory = explode('=>', $oldMemory);
-            $originGrepMemmory = trim($memory[2]);
-
-            if ($originGrepMemmory == $tmpMem) {
-                $tmpMem = '2.5GB';
-            }
-
-            $newMemory = exec($this->getPHP().' -d memory_limit=' . $tmpMem . ' -i | grep "memory_limit"');
-            if ($newMemory) {
-                $newMemory = explode('=>', $newMemory);
-                $grepNewMemory = trim($newMemory[2]);
-                if ($grepNewMemory != $originGrepMemmory) {
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check php command line
-     * @return bool
-     */
-    public function isPhpCommandLine()
-    {
-        $php = exec('which php');
-        if (function_exists('exec') && null != $php) {
-            if (strpos(strtolower($php), 'php') !== false) {
-                return true;
-            }
-        }
-
-        return false;
+        return ($memoryLimit == 0) ? 0 : ($memoryLimit / 1024) / 1024;
     }
 }

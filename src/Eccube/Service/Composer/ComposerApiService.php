@@ -40,21 +40,15 @@ class ComposerApiService implements ComposerServiceInterface
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application
-     */
-    protected $app;
-
-    /**
      * @var Application $consoleApplication
      */
     private $consoleApplication;
 
     private $workingDir;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct($appConfig)
     {
-        $this->app = $app;
-        $this->appConfig = $app['config'];
+        $this->appConfig = $appConfig;
     }
 
     /**
