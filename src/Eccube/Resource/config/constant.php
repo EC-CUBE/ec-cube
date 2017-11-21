@@ -63,4 +63,6 @@
     'product_order_price_higher' => 3,
     'price_max' => 2147483647,
     'pageinrange' => false,
+    'api_mode' => '1',
+    'exec_mode' => '2',
 ];
