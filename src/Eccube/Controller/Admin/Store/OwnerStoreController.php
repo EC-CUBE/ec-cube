@@ -288,7 +288,7 @@ class OwnerStoreController extends AbstractController
                 'php_version' => phpversion(),
                 'db_version' => $this->systemService->getDbversion(),
                 'os' => php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('v'),
-                'host' => $request->getHost() . ' ' . $request->server->get("REMOTE_ADDR"),
+                'host' => $request->getHost(),
                 'web_server' => $request->server->get("SERVER_SOFTWARE"),
                 'composer_version' => $this->composerService->composerVersion(),
                 'composer_execute_mode' => $composerMode,
@@ -301,6 +301,7 @@ class OwnerStoreController extends AbstractController
         $app->addError('admin.plugin.install.fail', 'admin');
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
+
 
     /**
      * Do confirm page
