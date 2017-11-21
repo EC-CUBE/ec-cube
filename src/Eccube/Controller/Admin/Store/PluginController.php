@@ -251,6 +251,14 @@ class PluginController extends AbstractController
                     $fs->remove($tmpDir);
                 }
                 $message = $e->getMessage();
+            } catch (\Exception $er) {
+                // Catch composer install error | Other error
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir);
+                }
+                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                $message = 'admin.plugin.install.fail';
             }
         } else {
             $errors = $form->getErrors(true);
@@ -450,7 +458,15 @@ class PluginController extends AbstractController
                     $fs->remove($tmpDir);
                 }
                 $this->logger->error("plugin install failed.", array('original-message' => $e->getMessage()));
-                $errors[] = $e->getMessage();
+                $errors[] = $e;
+            } catch (\Exception $er) {
+                // Catch composer install error | Other error
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir);
+                }
+                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                $app->addError('admin.plugin.install.fail', 'admin');
             }
         } else {
             foreach ($form->getErrors(true) as $error) {

@@ -146,9 +146,6 @@ class PluginService
             // 問題なければ本当のplugindirへ
             $this->unpackPluginArchive($path, $pluginBaseDir);
 
-            // プラグイン配置後に実施する処理
-            $this->postInstall($config, $event, $source);
-
             // Check dependent plugin
             // Don't install ec-cube library
             $dependents = $this->getDependentByCode($config['code'], self::OTHER_LIBRARY);
@@ -156,6 +153,9 @@ class PluginService
                 $package = $this->parseToComposerCommand($dependents);
                 $this->composerService->execRequire($package);
             }
+
+            // プラグイン配置後に実施する処理
+            $this->postInstall($config, $event, $source);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -523,9 +523,6 @@ class PluginService
             $this->deleteFile($tmp); // テンポラリのファイルを削除
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
-            $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
-
-            PluginConfigManager::writePluginConfigCache();
 
             // Check dependent plugin
             // Don't install ec-cube library
@@ -534,6 +531,9 @@ class PluginService
                 $package = $this->parseToComposerCommand($dependents);
                 $this->composerService->execRequire($package);
             }
+
+            $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
+            PluginConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp]);
             throw $e;
