@@ -38,7 +38,8 @@ class ComposerServiceProvider implements ServiceProviderInterface
             /**@var \Eccube\Service\SystemService $systemService */
             $systemService = $app['eccube.service.system'];
             $composerMemory = $app['config']['composer_memory_limit'];
-            if ($systemService->isSetMemoryLimit() || $systemService->getMemoryLimit() == -1 || $systemService->getMemoryLimit() >= $composerMemory) {
+            $memoryLimit = $systemService->getMemoryLimit();
+            if ($systemService->canSetMemoryLimit($composerMemory.'M') || $memoryLimit == -1 || $memoryLimit >= $composerMemory) {
                 return new ComposerApiService($app);
             } else {
                 return new ComposerProcessService($app);

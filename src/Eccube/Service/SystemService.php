@@ -40,12 +40,6 @@ class SystemService
      */
     protected $em;
 
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
     public function getDbversion()
     {
 
@@ -88,14 +82,13 @@ class SystemService
 
     /**
      * Try to set new values memory_limit | return true
+     * @param $memory | EX: 1536M
      * @return bool
      */
-    public function isSetMemoryLimit()
+    public function canSetMemoryLimit($memory)
     {
-        $setMemory = $this->appConfig['composer_memory_limit'].'M';
-
         try {
-            ini_set('memory_limit', $setMemory);
+            ini_set('memory_limit', $memory);
         } catch (\Exception $exception) {
             return false;
         }
