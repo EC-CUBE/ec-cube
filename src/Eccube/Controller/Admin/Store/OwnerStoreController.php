@@ -260,6 +260,7 @@ class OwnerStoreController extends AbstractController
 
         // Unset first param
         unset($dependents[0]);
+
         $packageNames = '';
         if (!empty($dependents)) {
             foreach ($dependents as $item) {
@@ -276,17 +277,19 @@ class OwnerStoreController extends AbstractController
             if ($this->composerService instanceof ComposerProcessService) {
                 $composerMode = 2;
             }
-            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
             $data = array(
-                'domain_name' =>$protocol . $request->server->get('HTTP_HOST'),
+                'code' => $pluginCode,
+                'version' => $version,
+                'download_date' => Carbon::now()->format('Y-m-d H:i:s'),
                 'core_version' => $eccubeVersion,
                 'php_version' => phpversion(),
                 'db_version' => $this->systemService->getDbversion(),
                 'os' => php_uname('s'),
-                'host' => php_uname('n'),
+                'host' => php_uname('n') .' '. $request->server->get("REMOTE_ADDR"),
                 'web_server' => $request->server->get("SERVER_SOFTWARE"),
                 'composer_version' => $this->systemService->composerVersion(),
-                'composer_execute_mode' => $composerMode
+                'composer_execute_mode' => $composerMode,
+                'dependents' => json_encode($dependents)
             );
             $this->postRequestApi($url, $app, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
