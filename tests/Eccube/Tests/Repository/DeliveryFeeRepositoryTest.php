@@ -46,7 +46,7 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
         $Pref
             ->setId(500)
             ->setName('その他')
-            ->setRank(99);
+            ->setSortNo(99);
         $this->app['orm.em']->persist($Pref);
         $this->app['orm.em']->flush();
 

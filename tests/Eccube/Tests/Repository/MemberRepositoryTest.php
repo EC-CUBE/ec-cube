@@ -34,7 +34,7 @@ class MemberRepositoryTest extends EccubeTestCase
                 ->setLoginId('member-1')
                 ->setPassword($encoder->encodePassword($password, $salt))
                 ->setSalt($salt)
-                ->setRank($i)
+                ->setSortNo($i)
                 ->setWork($Work);
             $this->app['orm.em']->persist($Member);
             $this->app['eccube.repository.member']->save($Member);
@@ -87,17 +87,17 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testUp()
     {
-        $rank = $this->Member->getRank();
+        $rank = $this->Member->getSortNo();
         $this->app['eccube.repository.member']->up($this->Member);
 
         $this->expected = $rank + 1;
-        $this->actual = $this->Member->getRank();
+        $this->actual = $this->Member->getSortNo();
         $this->verify();
     }
 
     public function testUpWithException()
     {
-        $this->Member->setRank(999);
+        $this->Member->setSortNo(999);
         $this->app['orm.em']->flush();
 
         try {
@@ -113,25 +113,25 @@ class MemberRepositoryTest extends EccubeTestCase
         /** @var EntityManager $em */
         $em = $this->app['orm.em'];
         $qb = $em->createQueryBuilder();
-        $max = $qb->select('MAX(m.rank)')
+        $max = $qb->select('MAX(m.sort_no)')
             ->from(Member::class, 'm')
             ->getQuery()
             ->getSingleScalarResult();
 
-        $this->Member->setRank($max + 1);
+        $this->Member->setSortNo($max + 1);
         $this->app['orm.em']->flush();
 
-        $rank = $this->Member->getRank();
+        $rank = $this->Member->getSortNo();
         $this->app['eccube.repository.member']->down($this->Member);
 
         $this->expected = $rank - 1;
-        $this->actual = $this->Member->getRank();
+        $this->actual = $this->Member->getSortNo();
         $this->verify();
     }
 
     public function testDownWithException()
     {
-        $this->Member->setRank(0);
+        $this->Member->setSortNo(0);
         $this->app['orm.em']->flush();
 
         try {
@@ -149,7 +149,7 @@ class MemberRepositoryTest extends EccubeTestCase
             ->setLoginId('member-100')
             ->setPassword('password')
             ->setSalt('salt')
-            ->setRank(100);
+            ->setSortNo(100);
 
         $this->app['eccube.repository.member']->save($Member);
     }
@@ -159,7 +159,7 @@ class MemberRepositoryTest extends EccubeTestCase
         /** @var EntityManager $em */
         $em = $this->app['orm.em'];
         $qb = $em->createQueryBuilder();
-        $rank = $qb->select('MAX(m.rank)')
+        $rank = $qb->select('MAX(m.sort_no)')
             ->from(Member::class, 'm')
             ->getQuery()
             ->getSingleScalarResult();
@@ -169,11 +169,11 @@ class MemberRepositoryTest extends EccubeTestCase
             ->setLoginId('member-100')
             ->setPassword('password')
             ->setSalt('salt')
-            ->setRank(100);
+            ->setSortNo(100);
         $this->app['eccube.repository.member']->save($Member);
 
         $this->expected = $rank + 1;
-        $this->actual = $Member->getRank();
+        $this->actual = $Member->getSortNo();
 
         $this->verify();
     }

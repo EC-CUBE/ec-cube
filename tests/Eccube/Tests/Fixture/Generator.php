@@ -298,7 +298,7 @@ class Generator {
             $ProductImage
                 ->setCreator($Member)
                 ->setFileName($image)
-                ->setRank($i)
+                ->setSortNo($i)
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
             $this->app['orm.em']->persist($ProductImage);
@@ -405,7 +405,7 @@ class Generator {
                 ->setProduct($Product)
                 ->setCategoryId($Category->getId())
                 ->setProductId($Product->getId())
-                ->setRank($i);
+                ->setSortNo($i);
             $this->app['orm.em']->persist($ProductCategory);
             $this->app['orm.em']->flush($ProductCategory);
             $Product->addProductCategory($ProductCategory);
@@ -655,7 +655,7 @@ class Generator {
             ->setName($faker->word)
             ->setDescription($faker->paragraph())
             ->setConfirmUrl($faker->url)
-            ->setRank($faker->randomNumber(2))
+            ->setSortNo($faker->randomNumber(2))
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)

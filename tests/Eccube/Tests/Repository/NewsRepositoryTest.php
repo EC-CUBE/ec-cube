@@ -29,7 +29,7 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setUrl($faker->url)
                 ->setSelect(1)
                 ->setLinkMethod(1)
-                ->setRank($i)
+                ->setSortNo($i)
                 ;
             $this->app['orm.em']->persist($News);
         }
@@ -51,14 +51,14 @@ class NewsRepositoryTest extends EccubeTestCase
             array('title' => 'news-1')
         );
         $this->assertNotNull($News);
-        $this->assertEquals(1, $News->getRank());
+        $this->assertEquals(1, $News->getSortNo());
 
         // rank up 1 => 2
         $this->app['eccube.repository.news']->up($News);
 
         $this->expected = 2;
-        $this->actual = $News->getRank();
-        $this->verify('rank は '.$this->expected.'ではありません');
+        $this->actual = $News->getSortNo();
+        $this->verify('sort_no は '.$this->expected.'ではありません');
     }
 
     public function testUpWithException()
@@ -81,14 +81,14 @@ class NewsRepositoryTest extends EccubeTestCase
             array('title' => 'news-1')
         );
         $this->assertNotNull($News);
-        $this->assertEquals(1, $News->getRank());
+        $this->assertEquals(1, $News->getSortNo());
 
         // rank down 1 => 0
         $this->app['eccube.repository.news']->down($News);
 
         $this->expected = 0;
-        $this->actual = $News->getRank();
-        $this->verify('rank は '.$this->expected.'ではありません');
+        $this->actual = $News->getSortNo();
+        $this->verify('sort_no は '.$this->expected.'ではありません');
     }
 
     public function testDownWithException()
@@ -118,8 +118,8 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.news']->save($News);
 
         $this->expected = 3;
-        $this->actual = $News->getRank();
-        $this->verify('rank は'.$this->expected.'ではありません');
+        $this->actual = $News->getSortNo();
+        $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
     public function testSaveWithRankNull()
@@ -137,8 +137,8 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.news']->save($News);
 
         $this->expected = 1;
-        $this->actual = $News->getRank();
-        $this->verify('rank は'.$this->expected.'ではありません');
+        $this->actual = $News->getSortNo();
+        $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
     public function testDelete()

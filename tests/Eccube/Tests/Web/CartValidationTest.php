@@ -844,7 +844,7 @@ class CartValidationTest extends AbstractWebTestCase
         $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Delivery
             ->setDelFlg(Constant::ENABLED)
-            ->setRank(0);
+            ->setSortNo(0);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);
 

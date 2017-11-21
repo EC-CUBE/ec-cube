@@ -361,14 +361,14 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     public function createFormDataEdit($entity = 'Eccube-Entity-Master-Sex')
     {
         $entityName = str_replace('-', '\\', $entity);
-        $masterData = $this->app['orm.em']->getRepository($entityName)->findBy(array(), array('rank' => 'ASC'));
+        $masterData = $this->app['orm.em']->getRepository($entityName)->findBy(array(), array('sort_no' => 'ASC'));
         $data = array();
         $rank = 1;
         $id = 1;
         foreach ($masterData as $value) {
-            $data[$value['rank']]['id'] = $value['id'];
-            $data[$value['rank']]['name'] = $value['name'];
-            $rank = $value['rank'] + 1;
+            $data[$value['sort_no']]['id'] = $value['id'];
+            $data[$value['sort_no']]['name'] = $value['name'];
+            $rank = $value['sort_no'] + 1;
             $id = $value['id'];
         }
 

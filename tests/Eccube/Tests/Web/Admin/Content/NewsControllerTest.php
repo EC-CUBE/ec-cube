@@ -134,7 +134,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             ->setTitle('テストタイトル' . $rank)
             ->setDescription('テスト内容' . $rank)
             ->setUrl('http://example.com/')
-            ->setRank(100 + $rank)
+            ->setSortNo(100 + $rank)
             ->setSelect(0)
             ->setLinkMethod(false)
             ->setCreator($TestCreator);

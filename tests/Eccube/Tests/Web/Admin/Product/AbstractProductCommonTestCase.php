@@ -113,7 +113,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $TestClassName = new ClassName();
         $TestClassName->setName($this->faker->word)
-            ->setRank($this->faker->randomNumber(3))
+            ->setSortNo($this->faker->randomNumber(3))
             ->setCreator($Creator);
 
         $this->app['orm.em']->persist($TestClassName);
@@ -136,7 +136,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $TestClassCategory = new ClassCategory();
         $TestClassCategory->setName($this->faker->word)
-            ->setRank($this->faker->randomNumber(3))
+            ->setSortNo($this->faker->randomNumber(3))
             ->setClassName($TestClassName)
             ->setVisible(true)
             ->setCreator($Creator);

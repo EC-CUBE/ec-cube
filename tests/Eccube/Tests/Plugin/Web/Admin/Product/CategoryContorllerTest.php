@@ -43,31 +43,31 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function createCategories()
     {
         $categories = array(
-            array('name' => '親1', 'hierarchy' => 1, 'rank' => 1,
+            array('name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
                   'child' => array(
-                      array('name' => '子1', 'hierarchy' => 2, 'rank' => 4,
+                      array('name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
                             'child' => array(
-                                array('name' => '孫1', 'hierarchy' => 3, 'rank' => 9)
+                                array('name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9)
                             ),
                       ),
                   ),
             ),
-            array('name' => '親2', 'hierarchy' => 1, 'rank' => 2,
+            array('name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
                   'child' => array(
-                      array('name' => '子2-0', 'hierarchy' => 2, 'rank' => 5,
+                      array('name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
                             'child' => array(
-                                array('name' => '孫2', 'hierarchy' => 3, 'rank' => 10)
+                                array('name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10)
                             )
                       ),
-                      array('name' => '子2-1', 'hierarchy' => 2, 'rank' => 6),
-                      array('name' => '子2-2', 'hierarchy' => 2, 'rank' => 7)
+                      array('name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6),
+                      array('name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7)
                   ),
             ),
-            array('name' => '親3', 'hierarchy' => 1, 'rank' => 3,
+            array('name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
                   'child' => array(
-                      array('name' => '子3', 'hierarchy' => 2, 'rank' => 8,
+                      array('name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
                             'child' => array(
-                                array('name' => '孫3', 'hierarchy' => 3, 'rank' => 11)
+                                array('name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11)
                             )
                       )
                   ),
@@ -227,13 +227,13 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $TestCategory = new \Eccube\Entity\Category();
         if ($TestParentCategory == null) {
             $TestCategory->setName('テスト家具')
-                ->setRank(100)
+                ->setSortNo(100)
                 ->setHierarchy(100)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         } else {
             $TestCategory->setName($TestParentCategory->getName() . '_c')
-                ->setRank($TestParentCategory->getRank() + 1)
+                ->setSortNo($TestParentCategory->getSortNo() + 1)
                 ->setHierarchy($TestParentCategory->getHierarchy() + 1)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);

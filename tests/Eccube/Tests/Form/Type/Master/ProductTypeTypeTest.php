@@ -65,7 +65,7 @@ class ProductTypeTypeTest extends AbstractTypeTestCase
             $data[] = $choice->data;
         }
         $query = $this->app['eccube.repository.master.product_type']->createQueryBuilder('m')
-            ->orderBy('m.rank', 'ASC')
+            ->orderBy('m.sort_no', 'ASC')
             ->getQuery();
         $res = $query->getResult();
         // order by されているか

@@ -23,7 +23,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $Property->setValue($this->app['eccube.service.csv.export'], fopen($this->url, 'w'));
 
         $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setRank(1);
+        $Csv->setSortNo(1);
         $Csv->setEnabled(false);
         $this->app['orm.em']->flush();
     }

@@ -65,7 +65,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
             $data[] = $choice->data;
         }
         $query = $this->app['eccube.repository.delivery_duration']->createQueryBuilder('m')
-            ->orderBy('m.rank', 'ASC')
+            ->orderBy('m.sort_no', 'ASC')
             ->getQuery();
         $res = $query->getResult();
         // order by されているか

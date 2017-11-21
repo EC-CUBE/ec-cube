@@ -40,7 +40,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             $ClassName
                 ->setName('class-'.$i)
                 ->setCreator($this->Member)
-                ->setRank($i)
+                ->setSortNo($i)
                 ;
             $this->app['orm.em']->persist($ClassName);
         }
@@ -147,7 +147,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_product_class_name_rank_move'),
+            $this->app->url('admin_product_class_name_sort_no_move'),
             array($ClassName->getId() => 10),
             array(),
             array(
@@ -159,7 +159,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
         $MovedClassName = $this->app['eccube.repository.class_name']->find($ClassName->getId());
         $this->expected = 10;
-        $this->actual = $MovedClassName->getRank();
+        $this->actual = $MovedClassName->getSortNo();
         $this->verify();
     }
 
@@ -167,7 +167,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     {
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
-            ->setRank(100)
+            ->setSortNo(100)
             ->setCreator($TestCreator);
 
         return $TestClassName;

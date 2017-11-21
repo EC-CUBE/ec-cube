@@ -35,7 +35,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setRank(1);
+        $Csv->setSortNo(1);
         $Csv->setEnabled(false);
         $this->app['orm.em']->flush();
     }
@@ -52,7 +52,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(1);
         $this->assertNotEmpty($CsvType);
 
-        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enabled' => true), array('rank' => 'ASC'));
+        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enabled' => true), array('sort_no' => 'ASC'));
         $this->assertNotEmpty($Csv);
     }
 
@@ -62,7 +62,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->getConnection()->beginTransaction();
 
         $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setRank(1);
+        $Csv->setSortNo(1);
         $Csv->setEnabled(false);
 
         $this->app['orm.em']->flush();
@@ -118,10 +118,10 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->app['eccube.repository.master.csv_type']->find($csvType);
         $Creator = $this->app['eccube.repository.member']->find(2);
 
-        $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('rank' => 'DESC'));
+        $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('sort_no' => 'DESC'));
         $rank = 1;
         if ($csv) {
-            $rank = $csv->getRank() + 1;
+            $rank = $csv->getSortNo() + 1;
         }
 
         $Csv = new Csv();
@@ -132,7 +132,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $Csv->setReferenceFieldName($ref);
         $Csv->setDispName('Test');
         $Csv->setEnabled(false);
-        $Csv->setRank($rank);
+        $Csv->setSortNo($rank);
 
         $this->app['orm.em']->persist($Csv);
         $this->app['orm.em']->flush();

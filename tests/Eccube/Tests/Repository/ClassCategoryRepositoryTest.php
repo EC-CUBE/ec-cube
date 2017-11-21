@@ -25,13 +25,13 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             $ClassName = new ClassName();
             $ClassName
                 ->setName('class-'.$i)
-                ->setRank($i);
+                ->setSortNo($i);
             for ($j = 0; $j < 3; $j++) {
                 $ClassCategory = new ClassCategory();
                 $ClassCategory
                     ->setName('classcategory-'.$i.'-'.$j)
                     ->setVisible(true)
-                    ->setRank($j)
+                    ->setSortNo($j)
                     ->setClassName($ClassName);
                 $ClassName->addClassCategory($ClassCategory);
                 $this->app['orm.em']->persist($ClassCategory);
@@ -69,7 +69,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
 
         $this->actual = array();
         foreach ($ClassCategories as $ClassCategory) {
-            $this->actual[] = $ClassCategory->getRank();
+            $this->actual[] = $ClassCategory->getSortNo();
         }
         $this->expected = array(2, 2, 2, 1, 1, 1, 0, 0, 0);
         $this->verify('ソート順が違います');
@@ -110,8 +110,8 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.class_category']->save($ClassCategory);
 
         $this->expected = 3;
-        $this->actual = $ClassCategory->getRank();
-        $this->verify('rank は'.$this->expected.'ではありません');
+        $this->actual = $ClassCategory->getSortNo();
+        $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
     public function testSaveWithRankNull()
@@ -132,8 +132,8 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.class_category']->save($ClassCategory);
 
         $this->expected = 1;
-        $this->actual = $ClassCategory->getRank();
-        $this->verify('rank は'.$this->expected.'ではありません');
+        $this->actual = $ClassCategory->getSortNo();
+        $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
     public function testDelete()
