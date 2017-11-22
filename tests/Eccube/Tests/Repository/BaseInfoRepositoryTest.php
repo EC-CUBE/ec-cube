@@ -38,8 +38,6 @@ class BaseInfoRepositoryTest extends EccubeTestCase
             ->setAddr01($faker->address)
             ->setAddr02($faker->secondaryAddress)
             ->setEmail01($faker->email)
-            ->setLatitude($faker->latitude)
-            ->setLongitude($faker->longitude)
             ->setUpdateDate($faker->dateTime('now'));
 
         /*
