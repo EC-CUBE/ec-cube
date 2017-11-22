@@ -112,7 +112,7 @@ class PaymentProcessorTest extends EccubeTestCase
     {
         $cart = new Cart();
         $item = new CartItem();
-        $item->setObject($this->ProductClass1);
+        $item->setProductClass($this->ProductClass1);
         $cart->addItem($item);
 
         $result = $this->validator->process($cart, new PurchaseContext());
@@ -124,11 +124,11 @@ class PaymentProcessorTest extends EccubeTestCase
     {
         $cart = new Cart();
         $item1 = new CartItem();
-        $item1->setObject($this->ProductClass1);
+        $item1->setProductClass($this->ProductClass1);
         $cart->addItem($item1);
 
         $item2 = new CartItem();
-        $item2->setObject($this->ProductClass2);
+        $item2->setProductClass($this->ProductClass2);
         $cart->addItem($item2);
 
         $result = $this->validator->process($cart, new PurchaseContext());
@@ -140,21 +140,15 @@ class PaymentProcessorTest extends EccubeTestCase
     {
         $cart = new Cart();
         $item1 = new CartItem();
-        $item1->setClassName(ProductClass::class);
-        $item1->setClassId($this->ProductClass1->getId());
-        $item1->setObject($this->ProductClass1);
+        $item1->setProductClass($this->ProductClass1);
         $cart->addItem($item1);
 
         $item2 = new CartItem();
-        $item1->setClassName(ProductClass::class);
-        $item1->setClassId($this->ProductClass2->getId());
-        $item2->setObject($this->ProductClass2);
+        $item2->setProductClass($this->ProductClass2);
         $cart->addItem($item2);
 
         $item3 = new CartItem();
-        $item1->setClassName(ProductClass::class);
-        $item1->setClassId($this->ProductClass3->getId());
-        $item3->setObject($this->ProductClass3);
+        $item3->setProductClass($this->ProductClass3);
         $cart->addItem($item3);
 
         $result = $this->validator->process($cart, new PurchaseContext());

@@ -24,9 +24,9 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Exception\CartException;
+use Eccube\Entity\CartItem;
+use Eccube\Service\Cart\CartItemComparator;
+use Eccube\Service\CartService;
 use Eccube\Util\Str;
 
 class CartServiceTest extends AbstractServiceTestCase
@@ -96,10 +96,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService = $this->app['eccube.service.cart'];
         $cartService->addProduct(1);
 
+        /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $cartService->getCart()->getCartItems();
 
-        $this->assertEquals('Eccube\Entity\ProductClass', $CartItems[0]->getClassName());
-        $this->assertEquals(1, $CartItems[0]->getClassId());
+        $this->assertEquals(1, $CartItems[0]->getProductClassId());
     }
 
     public function testAddProducts_Quantity()
@@ -136,6 +136,38 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->assertEquals(107, $quantity);
     }
 
+    public function testAddProducts_WithCartItemComparator()
+    {
+        /** @var CartService $cartService */
+        $cartService = $this->app['eccube.service.cart'];
+
+        // 同じ商品規格で同じ数量なら同じ明細とみなすようにする
+        $cartService->setCartItemComparator(new CartServiceTest_CartItemComparator());
+
+        {
+            $cartService->addProduct(1, 1);
+            $cartService->addProduct(1, 1);
+
+            /* @var \Eccube\Entity\CartItem[] $CartItems */
+            $CartItems = $cartService->getCart()->getCartItems();
+            self::assertEquals(1, count($CartItems));
+            self::assertEquals(1, $CartItems[0]->getProductClassId());
+            self::assertEquals(2, $CartItems[0]->getQuantity());
+        }
+
+        {
+            $cartService->addProduct(1, 1);
+
+            /* @var \Eccube\Entity\CartItem[] $CartItems */
+            $CartItems = $cartService->getCart()->getCartItems();
+            self::assertEquals(2, count($CartItems));
+            self::assertEquals(1, $CartItems[0]->getProductClassId());
+            self::assertEquals(1, $CartItems[0]->getQuantity());
+            self::assertEquals(1, $CartItems[1]->getProductClassId());
+            self::assertEquals(2, $CartItems[1]->getQuantity());
+        }
+    }
+
     public function testUpProductQuantity()
     {
         $cartService = $this->app['eccube.service.cart'];
@@ -166,6 +198,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testRemoveProduct()
     {
+        /* @var \Eccube\Service\CartService $cartService */
         $cartService = $this->app['eccube.service.cart'];
 
         $cartService->addProduct(1, 2);
@@ -183,7 +216,24 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService->save();
 
         $this->expected = $preOrderId;
-        $this->actual = $this->app['session']->get('cart')->getPreOrderId();
+        $this->actual = $cartService->getCart()->getPreOrderId();
         $this->verify();
+    }
+}
+
+/**
+ * 同じ商品同じ数量なら同じ明細とみなす.
+ */
+class CartServiceTest_CartItemComparator implements CartItemComparator
+{
+    /**
+     * @param CartItem $item1 明細1
+     * @param CartItem $item2 明細2
+     * @return boolean 同じ明細になる場合はtrue
+     */
+    public function compare(CartItem $item1, CartItem $item2)
+    {
+        return $item1->getProductClassId() == $item2->getProductClassId()
+            && $item1->getQuantity() == $item2->getQuantity();
     }
 }

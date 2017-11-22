@@ -34,6 +34,9 @@ use Symfony\Component\HttpKernel\Client;
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
 
+    /**
+     * @var Client
+     */
     protected $client;
 
     public function setUp()
