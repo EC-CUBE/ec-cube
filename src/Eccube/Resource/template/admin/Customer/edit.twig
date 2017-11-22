@@ -254,7 +254,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
+                        {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
+                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
+                        {% else %}
+                            <span class="ec-errorMessage">お届け先登録の上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
+                        {% endif %}
                     </div>
                     {% else %}
                     <div id="address_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
