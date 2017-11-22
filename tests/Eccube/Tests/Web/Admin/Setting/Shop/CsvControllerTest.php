@@ -119,9 +119,9 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $Creator = $this->app['eccube.repository.member']->find(2);
 
         $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('sort_no' => 'DESC'));
-        $rank = 1;
+        $sortNo = 1;
         if ($csv) {
-            $rank = $csv->getSortNo() + 1;
+            $sortNo = $csv->getSortNo() + 1;
         }
 
         $Csv = new Csv();
@@ -132,7 +132,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $Csv->setReferenceFieldName($ref);
         $Csv->setDispName('Test');
         $Csv->setEnabled(false);
-        $Csv->setSortNo($rank);
+        $Csv->setSortNo($sortNo);
 
         $this->app['orm.em']->persist($Csv);
         $this->app['orm.em']->flush();

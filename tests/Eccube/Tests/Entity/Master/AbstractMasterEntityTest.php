@@ -37,7 +37,7 @@ class AbstractMasterEntityTest extends EccubeTestCase
 
     public function testInvalidFields()
     {
-        // id, name, rank は取得できない
+        // id, name, sortNo は取得できない
         try {
             $c = TestSexDecorator::id();
             self::fail();

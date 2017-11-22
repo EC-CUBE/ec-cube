@@ -85,7 +85,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
-    public function testSaveWithRankNull()
+    public function testSaveWithSortNoNull()
     {
         $this->removeClass();    // 一旦全件削除
         $faker = $this->getFaker();

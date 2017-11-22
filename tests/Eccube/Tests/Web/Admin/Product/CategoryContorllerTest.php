@@ -240,7 +240,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
-    public function testMoveRank()
+    public function testMoveSortNo()
     {
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子1'));
 
@@ -292,12 +292,12 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         return $TestCategory;
     }
 
-    public function testMoveRankAndShow()
+    public function testMoveSortNoAndShow()
     {
         // Give
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
         $Category2 = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
-        $newRanks = array(
+        $newSortNos = array(
             $Category->getId() => $Category2->getSortNo(),
             $Category2->getId() => $Category->getSortNo()
         );
@@ -306,7 +306,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->app->url('admin_product_category_sort_no_move'),
-            $newRanks,
+            $newSortNos,
             array(),
             array(
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -317,7 +317,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // Then
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = $newRanks[$Category->getId()];
+        $this->expected = $newSortNos[$Category->getId()];
         $this->actual = $Category->getSortNo();
         $this->verify();
 

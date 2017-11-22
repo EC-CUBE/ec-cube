@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <table class="table table-striped">
                                     <thead>
                                        <tr id="news_list_box__list_header">
-                                            <th id="news_list_box__header_rank">順位</th>
+                                            <th id="news_list_box__header_sort_no">順位</th>
                                             <th id="news_list_box__header_date">日付</th>
                                             <th id="news_list_box__header_title">タイトル</th>
                                             <th id="news_list_box__header_menu_box">&nbsp;</th>
@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tbody>
                                     {% for News in NewsList %}
                                         <tr id="news_list_box__item--{{ News.id }}">
-                                            <td id="news_list_box__rank--{{ News.id }}">{{ loop.index }}</td>
+                                            <td id="news_list_box__sort_no--{{ News.id }}">{{ loop.index }}</td>
                                             <td id="news_list_box__date--{{ News.id }}">{{ News.publishDate|date("Y/m/d") }}</td>
                                             <td id="news_list_box__title--{{ News.id }}">{{ News.title }}</td>
                                             <td id="news_list_box__menu_box--{{ News.id }}" class="icon_edit">

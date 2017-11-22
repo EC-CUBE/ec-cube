@@ -751,16 +751,16 @@ class CsvImportController
 
             // 画像の登録
             $images = explode(',', $row['商品画像']);
-            $rank = 1;
+            $sortNo = 1;
             foreach ($images as $image) {
 
                 $ProductImage = new ProductImage();
                 $ProductImage->setFileName(Str::trimAll($image));
                 $ProductImage->setProduct($Product);
-                $ProductImage->setSortNo($rank);
+                $ProductImage->setSortNo($sortNo);
 
                 $Product->addProductImage($ProductImage);
-                $rank++;
+                $sortNo++;
                 $this->em->persist($ProductImage);
             }
         }
@@ -787,7 +787,7 @@ class CsvImportController
 
         // カテゴリの登録
         $categories = explode(',', $row['商品カテゴリ(ID)']);
-        $rank = 1;
+        $sortNo = 1;
         $categoriesIdList = array();
         foreach ($categories as $category) {
 
@@ -798,16 +798,16 @@ class CsvImportController
                 } else {
                     foreach($Category->getPath() as $ParentCategory){
                         if (!isset($categoriesIdList[$ParentCategory->getId()])){
-                            $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $rank);
+                            $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $sortNo);
                             $this->entityManager->persist($ProductCategory);
-                            $rank++;
+                            $sortNo++;
                             $Product->addProductCategory($ProductCategory);
                             $categoriesIdList[$ParentCategory->getId()] = true;
                         }
                     }
                     if (!isset($categoriesIdList[$Category->getId()])){
-                        $ProductCategory = $this->makeProductCategory($Product, $Category, $rank);
-                        $rank++;
+                        $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
+                        $sortNo++;
                         $this->em->persist($ProductCategory);
                         $Product->addProductCategory($ProductCategory);
                         $categoriesIdList[$Category->getId()] = true;
@@ -1211,14 +1211,14 @@ class CsvImportController
      * @param \Eccube\Entity\Category $Category
      * @return ProductCategory
      */
-    private function makeProductCategory($Product, $Category, $rank)
+    private function makeProductCategory($Product, $Category, $sortNo)
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setSortNo($rank);
+        $ProductCategory->setSortNo($sortNo);
         
         return $ProductCategory;
     }

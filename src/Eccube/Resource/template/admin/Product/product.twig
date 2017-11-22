@@ -50,7 +50,7 @@ $(function() {
         opacity: 0.7,
         placeholder: 'ui-state-highlight',
         update: function (event, ui) {
-            updateRank();
+            updateSortNo();
         }
     });
     {% if has_class == false %}
@@ -100,17 +100,17 @@ $(function() {
             $("#icon_no_image").css("display", "");
         }
     };
-    var updateRank = function () {
+    var updateSortNo = function () {
         $("#thumb li").each(function (index) {
-            $(this).find(".rank_images").remove();
+            $(this).find(".sort_no_images").remove();
             filename = $(this).find("input[type='hidden']").val();
-            $rank = $('<input type="hidden" class="rank_images" name="rank_images[]" />');
-            $rank.val(filename + '//' + parseInt(index + 1));
-            $(this).append($rank);
+            $sortNo = $('<input type="hidden" class="sort_no_images" name="sort_no_images[]" />');
+            $sortNo.val(filename + '//' + parseInt(index + 1));
+            $(this).append($sortNo);
         });
     }
     hideSvg();
-    updateRank();
+    updateSortNo();
     // 画像削除時
     var count_del = 0;
     $("#thumb").on("click", ".delete-image", function () {
@@ -122,7 +122,7 @@ $(function() {
         $("#thumb").append($new_delete_image);
         $(this).parent("li").remove();
         hideSvg();
-        updateRank();
+        updateSortNo();
         count_del++;
     });
     var count_add = {{ form.add_images|length|default(0) }};
@@ -142,7 +142,7 @@ $(function() {
                 count_add++;
             });
             hideSvg();
-            updateRank();
+            updateSortNo();
         },
         fail: function (e, data) {
             alert('アップロードに失敗しました。');

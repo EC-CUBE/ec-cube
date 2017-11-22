@@ -230,15 +230,15 @@ class CategoryController extends AbstractController
      * @Method("POST")
      * @Route("/{_admin}/product/category/sort_no/move", name="admin_product_category_sort_no_move")
      */
-    public function moveRank(Application $app, Request $request)
+    public function moveSortNo(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $ranks = $request->request->all();
-            foreach ($ranks as $categoryId => $rank) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $categoryId => $sortNo) {
                 /* @var $Category \Eccube\Entity\Category */
                 $Category = $this->categoryRepository
                     ->find($categoryId);
-                $Category->setSortNo($rank);
+                $Category->setSortNo($sortNo);
                 $this->entityManager->persist($Category);
             }
             $this->entityManager->flush();

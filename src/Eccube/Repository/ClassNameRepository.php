@@ -62,11 +62,11 @@ class ClassNameRepository extends AbstractRepository
     public function save($ClassName)
     {
         if (!$ClassName->getId()) {
-            $rank = $this->createQueryBuilder('cn')
+            $sortNo = $this->createQueryBuilder('cn')
                 ->select('COALESCE(MAX(cn.sort_no), 0)')
                 ->getQuery()
                 ->getSingleScalarResult();
-            $ClassName->setSortNo($rank + 1);
+            $ClassName->setSortNo($sortNo + 1);
         }
 
         $em = $this->getEntityManager();
@@ -84,12 +84,12 @@ class ClassNameRepository extends AbstractRepository
      */
     public function delete($ClassName)
     {
-        $rank = $ClassName->getSortNo();
+        $sortNo = $ClassName->getSortNo();
         $this->createQueryBuilder('cn')
             ->update()
             ->set('cn.sort_no', 'cn.sort_no - 1')
             ->where('cn.sort_no > :sort_no')
-            ->setParameter('sort_no', $rank)
+            ->setParameter('sort_no', $sortNo)
             ->getQuery()
             ->execute();
 

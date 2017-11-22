@@ -117,22 +117,22 @@ class CategoryRepository extends AbstractRepository
         if (!$Category->getId()) {
             $Parent = $Category->getParent();
             if ($Parent) {
-                $rank = $Parent->getSortNo() - 1;
+                $sortNo = $Parent->getSortNo() - 1;
             } else {
-                $rank = $this->createQueryBuilder('c')
+                $sortNo = $this->createQueryBuilder('c')
                     ->select('COALESCE(MAX(c.sort_no), 0)')
                     ->getQuery()
                     ->getSingleScalarResult();
             }
 
-            $Category->setSortNo($rank + 1);
+            $Category->setSortNo($sortNo + 1);
 
             $this
                 ->createQueryBuilder('c')
                 ->update()
                 ->set('c.sort_no', 'c.sort_no + 1')
                 ->where('c.sort_no > :sort_no')
-                ->setParameter('sort_no', $rank)
+                ->setParameter('sort_no', $sortNo)
                 ->getQuery()
                 ->execute();
         }

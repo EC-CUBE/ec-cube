@@ -49,14 +49,14 @@ class PaymentRepository extends AbstractRepository
 
             $Payment = $this->findOneBy(array(), array('sort_no' => 'DESC'));
 
-            $rank = 1;
+            $sortNo = 1;
             if ($Payment) {
-                $rank = $Payment->getSortNo() + 1;
+                $sortNo = $Payment->getSortNo() + 1;
             }
 
             $Payment = new \Eccube\Entity\Payment();
             $Payment
-                ->setSortNo($rank)
+                ->setSortNo($sortNo)
                 ->setFixed(true)
                 ->setVisible(true);
         } else {

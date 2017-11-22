@@ -87,10 +87,10 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testUp()
     {
-        $rank = $this->Member->getSortNo();
+        $sortNo = $this->Member->getSortNo();
         $this->app['eccube.repository.member']->up($this->Member);
 
-        $this->expected = $rank + 1;
+        $this->expected = $sortNo + 1;
         $this->actual = $this->Member->getSortNo();
         $this->verify();
     }
@@ -121,10 +121,10 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->Member->setSortNo($max + 1);
         $this->app['orm.em']->flush();
 
-        $rank = $this->Member->getSortNo();
+        $sortNo = $this->Member->getSortNo();
         $this->app['eccube.repository.member']->down($this->Member);
 
-        $this->expected = $rank - 1;
+        $this->expected = $sortNo - 1;
         $this->actual = $this->Member->getSortNo();
         $this->verify();
     }
@@ -154,12 +154,12 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.member']->save($Member);
     }
 
-    public function testSaveWithRankNull()
+    public function testSaveWithSortNoNull()
     {
         /** @var EntityManager $em */
         $em = $this->app['orm.em'];
         $qb = $em->createQueryBuilder();
-        $rank = $qb->select('MAX(m.sort_no)')
+        $sortNo = $qb->select('MAX(m.sort_no)')
             ->from(Member::class, 'm')
             ->getQuery()
             ->getSingleScalarResult();
@@ -172,7 +172,7 @@ class MemberRepositoryTest extends EccubeTestCase
             ->setSortNo(100);
         $this->app['eccube.repository.member']->save($Member);
 
-        $this->expected = $rank + 1;
+        $this->expected = $sortNo + 1;
         $this->actual = $Member->getSortNo();
 
         $this->verify();

@@ -259,8 +259,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($MemberTwo);
         $this->app['orm.em']->flush();
 
-        $oldRank = $MemberOne->getSortNo();
-        $newRank = $MemberTwo->getSortNo();
+        $oldSortNo = $MemberOne->getSortNo();
+        $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberOne->getId();
         // main
         $this->client->request('PUT',
@@ -271,7 +271,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
-        $this->expected = array($newRank, $oldRank);
+        $this->expected = array($newSortNo, $oldSortNo);
         $this->verify();
     }
 
@@ -295,7 +295,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // before
         $Member = $this->app['eccube.repository.member']->findOneBy(array('sort_no' => 1));
         $mid = $Member->getId();
-        $oldRank = $Member->getSortNo();
+        $oldSortNo = $Member->getSortNo();
         // main
         $this->client->request('PUT',
             $this->app->url('admin_setting_system_member_down', array('id' => $mid))
@@ -305,7 +305,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $Member->getSortNo();
-        $this->expected = $oldRank;
+        $this->expected = $oldSortNo;
         $this->verify();
     }
 
@@ -319,8 +319,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($MemberTwo);
         $this->app['orm.em']->flush();
 
-        $oldRank = $MemberOne->getSortNo();
-        $newRank = $MemberTwo->getSortNo();
+        $oldSortNo = $MemberOne->getSortNo();
+        $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberTwo->getId();
         // main
         $this->client->request('PUT',
@@ -331,7 +331,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
-        $this->expected = array($newRank, $oldRank);
+        $this->expected = array($newSortNo, $oldSortNo);
         $this->verify();
     }
 

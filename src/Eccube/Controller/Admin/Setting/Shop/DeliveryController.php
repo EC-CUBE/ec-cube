@@ -266,14 +266,14 @@ class DeliveryController extends AbstractController
         $this->entityManager->remove($Delivery);
         $this->entityManager->flush($Delivery);
 
-        $rank = 1;
+        $sortNo = 1;
         $Delivs = $this->deliveryRepository
             ->findBy([], ['sort_no' => 'ASC']);
 
         foreach ($Delivs as $Deliv) {
             if ($Deliv->getId() != $Delivery->getId()) {
-                $Deliv->setSortNo($rank);
-                $rank++;
+                $Deliv->setSortNo($sortNo);
+                $sortNo++;
             }
         }
 
@@ -330,17 +330,17 @@ class DeliveryController extends AbstractController
      * @Method("POST")
      * @Route("/{_admin}/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move")
      */
-    public function moveRank(Application $app, Request $request)
+    public function moveSortNo(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
 
-        $ranks = $request->request->all();
-        foreach ($ranks as $deliveryId => $rank) {
+        $sortNos = $request->request->all();
+        foreach ($sortNos as $deliveryId => $sortNo) {
             $Delivery = $this->deliveryRepository
                 ->find($deliveryId);
-            $Delivery->setSortNo($rank);
+            $Delivery->setSortNo($sortNo);
         }
         $this->entityManager->flush();
 

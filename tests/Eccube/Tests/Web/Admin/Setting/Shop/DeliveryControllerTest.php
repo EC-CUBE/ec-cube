@@ -197,16 +197,16 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function testMoveRank()
+    public function testMoveSortNo()
     {
         $DeliveryOne = $this->createDelivery();
-        $oldRank = $DeliveryOne->getSortNo();
+        $oldSortNo = $DeliveryOne->getSortNo();
         $DeliveryTwo = $this->createDelivery();
-        $newRank = $DeliveryTwo->getSortNo();
+        $newSortNo = $DeliveryTwo->getSortNo();
 
         $request = array(
-            $DeliveryOne->getId() => $newRank,
-            $DeliveryTwo->getId() => $oldRank
+            $DeliveryOne->getId() => $newSortNo,
+            $DeliveryTwo->getId() => $oldSortNo
         );
 
         $this->client->request(
@@ -221,7 +221,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = $newRank;
+        $this->expected = $newSortNo;
         $this->actual = $DeliveryOne->getSortNo();
         $this->verify();
     }

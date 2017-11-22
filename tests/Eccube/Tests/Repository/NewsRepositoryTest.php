@@ -52,7 +52,7 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->assertNotNull($News);
         $this->assertEquals(1, $News->getSortNo());
 
-        // rank up 1 => 2
+        // sortNo up 1 => 2
         $this->app['eccube.repository.news']->up($News);
 
         $this->expected = 2;
@@ -82,7 +82,7 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->assertNotNull($News);
         $this->assertEquals(1, $News->getSortNo());
 
-        // rank down 1 => 0
+        // sortNo down 1 => 0
         $this->app['eccube.repository.news']->down($News);
 
         $this->expected = 0;
@@ -120,7 +120,7 @@ class NewsRepositoryTest extends EccubeTestCase
         $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
-    public function testSaveWithRankNull()
+    public function testSaveWithSortNoNull()
     {
         $this->removeNews();    // 一旦全件削除
         $faker = $this->getFaker();

@@ -88,7 +88,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <tr id="result_list__list_header">
                             <th id="result_list__header_id">ID</th>
                             <th id="result_list__header_name">Name</th>
-                            {#<th>Rank</th>#}
+                            {#<th>SortNo</th>#}
                         </tr>
                         {% for data in form2.data %}
                         <tr id="result_list__item--{{ data.vars.name }}">
@@ -101,7 +101,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{form_errors(data.name)}}
                             </td>
                             {#
-                            <td id="result_list__rank">
+                            <td id="result_list__sortNo">
                                 {{form_widget(data.sortNo)}}
                             </td>
                             #}

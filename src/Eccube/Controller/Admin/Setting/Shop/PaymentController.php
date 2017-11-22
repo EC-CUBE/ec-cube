@@ -216,10 +216,10 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $rank = 1;
+        $sortNo = 1;
         $Payments = $this->paymentRepository->findBy(array(), array('sort_no' => 'ASC'));
         foreach ($Payments as $Payment) {
-                $Payment->setSortNo($rank++);
+                $Payment->setSortNo($sortNo++);
         }
 
         try {
@@ -253,17 +253,17 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $currentRank = $current->getSortNo();
-        $targetSortNo = $currentRank + 1;
+        $currentSortNo = $current->getSortNo();
+        $targetSortNo = $currentSortNo + 1;
 
         $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setSortNo($currentRank);
+        $target->setSortNo($currentSortNo);
         $current->setSortNo($targetSortNo);
 
         $this->entityManager->flush();
 
-        $app->addSuccess('admin.rank.move.complete', 'admin');
+        $app->addSuccess('admin.sort_no.move.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
@@ -276,17 +276,17 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $currentRank = $current->getSortNo();
-        $targetSortNo = $currentRank - 1;
+        $currentSortNo = $current->getSortNo();
+        $targetSortNo = $currentSortNo - 1;
 
         $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setSortNo($currentRank);
+        $target->setSortNo($currentSortNo);
         $current->setSortNo($targetSortNo);
 
         $this->entityManager->flush();
 
-        $app->addSuccess('admin.rank.move.complete', 'admin');
+        $app->addSuccess('admin.sort_no.move.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }

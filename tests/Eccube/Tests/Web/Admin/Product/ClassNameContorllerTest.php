@@ -141,7 +141,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
-    public function testMoveRank()
+    public function testMoveSortNo()
     {
         $ClassName = $this->app['eccube.repository.class_name']->findOneBy(array('name' => 'class-1'));
 

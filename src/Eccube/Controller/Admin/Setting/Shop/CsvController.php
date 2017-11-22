@@ -147,23 +147,23 @@ class CsvController extends AbstractController
             $data = $request->get('form');
             if (isset($data['csv_not_output'])) {
                 $Csvs = $data['csv_not_output'];
-                $rank = 1;
+                $sortNo = 1;
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
-                    $c->setSortNo($rank);
+                    $c->setSortNo($sortNo);
                     $c->setEnabled(false);
-                    $rank++;
+                    $sortNo++;
                 }
             }
 
             if (isset($data['csv_output'])) {
                 $Csvs = $data['csv_output'];
-                $rank = 1;
+                $sortNo = 1;
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
-                    $c->setSortNo($rank);
+                    $c->setSortNo($sortNo);
                     $c->setEnabled(true);
-                    $rank++;
+                    $sortNo++;
                 }
             }
 

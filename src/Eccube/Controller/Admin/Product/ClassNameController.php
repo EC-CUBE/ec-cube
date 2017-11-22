@@ -167,14 +167,14 @@ class ClassNameController extends AbstractController
      * @Method("POST")
      * @Route("/{_admin}/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move")
      */
-    public function moveRank(Application $app, Request $request)
+    public function moveSortNo(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $ranks = $request->request->all();
-            foreach ($ranks as $classNameId => $rank) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $classNameId => $sortNo) {
                 $ClassName = $this->classNameRepository
                     ->find($classNameId);
-                $ClassName->setSortNo($rank);
+                $ClassName->setSortNo($sortNo);
                 $this->entityManager->persist($ClassName);
             }
             $this->entityManager->flush();

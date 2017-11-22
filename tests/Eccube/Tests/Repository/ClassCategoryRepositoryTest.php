@@ -114,7 +114,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
-    public function testSaveWithRankNull()
+    public function testSaveWithSortNoNull()
     {
         $this->removeClass();    // 一旦全件削除
         $ClassName = new ClassName();

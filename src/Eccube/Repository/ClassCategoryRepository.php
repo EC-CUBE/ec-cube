@@ -67,14 +67,14 @@ class ClassCategoryRepository extends AbstractRepository
     {
         if (!$ClassCategory->getId()) {
             $ClassName = $ClassCategory->getClassName();
-            $rank = $this->createQueryBuilder('cc')
+            $sortNo = $this->createQueryBuilder('cc')
                 ->select('COALESCE(MAX(cc.sort_no), 0)')
                 ->where('cc.ClassName = :ClassName')
                 ->setParameter('ClassName', $ClassName)
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $ClassCategory->setSortNo($rank + 1);
+            $ClassCategory->setSortNo($sortNo + 1);
             $ClassCategory->setVisible(true);
         }
 
