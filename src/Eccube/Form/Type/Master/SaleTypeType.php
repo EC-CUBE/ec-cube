@@ -22,20 +22,43 @@
  */
 
 
-namespace Eccube\Entity\Master;
+namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\Mapping as ORM;
+use Eccube\Annotation\FormType;
+use Eccube\Form\Type\MasterType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 /**
- * ProductType
- *
- * @ORM\Table(name="mtb_product_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @FormType
  */
-class ProductType extends \Eccube\Entity\Master\AbstractMasterEntity
+class SaleTypeType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'class' => 'Eccube\Entity\Master\SaleType',
+            'label' => '販売種別',
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'sale_type';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return MasterType::class;
+    }
 }

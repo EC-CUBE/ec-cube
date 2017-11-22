@@ -42,7 +42,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDateRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\ProductTypeRepository;
+use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\Master\TagRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
@@ -67,10 +67,10 @@ class CsvImportController
     protected $deliveryDateRepository;
 
     /**
-     * @Inject(ProductTypeRepository::class)
-     * @var ProductTypeRepository
+     * @Inject(SaleTypeRepository::class)
+     * @var SaleTypeRepository
      */
-    protected $productTypeRepository;
+    protected $saleTypeRepository;
 
     /**
      * @Inject(TagRepository::class)
@@ -878,18 +878,18 @@ class CsvImportController
         $ProductClass->setVisible(true);
 
 
-        if ($row['商品種別(ID)'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
+        if ($row['販売種別(ID)'] == '') {
+            $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が設定されていません。');
         } else {
-            if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
-                if (!$ProductType) {
-                    $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+            if (preg_match('/^\d+$/', $row['販売種別(ID)'])) {
+                $SaleType = $this->saleTypeRepository->find($row['販売種別(ID)']);
+                if (!$SaleType) {
+                    $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
                 } else {
-                    $ProductClass->setProductType($ProductType);
+                    $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+                $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
             }
         }
 
@@ -1006,18 +1006,18 @@ class CsvImportController
 
         $ProductClass->setProduct($Product);
 
-        if ($row['商品種別(ID)'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
+        if ($row['販売種別(ID)'] == '') {
+            $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が設定されていません。');
         } else {
-            if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
-                if (!$ProductType) {
-                    $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+            if (preg_match('/^\d+$/', $row['販売種別(ID)'])) {
+                $SaleType = $this->saleTypeRepository->find($row['販売種別(ID)']);
+                if (!$SaleType) {
+                    $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
                 } else {
-                    $ProductClass->setProductType($ProductType);
+                    $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+                $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
             }
         }
 
@@ -1178,7 +1178,7 @@ class CsvImportController
             '商品画像' => 'product_image',
             '商品カテゴリ(ID)' => 'product_category',
             'タグ(ID)' => 'product_tag',
-            '商品種別(ID)' => 'product_type',
+            '販売種別(ID)' => 'sale_type',
             '規格分類1(ID)' => 'class_category1',
             '規格分類2(ID)' => 'class_category2',
             '発送日目安(ID)' => 'deliveryFee',

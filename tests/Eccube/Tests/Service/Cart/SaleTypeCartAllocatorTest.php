@@ -21,27 +21,33 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Service\Cart;
+namespace Eccube\Tests\Service\Cart;
 
 use Eccube\Entity\CartItem;
+use Eccube\Service\Cart\SaleTypeCartAllocator;
+use Eccube\Tests\EccubeTestCase;
 
-/**
- * 商品種別ごとにカートを振り分けるCartItemAllocator
- */
-class ProductTypeCartAllocator implements CartItemAllocator
+class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
-    /**
-     * 商品の振り分け先となるカートの識別子を決定します。
-     *
-     * @param CartItem $Item カート商品
-     * @return string
-     */
-    public function allocate(CartItem $Item)
+    /** @var SaleTypeCartAllocator */
+    private $allocator;
+
+    public function setUp()
     {
-        $ProductClass = $Item->getProductClass();
-        if ($ProductClass && $ProductClass->getProductType()) {
-            return (string) $ProductClass->getProductType()->getId();
-        }
-        throw new \InvalidArgumentException('ProductClass/ProductType not found');
+        parent::setUp();
+        $this->allocator = new SaleTypeCartAllocator();
+    }
+
+    public function testAllocate()
+    {
+        $Product = $this->createProduct();
+        /* @var \Eccube\Entity\ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()[0];
+        $CartItem = new CartItem();
+        $CartItem->setProductClass($ProductClass);
+
+        $expected = (string) $ProductClass->getSaleType()->getId();
+        $actual = $this->allocator->allocate($CartItem);
+        self::assertEquals($expected, $actual);
     }
 }

@@ -31,7 +31,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\Cart\ProductClassComparator;
-use Eccube\Service\Cart\ProductTypeCartAllocator;
+use Eccube\Service\Cart\SaleTypeCartAllocator;
 use Eccube\Service\TaxRuleService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -72,7 +72,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         };
 
         $app[CartItemAllocator::class] = function() {
-            return new ProductTypeCartAllocator();
+            return new SaleTypeCartAllocator();
         };
     }
 
