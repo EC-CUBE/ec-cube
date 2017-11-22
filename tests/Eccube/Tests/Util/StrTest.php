@@ -2,7 +2,7 @@
 
 namespace Eccube\Tests\Util;
 
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -18,7 +18,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testRandom()
     {
         $this->expected = 16;
-        $result = Str::random();
+        $result = StringUtil::random();
         $this->actual = strlen($result);
         // デフォルトは16桁
         $this->assertEquals($this->expected, $this->actual);
@@ -28,7 +28,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testRandomWithParams()
     {
         $this->expected = 5;
-        $result = Str::random($this->expected);
+        $result = StringUtil::random($this->expected);
         $this->actual = strlen($result);
 
         $this->assertEquals($this->expected, $this->actual);
@@ -39,7 +39,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         $this->expected = 'Unable to generate random string.';
         try {
-            $result = Str::random(0);
+            $result = StringUtil::random(0);
             $this->fail();
         } catch (\RuntimeException $e) {
             $this->actual = $e->getMessage();
@@ -50,7 +50,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testQuickRandom()
     {
         $this->expected = 16;
-        $result = Str::quickRandom();
+        $result = StringUtil::quickRandom();
         $this->actual = strlen($result);
         // デフォルトは16桁
         $this->assertEquals($this->expected, $this->actual);
@@ -60,7 +60,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testQuickRandomWithParams()
     {
         $this->expected = 5;
-        $result = Str::QuickRandom($this->expected);
+        $result = StringUtil::QuickRandom($this->expected);
         $this->actual = strlen($result);
 
         $this->assertEquals($this->expected, $this->actual);
@@ -74,15 +74,15 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->expected = "aaaa\n";
 
         $param = "aaaa\r\n";
-        $this->actual = Str::convertLineFeed($param);
+        $this->actual = StringUtil::convertLineFeed($param);
         $this->assertEquals($this->expected, $this->actual);
 
         $param = "aaaa\r";
-        $this->actual = Str::convertLineFeed($param);
+        $this->actual = StringUtil::convertLineFeed($param);
         $this->assertEquals($this->expected, $this->actual);
 
         $param = "aaaa\n";
-        $this->actual = Str::convertLineFeed($param);
+        $this->actual = StringUtil::convertLineFeed($param);
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -92,15 +92,15 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $lf = "\r\n";
 
         $param = "aaaa\n";
-        $this->actual = Str::convertLineFeed($param, $lf);
+        $this->actual = StringUtil::convertLineFeed($param, $lf);
         $this->assertEquals($this->expected, $this->actual);
 
         $param = "aaaa\r";
-        $this->actual = Str::convertLineFeed($param, $lf);
+        $this->actual = StringUtil::convertLineFeed($param, $lf);
         $this->assertEquals($this->expected, $this->actual);
 
         $param = "aaaa\r\n";
-        $this->actual = Str::convertLineFeed($param, $lf);
+        $this->actual = StringUtil::convertLineFeed($param, $lf);
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -110,22 +110,22 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $lf = "\n";
 
         $param = "aaaa\nbbbb\ncccc\n";
-        $this->actual = Str::convertLineFeed($param, $lf);
+        $this->actual = StringUtil::convertLineFeed($param, $lf);
         $this->assertEquals($this->expected, $this->actual);
 
         $param = "aaaa\rbbbb\rcccc\r";
-        $this->actual = Str::convertLineFeed($param, $lf);
+        $this->actual = StringUtil::convertLineFeed($param, $lf);
         $this->assertEquals($this->expected, $this->actual);
 
         $param = "aaaa\r\nbbbb\r\ncccc\r\n";
-        $this->actual = Str::convertLineFeed($param, $lf);
+        $this->actual = StringUtil::convertLineFeed($param, $lf);
         $this->assertEquals($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithEmpty()
     {
         $this->expected = '';
-        $this->actual = Str::convertLineFeed($this->expected);
+        $this->actual = StringUtil::convertLineFeed($this->expected);
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -134,12 +134,12 @@ class StrTest extends \PHPUnit_Framework_TestCase
         // 「京」は SJIS と EUC を誤認しない文字
         $text = mb_convert_encoding('京', 'SJIS', 'UTF-8');
         $this->expected = 'SJIS';
-        $this->actual = Str::characterEncoding($text);
+        $this->actual = StringUtil::characterEncoding($text);
         $this->assertEquals($this->expected, $this->actual);
 
         // 検出順序を変更してみる
         $this->expected = 'SJIS-win';
-        $this->actual = Str::characterEncoding($text, array('SJIS-win', 'UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS'));
+        $this->actual = StringUtil::characterEncoding($text, array('SJIS-win', 'UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS'));
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -148,7 +148,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
         // 「京」は SJIS と EUC を誤認しない文字
         $text = mb_convert_encoding('京', 'euc-jp', 'UTF-8');
         $this->expected = 'EUC-JP';
-        $this->actual = Str::characterEncoding($text);
+        $this->actual = StringUtil::characterEncoding($text);
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -158,7 +158,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
         // see http://www.qlosawa.sakura.ne.jp/language/binyu.html
         $text = mb_convert_encoding('〠', 'UTF-8', 'UTF-8');
         $this->expected = 'UTF-8';
-        $this->actual = Str::characterEncoding($text);
+        $this->actual = StringUtil::characterEncoding($text);
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -166,7 +166,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         // 「〠」は UTF-8 固有の文字
         $text = mb_convert_encoding('〠', 'UTF-8', 'UTF-8');
-        $this->actual = Str::characterEncoding($text, array('SJIS-win', 'eucJP-win', 'ASCII')); // UTF-8 は検出しない
+        $this->actual = StringUtil::characterEncoding($text, array('SJIS-win', 'eucJP-win', 'ASCII')); // UTF-8 は検出しない
         $this->assertNull($this->actual);
     }
 
@@ -174,7 +174,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         $value = '一弍三4567890あいうえお';
         $this->expected = '一弍三4567890...';
-        $this->actual = Str::ellipsis($value, 10, '...');
+        $this->actual = StringUtil::ellipsis($value, 10, '...');
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -182,7 +182,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         $value = '一弍三';
         $this->expected = '一弍三';
-        $this->actual = Str::ellipsis($value, 10, '...');
+        $this->actual = StringUtil::ellipsis($value, 10, '...');
         $this->assertEquals($this->expected, $this->actual);
     }
 
@@ -191,132 +191,132 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $elapsedTime = new \DateTime();
         $date = $elapsedTime;
         $this->expected = '0秒前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT59S'));
         $this->expected = '59秒前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT60S'));
         $this->expected = '1分前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT59M59S'));
         $this->expected = '59分前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT59M60S'));
         $this->expected = '1時間前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT23H59M59S'));
         $this->expected = '23時間前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('PT23H59M60S'));
         $this->expected = '1日前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('P31DT23H59M59S'));
         $this->expected = '31日前';
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('P31DT23H59M60S'));
         $this->expected = date('Y/m/d', strtotime('- 32 days'));
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         $elapsedTime = new \DateTime();
         $date = $elapsedTime->sub(new \DateInterval('P1Y'));
         $this->expected = date('Y/m/d', strtotime('- 1 years'));
-        $this->actual = Str::timeAgo($date);
+        $this->actual = StringUtil::timeAgo($date);
         $this->assertEquals($this->expected, $this->actual);
 
         // 日付書式を引数に
         $this->expected = date('Y/m/d', strtotime('- 1 years'));
-        $this->actual = Str::timeAgo(date('Y/m/d', strtotime('- 1 years')));
+        $this->actual = StringUtil::timeAgo(date('Y/m/d', strtotime('- 1 years')));
         $this->assertEquals($this->expected, $this->actual);
 
         // 引数が空
-        $this->actual = Str::timeAgo('');
+        $this->actual = StringUtil::timeAgo('');
         $this->assertEmpty($this->actual);
     }
 
     public function testIsBlank()
     {
         $text = '';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertTrue($this->actual);
 
         $text = null;
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertTrue($this->actual);
 
         $text = 0;
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = '1';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = '      ';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertTrue($this->actual);
 
         // $greedy = true のテスト
         $text = '　';
-        $this->actual = Str::isBlank($text, true);
+        $this->actual = StringUtil::isBlank($text, true);
         $this->assertTrue($this->actual);
 
         // $greedy = true のテスト
         $text = '　a　';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual, true);
 
         // $greedy = true のテスト
         $text = "　\n\t　";
-        $this->actual = Str::isBlank($text, true);
+        $this->actual = StringUtil::isBlank($text, true);
         $this->assertTrue($this->actual);
 
         // $greedy = true のテスト
         $text = " \t　\n\r\x0B\0"; // 全ての空白文字
-        $this->actual = Str::isBlank($text, true);
+        $this->actual = StringUtil::isBlank($text, true);
         $this->assertTrue($this->actual);
     }
 
     public function testIsNotBlank()
     {
         $text = '';
-        $this->actual = Str::isNotBlank($text);
+        $this->actual = StringUtil::isNotBlank($text);
         $this->assertFalse($this->actual);
 
         $text = null;
-        $this->actual = Str::isNotBlank($text);
+        $this->actual = StringUtil::isNotBlank($text);
         $this->assertFalse($this->actual);
 
         $text = 1;
-        $this->actual = Str::isNotBlank($text);
+        $this->actual = StringUtil::isNotBlank($text);
         $this->assertTrue($this->actual);
 
         $text = '1';
-        $this->actual = Str::isNotBlank($text);
+        $this->actual = StringUtil::isNotBlank($text);
         $this->assertTrue($this->actual);
     }
 
@@ -326,7 +326,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testIsBlankWithObject()
     {
         $text = new \stdClass();
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);
     }
@@ -337,7 +337,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testIsBlankWithArray()
     {
         $text = array();
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
     }
@@ -349,7 +349,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         // $greedy = true のテスト
         $text = array(array('aa' => array('aa' => '')));
-        $this->actual = Str::isBlank($text, true);
+        $this->actual = StringUtil::isBlank($text, true);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
     }
@@ -361,7 +361,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         // $greedy = true のテスト
         $text = array();
-        $this->actual = Str::isBlank($text, true);
+        $this->actual = StringUtil::isBlank($text, true);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
     }
@@ -373,7 +373,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         // $greedy = true のテスト
         $text = array(array('aa' => array('aa' => 'a')));
-        $this->actual = Str::isBlank($text, true);
+        $this->actual = StringUtil::isBlank($text, true);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);
     }
@@ -384,7 +384,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testIsNotBlankWithArray()
     {
         $text = array();
-        $this->actual = Str::isNotBlank($text);
+        $this->actual = StringUtil::isNotBlank($text);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);
     }
@@ -395,7 +395,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testIsBlankWithArrayCollectionEmpty()
     {
         $value = new ArrayCollection();
-        $this->actual = Str::isBlank($value);
+        $this->actual = StringUtil::isBlank($value);
         // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
     }
@@ -406,7 +406,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testIsBlankWithArrayCollectionNotEmpty()
     {
         $value = new ArrayCollection(array('a'));
-        $this->actual = Str::isBlank($value);
+        $this->actual = StringUtil::isBlank($value);
         // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
         $this->assertFalse($this->actual);
     }
@@ -415,27 +415,27 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         // greedy = false のテスト
         $text = '      ';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertTrue($this->actual);
 
         $text = '　';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = '　a　';
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = "　\n\t　";
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = " \t　\n\r\x0B\0"; // 全ての空白文字
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = " \t\n\r\x0B\0"; // ASCII の空白文字
-        $this->actual = Str::isBlank($text);
+        $this->actual = StringUtil::isBlank($text);
         $this->assertTrue($this->actual);
     }
 
@@ -443,36 +443,36 @@ class StrTest extends \PHPUnit_Framework_TestCase
     {
         $text = '     a　';
         $this->expected = 'a';
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertEquals($this->expected, $this->actual);
 
         $text = '     a　a　';
         $this->expected = 'a　a';
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertEquals($this->expected, $this->actual);
 
         $text = '';
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertNotNull($this->actual);
         $this->assertEmpty($this->actual);
 
         $text = null;
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertNull($this->actual);
 
         $text = 0;
         $this->expected = 0;
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertTrue($this->expected === $this->actual);
 
         $text = '0';
         $this->expected = '0';
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertTrue($this->expected === $this->actual);
 
         $text = " 0\n0\r\n\t";
         $this->expected = "0\n0";
-        $this->actual = Str::trimAll($text);
+        $this->actual = StringUtil::trimAll($text);
         $this->assertTrue($this->expected === $this->actual);
     }
 }

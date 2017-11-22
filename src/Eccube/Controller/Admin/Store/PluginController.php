@@ -38,7 +38,7 @@ use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -237,7 +237,7 @@ class PluginController extends AbstractController
             try {
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
-                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
+                $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
                 $fs = new Filesystem();
@@ -442,7 +442,7 @@ class PluginController extends AbstractController
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $service->createTempDir();
                 // 拡張子を付けないとpharが動かないので付ける
-                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
+                $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $tmpPath = $tmpDir.'/'.$tmpFile;
                 $service->install($tmpPath);
@@ -628,7 +628,7 @@ class PluginController extends AbstractController
                             $file = base64_decode($item['data']);
                             $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
                             $tmpDir = $service->createTempDir();
-                            $tmpFile = sha1(Str::random(32)).'.'.$extension;
+                            $tmpFile = sha1(StringUtil::random(32)).'.'.$extension;
 
                             // ファイル作成
                             $fs = new Filesystem();

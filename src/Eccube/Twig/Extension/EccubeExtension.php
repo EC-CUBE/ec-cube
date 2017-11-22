@@ -26,7 +26,7 @@ namespace Eccube\Twig\Extension;
 
 use Eccube\Common\Constant;
 use Eccube\Service\TaxRuleService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Silex\Application;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Form\FormView;
@@ -201,7 +201,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getEllipsis($value, $length = 100, $end = '...')
     {
-        return Str::ellipsis($value, $length, $end);
+        return StringUtil::ellipsis($value, $length, $end);
     }
 
     /**
@@ -211,7 +211,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getTimeAgo($date)
     {
-        return Str::timeAgo($date);
+        return StringUtil::timeAgo($date);
     }
 
     /**
