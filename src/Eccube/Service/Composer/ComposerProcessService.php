@@ -22,8 +22,8 @@
  */
 namespace Eccube\Service\Composer;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Service;
-use Eccube\Service\SystemService;
 
 /**
  * Class ComposerProcessService
@@ -38,20 +38,20 @@ class ComposerProcessService implements ComposerServiceInterface
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application
+     * @var EntityManagerInterface
      */
-    protected $app;
+    protected $entityManagerInterface;
 
     private $workingDir;
     private $composerFile;
     private $composerSetup;
     private $pathPHP;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct($config, $entityManagerInterface, $pathPHP)
     {
-        $this->app = $app;
-        $this->appConfig = $app['config'];
-        $this->pathPHP = $app['eccube.service.system']->getPHP();
+        $this->appConfig = $config;
+        $this->entityManagerInterface = $entityManagerInterface;
+        $this->pathPHP = $pathPHP;
     }
 
     /**
@@ -140,7 +140,7 @@ class ComposerProcessService implements ComposerServiceInterface
             }
         }
 
-        $em = $this->app['orm.em'];
+        $em = $this->entityManagerInterface;
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
             $em->getConnection()->beginTransaction();
