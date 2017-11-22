@@ -40,17 +40,17 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManagerInterface;
+    protected $entityManager;
 
     private $workingDir;
     private $composerFile;
     private $composerSetup;
     private $pathPHP;
 
-    public function __construct($config, $entityManagerInterface, $pathPHP)
+    public function __construct($appConfig, $entityManager, $pathPHP)
     {
-        $this->appConfig = $config;
-        $this->entityManagerInterface = $entityManagerInterface;
+        $this->appConfig = $appConfig;
+        $this->entityManager = $entityManager;
         $this->pathPHP = $pathPHP;
     }
 
@@ -140,7 +140,7 @@ class ComposerProcessService implements ComposerServiceInterface
             }
         }
 
-        $em = $this->entityManagerInterface;
+        $em = $this->entityManager;
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
             $em->getConnection()->beginTransaction();
