@@ -120,6 +120,8 @@ final class EccubeEvents
 
     // delete
     const ADMIN_CUSTOMER_DELETE_COMPLETE = 'admin.customer.delete.complete';
+    
+    const ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE = 'admin.customer.delivery.delete.complete';
 
     // export
     const ADMIN_CUSTOMER_CSV_EXPORT = 'admin.customer.csv.export';
@@ -131,8 +133,11 @@ final class EccubeEvents
     // index
     const ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE = 'admin.customer.edit.index.initialize';
     const ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE = 'admin.customer.edit.index.complete';
-
-
+    
+    // index
+    const ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_INITIALIZE = 'admin.customer.delivery.edit.index.initialize';
+    const ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE = 'admin.customer.delivery.edit.index.complete';
+    
     /**
      * Admin/Order/EditController
      */
