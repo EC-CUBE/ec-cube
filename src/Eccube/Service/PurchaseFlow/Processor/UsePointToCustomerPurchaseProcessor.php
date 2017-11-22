@@ -19,6 +19,9 @@ class UsePointToCustomerPurchaseProcessor implements PurchaseProcessor
     {
         $Order = $itemHolder;
         $Customer = $context->getUser();
+        if (!$Customer) {
+            return ProcessResult::success();
+        }
         if ($Customer->getPoint() < $Order->getUsePoint()) {
             return ProcessResult::error('利用ポイントが所有ポイントを上回っています.');
         }

@@ -161,6 +161,10 @@ class OrderType extends AbstractType
             function (FormEvent $event) {
                 /** @var Order $Order */
                 $Order = $event->getData();
+                // XXX 非会員購入の際, use_point が null で submit される？
+                if ($Order->getUsePoint() === null) {
+                    $Order->setUsePoint(0);
+                }
                 $Payment = $Order->getPayment();
                 $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
                 // TODO CalculateChargeStrategy でセットする

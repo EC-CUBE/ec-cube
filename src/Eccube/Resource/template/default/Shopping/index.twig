@@ -372,7 +372,7 @@ $(function() {
                     {{ form_errors(form.Payment) }}
                 </div>
             </div>
-            {% if BaseInfo.isOptionPoint %}
+            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                 <div class="ec-orderPayment">
                     <div class="ec-rectHeading">
                         <h2>利用ポイント(暫定実装)</h2>

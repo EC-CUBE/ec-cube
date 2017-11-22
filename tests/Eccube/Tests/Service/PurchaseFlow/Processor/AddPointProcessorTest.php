@@ -28,7 +28,7 @@ class AddPointProcessorTest extends EccubeTestCase
             $cartItem->setPrice($ProductClass->getPrice02IncTax());
             $cartItem->setQuantity(1);
             $this->Cart->addCartItem($cartItem);
-            $this->total += $cartItem->getPrice() * $cartItem->getQuantity();
+            $this->total += round($cartItem->getPrice() * $this->BaseInfo->getBasicPointRate() / 100) * $cartItem->getQuantity();
         }
     }
 
@@ -39,7 +39,7 @@ class AddPointProcessorTest extends EccubeTestCase
         $actual = $this->Cart->getAddPoint();
         self::assertGreaterThan(0, $actual);
 
-        $expected = $this->total * ($this->BaseInfo->getBasicPointRate() / 100);
+        $expected = $this->total;
         self::assertEquals($expected, $actual);
     }
 }

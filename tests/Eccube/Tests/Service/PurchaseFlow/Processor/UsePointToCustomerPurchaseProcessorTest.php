@@ -10,7 +10,7 @@ use Eccube\Service\PurchaseFlow\Processor\UsePointToCustomerPurchaseProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class AddPointProcessorTest extends EccubeTestCase
+class UsePointToCustomerPurchaseProcessorTest extends EccubeTestCase
 {
 
     public function setUp()
