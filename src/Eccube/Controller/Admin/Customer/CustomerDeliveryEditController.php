@@ -197,7 +197,7 @@ class CustomerDeliveryEditController extends AbstractController
         }
         
         $CustomerAddress = $this->customerAddressRepository->find($did);
-        if (is_null($Customer)) {
+        if (is_null($CustomerAddress)) {
             throw new NotFoundHttpException();
         } else if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
             $app->deleteMessage();
