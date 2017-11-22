@@ -223,6 +223,7 @@ class ComposerApiService implements ComposerServiceInterface
         $output = $this->runCommand(array(
             '--version'=> true
         ));
-        return $output;
+
+        return OutputParser::parseComposerVersion($output);
     }
 }

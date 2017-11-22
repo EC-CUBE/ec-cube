@@ -150,4 +150,19 @@ class OutputParser
 
         return $result;
     }
+
+    /**
+     * Parse to composer version
+     * @param string $output
+     * @return array|mixed|string
+     */
+    public static function parseComposerVersion($output)
+    {
+        $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
+        $rowArray = array_filter($rowArray, function ($line) {
+            return !preg_match('/^<warning>.*/', $line);
+        });
+
+        return array_shift($rowArray);
+    }
 }
