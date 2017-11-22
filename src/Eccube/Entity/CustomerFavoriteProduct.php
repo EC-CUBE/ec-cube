@@ -35,6 +35,16 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $customer_id;
+
+    /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -67,6 +77,26 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function getId ()
     {
         return $this->id;
+    }
+
+    /**
+     * Get customer_id
+     *
+     * @return integer
+     */
+    public function getCustomerId()
+    {
+        return $this->customer_id;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
     }
 
     /**

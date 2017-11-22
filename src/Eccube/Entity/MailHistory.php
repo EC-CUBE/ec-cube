@@ -44,6 +44,21 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $order_id;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
+     * @var integer
+     */
+    private $template_id;
+
+    /**
      * @var \DateTime
      */
     private $send_date;
@@ -81,6 +96,36 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
+     * Get order_id
+     *
+     * @return integer
+     */
+    public function getOrderId()
+    {
+        return $this->order_id;
+    }
+
+    /**
+     * Get template_id
+     *
+     * @return integer
+     */
+    public function getTemplateId()
+    {
+        return $this->template_id;
     }
 
     /**

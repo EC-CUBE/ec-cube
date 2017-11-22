@@ -81,6 +81,21 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
+     * @var integer
+     */
+    private $product_class_id;
+
+    /**
      * @var string
      */
     private $tax_rate;
@@ -149,6 +164,36 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Get product_class_id
+     *
+     * @return integer
+     */
+    public function getProductClassId()
+    {
+        return $this->product_class_id;
     }
 
     /**

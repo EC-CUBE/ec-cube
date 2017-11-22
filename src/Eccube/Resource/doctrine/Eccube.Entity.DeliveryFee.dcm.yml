@@ -12,6 +12,9 @@ Eccube\Entity\DeliveryFee:
             generator:
                 strategy: AUTO
     fields:
+        delivery_id:
+            type: integer
+            nullable: true
         fee:
             type: decimal
             nullable: false

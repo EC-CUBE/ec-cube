@@ -12,6 +12,9 @@ Eccube\Entity\Csv:
             generator:
                 strategy: AUTO
     fields:
+        creator_id:
+            type: integer
+            nullable: false
         entity_name:
             type: text
             nullable: false

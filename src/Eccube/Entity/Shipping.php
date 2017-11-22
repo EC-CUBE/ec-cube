@@ -37,6 +37,16 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $order_id;
+
+    /**
+     * @var integer
+     */
+    private $delivery_id;
+
+    /**
      * @var string
      */
     private $name01;
@@ -276,6 +286,26 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get order_id
+     *
+     * @return integer
+     */
+    public function getOrderId()
+    {
+        return $this->order_id;
+    }
+
+    /**
+     * Get delivery_id
+     *
+     * @return integer
+     */
+    public function getDeliveryId()
+    {
+        return $this->delivery_id;
     }
 
     /**

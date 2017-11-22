@@ -12,6 +12,9 @@ Eccube\Entity\Member:
             generator:
                 strategy: AUTO
     fields:
+        creator_id:
+            type: integer
+            nullable: true
         name:
             type: text
             nullable: true

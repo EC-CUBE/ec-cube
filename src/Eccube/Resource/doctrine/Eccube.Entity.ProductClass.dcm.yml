@@ -20,6 +20,18 @@ Eccube\Entity\ProductClass:
             generator:
                 strategy: AUTO
     fields:
+        product_id:
+            type: integer
+            nullable: false
+        class_category_id2:
+            type: integer
+            nullable: true
+        class_category_id1:
+            type: integer
+            nullable: true
+        creator_id:
+            type: integer
+            nullable: false
         code:
             type: text
             column: product_code

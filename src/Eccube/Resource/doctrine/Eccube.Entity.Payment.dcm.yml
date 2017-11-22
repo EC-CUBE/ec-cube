@@ -12,6 +12,9 @@ Eccube\Entity\Payment:
             generator:
                 strategy: AUTO
     fields:
+        creator_id:
+            type: integer
+            nullable: false
         method:
             type: text
             nullable: true

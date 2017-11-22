@@ -17,6 +17,16 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -45,6 +55,26 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**

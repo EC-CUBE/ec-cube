@@ -12,6 +12,12 @@ Eccube\Entity\ProductStock:
             generator:
                 strategy: AUTO
     fields:
+        product_class_id:
+            type: integer
+            nullable: true
+        creator_id:
+            type: integer
+            nullable: false
         stock:
             type: decimal
             nullable: true

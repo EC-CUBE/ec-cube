@@ -12,6 +12,12 @@ Eccube\Entity\Category:
             generator:
                 strategy: AUTO
     fields:
+        parent_category_id:
+            type: integer
+            nullable: true
+        creator_id:
+            type: integer
+            nullable: true
         name:
             type: text
             nullable: false

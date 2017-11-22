@@ -45,6 +45,11 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var string
      */
     private $name;
@@ -95,6 +100,16 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**

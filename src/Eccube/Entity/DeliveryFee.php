@@ -35,6 +35,11 @@ class DeliveryFee extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $delivery_id;
+
+    /**
      * @var string
      */
     private $fee;
@@ -57,6 +62,16 @@ class DeliveryFee extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get delivery_id
+     *
+     * @return integer
+     */
+    public function getDeliveryId()
+    {
+        return $this->delivery_id;
     }
 
     /**

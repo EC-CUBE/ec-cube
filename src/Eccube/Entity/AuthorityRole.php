@@ -16,6 +16,11 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var string
      */
     private $deny_url;
@@ -40,7 +45,6 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
@@ -49,6 +53,16 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**
