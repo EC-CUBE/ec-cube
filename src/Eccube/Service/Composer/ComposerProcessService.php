@@ -212,14 +212,14 @@ class ComposerProcessService implements ComposerServiceInterface
     public function isSetCliMemoryLimit()
     {
         $oldMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
-        $tmpMem = '2GB';
+        $tmpMem = '1.5GB';
 
         if ($oldMemory) {
             $memory = explode('=>', $oldMemory);
             $originGrepMemmory = trim($memory[2]);
 
             if ($originGrepMemmory == $tmpMem) {
-                $tmpMem = '2.5GB';
+                $tmpMem = '1.49GB';
             }
 
             $newMemory = exec($this->pathPHP.' -d memory_limit='.$tmpMem.' -i | grep "memory_limit"');
