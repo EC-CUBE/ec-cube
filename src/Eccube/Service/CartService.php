@@ -125,26 +125,36 @@ class CartService
     protected function mergeAllCartItems($cartItems = [])
     {
         /** @var CartItem[] $allCartItems */
-        $allCartItems = $cartItems;
+        $allCartItems = [];
 
         foreach ($this->getCarts() as $Cart) {
-            /** @var CartItem $item */
-            foreach ($Cart->getItems() as $item) {
-                $itemExists = false;
-                foreach ($allCartItems as $itemInArray) {
-                    // 同じ明細があればマージする
-                    if ($this->cartItemComparator->compare($item, $itemInArray)) {
-                        $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
-                        $itemExists = true;
-                        break;
-                    }
-                }
-                if (!$itemExists) {
-                    $allCartItems[] = $item;
-                }
-            }
+            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
         }
 
+        return $this->mergeCartitems($cartItems, $allCartItems);
+    }
+
+    /**
+     * @param $cartItems
+     * @param $allCartItems
+     * @return array
+     */
+    protected function mergeCartitems($cartItems, $allCartItems)
+    {
+        foreach ($cartItems as $item) {
+            $itemExists = false;
+            foreach ($allCartItems as $itemInArray) {
+                // 同じ明細があればマージする
+                if ($this->cartItemComparator->compare($item, $itemInArray)) {
+                    $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
+                    $itemExists = true;
+                    break;
+                }
+            }
+            if (!$itemExists) {
+                $allCartItems[] = $item;
+            }
+        }
         return $allCartItems;
     }
 
