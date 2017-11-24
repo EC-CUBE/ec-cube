@@ -41,8 +41,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
@@ -86,12 +84,6 @@ class CustomerDeliveryEditController extends AbstractController
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
-    
-    /**
-     * @Inject("security.encoder_factory")
-     * @var EncoderFactoryInterface
-     */
-    protected $encoderFactory;
     
     /**
      * お届け先編集画面.
