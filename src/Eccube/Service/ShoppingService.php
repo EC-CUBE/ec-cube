@@ -977,7 +977,7 @@ class ShoppingService
     {
 
         $saleTypes = $this->orderService->getSaleTypes($Order);
-        if ($this->BaseInfo->isOptionMultipleShipping() == Constant::ENABLED && count($saleTypes) > 1) {
+        if ($this->BaseInfo->isOptionMultipleShipping() && count($saleTypes) > 1) {
             // 複数配送時の支払方法
 
             $payments = $this->paymentRepository->findAllowedPayments($deliveries);
