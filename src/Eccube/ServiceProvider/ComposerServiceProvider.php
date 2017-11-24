@@ -20,8 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
 namespace Eccube\ServiceProvider;
 
 use Eccube\Service\Composer\ComposerApiService;
@@ -29,9 +27,15 @@ use Eccube\Service\Composer\ComposerProcessService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
+/**
+ * Class ComposerServiceProvider
+ * @package Eccube\ServiceProvider
+ */
 class ComposerServiceProvider implements ServiceProviderInterface
 {
-
+    /**
+     * @param Container $app
+     */
     public function register(Container $app)
     {
         $app['eccube.service.composer'] = function () use ($app) {
@@ -39,6 +43,7 @@ class ComposerServiceProvider implements ServiceProviderInterface
             $systemService = $app['eccube.service.system'];
             $composerMemory = $app['config']['composer_memory_limit'];
             $memoryLimit = $systemService->getMemoryLimit();
+            // Check memory and can set memory for composer api
             if ($systemService->canSetMemoryLimit($composerMemory.'M') || $memoryLimit == -1 || $memoryLimit >= $composerMemory) {
                 return new ComposerApiService($app['config']);
             } else {

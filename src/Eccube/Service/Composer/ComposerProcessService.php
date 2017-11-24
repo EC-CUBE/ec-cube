@@ -33,7 +33,7 @@ use Eccube\Annotation\Service;
 class ComposerProcessService implements ComposerServiceInterface
 {
     /**
-     * @var array
+     * @var array config parameter
      */
     protected $appConfig;
 
@@ -47,6 +47,13 @@ class ComposerProcessService implements ComposerServiceInterface
     private $composerSetup;
     private $pathPHP;
 
+    /**
+     * ComposerProcessService constructor.
+     *
+     * @param array                  $appConfig
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $pathPHP
+     */
     public function __construct($appConfig, $entityManager, $pathPHP)
     {
         $this->appConfig = $appConfig;
@@ -57,13 +64,13 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * This function to install a plugin by composer require
      *
-     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string $packageName format "foo/bar foo/bar2:1.0.0"
      * @return bool
      */
     public function execRequire($packageName)
     {
         set_time_limit(0);
-        if(false === $this->init()){
+        if (false === $this->init()) {
             return false;
         }
         // Build command
@@ -78,20 +85,19 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * This function to remove a plugin by composer remove
-     * Note: Remove with dependency, if not, please add " --no-update-with-dependencies"
      *
-     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string $packageName format "foo/bar foo/bar2"
      * @return bool
      */
     public function execRemove($packageName)
     {
         set_time_limit(0);
-        if(false === $this->init()){
+        if (false === $this->init()) {
             return false;
         }
         // Build command
         $command = $this->pathPHP.' '.$this->composerFile.' remove '.$packageName;
-        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
+        $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
 
@@ -126,6 +132,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Set init
+     * @return bool
      */
     private function init()
     {
@@ -140,6 +147,11 @@ class ComposerProcessService implements ComposerServiceInterface
             }
         }
 
+        /**
+         * Mysql lock in transaction
+         * @link https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+         * @var EntityManagerInterface $em
+         */
         $em = $this->entityManager;
         if ($em->getConnection()->isTransactionActive()) {
             $em->getConnection()->commit();
@@ -151,6 +163,8 @@ class ComposerProcessService implements ComposerServiceInterface
         putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
         $this->setupComposer();
+
+        return true;
     }
 
     /**
@@ -176,9 +190,10 @@ class ComposerProcessService implements ComposerServiceInterface
      * Get grep memory_limit | Megabyte
      * @return int|string
      */
-    private function getCliMemoryLimit(){
+    private function getCliMemoryLimit()
+    {
         $grepMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
-        if($grepMemory){
+        if ($grepMemory) {
             $grepMemory = explode('=>', $grepMemory);
 
             // -1 unlimited
@@ -189,14 +204,11 @@ class ComposerProcessService implements ComposerServiceInterface
             $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
             $memo = trim($exp[0]);
             if ($exp[1] == 'M') {
-
                 return $memo;
             } else {
                 if ($exp[1] == 'GB') {
-
                     return $memo * 1024;
                 } else {
-
                     return 0;
                 }
             }
@@ -213,7 +225,6 @@ class ComposerProcessService implements ComposerServiceInterface
     {
         $oldMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
         $tmpMem = '1.5GB';
-
         if ($oldMemory) {
             $memory = explode('=>', $oldMemory);
             $originGrepMemmory = trim($memory[2]);
@@ -227,7 +238,6 @@ class ComposerProcessService implements ComposerServiceInterface
                 $newMemory = explode('=>', $newMemory);
                 $grepNewMemory = trim($newMemory[2]);
                 if ($grepNewMemory != $originGrepMemmory) {
-
                     return true;
                 }
             }

@@ -82,18 +82,18 @@ class SystemService
 
     /**
      * Try to set new values memory_limit | return true
-     * @param $memory | EX: 1536M
+     * @param string $memory | EX: 1536M
      * @return bool
      */
     public function canSetMemoryLimit($memory)
     {
         try {
-            ini_set('memory_limit', $memory);
+            $ret = ini_set('memory_limit', $memory);
         } catch (\Exception $exception) {
             return false;
         }
 
-        return true;
+        return ($ret === false) ? false : true;
     }
 
     /**
