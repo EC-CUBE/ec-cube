@@ -265,7 +265,7 @@ class Generator {
         $faker = $this->getFaker();
         $Member = $this->app['eccube.repository.member']->find(2);
         $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
 
         $Product = new Product();
@@ -336,7 +336,7 @@ class Generator {
                 ->setStock($ProductStock->getStock())
                 ->setProductStock($ProductStock)
                 ->setProduct($Product)
-                ->setProductType($ProductType)
+                ->setSaleType($SaleType)
                 ->setStockUnlimited(false)
                 ->setPrice02($faker->randomNumber(5))
                 ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
@@ -381,7 +381,7 @@ class Generator {
             ->setStock($ProductStock->getStock())
             ->setProductStock($ProductStock)
             ->setProduct($Product)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setPrice02($faker->randomNumber(5))
             ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
@@ -651,7 +651,7 @@ class Generator {
     public function createDelivery($delivery_time_max_pattern = 5)
     {
         $Member = $this->app['eccube.repository.member']->find(2);
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
         $faker = $this->getFaker();
         $Delivery = new Delivery();
         $Delivery
@@ -663,7 +663,7 @@ class Generator {
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);

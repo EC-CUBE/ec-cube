@@ -24,9 +24,13 @@
 
 namespace Eccube\Form\Type;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Entity\CartItem;
+use Eccube\Entity\ProductClass;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
+use Eccube\Repository\ProductClassRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -49,12 +53,24 @@ class AddCartType extends AbstractType
      * @var array
      * @Inject("config")
      */
-    protected $congig;
+    protected $config;
 
+    /**
+     * @var EntityManager
+     * @Inject("orm.em")
+     */
+    protected $em;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
     protected $Product = null;
 
-    public function __construct() {
-    }
+    /**
+     * @var ProductClassRepository
+     * @Inject(ProductClassRepository::class)
+     */
+    protected $productClassRepository;
 
     /**
      * {@inheritdoc}
@@ -64,25 +80,18 @@ class AddCartType extends AbstractType
         /* @var $Product \Eccube\Entity\Product */
         $Product = $options['product'];
         $this->Product = $Product;
-        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $Product->getProductClasses()->first();
 
         $builder
-            ->add('mode', HiddenType::class, array(
-                'data' => 'add_cart',
-            ))
-            ->add('product_id', HiddenType::class, array(
-                'data' => $Product->getId(),
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
-                ),
-            ))
-            ->add('product_class_id', HiddenType::class, array(
-                'data' => count($ProductClasses) === 1 ? $ProductClasses[0]->getId() : '',
-                'constraints' => array(
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
-                ),
-            ));
+            ->add(
+                $builder
+                    ->create('ProductClass', HiddenType::class, [
+                        'data_class' => null,
+                        'data' => $ProductClass,
+                    ])
+                    ->addModelTransformer(new EntityToIdTransformer($this->em, ProductClass::class))
+            )
+        ;
 
         if ($Product->getStockFind()) {
             $builder
@@ -90,7 +99,7 @@ class AddCartType extends AbstractType
                     'data' => 1,
                     'attr' => array(
                         'min' => 1,
-                        'maxlength' => $this->congig['int_len'],
+                        'maxlength' => $this->config['int_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -106,12 +115,14 @@ class AddCartType extends AbstractType
                     $builder->add('classcategory_id1', ChoiceType::class, [
                         'label' => $Product->getClassName1(),
                         'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories1AsFlip(),
+                        'mapped' => false,
                     ]);
                 }
                 if (!is_null($Product->getClassName2())) {
                     $builder->add('classcategory_id2', ChoiceType::class, [
                         'label' => $Product->getClassName2(),
                         'choices' => ['選択してください' => '__unselected'],
+                        'mapped' => false,
                     ]);
                 }
             }
@@ -119,13 +130,27 @@ class AddCartType extends AbstractType
             $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
                 $data = $event->getData();
                 $form = $event->getForm();
-                if (!is_null($Product->getClassName2())) {
+                if (isset($data['classcategory_id1']) && !is_null($Product->getClassName2())) {
                     if ($data['classcategory_id1']) {
                         $form->add('classcategory_id2', ChoiceType::class, [
                             'label' => $Product->getClassName2(),
                             'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories2AsFlip($data['classcategory_id1']),
+                            'mapped' => false,
                         ]);
                     }
+                }
+            });
+
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                /** @var CartItem $CartItem */
+                $CartItem = $event->getData();
+                $ProductClass = $CartItem->getProductClass();
+                // FIXME 価格の設定箇所、ここでいいのか
+                if ($ProductClass) {
+                    $CartItem
+                        ->setProductClass($ProductClass)
+                        ->setPrice($ProductClass->getPrice02IncTax())
+                    ;
                 }
             });
         }
@@ -138,6 +163,7 @@ class AddCartType extends AbstractType
     {
         $resolver->setRequired('product');
         $resolver->setDefaults(array(
+            'data_class' => CartItem::class,
             'id_add_product_id' => true,
             'constraints' => array(
                 // FIXME new Assert\Callback(array($this, 'validate')),
@@ -154,10 +180,6 @@ class AddCartType extends AbstractType
             foreach ($view->vars['form']->children as $child) {
                 $child->vars['id'] .= $options['product']->getId();
             }
-        }
-
-        if ($view->vars['form']->children['mode']->vars['value'] === 'add_cart') {
-            $view->vars['form']->children['mode']->vars['value'] = '';
         }
     }
 
@@ -177,30 +199,27 @@ class AddCartType extends AbstractType
      */
     public function validate($data, ExecutionContext $context)
     {
-        if ($data['mode'] !== 'add_favorite') {
-            $context->getValidator()->validate($data['product_class_id'], array(
+        $context->getValidator()->validate($data['product_class_id'], array(
+            new Assert\NotBlank(),
+        ), '[product_class_id]');
+        if ($this->Product->getClassName1()) {
+            $context->validateValue($data['classcategory_id1'], array(
                 new Assert\NotBlank(),
-            ), '[product_class_id]');
-            if ($this->Product->getClassName1()) {
-                $context->validateValue($data['classcategory_id1'], array(
-                    new Assert\NotBlank(),
-                    new Assert\NotEqualTo(array(
-                        'value' => '__unselected',
-                        'message' => 'form.type.select.notselect'
-                    )),
-                ), '[classcategory_id1]');
-            }
-            //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
-            if ($this->Product->getClassName2()) {
-                $context->getValidator()->validate($data['classcategory_id2'], array(
-                    new Assert\NotBlank(),
-                    new Assert\NotEqualTo(array(
-                        'value' => '__unselected',
-                        'message' => 'form.type.select.notselect'
-                    )),
-                ), '[classcategory_id2]');
-            }
-
+                new Assert\NotEqualTo(array(
+                    'value' => '__unselected',
+                    'message' => 'form.type.select.notselect'
+                )),
+            ), '[classcategory_id1]');
+        }
+        //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
+        if ($this->Product->getClassName2()) {
+            $context->getValidator()->validate($data['classcategory_id2'], array(
+                new Assert\NotBlank(),
+                new Assert\NotEqualTo(array(
+                    'value' => '__unselected',
+                    'message' => 'form.type.select.notselect'
+                )),
+            ), '[classcategory_id2]');
         }
     }
 }

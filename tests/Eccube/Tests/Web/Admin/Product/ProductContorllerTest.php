@@ -58,7 +58,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $form = array(
             'class' => array(
-                'product_type' => 1,
+                'sale_type' => 1,
                 'price01' => $price01,
                 'price02' => $price02,
                 'stock' => $faker->randomNumber(3),

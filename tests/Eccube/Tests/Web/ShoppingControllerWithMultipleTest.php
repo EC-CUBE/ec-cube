@@ -1476,7 +1476,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      * - Delivery 1: サンプル業者
      * - Mail content: ◎お届け先2
      */
-    public function testAddMultiShippingWithProductTypeOfOneShippingAreNotSame()
+    public function testAddMultiShippingWithSaleTypeOfOneShippingAreNotSame()
     {
         $User = $this->logIn();
         $client = $this->client;
@@ -1486,9 +1486,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // Product with other type (2)
         $Product = $this->createProduct();
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setProductType($ProductType)->setStock(111);
+        $ProductClass->setSaleType($SaleType)->setStock(111);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush();
 
@@ -1817,9 +1817,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // Product test 2 with type 2
         $Product2 = $this->createProduct();
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setProductType($ProductType)->setStock(111);
+        $ProductClass2->setSaleType($SaleType)->setStock(111);
 
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->persist($ProductClass2);

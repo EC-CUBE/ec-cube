@@ -10,7 +10,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 /**
- * 商品種別に配送業者が設定されているかどうか.
+ * 販売種別に配送業者が設定されているかどうか.
  */
 class DeliverySettingValidator extends ValidatableItemProcessor
 {
@@ -30,11 +30,11 @@ class DeliverySettingValidator extends ValidatableItemProcessor
             return;
         }
 
-        $ProductType = $item->getProductClass()->getProductType();
-        $Deliveries = $this->deliveryRepository->findBy(['ProductType' => $ProductType, 'visible' => true]);
+        $SaleType = $item->getProductClass()->getSaleType();
+        $Deliveries = $this->deliveryRepository->findBy(['SaleType' => $SaleType, 'visible' => true]);
 
         if (empty($Deliveries)) {
-            throw InvalidItemException::fromProductClass('cart.product.not.producttype', $item->getProductClass());
+            throw InvalidItemException::fromProductClass('cart.product.not.saletype', $item->getProductClass());
         }
     }
 

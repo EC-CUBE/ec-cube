@@ -75,22 +75,22 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * この注文の保持する商品種別を取得します.
+     * この注文の保持する販売種別を取得します.
      *
-     * @return \Eccube\Entity\Master\ProductType[] 一意な商品種別の配列
+     * @return \Eccube\Entity\Master\SaleType[] 一意な販売種別の配列
      */
-    public function getProductTypes()
+    public function getSaleTypes()
     {
-        $productTypes = array();
+        $saleTypes = array();
         foreach ($this->getOrderItems() as $OrderItem) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $OrderItem->getProductClass();
             if ($ProductClass) {
-                $productTypes[] = $ProductClass->getProductType();
+                $saleTypes[] = $ProductClass->getSaleType();
             }
         }
 
-        return array_unique($productTypes);
+        return array_unique($saleTypes);
     }
 
 
