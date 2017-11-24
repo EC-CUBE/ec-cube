@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @author Kentaro Ohkouchi
  */
-class StrTest extends \PHPUnit_Framework_TestCase
+class StringUtilTest extends \PHPUnit_Framework_TestCase
 {
     private $actual;
     private $expected;
