@@ -22,7 +22,7 @@
  */
 namespace Eccube\Service\Composer;
 
-use Eccube\Annotation\Inject;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Service;
 
 /**
@@ -33,14 +33,26 @@ use Eccube\Annotation\Service;
 class ComposerProcessService implements ComposerServiceInterface
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
     private $workingDir;
     private $composerFile;
     private $composerSetup;
+    private $pathPHP;
+
+    public function __construct($appConfig, $entityManager, $pathPHP)
+    {
+        $this->appConfig = $appConfig;
+        $this->entityManager = $entityManager;
+        $this->pathPHP = $pathPHP;
+    }
 
     /**
      * This function to install a plugin by composer require
@@ -51,9 +63,11 @@ class ComposerProcessService implements ComposerServiceInterface
     public function execRequire($packageName)
     {
         set_time_limit(0);
-        $this->init();
+        if(false === $this->init()){
+            return false;
+        }
         // Build command
-        $command = $this->getPHP().' '.$this->composerFile.' require '.$packageName;
+        $command = $this->pathPHP.' '.$this->composerFile.' require '.$packageName;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
@@ -72,9 +86,11 @@ class ComposerProcessService implements ComposerServiceInterface
     public function execRemove($packageName)
     {
         set_time_limit(0);
-        $this->init();
+        if(false === $this->init()){
+            return false;
+        }
         // Build command
-        $command = $this->getPHP().' '.$this->composerFile.' remove '.$packageName;
+        $command = $this->pathPHP.' '.$this->composerFile.' remove '.$packageName;
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction --no-update-with-dependencies -d ';
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
@@ -109,20 +125,27 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     /**
-     * Get environment php command
-     *
-     * @return string
-     */
-    private function getPHP()
-    {
-        return 'php';
-    }
-
-    /**
      * Set init
      */
     private function init()
     {
+        if (!$this->isPhpCommandLine()) {
+            return false;
+        }
+
+        if (!$this->isSetCliMemoryLimit()) {
+            $composerMemory = $this->appConfig['composer_memory_limit'];
+            if ($this->getCliMemoryLimit() < $composerMemory && $this->getCliMemoryLimit() != -1) {
+                return false;
+            }
+        }
+
+        $em = $this->entityManager;
+        if ($em->getConnection()->isTransactionActive()) {
+            $em->getConnection()->commit();
+            $em->getConnection()->beginTransaction();
+        }
+
         @ini_set('memory_limit', '1536M');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
@@ -142,10 +165,90 @@ class ComposerProcessService implements ComposerServiceInterface
                 $result = copy('https://getcomposer.org/installer', $this->composerSetup);
                 log_info($this->composerSetup.' : '.$result);
             }
-            $command = $this->getPHP().' '.$this->composerSetup;
+            $command = $this->pathPHP.' '.$this->composerSetup;
             $this->runCommand($command);
 
             unlink($this->composerSetup);
         }
+    }
+
+    /**
+     * Get grep memory_limit | Megabyte
+     * @return int|string
+     */
+    public function getCliMemoryLimit(){
+        $grepMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
+        if($grepMemory){
+            $grepMemory = explode('=>', $grepMemory);
+
+            // -1 unlimited
+            if (trim($grepMemory[2]) == -1) {
+                return -1;
+            }
+
+            $exp = preg_split('#(?<=\d)(?=[a-z])#i', $grepMemory[2]);
+            $memo = trim($exp[0]);
+            if ($exp[1] == 'M') {
+
+                return $memo;
+            } else {
+                if ($exp[1] == 'GB') {
+
+                    return $memo * 1024;
+                } else {
+
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Check to set new value grep "memory_limit"
+     * @return bool
+     */
+    public function isSetCliMemoryLimit()
+    {
+        $oldMemory = exec($this->pathPHP.' -i | grep "memory_limit"');
+        $tmpMem = '1.5GB';
+
+        if ($oldMemory) {
+            $memory = explode('=>', $oldMemory);
+            $originGrepMemmory = trim($memory[2]);
+
+            if ($originGrepMemmory == $tmpMem) {
+                $tmpMem = '1.49GB';
+            }
+
+            $newMemory = exec($this->pathPHP.' -d memory_limit='.$tmpMem.' -i | grep "memory_limit"');
+            if ($newMemory) {
+                $newMemory = explode('=>', $newMemory);
+                $grepNewMemory = trim($newMemory[2]);
+                if ($grepNewMemory != $originGrepMemmory) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check php command line
+     * @return bool
+     */
+    public function isPhpCommandLine()
+    {
+        $php = exec('which php');
+        if (function_exists('exec') && null != $php) {
+            if (strpos(strtolower($php), 'php') !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

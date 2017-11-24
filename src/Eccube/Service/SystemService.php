@@ -26,6 +26,8 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @Service
@@ -67,5 +69,45 @@ class SystemService
             ->getSingleScalarResult();
 
         return $prefix.$version;
+    }
+
+    /**
+     * Get environment php command
+     * @return string
+     */
+    public function getPHP()
+    {
+        return (new PhpExecutableFinder())->find();
+    }
+
+    /**
+     * Try to set new values memory_limit | return true
+     * @param $memory | EX: 1536M
+     * @return bool
+     */
+    public function canSetMemoryLimit($memory)
+    {
+        try {
+            ini_set('memory_limit', $memory);
+        } catch (\Exception $exception) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get memory_limit | Megabyte
+     * @return float|int
+     */
+    public function getMemoryLimit()
+    {
+        // Data type: bytes
+        $memoryLimit = (new MemoryDataCollector())->getMemoryLimit();
+        if (-1 == $memoryLimit) {
+            return -1;
+        }
+
+        return ($memoryLimit == 0) ? 0 : ($memoryLimit / 1024) / 1024;
     }
 }

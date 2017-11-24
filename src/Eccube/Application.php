@@ -42,6 +42,7 @@ use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
+use Eccube\ServiceProvider\ComposerServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\ForwardOnlyServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
@@ -338,6 +339,7 @@ class Application extends \Silex\Application
 
         $this->register(new CompatRepositoryProvider());
         $this->register(new CompatServiceProvider());
+        $this->register(new ComposerServiceProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());
         $this->register(new PagenatorServiceProvider());
         $this->register(new PaymentServiceProvider());
