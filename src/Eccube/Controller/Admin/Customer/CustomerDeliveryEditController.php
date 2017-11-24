@@ -171,25 +171,18 @@ class CustomerDeliveryEditController extends AbstractController
      * @Method("DELETE")
      * @Route("/{_admin}/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete")
      */
-    public function delete(Application $app, Request $request, $id, $did)
+    public function delete(Application $app, Request $request, Customer $Customer, $did)
     {
         $this->isTokenValid($app);
     
         log_info('お届け先削除開始', array($did));
-    
-        
-        $Customer = $this->customerRepository->find($id);
-    
-        if (is_null($Customer)) {
-            throw new NotFoundHttpException();
-        }
         
         $CustomerAddress = $this->customerAddressRepository->find($did);
         if (is_null($CustomerAddress)) {
             throw new NotFoundHttpException();
         } else if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
             $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer_edit', array('id' => $id)));
+            return $app->redirect($app->url('admin_customer_edit', array('id' => $Customer->getId())));
         }
     
         try {
@@ -202,7 +195,7 @@ class CustomerDeliveryEditController extends AbstractController
             $app->addError($message, 'admin');
         }
     
-        log_info('お届け先削除完了', array($id));
+        log_info('お届け先削除完了', array($did));
     
         $event = new EventArgs(
             array(
@@ -213,7 +206,7 @@ class CustomerDeliveryEditController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE, $event);
     
-        return $app->redirect($app->url('admin_customer_edit', array('id' => $id)));
+        return $app->redirect($app->url('admin_customer_edit', array('id' => $Customer->getId())));
     }
     
 }
