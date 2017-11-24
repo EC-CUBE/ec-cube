@@ -55,6 +55,7 @@ use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -509,6 +510,17 @@ class Application extends \Silex\Application
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
+        });
+
+        // TwigRendererがdeprecatedになり, Rendererを取得できないエラーが発生するため,
+        // twig.runtimesにFormRendererを追加.
+        // @see https://github.com/silexphp/Silex/pull/1571
+        $this->extend('twig.runtimes', function($runtimes) {
+            if (!isset($runtimes[FormRenderer::class])) {
+                $runtimes[FormRenderer::class] = 'twig.form.renderer';
+            }
+
+            return $runtimes;
         });
 
         $this->before(function (Request $request, \Silex\Application $app) {
