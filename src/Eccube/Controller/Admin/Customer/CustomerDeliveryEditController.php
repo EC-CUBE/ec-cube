@@ -43,6 +43,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Eccube\Entity\Customer;
 
 /**
  * @Route(service=CustomerDeliveryEditController::class)
@@ -92,13 +93,8 @@ class CustomerDeliveryEditController extends AbstractController
      * @Route("/{_admin}/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
      * @Template("Customer/delivery_edit.twig")
      */
-    public function edit(Application $app, Request $request, $id, $did = null)
-    {
-        $Customer = $this->customerRepository->find($id);
-        if (is_null($Customer)) {
-            throw new NotFoundHttpException();
-        }
-        
+    public function edit(Application $app, Request $request, Customer $Customer, $did = null)
+    {   
         // 配送先住所最大値判定
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
         if (is_null($did)) {
