@@ -64,6 +64,8 @@ return [
     'front.shopping.order.error' => '購入処理でエラーが発生しました。',
     'front.shopping.stock.error' => '選択された商品の在庫が不足しております。該当商品をカートから削除しました。',
     'front.shopping.system.error' => '購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。',
+    'front.delivery.save.complete' => 'お届け先登録が完了しました',
+    'front.delivery.max.warning' => 'お届け先の登録数の上限を超えています',
     'admin.install.warning' => 'installphpPath は、インストール完了後にファイルを削除してください',
     'admin.register.complete' => '登録が完了しました。',
     'admin.register.failed' => '登録できませんでした。',

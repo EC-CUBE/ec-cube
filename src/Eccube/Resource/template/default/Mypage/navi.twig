@@ -20,6 +20,48 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% set favorite = BaseInfo.option_favorite_product %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css', 'admin') }}">
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $.ajax({
+                url: "{{ asset('assets/img/svg.html', 'admin') }}",
+                type: 'GET',
+                dataType: 'html',
+            }).done(function(data){
+                $('body').prepend(data);
+            }).fail(function(data){
+            });
+        });
+    </script>
+{% endblock %}
+
+{% if app.session.flashBag.has('eccube.front.success') %}
+    {% for message in app.session.flashBag.get('eccube.front.success') %}
+        <div class="row">
+            <div class="alert alert-success alert-dismissable alert-section">
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if app.session.flashBag.has('eccube.front.warning') %}
+    {% for message in app.session.flashBag.get('eccube.front.warning') %}
+        <div class="row">
+            <div class="alert alert-warning alert-dismissable alert-section">
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="ec-navlistRole">
 
     <ul class="ec-navlistRole__navlist {% if favorite %}favorite{% endif %}">

@@ -116,7 +116,8 @@ class DeliveryController extends AbstractController
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $this->appConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
+                $app->addWarning('front.delivery.max.warning');
+                return $app->redirect($app->url('mypage_delivery'));
             }
         }
 
@@ -170,8 +171,7 @@ class DeliveryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
 
-            $app->addSuccess('mypage.delivery.add.complete');
-
+            $app->addSuccess('front.delivery.save.complete');
             return $app->redirect($app->url('mypage_delivery'));
         }
 
