@@ -92,7 +92,10 @@ class ProductRepository extends AbstractRepository
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR NORMALIZE(p.search_word) LIKE NORMALIZE(:%s)', $key, $key))
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR 
+                        NORMALIZE(p.search_word) LIKE NORMALIZE(:%s) OR 
+                        EXISTS (SELECT wpc%d FROM \Eccube\Entity\ProductClass wpc%d WHERE p = wpc%d.Product AND NORMALIZE(wpc%d.code) LIKE NORMALIZE(:%s))', 
+                        $key, $key, $index, $index, $index, $index, $key))
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
