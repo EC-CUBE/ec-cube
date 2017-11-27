@@ -484,7 +484,7 @@ class PluginController extends AbstractController
      * オーナーズストアプラグインインストール画面
      *
      * @Route("/{_admin}/store/plugin/owners_install", name="admin_store_plugin_owners_install")
-     * @Template("Store/plugin_owners_install.twig")
+     * @Template("Store/plugin_search.twig")
      */
     public function ownersInstall(Application $app, Request $request)
     {

@@ -87,7 +87,6 @@ class OwnerStoreController extends AbstractController
     public function search(Application $app, Request $request)
     {
         // Acquire downloadable plug-in information from owners store
-        $success = 0;
         $items = array();
         $promotionItems = array();
         $message = '';
@@ -98,69 +97,59 @@ class OwnerStoreController extends AbstractController
             $message = $this->getResponseErrorMessage($info);
         } else {
             $data = json_decode($json, true);
-            if (isset($data['success'])) {
-                $success = $data['success'];
-                if ($success == '1') {
-                    $items = array();
-                    // Check plugin installed
-                    $arrPluginInstalled = $this->pluginRepository->findAll();
-                    // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : paid purchase
-                    foreach ($data['item'] as $item) {
-                        // Not install/purchased
-                        $item['update_status'] = 1;
-                        /** @var Plugin $plugin */
-                        foreach ($arrPluginInstalled as $plugin) {
-                            if ($plugin->getSource() == $item['product_id']) {
-                                // Need update
-                                $item['update_status'] = 3;
-                                if ($plugin->getVersion() == $item['version']) {
-                                    // Installed
-                                    $item['update_status'] = 2;
-                                }
+            if (isset($data['success']) && $data['success']) {
+                // Check plugin installed
+                $pluginInstalled = $this->pluginRepository->findAll();
+                // Update_status 1 : not install/purchased 、2 : Installed、 3 : Update、4 : paid purchase
+                foreach ($data['item'] as $item) {
+                    // Not install/purchased
+                    $item['update_status'] = 1;
+                    /** @var Plugin $plugin */
+                    foreach ($pluginInstalled as $plugin) {
+                        if ($plugin->getSource() == $item['product_id']) {
+                            // Need update
+                             $item['update_status'] = 3;
+                            if ($plugin->getVersion() == $item['version']) {
+                                // Installed
+                                $item['update_status'] = 2;
                             }
                         }
-                        $items[] = $item;
                     }
+                    $items[] = $item;
+                }
 
-                    // EC-CUBE version check
-                    $arrDependency = [];
-                    foreach ($items as &$item) {
-                        // Not applicable version
-                        $item['version_check'] = 0;
-                        if (in_array(Constant::VERSION, $item['eccube_version'])) {
-                            // Match version
-                            $item['version_check'] = 1;
-                        }
-                        if ($item['price'] != '0' && $item['purchased'] == '0') {
-                            // Not purchased with paid items
-                            $item['update_status'] = 4;
-                        }
-
-                        // Add plugin dependency
-                        $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
+                // EC-CUBE version check
+                foreach ($items as &$item) {
+                    // Not applicable version
+                    $item['version_check'] = 0;
+                    if (in_array(Constant::VERSION, $item['eccube_version'])) {
+                        // Match version
+                        $item['version_check'] = 1;
                     }
-                    unset($item);
-
-                    // Promotion item
-                    $i = 0;
-                    foreach ($items as $item) {
-                        if ($item['promotion'] == 1) {
-                            $promotionItems[] = $item;
-                            unset($items[$i]);
-                        }
-                        $i++;
+                    if ($item['price'] != '0' && $item['purchased'] == '0') {
+                        // Not purchased with paid items
+                        $item['update_status'] = 4;
                     }
-                } else {
-                    $message = $data['error_code'].' : '.$data['error_message'];
+                    // Add plugin dependency
+                    $item['depend'] = $this->pluginService->getRequirePluginName($items, $item);
+                }
+                unset($item);
+
+                // Promotion item
+                $i = 0;
+                foreach ($items as $item) {
+                    if ($item['promotion'] == 1) {
+                        $promotionItems[] = $item;
+                        unset($items[$i]);
+                    }
+                    $i++;
                 }
             } else {
-                $success = 0;
-                $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                $message = $app->trans('admin.plugin.authentication.fail');
             }
         }
 
         return [
-            'success' => $success,
             'items' => $items,
             'promotionItems' => $promotionItems,
             'message' => $message,
@@ -196,14 +185,14 @@ class OwnerStoreController extends AbstractController
         $plugin = $this->pluginService->buildInfo($items, $pluginCode);
 
         // Prevent infinity loop: A -> B -> A.
-        $arrDependency[] = $plugin;
-        $arrDependency = $this->pluginService->getDependency($items, $plugin, $arrDependency);
+        $dependents[] = $plugin;
+        $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
         // Unset first param
-        unset($arrDependency[0]);
+        unset($dependents[0]);
 
         return [
             'item' => $plugin,
-            'arrDependency' => $arrDependency,
+            'dependents' => $dependents,
         ];
     }
 

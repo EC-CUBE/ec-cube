@@ -149,6 +149,7 @@ return [
     'admin.system.security.save.complete' => 'セキュリティ設定を保存しました。',
     'admin.system.security.route.dir.complete' => '管理画面のURLを変更しましたので再ログインをしてください。',
     'admin.system.authority.save.complete' => '権限設定を保存しました。',
+    'admin.plugin.authentication.fail' => 'EC-CUBEオーナーズストアにエラーが発生しています。',
     'admin.plugin.enable.complete' => 'プラグインを有効にしました。',
     'admin.plugin.enable.depend' => '%name%を有効化するためには、先に%depend_name%を有効化してください。',
     'admin.plugin.disable.complete' => 'プラグインを無効にしました。',
