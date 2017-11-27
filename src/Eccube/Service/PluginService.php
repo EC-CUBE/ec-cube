@@ -36,7 +36,7 @@ use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
@@ -90,8 +90,8 @@ class PluginService
     protected $schemaService;
 
     /**
-     * @Inject(ComposerApiService::class)
-     * @var ComposerApiService
+     * @Inject("eccube.service.composer")
+     * @var ComposerServiceInterface
      */
     protected $composerService;
 
