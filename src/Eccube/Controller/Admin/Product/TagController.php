@@ -105,7 +105,7 @@ class TagController extends AbstractController
                 
                 $this->tagRepository->save($TargetTag);
 
-                log_info('カテゴリ登録完了', array($TargetTag->getId()));
+                log_info('タグ登録完了', array($TargetTag->getId()));
 
                 $event = new EventArgs(
                     array(
