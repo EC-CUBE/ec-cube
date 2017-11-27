@@ -22,10 +22,11 @@
  */
 
 
-namespace Eccube\Repository\Master;
+namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
 use Eccube\Repository\AbstractRepository;
+use Eccube\Entity\Tag;
 
 /**
  * TagRepository
@@ -37,23 +38,64 @@ use Eccube\Repository\AbstractRepository;
  */
 class TagRepository extends AbstractRepository
 {
-    public function findOrCreateByTagName($tag_name)
+    
+    /**
+     * カテゴリを保存する.
+     *
+     * @param  Tag $tag タグ
+     */
+    public function save($tag)
     {
-        $Tag = $this->findOneBy(array('name' => $tag_name));
-
-        if (is_null($Tag)) {
+        if (!$tag->getId()) {
             $RankTop = $this->findOneBy(array(), array('rank' => 'DESC'));
             $rank = 0;
             if (!is_null($RankTop)) {
                 $rank = $RankTop->getRank();
             }
-
-            $Tag = new \Eccube\Entity\Master\Tag();
-            $Tag
-                ->setName($tag_name)
-                ->setRank($rank + 1);
+            
+            $tag->setRank($rank + 1);
         }
-
-        return $Tag;
+        
+        $em = $this->getEntityManager();
+        $em->persist($tag);
+        $em->flush($tag);
+    }
+    
+    /**
+     * タグ一覧を取得する.
+     * 
+     * @return Tag[] タグの配列
+     */
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('t')->orderBy('t.rank', 'DESC');
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * タグを削除する.
+     *
+     * @param  Tag $Tag 削除対象のタグ
+     */
+    public function delete($Tag)
+    {
+        $em = $this->getEntityManager();
+        $em->beginTransaction();
+        
+        $em->createQuery("DELETE \Eccube\Entity\ProductTag pt WHERE pt.Tag = :tag")->execute(array("tag" => $Tag));
+        
+        $this
+            ->createQueryBuilder('t')
+            ->update()
+            ->set('t.rank', 't.rank - 1')
+            ->where('t.rank > :rank')
+            ->setParameter('rank', $Tag->getRank())
+            ->getQuery()
+            ->execute();
+    
+        $em->remove($Tag);
+        $em->flush($Tag);
+        
+        $em->commit();
     }
 }

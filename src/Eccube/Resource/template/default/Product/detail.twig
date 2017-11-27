@@ -169,7 +169,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {# タグ #}
                     <ul class="ec-productRole__tags">
                         {% for ProductTag in Product.ProductTag %}
-                            <li class="ec-productRole__tag">{{ ProductTag.Tag }}
+                            <li class="ec-productRole__tag tag_{{ ProductTag.Tag.id }}">{{ ProductTag.Tag }}
                             </li>
                         {% endfor %}
                     </ul>

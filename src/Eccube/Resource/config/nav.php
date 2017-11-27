@@ -27,6 +27,11 @@
                     'url' => 'admin_product_category',
                 ],
                 [
+                    'id' => 'tag',
+                    'name' => 'タグ登録',
+                    'url' => 'admin_product_tag',
+                ],
+                [
                     'id' => 'product_csv_import',
                     'name' => '商品CSV登録',
                     'url' => 'admin_product_csv_import',

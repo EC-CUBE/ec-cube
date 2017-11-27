@@ -204,7 +204,16 @@ final class EccubeEvents
 
     // export
     const ADMIN_PRODUCT_CATEGORY_CSV_EXPORT = 'admin.product.category.csv.export';
+    
+    /**
+     * Admin/Product/TagController
+     */
+    // index
+    const ADMIN_PRODUCT_TAG_INDEX_INITIALIZE = 'admin.product.tag.index.initialize';
+    const ADMIN_PRODUCT_TAG_INDEX_COMPLETE = 'admin.product.tag.index.complete';
 
+    // delete
+    const ADMIN_PRODUCT_TAG_DELETE_COMPLETE = 'admin.product.tag.delete.complete';
 
     /**
      * Admin/Product/ClassCategoryController

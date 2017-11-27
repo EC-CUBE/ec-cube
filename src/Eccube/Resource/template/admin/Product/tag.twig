@@ -1,0 +1,161 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'tag'] %}
+
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}タグ編集{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.widget.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js', 'admin') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
+    <script>
+        $(function() {
+            var oldRanks = [];
+            // 画面の中のrank一覧を保持
+            $("div.tableish > .item_box").each(function() {
+                oldRanks.push(this.dataset.rank);
+            });
+            // rsort
+            oldRanks.sort(function(a,b){return a - b;}).reverse();
+
+            $("div.tableish").sortable({
+                items: '> .item_box',
+                cursor: 'move',
+                update: function(e, ui) {
+                    $("body").append($('<div class="modal-backdrop in"></div>'));
+                    updateRank();
+                }
+            });
+
+            var updateRank = function() {
+                // 並び替え後にrankを更新
+                var newRanks = {};
+                var i = 0;
+                $("div.tableish > .item_box").each(function() {
+                    newRanks[this.dataset.tagId] = oldRanks[i];
+                    i++;
+                });
+
+                $.ajax({
+                    url: '{{ url('admin_product_tag_rank_move') }}',
+                    type: 'POST',
+                    data: newRanks,
+                }).done(function(data) {
+                    console.log(data);
+                    $(".modal-backdrop").remove();
+                }).fail(function() {
+                    console.log('fail');
+                    $(".modal-backdrop").remove();
+                });
+            };
+
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+    <div id="tag_wrap" class="row">
+        <div id="list_box" class="col-md-12">
+            <div id="list_box__body" class="box">
+                <div id="edit_box" class="box-body">
+                    <div id="edit_box__body" class="row">
+                        <div id="edit_box__body_inner" class="col-md-12">
+                            <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetTag.id %}{{ path('admin_product_tag_edit', {id: TargetTag.id}) }}{% else %}{{ url('admin_product_tag') }}{% endif %}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-md-12 form-inline">
+                                        {{ form_widget(form._token) }}
+                                        {{ form_widget(form.name, {attr: {placeholder: 'タグ名を入力'}}) }}
+                                        {{ form_errors(form.name) }}
+                                        <button class="btn btn-default btn-sm" type="submit">タグ作成</button>
+                                    </div>
+                                </div>
+                                <div class="extra-form">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            <div class="col-md-12 form-group">
+                                                {{ form_label(f) }}
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- /.box-header -->
+                {% if Tags|length > 0 %}
+                    <div id="sortable_list" class="box-body no-padding no-border">
+                        <div id="sortable_list_box" class="sortable_list">
+                            <div id="sortable_list_box__list" class="tableish">
+
+                                {% for Tag in Tags %}
+
+                                <div id="sortable_list__item--{{ Tag.id }}" class="item_box tr" data-rank="{{ Tag.rank }}" data-tag-id="{{ Tag.id }}">
+                                    <div class="icon_sortable td">
+                                        <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
+                                    </div>
+                                    <div id="sortable_list__item_body--{{ Tag.id }}" class="item_pattern td">
+                                        {{ Tag.name }}
+                                    </div>
+                                    <div id="sortable_list__item_menu_box--{{ Tag.id }}" class="icon_edit td">
+                                        <div id="sortable_list__item_menu_toggle--{{ Tag.id }}" class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                            <ul id="sortable_list__menu--{{ Tag.id }}" class="dropdown-menu dropdown-menu-right">
+                                                {% if Tag.id != TargetTag.id %}
+                                                    <li><a href="{{ url('admin_product_tag_edit', {id: Tag.id}) }}">編集</a></li>
+                                                {% else %}
+                                                    <li><a>編集中</a></li>
+                                                {% endif %}
+
+                                                <li>
+                                                    <a data-message="{% if Tag.ProductTag|length > 0 %}紐づく商品が存在しています。{% endif %}削除してもよろしいですか？" href="{{ url('admin_product_tag_delete', {id: Tag.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                        削除
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- /.item_box -->
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+            {% else %}
+                <div id="list_box" class="box-body no-padding">
+                    <div id="list_box__not_find_tag" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
+                </div><!-- /.box-body -->
+            {% endif %}
+            <!-- ▲ データがある時 ▲ -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+
+    </div>
+{% endblock %}
