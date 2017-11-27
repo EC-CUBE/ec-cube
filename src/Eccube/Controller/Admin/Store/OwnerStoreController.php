@@ -107,11 +107,11 @@ class OwnerStoreController extends AbstractController
                     /** @var Plugin $plugin */
                     foreach ($pluginInstalled as $plugin) {
                         if ($plugin->getSource() == $item['product_id']) {
-                            // Need update
-                             $item['update_status'] = 3;
-                            if ($plugin->getVersion() == $item['version']) {
-                                // Installed
-                                $item['update_status'] = 2;
+                            // Installed
+                            $item['update_status'] = 2;
+                            if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
+                                // Need update
+                                $item['update_status'] = 3;
                             }
                         }
                     }
