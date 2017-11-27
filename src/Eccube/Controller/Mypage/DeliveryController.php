@@ -123,20 +123,6 @@ class DeliveryController extends AbstractController
 
         $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $id);
 
-        $parentPage = $request->get('parent_page', null);
-
-        // 正しい遷移かをチェック
-        $allowdParents = array(
-            $app->url('mypage_delivery'),
-            $app->url('shopping_redirect_to'),
-        );
-
-        // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
-        if (!in_array($parentPage, $allowdParents)) {
-            // @deprecated 使用されていないコード
-            $parentPage = $app->url('mypage_delivery');
-        }
-
         $builder = $this->formFactory
             ->createBuilder(CustomerAddressType::class, $CustomerAddress);
 
@@ -177,7 +163,6 @@ class DeliveryController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'parentPage' => $parentPage,
             'BaseInfo' => $this->BaseInfo,
         ];
     }
