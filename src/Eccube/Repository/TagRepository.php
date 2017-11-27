@@ -40,7 +40,7 @@ class TagRepository extends AbstractRepository
 {
     
     /**
-     * カテゴリを保存する.
+     * タグを保存する.
      *
      * @param  Tag $tag タグ
      */
