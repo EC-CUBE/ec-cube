@@ -29,7 +29,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -86,7 +86,7 @@ class ProductRepository extends AbstractRepository
         }
 
         // name
-        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
+        if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
@@ -154,7 +154,7 @@ class ProductRepository extends AbstractRepository
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
-        if (isset($searchData['id']) && Str::isNotBlank($searchData['id'])) {
+        if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')

@@ -37,8 +37,8 @@ use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
-use Eccube\Util\Cache;
-use Eccube\Util\Str;
+use Eccube\Util\CacheUtil;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -173,7 +173,7 @@ class PluginService
     {
         // キャッシュの削除
         PluginConfigManager::removePluginConfigCache();
-        Cache::clear($this->app, false);
+        CacheUtil::clear($this->app, false);
     }
 
     // インストール事後処理
@@ -181,7 +181,7 @@ class PluginService
     {
         // Proxyのクラスをロードせずにスキーマを更新するために、
         // インストール時には一時的なディレクトリにProxyを生成する
-        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
+        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
         @mkdir($tmpProxyOutputDir);
 
         try {
@@ -204,7 +204,7 @@ class PluginService
     public function createTempDir()
     {
         @mkdir($this->appConfig['plugin_temp_realdir']);
-        $d = ($this->appConfig['plugin_temp_realdir'].'/'.sha1(Str::random(16)));
+        $d = ($this->appConfig['plugin_temp_realdir'].'/'.sha1(StringUtil::random(16)));
 
         if (!mkdir($d, 0777)) {
             throw new PluginException($php_errormsg.$d);
@@ -390,7 +390,7 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         ConfigManager::removePluginConfigCache();
-        Cache::clear($this->app, false);
+        CacheUtil::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->disable($plugin);
@@ -469,7 +469,7 @@ class PluginService
         $em = $this->entityManager;
         try {
             PluginConfigManager::removePluginConfigCache();
-            Cache::clear($this->app, false);
+            CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? true : false);
@@ -506,7 +506,7 @@ class PluginService
         $tmp = null;
         try {
             PluginConfigManager::removePluginConfigCache();
-            Cache::clear($this->app, false);
+            CacheUtil::clear($this->app, false);
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開

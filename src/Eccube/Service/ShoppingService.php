@@ -52,7 +52,7 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
@@ -263,7 +263,7 @@ class ShoppingService
     {
         // ランダムなpre_order_idを作成
         do {
-            $preOrderId = sha1(Str::random(32));
+            $preOrderId = sha1(StringUtil::random(32));
             $Order = $this->orderRepository->findOneBy(array(
                 'pre_order_id' => $preOrderId,
                 'OrderStatus' => $this->appConfig['order_processing'],
