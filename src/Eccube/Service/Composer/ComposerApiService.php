@@ -23,7 +23,6 @@
 namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -36,7 +35,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class ComposerApiService implements ComposerServiceInterface
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
@@ -47,6 +45,11 @@ class ComposerApiService implements ComposerServiceInterface
     private $consoleApplication;
 
     private $workingDir;
+
+    public function __construct($appConfig)
+    {
+        $this->appConfig = $appConfig;
+    }
 
     /**
      * Run get info command
@@ -67,7 +70,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run execute command
      *
-     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @return array
      */
     public function execRequire($packageName)
@@ -88,18 +91,18 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run remove command
      *
-     * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
+     * @param string $packageName format "foo/bar foo/bar:1.0.0"
      * @return bool
      */
     public function execRemove($packageName)
     {
+        $packageName = explode(' ', trim($packageName));
         $this->runCommand(array(
             'command' => 'remove',
-            'packages' => array($packageName),
+            'packages' => $packageName,
             '--ignore-platform-reqs' => true,
             '--no-interaction' => true,
             '--profile' => true,
-            '--no-update-with-dependencies' => true,
         ));
 
         return true;

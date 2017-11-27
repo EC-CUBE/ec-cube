@@ -54,11 +54,11 @@ return [
     'cart.product.payment.kind' => 'お支払方法が異なるためこの商品は同時に購入することはできません。',
     'cart.product.delete' => '現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。',
     'cart.product.not.status' => '現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。',
-    'cart.product.not.producttype' => '「%product%」はまだ配送の準備ができておりません。
+    'cart.product.not.saletype' => '「%product%」はまだ配送の準備ができておりません。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
     'shopping.multiple.delivery' => '配送方法が異なる商品が含まれているため、お届け先は複数となります。',
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
-    'shopping.delivery.not.producttype' => '配送の準備ができていない商品が含まれております。
+    'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
     'shopping.total.price' => '合計金額が不正です。(¥ totalPrice)',
     'front.shopping.order.error' => '購入処理でエラーが発生しました。',
@@ -150,7 +150,9 @@ return [
     'admin.system.security.route.dir.complete' => '管理画面のURLを変更しましたので再ログインをしてください。',
     'admin.system.authority.save.complete' => '権限設定を保存しました。',
     'admin.plugin.enable.complete' => 'プラグインを有効にしました。',
+    'admin.plugin.enable.depend' => '%name%を有効化するためには、先に%depend_name%を有効化してください。',
     'admin.plugin.disable.complete' => 'プラグインを無効にしました。',
+    'admin.plugin.disable.depend' => '%name%を無効化するためには、先に%depend_name%を無効化してください。',
     'admin.plugin.already.enable' => 'すでに有効化されています。',
     'admin.plugin.already.disable' => 'すでに無効化されています。',
     'admin.plugin.uninstall.complete' => 'プラグインを削除しました。',

@@ -27,7 +27,6 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
 use Eccube\Event\EccubeEvents;

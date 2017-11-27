@@ -3,7 +3,7 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
-use Eccube\Entity\Master\ProductType;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
@@ -40,7 +40,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = new DeliverySettingValidator($this->app['eccube.repository.delivery']);
         $this->cartItem = new CartItem();
-        $this->cartItem->setObject($this->ProductClass);
+        $this->cartItem->setProductClass($this->ProductClass);
     }
 
     public function testInstance()
@@ -63,9 +63,9 @@ class DeliverySettingValidatorTest extends EccubeTestCase
      */
     public function testDisplayStatusWithClosed()
     {
-        $ProductType = new ProductType();
-        $ProductType->setId(10000);
-        $this->ProductClass->setProductType($ProductType);
+        $SaleType = new SaleType();
+        $SaleType->setId(10000);
+        $this->ProductClass->setSaleType($SaleType);
 
         $this->validator->process($this->cartItem, new PurchaseContext());
 

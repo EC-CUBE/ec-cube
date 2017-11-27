@@ -2,16 +2,20 @@
 
 namespace Eccube\Tests\Fixture;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
-use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\ShippingStatus;
+use Eccube\Entity\Master\TaxDisplayType;
+use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Entity\Page;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
@@ -21,12 +25,6 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\OrderItem;
-use Eccube\Entity\Member;
-use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Entity\Master\TaxType;
-use Eccube\Entity\Master\TaxDisplayType;
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Tests\EccubeTestCase;
 use Faker\Factory as Faker;
 
@@ -266,7 +264,7 @@ class Generator {
         $faker = $this->getFaker();
         $Member = $this->app['eccube.repository.member']->find(2);
         $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
 
         $Product = new Product();
@@ -337,7 +335,7 @@ class Generator {
                 ->setStock($ProductStock->getStock())
                 ->setProductStock($ProductStock)
                 ->setProduct($Product)
-                ->setProductType($ProductType)
+                ->setSaleType($SaleType)
                 ->setStockUnlimited(false)
                 ->setPrice02($faker->randomNumber(5))
                 ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
@@ -382,7 +380,7 @@ class Generator {
             ->setStock($ProductStock->getStock())
             ->setProductStock($ProductStock)
             ->setProduct($Product)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setPrice02($faker->randomNumber(5))
             ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
@@ -649,7 +647,7 @@ class Generator {
     public function createDelivery($delivery_time_max_pattern = 5)
     {
         $Member = $this->app['eccube.repository.member']->find(2);
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
         $faker = $this->getFaker();
         $Delivery = new Delivery();
         $Delivery
@@ -661,7 +659,7 @@ class Generator {
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setVisible(true);
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush($Delivery);

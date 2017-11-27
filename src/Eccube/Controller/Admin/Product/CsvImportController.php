@@ -42,7 +42,7 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDateRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\ProductTypeRepository;
+use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\Master\TagRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
@@ -67,10 +67,10 @@ class CsvImportController
     protected $deliveryDateRepository;
 
     /**
-     * @Inject(ProductTypeRepository::class)
-     * @var ProductTypeRepository
+     * @Inject(SaleTypeRepository::class)
+     * @var SaleTypeRepository
      */
-    protected $productTypeRepository;
+    protected $saleTypeRepository;
 
     /**
      * @Inject(TagRepository::class)
@@ -278,7 +278,7 @@ class CsvImportController
                         if ($ProductClasses->count() < 1) {
                             // 規格分類1(ID)がセットされていると規格なし商品、規格あり商品を作成
                             $ProductClassOrg = $this->createProductClass($row, $Product, $app, $data);
-                            if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                            if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                 if ($row['送料'] != '') {
                                     $deliveryFee = str_replace(',', '', $row['送料']);
                                     if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -364,7 +364,7 @@ class CsvImportController
                                 ) {
                                     $this->updateProductClass($row, $Product, $pc, $app, $data);
 
-                                    if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                                    if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -435,7 +435,7 @@ class CsvImportController
                                     }
                                     $ProductClass = $this->createProductClass($row, $Product, $app, $data, $ClassCategory1, $ClassCategory2);
 
-                                    if ($this->BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
+                                    if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
                                             if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
@@ -878,18 +878,18 @@ class CsvImportController
         $ProductClass->setVisible(true);
 
 
-        if ($row['商品種別(ID)'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
+        if ($row['販売種別(ID)'] == '') {
+            $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が設定されていません。');
         } else {
-            if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
-                if (!$ProductType) {
-                    $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+            if (preg_match('/^\d+$/', $row['販売種別(ID)'])) {
+                $SaleType = $this->saleTypeRepository->find($row['販売種別(ID)']);
+                if (!$SaleType) {
+                    $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
                 } else {
-                    $ProductClass->setProductType($ProductType);
+                    $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+                $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
             }
         }
 
@@ -919,7 +919,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
             if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
-                $ProductClass->setStockUnlimited(Constant::DISABLED);
+                $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
                     $this->addErrors(($data->key() + 1) . '行目の在庫数が設定されていません。');
@@ -933,7 +933,7 @@ class CsvImportController
                 }
 
             } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
-                $ProductClass->setStockUnlimited(Constant::ENABLED);
+                $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
@@ -983,7 +983,7 @@ class CsvImportController
         $ProductClass->setProductStock($ProductStock);
         $ProductStock->setProductClass($ProductClass);
 
-        if (!$ProductClass->getStockUnlimited()) {
+        if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
@@ -1006,18 +1006,18 @@ class CsvImportController
 
         $ProductClass->setProduct($Product);
 
-        if ($row['商品種別(ID)'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
+        if ($row['販売種別(ID)'] == '') {
+            $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が設定されていません。');
         } else {
-            if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
-                $ProductType = $this->productTypeRepository->find($row['商品種別(ID)']);
-                if (!$ProductType) {
-                    $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+            if (preg_match('/^\d+$/', $row['販売種別(ID)'])) {
+                $SaleType = $this->saleTypeRepository->find($row['販売種別(ID)']);
+                if (!$SaleType) {
+                    $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
                 } else {
-                    $ProductClass->setProductType($ProductType);
+                    $ProductClass->setSaleType($SaleType);
                 }
             } else {
-                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+                $this->addErrors(($data->key() + 1) . '行目の販売種別(ID)が存在しません。');
             }
         }
 
@@ -1071,7 +1071,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
             if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
-                $ProductClass->setStockUnlimited(Constant::DISABLED);
+                $ProductClass->setStockUnlimited(false);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
                     $this->addErrors(($data->key() + 1) . '行目の在庫数が設定されていません。');
@@ -1085,7 +1085,7 @@ class CsvImportController
                 }
 
             } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
-                $ProductClass->setStockUnlimited(Constant::ENABLED);
+                $ProductClass->setStockUnlimited(true);
                 $ProductClass->setStock(null);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
@@ -1123,7 +1123,7 @@ class CsvImportController
 
         $ProductStock = $ProductClass->getProductStock();
 
-        if (!$ProductClass->getStockUnlimited()) {
+        if (!$ProductClass->isStockUnlimited()) {
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
@@ -1178,7 +1178,7 @@ class CsvImportController
             '商品画像' => 'product_image',
             '商品カテゴリ(ID)' => 'product_category',
             'タグ(ID)' => 'product_tag',
-            '商品種別(ID)' => 'product_type',
+            '販売種別(ID)' => 'sale_type',
             '規格分類1(ID)' => 'class_category1',
             '規格分類2(ID)' => 'class_category2',
             '発送日目安(ID)' => 'deliveryFee',

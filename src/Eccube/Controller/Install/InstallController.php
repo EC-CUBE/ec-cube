@@ -40,7 +40,6 @@ use Eccube\Form\Type\Install\Step5Type;
 use Eccube\InstallApplication;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\Str;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;

@@ -68,11 +68,11 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     private $class_name;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="plugin_enable", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="plugin_enable", type="boolean", options={"default":false})
      */
-    private $enable = 0;
+    private $enable = false;
 
     /**
      * @var string
@@ -202,7 +202,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set enable.
      *
-     * @param int $enable
+     * @param boolean $enable
      *
      * @return Plugin
      */
@@ -216,9 +216,9 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get enable.
      *
-     * @return int
+     * @return boolean
      */
-    public function getEnable()
+    public function isEnable()
     {
         return $this->enable;
     }

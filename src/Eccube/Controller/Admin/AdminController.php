@@ -458,7 +458,7 @@ class AdminController extends AbstractController
             ->select('count(DISTINCT p.id)')
             ->innerJoin('p.ProductClasses', 'pc')
             ->where('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
-            ->setParameter('StockUnlimited', Constant::DISABLED);
+            ->setParameter('StockUnlimited', false);
 
         return $qb
             ->getQuery()

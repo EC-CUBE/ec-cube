@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,28 +21,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Service\Cart;
 
-namespace Eccube\Form\DataTransformer;
+use Eccube\Entity\CartItem;
 
-use Symfony\Component\Form\DataTransformerInterface;
-
-class IntegerToBooleanTransformer implements DataTransformerInterface
+/**
+ * 販売種別ごとにカートを振り分けるCartItemAllocator
+ */
+class SaleTypeCartAllocator implements CartItemAllocator
 {
     /**
-     * @param  boolean $value
-     * @return integer
+     * 商品の振り分け先となるカートの識別子を決定します。
+     *
+     * @param CartItem $Item カート商品
+     * @return string
      */
-    public function transform($value)
+    public function allocate(CartItem $Item)
     {
-        return $value > 0 ? true : false;
-    }
-
-    /**
-     * @param  integer $value
-     * @return boolean
-     */
-    public function reverseTransform($value)
-    {
-        return $value === true ? 1 : 0;
+        $ProductClass = $Item->getProductClass();
+        if ($ProductClass && $ProductClass->getSaleType()) {
+            return (string) $ProductClass->getSaleType()->getId();
+        }
+        throw new \InvalidArgumentException('ProductClass/SaleType not found');
     }
 }

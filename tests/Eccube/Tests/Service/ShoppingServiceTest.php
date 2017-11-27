@@ -2,11 +2,8 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
-use Eccube\Exception\ShoppingException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
@@ -14,8 +11,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     protected $Customer;
     protected $CartService;
-    protected $ProductType1;
-    protected $ProductType2;
+    protected $SaleType1;
+    protected $SaleType2;
 
     public function setUp()
     {
@@ -31,8 +28,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->CartService->addProduct(1, 1);
         $this->CartService->save();
 
-        $this->ProductType1 = $this->app['eccube.repository.master.product_type']->find(1);
-        $this->ProductType2 = $this->app['eccube.repository.master.product_type']->find(2);
+        $this->SaleType1 = $this->app['eccube.repository.master.sale_type']->find(1);
+        $this->SaleType2 = $this->app['eccube.repository.master.sale_type']->find(2);
     }
 
     public function testCreateOrder()
@@ -64,7 +61,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
         $Order = $this->app['eccube.service.shopping']->getOrder();
@@ -80,7 +77,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         $NonMember = $this->createNonMember();
         $this->app['security.token_storage']->setToken(
@@ -147,7 +144,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     public function testGetDeliveries()
     {
-        $Deliveries = $this->app['eccube.service.shopping']->getDeliveries($this->ProductType1);
+        $Deliveries = $this->app['eccube.service.shopping']->getDeliveries($this->SaleType1);
 
         $this->expected = 1;
         $this->actual = count($Deliveries);
@@ -161,7 +158,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     public function testGetDeliveriesMultiple()
     {
         $Deliveries = $this->app['eccube.service.shopping']->getDeliveries(
-            array($this->ProductType1, $this->ProductType2));
+            array($this->SaleType1, $this->SaleType2));
 
         $this->expected = 2;
         $this->actual = count($Deliveries);
@@ -233,9 +230,9 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     {
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
-        // ProductType 1 と 2 で, 共通する支払い方法を削除しておく
+        // SaleType 1 と 2 で, 共通する支払い方法を削除しておく
         $PaymentOption = $this
             ->app['orm.em']
             ->getRepository('\Eccube\Entity\PaymentOption')
@@ -250,7 +247,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->app['orm.em']->flush();
 
         $Deliveries = $this->app['eccube.service.shopping']->getDeliveries(
-            array($this->ProductType1, $this->ProductType2));
+            array($this->SaleType1, $this->SaleType2));
 
         $this->expected = 0;
         $this->actual = count($Deliveries);
@@ -410,7 +407,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // 複数配送対応としておく
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
 
         $Delivery = $this->app['eccube.fixture.generator']->createDelivery();
         $Order = $this->app['eccube.fixture.generator']->createOrder($this->Customer, array(), $Delivery);

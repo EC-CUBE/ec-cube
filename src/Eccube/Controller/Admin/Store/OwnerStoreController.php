@@ -29,8 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
-use Eccube\Service\Composer\ComposerProcessService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -64,8 +63,8 @@ class OwnerStoreController extends AbstractController
     protected $pluginService;
 
     /**
-     * @Inject(ComposerApiService::class)
-     * @var ComposerApiService
+     * @Inject("eccube.service.composer")
+     * @var ComposerServiceInterface
      */
     protected $composerService;
 
@@ -230,7 +229,7 @@ class OwnerStoreController extends AbstractController
     public function apiInstall(Application $app, Request $request, $pluginCode, $eccubeVersion, $version)
     {
         // Check plugin code
-        $url = $this->appConfig['package_repo_url'] . '/search/packages.json' . '?eccube_version=' . $eccubeVersion . '&plugin_code=' . $pluginCode . '&version=' . $version;
+        $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
         list($json, $info) = $this->getRequestApi($url, $app);
         $existFlg = false;
         $data = json_decode($json, true);
@@ -273,7 +272,6 @@ class OwnerStoreController extends AbstractController
         }
         $packageNames .= self::$vendorName . '/' . $pluginCode;
         $return = $this->composerService->execRequire($packageNames);
-
         if ($return) {
             $url = $this->appConfig['package_repo_url'] . '/collect';
             // $composerMode = 1 is ComposerApi
@@ -296,12 +294,13 @@ class OwnerStoreController extends AbstractController
             );
             $this->postRequestApi($url, $app, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
+
             return $app->redirect($app->url('admin_store_plugin'));
         }
         $app->addError('admin.plugin.install.fail', 'admin');
+
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
-
 
     /**
      * Do confirm page
@@ -367,7 +366,7 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->isEnable()) {
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();

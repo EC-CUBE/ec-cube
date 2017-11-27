@@ -24,10 +24,11 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
-use Eccube\Service\ItemValidateException;
 
-class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
+class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
     /**
      * @var bool
@@ -35,7 +36,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     private $lock = false;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var ArrayCollection
      */
     private $CartItems;
 
@@ -61,7 +62,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     private $Payments = array();
 
     /**
-     * @var ItemValidateException[]
+     * @var InvalidItemException[]
      */
     private $errors = [];
 
@@ -72,7 +73,7 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
 
     public function __construct()
     {
-        $this->CartItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->CartItems = new ArrayCollection();
     }
 
     /**
@@ -114,10 +115,11 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     }
 
     /**
-     * @param  \Eccube\Entity\CartItem $AddCartItem
+     * @param  CartItem $AddCartItem
      * @return \Eccube\Entity\Cart
+     * @deprecated CartService#addProductを使用
      */
-    public function setCartItem(\Eccube\Entity\CartItem $AddCartItem)
+    public function setCartItem(CartItem $AddCartItem)
     {
         $find = false;
         foreach ($this->CartItems as $CartItem) {
@@ -150,7 +152,8 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
     /**
      * @param  string                  $class_name
      * @param  string                  $class_id
-     * @return \Eccube\Entity\CartItem
+     * @return CartItem
+     * @deprecated 削除予定
      */
     public function getCartItemByIdentifier($class_name, $class_id)
     {
@@ -163,10 +166,17 @@ class Cart extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, I
         return null;
     }
 
+    /**
+     * @param $class_name
+     * @param $class_id
+     * @return $this
+     * @deprecated CartService#removeProduct()を使用
+     */
     public function removeCartItemByIdentifier($class_name, $class_id)
     {
+        /* @var CartItem $CartItem */
         foreach ($this->CartItems as $CartItem) {
-            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() == $class_id) {
+            if ($CartItem->getProductClassId() == $class_id) {
                 $this->CartItems->removeElement($CartItem);
             }
         }

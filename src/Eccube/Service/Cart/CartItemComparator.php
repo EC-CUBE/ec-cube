@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,21 +21,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Service\Cart;
 
-namespace Eccube\Entity\Master;
 
-use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\CartItem;
 
 /**
- * ProductType
- *
- * @ORM\Table(name="mtb_product_type")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\Master\ProductTypeRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * カートに追加する明細(CartItem)同士が同じ明細になるかどうか判定するインターフェイス。
  */
-class ProductType extends \Eccube\Entity\Master\AbstractMasterEntity
+interface CartItemComparator
 {
+    /**
+     * @param CartItem $item1 明細1
+     * @param CartItem $item2 明細2
+     * @return boolean 同じ明細になる場合はtrue
+     */
+    public function compare(CartItem $item1, CartItem $item2);
 }
