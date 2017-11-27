@@ -198,6 +198,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-cartRole__total">合計：<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
                     </div>
                     <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">レジに進む</a>
+                    {% if loop.last %}
+                    <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">お買い物を続ける</a>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </form>
@@ -214,6 +217,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         {% endif %}
     </div>
-
 
 {% endblock %}
