@@ -26,7 +26,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Delivery;
-use Eccube\Entity\Master\ProductType;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -66,7 +66,7 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
             if (false === $item->isProduct()) {
                 continue;
             }
-            $Deliveries = $this->getDeliveries($item->getProductClass()->getProductType());
+            $Deliveries = $this->getDeliveries($item->getProductClass()->getSaleType());
             $Payments = $this->getPayments($Deliveries);
 
             $ids = [];
@@ -88,11 +88,11 @@ class PaymentProcessor extends ValidatableItemHolderProcessor
         }
     }
 
-    private function getDeliveries(ProductType $ProductType)
+    private function getDeliveries(SaleType $SaleType)
     {
         $Deliveries = $this->deliveryRepository->findBy(
             [
-                'ProductType' => $ProductType,
+                'SaleType' => $SaleType,
                 'visible' => true
             ]
         );

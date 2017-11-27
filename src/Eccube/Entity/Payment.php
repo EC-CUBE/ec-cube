@@ -83,11 +83,11 @@ class Payment extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int|null
+     * @var boolean
      *
-     * @ORM\Column(name="fix_flg", type="smallint", nullable=true, options={"unsigned":true,"default":1})
+     * @ORM\Column(name="fixed", type="boolean", options={"default":true})
      */
-    private $fix_flg = 1;
+    private $fixed = true;
 
     /**
      * @var string|null
@@ -95,13 +95,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
      * @ORM\Column(name="payment_image", type="string", length=255, nullable=true)
      */
     private $payment_image;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="charge_flg", type="smallint", nullable=true, options={"unsigned":true,"default":1})
-     */
-    private $charge_flg = 1;
 
     /**
      * @var string|null
@@ -277,27 +270,27 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set fixFlg.
+     * Set fixed.
      *
-     * @param int|null $fixFlg
+     * @param boolean $fixed
      *
      * @return Payment
      */
-    public function setFixFlg($fixFlg = null)
+    public function setFixed($fixed)
     {
-        $this->fix_flg = $fixFlg;
+        $this->fixed = $fixed;
 
         return $this;
     }
 
     /**
-     * Get fixFlg.
+     * Get fixed.
      *
-     * @return int|null
+     * @return boolean
      */
-    public function getFixFlg()
+    public function isFixed()
     {
-        return $this->fix_flg;
+        return $this->fixed;
     }
 
     /**
@@ -322,30 +315,6 @@ class Payment extends \Eccube\Entity\AbstractEntity
     public function getPaymentImage()
     {
         return $this->payment_image;
-    }
-
-    /**
-     * Set chargeFlg.
-     *
-     * @param int|null $chargeFlg
-     *
-     * @return Payment
-     */
-    public function setChargeFlg($chargeFlg = null)
-    {
-        $this->charge_flg = $chargeFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get chargeFlg.
-     *
-     * @return int|null
-     */
-    public function getChargeFlg()
-    {
-        return $this->charge_flg;
     }
 
     /**

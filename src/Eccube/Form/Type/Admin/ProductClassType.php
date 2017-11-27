@@ -30,10 +30,9 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDateType;
-use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -85,6 +84,11 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
+            ->add('stock_unlimited', CheckboxType::class, array(
+                'label' => '無制限',
+                'value' => '1',
+                'required' => false,
+            ))
             ->add('sale_limit', NumberType::class, array(
                 'label' => '販売制限数',
                 'required' => false,
@@ -123,8 +127,8 @@ class ProductClassType extends AbstractType
                 'label' => '商品送料',
                 'required' => false,
             ))
-            ->add('product_type', ProductTypeType::class, array(
-                'label' => '商品種別',
+            ->add('sale_type', SaleTypeType::class, array(
+                'label' => '販売種別',
                 'multiple' => false,
                 'expanded' => false,
                 'constraints' => array(
@@ -149,16 +153,6 @@ class ProductClassType extends AbstractType
                     $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
                 }
             });
-
-        $transformer = new DataTransformer\IntegerToBooleanTransformer();
-
-        $builder
-            ->add($builder->create('stock_unlimited', CheckboxType::class, array(
-                'label' => '無制限',
-                'value' => '1',
-                'required' => false,
-            ))->addModelTransformer($transformer));
-
 
         $transformer = new DataTransformer\EntityToIdTransformer(
             $this->entityManager,

@@ -39,8 +39,7 @@ use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
 use Eccube\InstallApplication;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
-use Eccube\Util\Str;
-use Symfony\Component\Dotenv\Dotenv;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -206,7 +205,7 @@ class InstallController
                 $config = require $this->configDir.'/config.php';
                 if (!empty($config['admin_allow_hosts'])) {
                     $sessionData['admin_allow_hosts']
-                        = Str::convertLineFeed(implode("\n", $config['admin_allow_hosts']));
+                        = StringUtil::convertLineFeed(implode("\n", $config['admin_allow_hosts']));
                 }
                 // 強制SSL
                 $sessionData['admin_force_ssl'] = $config['force_ssl'];
@@ -216,7 +215,7 @@ class InstallController
                     $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
                 }
                 if (!empty($config['trusted_proxies'])) {
-                    $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n",
+                    $sessionData['trusted_proxies'] = StringUtil::convertLineFeed(implode("\n",
                         $sessionData['trusted_proxies']));
                 }
                 // メール
@@ -531,7 +530,7 @@ class InstallController
                 'password_hash_algos' => 'sha256',
             );
             $encoder = new PasswordEncoder($config);
-            $salt = Str::random(32);
+            $salt = StringUtil::random(32);
             $password = $encoder->encodePassword($data['login_pass'], $salt);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
@@ -590,7 +589,7 @@ class InstallController
                 'password_hash_algos' => 'sha256',
             );
             $encoder = new PasswordEncoder($config);
-            $salt = Str::random(32);
+            $salt = StringUtil::random(32);
             $stmt = $conn->prepare("SELECT id FROM dtb_member WHERE login_id = :login_id;");
             $stmt->execute([':login_id' => $data['login_id']]);
             $row = $stmt->fetch();
@@ -655,10 +654,10 @@ class InstallController
         $values['ECCUBE_ROOT_URLPATH'] = $data['root_urlpath'];
 
         if ($updateAuthMagic) {
-            $values['ECCUBE_AUTH_MAGIC'] = Str::random(32);
+            $values['ECCUBE_AUTH_MAGIC'] = StringUtil::random(32);
         } else {
             if (empty($values['ECCUBE_AUTH_MAGIC'])) {
-                $values['ECCUBE_AUTH_MAGIC'] = Str::random(32);
+                $values['ECCUBE_AUTH_MAGIC'] = StringUtil::random(32);
             }
         }
         if (isset($data['force_ssl'])) {
@@ -704,13 +703,13 @@ class InstallController
             $values['ECCUBE_ADMIN_ALLOW_HOSTS'] = $data['admin_allow_hosts'];
         }
         if (isset($data['admin_allow_hosts'])) {
-            $hosts = Str::convertLineFeed($data['admin_allow_hosts']);
+            $hosts = StringUtil::convertLineFeed($data['admin_allow_hosts']);
             if ($hosts) {
                 $values['ECCUBE_ADMIN_ALLOW_HOSTS'] = explode("\n", $hosts);
             }
         }
         if (isset($data['trusted_proxies'])) {
-            $proxies = Str::convertLineFeed($data['trusted_proxies']);
+            $proxies = StringUtil::convertLineFeed($data['trusted_proxies']);
             if ($proxies) {
                 $proxies = explode("\n", $proxies);
                 // ループバックアドレスを含める
@@ -861,7 +860,7 @@ class InstallController
         $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
         $config_app->initialize();
         $config_app->boot();
-        \Eccube\Util\Cache::clear($config_app, true);
+        \Eccube\Util\CacheUtil::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig', array(
             'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',

@@ -3,8 +3,6 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
-use Eccube\Annotation\Inject;
-use Eccube\Common\Constant;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\ProductStockRepository;
@@ -54,7 +52,7 @@ class StockReduceProcessor implements ItemProcessor
             return ProcessResult::success();
         }
         // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
-        if ($item->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
+        if (!$item->getProductClass()->isStockUnlimited()) {
             // 在庫チェックあり
             // 在庫に対してロック(select ... for update)を実行
             $productStock = $this->productStockRepository->find(

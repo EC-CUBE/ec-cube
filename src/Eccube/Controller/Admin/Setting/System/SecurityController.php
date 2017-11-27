@@ -29,7 +29,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -78,7 +78,7 @@ class SecurityController extends AbstractController
                 $config = require $configFile;
 
                 // trim処理
-                $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
+                $allowHost = StringUtil::convertLineFeed($data['admin_allow_hosts']);
                 if (empty($allowHost)) {
                     $config['admin_allow_hosts'] = null;
                 } else {
@@ -136,7 +136,7 @@ class SecurityController extends AbstractController
             $form->get('admin_route_dir')->setData($this->appConfig['admin_route']);
             $allowHost = $this->appConfig['admin_allow_hosts'];
             if (count($allowHost) > 0) {
-                $form->get('admin_allow_hosts')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
+                $form->get('admin_allow_hosts')->setData(StringUtil::convertLineFeed(implode("\n", $allowHost)));
             }
             $form->get('force_ssl')->setData((bool)$this->appConfig['force_ssl']);
         }

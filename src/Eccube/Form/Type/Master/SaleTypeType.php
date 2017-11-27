@@ -22,27 +22,43 @@
  */
 
 
-namespace Eccube\Form\DataTransformer;
+namespace Eccube\Form\Type\Master;
 
-use Symfony\Component\Form\DataTransformerInterface;
+use Eccube\Annotation\FormType;
+use Eccube\Form\Type\MasterType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IntegerToBooleanTransformer implements DataTransformerInterface
+
+/**
+ * @FormType
+ */
+class SaleTypeType extends AbstractType
 {
     /**
-     * @param  boolean $value
-     * @return integer
+     * {@inheritdoc}
      */
-    public function transform($value)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return $value > 0 ? true : false;
+        $resolver->setDefaults(array(
+            'class' => 'Eccube\Entity\Master\SaleType',
+            'label' => '販売種別',
+        ));
     }
 
     /**
-     * @param  integer $value
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function getBlockPrefix()
     {
-        return $value === true ? 1 : 0;
+        return 'sale_type';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return MasterType::class;
     }
 }

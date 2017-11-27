@@ -24,8 +24,8 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Util\EntityUtil;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Util\EntityUtil;
 
 /**
  * PaymentOption

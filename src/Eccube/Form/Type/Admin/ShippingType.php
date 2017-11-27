@@ -39,7 +39,7 @@ use Eccube\Form\Type\ZipType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\DeliveryTimeRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -249,7 +249,7 @@ class ShippingType extends AbstractType
                 }
 
                 $Delivery = null;
-                if (Str::isNotBlank($data['Delivery'])) {
+                if (StringUtil::isNotBlank($data['Delivery'])) {
                     $Delivery = $this->deliveryRepository->find($data['Delivery']);
                 }
 

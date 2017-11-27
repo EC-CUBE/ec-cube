@@ -22,7 +22,6 @@
  */
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Member;
@@ -76,14 +75,14 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush($TestProduct);
 
         $ProductClass = new ProductClass();
-        $ProductType = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\ProductType')
+        $SaleType = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\SaleType')
             ->find(1);
         $ProductClass->setProduct($TestProduct)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setCode('test code')
             ->setStock(100)
-            ->setStockUnlimited(Constant::DISABLED)
+            ->setStockUnlimited(false)
             ->setSaleLimit($this->faker->numberBetween(1, 99))
             ->setPrice01($this->faker->randomNumber(4))
             ->setPrice02($this->faker->randomNumber(4))
@@ -166,17 +165,17 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
         $ProductClass = new ProductClass();
-        $ProductType = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\ProductType')
+        $SaleType = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\SaleType')
             ->find(1);
 
         $ProductClass->setProduct($TestProduct)
             ->setClassCategory1($TestClassCategory1)
             ->setClassCategory2($TestClassCategory2)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setCode('test')
             ->setStock(100)
-            ->setStockUnlimited(0)
+            ->setStockUnlimited(false)
             ->setSaleLimit(10)
             ->setPrice01(10000)
             ->setPrice02(5000)

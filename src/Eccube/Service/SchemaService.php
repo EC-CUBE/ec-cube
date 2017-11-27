@@ -28,7 +28,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 
 /**
  * @Service
@@ -44,7 +44,7 @@ class SchemaService
 
     public function updateSchema($generatedFiles, $proxiesDirectory)
     {
-        $outputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
+        $outputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
         mkdir($outputDir);
 
         try {

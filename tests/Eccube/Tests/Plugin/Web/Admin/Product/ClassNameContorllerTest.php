@@ -24,9 +24,9 @@
 
 namespace Eccube\Tests\Plugin\Web\Admin\Product;
 
+use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Entity\ClassName;
 
 /**
  * @group plugin
@@ -44,7 +44,6 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             $ClassName
                 ->setName('class-'.$i)
                 ->setCreator($this->Member)
-                ->setDelFlg(0)
                 ->setRank($i)
                 ;
             $this->app['orm.em']->persist($ClassName);
@@ -143,7 +142,6 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)
-            ->setDelFlg(false)
             ->setCreator($TestCreator);
 
         return $TestClassName;

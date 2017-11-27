@@ -60,11 +60,11 @@ class Csv extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="enable_flg", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="enable", type="boolean", options={"default":true})
      */
-    private $enable_flg;
+    private $enable = true;
 
     /**
      * @var \DateTime
@@ -232,27 +232,27 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set enableFlg.
+     * Set enable.
      *
-     * @param int $enableFlg
+     * @param boolean $enable
      *
      * @return Csv
      */
-    public function setEnableFlg($enableFlg)
+    public function setEnable($enable)
     {
-        $this->enable_flg = $enableFlg;
+        $this->enable = $enable;
 
         return $this;
     }
 
     /**
-     * Get enableFlg.
+     * Get enable.
      *
-     * @return int
+     * @return boolean
      */
-    public function getEnableFlg()
+    public function isEnable()
     {
-        return $this->enable_flg;
+        return $this->enable;
     }
 
     /**

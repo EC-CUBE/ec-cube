@@ -38,7 +38,7 @@ use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -48,6 +48,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -210,6 +212,10 @@ class PluginController extends AbstractController
      *
      * @Method("POST")
      * @Route("/{_admin}/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
+     * @param Application $app
+     * @param Request     $request
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function update(Application $app, Request $request, Plugin $Plugin)
     {
@@ -225,45 +231,40 @@ class PluginController extends AbstractController
             ->getForm();
 
         $message = '';
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $tmpDir = null;
+            try {
+                $formFile = $form['plugin_archive']->getData();
+                $tmpDir = $this->pluginService->createTempDir();
+                $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
+                $formFile->move($tmpDir, $tmpFile);
+                $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
+                $fs = new Filesystem();
+                $fs->remove($tmpDir);
+                $app->addSuccess('admin.plugin.update.complete', 'admin');
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-
-                $tmpDir = null;
-                try {
-
-                    $formFile = $form['plugin_archive']->getData();
-
-                    $tmpDir = $this->pluginService->createTempDir();
-                    $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
-
-                    $formFile->move($tmpDir, $tmpFile);
-                    $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
-
+                return $app->redirect($app->url('admin_store_plugin'));
+            } catch (PluginException $e) {
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
-
-                    $app->addSuccess('admin.plugin.update.complete', 'admin');
-
-                    return $app->redirect($app->url('admin_store_plugin'));
-
-                } catch (PluginException $e) {
-                    if (!empty($tmpDir) && file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-                    $message = $e->getMessage();
                 }
-            } else {
-                $errors = $form->getErrors(true);
-                foreach ($errors as $error) {
-                    $message = $error->getMessage();
+                $message = $e->getMessage();
+            } catch (\Exception $er) {
+                // Catch composer install error | Other error
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir);
                 }
-
+                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                $message = 'admin.plugin.install.fail';
             }
-
+        } else {
+            $errors = $form->getErrors(true);
+            foreach ($errors as $error) {
+                $message = $error->getMessage();
+            }
         }
 
         $app->addError($message, 'admin');
@@ -285,7 +286,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->isEnable()) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
             $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
@@ -295,7 +296,8 @@ class PluginController extends AbstractController
                 if ($DependPlugin) {
                     $dependName = $DependPlugin->getName();
                 }
-                $app->addError($Plugin->getName().'を有効化するためには、先に'.$dependName.'を有効化してください。', 'admin');
+                $message = $app->trans('admin.plugin.enable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+                $app->addError($message, 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
             }
@@ -319,11 +321,16 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
-            $requires = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
-            if (!empty($requires)) {
-                $dependName = $requires[0];
-                $app->addError($Plugin->getName().'を無効化するためには、先に'.$dependName.'を無効化してください。', 'admin');
+        if ($Plugin->isEnable()) {
+            $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
+            if (!empty($dependents)) {
+                $dependName = $dependents[0];
+                $DependPlugin = $this->pluginRepository->findOneBy(['code' => $dependents[0]]);
+                if ($DependPlugin) {
+                    $dependName = $DependPlugin->getName();
+                }
+                $message = $app->trans('admin.plugin.disable.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+                $app->addError($message, 'admin');
 
                 return $app->redirect($app->url('admin_store_plugin'));
             }
@@ -342,13 +349,29 @@ class PluginController extends AbstractController
      *
      * @Method("DELETE")
      * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     * @param Application $app
+     * @param Plugin      $Plugin
+     * @return RedirectResponse
      */
     public function uninstall(Application $app, Plugin $Plugin)
     {
         $this->isTokenValid($app);
+        // Check other plugin depend on it
+        $pluginCode = $Plugin->getCode();
+        $otherDepend = $this->pluginService->findDependentPlugin($pluginCode);
+        if (!empty($otherDepend)) {
+            $DependPlugin = $this->pluginRepository->findOneBy(['code' => $otherDepend[0]]);
+            $dependName = $otherDepend[0];
+            if ($DependPlugin) {
+                $dependName = $DependPlugin->getName();
+            }
+            $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
+            $app->addError($message, 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
 
         $this->pluginService->uninstall($Plugin);
-
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin'));
@@ -400,59 +423,54 @@ class PluginController extends AbstractController
      *
      * @Route("/{_admin}/store/plugin/install", name="admin_store_plugin_install")
      * @Template("Store/plugin_install.twig")
+     * @param Application $app
+     * @param Request     $request
+     * @return array|RedirectResponse
      */
     public function install(Application $app, Request $request)
     {
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
-
         $errors = array();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $tmpDir = null;
+            try {
+                $service = $this->pluginService;
+                /** @var UploadedFile $formFile */
+                $formFile = $form['plugin_archive']->getData();
+                $tmpDir = $service->createTempDir();
+                // 拡張子を付けないとpharが動かないので付ける
+                $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
+                $formFile->move($tmpDir, $tmpFile);
+                $tmpPath = $tmpDir.'/'.$tmpFile;
+                $service->install($tmpPath);
+                // Remove tmp file
+                $fs = new Filesystem();
+                $fs->remove($tmpDir);
+                $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-
-                $tmpDir = null;
-                try {
-                    $service = $this->pluginService;
-
-                    $formFile = $form['plugin_archive']->getData();
-
-                    $tmpDir = $service->createTempDir();
-                    $tmpFile = sha1(Str::random(32))
-                        .'.'
-                        .$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
-
-                    $formFile->move($tmpDir, $tmpFile);
-
-                    $service->install($tmpDir.'/'.$tmpFile);
-
+                return $app->redirect($app->url('admin_store_plugin'));
+            } catch (PluginException $e) {
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
-
-                    $app->addSuccess('admin.plugin.install.complete', 'admin');
-
-                    return $app->redirect($app->url('admin_store_plugin'));
-
-                } catch (PluginException $e) {
-                    if (!empty($tmpDir) && file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-                    $this->logger->error(
-                        "plugin install failed.",
-                        array(
-                            'original-message' => $e->getMessage(),
-                        )
-                    );
-                    $errors[] = $e;
                 }
-            } else {
-                foreach ($form->getErrors(true) as $error) {
-                    $errors[] = $error;
+                $this->logger->error("plugin install failed.", array('original-message' => $e->getMessage()));
+                $errors[] = $e;
+            } catch (\Exception $er) {
+                // Catch composer install error | Other error
+                if (!empty($tmpDir) && file_exists($tmpDir)) {
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir);
                 }
+                $this->logger->error("plugin install failed.", array('original-message' => $er->getMessage()));
+                $app->addError('admin.plugin.install.fail', 'admin');
+            }
+        } else {
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error;
             }
         }
 
@@ -579,56 +597,49 @@ class PluginController extends AbstractController
      * オーナーズブラグインインストール、アップデート
      *
      * @Route("/{_admin}/store/plugin/upgrade/{action}/{id}/{version}", requirements={"id" = "\d+"}, name="admin_store_plugin_upgrade")
+     * @param Application $app
+     * @param Request     $request
+     * @param string      $action
+     * @param int         $id
+     * @param string      $version
+     * @return RedirectResponse
      */
     public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
         $authKey = $this->BaseInfo->getAuthenticationKey();
         $message = '';
-
         if (!is_null($authKey)) {
-
             // オーナーズストア通信
             $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?method=download&product_id='.$id;
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
-
             if ($json === false) {
                 // 接続失敗時
-
                 $message = $this->getResponseErrorMessage($info);
-
             } else {
                 // 接続成功時
-
                 $data = json_decode($json, true);
-
                 if (isset($data['success'])) {
                     $success = $data['success'];
                     if ($success == '1') {
                         $tmpDir = null;
                         try {
                             $service = $this->pluginService;
-
                             $item = $data['item'];
                             $file = base64_decode($item['data']);
                             $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
-
                             $tmpDir = $service->createTempDir();
-                            $tmpFile = sha1(Str::random(32)).'.'.$extension;
+                            $tmpFile = sha1(StringUtil::random(32)).'.'.$extension;
 
                             // ファイル作成
                             $fs = new Filesystem();
                             $fs->dumpFile($tmpDir.'/'.$tmpFile, $file);
 
                             if ($action == 'install') {
-
                                 $service->install($tmpDir.'/'.$tmpFile, $id);
                                 $app->addSuccess('admin.plugin.install.complete', 'admin');
-
                             } else {
                                 if ($action == 'update') {
-
                                     $Plugin = $this->pluginRepository->findOneBy(array('source' => $id));
-
                                     $service->update($Plugin, $tmpDir.'/'.$tmpFile);
                                     $app->addSuccess('admin.plugin.update.complete', 'admin');
                                 }
@@ -642,7 +653,6 @@ class PluginController extends AbstractController
                             $this->getRequestApi($request, $authKey, $url, $app);
 
                             return $app->redirect($app->url('admin_store_plugin'));
-
                         } catch (PluginException $e) {
                             if (!empty($tmpDir) && file_exists($tmpDir)) {
                                 $fs = new Filesystem();
@@ -650,7 +660,6 @@ class PluginController extends AbstractController
                             }
                             $message = $e->getMessage();
                         }
-
                     } else {
                         $message = $data['error_code'].' : '.$data['error_message'];
                     }
@@ -666,9 +675,7 @@ class PluginController extends AbstractController
             .'?method=commit&product_id='.$id
             .'&status=0&version='.$version
             .'&message='.urlencode($message);
-
         $this->getRequestApi($request, $authKey, $url, $app);
-
         $app->addError($message, 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_install'));

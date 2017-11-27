@@ -3,14 +3,12 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Common\Constant;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Service\PluginService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -289,7 +287,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
             ->getHandlers();
 
         foreach ($handlers as $handler) {
-            if ($handler->getPlugin()->getEnable()) {
+            if ($handler->getPlugin()->isEnable()) {
 
                 $priority = $handler->getPriority();
             } else {
@@ -320,7 +318,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                 ->findOneBy(array('code' => $config['code']));
 
             // const
-            if (is_null($plugin) || $plugin->getEnable() == Constant::DISABLED) {
+            if (is_null($plugin) || !$plugin->isEnable()) {
                 // プラグインが無効化されていれば読み込まない
                 continue;
             }

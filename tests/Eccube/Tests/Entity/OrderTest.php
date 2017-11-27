@@ -87,10 +87,10 @@ class OrderTest extends EccubeTestCase
         $this->assertNull($Order->getOrderStatus());
     }
 
-    public function testGetProductTypes()
+    public function testGetSaleTypes()
     {
-        $this->expected = array($this->app['eccube.repository.master.product_type']->find(1));
-        $this->actual = $this->Order->getProductTypes();
+        $this->expected = array($this->app['eccube.repository.master.sale_type']->find(1));
+        $this->actual = $this->Order->getSaleTypes();
         $this->verify();
     }
 

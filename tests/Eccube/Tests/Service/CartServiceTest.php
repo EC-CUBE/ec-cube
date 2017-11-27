@@ -27,24 +27,30 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 
 class CartServiceTest extends AbstractServiceTestCase
 {
 
     protected $Product;
 
+    protected $Product2;
+
+    protected $SaleType1;
+
+    protected $SaleType2;
+
     public function setUp()
     {
         parent::setUp();
-        $this->ProductType1 = $this->app['eccube.repository.master.product_type']->find(1);
-        $this->ProductType2 = $this->app['eccube.repository.master.product_type']->find(2);
+        $this->SaleType1 = $this->app['eccube.repository.master.sale_type']->find(1);
+        $this->SaleType2 = $this->app['eccube.repository.master.sale_type']->find(2);
         $this->Product = $this->createProduct();
 
-        // ProductType 2 の商品を作成
+        // SaleType 2 の商品を作成
         $this->Product2 = $this->createProduct();
         foreach ($this->Product2->getProductClasses() as $ProductClass) {
-            $ProductClass->setProductType($this->ProductType2);
+            $ProductClass->setSaleType($this->SaleType2);
         }
         $this->app['orm.em']->flush();
     }
@@ -210,7 +216,7 @@ class CartServiceTest extends AbstractServiceTestCase
     public function testSave()
     {
         $cartService = $this->app['eccube.service.cart'];
-        $preOrderId = sha1(Str::random(32));
+        $preOrderId = sha1(StringUtil::random(32));
 
         $cartService->setPreOrderId($preOrderId);
         $cartService->save();

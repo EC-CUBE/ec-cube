@@ -97,11 +97,11 @@ class News extends AbstractEntity
     private $select = 0;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="link_method", type="smallint", options={"unsigned":true,"default":0})
+     * @ORM\Column(name="link_method", type="boolean", options={"default":false})
      */
-    private $link_method = 0;
+    private $link_method = false;
 
     /**
      * @var \DateTime
@@ -285,7 +285,7 @@ class News extends AbstractEntity
     /**
      * Set linkMethod.
      *
-     * @param int $linkMethod
+     * @param boolean $linkMethod
      *
      * @return News
      */
@@ -299,9 +299,9 @@ class News extends AbstractEntity
     /**
      * Get linkMethod.
      *
-     * @return int
+     * @return boolean
      */
-    public function getLinkMethod()
+    public function isLinkMethod()
     {
         return $this->link_method;
     }

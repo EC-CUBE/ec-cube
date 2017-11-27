@@ -5,7 +5,6 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use org\bovigo\vfs\vfsStream;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserDataControllerTest extends AbstractWebTestCase
 {
@@ -36,7 +35,7 @@ class UserDataControllerTest extends AbstractWebTestCase
             ->setUrl($this->fileName)
             ->setFileName($this->fileName)
             ->setDeviceType($this->DeviceType)
-            ->setEditFlg(Page::EDIT_FLG_USER);
+            ->setEditType(Page::EDIT_TYPE_USER);
         $this->app['orm.em']->persist($Page);
         $this->app['orm.em']->flush();
 

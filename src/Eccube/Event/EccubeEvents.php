@@ -521,6 +521,11 @@ final class EccubeEvents
     const FRONT_PRODUCT_DETAIL_FAVORITE = 'front.product.detail.favorite';
     const FRONT_PRODUCT_DETAIL_COMPLETE = 'front.product.detail.complete';
 
+    const FRONT_PRODUCT_CART_ADD_INITIALIZE = 'front.product.cart.add.initialize';
+    const FRONT_PRODUCT_CART_ADD_COMPLETE = 'front.product.cart.add.complete';
+
+    const FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE = 'front.product.favorite.add.initialize';
+    const FRONT_PRODUCT_FAVORITE_ADD_COMPLETE = 'front.product.favorite.add.complete';
 
     /**
      * ShoppingController

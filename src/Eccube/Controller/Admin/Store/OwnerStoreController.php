@@ -29,7 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -62,8 +62,8 @@ class OwnerStoreController extends AbstractController
     protected $pluginService;
 
     /**
-     * @Inject(ComposerApiService::class)
-     * @var ComposerApiService
+     * @Inject("eccube.service.composer")
+     * @var ComposerServiceInterface
      */
     protected $composerService;
 
@@ -333,7 +333,7 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnable() == Constant::ENABLED) {
+        if ($Plugin->isEnable()) {
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();

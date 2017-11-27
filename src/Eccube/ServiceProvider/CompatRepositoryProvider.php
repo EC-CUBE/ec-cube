@@ -26,8 +26,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.master.product_status'] = function () use ($app) {
             return $app['Eccube\Repository\Master\ProductStatusRepository'];
         };
-        $app['eccube.repository.master.product_type'] = function () use ($app) {
-            return $app['Eccube\Repository\Master\ProductTypeRepository'];
+        $app['eccube.repository.master.sale_type'] = function () use ($app) {
+            return $app['Eccube\Repository\Master\SaleTypeRepository'];
         };
         $app['eccube.repository.master.page_max'] = function () use ($app) {
             return $app['Eccube\Repository\Master\PageMaxRepository'];

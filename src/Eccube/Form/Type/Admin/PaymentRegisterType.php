@@ -34,7 +34,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -84,29 +83,18 @@ class PaymentRegisterType extends AbstractType
             ->add('payment_image', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('charge_flg', HiddenType::class)
-            ->add('fix_flg', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function($event) {
+            ->add('charge', PriceType::class, array(
+                'label' => '手数料',
+            ))
+            ->add('fixed', HiddenType::class)
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
                 if (!empty($ruleMin) && !empty($ruleMax) && $ruleMax < $ruleMin) {
                     $form['rule_min']->addError(new FormError('利用条件(下限)は'.$ruleMax.'円以下にしてください。'));
                 }
-            })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) use ($app) {
-                $form = $event->getForm();
-                /** @var \Eccube\Entity\Payment $Payment */
-                $Payment = $event->getData();
-                if (is_null($Payment) || $Payment->getChargeFlg() == 1) {
-                    $form->add('charge', PriceType::class, array(
-                        'label' => '手数料',
-                    ));
-                } else {
-                    $form->add('charge', HiddenType::class);
-                }
-            })
-        ;
+            });
     }
 
     /**

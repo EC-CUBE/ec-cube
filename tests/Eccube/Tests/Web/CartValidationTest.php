@@ -370,11 +370,11 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product has other type
      */
-    public function testProductInCartProductType()
+    public function testProductInCartSaleType()
     {
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -383,9 +383,9 @@ class CartValidationTest extends AbstractWebTestCase
         $productName = $this->getFaker()->word;
         /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setProductType($ProductType);
+        $ProductClass->setSaleType($SaleType);
         $productClassId = $ProductClass->getId();
         $productId = $Product->getId();
 
@@ -452,11 +452,11 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInCartProductTypeWithMultiShipping()
+    public function testProductInCartSaleTypeWithMultiShipping()
     {
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -465,9 +465,9 @@ class CartValidationTest extends AbstractWebTestCase
         $productName = $this->getFaker()->word;
         /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setProductType($ProductType);
+        $ProductClass->setSaleType($SaleType);
         $productClassId = $ProductClass->getId();
         $productId = $Product->getId();
 
@@ -616,7 +616,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId);
 
         // Remove product (delete flg)
-        $Product->setDelFlg(Constant::ENABLED);
+//        $Product->setDelFlg(Constant::ENABLED);
         $ProductClass->setDelFlg(Constant::ENABLED);
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->persist($ProductClass);
@@ -813,12 +813,12 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product type change from shopping step
      */
-    public function testProductInCartProductTypeFromShopping()
+    public function testProductInCartSaleTypeFromShopping()
     {
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1103,12 +1103,12 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product type is changing before plus one
      */
-    public function testProductInCartChangeProductTypeBeforePlus()
+    public function testProductInCartChangeSaleTypeBeforePlus()
     {
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1139,8 +1139,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass->setProductType($ProductType);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass->setSaleType($SaleType);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush();
 
@@ -1159,12 +1159,12 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInCartChangeProductTypeBeforePlusWithMultiShipping()
+    public function testProductInCartChangeSaleTypeBeforePlusWithMultiShipping()
     {
         // GIVE
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1195,8 +1195,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass->setProductType($ProductType);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass->setSaleType($SaleType);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush();
 
@@ -1451,12 +1451,12 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in cart when product type is changing before Minus one
      */
-    public function testProductInCartChangeProductTypeBeforeMinus()
+    public function testProductInCartChangeSaleTypeBeforeMinus()
     {
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1487,8 +1487,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass->setProductType($ProductType);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass->setSaleType($SaleType);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush();
 
@@ -1507,12 +1507,12 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInCartChangeProductTypeBeforeMinusWithMultiShipping()
+    public function testProductInCartChangeSaleTypeBeforeMinusWithMultiShipping()
     {
         // GIVE
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
 
@@ -1543,8 +1543,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($client, $productClassId2, $stockInCart);
 
         // Change product type
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass->setProductType($ProductType);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass->setSaleType($SaleType);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush();
 
@@ -2679,12 +2679,12 @@ class CartValidationTest extends AbstractWebTestCase
     /**
      * Test product in history order when product type is changed from order again function
      */
-    public function testProductInHistoryOrderWhenProductTypeIsChangedFromOrderAgain()
+    public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgain()
     {
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
+        $BaseInfo->setOptionMultipleShipping(false);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
         $this->logIn();
@@ -2735,8 +2735,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertContains($productName2, $product);
 
         // change type
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass2->setProductType($ProductType);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass2->setSaleType($SaleType);
         $this->app['orm.em']->persist($ProductClass2);
         $this->app['orm.em']->flush();
 
@@ -2756,12 +2756,12 @@ class CartValidationTest extends AbstractWebTestCase
      * with MultiShipping
      * enable add cart
      */
-    public function testProductInHistoryOrderWhenProductTypeIsChangedFromOrderAgainWithMultiShipping()
+    public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgainWithMultiShipping()
     {
         // GIVE
         // enable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+        $BaseInfo->setOptionMultipleShipping(true);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush();
         $this->logIn();
@@ -2812,8 +2812,8 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertContains($productName2, $product);
 
         // change type
-        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
-        $ProductClass2->setProductType($ProductType);
+        $SaleType = $this->app['eccube.repository.master.sale_type']->find(2);
+        $ProductClass2->setSaleType($SaleType);
         $this->app['orm.em']->persist($ProductClass2);
         $this->app['orm.em']->flush();
 

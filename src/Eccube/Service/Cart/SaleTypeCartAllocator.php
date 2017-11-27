@@ -26,9 +26,9 @@ namespace Eccube\Service\Cart;
 use Eccube\Entity\CartItem;
 
 /**
- * 商品種別ごとにカートを振り分けるCartItemAllocator
+ * 販売種別ごとにカートを振り分けるCartItemAllocator
  */
-class ProductTypeCartAllocator implements CartItemAllocator
+class SaleTypeCartAllocator implements CartItemAllocator
 {
     /**
      * 商品の振り分け先となるカートの識別子を決定します。
@@ -39,9 +39,9 @@ class ProductTypeCartAllocator implements CartItemAllocator
     public function allocate(CartItem $Item)
     {
         $ProductClass = $Item->getProductClass();
-        if ($ProductClass && $ProductClass->getProductType()) {
-            return (string) $ProductClass->getProductType()->getId();
+        if ($ProductClass && $ProductClass->getSaleType()) {
+            return (string) $ProductClass->getSaleType()->getId();
         }
-        throw new \InvalidArgumentException('ProductClass/ProductType not found');
+        throw new \InvalidArgumentException('ProductClass/SaleType not found');
     }
 }
