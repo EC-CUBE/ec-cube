@@ -114,14 +114,15 @@ class AddCartType extends AbstractType
                 if (!is_null($Product->getClassName1())) {
                     $builder->add('classcategory_id1', ChoiceType::class, [
                         'label' => $Product->getClassName1(),
-                        'choices' => ['選択してください' => '__unselected'] + $Product->getClassCategories1AsFlip(),
+                        'placeholder' => '選択してください',
+                        'choices' => $Product->getClassCategories1AsFlip(),
                         'mapped' => false,
                     ]);
                 }
                 if (!is_null($Product->getClassName2())) {
                     $builder->add('classcategory_id2', ChoiceType::class, [
                         'label' => $Product->getClassName2(),
-                        'choices' => ['選択してください' => '__unselected'],
+                        'placeholder' => '選択してください',
                         'mapped' => false,
                     ]);
                 }
