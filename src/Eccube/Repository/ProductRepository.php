@@ -28,7 +28,8 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * ProductRepository
@@ -84,13 +85,16 @@ class ProductRepository extends AbstractRepository
         }
 
         // name
-        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
+        if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR NORMALIZE(p.search_word) LIKE NORMALIZE(:%s)', $key, $key))
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR 
+                        NORMALIZE(p.search_word) LIKE NORMALIZE(:%s) OR 
+                        EXISTS (SELECT wpc%d FROM \Eccube\Entity\ProductClass wpc%d WHERE p = wpc%d.Product AND NORMALIZE(wpc%d.code) LIKE NORMALIZE(:%s))', 
+                        $key, $key, $index, $index, $index, $index, $key))
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
@@ -149,7 +153,7 @@ class ProductRepository extends AbstractRepository
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
-        if (isset($searchData['id']) && Str::isNotBlank($searchData['id'])) {
+        if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')

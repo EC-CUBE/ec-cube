@@ -24,9 +24,8 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Common\Constant;
 use Eccube\Entity\Category;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CategoryControllerTest extends AbstractAdminWebTestCase
 {

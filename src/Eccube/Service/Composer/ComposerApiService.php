@@ -23,7 +23,6 @@
 namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -36,7 +35,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class ComposerApiService implements ComposerServiceInterface
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
@@ -47,6 +45,11 @@ class ComposerApiService implements ComposerServiceInterface
     private $consoleApplication;
 
     private $workingDir;
+
+    public function __construct($appConfig)
+    {
+        $this->appConfig = $appConfig;
+    }
 
     /**
      * Run get info command

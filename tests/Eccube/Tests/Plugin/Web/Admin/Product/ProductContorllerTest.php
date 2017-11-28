@@ -38,7 +38,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $form = array(
             'class' => array(
-                'product_type' => 1,
+                'sale_type' => 1,
                 'price01' => $faker->randomNumber(5),
                 'price02' => $faker->randomNumber(5),
                 'stock' => $faker->randomNumber(3),
@@ -246,11 +246,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     private function newTestProductClass($TestCreator, $TestProduct)
     {
         $TestClassCategory = new \Eccube\Entity\ProductClass();
-        $ProductType = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\ProductType')
+        $SaleType = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\SaleType')
             ->find(1);
         $TestClassCategory->setProduct($TestProduct)
-            ->setProductType($ProductType)
+            ->setSaleType($SaleType)
             ->setCode('test code')
             ->setStock(100)
             ->setStockUnlimited(false)

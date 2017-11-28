@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
 
 /**
@@ -42,15 +43,15 @@ class DeliveryRepository extends AbstractRepository
     /**
      * @deprecated 呼び出し元で制御する
      * @param $id
-     * @return \Eccube\Entity\Delivery|null|object
+     * @return Delivery|null|object
      */
     public function findOrCreate($id)
     {
         if ($id == 0) {
             $em = $this->getEntityManager();
 
-            $ProductType = $em
-                ->getRepository('\Eccube\Entity\Master\ProductType')
+            $SaleType = $em
+                ->getRepository(SaleType::class)
                 ->findOneBy(array(), array('sort_no' => 'DESC'));
 
             $Delivery = $this->findOneBy(array(), array('sort_no' => 'DESC'));
@@ -60,11 +61,11 @@ class DeliveryRepository extends AbstractRepository
                 $sortNo = $Delivery->getSortNo() + 1;
             }
 
-            $Delivery = new \Eccube\Entity\Delivery();
+            $Delivery = new Delivery();
             $Delivery
                 ->setSortNo($sortNo)
                 ->setVisible(true)
-                ->setProductType($ProductType);
+                ->setSaleType($SaleType);
         } else {
             $Delivery = $this->find($id);
         }
@@ -73,17 +74,17 @@ class DeliveryRepository extends AbstractRepository
     }
 
     /**
-     * 複数の商品種別から配送業者を取得
+     * 複数の販売種別から配送業者を取得
      *
-     * @param $productTypes
+     * @param $saleTypes
      * @return array
      */
-    public function getDeliveries($productTypes)
+    public function getDeliveries($saleTypes)
     {
         $deliveries = $this->createQueryBuilder('d')
-            ->where('d.ProductType in (:productTypes)')
+            ->where('d.SaleType in (:saleTypes)')
             ->andWhere('d.visible = :visible')
-            ->setParameter('productTypes', $productTypes)
+            ->setParameter('saleTypes', $saleTypes)
             ->setParameter('visible', true)
             ->getQuery()
             ->getResult();
@@ -94,13 +95,14 @@ class DeliveryRepository extends AbstractRepository
     /**
      * 選択可能な配送業者を取得
      *
+     * @param $saleTypes
      * @param $payments
      * @return array
      */
-    public function findAllowedDeliveries($productTypes, $payments)
+    public function findAllowedDeliveries($saleTypes, $payments)
     {
 
-        $d = $this->getDeliveries($productTypes);
+        $d = $this->getDeliveries($saleTypes);
         $arr = array();
 
         foreach ($d as $Delivery) {

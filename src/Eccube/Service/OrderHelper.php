@@ -25,7 +25,7 @@ use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -117,14 +117,14 @@ class OrderHelper
 
         // 明細情報の設定
         $OrderItems = $this->createOrderItemsFromCartItems($CartItems);
-        $OrderItemsGroupByProductType = array_reduce($OrderItems, function($result, $item) {
+        $OrderItemsGroupBySaleType = array_reduce($OrderItems, function($result, $item) {
             /* @var OrderItem $item */
-            $productTypeId = $item->getProductClass()->getProductType()->getId();
-            $result[$productTypeId][] = $item;
+            $saleTypeId = $item->getProductClass()->getSaleType()->getId();
+            $result[$saleTypeId][] = $item;
             return $result;
         }, []);
 
-        foreach ($OrderItemsGroupByProductType as $OrderItems) {
+        foreach ($OrderItemsGroupBySaleType as $OrderItems) {
             $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
             $this->addOrderItems($Order, $Shipping, $OrderItems);
             $this->setDefaultDelivery($Shipping);
@@ -143,7 +143,7 @@ class OrderHelper
     {
         // ランダムなpre_order_idを作成
         do {
-            $preOrderId = sha1(Str::random(32));
+            $preOrderId = sha1(StringUtil::random(32));
 
             $Order = $this->orderRepository->findOneBy(
                 [
@@ -187,7 +187,7 @@ class OrderHelper
         return array_map(function($item) use ($ProductItemType, $TaxExclude, $Taxion) {
             /* @var $item CartItem */
             /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $item->getObject();
+            $ProductClass = $item->getProductClass();
             /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
             $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
@@ -261,17 +261,18 @@ class OrderHelper
 
     public function setDefaultDelivery(Shipping $Shipping)
     {
-        // 配送商品に含まれる商品種別を抽出.
+        // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
-        $ProductTypes = [];
+        $SaleTypes = [];
+        /** @var OrderItem $OrderItem */
         foreach ($OrderItems as $OrderItem) {
             $ProductClass = $OrderItem->getProductClass();
-            $ProductType = $ProductClass->getProductType();
-            $ProductTypes[$ProductType->getId()] = $ProductType;
+            $SaleType = $ProductClass->getSaleType();
+            $SaleTypes[$SaleType->getId()] = $SaleType;
         }
 
-        // 商品種別に紐づく配送業者を取得.
-        $Deliveries = $this->deliveryRepository->getDeliveries($ProductTypes);
+        // 販売種別に紐づく配送業者を取得.
+        $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 初期の配送業者を設定
         $Delivery = current($Deliveries);
@@ -290,8 +291,8 @@ class OrderHelper
     {
         $OrderItems = $Order->getOrderItems();
 
-        // 受注明細に含まれる商品種別を抽出.
-        $ProductTypes = [];
+        // 受注明細に含まれる販売種別を抽出.
+        $SaleTypes = [];
         /** @var OrderItem $OrderItem */
         foreach ($OrderItems as $OrderItem) {
             $ProductClass = $OrderItem->getProductClass();
@@ -299,12 +300,12 @@ class OrderHelper
                 // 商品明細のみ対象とする. 送料明細等はスキップする.
                 continue;
             }
-            $ProductType = $ProductClass->getProductType();
-            $ProductTypes[$ProductType->getId()] = $ProductType;
+            $SaleType = $ProductClass->getSaleType();
+            $SaleTypes[$SaleType->getId()] = $SaleType;
         }
 
-        // 商品種別に紐づく配送業者を抽出
-        $Deliveries = $this->deliveryRepository->getDeliveries($ProductTypes);
+        // 販売種別に紐づく配送業者を抽出
+        $Deliveries = $this->deliveryRepository->getDeliveries($SaleTypes);
 
         // 利用可能な支払い方法を抽出.
         $Payments = $this->paymentRepository->findAllowedPayments($Deliveries, true);

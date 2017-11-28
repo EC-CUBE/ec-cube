@@ -72,14 +72,14 @@ class ShippingItemType extends AbstractType
                 $deliveryDurations = $this->shoppingService->getFormDeliveryDurations($data->getOrder());
 
                 // 配送業者
-                // 商品種別に紐づく配送業者を取得
+                // 販売種別に紐づく配送業者を取得
                 $delives = $this->shoppingService->getDeliveriesOrder($data->getOrder());
 
                 $deliveries = array();
                 foreach ($delives as $Delivery) {
                     foreach ($data->getOrderItems() as $item) {
-                        $productType = $item->getProductClass()->getProductType();
-                        if ($Delivery->getProductType()->getId() == $productType->getId()) {
+                        $saleType = $item->getProductClass()->getSaleType();
+                        if ($Delivery->getSaleType()->getId() == $saleType->getId()) {
                             $deliveries[] = $Delivery;
                         }
                     }

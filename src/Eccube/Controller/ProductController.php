@@ -30,7 +30,6 @@ use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -42,6 +41,7 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -296,25 +296,14 @@ class ProductController
     /**
      * 商品詳細画面.
      *
+     * @Method("GET")
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
      */
     public function detail(Application $app, Request $request, Product $Product)
     {
-        $is_admin = $request->getSession()->has('_security_admin');
-
-        // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
-        if (!$is_admin) {
-            // 在庫なし商品の非表示オプションが有効な場合.
-            if ($this->BaseInfo->isOptionNostockHidden()) {
-                if (!$Product->getStockFind()) {
-                    throw new NotFoundHttpException();
-                }
-            }
-            // 公開ステータスでない商品は表示しない.
-            if ($Product->getStatus()->getId() !== ProductStatus::DISPLAY_SHOW) {
-                throw new NotFoundHttpException();
-            }
+        if (!$this->checkVisibility($Product)) {
+            throw new NotFoundHttpException();
         }
 
         $builder = $this->formFactory->createNamedBuilder(
@@ -474,5 +463,30 @@ class ProductController
         } else {
             return '全商品';
         }
+    }
+
+    /**
+     * 閲覧可能な商品かどうかを判定
+     * @param Product $Product
+     * @return boolean 閲覧可能な場合はtrue
+     */
+    private function checkVisibility(Product $Product)
+    {
+        $is_admin = $this->session->has('_security_admin');
+
+        // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
+        if (!$is_admin) {
+            // 在庫なし商品の非表示オプションが有効な場合.
+            if ($this->BaseInfo->isOptionNostockHidden()) {
+                if (!$Product->getStockFind()) {
+                    return false;
+                }
+            }
+            // 公開ステータスでない商品は表示しない.
+            if ($Product->getStatus()->getId() !== ProductStatus::DISPLAY_SHOW) {
+                return false;
+            }
+        }
+        return true;
     }
 }

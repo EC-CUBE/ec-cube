@@ -11,8 +11,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     protected $Customer;
     protected $CartService;
-    protected $ProductType1;
-    protected $ProductType2;
+    protected $SaleType1;
+    protected $SaleType2;
 
     public function setUp()
     {
@@ -28,8 +28,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->CartService->addProduct(1, 1);
         $this->CartService->save();
 
-        $this->ProductType1 = $this->app['eccube.repository.master.product_type']->find(1);
-        $this->ProductType2 = $this->app['eccube.repository.master.product_type']->find(2);
+        $this->SaleType1 = $this->app['eccube.repository.master.sale_type']->find(1);
+        $this->SaleType2 = $this->app['eccube.repository.master.sale_type']->find(2);
     }
 
     public function testCreateOrder()
@@ -144,7 +144,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     public function testGetDeliveries()
     {
-        $Deliveries = $this->app['eccube.service.shopping']->getDeliveries($this->ProductType1);
+        $Deliveries = $this->app['eccube.service.shopping']->getDeliveries($this->SaleType1);
 
         $this->expected = 1;
         $this->actual = count($Deliveries);
@@ -158,7 +158,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     public function testGetDeliveriesMultiple()
     {
         $Deliveries = $this->app['eccube.service.shopping']->getDeliveries(
-            array($this->ProductType1, $this->ProductType2));
+            array($this->SaleType1, $this->SaleType2));
 
         $this->expected = 2;
         $this->actual = count($Deliveries);
@@ -232,7 +232,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionMultipleShipping(true);
 
-        // ProductType 1 と 2 で, 共通する支払い方法を削除しておく
+        // SaleType 1 と 2 で, 共通する支払い方法を削除しておく
         $PaymentOption = $this
             ->app['orm.em']
             ->getRepository('\Eccube\Entity\PaymentOption')
@@ -247,7 +247,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->app['orm.em']->flush();
 
         $Deliveries = $this->app['eccube.service.shopping']->getDeliveries(
-            array($this->ProductType1, $this->ProductType2));
+            array($this->SaleType1, $this->SaleType2));
 
         $this->expected = 0;
         $this->actual = count($Deliveries);

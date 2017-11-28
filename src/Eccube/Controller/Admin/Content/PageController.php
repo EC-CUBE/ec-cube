@@ -36,7 +36,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -181,7 +181,7 @@ class PageController extends AbstractController
 
             $fs = new Filesystem();
             $pageData = $form->get('tpl_data')->getData();
-            $pageData = Str::convertLineFeed($pageData);
+            $pageData = StringUtil::convertLineFeed($pageData);
             $fs->dumpFile($filePath, $pageData);
 
             // 更新でファイル名を変更した場合、以前のファイルを削除

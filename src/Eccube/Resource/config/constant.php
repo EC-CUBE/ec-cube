@@ -42,7 +42,7 @@
     'order_pending' => 7,
     'order_pre_end' => 6,
     'order_processing' => 8,
-    'product_type_normal' => 1,
+    'sale_type_normal' => 1,
     'search_pmax' => 10,
     'tax_rule_priority' => 'product_id,product_class_id,pref_id,country_id',
     'default_page_count' => 10,
@@ -63,4 +63,5 @@
     'product_order_price_higher' => 3,
     'price_max' => 2147483647,
     'pageinrange' => false,
+    'composer_memory_limit' => 1536,
 ];

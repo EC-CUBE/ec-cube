@@ -218,20 +218,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="latitude", type="decimal", precision=9, scale=6, nullable=true)
-     */
-    private $latitude;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="longitude", type="decimal", precision=9, scale=6, nullable=true)
-     */
-    private $longitude;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="delivery_free_amount", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $delivery_free_amount;
@@ -913,54 +899,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getMessage()
     {
         return $this->message;
-    }
-
-    /**
-     * Set latitude.
-     *
-     * @param string|null $latitude
-     *
-     * @return BaseInfo
-     */
-    public function setLatitude($latitude = null)
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    /**
-     * Get latitude.
-     *
-     * @return string|null
-     */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * Set longitude.
-     *
-     * @param string|null $longitude
-     *
-     * @return BaseInfo
-     */
-    public function setLongitude($longitude = null)
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    /**
-     * Get longitude.
-     *
-     * @return string|null
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
     }
 
     /**
