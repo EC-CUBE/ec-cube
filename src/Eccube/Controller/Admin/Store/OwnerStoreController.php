@@ -272,31 +272,28 @@ class OwnerStoreController extends AbstractController
         }
         $packageNames .= self::$vendorName . '/' . $pluginCode;
         $return = $this->composerService->execRequire($packageNames);
+        $data = array(
+            'code' => $pluginCode,
+            'version' => $version,
+            'core_version' => $eccubeVersion,
+            'php_version' => phpversion(),
+            'db_version' => $this->systemService->getDbversion(),
+            'os' => php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('v'),
+            'host' => $request->getHost(),
+            'web_server' => $request->server->get("SERVER_SOFTWARE"),
+            'composer_version' => $this->composerService->composerVersion(),
+            'composer_execute_mode' => $this->composerService->getMode(),
+            'dependents' => json_encode($dependentModifier)
+        );
         if ($return) {
-            $url = $this->appConfig['package_repo_url'] . '/collect';
-            // $composerMode = 1 is ComposerApi
-            $composerMode = $this->appConfig['api_mode'];
-            if ($this->composerService instanceof ComposerProcessService) {
-                $composerMode = $this->appConfig['exec_mode'];
-            }
-            $data = array(
-                'code' => $pluginCode,
-                'version' => $version,
-                'core_version' => $eccubeVersion,
-                'php_version' => phpversion(),
-                'db_version' => $this->systemService->getDbversion(),
-                'os' => php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('v'),
-                'host' => $request->getHost(),
-                'web_server' => $request->server->get("SERVER_SOFTWARE"),
-                'composer_version' => $this->composerService->composerVersion(),
-                'composer_execute_mode' => $composerMode,
-                'dependents' => json_encode($dependentModifier)
-            );
+            $url = $this->appConfig['package_repo_url'] . '/report';
             $this->postRequestApi($url, $app, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
         }
+        $url = $this->appConfig['package_repo_url'] . '/report/fail';
+        $this->postRequestApi($url, $app, $data);
         $app->addError('admin.plugin.install.fail', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));

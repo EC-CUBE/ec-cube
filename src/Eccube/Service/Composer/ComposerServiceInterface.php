@@ -57,4 +57,10 @@ interface ComposerServiceInterface
      * @return null|string
      */
     public function composerVersion();
+
+    /**
+     * Get mode
+     * @return mixed|string
+     */
+    public function getMode();
 }

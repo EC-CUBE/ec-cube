@@ -160,9 +160,8 @@ class OutputParser
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rowArray = array_filter($rowArray, function ($line) {
-            return !preg_match('/^<warning>.*/', $line);
+            return preg_match('/^Composer */', $line);
         });
-
         return array_shift($rowArray);
     }
 }

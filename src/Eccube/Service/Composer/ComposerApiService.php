@@ -34,6 +34,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 class ComposerApiService implements ComposerServiceInterface
 {
+
     /**
      * @var array
      */
@@ -221,12 +222,22 @@ class ComposerApiService implements ComposerServiceInterface
      * Get version of composer
      * @return null|string
      */
-    public function composerVersion(){
+    public function composerVersion()
+    {
         $this->init();
         $output = $this->runCommand(array(
-            '--version'=> true
+            '--version' => true
         ));
 
         return OutputParser::parseComposerVersion($output);
+    }
+
+    /**
+     * Get mode
+     * @return mixed|string
+     */
+    public function getMode()
+    {
+        return 'API';
     }
 }

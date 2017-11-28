@@ -269,12 +269,16 @@ class ComposerProcessService implements ComposerServiceInterface
     public function composerVersion()
     {
         $this->init();
-        $command = $this->getPHP().' '.$this->composerFile.' -V';
-        $composer = exec($command);
-        if (function_exists('exec') && null != $composer) {
-            return $composer;
-        }
+        $command = $this->pathPHP . ' ' . $this->composerFile . ' -V';
+        return exec($command);
+    }
 
-        return null;
+    /**
+     * Get mode
+     * @return mixed|string
+     */
+    public function getMode()
+    {
+        return 'EXEC';
     }
 }
