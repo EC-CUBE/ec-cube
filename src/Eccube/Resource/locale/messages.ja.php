@@ -137,8 +137,6 @@ return [
     'admin.shop.save.complete' => '基本情報を保存しました。',
     'admin.shop.save.error' => '基本情報を保存できませんでした。',
     'admin.shop.download.invalid' => 'ダウンロード無制限でない場合、ダウンロード可能日数を入力してください。',
-    'admin.shop.latitude.invalid' => '-90.000000～90.000000の範囲で指定してください',
-    'admin.shop.longitude.invalid' => '-180.000000～180.000000の範囲で指定してください',
     'admin.shop.tax.save.complete' => '税率設定情報を保存しました。',
     'admin.shop.tax.delete.complete' => '税率設定情報を削除しました。',
     'admin.shop.mail.save.complete' => 'メールテンプレート情報を保存しました。',
