@@ -865,6 +865,16 @@ class PluginService
     }
 
     /**
+     * @param string $pluginVersion
+     * @param string $remoteVersion
+     * @return mixed
+     */
+    public function isUpdate($pluginVersion, $remoteVersion)
+    {
+        return version_compare($pluginVersion, $remoteVersion, '<');
+    }
+
+    /**
      * @param array  $plugins get from api
      * @param string $pluginCode
      * @return false|int|string
