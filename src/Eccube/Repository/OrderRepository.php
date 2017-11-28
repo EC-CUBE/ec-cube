@@ -335,9 +335,10 @@ class OrderRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
             $qb
                 ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
-                ->setParameter('tel', '%' . $searchData['tel'] . '%');
+                ->setParameter('tel', '%' . $tel . '%');
         }
 
         // sex
