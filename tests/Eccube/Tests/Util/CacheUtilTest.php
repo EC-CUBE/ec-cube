@@ -2,18 +2,18 @@
 
 namespace Eccube\Tests\Util;
 
-use Eccube\Util\Cache;
+use Eccube\Util\CacheUtil;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Cache test cases.
+ * CacheUtil test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheUtilTest extends \PHPUnit_Framework_TestCase
 {
     private $actual;
     private $expected;
@@ -46,7 +46,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     public function testClearAll()
     {
         // .gitkeep を残してすべてを削除
-        Cache::clear($this->app, true);
+        CacheUtil::clear($this->app, true);
 
         $finder = new Finder();
         $iterator = $finder
@@ -64,7 +64,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     {
         file_put_contents($this->app['config']['root_dir'].'/app/cache/.dummykeep', 'test');
         // 'doctrine', 'profiler', 'twig' ディレクトリを削除
-        Cache::clear($this->app, false);
+        CacheUtil::clear($this->app, false);
 
         $finder = new Finder();
         $iterator = $finder

@@ -26,6 +26,7 @@ namespace Eccube\Controller\Block;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -48,10 +49,23 @@ class CartController
      */
     public function index(Application $app, Request $request)
     {
-        $Cart = $this->cartService->getCart();
+        $Carts = $this->cartService->getCarts();
+
+        $totalQuantity = array_reduce($Carts, function($total, $Cart) {
+            /** @var Cart $Cart */
+            $total += $Cart->getTotalQuantity();
+            return $total;
+        }, 0);
+        $totalPrice = array_reduce($Carts, function($total, $Cart) {
+            /** @var Cart $Cart */
+            $total += $Cart->getTotalPrice();
+            return $total;
+        }, 0);
 
         return [
-            'Cart' => $Cart,
+            'totalQuantity' => $totalQuantity,
+            'totalPrice' => $totalPrice,
+            'Carts' => $Carts,
         ];
     }
 }

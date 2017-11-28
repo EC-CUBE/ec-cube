@@ -20,10 +20,10 @@
         'pgsql' => [
             'driver' => 'pdo_pgsql',
             'host' => env('ECCUBE_DB_HOST', '127.0.0.1'),
-            'dbname' => env('ECCUBE_DB_DATABASE', 'eccube_db'),
+            'dbname' => env('ECCUBE_DB_DATABASE', 'ss_eccube_3x_b'),
             'port' => env('ECCUBE_DB_PORT', '5432'),
-            'user' => env('ECCUBE_DB_USERNAME', 'eccube_user'),
-            'password' => env('ECCUBE_DB_PASSWORD', 'password'),
+            'user' => env('ECCUBE_DB_USERNAME', 'postgres'),
+            'password' => env('ECCUBE_DB_PASSWORD', 'root'),
             'charset' => env('ECCUBE_DB_CHARSET', 'utf8'),
         ],
     ],

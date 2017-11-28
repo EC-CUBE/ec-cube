@@ -125,26 +125,36 @@ class CartService
     protected function mergeAllCartItems($cartItems = [])
     {
         /** @var CartItem[] $allCartItems */
-        $allCartItems = $cartItems;
+        $allCartItems = [];
 
         foreach ($this->getCarts() as $Cart) {
-            /** @var CartItem $item */
-            foreach ($Cart->getItems() as $item) {
-                $itemExists = false;
-                foreach ($allCartItems as $itemInArray) {
-                    // 同じ明細があればマージする
-                    if ($this->cartItemComparator->compare($item, $itemInArray)) {
-                        $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
-                        $itemExists = true;
-                        break;
-                    }
-                }
-                if (!$itemExists) {
-                    $allCartItems[] = $item;
-                }
-            }
+            $allCartItems = $this->mergeCartitems($Cart->getCartItems(), $allCartItems);
         }
 
+        return $this->mergeCartitems($cartItems, $allCartItems);
+    }
+
+    /**
+     * @param $cartItems
+     * @param $allCartItems
+     * @return array
+     */
+    protected function mergeCartitems($cartItems, $allCartItems)
+    {
+        foreach ($cartItems as $item) {
+            $itemExists = false;
+            foreach ($allCartItems as $itemInArray) {
+                // 同じ明細があればマージする
+                if ($this->cartItemComparator->compare($item, $itemInArray)) {
+                    $itemInArray->setQuantity($itemInArray->getQuantity() + $item->getQuantity());
+                    $itemExists = true;
+                    break;
+                }
+            }
+            if (!$itemExists) {
+                $allCartItems[] = $item;
+            }
+        }
         return $allCartItems;
     }
 
@@ -165,7 +175,8 @@ class CartService
         }
 
         $this->session->set('carts', $Carts);
-        $this->carts = $Carts;
+        // 配列のkeyを0からにする
+        $this->carts = array_values($Carts);
     }
 
     /**
@@ -288,11 +299,16 @@ class CartService
      */
     public function clear()
     {
-        $this->getCart()
-            ->setPreOrderId(null)
-            ->setLock(false)
-            ->setTotalPrice(0)
-            ->clearCartItems();
+        $Carts = $this->getCarts();
+        $removed = array_splice($Carts, 0, 1);
+        if (!empty($removed)) {
+            $removedCart = $removed[0];
+            $removedCart->setPreOrderId(null)
+                ->setLock(false)
+                ->setTotalPrice(0)
+                ->clearCartItems();
+        }
+        $this->carts = $Carts;
 
         return $this;
     }
@@ -303,5 +319,20 @@ class CartService
     public function setCartItemComparator($cartItemComparator)
     {
         $this->cartItemComparator = $cartItemComparator;
+    }
+
+    /**
+     * 指定したインデックスにあるカートを優先にする
+     * @param int $index カートのインデックス
+     */
+    public function setPrimary($index = 0)
+    {
+        $Carts = $this->getCarts();
+        $primary = $Carts[$index];
+        $prev = $Carts[0];
+        array_splice($Carts, 0, 1, [$primary]);
+        array_splice($Carts, $index, 1, [$prev]);
+        $this->carts = $Carts;
+        $this->save();
     }
 }
