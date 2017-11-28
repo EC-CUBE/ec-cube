@@ -100,7 +100,7 @@ class OwnerStoreController extends AbstractController
         $message = '';
         // Owner's store communication
         $url = $this->appConfig['package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url, $app);
+        list($json, $info) = $this->getRequestApi($url);
         if ($json === false) {
             $message = $this->getResponseErrorMessage($info);
         } else {
@@ -188,7 +188,7 @@ class OwnerStoreController extends AbstractController
     {
         // Owner's store communication
         $url = $this->appConfig['package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url, $app);
+        list($json, $info) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
 
@@ -230,7 +230,7 @@ class OwnerStoreController extends AbstractController
     {
         // Check plugin code
         $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?eccube_version='.$eccubeVersion.'&plugin_code='.$pluginCode.'&version='.$version;
-        list($json, $info) = $this->getRequestApi($url, $app);
+        list($json, $info) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
         if ($data && isset($data['success'])) {
@@ -287,13 +287,13 @@ class OwnerStoreController extends AbstractController
         );
         if ($return) {
             $url = $this->appConfig['package_repo_url'] . '/report';
-            $this->postRequestApi($url, $app, $data);
+            $this->postRequestApi($url, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
         }
         $url = $this->appConfig['package_repo_url'] . '/report/fail';
-        $this->postRequestApi($url, $app, $data);
+        $this->postRequestApi($url, $data);
         $app->addError('admin.plugin.install.fail', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
@@ -312,7 +312,7 @@ class OwnerStoreController extends AbstractController
     {
         // Owner's store communication
         $url = $this->appConfig['package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($url, $app);
+        list($json, $info) = $this->getRequestApi($url);
         $data = json_decode($json, true);
         $items = $data['item'];
 
@@ -382,10 +382,9 @@ class OwnerStoreController extends AbstractController
      * API request processing
      *
      * @param string  $url
-     * @param Application $app
      * @return array
      */
-    private function getRequestApi($url, $app)
+    private function getRequestApi($url)
     {
         $curl = curl_init($url);
 
@@ -416,11 +415,10 @@ class OwnerStoreController extends AbstractController
      * API post request processing
      *
      * @param string  $url
-     * @param Application $app
      * @param array $data
      * @return array
      */
-    private function postRequestApi($url, $app, $data)
+    private function postRequestApi($url, $data)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
