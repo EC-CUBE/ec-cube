@@ -30,7 +30,7 @@ use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -157,7 +157,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         $qb = $this->createQueryBuilder('c')
             ->select('c');
 
-        if (isset($searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
+        if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
             $id = preg_match('/^\d+$/', $clean_key_multi) ? $clean_key_multi : null;
@@ -209,7 +209,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         }
 
         // tel
-        if (isset($searchData['tel']) && Str::isNotBlank($searchData['tel'])) {
+        if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
             $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
             $qb
                 ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
@@ -217,12 +217,12 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         }
 
         // buy_total
-        if (isset($searchData['buy_total_start']) && Str::isNotBlank($searchData['buy_total_start'])) {
+        if (isset($searchData['buy_total_start']) && StringUtil::isNotBlank($searchData['buy_total_start'])) {
             $qb
                 ->andWhere('c.buy_total >= :buy_total_start')
                 ->setParameter('buy_total_start', $searchData['buy_total_start']);
         }
-        if (isset($searchData['buy_total_end']) && Str::isNotBlank($searchData['buy_total_end'])) {
+        if (isset($searchData['buy_total_end']) && StringUtil::isNotBlank($searchData['buy_total_end'])) {
             $qb
                 ->andWhere('c.buy_total <= :buy_total_end')
                 ->setParameter('buy_total_end', $searchData['buy_total_end']);
@@ -290,7 +290,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         }
 
         // buy_product_name、buy_product_code
-        if (isset($searchData['buy_product_code']) && Str::isNotBlank($searchData['buy_product_code'])) {
+        if (isset($searchData['buy_product_code']) && StringUtil::isNotBlank($searchData['buy_product_code'])) {
             $qb
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderItems', 'oi')
@@ -312,7 +312,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function getUniqueSecretKey()
     {
         do {
-            $key = Str::random(32);
+            $key = StringUtil::random(32);
             $Customer = $this->findOneBy(['secret_key' => $key]);
         } while ($Customer);
 
@@ -327,7 +327,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
     public function getUniqueResetKey()
     {
         do {
-            $key = Str::random(32);
+            $key = StringUtil::random(32);
             $Customer = $this->findOneBy(['reset_key' => $key]);
         } while ($Customer);
 
@@ -387,7 +387,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      */
     public function getResetPassword()
     {
-        return Str::random(8);
+        return StringUtil::random(8);
     }
 
     /**

@@ -34,7 +34,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -175,7 +175,7 @@ class BlockController extends AbstractController
 
                 $fs = new Filesystem();
                 $blockData = $form->get('block_html')->getData();
-                $blockData = Str::convertLineFeed($blockData);
+                $blockData = StringUtil::convertLineFeed($blockData);
                 $fs->dumpFile($filePath, $blockData);
                 // 更新でファイル名を変更した場合、以前のファイルを削除
                 if ($Block->getFileName() != $previous_filename && !is_null($previous_filename)) {
@@ -186,7 +186,7 @@ class BlockController extends AbstractController
                 }
 
                 //twigテンプレートのみ削除
-                \Eccube\Util\Cache::clear($app, false, true);
+                \Eccube\Util\CacheUtil::clear($app, false, true);
 
                 $event = new EventArgs(
                     array(
@@ -254,7 +254,7 @@ class BlockController extends AbstractController
 
             $app->addSuccess('admin.delete.complete', 'admin');
             //twigテンプレートのみ削除
-            \Eccube\Util\Cache::clear($app, false, true);
+            \Eccube\Util\CacheUtil::clear($app, false, true);
         }
 
 

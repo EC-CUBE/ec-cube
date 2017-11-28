@@ -25,7 +25,7 @@ use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -143,7 +143,7 @@ class OrderHelper
     {
         // ランダムなpre_order_idを作成
         do {
-            $preOrderId = sha1(Str::random(32));
+            $preOrderId = sha1(StringUtil::random(32));
 
             $Order = $this->orderRepository->findOneBy(
                 [
