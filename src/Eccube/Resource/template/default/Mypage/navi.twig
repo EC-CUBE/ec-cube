@@ -22,14 +22,65 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set favorite = BaseInfo.option_favorite_product %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css', 'admin') }}">
+		<style>
+				#svgicon {
+					display: block;
+					width: 0;
+					height: 0;
+					overflow: hidden;
+				}
+				.alert-section {
+					border-radius: 0;
+					margin-top: 0;
+					margin-bottom: 10px;
+					position: relative;
+				}
+				@media screen and (min-width: 768px) {
+					.alert-section {
+						margin-top: -28px;
+						margin-bottom: 20px;
+					}
+				}
+				.alert-success {
+					color: #fff;
+					background-color: #18a689;
+					border-color: transparent;
+				}
+				.alert-dismissible .close {
+					font-size: 13px;
+				}
+				.alert-close {
+					font-size: 21px;
+					font-weight: 700;
+					line-height: 1;
+					text-shadow: 0 1px 0 #fff;
+				}
+				.close {
+					text-shadow: none;
+					filter: alpha(opacity=80);
+					opacity: .8;
+				}
+				.close:hover,
+				.close:focus {
+				  color: #fff;
+					filter: alpha(opacity=100);
+					opacity: 1;
+				}
+				.cb {
+					display: inline-block;
+					width: 1em;
+					height: 1em;
+					vertical-align: middle;
+					fill: currentColor;
+				}
+		</style>
 {% endblock %}
 
 {% block javascript %}
     <script>
         $(function () {
             $.ajax({
-                url: "{{ asset('assets/img/svg.html', 'admin') }}",
+                url: "{{ asset('img/common/svg.html') }}",
                 type: 'GET',
                 dataType: 'html',
             }).done(function(data){
@@ -42,23 +93,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% if app.session.flashBag.has('eccube.front.success') %}
     {% for message in app.session.flashBag.get('eccube.front.success') %}
-        <div class="row">
-            <div class="alert alert-success alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
+				<div class="alert alert-success alert-dismissable alert-section">
+						<button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+						<svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
+				</div>
     {% endfor %}
 {% endif %}
 
 {% if app.session.flashBag.has('eccube.front.warning') %}
     {% for message in app.session.flashBag.get('eccube.front.warning') %}
-        <div class="row">
-            <div class="alert alert-warning alert-dismissable alert-section">
-                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
-                <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
-            </div>
-        </div>
+				<div class="alert alert-warning alert-dismissable alert-section">
+						<button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+						<svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
+				</div>
     {% endfor %}
 {% endif %}
 
