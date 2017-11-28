@@ -128,9 +128,10 @@ class ShippingRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
             $qb
                 ->andWhere('CONCAT(s.tel01, s.tel02, s.tel03) LIKE :tel')
-                ->setParameter('tel', '%' . $searchData['tel'] . '%');
+                ->setParameter('tel', '%' . $tel . '%');
         }
 
         // payment
