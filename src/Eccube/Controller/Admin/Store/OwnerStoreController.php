@@ -245,7 +245,7 @@ class OwnerStoreController extends AbstractController
             }
         }
         if ($existFlg === false) {
-            $app->log(sprintf('%s plugin not found!', $pluginCode));
+            log_info(sprintf('%s plugin not found!', $pluginCode));
             $app->addError('admin.plugin.not.found', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
@@ -407,7 +407,7 @@ class OwnerStoreController extends AbstractController
         $info['message'] = $message;
         curl_close($curl);
 
-        $app->log('http get_info', $info);
+        log_info('http get_info', $info);
 
         return array($result, $info);
     }
@@ -433,7 +433,7 @@ class OwnerStoreController extends AbstractController
         $info['message'] = $message;
         curl_close($curl);
 
-        $app->log('http post_info', $info);
+        log_info('http post_info', $info);
         return array($result, $info);
     }
 
