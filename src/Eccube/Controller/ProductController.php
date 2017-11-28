@@ -325,114 +325,6 @@ class ProductController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $builder->getForm();
-
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $addCartData = $form->getData();
-                if ($addCartData['mode'] === 'add_favorite') {
-                    if ($app->isGranted('ROLE_USER')) {
-                        $Customer = $app->user();
-                        $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
-                        $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
-
-                        $event = new EventArgs(
-                            array(
-                                'form' => $form,
-                                'Product' => $Product,
-                            ),
-                            $request
-                        );
-                        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_FAVORITE, $event);
-
-                        if ($event->getResponse() !== null) {
-                            return $event->getResponse();
-                        }
-
-                        return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
-                    } else {
-                        // 非会員の場合、ログイン画面を表示
-                        //  ログイン後の画面遷移先を設定
-                        $app->setLoginTargetPath($app->url('product_detail', array('id' => $Product->getId())));
-                        $this->session->getFlashBag()->set('eccube.add.favorite', true);
-
-                        return $app->redirect($app->url('mypage_login'));
-                    }
-                } elseif ($addCartData['mode'] === 'add_cart') {
-
-                    log_info(
-                        'カート追加処理開始',
-                        array(
-                            'product_id' => $Product->getId(),
-                            'product_class_id' => $addCartData['product_class_id'],
-                            'quantity' => $addCartData['quantity'],
-                        )
-                    );
-
-                    // カートを取得
-                    $Cart = $this->cartService->getCart();
-
-                    // カートへ追加
-                    $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
-
-                    // 明細の正規化
-                    $flow = $this->purchaseFlow;
-                    $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
-
-                    // 復旧不可のエラーが発生した場合は追加した明細を削除.
-                    if ($result->hasError()) {
-                        $Cart->removeCartItemByIdentifier(ProductClass::class, $addCartData['product_class_id']);
-                        foreach ($result->getErrors() as $error) {
-                            $app->addRequestError($error->getMessage());
-                        }
-                    }
-
-                    foreach ($result->getWarning() as $warning) {
-                        $app->addRequestError($warning->getMessage());
-                    }
-
-                    $this->cartService->save();
-
-                    log_info(
-                        'カート追加処理完了',
-                        array(
-                            'product_id' => $Product->getId(),
-                            'product_class_id' => $addCartData['product_class_id'],
-                            'quantity' => $addCartData['quantity'],
-                        )
-                    );
-
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form,
-                            'Product' => $Product,
-                        ),
-                        $request
-                    );
-                    $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_COMPLETE, $event);
-
-                    if ($event->getResponse() !== null) {
-                        return $event->getResponse();
-                    }
-
-                    return $app->redirect($app->url('cart'));
-                }
-            }
-        } else {
-            $addFavorite = $this->session->getFlashBag()->get('eccube.add.favorite');
-            if (!empty($addFavorite)) {
-                // お気に入り登録時にログインされていない場合、ログイン後にお気に入り追加処理を行う
-                if ($app->isGranted('ROLE_USER')) {
-                    $Customer = $app->user();
-                    $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
-                    $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
-                }
-            }
-        }
-
         $is_favorite = false;
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
@@ -442,10 +334,158 @@ class ProductController
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
-            'form' => $form->createView(),
+            'form' => $builder->getForm()->createView(),
             'Product' => $Product,
             'is_favorite' => $is_favorite,
         ];
+    }
+
+    /**
+     * お気に入り追加.
+     *
+     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"})
+     */
+    public function addFavorite(Application $app, Request $request, Product $Product)
+    {
+        $this->checkVisibility($Product);
+
+        $event = new EventArgs(
+            array(
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE, $event);
+
+
+        if ($app->isGranted('ROLE_USER')) {
+            $Customer = $app->user();
+            $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
+            $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+
+            $event = new EventArgs(
+                array(
+                    'Product' => $Product,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
+
+            return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
+        } else {
+            // 非会員の場合、ログイン画面を表示
+            //  ログイン後の画面遷移先を設定
+            $app->setLoginTargetPath($app->url('product_add_favorite', array('id' => $Product->getId())));
+            $this->session->getFlashBag()->set('eccube.add.favorite', true);
+
+            $event = new EventArgs(
+                array(
+                    'Product' => $Product,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
+
+            return $app->redirect($app->url('mypage_login'));
+        }
+    }
+
+    /**
+     * カートに追加.
+     *
+     * @Method("POST")
+     * @Route("/products/add_cart/{id}", name="product_add_cart", requirements={"id" = "\d+"})
+     */
+    public function addCart(Application $app, Request $request, Product $Product)
+    {
+        if (!$this->checkVisibility($Product)) {
+            throw new NotFoundHttpException();
+        }
+
+        $builder = $this->formFactory->createNamedBuilder(
+            '',
+            AddCartType::class,
+            null,
+            array(
+                'product' => $Product,
+                'id_add_product_id' => false,
+            )
+        );
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_CART_ADD_INITIALIZE, $event);
+
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        if (!$form->isValid()) {
+            throw new NotFoundHttpException();
+        }
+
+        $addCartData = $form->getData();
+
+        log_info(
+            'カート追加処理開始',
+            array(
+                'product_id' => $Product->getId(),
+                'product_class_id' => $addCartData['product_class_id'],
+                'quantity' => $addCartData['quantity'],
+            )
+        );
+
+        // カートへ追加
+        $this->cartService->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+
+        // 明細の正規化
+        $flow = $this->purchaseFlow;
+        $Cart = $this->cartService->getCart();
+        $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
+
+        // 復旧不可のエラーが発生した場合は追加した明細を削除.
+        if ($result->hasError()) {
+            $this->cartService->removeProduct($addCartData['product_class_id']);
+            foreach ($result->getErrors() as $error) {
+                $app->addRequestError($error->getMessage());
+            }
+        }
+
+        foreach ($result->getWarning() as $warning) {
+            $app->addRequestError($warning->getMessage());
+        }
+
+        $this->cartService->save();
+
+        log_info(
+            'カート追加処理完了',
+            array(
+                'product_id' => $Product->getId(),
+                'product_class_id' => $addCartData['product_class_id'],
+                'quantity' => $addCartData['quantity'],
+            )
+        );
+
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_CART_ADD_COMPLETE, $event);
+
+        if ($event->getResponse() !== null) {
+            return $event->getResponse();
+        }
+
+        return $app->redirect($app->url('cart'));
+
     }
 
     /**
