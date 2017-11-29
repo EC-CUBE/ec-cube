@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Eccube\Form\Type\Master\SaleTypeType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class SaleTypeTypeTest extends AbstractTypeTestCase
 {

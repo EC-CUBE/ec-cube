@@ -23,27 +23,24 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\CustomerType;
-use Eccube\Repository\CustomerRepository;
+use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Repository\CustomerRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Eccube\Form\Type\Front\CustomerAddressType;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Eccube\Entity\Customer;
 
 /**
  * @Route(service=CustomerDeliveryEditController::class)

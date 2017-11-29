@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
