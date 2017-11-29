@@ -6,6 +6,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
+use Eccube\Service\PurchaseFlow\ProcessResult;
 
 /**
  * 受注情報の日付更新.
@@ -72,5 +73,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
             // 受注日時
             $TargetOrder->setOrderDate($dateTime);
         }
+        
+        return ProcessResult::success();
     }
 }

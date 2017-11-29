@@ -31,12 +31,22 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Annotation\Inject;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Eccube\Form\Validator\TwigLint;
 
 /**
  * @FormType
  */
 class MailType extends AbstractType
 {
+    
+    /**
+     * @Inject("config")
+     * @var array
+     */
+    protected $appConfig;
+    
     /**
      * {@inheritdoc}
      */
@@ -71,6 +81,15 @@ class MailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+            ))
+            ->add('tpl_data', HiddenType::class, array(
+                'label' => false,
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new TwigLint(),
+                ]
             ))
         ;
     }
