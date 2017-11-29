@@ -86,13 +86,13 @@ class PurchaseFlowServiceProvider implements ServiceProviderInterface
         $app['eccube.purchase.flow.order.item_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
             $processors[] = new StockValidator();
-            $processors[] = new PaymentTotalLimitValidator($app['config']['max_total_fee']);
 
             return $processors;
         };
 
         $app['eccube.purchase.flow.order.holder_processors'] = function (Container $app) {
             $processors = new ArrayCollection();
+            $processors[] = new PaymentTotalLimitValidator($app['config']['max_total_fee']);
             $processors[] = new UpdateDatePurchaseProcessor($app['config']);
             $processors[] = new AdminOrderRegisterPurchaseProcessor($app);
 
