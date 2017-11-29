@@ -43,15 +43,15 @@ class OrderService
 
 
     /**
-     * 商品種別を取得
+     * 販売種別を取得
      *
      * @param Order $Order
      * @return array
      * @deprecated since 3.0.0, to be removed in 3.1
      */
-    public function getProductTypes(Order $Order)
+    public function getSaleTypes(Order $Order)
     {
-        return $Order->getProductTypes();
+        return $Order->getSaleTypes();
     }
 
     /**

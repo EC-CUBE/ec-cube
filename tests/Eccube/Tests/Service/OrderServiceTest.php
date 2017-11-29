@@ -66,10 +66,10 @@ class OrderServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    public function testGetProductTypes()
+    public function testGetSaleTypes()
     {
-        $this->expected = array($this->app['eccube.repository.master.product_type']->find(1));
-        $this->actual = $this->app['eccube.service.order']->getProductTypes($this->Order);
+        $this->expected = array($this->app['eccube.repository.master.sale_type']->find(1));
+        $this->actual = $this->app['eccube.service.order']->getSaleTypes($this->Order);
         $this->verify();
     }
 }

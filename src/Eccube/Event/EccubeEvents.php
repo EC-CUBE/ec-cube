@@ -120,6 +120,8 @@ final class EccubeEvents
 
     // delete
     const ADMIN_CUSTOMER_DELETE_COMPLETE = 'admin.customer.delete.complete';
+    
+    const ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE = 'admin.customer.delivery.delete.complete';
 
     // export
     const ADMIN_CUSTOMER_CSV_EXPORT = 'admin.customer.csv.export';
@@ -131,8 +133,11 @@ final class EccubeEvents
     // index
     const ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE = 'admin.customer.edit.index.initialize';
     const ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE = 'admin.customer.edit.index.complete';
-
-
+    
+    // index
+    const ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_INITIALIZE = 'admin.customer.delivery.edit.index.initialize';
+    const ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE = 'admin.customer.delivery.edit.index.complete';
+    
     /**
      * Admin/Order/EditController
      */
@@ -521,6 +526,11 @@ final class EccubeEvents
     const FRONT_PRODUCT_DETAIL_FAVORITE = 'front.product.detail.favorite';
     const FRONT_PRODUCT_DETAIL_COMPLETE = 'front.product.detail.complete';
 
+    const FRONT_PRODUCT_CART_ADD_INITIALIZE = 'front.product.cart.add.initialize';
+    const FRONT_PRODUCT_CART_ADD_COMPLETE = 'front.product.cart.add.complete';
+
+    const FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE = 'front.product.favorite.add.initialize';
+    const FRONT_PRODUCT_FAVORITE_ADD_COMPLETE = 'front.product.favorite.add.complete';
 
     /**
      * ShoppingController

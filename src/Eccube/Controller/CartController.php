@@ -26,13 +26,13 @@ namespace Eccube\Controller;
 
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -77,38 +77,66 @@ class CartController extends AbstractController
     public function index(Application $app, Request $request)
     {
         // カートを取得して明細の正規化を実行
-        $Cart = $this->cartService->getCart();
-        /** @var PurchaseFlowResult $result */
-        $result = $this->purchaseFlow->calculate($Cart, $app['eccube.purchase.context']());
+        $Carts = $this->cartService->getCarts();
 
-        // 復旧不可のエラーが発生した場合はカートをクリアして再描画
-        if ($result->hasError()) {
-            foreach ($result->getErrors() as $error) {
-                $app->addRequestError($error->getMessage());
-            }
-            $this->cartService->clear();
-            $this->cartService->save();
-
-            return $app->redirect($app->url('cart'));
-        }
-
-        $this->cartService->save();
-
-        foreach ($result->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
-        }
+        $this->execPurchaseFlow($app, $Carts);
 
         // TODO itemHolderから取得できるように
         $least = 0;
         $quantity = 0;
         $isDeliveryFree = false;
 
+        $totalQuantity = array_reduce($Carts, function($total, $Cart) {
+            /** @var Cart $Cart */
+            $total += $Cart->getQuantity();
+            return $total;
+        }, 0);
+        $totalPrice = array_reduce($Carts, function($total, $Cart) {
+            /** @var Cart $Cart */
+            $total += $Cart->getTotalPrice();
+            return $total;
+        }, 0);
+
         return [
-            'Cart' => $Cart,
+            'totalPrice' => $totalPrice,
+            'totalQuantity' => $totalQuantity,
+            'Carts' => $Carts,
             'least' => $least,
             'quantity' => $quantity,
             'is_delivery_free' => $isDeliveryFree,
         ];
+    }
+
+    protected function execPurchaseFlow(Application $app, $Carts)
+    {
+        $flowResults = array_map(function($Cart) use ($app) {
+            return $this->purchaseFlow->calculate($Cart, $app['eccube.purchase.context']());
+        }, $Carts);
+
+
+        // 復旧不可のエラーが発生した場合はカートをクリアして再描画
+        $hasError = false;
+        foreach ($flowResults as $result) {
+            if ($result->hasError()) {
+                $hasError = true;
+                foreach ($result->getErrors() as $error) {
+                    $app->addRequestError($error->getMessage());
+                }
+            }
+        }
+        if ($hasError) {
+            $this->cartService->clear();
+            $this->cartService->save();
+            return $app->redirect($app->url('cart'));
+        }
+
+        $this->cartService->save();
+
+        foreach ($flowResults as $index=>$result) {
+            foreach ($result->getWarning() as $warning) {
+                $app->addRequestError($warning->getMessage(), "front.cart.${index}");
+            }
+        }
     }
 
     /**
@@ -161,26 +189,8 @@ class CartController extends AbstractController
         }
 
         // カートを取得して明細の正規化を実行
-        $Cart = $this->cartService->getCart();
-        /** @var PurchaseFlowResult $result */
-        $result = $this->purchaseFlow->calculate($Cart, $app['eccube.purchase.context']());
-
-        // 復旧不可のエラーが発生した場合はカートをクリアしてカート一覧へ
-        if ($result->hasError()) {
-            foreach ($result->getErrors() as $error) {
-                $app->addRequestError($error->getMessage());
-            }
-            $this->cartService->clear();
-            $this->cartService->save();
-
-            return $app->redirect($app->url('cart'));
-        }
-
-        $this->cartService->save();
-
-        foreach ($result->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
-        }
+        $Carts = $this->cartService->getCarts();
+        $this->execPurchaseFlow($app, $Carts);
 
         log_info('カート演算処理終了', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
@@ -190,9 +200,9 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @Route("/cart/buystep", name="cart_buystep")
+     * @Route("/cart/buystep/{index}", name="cart_buystep", requirements={"index" = "\d+"}, defaults={"index" = 0})
      */
-    public function buystep(Application $app, Request $request)
+    public function buystep(Application $app, Request $request, $index)
     {
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(
@@ -201,6 +211,7 @@ class CartController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
+        $this->cartService->setPrimary($index);
         $this->cartService->lock();
         $this->cartService->save();
 

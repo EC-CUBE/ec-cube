@@ -54,11 +54,11 @@ return [
     'cart.product.payment.kind' => 'お支払方法が異なるためこの商品は同時に購入することはできません。',
     'cart.product.delete' => '現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。',
     'cart.product.not.status' => '現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。',
-    'cart.product.not.producttype' => '「%product%」はまだ配送の準備ができておりません。
+    'cart.product.not.saletype' => '「%product%」はまだ配送の準備ができておりません。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
     'shopping.multiple.delivery' => '配送方法が異なる商品が含まれているため、お届け先は複数となります。',
     'shopping.multiple.quantity.diff' => '数量の合計が、カゴの中の数量と異なっています。',
-    'shopping.delivery.not.producttype' => '配送の準備ができていない商品が含まれております。
+    'shopping.delivery.not.saletype' => '配送の準備ができていない商品が含まれております。
 恐れ入りますがお問い合わせページよりお問い合わせください。',
     'shopping.total.price' => '合計金額が不正です。(¥ totalPrice)',
     'front.shopping.order.error' => '購入処理でエラーが発生しました。',
@@ -111,8 +111,12 @@ return [
     'admin.category.csv_import.save.complete' => 'カテゴリ登録CSVファイルをアップロードしました。',
     'admin.customer.save.complete' => '会員情報を保存しました。',
     'admin.customer.save.failed' => '会員情報を保存できませんでした。',
+    'admin.customer.delivery.save.complete' => 'お届け先情報を保存しました。',
+    'admin.customer.delivery.save.failed' => 'お届け先情報を保存できませんでした。',
     'admin.customer.delete.complete' => '会員情報を削除しました。',
     'admin.customer.delete.failed' => '会員情報を削除できませんでした。',
+    'admin.customer.delivery.delete.complete' => 'お届け先情報を削除しました。',
+    'admin.customer.delivery.delete.failed' => 'お届け先情報を削除できませんでした。',
     'admin.customer.resend.complete' => '仮会員登録メールを送信しました。',
     'admin.news.up.complete' => '新着情報を上へ移動しました。',
     'admin.news.up.error' => '新着情報を上へ移動できませんでした。',
@@ -133,8 +137,6 @@ return [
     'admin.shop.save.complete' => '基本情報を保存しました。',
     'admin.shop.save.error' => '基本情報を保存できませんでした。',
     'admin.shop.download.invalid' => 'ダウンロード無制限でない場合、ダウンロード可能日数を入力してください。',
-    'admin.shop.latitude.invalid' => '-90.000000～90.000000の範囲で指定してください',
-    'admin.shop.longitude.invalid' => '-180.000000～180.000000の範囲で指定してください',
     'admin.shop.tax.save.complete' => '税率設定情報を保存しました。',
     'admin.shop.tax.delete.complete' => '税率設定情報を削除しました。',
     'admin.shop.mail.save.complete' => 'メールテンプレート情報を保存しました。',
@@ -149,6 +151,7 @@ return [
     'admin.system.security.save.complete' => 'セキュリティ設定を保存しました。',
     'admin.system.security.route.dir.complete' => '管理画面のURLを変更しましたので再ログインをしてください。',
     'admin.system.authority.save.complete' => '権限設定を保存しました。',
+    'admin.plugin.authentication.fail' => 'EC-CUBEオーナーズストアにエラーが発生しています。',
     'admin.plugin.enable.complete' => 'プラグインを有効にしました。',
     'admin.plugin.enable.depend' => '%name%を有効化するためには、先に%depend_name%を有効化してください。',
     'admin.plugin.disable.complete' => 'プラグインを無効にしました。',

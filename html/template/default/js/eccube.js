@@ -532,7 +532,7 @@
         }
 
         // 商品規格
-        var $product_class_id_dynamic = $form.find('[id^=product_class_id]');
+        var $product_class_id_dynamic = $form.find('[id^=ProductClass]');
         if (classcat2 && typeof classcat2.product_class_id !== 'undefined' && String(classcat2.product_class_id).length >= 1) {
             $product_class_id_dynamic.val(classcat2.product_class_id);
         } else {

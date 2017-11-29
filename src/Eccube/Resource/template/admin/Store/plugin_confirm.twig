@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="plugin-block">
                                 <div class="row grid">
                                     <div class="col-xs-12 grid-item">
-                                        {{ include('Store/plugin_owners_confirm.twig') }}
+                                        {{ include('Store/plugin_confirm_panel.twig') }}
                                     </div>
                                 </div><!-- .row -->
                             </div><!-- .plugin-block -->
@@ -59,7 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div><!-- .row -->
                 </div><!-- /.box-body 1 -->
 
-                    {% if arrDependency is not empty %}
+                    {% if dependents is not empty %}
             </div> <!-- end box 1 -->
 
             <div class="box">
@@ -70,9 +70,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="col-xs-12">
                         <div class="plugin-block">
                             <div class="row grid">
-                                {% for plugin in arrDependency %}
+                                {% for plugin in dependents %}
                                 <div class="col-xs-12 grid-item">
-                                    {% include 'Store/plugin_owners_confirm.twig' with {'item': plugin} only %}
+                                    {% include 'Store/plugin_confirm_panel.twig' with {'item': plugin} only %}
                                 </div>
                                 {% endfor %}
                             </div><!-- .row -->

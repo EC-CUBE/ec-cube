@@ -31,7 +31,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -146,7 +146,7 @@ class TemplateController extends AbstractController
         $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
         // 一時ディレクトリ
-        $uniqId = sha1(Str::random(32));
+        $uniqId = sha1(StringUtil::random(32));
         $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
         $appDir = $tmpDir.'/app';
         $htmlDir = $tmpDir.'/html';
@@ -272,7 +272,7 @@ class TemplateController extends AbstractController
             $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
             // 一時ディレクトリ
-            $uniqId = sha1(Str::random(32));
+            $uniqId = sha1(StringUtil::random(32));
             $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
             $appDir = $tmpDir.'/app';
             $htmlDir = $tmpDir.'/html';

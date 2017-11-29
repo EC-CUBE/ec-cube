@@ -23,7 +23,6 @@
 namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -35,8 +34,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 class ComposerApiService implements ComposerServiceInterface
 {
+
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
@@ -47,6 +46,11 @@ class ComposerApiService implements ComposerServiceInterface
     private $consoleApplication;
 
     private $workingDir;
+
+    public function __construct($appConfig)
+    {
+        $this->appConfig = $appConfig;
+    }
 
     /**
      * Run get info command
@@ -212,5 +216,28 @@ class ComposerApiService implements ComposerServiceInterface
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
+    }
+
+    /**
+     * Get version of composer
+     * @return null|string
+     */
+    public function composerVersion()
+    {
+        $this->init();
+        $output = $this->runCommand(array(
+            '--version' => true
+        ));
+
+        return OutputParser::parseComposerVersion($output);
+    }
+
+    /**
+     * Get mode
+     * @return mixed|string
+     */
+    public function getMode()
+    {
+        return 'API';
     }
 }
