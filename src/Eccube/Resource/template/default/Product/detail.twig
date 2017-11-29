@@ -136,9 +136,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         $('#add-cart').on('click', function () {
             {% if form.classcategory_id1 is defined %}
             // 規格1フォームの必須チェック
-            if (!$('#classcategory_id1').val()) {
+            if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
                 $('#classcategory_id1')[0].setCustomValidity("項目が選択されていません。");
-//                console.log($('#classcategory_id1')[0]);
                 return true;
             }else{
                 $('#classcategory_id1')[0].setCustomValidity("");
@@ -147,7 +146,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             {% if form.classcategory_id2 is defined %}
             // 規格2フォームの必須チェック
-            if (!$('#classcategory_id2').val()) {
+            if ($('#classcategory_id2').val() == '__unselected' || $('#classcategory_id2').val() == '') {
                 $('#classcategory_id2')[0].setCustomValidity("項目が選択されていません。");
                 return true;
             }else{
@@ -156,7 +155,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
 
             // 個数フォームのチェック
-            console.log($('#quantity').val());
             if ($('#quantity').val() < 1) {
                 $('#quantity')[0].setCustomValidity("1以上で入力してください。");
                 return true;
