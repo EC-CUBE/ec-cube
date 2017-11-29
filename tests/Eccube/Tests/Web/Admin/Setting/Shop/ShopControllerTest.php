@@ -114,8 +114,6 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             'option_point' => 1,
             'basic_point_rate' => 1,
             'nostock_hidden' => '0',
-            'latitude' => '',
-            'longitude' => '',
         );
 
         return $form;

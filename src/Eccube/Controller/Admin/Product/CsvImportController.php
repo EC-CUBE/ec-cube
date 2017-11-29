@@ -46,7 +46,7 @@ use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\Master\TagRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -224,39 +224,39 @@ class CsvImportController
                             }
                         }
 
-                        if (Str::isBlank($row['商品名'])) {
+                        if (StringUtil::isBlank($row['商品名'])) {
                             $this->addErrors(($data->key() + 1) . '行目の商品名が設定されていません。');
                             return $this->render($app, $form, $headers);
                         } else {
-                            $Product->setName(Str::trimAll($row['商品名']));
+                            $Product->setName(StringUtil::trimAll($row['商品名']));
                         }
 
-                        if (Str::isNotBlank($row['ショップ用メモ欄'])) {
-                            $Product->setNote(Str::trimAll($row['ショップ用メモ欄']));
+                        if (StringUtil::isNotBlank($row['ショップ用メモ欄'])) {
+                            $Product->setNote(StringUtil::trimAll($row['ショップ用メモ欄']));
                         } else {
                             $Product->setNote(null);
                         }
 
-                        if (Str::isNotBlank($row['商品説明(一覧)'])) {
-                            $Product->setDescriptionList(Str::trimAll($row['商品説明(一覧)']));
+                        if (StringUtil::isNotBlank($row['商品説明(一覧)'])) {
+                            $Product->setDescriptionList(StringUtil::trimAll($row['商品説明(一覧)']));
                         } else {
                             $Product->setDescriptionList(null);
                         }
 
-                        if (Str::isNotBlank($row['商品説明(詳細)'])) {
-                            $Product->setDescriptionDetail(Str::trimAll($row['商品説明(詳細)']));
+                        if (StringUtil::isNotBlank($row['商品説明(詳細)'])) {
+                            $Product->setDescriptionDetail(StringUtil::trimAll($row['商品説明(詳細)']));
                         } else {
                             $Product->setDescriptionDetail(null);
                         }
 
-                        if (Str::isNotBlank($row['検索ワード'])) {
-                            $Product->setSearchWord(Str::trimAll($row['検索ワード']));
+                        if (StringUtil::isNotBlank($row['検索ワード'])) {
+                            $Product->setSearchWord(StringUtil::trimAll($row['検索ワード']));
                         } else {
                             $Product->setSearchWord(null);
                         }
 
-                        if (Str::isNotBlank($row['フリーエリア'])) {
-                            $Product->setFreeArea(Str::trimAll($row['フリーエリア']));
+                        if (StringUtil::isNotBlank($row['フリーエリア'])) {
+                            $Product->setFreeArea(StringUtil::trimAll($row['フリーエリア']));
                         } else {
                             $Product->setFreeArea(null);
                         }
@@ -554,11 +554,11 @@ class CsvImportController
 
                         }
 
-                        if (Str::isBlank($row['カテゴリ名'])) {
+                        if (StringUtil::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリ名が設定されていません。');
                             return $this->render($app, $form, $headers);
                         } else {
-                            $Category->setName(Str::trimAll($row['カテゴリ名']));
+                            $Category->setName(StringUtil::trimAll($row['カテゴリ名']));
                         }
 
                         if ($row['親カテゴリID'] != '') {
@@ -697,7 +697,7 @@ class CsvImportController
     protected function getImportData($app, $formFile)
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
-        $this->fileName = 'upload_' . Str::random() . '.' . $formFile->getClientOriginalExtension();
+        $this->fileName = 'upload_' . StringUtil::random() . '.' . $formFile->getClientOriginalExtension();
         $formFile->move($this->appConfig['csv_temp_realdir'], $this->fileName);
 
         $file = file_get_contents($this->appConfig['csv_temp_realdir'] . '/' . $this->fileName);
@@ -711,12 +711,12 @@ class CsvImportController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = Str::characterEncoding(substr($file, 0, 6));
+            $encode = StringUtil::characterEncoding(substr($file, 0, 6));
             if ($encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
         }
-        $file = Str::convertLineFeed($file);
+        $file = StringUtil::convertLineFeed($file);
 
         $tmp = tmpfile();
         fwrite($tmp, $file);
@@ -755,7 +755,7 @@ class CsvImportController
             foreach ($images as $image) {
 
                 $ProductImage = new ProductImage();
-                $ProductImage->setFileName(Str::trimAll($image));
+                $ProductImage->setFileName(StringUtil::trimAll($image));
                 $ProductImage->setProduct($Product);
                 $ProductImage->setRank($rank);
 
@@ -909,8 +909,8 @@ class CsvImportController
             }
         }
 
-        if (Str::isNotBlank($row['商品コード'])) {
-            $ProductClass->setCode(Str::trimAll($row['商品コード']));
+        if (StringUtil::isNotBlank($row['商品コード'])) {
+            $ProductClass->setCode(StringUtil::trimAll($row['商品コード']));
         } else {
             $ProductClass->setCode(null);
         }
@@ -1061,8 +1061,8 @@ class CsvImportController
             }
         }
 
-        if (Str::isNotBlank($row['商品コード'])) {
-            $ProductClass->setCode(Str::trimAll($row['商品コード']));
+        if (StringUtil::isNotBlank($row['商品コード'])) {
+            $ProductClass->setCode(StringUtil::trimAll($row['商品コード']));
         } else {
             $ProductClass->setCode(null);
         }

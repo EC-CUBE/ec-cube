@@ -19,6 +19,7 @@
     ],
     "require": {
         "php": "^5.6 || ^7.0",
+        "ext-intl": "^1.1",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.0",
         "composer/composer": "^1.5",

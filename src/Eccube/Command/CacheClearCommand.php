@@ -52,7 +52,7 @@ EOF
 
         $this->app = $this->getSilexApplication();
         
-        \Eccube\Util\Cache::clear($this->app,$input->getOption('all'));
+        \Eccube\Util\CacheUtil::clear($this->app,$input->getOption('all'));
         $output->writeln(sprintf("%s <info>success</info>", 'cache:clear'));
 
     }
