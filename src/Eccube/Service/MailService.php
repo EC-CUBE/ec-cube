@@ -75,8 +75,8 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['entry_confirm_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
@@ -121,8 +121,8 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['entry_complete_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ));
@@ -167,8 +167,8 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['customer_withdraw_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ));
@@ -213,8 +213,8 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['contact_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
         ));
@@ -316,11 +316,12 @@ class MailService
     {
         log_info('仮会員登録再送メール送信開始');
         
+        /* @var $MailTemplate \Eccube\Entity\MailTemplate */
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['entry_confirm_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
@@ -408,8 +409,8 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['forgot_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'reset_url' => $reset_url
         ));
@@ -453,8 +454,8 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['reset_complete_mail_template_id']);
         
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'password' => $password,
         ));
