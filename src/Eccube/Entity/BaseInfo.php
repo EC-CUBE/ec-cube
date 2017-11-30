@@ -293,6 +293,27 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $authentication_key;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="option_point", type="boolean", options={"default":true})
+     */
+    private $option_point = true;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="basic_point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true, "default":1}, nullable=true)
+     */
+    private $basic_point_rate = '1';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="point_conversion_rate", type="decimal", precision=10, scale=0, options={"unsigned":true, "default":1}, nullable=true)
+     */
+    private $point_conversion_rate = '1';
+
+    /**
      * @var \Eccube\Entity\Master\Country
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
@@ -1211,5 +1232,77 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Set optionPoint
+     *
+     * @param boolean $optionPoint
+     *
+     * @return BaseInfo
+     */
+    public function setOptionPoint($optionPoint)
+    {
+        $this->option_point = $optionPoint;
+
+        return $this;
+    }
+
+    /**
+     * Get optionPoint
+     *
+     * @return boolean
+     */
+    public function isOptionPoint()
+    {
+        return $this->option_point;
+    }
+
+    /**
+     * Set pointConversionRate
+     *
+     * @param string $pointConversionRate
+     *
+     * @return BaseInfo
+     */
+    public function setPointConversionRate($pointConversionRate)
+    {
+        $this->point_conversion_rate = $pointConversionRate;
+
+        return $this;
+    }
+
+    /**
+     * Get pointConversionRate
+     *
+     * @return string
+     */
+    public function getPointConversionRate()
+    {
+        return $this->point_conversion_rate;
+    }
+
+    /**
+     * Set basicPointRate
+     *
+     * @param string $basicPointRate
+     *
+     * @return BaseInfo
+     */
+    public function setBasicPointRate($basicPointRate)
+    {
+        $this->basic_point_rate = $basicPointRate;
+
+        return $this;
+    }
+
+    /**
+     * Get basicPointRate
+     *
+     * @return string
+     */
+    public function getBasicPointRate()
+    {
+        return $this->basic_point_rate;
     }
 }

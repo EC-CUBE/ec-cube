@@ -40,6 +40,8 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  */
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
+    use PointTrait;
+
     /**
      * @var ItemValidateException[]
      */
@@ -1708,4 +1710,5 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         return $quantity;
     }
+
 }

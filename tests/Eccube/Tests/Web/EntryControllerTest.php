@@ -94,6 +94,7 @@ class EntryControllerTest extends AbstractWebTestCase
             ),
             'sex' => 1,
             'job' => 1,
+            'point' => 1,
             '_token' => 'dummy'
         );
         return $form;

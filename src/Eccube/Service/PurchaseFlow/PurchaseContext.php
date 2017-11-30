@@ -3,6 +3,7 @@
 namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Customer;
 
 class PurchaseContext extends \SplObjectStorage
 {
@@ -10,9 +11,10 @@ class PurchaseContext extends \SplObjectStorage
 
     private $originHolder;
 
-    public function __construct(ItemHolderInterface $originHolder = null)
+    public function __construct(ItemHolderInterface $originHolder = null, Customer $user = null)
     {
         $this->originHolder = $originHolder;
+        $this->user = $user;
     }
 
     public function getOriginHolder()

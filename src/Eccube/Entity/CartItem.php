@@ -26,6 +26,8 @@ namespace Eccube\Entity;
 
 class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
+    use PointRateTrait;
+
     private $price;
     private $quantity;
     private $ProductClass;

@@ -799,6 +799,11 @@ class ShoppingController extends AbstractShoppingController
                     // TODO エラーメッセージ
                     throw new ShoppingException();
                 }
+                try {
+                    $this->purchaseFlow->purchase($Order, $app['eccube.purchase.context']($Order, $Order->getCustomer())); // TODO 変更前の Order を渡す必要がある？
+                } catch (PurchaseException $e) {
+                    $app->addError($e->getMessage(), 'front');
+                }
 
                 // 購入処理
                 $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない

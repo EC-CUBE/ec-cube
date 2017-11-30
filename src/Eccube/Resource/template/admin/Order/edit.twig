@@ -476,6 +476,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     <dd class="form-group form-inline">
                                         {{ Order.charge|price }}
                                     </dd>
+                                    <dt id="product_info_result_box__add_point" {{ form_label(form.add_point) }}：</dt>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.add_point) }}
+                                        {{ form_errors(form.add_point) }}
+                                    </dd>
+                                    <dt id="product_info_result_box__use_point" {{ form_label(form.use_point) }}：</dt>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.use_point) }}
+                                        {{ form_errors(form.use_point) }}
+                                    </dd>
+
                                 </dl>
                             </div>
                         </div>

@@ -357,7 +357,6 @@ class ProductController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE, $event);
 
-
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
             $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
@@ -446,7 +445,7 @@ class ProductController
         // 明細の正規化
         $flow = $this->purchaseFlow;
         $Cart = $this->cartService->getCart();
-        $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
+        $result = $flow->calculate($Cart, $app['eccube.purchase.context']($Cart, $app->user()));
 
         // 復旧不可のエラーが発生した場合は追加した明細を削除.
         if ($result->hasError()) {

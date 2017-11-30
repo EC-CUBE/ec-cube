@@ -1127,6 +1127,7 @@ class ShoppingService
      *
      * @param Order $Order
      * @throws ShoppingException
+     * @deprecated PurchaseFlow::purchase() を使用してください
      */
     public function processPurchase(Order $Order)
     {
