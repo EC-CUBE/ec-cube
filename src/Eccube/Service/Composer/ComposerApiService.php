@@ -72,12 +72,12 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return array
+     * @return bool
      */
     public function execRequire($packageName)
     {
         $packageName = explode(" ", trim($packageName));
-        $output = $this->runCommand(array(
+        $this->runCommand(array(
             'command' => 'require',
             'packages' => $packageName,
             '--no-interaction' => true,
@@ -86,7 +86,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--ignore-platform-reqs' => true,
         ));
 
-        return OutputParser::parseRequire($output);
+        return true;
     }
 
     /**

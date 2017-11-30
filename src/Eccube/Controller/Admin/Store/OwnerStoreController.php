@@ -271,7 +271,6 @@ class OwnerStoreController extends AbstractController
             }
         }
         $packageNames .= self::$vendorName . '/' . $pluginCode;
-        $return = $this->composerService->execRequire($packageNames);
         $data = array(
             'code' => $pluginCode,
             'version' => $version,
@@ -285,13 +284,22 @@ class OwnerStoreController extends AbstractController
             'composer_execute_mode' => $this->composerService->getMode(),
             'dependents' => json_encode($dependentModifier)
         );
-        if ($return) {
-            $url = $this->appConfig['package_repo_url'] . '/report';
-            $this->postRequestApi($url, $data);
-            $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-            return $app->redirect($app->url('admin_store_plugin'));
+        try {
+            $return = $this->composerService->execRequire($packageNames);
+            if ($return) {
+                // Do report to package repo
+                $url = $this->appConfig['package_repo_url'] . '/report';
+                $this->postRequestApi($url, $data);
+                $app->addSuccess('admin.plugin.install.complete', 'admin');
+
+                return $app->redirect($app->url('admin_store_plugin'));
+            }
+        } catch (\Exception $exception) {
+            log_info($exception);
         }
+
+        // Do report to package repo
         $url = $this->appConfig['package_repo_url'] . '/report/fail';
         $this->postRequestApi($url, $data);
         $app->addError('admin.plugin.install.fail', 'admin');
@@ -368,11 +376,15 @@ class OwnerStoreController extends AbstractController
         }
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
-        $return = $this->composerService->execRemove($packageName);
-        if ($return) {
-            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } else {
-            $app->addError('admin.plugin.uninstall.error', 'admin');
+        try {
+            $return = $this->composerService->execRemove($packageName);
+            if ($return) {
+                $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+            } else {
+                $app->addError('admin.plugin.uninstall.error', 'admin');
+            }
+        } catch (\Exception $exception) {
+            log_info($exception);
         }
 
         return $app->redirect($app->url('admin_store_plugin'));
