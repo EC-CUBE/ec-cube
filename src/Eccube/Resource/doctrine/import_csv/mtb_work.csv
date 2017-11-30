@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "0","非稼働","0","work"
 "1","稼働","1","work"
 

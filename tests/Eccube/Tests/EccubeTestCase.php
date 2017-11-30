@@ -128,7 +128,7 @@ abstract class EccubeTestCase extends WebTestCase
         }
 
         // 通常は eccube_install.sh で追加されるデータを追加する
-        $sql = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, 'admin', 'test', 'test', 1, 0, 0, 1, 1, current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP')";
+        $sql = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, sort_no, update_date, create_date,name,department) VALUES (2, 'admin', 'test', 'test', 1, 0, 0, 1, 1, current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP')";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $stmt->closeCursor();

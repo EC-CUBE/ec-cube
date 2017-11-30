@@ -25,31 +25,31 @@ class JoinClauseTest extends EccubeTestCase
 
     public function testInnerJoinFull()
     {
-        $clause = JoinClause::innerJoin('p.ProductCategories', 'pct', 'ON', 'pct.rank = 1', 'categoryId');
-        self::assertEquals('INNER JOIN p.ProductCategories pct INDEX BY categoryId ON pct.rank = 1', $this->asString($clause));
+        $clause = JoinClause::innerJoin('p.ProductCategories', 'pct', 'ON', 'pct.sort_no = 1', 'categoryId');
+        self::assertEquals('INNER JOIN p.ProductCategories pct INDEX BY categoryId ON pct.sort_no = 1', $this->asString($clause));
     }
 
     public function testLeftJoinFull()
     {
-        $clause = JoinClause::leftJoin('p.ProductCategories', 'pct', 'ON', 'pct.rank = 1', 'categoryId');
-        self::assertEquals('LEFT JOIN p.ProductCategories pct INDEX BY categoryId ON pct.rank = 1', $this->asString($clause));
+        $clause = JoinClause::leftJoin('p.ProductCategories', 'pct', 'ON', 'pct.sort_no = 1', 'categoryId');
+        self::assertEquals('LEFT JOIN p.ProductCategories pct INDEX BY categoryId ON pct.sort_no = 1', $this->asString($clause));
     }
 
     public function testWithWhere()
     {
         $clause = JoinClause::leftJoin('p.ProductCategories', 'pct')
             ->addWhere(WhereClause::eq('p.name', ':Name', 'hoge'))
-            ->addWhere(WhereClause::eq('pct.rank', ':Rank', 1));
-        self::assertEquals('LEFT JOIN p.ProductCategories pct WHERE p.name = :Name AND pct.rank = :Rank', $this->asString($clause));
-        self::assertEquals([new Parameter('Name', 'hoge'), new Parameter('Rank', 1)], $this->getParams($clause));
+            ->addWhere(WhereClause::eq('pct.sort_no', ':SortNo', 1));
+        self::assertEquals('LEFT JOIN p.ProductCategories pct WHERE p.name = :Name AND pct.sort_no = :SortNo', $this->asString($clause));
+        self::assertEquals([new Parameter('Name', 'hoge'), new Parameter('SortNo', 1)], $this->getParams($clause));
     }
 
     public function testWithOrderBy()
     {
         $clause = JoinClause::leftJoin('p.ProductCategories', 'pct')
-            ->addOrderBy(new OrderByClause('pct.rank', 'desc'))
+            ->addOrderBy(new OrderByClause('pct.sort_no', 'desc'))
             ->addOrderBy(new OrderByClause('pct.categoryId'));
-        self::assertEquals('LEFT JOIN p.ProductCategories pct ORDER BY pct.rank desc, pct.categoryId asc', $this->asString($clause));
+        self::assertEquals('LEFT JOIN p.ProductCategories pct ORDER BY pct.sort_no desc, pct.categoryId asc', $this->asString($clause));
     }
 
     private function asString(JoinClause $clause)

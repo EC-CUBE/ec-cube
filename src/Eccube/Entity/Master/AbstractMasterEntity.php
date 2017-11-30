@@ -37,9 +37,9 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
-    protected $rank;
+    protected $sort_no;
 
 
     /**
@@ -91,27 +91,27 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return $this
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     public function __get($name)
@@ -131,7 +131,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     protected static function getConstantValue($name)
     {
-        if (in_array($name, ['id', 'name', 'rank'])) {
+        if (in_array($name, ['id', 'name', 'sortNo'])) {
             throw new \InvalidArgumentException();
         }
         // see also. http://qiita.com/Hiraku/items/71e385b56dcaa37629fe

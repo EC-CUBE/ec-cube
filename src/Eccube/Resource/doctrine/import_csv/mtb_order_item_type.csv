@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","商品","0","orderitemtype"
 "2","送料","1","orderitemtype"
 "3","手数料","2","orderitemtype"

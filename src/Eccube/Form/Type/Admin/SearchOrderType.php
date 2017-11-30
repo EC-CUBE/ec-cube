@@ -31,9 +31,7 @@ use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -141,7 +139,7 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('commit_date_start', DateType::class, array(
+            ->add('shipping_date_start', DateType::class, array(
                 'label' => '発送日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
@@ -149,7 +147,7 @@ class SearchOrderType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('commit_date_end', DateType::class, array(
+            ->add('shipping_date_end', DateType::class, array(
                 'label' => '発送日(TO)',
                 'required' => false,
                 'input' => 'datetime',

@@ -47,7 +47,7 @@ class CategoryType extends AbstractType
             // なぜかDESC
             'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('c')
-                    ->orderBy('c.rank', 'DESC');
+                    ->orderBy('c.sort_no', 'DESC');
             },
         ));
     }

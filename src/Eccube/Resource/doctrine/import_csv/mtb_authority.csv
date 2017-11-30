@@ -1,3 +1,3 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "0","システム管理者","0","authority"
 "1","店舗オーナー","1","authority"

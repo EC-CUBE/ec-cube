@@ -834,7 +834,7 @@ class Application extends \Silex\Application
 
             // filters
             $config = $em->getConfiguration();
-            $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+            $config->addFilter("option_nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
             $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
 
             return $em;

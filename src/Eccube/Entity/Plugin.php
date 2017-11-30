@@ -70,9 +70,9 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="plugin_enable", type="boolean", options={"default":false})
+     * @ORM\Column(name="enabled", type="boolean", options={"default":false})
      */
-    private $enable = false;
+    private $enabled = false;
 
     /**
      * @var string
@@ -200,27 +200,27 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set enable.
+     * Set enabled.
      *
-     * @param boolean $enable
+     * @param boolean $enabled
      *
      * @return Plugin
      */
-    public function setEnable($enable)
+    public function setEnabled($enabled)
     {
-        $this->enable = $enable;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get enable.
+     * Get enabled.
      *
      * @return boolean
      */
-    public function isEnable()
+    public function isEnabled()
     {
-        return $this->enable;
+        return $this->enabled;
     }
 
     /**

@@ -126,9 +126,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var \DateTime
@@ -156,7 +156,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="work", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
      * })
      */
     private $Work;
@@ -166,7 +166,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="authority", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
      * })
      */
     private $Authority;
@@ -313,27 +313,27 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return Member
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**

@@ -51,12 +51,12 @@ class Loader
                         throw new \Exception(sprintf('"%s" is undefined in %s', $b->getFilename()));
                     }
 
-                    $a_rank = $definition[$a->getFilename()];
-                    $b_rank = $definition[$b->getFilename()];
+                    $a_sortNo = $definition[$a->getFilename()];
+                    $b_sortNo = $definition[$b->getFilename()];
 
-                    if ($a_rank < $b_rank) {
+                    if ($a_sortNo < $b_sortNo) {
                         return -1;
-                    } elseif ($a_rank > $b_rank) {
+                    } elseif ($a_sortNo > $b_sortNo) {
                         return 1;
                     } else {
                         return 0;

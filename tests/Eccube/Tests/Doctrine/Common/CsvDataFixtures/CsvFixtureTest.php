@@ -36,7 +36,7 @@ class CsvFixtureTest extends EccubeTestCase
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
         $headers = $this->file->current();
 
-        $this->expected = 'INSERT INTO mtb_job (id, name, rank, discriminator_type) VALUES (?, ?, ?, ?)';
+        $this->expected = 'INSERT INTO mtb_job (id, name, sort_no, discriminator_type) VALUES (?, ?, ?, ?)';
         $this->actual = $this->fixture->getSql('mtb_job', $headers);
         $this->verify();
     }
@@ -64,7 +64,7 @@ class CsvFixtureTest extends EccubeTestCase
         $this->verify('行数は一致するか？');
         foreach ($Jobs as $key => $Job) {
             $this->expected = $rows[$key][0].', '.$rows[$key][1].', '.$rows[$key][2];
-            $this->actual = $Job->getId().', '.$Job->getName().', '.$Job->getRank();
+            $this->actual = $Job->getId().', '.$Job->getName().', '.$Job->getSortNo();
             $this->verify($key.'行目のデータは一致するか？');
         }
     }
