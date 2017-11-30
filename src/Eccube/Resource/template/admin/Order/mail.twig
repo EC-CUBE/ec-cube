@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}メール通知{% endblock %}
+{% block title %}{{'admin.order.mail.339'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.mail.340'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -52,7 +52,7 @@ $(function() {
         }).done(function(data, textStatus, jqXHR){
             modal.find('.modal-body').html(data);
         }).fail(function(data, textStatus, errorThrown){
-            modal.find('.modal-body').text('取得に失敗しました。');
+            modal.find('.modal-body').text('{{'admin.order.mail.341'|trans}}。');
         });
     });
 
@@ -67,7 +67,7 @@ $(function() {
     <div id="history_box" class="col-md-9">
         <div id="history_box_body" class="box">
             <div id="history_box__header" class="box-header">
-                <h3 class="box-title">メール配信履歴</h3>
+                <h3 class="box-title">{{'admin.order.mail.342'|trans}}</h3>
             </div><!-- /.box-header -->
             <div id="history_box__body" class="box-body no-padding">
                 <div id="history_box__list_box" class="table_list">
@@ -75,8 +75,8 @@ $(function() {
                         <table class="table table-striped">
                             <thead>
                                 <tr id="history_box__item_header">
-                                    <th id="history_box__header_send_date">処理日</th>
-                                    <th id="history_box__header_subject">件名</th>
+                                    <th id="history_box__header_send_date">{{'admin.order.mail.343'|trans}}</th>
+                                    <th id="history_box__header_subject">{{'admin.order.mail.344'|trans}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,7 +102,7 @@ $(function() {
         <input id="mode" type="hidden" name="mode">
         <div id="edit_box__body" class="box">
             <div id="edit_box__header" class="box-header">
-                <h3 class="box-title">メール配信</h3>
+                <h3 class="box-title">{{'admin.order.mail.345'|trans}}</h3>
             </div><!-- /.box-header -->
             <div id="edit_box__body_inner" class="box-body">
                 <div id="edit_box__template" class="form-group">
@@ -144,8 +144,8 @@ $(function() {
         </div><!-- /.box -->
         <div id="edit_box__footer" class="row">
             <div id="button_box__button_menu" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                <button type="submit" class="btn btn-primary btn-lg" name="mode" value="confirm">送信内容を確認</button>
-                <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">検索結果へ戻る</a></p>
+                <button type="submit" class="btn btn-primary btn-lg" name="mode" value="confirm">{{'admin.order.mail.346'|trans}}</button>
+                <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">{{'admin.order.mail.347'|trans}}</a></p>
             </div>
         </div>
         </form>
@@ -163,7 +163,7 @@ $(function() {
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{'admin.order.mail.348'|trans}}</button>
       </div>
     </div>
   </div>

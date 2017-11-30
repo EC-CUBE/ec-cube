@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'system', 'authority'] %}
 
-{% block title %}システム設定{% endblock %}
-{% block sub_title %}権限管理{% endblock %}
+{% block title %}{{'admin.setting.system.authority.658'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.authority.659'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -65,11 +65,11 @@ $(function() {
         <div id="authority_wrap" class="col-md-9">
             <div id="authority_list_box" class="box">
                 <div id="authority_list_box__header" class="box-header">
-                    <h3 class="box-title">権限設定</h3>
+                    <h3 class="box-title">{{'admin.setting.system.authority.660'|trans}}</h3>
                     <div style="margin-left: 10px;">
                         <p>{{ app.request_stack.currentrequest.baseUrl ~ '/' ~ app.config.admin_route}}以降からのURLを拒否URLに入力してください。</p>
-                        <p>拒否URL以降がアクセス拒否されます。(URLは前方一致)</p>
-                        <p>例) /setting <span class="text-danger">※「/」を必ず記入してください</span></p>
+                        <p>{{'admin.setting.system.authority.662'|trans}}</p>
+                        <p>例) /setting <span class="text-danger">{{'admin.setting.system.authority.663'|trans}}</span></p>
                     </div>
                 </div><!-- /.box-header -->
                 <div id="authority_list_box__body" class="box-body">
@@ -79,8 +79,8 @@ $(function() {
                                     data-prototype="{% filter escape %}{{ include('Setting/System/authority_prototype.twig', {'form': form.AuthorityRoles.vars.prototype}) }}{% endfilter %}">
                                 <thead>
                                     <tr id="authority_list__header">
-                                        <th id="authority_list__header_role" style="width: 210px;">権限</th>
-                                        <th id="authority_list__header_deny_url">拒否URL</th>
+                                        <th id="authority_list__header_role" style="width: 210px;">{{'admin.setting.system.authority.664'|trans}}</th>
+                                        <th id="authority_list__header_deny_url">{{'admin.setting.system.authority.665'|trans}}</th>
                                         <th id="authority_list__header_delete_button" style="width: 80px;"></th>
                                     </tr>
                                 </thead>
@@ -96,7 +96,7 @@ $(function() {
                                             {{ form_errors(form.deny_url) }}
                                         </td>
                                         <td id="authority_list__delete_button--{{ loop.index }}" class="text-center">
-                                            <button type="button" class="btn btn-default delete">削除</button>
+                                            <button type="button" class="btn btn-default delete">{{'admin.setting.system.authority.666'|trans}}</button>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -105,7 +105,7 @@ $(function() {
                         </div>
                     </div>
                     <p id="authority_box__add_button">
-                        <button type="button" class="btn btn-default add">行追加</button>
+                        <button type="button" class="btn btn-default add">{{'admin.setting.system.authority.667'|trans}}</button>
                     </p>
                     <div class="extra-form clearfix">
                         {% for f in form.getIterator %}
@@ -128,7 +128,7 @@ $(function() {
                     <div id="common_button_box__body" class="box-body">
                         <div id="common_button_box__insert_button" class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.system.authority.668'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

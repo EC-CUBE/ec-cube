@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'system', 'system_index'] %}
 
-{% block title %}システム設定{% endblock %}
+{% block title %}{{'admin.setting.system.system.713'|trans}}{% endblock %}
 {% block sub_title %}システム情報{% endblock %}
 
 {% block main %}
@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="server_info_box" class="col-md-12">
             <div id="server_info_box__body" class="box">
                 <div id="server_info_box__header" class="box-header">
-                    <h3 class="box-title">システム情報</h3>
+                    <h3 class="box-title">{{'admin.setting.system.system.715'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="server_info_box__body_inner" class="box-body">
                     <dl class="dl-horizontal">
@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="php_info_box" class="col-md-12">
             <div id="php_info_box__body" class="box">
                 <div id="php_info_box__header" class="box-header">
-                    <h3 class="box-title">PHP情報</h3>
+                    <h3 class="box-title">{{'admin.setting.system.system.716'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="php_info_box__frame" class="box-body no-padding">
                     <iframe name="php_info" src="{{ url('admin_setting_system_system_phpinfo') }}" height="500" frameborder="0" style="width: 100%;"></iframe>

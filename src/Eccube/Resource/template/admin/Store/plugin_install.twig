@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}プラグインのアップロード{% endblock %}
+{% block title %}{{'admin.store.plugin_install.838'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.plugin_install.839'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
        {{ form_widget(form._token) }}
        <div class="box">
             <div class="box-header">
-                <h3 class="box-title">新規プラグインアップロード</h3>
+                <h3 class="box-title">{{'admin.store.plugin_install.840'|trans}}</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="form-group">
@@ -56,7 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="box-body">
                     <div class="row text-center">
                         <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                            <button class="btn btn-primary btn-block btn-lg" type="submit">アップロード</button>
+                            <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.store.plugin_install.842'|trans}}</button>
                         </div>
                     </div>
                 </div><!-- /.box-body -->

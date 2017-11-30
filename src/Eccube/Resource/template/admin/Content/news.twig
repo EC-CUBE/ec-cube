@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['content', 'news'] %}
 
-{% block title %}コンテンツ管理{% endblock %}
-{% block sub_title %}新着情報管理{% endblock %}
+{% block title %}{{'admin.content.news.53'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.news.54'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="news_list_box" class="col-md-12">
             <div id="news_list_box__body" class="box">
                 <div id="news_list_box__header" class="box-header">
-                    <h3 class="box-title">新着情報管理</h3>
+                    <h3 class="box-title">{{'admin.content.news.55'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="news_list_box__body_inner" class="box-body">
                     <form name="form1" id="form1" method="post" action="">
@@ -42,9 +42,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <table class="table table-striped">
                                     <thead>
                                        <tr id="news_list_box__list_header">
-                                            <th id="news_list_box__header_rank">順位</th>
-                                            <th id="news_list_box__header_date">日付</th>
-                                            <th id="news_list_box__header_title">タイトル</th>
+                                            <th id="news_list_box__header_rank">{{'admin.content.news.56'|trans}}</th>
+                                            <th id="news_list_box__header_date">{{'admin.content.news.57'|trans}}</th>
+                                            <th id="news_list_box__header_title">{{'admin.content.news.58'|trans}}</th>
                                             <th id="news_list_box__header_menu_box">&nbsp;</th>
                                         </tr>
                                     </thead>
@@ -58,16 +58,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div id="news_list_box__menu_box_toggle--{{ News.id }}" class="dropdown">
                                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                     <ul id="news_list_box__menu--{{ News.id }}" class="dropdown-menu dropdown-menu-right">
-                                                        <li><a href="{{ url('admin_content_news_edit', {id: News.id}) }}" >編集</a></li>
-                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この新着情報を削除してもよろしいですか？">削除</a></li>
+                                                        <li><a href="{{ url('admin_content_news_edit', {id: News.id}) }}" >{{'admin.content.news.59'|trans}}</a></li>
+                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.news.60'|trans}}">削除</a></li>
                                                         {% if loop.first == false %}
                                                             <li>
-                                                                <a href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
+                                                                <a href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.61'|trans}}</a>
                                                             </li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
                                                             <li>
-                                                                <a href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
+                                                                <a href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.62'|trans}}</a>
                                                             </li>
                                                         {% endif %}
 
@@ -85,7 +85,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
             <div id="news_list_box__footer" class="row">
                 <div id="news_list_box__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-primary btn-block btn-lg">新規登録</a>
+                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.content.news.63'|trans}}</a>
                 </div>
             </div>
 

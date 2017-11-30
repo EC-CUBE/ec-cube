@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'category_csv_import'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}カテゴリ登録CSVアップロード{% endblock %}
+{% block title %}{{'admin.product.csv_category.437'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.csv_category.438'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -70,11 +70,11 @@ $(function() {
             {{ form_widget(form._token) }}
             <div id="upload_wrap" class="box">
                 <div id="upload_box__header" class="box-header">
-                    <h3 class="box-title">カテゴリ登録CSV</h3>
+                    <h3 class="box-title">{{'admin.product.csv_category.439'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="upload_box__body" class="box-body">
                     <div id="upload_box__body_inner" class="form-group">
-                        <label class="col-sm-5 control-label">CSVファイル選択</label>
+                        <label class="col-sm-5 control-label">{{'admin.product.csv_category.440'|trans}}</label>
                         <div id="upload_box__file" class="col-sm-7">
                             {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
                             {{ form_errors(form.import_file) }}
@@ -86,7 +86,7 @@ $(function() {
                     <div id="spinner"></div>
                 </div><!-- /.box-body -->
                 <div class="box-footer text-center">
-                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
+                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">{{'admin.product.csv_category.441'|trans}}</button>
                 </div><!-- /.box-footer -->
             </div><!-- /.box -->
         </form>
@@ -97,8 +97,8 @@ $(function() {
     <div id="file_format_box" class="col-md-12">
         <div id="file_format_box__body" class="box">
             <div id="file_format_box__header" class="box-header">
-                <a href="{{ url('admin_product_csv_template', {'type': 'category'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
-                <h3 class="box-title">カテゴリ登録CSVファイルフォーマット</h3>
+                <a href="{{ url('admin_product_csv_template', {'type': 'category'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">{{'admin.product.csv_category.442'|trans}}</a>
+                <h3 class="box-title">{{'admin.product.csv_category.443'|trans}}</h3>
             </div><!-- /.box-header -->
             <div id="file_format_box__body_inner" class="box-body no-padding">
                 <div id="file_format_box__list_box" class="table_list">
@@ -113,8 +113,8 @@ $(function() {
                             </thead>
                             <tbody>
                                 <tr id="file_format_box__list" class="text-nowrap">
-                                    <td id="file_format_box__id">新規登録時は未設定<br>既存カテゴリの更新はカテゴリIDを設定</td>
-                                    <td id="file_format_box__name">必須</td>
+                                    <td id="file_format_box__id">{{'admin.product.csv_category.444'|trans}}</td>
+                                    <td id="file_format_box__name">{{'admin.product.csv_category.445'|trans}}</td>
                                     <td id="file_format_box__parent_id"></td>
                                 </tr>
                             </tbody>

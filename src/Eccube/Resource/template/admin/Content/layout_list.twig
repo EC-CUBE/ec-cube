@@ -25,8 +25,8 @@
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}コンテンツ管理{% endblock %}
-{% block sub_title %}レイアウト管理{% endblock %}
+{% block title %}{{'admin.content.layout_list.45'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.layout_list.46'|trans}}{% endblock %}
 
 {% block main %}
     <div id="page_wrap" class="container-fluid">
@@ -35,7 +35,7 @@
                 <div id="layout_list__body" class="box">
                     <div id="layout_list_box__header" class="box-header">
                         <div class="box-title">
-                            レイアウト一覧
+                            {{'admin.content.layout_list.47'|trans}}
                         </div>
                     </div>
                     <div id="sortable_list_box" class="box-body no-padding no-border">
@@ -43,8 +43,8 @@
                             <div class="tableish">
                                 <div class="item_box tr" style="background-color: #F9F9F9;">
                                     <div class="item_pattern td"><strong>ID</strong></div>
-                                    <div class="item_pattern td"><strong>レイアウト名</strong></div>
-                                    <div class="item_pattern td"><strong>端末</strong></div>
+                                    <div class="item_pattern td"><strong>{{'admin.content.layout_list.48'|trans}}</strong></div>
+                                    <div class="item_pattern td"><strong>{{'admin.content.layout_list.49'|trans}}</strong></div>
                                     <div class="item_pattern td"></div>
                                 </div>
                                 {% for Layout in Layouts %}
@@ -63,10 +63,10 @@
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="sortable_list_box__menu--{{ Layout.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
-                                                        <a href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}" >レイアウト編集</a>
+                                                        <a href="{{ url('admin_content_layout_edit', { id : Layout.id } ) }}" >{{'admin.content.layout_list.50'|trans}}</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ url('admin_content_layout_delete', { 'id': Layout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このページを削除してもよろしいですか？">削除</a>
+                                                        <a href="{{ url('admin_content_layout_delete', { 'id': Layout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.layout_list.51'|trans}}">削除</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -83,7 +83,7 @@
 
             <div id="layout_list__footer" class="row btn_area2">
                 <div id="layout_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_layout_new')}}">新規入力</a>
+                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_layout_new')}}">{{'admin.content.layout_list.52'|trans}}</a>
                 </div>
             </div>
 

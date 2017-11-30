@@ -23,8 +23,8 @@
 
 {% set menus = ['shipping', 'shipping_master'] %}
 
-{% block title %}出荷管理{% endblock %}
-{% block sub_title %}出荷マスター{% endblock %}
+{% block title %}{{'admin.shipping.index.759'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.shipping.index.760'|trans}}{% endblock %}
 
 {% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -79,7 +79,7 @@
                     }
                 });
                 if (!isChecked) {
-                    alert("チェックボックスが選択されていません");
+                    alert("{{'admin.shipping.index.761'|trans}}");
                     return false;
                 }
                 $('#dropdown-form').attr('action', href).submit();
@@ -118,7 +118,7 @@
             {{ form_widget(searchForm._token) }}
             <div id="search_box_main" class="row">
                 <div id="search_box_main__body" class="col-md-12 accordion">
-                    {{ form_widget(searchForm.multi, { attr: { placeholder: '配送番号・お届け先名・お届け先会社名', class : 'input_search' } } ) }}
+                    {{ form_widget(searchForm.multi, { attr: { placeholder: '{{'admin.shipping.index.762'|trans}}', class : 'input_search' } } ) }}
 
                     <a href="#" class="toggle{% if active %} active{% endif %}">
                         <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>
@@ -129,7 +129,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div id="search_box_main__order_status" class="form-group">
-                                            <label>受注状況</label>
+                                            <label>{{'admin.shipping.index.763'|trans}}</label>
                                             <div>
                                                 {{ form_widget(searchForm.order_status) }}
                                             </div>
@@ -139,7 +139,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div id="search_box_main__shipping_status" class="form-group">
-                                            <label>出荷状況</label>
+                                            <label>{{'admin.shipping.index.764'|trans}}</label>
                                             <div>
                                                 {{ form_widget(searchForm.shipping_status) }}
                                             </div>
@@ -155,7 +155,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div id="search_box_main__kana" class="form-group">
-                                            <label>お届け先 お名前(フリガナ)</label>
+                                            <label>{{'admin.shipping.index.766'|trans}}</label>
                                             {{ form_widget(searchForm.kana) }}
                                             {{ form_errors(searchForm.kana) }}
                                         </div>
@@ -170,7 +170,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div id="search_box_main__kana" class="form-group">
-                                            <label>ご注文者 お名前(フリガナ)</label>
+                                            <label>{{'admin.shipping.index.768'|trans}}</label>
                                             {{ form_widget(searchForm.order_kana) }}
                                             {{ form_errors(searchForm.order_kana) }}
                                         </div>
@@ -179,7 +179,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div id="search_box_main__order_id" class="form-group">
-                                            <label>注文番号</label>
+                                            <label>{{'admin.shipping.index.769'|trans}}</label>
                                             {{ form_widget(searchForm.order_id) }}
                                             {{ form_errors(searchForm.order_id) }}
                                         </div>
@@ -201,7 +201,7 @@
                                         </div>
                                     </div>
                                     <div id="search_box_main__payment_date" class="col-sm-6">
-                                        <label>出荷日</label>
+                                        <label>{{'admin.shipping.index.773'|trans}}</label>
                                         <div class="form-group range">
                                             {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
@@ -210,7 +210,7 @@
 
                                 <div class="row">
                                     <div id="search_box_main__update_date" class="col-sm-6">
-                                        <label>更新日</label>
+                                        <label>{{'admin.shipping.index.775'|trans}}</label>
                                         <div class="form-group range">
                                             {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
@@ -220,13 +220,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div id="search_box_main__payment_total" class="form-group range">
-                                            <label>購入金額</label>
+                                            <label>{{'admin.shipping.index.777'|trans}}</label>
                                             {{ form_widget(searchForm.payment_total_start) }} ～ {{ form_widget(searchForm.payment_total_end) }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div id="search_box_main__buy_product_name" class="form-group">
-                                            <label>購入商品名</label>
+                                            <label>{{'admin.shipping.index.779'|trans}}</label>
                                             {{ form_widget(searchForm.buy_product_name) }}
                                         </div>
                                     </div>
@@ -258,7 +258,7 @@
                                 </div><!-- /.row -->
                                 <div id="search_box_main__clear" class="row">
                                     <div class="col-sm-12">
-                                        <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
+                                        <p class="text-center"><a href="#" class="search-clear">{{'admin.shipping.index.780'|trans}}</a></p>
                                     </div>
                                 </div><!-- /.row -->
                             </div>
@@ -270,7 +270,7 @@
             <div id="search_box_footer" class="row btn_area">
                 <div id="search_box_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                     <button type="submit" class="btn btn-primary btn-block btn-lg">
-                        検索する <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+                        {{'admin.shipping.index.781'|trans}} <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                     </button>
                 </div>
                 <!-- /.col -->
@@ -302,17 +302,17 @@
                                                 </ul>
                                         </li>
                                         <li id="result_list_main__csv_menu" class="dropdown">
-                                            <a id="result_list_main__csv_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                            <a id="result_list_main__csv_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">{{'admin.shipping.index.785'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">出荷CSVダウンロード</a></li>
-                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">出荷CSV出力項目設定</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">{{'admin.shipping.index.786'|trans}}</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">{{'admin.shipping.index.787'|trans}}</a></li>
                                             </ul>
                                         </li>
                                         <li id="dropmenu" class="dropdown">
-                                            <a id="result_list_main__other_menu_toggle"class="dropdown-toggle" data-toggle="dropdown">その他<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                            <a id="result_list_main__other_menu_toggle"class="dropdown-toggle" data-toggle="dropdown">{{'admin.shipping.index.788'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">出荷済みに更新</a></li>
-                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">メール一括通知</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')"{{'admin.shipping.index.789'|trans}}</a></li>
+                                                <li><a href="javascript:;" onclick="alert('この機能は準備中です')">{{'admin.shipping.index.790'|trans}}</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -325,13 +325,13 @@
                                             <thead>
                                                 <tr id="result_list_main__header">
                                                     <th class="text-center"><input type="checkbox" id="check-all"></th>
-                                                    <th id="result_list_main__header_id">配送番号</th>
-                                                    <th id="result_list_main__header_order_date">出荷伝票番号</th>
-                                                    <th id="result_list_main__header_name">お届け先名</th>
+                                                    <th id="result_list_main__header_id">{{'admin.shipping.index.791'|trans}}</th>
+                                                    <th id="result_list_main__header_order_date">{{'admin.shipping.index.792'|trans}}</th>
+                                                    <th id="result_list_main__header_name">{{'admin.shipping.index.793'|trans}}</th>
                                                     <th id="result_list_main__header_payment_method">お届け先住所</th>
-                                                    <th id="result_list_main__header_delivery_date">お届け予定日</th>
-                                                    <th id="result_list_main__header_commit_date">発送日</th>
-                                                    <th id="result_list_main__header_commit_date">出荷状況</th>
+                                                    <th id="result_list_main__header_delivery_date">{{'admin.shipping.index.795'|trans}}</th>
+                                                    <th id="result_list_main__header_commit_date">{{'admin.shipping.index.796'|trans}}</th>
+                                                    <th id="result_list_main__header_commit_date">{{'admin.shipping.index.797'|trans}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -339,7 +339,7 @@
                                                     <tr id="result_list_main__item--{{ Shipping.id }}">
                                                         <td id="result_list_main__id_check--{{ Shipping.id }}" class="text-center"><input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}"></td>
                                                         <td id="result_list_main__id--{{ Shipping.id }}"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
-                                                        <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber|default('未登録') }} </td>
+                                                        <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber|default('{{'admin.shipping.index.798'|trans}}') }} </td>
                                                         <td id="result_list_main__name--{{ Shipping.id }}">{{ Shipping.name01 }} {{ Shipping.name02 }}</td>
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate|date_format }}</td>
@@ -358,7 +358,7 @@
                         {% endif %}
                     {% else %}
                         <div class="box-header with-arrow">
-                            <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+                            <h3 class="box-title">{{'admin.shipping.index.799'|trans}}</h3>
                         </div><!-- /.box-header -->
                     {% endif %}
                 </div><!-- /.box -->

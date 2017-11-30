@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}プラグイン一覧{% endblock %}
+{% block title %}{{'admin.store.plugin.809'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.plugin.810'|trans}}{% endblock %}
 
 {% block javascript %}
     <script>
@@ -50,8 +50,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <a href="{{ url('admin_store_plugin_owners_search') }}" class="btn btn-info btn-xs pull-right">プラグインの新規追加はこちら</a>
-                    <h3 class="box-title">オーナーズストアプラグイン</h3>
+                    <a href="{{ url('admin_store_plugin_owners_search') }}" class="btn btn-info btn-xs pull-right">{{'admin.store.plugin.811'|trans}}</a>
+                    <h3 class="box-title">{{'admin.store.plugin.812'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     {{ include('Store/plugin_table_official.twig', {'Plugins': officialPlugins}) }}
@@ -60,8 +60,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             <div class="box">
                 <div class="box-header">
-                    <a href="{{ url('admin_store_plugin_install') }}" class="btn btn-info btn-xs pull-right">プラグインのアップロードはこちら</a>
-                    <h3 class="box-title">独自プラグイン</h3>
+                    <a href="{{ url('admin_store_plugin_install') }}" class="btn btn-info btn-xs pull-right">{{'admin.store.plugin.813'|trans}}</a>
+                    <h3 class="box-title">{{'admin.store.plugin.814'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     {{ include('Store/plugin_table.twig', {'Plugins': unofficialPlugins}) }}
@@ -70,7 +70,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% if unregisterdPlugins is not empty %}
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">未登録プラグイン</h3>
+                        <h3 class="box-title">{{'admin.store.plugin.815'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         {{ include('Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
@@ -86,7 +86,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
-                    <h4 class="modal-title" id="readmeModalLabel">{# プラグイン名 #}</h4>
+                    <h4 class="modal-title" id="readmeModalLabel">{# {{'admin.store.plugin.816'|trans}} #}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group" id="readmeContent">

@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['shipping', 'shipping_edit'] %}
 
-{% block title %}出荷管理{% endblock %}
-{% block sub_title %}出荷登録・編集{% endblock %}
+{% block title %}{{'admin.shipping.edit.717'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.shipping.edit.718'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
@@ -182,7 +182,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         function setShippingDeliveryTime(val, idx){
             var $shippingDeliveryTime = $('.shipping-delivery-time[data-idx="' + idx + '"]');
             $shippingDeliveryTime.find('option').remove();
-            $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+            $shippingDeliveryTime.append($('<option></option>').val('').text('{{'admin.shipping.edit.719'|trans}}'));
 
             if (typeof(times[val]) !== 'undefined') {
                 for (var key in times[val]){
@@ -218,15 +218,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="number_info_box__body" class="box-body">
                         <div class="row">
                             <div id="number_info_box__order_status" class="col-sm-4">
-                                <h4>出荷番号 <span class="number">{{ Shipping.id }}</span></h4>
+                                <h4>{{'admin.shipping.edit.720'|trans}} <span class="number">{{ Shipping.id }}</span></h4>
                                 <div class="form-group">
-                                    配送業者 <span class="number">{{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': 0}}) }}{{ form_errors(form.Delivery) }}</span>
+                                    {{'admin.shipping.edit.721'|trans}} <span class="number">{{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': 0}}) }}{{ form_errors(form.Delivery) }}</span>
                                 </div>
                                 <div>
-                                    <h4>注文者名</h4>
+                                    <h4>{{'admin.shipping.edit.722'|trans}}</h4>
                                     {% for Order in Shipping.Orders  %}
                                         <div class="form-group">
-                                            注文番号: <span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span><br>
+                                            {{'admin.shipping.edit.723'|trans}}: <span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span><br>
                                             {{ Order.Name01 }} {{ Order.Name02 }} ({{ Order.Kana01 }} {{ Order.Kana02 }})<br>
                                             〒{{ Order.Zip01 }}-{{ Order.Zip02 }}<br>
                                             {{ Order.Pref }}{{ Order.Addr01 }}{{ Order.Addr02 }}
@@ -241,15 +241,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                 </div>
                                 <div class="form-group">
-                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>お届け時間: {{ Shipping.ShippingDeliveryTime }}
+                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.shipping.edit.726'|trans}}: {{ Shipping.ShippingDeliveryTime }}
                                     {{ form_widget(shippingForm.DeliveryTime, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="form-group">
-                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>出荷状況:{{ Shipping.ShippingStatus }}
+                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.shipping.edit.727'|trans}}:{{ Shipping.ShippingStatus }}
                                 </div>
-                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>出荷日：{{ Shipping.commit_date ? Shipping.commit_date|date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.shipping.edit.728'|trans}}：{{ Shipping.commit_date ? Shipping.commit_date|date("Y/m/d H:i:s") : '' }}</p>
                                 <div class="form-group">
-                                    出荷伝票番号
+                                    {{'admin.shipping.edit.729'|trans}}
                                     {{ form_widget(form.tracking_number) }}
                                     {{ form_errors(form.tracking_number) }}
                                 </div>
@@ -260,15 +260,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <div id="customer_info_box"  class="box accordion">
                 <div id="customer_info_box__toggle" class="box-header toggle active">
-                    <h3 class="box-title">お届け先情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.shipping.edit.730'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="customer_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="customer_info_list" class="order_list form-horizontal">
                         <div id="customer_info_list__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
-                                {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-                                {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                                {{ form_widget(form.name.name01, { attr : { placeholder: '{{'admin.shipping.edit.731'|trans}}' }}) }}
+                                {{ form_widget(form.name.name02, { attr : { placeholder: '{{'admin.shipping.edit.732'|trans}}' }}) }}
                                 {{ form_errors(form.name.name01) }}
                                 {{ form_errors(form.name.name02) }}
                             </div>
@@ -276,8 +276,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="customer_info_list__kana" class="form-group">
                             {{ form_label(form.kana) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
-                                {{ form_widget(form.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
-                                {{ form_widget(form.kana.kana02, { attr : { placeholder : 'メイ' }}) }}
+                                {{ form_widget(form.kana.kana01, { attr : { placeholder : '{{'admin.shipping.edit.733'|trans}}' }}) }}
+                                {{ form_widget(form.kana.kana02, { attr : { placeholder : '{{'admin.shipping.edit.734'|trans}}' }}) }}
                                 {{ form_errors(form.kana.kana01) }}
                                 {{ form_errors(form.kana.kana02) }}
                             </div>
@@ -286,7 +286,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="customer_info_list__address" class="form-group">
                             {{ form_label(form.address) }}
                             <div id="customer_info_list__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
-                                〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
+                                {{'admin.shipping.edit.735'|trans}}{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip.zip01) }}
                                 {{ form_errors(form.zip.zip02) }}
                             </div>
@@ -301,14 +301,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {# 住所：住所1 #}
                         <div class="form-group">
                             <div id="customer_info_list__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
+                                {{ form_widget(form.address.addr01, { attr : { placeholder : '{{'admin.shipping.edit.736'|trans}}'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
                         <div class="form-group">
                             <div id="customer_info_list__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
+                                {{ form_widget(form.address.addr02, { attr : { placeholder : '{{'admin.shipping.edit.737'|trans}}' }}) }}
                                 {{ form_errors(form.address.addr02) }}
                             </div>
                         </div>
@@ -351,14 +351,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             <div id="product_info_box" class="box accordion">
                 <div id="product_info_box__toggle" class="box-header toggle active">
-                    <h3 class="box-title">出荷商品情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.shipping.edit.738'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="product_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="product_info_list" class="order_list">
                         <div class="btn_area">
                             <ul id="product_info_list__search_menu">
-                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">注文から商品の追加</a></li>
-                                <li><button onclick="alert('この機能は準備中です')" type="button" class="btn btn-default" name="mode" value="calc">送料の更新</button></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">{{'admin.shipping.edit.739'|trans}}</a></li>
+                                <li><button onclick="alert('この機能は準備中です')" type="button" class="btn btn-default" name="mode" value="calc">{{'admin.shipping.edit.740'|trans}}</button></li>
                             </ul>
                         </div>
                         <div class="tableish"
@@ -386,7 +386,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(orderItemForm.order_item_type) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
-                                            <span>注文番号: <a href="{{ url('admin_order_edit', { id : orderItemForm.vars.value.Order.id }) }}">{{ orderItemForm.vars.value.Order.id }}</a></span><br>
+                                            <span>{{'admin.shipping.edit.741'|trans}}: <a href="{{ url('admin_order_edit', { id : orderItemForm.vars.value.Order.id }) }}">{{ orderItemForm.vars.value.Order.id }}</a></span><br>
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderItemForm.vars.value.product_name }}</strong><br>
                                             <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderItemForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
@@ -406,7 +406,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="row">
                                             <div id="product_info_list__price--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
-                                                    単価： {{ orderItemForm.vars.value.price|price }}
+                                                    {{'admin.shipping.edit.744'|trans}}： {{ orderItemForm.vars.value.price|price }}
 
                                                         {{ form_widget(orderItemForm.price, { type: 'hidden', attr: { class: 'notmoney' } } ) }}
                                                         {{ form_errors(orderItemForm.price) }}
@@ -414,7 +414,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
-                                                    数量：{{ orderItemForm.vars.value.quantity }}
+                                                    {{'admin.shipping.edit.745'|trans}}：{{ orderItemForm.vars.value.quantity }}
                                                     {{ form_widget(orderItemForm.quantity, { type: 'hidden' } ) }}
                                                         {{ form_errors(orderItemForm.quantity) }}
 
@@ -422,14 +422,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
-                                                    税率：{{ orderItemForm.vars.value.tax_rate }}%
+                                                    {{'admin.shipping.edit.746'|trans}}：{{ orderItemForm.vars.value.tax_rate }}%
 
                                                     {{ form_widget(orderItemForm.tax_rate, { type: 'hidden' } ) }}
                                                     {{ form_errors(orderItemForm.tax_rate) }}
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
-                                                <span>小計：</span> {{ orderItemForm.vars.value.total_price|price }}
+                                                <span>{{'admin.shipping.edit.747'|trans}}：</span> {{ orderItemForm.vars.value.total_price|price }}
                                             </div>
                                         </div>
 
@@ -437,7 +437,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if BaseInfo.optionMultipleShipping %}
                                     {% else %}
                                         <div id="product_info_list__button_multiple_shipping_delete--{{ loop.index }}" class="icon_edit">
-                                            <button type="button" class="btn btn-default btn-sm delete-item">削除</button>
+                                            <button type="button" class="btn btn-default btn-sm delete-item">{{'admin.shipping.edit.748'|trans}}</button>
                                         </div>
                                     {% endif %}
                                 </div><!-- /.item_box -->
@@ -450,17 +450,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             <div id="shop_info_box" class="box">
                 <div id="shop_info_box__header" class="box-header">
-                    <h3 class="box-title">配達用メモ欄</h3>
+                    <h3 class="box-title">{{'admin.shipping.edit.749'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="shop_info_box__note" class="box-body">{{ form_widget(form.note) }}</div>
             </div><!-- /.box -->
 
             <div id="detail__insert_button" class="row btn_area">
                 <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">出荷情報を登録</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">{{'admin.shipping.edit.750'|trans}}</button>
                 </p>
                 <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register_and_commit">出荷済みとして出荷情報を登録</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register_and_commit">{{'admin.shipping.edit.751'|trans}}</button>
                 </p>
 
                 <!-- /.col -->
@@ -469,7 +469,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="detail__back_button" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     {% if id is not null %}
-                        <p><a href="{{ url('admin/shipping/page', { page_no: app.session.get('eccube.admin.Shipping.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
+                        <p><a href="{{ url('admin/shipping/page', { page_no: app.session.get('eccube.admin.Shipping.search.page_no')|default('1') }) }}?resume=1">{{'admin.shipping.edit.752'|trans}}</a></p>
                     {% endif %}
                 </div>
             </div>
@@ -488,11 +488,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="search_customer_modal_box" class="modal-content">
             <div id="search_customer_modal_box__header" class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">会員検索</h4>
+                <h4 class="modal-title" id="myModalLabel">{{'admin.shipping.edit.753'|trans}}</h4>
             </div>
             <div id="search_customer_modal_box__body" class="modal-body">
                 <div class="form-group">
-                    {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '会員ID・メールアドレス・お名前' } } ) }}
+                    {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '{{'admin.shipping.edit.754'|trans}}' } } ) }}
                 </div>
                 <div class="extra-form form-group">
                     {% for f in searchCustomerModalForm.getIterator %}
@@ -504,7 +504,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endfor %}
                 </div>
                 <div id="search_customer_modal_box__button_search" class="form-group">
-                    <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
+                    <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >{{'admin.shipping.edit.755'|trans}}</button>
                 </div>
                 <div class="form-group" id="searchCustomerModalList">
                 </div>
@@ -519,12 +519,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="search_product_modal_box" class="modal-content">
             <div id="search_product_modal_box__header" class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">注文検索</h4>
+                <h4 class="modal-title" id="myModalLabel">{{'admin.shipping.edit.756'|trans}}</h4>
             </div>
             <div id="search_product_modal_box__body" class="modal-body">
                 <!-- TODO 検索項目の実装
                 <div id="search_product_modal_box__id" class="form-group">
-                    {{ form_widget(searchProductModalForm.id, { attr : { placeholder : '商品名・ID・コード' } } ) }}
+                    {{ form_widget(searchProductModalForm.id, { attr : { placeholder : '{{'admin.shipping.edit.757'|trans}}' } } ) }}
                 </div>
                 <div id="search_product_modal_box__category_id" class="form-group">
                     {{ form_widget(searchProductModalForm.category_id) }}
@@ -540,7 +540,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endfor %}
                 </div>
                 <div id="search_product_modal_box__button_search" class="form-group">
-                    <button type="button" id="searchProductModalButton" class="btn btn-primary">検索</button>
+                    <button type="button" id="searchProductModalButton" class="btn btn-primary">{{'admin.shipping.edit.758'|trans}}</button>
                 </div>
                 <div class="form-group" id="searchProductModalList">
                 </div>

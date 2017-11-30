@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['customer', 'customer_master'] %}
 
-{% block title %}会員管理{% endblock %}
-{% block sub_title %}会員マスター{% endblock %}
+{% block title %}{{'admin.customer.index.110'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.customer.index.111'|trans}}{% endblock %}
 
 {% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -119,7 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div id="search_box" class="row">
       <div id="search_box_main" class="col-md-12 accordion">
 
-        {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前', class : 'input_search' } } ) }}
+        {{ form_widget(searchForm.multi, { attr: { placeholder: '{{'admin.customer.index.112'|trans}}', class : 'input_search' } } ) }}
 
         <a id="search_box_main__toggle" href="#" class="toggle{% if active %} active{% endif %}"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
         <div id="search_box_main__body" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
@@ -128,69 +128,69 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
               <div class="col-xs-6 col-md-4">
                 <div id="search_box_main__customer_status" class="form-group">
-                  <label>会員種別</label>
+                  <label>{{'admin.customer.index.113'|trans}}</label>
                   {{ form_widget(searchForm.customer_status) }}
                 </div>
               </div>
               <div class="col-xs-6 col-md-4">
                 <div id="search_box_main__sex" class="form-group">
-                  <label>性別</label>
+                  <label>{{'admin.customer.index.114'|trans}}</label>
                   {{ form_widget(searchForm.sex) }}
                 </div>
               </div>
               <div class="col-xs-12 col-md-4">
                 <div id="search_box_main__birth_month" class="form-group">
-                  <label>誕生月</label>
+                  <label>{{'admin.customer.index.115'|trans}}</label>
                   {{ form_widget(searchForm.birth_month) }}
                 </div>
               </div>
               <div id="search_box_main__birth" class="col-xs-12 col-sm-12 col-md-6">
-                <label>誕生日</label>
+                <label>{{'admin.customer.index.116'|trans}}</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
               <div class="col-xs-6">
                 <div id="search_box_main__pref" class="form-group">
-                  <label>都道府県</label>
+                  <label>{{'admin.customer.index.118'|trans}}</label>
                   {{ form_widget(searchForm.pref) }}
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6">
                 <div id="search_box_main__tel" class="form-group">
-                  <label>電話番号</label>
+                  <label>{{'admin.customer.index.119'|trans}}</label>
                   {{ form_widget(searchForm.tel) }}
                   {{ form_errors(searchForm.tel) }}
                 </div>
               </div>
               <div id="search_box_main__crate_date" class="col-xs-12 col-sm-6">
-                <label>登録日</label>
+                <label>{{'admin.customer.index.120'|trans}}</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
               <div id="search_box_main__update_date" class="col-xs-12 col-sm-6">
-                <label>更新日</label>
+                <label>{{'admin.customer.index.122'|trans}}</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div id="search_box_main__buy_total" class="form-group range">
-                  <label>購入金額</label>
+                  <label>{{'admin.customer.index.124'|trans}}</label>
                   {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div id="search_box_main__buy_times" class="form-group range">
-                  <label>購入回数</label>
+                  <label>{{'admin.customer.index.126'|trans}}</label>
                   {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
                 </div>
               </div>
               {#
               <div class="col-xs-12 col-sm-12 col-md-6">
                 <div class="form-group">
-                  <label>購入商品カテゴリー</label>
+                  <label>{{'admin.customer.index.128'|trans}}</label>
                   {{ form_widget(searchForm.buy_category) }}
                 </select>
               </div>
@@ -198,12 +198,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             #}
             <div class="col-xs-12 col-sm-12 col-md-6">
               <div id="search_box_main__buy_product_code" class="form-group">
-                <label>購入商品名・コード</label>
+                <label>{{'admin.customer.index.129'|trans}}・コード</label>
                 {{ form_widget(searchForm.buy_product_code) }}
               </div>
             </div>
             <div id="search_box_main__last_buy" class="col-xs-12 col-sm-12 col-md-6">
-              <label>最終購入日</label>
+              <label>{{'admin.customer.index.130'|trans}}</label>
               <div class="form-group range">
                 {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
               </div>
@@ -220,7 +220,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endfor %}
                 </div>
             <div id="search_box_main__clear" class="col-xs-12 col-sm-12">
-              <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
+              <p class="text-center"><a href="#" class="search-clear">{{'admin.customer.index.132'|trans}}</a></p>
             </div>
           </div>
         </div>
@@ -231,7 +231,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   <div id="search_box_footer" class="row btn_area">
     <div id="search_box_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
       <button type="submit" class="btn btn-primary btn-block btn-lg">
-        検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
+        {{'admin.customer.index.133'|trans}} <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
       </button>
     </div>
     <!-- /.col -->
@@ -261,9 +261,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   </ul>
               </li>
               <li id="result_list_main__csv_menu" class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
+              <a class="dropdown-toggle" data-toggle="dropdown">{{'admin.customer.index.137'|trans}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
               <ul class="dropdown-menu">
-                <li><a href="{{ url('admin_customer_export') }}">CSVダウンロード</a></li>
+                <li><a href="{{ url('admin_customer_export') }}">{{'admin.customer.index.138'|trans}}</a></li>
                 <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CUSTOMER') }) }}">出力項目設定</a></li>
               </ul>
               </li>
@@ -276,10 +276,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <table class="table table-striped">
                         <thead>
                         <tr id="result_list_main__header">
-                            <th id="result_list_main__header_id">会員ID</th>
-                            <th id="result_list_main__header_name">会員名</th>
-                            <th id="result_list_main__header_tel">電話番号</th>
-                            <th id="result_list_main__header_mail">メールアドレス</th>
+                            <th id="result_list_main__header_id">{{'admin.customer.index.140'|trans}}</th>
+                            <th id="result_list_main__header_name">{{'admin.customer.index.141'|trans}}</th>
+                            <th id="result_list_main__header_tel">{{'admin.customer.index.142'|trans}}</th>
+                            <th id="result_list_main__header_mail">{{'admin.customer.index.143'|trans}}</th>
                             <th id="result_list_main__header_menu_box">&nbsp;</th>
                         </tr>
                         </thead>
@@ -294,10 +294,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div id="result_list_main__menu_box_toggle--{{ Customer.id }}" class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                     <ul id="result_list_main__menu--{{ Customer.id }}" class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">編集</a></li>
-                                        <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この会員情報を削除してもよろしいですか？">削除</a></li>
+                                        <li><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{'admin.customer.index.144'|trans}}</a></li>
+                                        <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.customer.index.145'|trans}}">削除</a></li>
                                         {% if Customer.Status.id == 1 %}
-                                        <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="仮登録メールを再送してもよろしいですか？">仮会員メール再送</a></li>
+                                        <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.customer.index.146'|trans}}">仮会員メール再送</a></li>
                                         {% endif %}
                                     </ul>
                                 </div>
@@ -315,7 +315,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       {% endif %}
       {% else %}
       <div id="result_list_main__header" class="box-header with-arrow">
-        <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+        <h3 class="box-title">{{'admin.customer.index.147'|trans}}</h3>
       </div><!-- /.box-header -->
       {% endif %}
     </div><!-- /.box -->

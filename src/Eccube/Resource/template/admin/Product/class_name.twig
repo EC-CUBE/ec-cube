@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'class_name'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}規格編集{% endblock %}
+{% block title %}{{'admin.product.class_name.428'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.class_name.429'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -86,7 +86,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="edit_box__body" class="form-group">
                             <div class="col-md-12 form-inline">
                                 {{ form_widget(form._token) }}
-                                {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
+                                {{ form_widget(form.name, {attr: {placeholder: '{{'admin.product.class_name.430'|trans}}'}}) }}
                                 {{ form_errors(form.name) }}
                                 <button class="btn btn-default btn-sm" type="submit">規格作成</button>
                             </div>
@@ -124,20 +124,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <ul id="sortable_list_box__menu--{{ ClassName.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
                                                         <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">
-                                                            分類登録
+                                                            {{'admin.product.class_name.432'|trans}}
                                                         </a>
                                                     </li>
 
                                                     {% if ClassName.id != TargetClassName.id %}
-                                                        <li><a href="{{ url('admin_product_class_name_edit', {id: ClassName.id}) }}">編集</a></li>
+                                                        <li><a href="{{ url('admin_product_class_name_edit', {id: ClassName.id}) }}">{{'admin.product.class_name.433'|trans}}</a></li>
                                                     {% else %}
-                                                        <li><a>編集中</a></li>
+                                                        <li><a>{{'admin.product.class_name.434'|trans}}</a></li>
                                                     {% endif %}
 
                                                     {% if ClassName.ClassCategories|length == 0 %}
                                                         <li>
                                                             <a href="{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                                削除
+                                                                {{'admin.product.class_name.435'|trans}}
                                                             </a>
                                                         </li>
                                                     {% endif %}

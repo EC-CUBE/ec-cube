@@ -70,7 +70,7 @@
                         var class_category_id1 = $sele1.val();
                         var class_cateogry_id2 = $sele2.val();
                         if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
-                            alert('規格を選択してください。')
+                            alert('{{'admin.order.search_product.379'|trans}}')
                             return;
                         }
                         var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
@@ -80,7 +80,7 @@
                     } else {
                         var class_category_id1 = $sele1.val();
                         if (class_category_id1 == '__unselected') {
-                            alert('規格を選択してください。')
+                            alert('{{'admin.order.search_product.379'|trans}}')
                             return;
                         }
                         var product = productsClassCategories[product_id][class_category_id1]['#'];
@@ -172,7 +172,7 @@
                         -
                     </td>
                     <td>
-                        送料を追加
+                        {{'admin.order.search_product.381'|trans}}
                     </td>
                     <td>
                     </td>
@@ -180,7 +180,7 @@
                     </div>
                     <td class="text-right">
                         <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DELIVERY_FEE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            決定
+                            {{'admin.order.search_product.382'|trans}}
                         </button>
                     </td>
                 </tr>
@@ -191,7 +191,7 @@
                         -
                     </td>
                     <td>
-                        手数料を追加
+                        {{'admin.order.search_product.383'|trans}}
                     </td>
                     <td>
                     </td>
@@ -199,7 +199,7 @@
                     </div>
                     <td class="text-right">
                         <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::CHARGE') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            決定
+                            {{'admin.order.search_product.382'|trans}}
                         </button>
                     </td>
                 </tr>
@@ -210,7 +210,7 @@
                         -
                     </td>
                     <td>
-                        値引きを追加
+                        {{'admin.order.search_product.385'|trans}}
                     </td>
                     <td>
                     </td>
@@ -218,7 +218,7 @@
                     </div>
                     <td class="text-right">
                         <button onclick="fnAddOrderItem($(this).parent().parent(), null, {{ constant('Eccube\\Entity\\Master\\OrderItemType::DISCOUNT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            決定
+                            {{'admin.order.search_product.382'|trans}}
                         </button>
                     </td>
                 </tr>
@@ -229,7 +229,7 @@
                         -
                     </td>
                     <td>
-                        空白の明細を追加
+                        {{'admin.order.search_product.387'|trans}}
                     </td>
                     <td>
                     </td>
@@ -237,7 +237,7 @@
                     </div>
                     <td class="text-right">
                         <button onclick="alert('この機能は準備中です')" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                            決定
+                            {{'admin.order.search_product.382'|trans}}
                         </button>
                     </td>
                 </tr>
@@ -277,7 +277,7 @@
                         </div>
                         <td class="text-right">
                             <button onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
-                                決定
+                                {{'admin.order.search_product.382'|trans}}
                             </button>
                         </td>
                     </tr>

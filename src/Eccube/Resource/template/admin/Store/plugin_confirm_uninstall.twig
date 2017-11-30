@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}プラグイン削除{% endblock %}
+{% block title %}{{'admin.store.plugin_confirm_uninstall.823'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.plugin_confirm_uninstall.824'|trans}}{% endblock %}
 
 {% block javascript %}
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/masonry.pkgd.min.js"></script>
@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">以下のプラグインを削除します。</h3>
+                    <h3 class="box-title">{{'admin.store.plugin_confirm_uninstall.825'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="col-xs-12">
                             <span class="pull-right">
                                 <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_uninstall', {'id': item.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">削除</a>
-                                <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">戻る</button>
+                                <button class="btn btn-cancel btn-xs" type="button" onclick="return window.history.back()">{{'admin.store.plugin_confirm_uninstall.827'|trans}}</button>
                             </span>
                         </div>
                     </div>

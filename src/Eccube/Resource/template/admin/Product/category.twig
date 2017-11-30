@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'class_category'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}カテゴリ編集{% endblock %}
+{% block title %}{{'admin.product.category.399'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.category.400'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -96,7 +96,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="list_box__body" class="box">
                 <div id="bread_crumb_box" class="box-header">
                     <div id="bread_crumb_box__body" class="box-title box-title-category">
-                        <a href="{{ url('admin_product_category') }}">全カテゴリー</a>
+                        <a href="{{ url('admin_product_category') }}">{{'admin.product.category.401'|trans}}</a>
                         {% for ParentCategory in TargetCategory.path %}
                             {% if ParentCategory.id is not null %}
                             &nbsp;<svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>&nbsp;<a href="{{ url('admin_product_category_show', { parent_id : ParentCategory.id }) }}">{{ ParentCategory.name }}</a>
@@ -112,9 +112,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if TargetCategory.hierarchy < app.config.category_nest_level %}
                                         <div class="col-md-12 form-inline">
                                             {{ form_widget(form._token) }}
-                                            {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
+                                            {{ form_widget(form.name, {attr: {placeholder: '{{'admin.product.category.402'|trans}}'}}) }}
                                             {{ form_errors(form.name) }}
-                                            <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
+                                            <button class="btn btn-default btn-sm" type="submit">{{'admin.product.category.403'|trans}}</button>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -132,9 +132,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </form>
                         </div>
                         <div id="csv_menu_box" class="dl_dropdown col-md-3">
-                            <div id="csv_menu_box__toggle" class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
+                            <div id="csv_menu_box__toggle" class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">{{'admin.product.category.404'|trans}}<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
                                 <ul id="csv_menu" class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="{{ url('admin_product_category_export') }}">CSVダウンロード</a></li>
+                                    <li><a href="{{ url('admin_product_category_export') }}">{{'admin.product.category.405'|trans}}</a></li>
                                     <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}">出力項目設定</a></li>
                                 </ul>
                             </div>
@@ -160,17 +160,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                             <ul id="sortable_list__menu--{{ Category.id }}" class="dropdown-menu dropdown-menu-right">
                                                 {% if Category.id != TargetCategory.id %}
-                                                    <li><a href="{{ url('admin_product_category_edit', {id: Category.id}) }}">編集</a></li>
+                                                    <li><a href="{{ url('admin_product_category_edit', {id: Category.id}) }}">{{'admin.product.category.407'|trans}}</a></li>
                                                 {% else %}
-                                                    <li><a>編集中</a></li>
+                                                    <li><a>{{'admin.product.category.408'|trans}}</a></li>
                                                 {% endif %}
 
                                                 {% if Category.Children|length > 0 or Category.hasProductCategories %}
-                                                    <li><a title="子カテゴリが存在するため削除できません。">削除</a></li>
+                                                    <li><a title="子カテゴリが存在するため{{'admin.product.category.410'|trans}}できません。">{{'admin.product.category.410'|trans}}</a></li>
                                                 {% else %}
                                                     <li>
                                                         <a href="{{ url('admin_product_category_delete', {id: Category.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
-                                                            削除
+                                                            {{'admin.product.category.410'|trans}}
                                                         </a>
                                                     </li>
                                                 {% endif %}
@@ -216,7 +216,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div id="tree_box__body" class="box no-header">
                     <div id="tree_box__body_inner" class="box-body">
                         <div id="tree_box__tree" class="tree">
-                            <p id="tree_box__header" class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
+                            <p id="tree_box__header" class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">{{'admin.product.category.401'|trans}}</a></p>
                             <ul id="category_tree">
                                 {% for TopCategory in TopCategories %}
                                     {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null), 0)}}

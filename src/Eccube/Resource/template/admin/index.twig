@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% block title %}ホーム{% endblock %}
+{% block title %}{{'admin.index.159'|trans}}{% endblock %}
 
 {% block javascript %}
 <script>
@@ -52,7 +52,7 @@ $(function(){
                 <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
                 <div class="box" id="order_info">
                     <div class="box-header">
-                        <h3 class="box-title">受注状況<a href="{{ url('admin_order') }}" class="icon_wrap"><svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg></a></h3>
+                        <h3 class="box-title">{{'admin.index.160'|trans}}<a href="{{ url('admin_order') }}" class="icon_wrap"><svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg></a></h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
                         <div class="link_list">
@@ -76,7 +76,7 @@ $(function(){
             <div class="col-md-6">
                 <div class="box" id="cube_news">
                     <div class="box-header">
-                        <h3 class="box-title">お知らせ</h3>
+                        <h3 class="box-title">{{'admin.index.161'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
                         <iframe name="information" class="link_list_wrap" src="{{ app.config.eccube_info_url }}"></iframe>
@@ -97,19 +97,19 @@ $(function(){
                             <div class="monthly_sale">
                                 <div class="item_number">
                                     {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
-                                    <div class="small">今月の売上高 / 売上件数</div>
+                                    <div class="small">{{'admin.index.164'|trans}}</div>
                                 </div>
                             </div>
                             <div class="yesterday_sale">
                                 <div class="item_number">
                                     {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
-                                    <div class="small">昨日の売上高 / 売上件数</div>
+                                    <div class="small">{{'admin.index.166'|trans}}</div>
                                 </div>
                             </div>
                             <div class="today_sale">
                                 <div class="item_number">
                                     {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }}  <span>件</span>
-                                    <div class="small">今日の売上高 / 売上件数</div>
+                                    <div class="small">{{'admin.index.168'|trans}}</div>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@ $(function(){
             <div class="col-md-4">
                 <div class="box" id="shop_info">
                     <div class="box-header">
-                        <h3 class="box-title">ショップ状況</h3>
+                        <h3 class="box-title">{{'admin.index.169'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
                         <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}" method="post">
@@ -133,14 +133,14 @@ $(function(){
                             <div class="tableish">
                                 <a href="" class="item_box tr shop-stock-detail">
                                     <div class="icon td"><svg class="cb cb-tag-slash"><use xlink:href="#cb-tag-slash" /></svg></div>
-                                    <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">在庫切れ商品</div></div>
+                                    <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">{{'admin.index.170'|trans}}</div></div>
                                     <div class="icon_link td">
                                         <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                                     </div>
                                 </a><!-- /.item_box -->
                                 <a href="" class="item_box tr shop-member-detail">
                                     <div class="icon td"><svg class="cb cb-users"><use xlink:href="#cb-users" /></svg></div>
-                                    <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">会員数</div></div>
+                                    <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">{{'admin.index.171'|trans}}</div></div>
                                     <div class="icon_link td">
                                         <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                                     </div>

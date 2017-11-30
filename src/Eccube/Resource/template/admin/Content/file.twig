@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['content', 'file'] %}
 
-{% block title %}コンテンツ管理{% endblock %}
-{% block sub_title %}ファイル管理{% endblock %}
+{% block title %}{{'admin.content.file.23'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.file.24'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -66,17 +66,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div id="upload_box" class="box-header form-horizontal">
                     {{ form_widget(form._token) }}
                     <div id="upload_box__body" class="form-group">
-                        <label class="col-sm-4 col-lg-3 control-label">ファイルのアップロード</label>
+                        <label class="col-sm-4 col-lg-3 control-label">{{'admin.content.file.25'|trans}}</label>
                         <div id="upload_box__file" class="col-sm-8 col-lg-9 padT07">
                             {{ form_widget(form.file) }}
-                            <div class="marT10"><a class="btn btn-default btn-sm" href="javascript;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">アップロード</a></div>
+                            <div class="marT10"><a class="btn btn-default btn-sm" href="javascript;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{'admin.content.file.26'|trans}}</a></div>
                         </div>
                     </div>
                     <div id="create_box__create_file" class="form-group form-inline">
-                        <label class="col-sm-4 col-lg-3 control-label">フォルダ作成</label>
+                        <label class="col-sm-4 col-lg-3 control-label">{{'admin.content.file.27'|trans}}</label>
                         <div class="col-sm-8 col-lg-9">
                             {{ form_widget(form.create_file) }}
-                            <a class="btn btn-default btn-sm" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">作成</a>
+                            <a class="btn btn-default btn-sm" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{'admin.content.file.28'|trans}}</a>
                         </div>
                     </div>
                 {% if error is not null %}
@@ -92,12 +92,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <table class="table table-striped with-border">
                                 <thead>
                                     <tr id="result_list__header">
-                                        <th id="result_list__header_name">ファイル名</th>
-                                        <th id="result_list__header_size">サイズ</th>
-                                        <th id="result_list__header_time">更新日付</th>
-                                        <th id="result_list__header_view">表示</th>
-                                        <th id="result_list__header_download">ダウンロード</th>
-                                        <th id="result_list__header_delete">削除</th>
+                                        <th id="result_list__header_name">{{'admin.content.file.29'|trans}}</th>
+                                        <th id="result_list__header_size">{{'admin.content.file.30'|trans}}</th>
+                                        <th id="result_list__header_time">{{'admin.content.file.31'|trans}}</th>
+                                        <th id="result_list__header_view">{{'admin.content.file.32'|trans}}</th>
+                                        <th id="result_list__header_download">{{'admin.content.file.33'|trans}}</th>
+                                        <th id="result_list__header_delete">{{'admin.content.file.34'|trans}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,9 +129,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </td>
                         <td id="result_list__view--{{ loop.index }}" class="text-center">
                             {% if file.is_dir %}
-                                <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">表示</a>
+                                <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">{{'admin.content.file.35'|trans}}</a>
                             {% else %}
-                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank">表示</a>
+                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank">{{'admin.content.file.36'|trans}}</a>
                             {% endif %}
                         </td>
                         {% if file.is_dir %}
@@ -139,11 +139,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <td id="result_list__download--{{ loop.index }}" class="text-center">-</td>
                         {% else %}
                             <td id="result_list__download--{{ loop.index }}"class="text-center">
-                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" target="_blank">ダウンロード</a>
+                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" target="_blank">{{'admin.content.file.37'|trans}}</a>
                             </td>
                         {% endif %}
                         <td id="result_list__delete--{{ loop.index }}" class="text-center">
-                            <a href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="一度削除したデータは元に戻せません。削除してもよろしいですか？">削除</a>
+                            <a href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.file.38'|trans}}">削除</a>
                         </td>
                     </tr>
                 {% endfor %}

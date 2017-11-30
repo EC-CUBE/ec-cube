@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_edit'] %}
 
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}受注登録・編集{% endblock %}
+{% block title %}{{'admin.order.edit.241'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.edit.242'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
@@ -180,7 +180,7 @@ $(function() {
     function setShippingDeliveryTime(val, idx){
         var $shippingDeliveryTime = $('.shipping-delivery-time[data-idx="' + idx + '"]');
         $shippingDeliveryTime.find('option').remove();
-        $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+        $shippingDeliveryTime.append($('<option></option>').val('').text('{{'admin.order.edit.243'|trans}}'));
 
         if (typeof(times[val]) !== 'undefined') {
             for (var key in times[val]){
@@ -216,12 +216,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     <div id="number_info_box__body" class="box-body">
                         <div class="row">
                             <div id="number_info_box__order_status" class="col-sm-4">
-                                <h4>注文番号 <span class="number">{{ Order.id }}</span></h4>
+                                <h4>{{'admin.order.edit.244'|trans}} <span class="number">{{ Order.id }}</span></h4>
                                 <div>
-                                    <h4>お届け先名</h4>
+                                    <h4>{{'admin.order.edit.245'|trans}}名</h4>
                                     {% for Shipping in Order.Shippings  %}
                                         <div class="form-group">
-                                            出荷番号: <span class="number"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}" }}">{{ Shipping.id }}</a></span><br>
+                                            {{'admin.order.edit.246'|trans}}: <span class="number"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}" }}">{{ Shipping.id }}</a></span><br>
                                             {{ Shipping.Name01 }} {{ Shipping.Name02 }} ({{ Shipping.Kana01 }} {{ Shipping.Kana02 }})<br>
                                             〒{{ Shipping.Zip01 }}-{{ Shipping.Zip02 }}<br>
                                             {{ Shipping.Pref }}{{ Shipping.Addr01 }}{{ Shipping.Addr02 }}
@@ -232,7 +232,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_widget(form.OrderStatus) }}
                                     {{ form_errors(form.OrderStatus) }}
                                 </div>
-                                <div id="number_info_box__order_status_info" class="small text-danger">キャンセルの場合は在庫数を手動で戻してください</div>
+                                <div id="number_info_box__order_status_info" class="small text-danger">{{'admin.order.edit.248'|trans}}</div>
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
                                 <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date ? Order.order_date |date("Y/m/d H:i:s") : '' }}</p>
@@ -246,19 +246,19 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             </div>
             <div id="customer_info_box"  class="box accordion">
                 <div id="customer_info_box__toggle" class="box-header toggle active">
-                    <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.order.edit.253'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="customer_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="customer_info_list" class="order_list form-horizontal">
                         {% if Order.id is empty %}
                         <div id="customer_info_list__button_search" class="btn_area">
                             <ul>
-                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchCustomerModal">会員検索</a></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchCustomerModal">{{'admin.order.edit.254'|trans}}</a></li>
                             </ul>
                         </div>
                         {% endif %}
                         <div id="customer_info_list__customer" class="form-group">
-                            <div class="col-sm-3 col-lg-2">会員ID</div>
+                            <div class="col-sm-3 col-lg-2">{{'admin.order.edit.255'|trans}}</div>
                             <div class="col-sm-9 col-lg-10">
                                 <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? '非会員' :  form.Customer.vars.value }}</p>
                                 {{ form_widget(form.Customer) }}
@@ -269,8 +269,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="customer_info_list__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
-                                {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-                                {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                                {{ form_widget(form.name.name01, { attr : { placeholder: '{{'admin.order.edit.257'|trans}}' }}) }}
+                                {{ form_widget(form.name.name02, { attr : { placeholder: '{{'admin.order.edit.258'|trans}}' }}) }}
                                 {{ form_errors(form.name.name01) }}
                                 {{ form_errors(form.name.name02) }}
                             </div>
@@ -278,8 +278,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="customer_info_list__kana" class="form-group">
                             {{ form_label(form.kana) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
-                                {{ form_widget(form.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
-                                {{ form_widget(form.kana.kana02, { attr : { placeholder : 'メイ' }}) }}
+                                {{ form_widget(form.kana.kana01, { attr : { placeholder : '{{'admin.order.edit.259'|trans}}' }}) }}
+                                {{ form_widget(form.kana.kana02, { attr : { placeholder : '{{'admin.order.edit.260'|trans}}' }}) }}
                                 {{ form_errors(form.kana.kana01) }}
                                 {{ form_errors(form.kana.kana02) }}
                             </div>
@@ -288,7 +288,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="customer_info_list__address" class="form-group">
                             {{ form_label(form.address) }}
                             <div id="customer_info_list__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
-                                〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
+                                {{'admin.order.edit.261'|trans}}{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip.zip01) }}
                                 {{ form_errors(form.zip.zip02) }}
                             </div>
@@ -303,14 +303,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {# 住所：住所1 #}
                         <div class="form-group">
                             <div id="customer_info_list__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
+                                {{ form_widget(form.address.addr01, { attr : { placeholder : '{{'admin.order.edit.262'|trans}}'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
                         <div class="form-group">
                             <div id="customer_info_list__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
+                                {{ form_widget(form.address.addr02, { attr : { placeholder : '{{'admin.order.edit.263'|trans}}' }}) }}
                                 {{ form_errors(form.address.addr02) }}
                             </div>
                         </div>
@@ -352,7 +352,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="customer_info_list__message" class="form-group">
                             {{ form_label(form.message) }}
                             <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.message, { attr : { placeholder : '3000文字まで入力可能' }}) }}
+                                {{ form_widget(form.message, { attr : { placeholder : '{{'admin.order.edit.264'|trans}}' }}) }}
                                 {{ form_errors(form.message) }}
                             </div>
                         </div>
@@ -362,14 +362,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             <div id="product_info_box" class="box accordion">
                 <div id="product_info_box__toggle" class="box-header toggle active">
-                    <h3 class="box-title">受注商品情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.order.edit.265'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="product_info_box__body" class="box-body accpanel" style="display: block;">
                     <div id="product_info_list" class="order_list">
                         <div class="btn_area">
                             <ul id="product_info_list__search_menu">
-                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">明細の追加</a></li>
-                                <li><button type="submit" class="btn btn-default" name="mode" value="calc">計算結果の更新</button></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">{{'admin.order.edit.266'|trans}}</a></li>
+                                <li><button type="submit" class="btn btn-default" name="mode" value="calc">{{'admin.order.edit.267'|trans}}</button></li>
                             </ul>
                         </div>
                         <div class="tableish"
@@ -423,16 +423,16 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
                                                     {% if BaseInfo.optionMultipleShipping %}
-                                                        数量：{{ form_widget(orderItemForm.quantity, {'read_only': 'readonly'}) }}
+                                                        {{'admin.order.edit.270'|trans}}：{{ form_widget(orderItemForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
-                                                        数量：{{ form_widget(orderItemForm.quantity) }}
+                                                        {{'admin.order.edit.271'|trans}}：{{ form_widget(orderItemForm.quantity) }}
                                                     {% endif %}
                                                     {{ form_errors(orderItemForm.quantity) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
-                                                    税率：
+                                                    {{'admin.order.edit.272'|trans}}：
                                                     <span class="input-group">
                                                     {{ form_widget(orderItemForm.tax_rate) }}
                                                     {{ form_errors(orderItemForm.tax_rate) }}
@@ -441,18 +441,18 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 </span>
                                             </div>
                                             <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
-                                                <span>小計：</span> {{ orderItemForm.vars.value.total_price|price }} ({{ orderItemForm.vars.value.tax_display_type }}) <!-- ({{ orderItemForm.vars.value.tax_type }}) -->
+                                                <span>{{'admin.order.edit.273'|trans}}：</span> {{ orderItemForm.vars.value.total_price|price }} ({{ orderItemForm.vars.value.tax_display_type }}) <!-- ({{ orderItemForm.vars.value.tax_type }}) -->
                                             </div>
                                         </div>
                                         {% if orderItemForm.vars.value.Shipping.id is defined %}
-                                        出荷情報 <a href="{{ url('admin/shipping/edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a><br>
+                                        {{'admin.order.edit.274'|trans}} <a href="{{ url('admin/shipping/edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a><br>
                                         {% endif %}
 
                                     </div>
                                     {% if BaseInfo.optionMultipleShipping %}
                                     {% else %}
                                     <div id="product_info_list__button_multiple_shipping_delete--{{ loop.index }}" class="icon_edit">
-                                        <button type="button" class="btn btn-default btn-sm delete-item">削除</button>
+                                        <button type="button" class="btn btn-default btn-sm delete-item">{{'admin.order.edit.275'|trans}}</button>
                                     </div>
                                     {% endif %}
                                 </div><!-- /.item_box -->
@@ -462,17 +462,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="product_info_result_box__sub_price" class="row with-border2 no-margin text-right">
                             <div class="col-lg-7 col-lg-offset-5">
                                 <dl id="product_info_result_box__body_sub_price" class="dl-horizontal">
-                                    <dt id="product_info_result_box__subtotal">小計：</dt>
+                                    <dt id="product_info_result_box__subtotal">{{'admin.order.edit.276'|trans}}：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
-                                    <dt id="product_info_result_box__discount">内値引き：</dt>
+                                    <dt id="product_info_result_box__discount">{{'admin.order.edit.277'|trans}}：</dt>
                                     <dd class="form-group form-inline">
-                                        ▲{{ Order.discount|price }}
+                                        {{'admin.order.edit.278'|trans}}{{ Order.discount|price }}
                                     </dd>
-                                    <dt id="product_info_result_box__delivery_fee_total">内送料：</dt>
+                                    <dt id="product_info_result_box__delivery_fee_total">{{'admin.order.edit.279'|trans}}：</dt>
                                     <dd class="form-group form-inline">
                                         {{ Order.delivery_fee_total|price }}
                                     </dd>
-                                    <dt id="product_info_result_box__charge">内手数料：</dt>
+                                    <dt id="product_info_result_box__charge">{{'admin.order.edit.280'|trans}}：</dt>
                                     <dd class="form-group form-inline">
                                         {{ Order.charge|price }}
                                     </dd>
@@ -483,9 +483,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="product_info_result_box__summary" class="row with-border2 no-margin text-right  ta">
                             <div class="col-lg-7 col-lg-offset-5">
                                 <dl id="product_info_result_box__body_summary" class="dl-horizontal">
-                                    <dt id="product_info_result_box__total">合計：</dt>
+                                    <dt id="product_info_result_box__total">{{'admin.order.edit.281'|trans}}：</dt>
                                     <dd>{{ Order.total|price }}</dd>
-                                    <dt id="product_info_result_box__payment_total">お支払合計：</dt>
+                                    <dt id="product_info_result_box__payment_total">{{'admin.order.edit.282'|trans}}：</dt>
                                     <dd>{{ Order.payment_total|price }}</dd>
                                 </dl>
                             </div>
@@ -497,7 +497,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             {# お支払情報 #}
             <div id="payment_info_box" class="box accordion">
                 <div id="payment_info_box__toggle" class="box-header toggle active">
-                    <h3 class="box-title">お支払情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.order.edit.283'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="payment_info_box__body" class="box-body accpanel" style="display: block;">
                     <dl id="payment_info_box__payment_method" class="dl-horizontal">
@@ -506,7 +506,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {{ form.vars.value.payment_method }}<br/>
                             {{ form_widget(form.Payment) }}
                             {{ form_errors(form.Payment) }}
-                            <p class="small">お支払方法の変更に伴う手数料の変更は手動にてお願いします。</p>
+                            <p class="small">{{'admin.order.edit.285'|trans}}</p>
                         </dd>
                     </dl>
                 </div>
@@ -515,14 +515,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             <div id="shop_info_box" class="box">
                 <div id="shop_info_box__header" class="box-header">
-                    <h3 class="box-title">ショップ用メモ欄</h3>
+                    <h3 class="box-title">{{'admin.order.edit.286'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="shop_info_box__note" class="box-body">{{ form_widget(form.note) }}</div>
             </div><!-- /.box -->
 
             <div id="detail__insert_button" class="row btn_area">
                 <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">受注情報を登録</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">{{'admin.order.edit.287'|trans}}</button>
                 </p>
                 <!-- /.col -->
             </div>
@@ -530,7 +530,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div id="detail__back_button" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     {% if id is not null %}
-                        <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
+                        <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">{{'admin.order.edit.288'|trans}}</a></p>
                     {% endif %}
                 </div>
             </div>
@@ -549,11 +549,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
         <div id="search_customer_modal_box" class="modal-content">
             <div id="search_customer_modal_box__header" class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">会員検索</h4>
+                <h4 class="modal-title" id="myModalLabel">{{'admin.order.edit.289'|trans}}</h4>
             </div>
             <div id="search_customer_modal_box__body" class="modal-body">
                 <div class="form-group">
-                    {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '会員ID・メールアドレス・お名前' } } ) }}
+                    {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '{{'admin.order.edit.290'|trans}}' } } ) }}
                 </div>
                 <div class="extra-form form-group">
                     {% for f in searchCustomerModalForm.getIterator %}
@@ -565,7 +565,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     {% endfor %}
                 </div>
                 <div id="search_customer_modal_box__button_search" class="form-group">
-                    <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
+                    <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >{{'admin.order.edit.291'|trans}}</button>
                 </div>
                 <div class="form-group" id="searchCustomerModalList">
                 </div>
@@ -580,11 +580,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
         <div id="search_product_modal_box" class="modal-content">
             <div id="search_product_modal_box__header" class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">商品検索</h4>
+                <h4 class="modal-title" id="myModalLabel">{{'admin.order.edit.292'|trans}}</h4>
             </div>
             <div id="search_product_modal_box__body" class="modal-body">
                 <div id="search_product_modal_box__id" class="form-group">
-                    {{ form_widget(searchProductModalForm.id, { attr : { placeholder : '商品名・ID・コード' } } ) }}
+                    {{ form_widget(searchProductModalForm.id, { attr : { placeholder : '{{'admin.order.edit.293'|trans}}' } } ) }}
                 </div>
                 <div id="search_product_modal_box__category_id" class="form-group">
                     {{ form_widget(searchProductModalForm.category_id) }}
@@ -599,7 +599,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     {% endfor %}
                 </div>
                 <div id="search_product_modal_box__button_search" class="form-group">
-                    <button type="button" id="searchProductModalButton" class="btn btn-primary">検索</button>
+                    <button type="button" id="searchProductModalButton" class="btn btn-primary">{{'admin.order.edit.294'|trans}}</button>
                 </div>
                 <div class="form-group" id="searchProductModalList">
                 </div>

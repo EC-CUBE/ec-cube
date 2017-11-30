@@ -36,17 +36,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endfor %}
                 {% endif %}
                 <div class="form-group has-feedback">
-                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'style' : 'ime-mode: disabled;', 'size': 20, 'class': 'box25', 'placeholder': 'ログインID', 'autofocus': true}}) }}
+                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'style' : 'ime-mode: disabled;', 'size': 20, 'class': 'box25', 'placeholder': '{{'admin.login.172'|trans}}', 'autofocus': true}}) }}
                 </div>
                 <div class="form-group has-feedback">
-                    {{ form_widget(form.password, {'attr': {'size': 20, 'class': 'box25', 'placeholder': 'パスワード'}}) }}
+                    {{ form_widget(form.password, {'attr': {'size': 20, 'class': 'box25', 'placeholder': '{{'admin.login.173'|trans}}'}}) }}
                 </div>
                 {% if error %}
                 <div class="form-group">
                     <span class="text-danger">{{ error|trans|raw }}</span>
                 </div>
                 {% endif %}
-                <p class="btn_area"><button type="submit" class="btn btn-primary btn-block btn-lg">ログイン</button></p>
+                <p class="btn_area"><button type="submit" class="btn btn-primary btn-block btn-lg">{{'admin.login.174'|trans}}</button></p>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 {{ form_rest(form) }}
             </form>

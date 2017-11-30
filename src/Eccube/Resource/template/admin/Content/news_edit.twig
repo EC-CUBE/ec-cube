@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['content', 'news'] %}
 
-{% block title %}コンテンツ管理{% endblock %}
-{% block sub_title %}新着情報管理{% endblock %}
+{% block title %}{{'admin.content.news_edit.64'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.news_edit.65'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -58,7 +58,7 @@ $(function() {
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box">
                 <div id="detail_box__header" class="box-header">
-                    <h3 class="box-title">新着情報登録・編集</h3>
+                    <h3 class="box-title">{{'admin.content.news_edit.66'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="?">
                     <div id="detail_box__body" class="box-body">
@@ -97,7 +97,7 @@ $(function() {
 
             <div id="detail_box__footer" class="row">
                 <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <p><a href="{{ url('admin_content_news') }}">戻る</a></p>
+                    <p><a href="{{ url('admin_content_news') }}">{{'admin.content.news_edit.67'|trans}}</a></p>
                 </div>
             </div>
 
@@ -109,7 +109,7 @@ $(function() {
                     <div id="common_button_box" class="box-body">
                         <div id="common_button_box__insert_button" class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit(); return false;">登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit(); return false;">{{'admin.content.news_edit.68'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

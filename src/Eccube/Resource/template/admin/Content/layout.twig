@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['content', 'layout'] %}
 
-{% block title %}コンテンツ管理{% endblock %}
-{% block sub_title %}レイアウト管理{% endblock %}
+{% block title %}{{'admin.content.layout.39'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.layout.40'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
 
@@ -362,7 +362,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="detail_box__footer" class="row">
                         <div id="detail_box__back_button"
                              class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area2">
-                            <p><a href="{{ url('admin_content_page') }}">戻る</a></p>
+                            <p><a href="{{ url('admin_content_page') }}">{{'admin.content.layout.41'|trans}}</a></p>
                         </div>
                     </div>
                 </div>
@@ -373,7 +373,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button type="submit" class="btn btn-primary btn-block btn-lg">登録</button>
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">{{'admin.content.layout.42'|trans}}</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
@@ -381,7 +381,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="preview_box" class="box">
                         <div id="preview_box__preview_button" class="box-header">
                             <button class="btn btn-default btn-block btn-sm">
-                                プレビュー(未実装)
+                                {{'admin.content.layout.43'|trans}}(未実装)
                             </button>
                         </div><!-- /.box-header -->
                     </div>
@@ -398,7 +398,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
-                    <h4 class="modal-title" id="blockModalLabel">{# ブロック名 #}</h4>
+                    <h4 class="modal-title" id="blockModalLabel">{# {{'admin.content.layout.44'|trans}} #}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

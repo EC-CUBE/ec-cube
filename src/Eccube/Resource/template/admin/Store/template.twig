@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'template', 'template_list'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}テンプレート管理{% endblock %}
+{% block title %}{{'admin.store.template.924'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.template.925'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-9">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">テンプレート一覧</h3>
+                    <h3 class="box-title">{{'admin.store.template.926'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="table_list">
@@ -44,9 +44,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th>選択</th>
-                                    <th>名前</th>
-                                    <th>保存先</th>
+                                    <th>{{'admin.store.template.927'|trans}}</th>
+                                    <th>{{'admin.store.template.928'|trans}}</th>
+                                    <th>{{'admin.store.template.929'|trans}}</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -67,13 +67,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                             <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}" >ダウンロード</a></li>
+                                                <li><a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}" >{{'admin.store.template.930'|trans}}</a></li>
                                                 {% if Template.default_template %}
                                                     <li>
-                                                        <a>削除</a>
+                                                        <a>{{'admin.store.template.931'|trans}}</a>
                                                     </li>
                                                 {% else %}
-                                                        <li><a href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このテンプレートを削除してもよろしいですか？">削除</a></li>
+                                                        <li><a href="{{ url('admin_store_template_delete', { 'id': Template.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.store.template.932'|trans}}">削除</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
@@ -94,7 +94,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <button class="btn btn-primary btn-block btn-lg"
-                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit(); return false;">登録</button>
+                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit(); return false;">{{'admin.store.template.933'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

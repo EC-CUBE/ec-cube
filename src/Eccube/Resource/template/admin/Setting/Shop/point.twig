@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}ポイント管理{% endblock %}
+{% block title %}{{'admin.setting.shop.point.622'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.point.623'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">ポイント管理</h3>
+                <h3 class="box-title">{{'admin.setting.shop.point.624'|trans}}</h3>
             </div><!-- /.box-header -->
             <form name="point_form" role="form" class="form-horizontal" id="point_form" method="post" action="">
             <div class="box-body">
@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 <div class="row hidden-xs hidden-sm">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <button class="btn btn-primary btn-block btn-lg" type="submit">商品を登録</button>
+                        <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.point.625'|trans}}</button>
                     </div>
                 </div>
             </div><!-- /.box-body --> 

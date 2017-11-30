@@ -26,8 +26,8 @@
 
 {% set menus = ['customer', 'customer_edit'] %}
 
-{% block title %}会員管理{% endblock %}
-{% block sub_title %}会員登録・編集{% endblock %}
+{% block title %}{{'admin.customer.edit.92'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.customer.edit.93'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -43,14 +43,14 @@
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box accordion">
                 <div id="detail_box__header" class="box-header toggle active">
-                    <h3 class="box-title">会員情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.customer.edit.94'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="detail_box__body" class="box-body accpanel" style="display: block;">
                     <div class="form-horizontal">
                         {# 会員ID #}
                         {% if Customer.id %}
                         <div id="detail_box__id" class="form-group">
-                            <label class="col-sm-3 col-lg-2 control-label">会員ID</label>
+                            <label class="col-sm-3 col-lg-2 control-label">{{'admin.customer.edit.95'|trans}}</label>
                             <div class="col-sm-9 col-lg-10">{{ Customer.id }}</div>
                         </div>
                         {% endif %}
@@ -102,14 +102,14 @@
                         {# 住所：住所1 #}
                         <div class="form-group">
                             <div id="detail_box__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
+                                {{ form_widget(form.address.addr01, { attr : { placeholder : '{{'admin.customer.edit.97'|trans}}'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
                         <div class="form-group">
                             <div id="detail_box__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
-                                {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
+                                {{ form_widget(form.address.addr02, { attr : { placeholder : '{{'admin.customer.edit.98'|trans}}' }}) }}
                                 {{ form_errors(form.address.addr02) }}
                             </div>
                         </div>
@@ -207,7 +207,7 @@
             {% if Customer.id %}
             <div id="history_box" class="box accordion">
                 <div id="history_box__toggle" class="box-header toggle">
-                    <h3 class="box-title">購入履歴<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    <h3 class="box-title">{{'admin.customer.edit.99'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div id="history_box__body" class="box-body accpanel">
                     {% if Customer.Orders|length > 0 %}
@@ -216,11 +216,11 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr id="history_box__list_header">
-                                        <th id="history_box__header_order_date">注文日時</th>
-                                        <th id="history_box__header_order_id">受注番号</th>
-                                        <th id="history_box__header_order_total">購入金額</th>
-                                        <th id="history_box__header_commit_date">発送日</th>
-                                        <th id="history_box__header_payment_method">支払方法</th>
+                                        <th id="history_box__header_order_date">{{'admin.customer.edit.100'|trans}}</th>
+                                        <th id="history_box__header_order_id">{{'admin.customer.edit.101'|trans}}</th>
+                                        <th id="history_box__header_order_total">{{'admin.customer.edit.102'|trans}}</th>
+                                        <th id="history_box__header_commit_date">{{'admin.customer.edit.103'|trans}}</th>
+                                        <th id="history_box__header_payment_method">{{'admin.customer.edit.104'|trans}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -236,7 +236,7 @@
                                             {{ Order.total|price }}
                                         </td>
                                         <td id="history_box__commit_date--{{ Order.id }}" class="member_mail">
-                                            {{ Order.commit_date|date_format|default('未発送') }}
+                                            {{ Order.commit_date|date_format|default('{{'admin.customer.edit.105'|trans}}') }}
                                         </td>
                                         <td id="history_box__payment_method--{{ Order.id }}" class="member_mail">
                                             {{ Order.payment_method }}
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <div id="history_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
+                    <div id="history_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>{{'admin.customer.edit.106'|trans}}</p>
                     </div>
                     {% endif %}
                 </div>
@@ -257,7 +257,7 @@
 
             <div id="detail_box__footer" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <p><a href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">検索画面に戻る</a></p>
+                    <p><a href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">{{'admin.customer.edit.107'|trans}}</a></p>
                 </div>
             </div>
 
@@ -277,7 +277,7 @@
                         </div>
                         <div id="button_box__insert_button" class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">会員情報を登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.customer.edit.108'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
@@ -285,7 +285,7 @@
 
                 <div id="shop_note_box" class="box">
                     <div id="shop_note_box__header" class="box-header">
-                        <h3 class="box-title">ショップ用メモ欄</h3>
+                        <h3 class="box-title">{{'admin.customer.edit.109'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div id="shop_note_box__note" class="box-body">
                         {{ form_widget(form.note) }}

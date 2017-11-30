@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['content', 'cache'] %}
 
-{% block title %}コンテンツ管理{% endblock %}
-{% block sub_title %}キャッシュ管理{% endblock %}
+{% block title %}{{'admin.content.cache.17'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.content.cache.18'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -35,16 +35,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-12">
             <div id="cache_box" class="box">
                 <div id="cache_box__header" class="box-header">
-                    <h3 class="box-title">キャッシュ管理</h3>
+                    <h3 class="box-title">{{'admin.content.cache.19'|trans}}</h3>
                     <div id="cache_box__message" style="margin-left: 10px;">
-                        <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。</p>
-                        <p>キャッシュ削除するディレクトリを選択してください。</p>
+                        <p class="text-danger">{{'admin.content.cache.20'|trans}}</p>
+                        <p>{{'admin.content.cache.21'|trans}}</p>
                     </div>
                     {{ form_widget(form.cache) }}
                     {{ form_errors(form.cache) }}
                 </div>
                 <div id="cache_box__clear_button" class="box-body">
-                    <button type="submit" class="btn btn-primary">キャッシュ削除</button>
+                    <button type="submit" class="btn btn-primary">{{'admin.content.cache.22'|trans}}</button>
                 </div>
             </div>
         </div>
