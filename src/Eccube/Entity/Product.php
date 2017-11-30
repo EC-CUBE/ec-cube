@@ -991,6 +991,27 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         return $this->ProductTag;
     }
+    
+    /**
+     * Get Tag
+     * フロント側タグrank順の配列を作成する
+     * 
+     * @return []Tag
+     */
+    public function getTags()
+    {
+        $tags = array();
+        
+        foreach ($this->getProductTag() as $productTag) {
+            $tags[] = $productTag->getTag();
+        }
+        
+        usort($tags, function(Tag $tag1, Tag $tag2) {
+            return $tag1->getRank() < $tag2->getRank();
+        });
+        
+        return $tags;
+    }
 
     /**
      * Add customerFavoriteProduct.
