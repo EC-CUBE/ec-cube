@@ -32,8 +32,9 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class AbstractController
+class AbstractController extends Controller
 {
     /**
      * @Inject("csrf.token_manager")

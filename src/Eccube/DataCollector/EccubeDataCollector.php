@@ -39,7 +39,7 @@ class EccubeDataCollector extends DataCollector
         $this->data = [
             'version'       => Constant::VERSION,
             'payoff'        => 'is the most popular e-commerce solution in Japan',
-            'dashboardlink' => sprintf('<a href="%s">%s</a>', $this->app->url('admin_homepage'), 'admin'),
+            'dashboardlink' => sprintf('<a href="%s">%s</a>', '/admin', 'admin'), // FIXME
             'branding'      => null,
             'editlink'      => null,
             'edittitle'     => null,

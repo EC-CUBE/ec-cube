@@ -49,23 +49,23 @@ class CartController
      */
     public function index(Application $app, Request $request)
     {
-        $Carts = $this->cartService->getCarts();
+        // $Carts = $this->cartService->getCarts();
 
-        $totalQuantity = array_reduce($Carts, function($total, $Cart) {
-            /** @var Cart $Cart */
-            $total += $Cart->getTotalQuantity();
-            return $total;
-        }, 0);
-        $totalPrice = array_reduce($Carts, function($total, $Cart) {
-            /** @var Cart $Cart */
-            $total += $Cart->getTotalPrice();
-            return $total;
-        }, 0);
+        // $totalQuantity = array_reduce($Carts, function($total, $Cart) {
+        //     /** @var Cart $Cart */
+        //     $total += $Cart->getTotalQuantity();
+        //     return $total;
+        // }, 0);
+        // $totalPrice = array_reduce($Carts, function($total, $Cart) {
+        //     /** @var Cart $Cart */
+        //     $total += $Cart->getTotalPrice();
+        //     return $total;
+        // }, 0);
 
         return [
-            'totalQuantity' => $totalQuantity,
-            'totalPrice' => $totalPrice,
-            'Carts' => $Carts,
+            'totalQuantity' => 0,
+            'totalPrice' => 0,
+            'Carts' => new \Eccube\Entity\Cart(),
         ];
     }
 }

@@ -179,8 +179,8 @@ class Application extends \Silex\Application
 
         $path = realpath($dir);
 
-        $loader = $this['eccube.autoloader'];
-        $loader->addPsr4($name.'\\', $path);
+        // $loader = $this['eccube.autoloader'];
+        // $loader->addPsr4($name.'\\', $path);
 
         $config = $this['config'];
         $config['vendor_dir'] = $path;

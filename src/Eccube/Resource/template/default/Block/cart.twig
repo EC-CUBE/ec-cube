@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-cartNavi__iconClose"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt="close"></div>
     <div class="ec-cartNavi__badge">{{ totalQuantity }}</div>
     <div class="ec-cartNavi__label">合計
-        <div class="ec-cartNavi__price">{{ totalPrice|price }}</div>
+        <div class="ec-cartNavi__price">{{ totalPrice }}</div>
     </div>
 </div>
 
@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% set Product = ProductClass.Product %}
                 <div class="ec-cartNaviIsset__cart">
                     <div class="ec-cartNaviIsset__cartImage">
-                        <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}">
+                        <img src="{{ asset(Product.MainListImage, 'save_image') }}" alt="{{ Product.name }}">
                     </div>
                     <div class="ec-cartNaviIsset__cartContent">
                         <div class="ec-cartNaviIsset__cartContentTitle">{{ Product.name }}
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div>
                         <div class="ec-cartNaviIsset__cartContentPrice">
-                            {{ CartItem.price|price }}
+                            {{ CartItem.price}}
                             <div class="ec-cartNaviIsset__cartContentTax">税込</div>
                         </div>
                         <div class="ec-cartNaviIsset__cartContentNumber">数量：{{ CartItem.quantity }}</div>

@@ -24,7 +24,7 @@
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -92,9 +92,9 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        $this->em->getConnection()->setAutoCommit(false);
-        $this->em->beginTransaction();
-        $this->logger->debug('Begin Transaction.');
+        // $this->em->getConnection()->setAutoCommit(false);
+        // $this->em->beginTransaction();
+        // $this->logger->debug('Begin Transaction.');
     }
 
     /**
@@ -114,12 +114,12 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->em->getConnection()->isTransactionActive()) {
-            $this->em->rollback();
-            $this->logger->debug('Rollback executed.');
-        } else {
-            $this->logger->debug('Transaction is not active. Rollback skipped.');
-        }
+        // if ($this->em->getConnection()->isTransactionActive()) {
+        //     $this->em->rollback();
+        //     $this->logger->debug('Rollback executed.');
+        // } else {
+        //     $this->logger->debug('Transaction is not active. Rollback skipped.');
+        // }
     }
 
     /**
@@ -129,22 +129,22 @@ class TransactionListener implements EventSubscriberInterface
      */
     public function onKernelTerminate(PostResponseEvent $event)
     {
-        if (!$this->isEnabled) {
-            $this->logger->debug('Transaction Listener is disabled.');
+        // if (!$this->isEnabled) {
+        //     $this->logger->debug('Transaction Listener is disabled.');
 
-            return;
-        }
-        if ($this->em->getConnection()->isTransactionActive()) {
-            if ($this->em->getConnection()->isRollbackOnly()) {
-                $this->em->rollback();
-                $this->logger->debug('Rollback executed.');
-            } else {
-                $this->em->commit();
-                $this->logger->debug('Commit executed.');
-            }
-        } else {
-            $this->logger->debug('Transaction is not active. Rollback skipped.');
-        }
+        //     return;
+        // }
+        // if ($this->em->getConnection()->isTransactionActive()) {
+        //     if ($this->em->getConnection()->isRollbackOnly()) {
+        //         $this->em->rollback();
+        //         $this->logger->debug('Rollback executed.');
+        //     } else {
+        //         $this->em->commit();
+        //         $this->logger->debug('Commit executed.');
+        //     }
+        // } else {
+        //     $this->logger->debug('Transaction is not active. Rollback skipped.');
+        // }
     }
 
     /**
