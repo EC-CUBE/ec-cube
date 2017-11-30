@@ -112,15 +112,15 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
      */
     public function up(Member $Member)
     {
-        $rank = $Member->getRank();
-        $Member2 = $this->findOneBy(array('rank' => $rank + 1));
+        $sortNo = $Member->getSortNo();
+        $Member2 = $this->findOneBy(array('sort_no' => $sortNo + 1));
 
         if (!$Member2) {
             throw new \Exception(sprintf('%s より上位の管理ユーザが存在しません.', $Member->getId()));
         }
 
-        $Member->setRank($rank + 1);
-        $Member2->setRank($rank);
+        $Member->setSortNo($sortNo + 1);
+        $Member2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
         $em->flush([$Member, $Member2]);
@@ -134,15 +134,15 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
      */
     public function down(Member $Member)
     {
-        $rank = $Member->getRank();
-        $Member2 = $this->findOneBy(array('rank' => $rank - 1));
+        $sortNo = $Member->getSortNo();
+        $Member2 = $this->findOneBy(array('sort_no' => $sortNo - 1));
 
         if (!$Member2) {
             throw new \Exception(sprintf('%s より下位の管理ユーザが存在しません.', $Member->getId()));
         }
 
-        $Member->setRank($rank - 1);
-        $Member2->setRank($rank);
+        $Member->setSortNo($sortNo - 1);
+        $Member2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
         $em->flush([$Member, $Member2]);
@@ -156,12 +156,12 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
     public function save($Member)
     {
         if (!$Member->getId()) {
-            $rank = $this->createQueryBuilder('m')
-                ->select('COALESCE(MAX(m.rank), 0)')
+            $sortNo = $this->createQueryBuilder('m')
+                ->select('COALESCE(MAX(m.sort_no), 0)')
                 ->getQuery()
                 ->getSingleScalarResult();
             $Member
-                ->setRank($rank + 1);
+                ->setSortNo($sortNo + 1);
         }
 
         $em = $this->getEntityManager();
@@ -181,9 +181,9 @@ class MemberRepository extends AbstractRepository implements UserProviderInterfa
     {
         $this->createQueryBuilder('m')
             ->update()
-            ->set('m.rank', 'm.rank - 1')
-            ->where('m.rank > :rank')
-            ->setParameter('rank', $Member->getRank())
+            ->set('m.sort_no', 'm.sort_no - 1')
+            ->where('m.sort_no > :sort_no')
+            ->setParameter('sort_no', $Member->getSortNo())
             ->getQuery()
             ->execute();
 

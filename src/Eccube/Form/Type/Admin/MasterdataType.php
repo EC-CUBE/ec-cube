@@ -75,7 +75,7 @@ class MasterdataType extends AbstractType
                     if (strpos($meta->rootEntityName, 'Master') !== false
                         && $meta->hasField('id')
                         && $meta->hasField('name')
-                        && $meta->hasField('rank')
+                        && $meta->hasField('sort_no')
                     ) {
                         $metadataName = str_replace('\\', '-', $meta->getName());
                         $masterdata[$metadataName] = $meta->getTableName();

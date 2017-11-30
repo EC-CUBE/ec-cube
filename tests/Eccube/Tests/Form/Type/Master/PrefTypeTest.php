@@ -69,7 +69,7 @@ class PrefTypeTest extends AbstractTypeTestCase
         }
 
         $query = $this->app['eccube.repository.master.pref']->createQueryBuilder('p')
-            ->orderBy('p.rank', 'ASC')
+            ->orderBy('p.sort_no', 'ASC')
             ->getQuery();
 
         $pref = $query->getResult();

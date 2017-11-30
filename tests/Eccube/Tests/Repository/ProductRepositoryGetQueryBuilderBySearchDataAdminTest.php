@@ -231,7 +231,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $Category = new Category();
         $Category
             ->setName('test')
-            ->setRank(1)
+            ->setSortNo(1)
             ->setHierarchy(1)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
@@ -262,7 +262,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
-                $this->actual[] = $ProductImage->getRank();
+                $this->actual[] = $ProductImage->getSortNo();
             }
 
             $this->verify();

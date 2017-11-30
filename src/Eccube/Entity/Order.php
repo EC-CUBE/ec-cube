@@ -32,7 +32,7 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 /**
  * Order
  *
- * @ORM\Table(name="dtb_order", indexes={@ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_order_order_email_idx", columns={"order_email"}), @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}), @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}), @ORM\Index(name="dtb_order_commit_date_idx", columns={"commit_date"}), @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"})})
+ * @ORM\Table(name="dtb_order", indexes={@ORM\Index(name="dtb_order_pre_order_id_idx", columns={"pre_order_id"}), @ORM\Index(name="dtb_order_email_idx", columns={"email"}), @ORM\Index(name="dtb_order_order_date_idx", columns={"order_date"}), @ORM\Index(name="dtb_order_payment_date_idx", columns={"payment_date"}), @ORM\Index(name="dtb_order_shipping_date_idx", columns={"shipping_date"}), @ORM\Index(name="dtb_order_update_date_idx", columns={"update_date"})})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
@@ -40,6 +40,8 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
  */
 class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
+    use PointTrait;
+
     /**
      * @var ItemValidateException[]
      */
@@ -132,126 +134,126 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_name01", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name01", type="string", length=255, nullable=true)
      */
     private $name01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_name02", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name02", type="string", length=255, nullable=true)
      */
     private $name02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_kana01", type="string", length=255, nullable=true)
+     * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
      */
     private $kana01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_kana02", type="string", length=255, nullable=true)
+     * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
      */
     private $kana02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_company_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
      */
     private $company_name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_tel01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="tel01", type="string", length=5, nullable=true)
      */
     private $tel01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_tel02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="tel02", type="string", length=4, nullable=true)
      */
     private $tel02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_tel03", type="string", length=4, nullable=true)
+     * @ORM\Column(name="tel03", type="string", length=4, nullable=true)
      */
     private $tel03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_fax01", type="string", length=5, nullable=true)
+     * @ORM\Column(name="fax01", type="string", length=5, nullable=true)
      */
     private $fax01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_fax02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="fax02", type="string", length=4, nullable=true)
      */
     private $fax02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_fax03", type="string", length=4, nullable=true)
+     * @ORM\Column(name="fax03", type="string", length=4, nullable=true)
      */
     private $fax03;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_zip01", type="string", length=3, nullable=true)
+     * @ORM\Column(name="zip01", type="string", length=3, nullable=true)
      */
     private $zip01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_zip02", type="string", length=4, nullable=true)
+     * @ORM\Column(name="zip02", type="string", length=4, nullable=true)
      */
     private $zip02;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_zipcode", type="string", length=7, nullable=true)
+     * @ORM\Column(name="zipcode", type="string", length=7, nullable=true)
      */
     private $zipcode;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_addr01", type="string", length=255, nullable=true)
+     * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
      */
     private $addr01;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="order_addr02", type="string", length=255, nullable=true)
+     * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
      */
     private $addr02;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="order_birth", type="datetimetz", nullable=true)
+     * @ORM\Column(name="birth", type="datetimetz", nullable=true)
      */
     private $birth;
 
@@ -342,9 +344,9 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="commit_date", type="datetimetz", nullable=true)
+     * @ORM\Column(name="shipping_date", type="datetimetz", nullable=true)
      */
-    private $commit_date;
+    private $shipping_date;
 
     /**
      * @var \DateTime|null
@@ -392,7 +394,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_country_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
      */
     private $Country;
@@ -402,7 +404,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_pref", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      */
     private $Pref;
@@ -412,7 +414,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_sex", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sex_id", referencedColumnName="id")
      * })
      */
     private $Sex;
@@ -422,7 +424,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_job", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      * })
      */
     private $Job;
@@ -462,7 +464,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\OrderStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
      * })
      */
     private $OrderStatus;
@@ -1265,27 +1267,27 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
     }
 
     /**
-     * Set commitDate.
+     * Set shippingDate.
      *
-     * @param \DateTime|null $commitDate
+     * @param \DateTime|null $shippingDate
      *
      * @return Order
      */
-    public function setCommitDate($commitDate = null)
+    public function setShippingDate($shippingDate = null)
     {
-        $this->commit_date = $commitDate;
+        $this->shipping_date = $shippingDate;
 
         return $this;
     }
 
     /**
-     * Get commitDate.
+     * Get shippingDate.
      *
      * @return \DateTime|null
      */
-    public function getCommitDate()
+    public function getShippingDate()
     {
-        return $this->commit_date;
+        return $this->shipping_date;
     }
 
     /**
@@ -1708,4 +1710,5 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
 
         return $quantity;
     }
+
 }

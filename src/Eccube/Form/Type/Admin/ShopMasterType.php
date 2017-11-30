@@ -245,7 +245,7 @@ class ShopMasterType extends AbstractType
             ))
 
             // 商品設定
-            ->add('nostock_hidden', ChoiceType::class, array(
+            ->add('option_nostock_hidden', ChoiceType::class, array(
                 'label' => '在庫切れ商品を非表示にする',
                 'choices' => array_flip(array(
                     '0' => '無効',
@@ -254,6 +254,60 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
+            // ポイント設定
+            ->add('option_point', ChoiceType::class, array(
+                'label' => 'ポイント機能を利用する',
+                'choices' => array_flip(array(
+                    '0' => '無効',
+                    '1' => '有効',
+                )),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add(
+                'basic_point_rate',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => 'ポイント付与率',
+                    'constraints' => array(
+                        new Assert\Regex(
+                            [
+                                'pattern' => "/^\d+$/u",
+                                'message' => 'form.type.numeric.invalid'
+                            ]
+                        ),
+                        new Assert\Range(
+                            [
+                                'min' => 1,
+                                'max' => 100,
+                            ]
+                        ),
+                    ),
+                ]
+            )
+            ->add(
+                'point_conversion_rate',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => 'ポイント換算レート',
+                    'constraints' => array(
+                        new Assert\Regex(
+                            [
+                                'pattern' => "/^\d+$/u",
+                                'message' => 'form.type.numeric.invalid'
+                            ]
+                        ),
+                        new Assert\Range(
+                            [
+                                'min' => 1,
+                                'max' => 100,
+                            ]
+                        ),
+                    ),
+                ]
+            )
         ;
 
         $builder->add(

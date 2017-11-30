@@ -30,7 +30,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
@@ -46,7 +45,7 @@ class ShoppingMultipleType extends AbstractType
 
         $deliveries = $options['deliveries'];
         $delivery = $options['delivery'];
-        $deliveryDates = $options['deliveryDates'];
+        $deliveryDurations = $options['deliveryDurations'];
 
         $builder
             ->add('delivery', EntityType::class, array(
@@ -55,8 +54,8 @@ class ShoppingMultipleType extends AbstractType
                 'choices' => $deliveries,
                 'data' => $delivery,
             ))
-            ->add('deliveryDate', ChoiceType::class, array(
-                'choices' => array_flip($deliveryDates),
+            ->add('deliveryDuration', ChoiceType::class, array(
+                'choices' => array_flip($deliveryDurations),
                 'required' => false,
                 'placeholder' => '指定なし',
             ))
@@ -75,7 +74,7 @@ class ShoppingMultipleType extends AbstractType
         $resolver->setDefaults(array(
             'deliveries' => array(),
             'delivery' => null,
-            'deliveryDates' => array(),
+            'deliveryDurations' => array(),
         ));
 
     }

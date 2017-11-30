@@ -29,7 +29,6 @@ use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -273,13 +272,13 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['order_mail_template_id']);
 
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -365,13 +364,13 @@ class MailService
         log_info('受注管理通知メール送信開始');
 
         $body = $this->app->renderView('Mail/order.twig', array(
-            'header' => $formData['header'],
-            'footer' => $formData['footer'],
+            'header' => $formData['mail_header'],
+            'footer' => $formData['mail_footer'],
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['subject'])
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['mail_subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -487,4 +486,31 @@ class MailService
         return $count;
     }
 
+    /**
+     * ポイントでマイナス発生時にメール通知する。
+     *
+     * @param Order $Order
+     * @param int $currentPoint
+     * @param int $changePoint
+     */
+    public function sendPointNotifyMail(\Eccube\Entity\Order $Order, $currentPoint = 0, $changePoint = 0)
+    {
+
+        $body = $this->app->renderView('Mail/point_notify.twig', array(
+            'Order' => $Order,
+            'currentPoint' => $currentPoint,
+            'changePoint' => $changePoint,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('['.$this->BaseInfo->getShopName().'] ポイント通知')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setTo(array($this->BaseInfo->getEmail01()))
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($body);
+
+        $this->app->mail($message);
+    }
 }

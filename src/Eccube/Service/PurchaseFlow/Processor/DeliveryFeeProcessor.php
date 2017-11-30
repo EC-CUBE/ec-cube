@@ -115,6 +115,7 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
                 ->setQuantity(1)
                 ->setOrderItemType($DeliveryFeeType)
                 ->setShipping($Shipping)
+                ->setOrder($itemHolder)
                 ->setTaxDisplayType($TaxInclude)
                 ->setTaxType($Taxion);
 

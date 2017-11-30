@@ -75,7 +75,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="mail_edit_box__body_inner" class="box-body">
 
                         {{ form_row(form.template) }}
-                        {{ form_row(form.subject) }}
+                        {{ form_row(form.mail_subject) }}
                         <div id="detail_box__tpl_data" class="form-group">
                             {{ form_label(form.tpl_data) }}
                             <div class="col-sm-9 col-lg-10">
@@ -84,8 +84,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.tpl_data) }}
                             </div>
                         </div>
-                        {{ form_row(form.header) }}
-                        {{ form_row(form.footer) }}
+                        {{ form_row(form.mail_header) }}
+                        {{ form_row(form.mail_footer) }}
+						
                         <div class="extra-form">
                             {% for f in form.getIterator %}
                                 {% if f.vars.name matches '[^plg*]' %}

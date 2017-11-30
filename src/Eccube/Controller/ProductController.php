@@ -46,6 +46,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -125,8 +126,8 @@ class ProductController
     public function index(Application $app, Request $request)
     {
         // Doctrine SQLFilter
-        if ($this->BaseInfo->isNostockHidden()) {
-            $this->entityManager->getFilters()->enable('nostock_hidden');
+        if ($this->BaseInfo->isOptionNostockHidden()) {
+            $this->entityManager->getFilters()->enable('option_nostock_hidden');
         }
 
         // handleRequestは空のqueryの場合は無視するため
@@ -357,7 +358,6 @@ class ProductController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE, $event);
 
-
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
             $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
@@ -398,6 +398,9 @@ class ProductController
      */
     public function addCart(Application $app, Request $request, Product $Product)
     {
+        // エラーメッセージの配列
+        $errorMessages = array();
+
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
         }
@@ -446,18 +449,18 @@ class ProductController
         // 明細の正規化
         $flow = $this->purchaseFlow;
         $Cart = $this->cartService->getCart();
-        $result = $flow->calculate($Cart, $app['eccube.purchase.context']());
+        $result = $flow->calculate($Cart, $app['eccube.purchase.context']($Cart, $app->user()));
 
         // 復旧不可のエラーが発生した場合は追加した明細を削除.
         if ($result->hasError()) {
             $this->cartService->removeProduct($addCartData['product_class_id']);
             foreach ($result->getErrors() as $error) {
-                $app->addRequestError($error->getMessage());
+                array_push($errorMessages, $error->getMessage());
             }
         }
 
         foreach ($result->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
+            array_push($errorMessages, $warning->getMessage());
         }
 
         $this->cartService->save();
@@ -483,9 +486,34 @@ class ProductController
         if ($event->getResponse() !== null) {
             return $event->getResponse();
         }
+        
+        if ($request->isXmlHttpRequest()) {
+            // ajaxでのリクエストの場合は結果をjson形式で返す。
+            
+            // 初期化
+            $done = null;
+            $messages = array();
 
-        return $app->redirect($app->url('cart'));
+            if (empty($errorMessages)) {
+                // エラーが発生していない場合
+                $done = true;
+                array_push($messages, 'カートに追加しました。');
+            } else {
+                // エラーが発生している場合
+                $done = false;
+                $messages = $errorMessages;
+            }
 
+            return new JsonResponse(array('done' => $done, 'messages' => $messages));
+
+        } else {
+            // ajax以外でのリクエストの場合はカート画面へリダイレクト
+            foreach ($errorMessages as $errorMessage) {
+                $app->addRequestError($errorMessage);
+            }
+
+            return $app->redirect($app->url('cart'));
+        }
     }
 
     /**
@@ -517,7 +545,7 @@ class ProductController
         // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
         if (!$is_admin) {
             // 在庫なし商品の非表示オプションが有効な場合.
-            if ($this->BaseInfo->isNostockHidden()) {
+            if ($this->BaseInfo->isOptionNostockHidden()) {
                 if (!$Product->getStockFind()) {
                     return false;
                 }

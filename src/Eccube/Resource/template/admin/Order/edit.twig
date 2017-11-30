@@ -237,7 +237,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="col-sm-6 col-sm-offset-2">
                                 <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date ? Order.order_date |date("Y/m/d H:i:s") : '' }}</p>
                                 <p id="number_info_box__payment_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date ? Order.payment_date|date("Y/m/d H:i:s") : '' }}</p>
-                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date ? Order.commit_date|date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.shipping_date ? Order.shipping_date|date("Y/m/d H:i:s") : '' }}</p>
                                 <p id="number_info_box__update_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date ? Order.update_date|date("Y/m/d H:i:s") : '' }}</p>
                             </div>
                         </div>
@@ -476,6 +476,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     <dd class="form-group form-inline">
                                         {{ Order.charge|price }}
                                     </dd>
+                                    <dt id="product_info_result_box__add_point" {{ form_label(form.add_point) }}：</dt>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.add_point) }}
+                                        {{ form_errors(form.add_point) }}
+                                    </dd>
+                                    <dt id="product_info_result_box__use_point" {{ form_label(form.use_point) }}：</dt>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.use_point) }}
+                                        {{ form_errors(form.use_point) }}
+                                    </dd>
+
                                 </dl>
                             </div>
                         </div>

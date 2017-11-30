@@ -331,7 +331,8 @@ class Application extends \Silex\Application
                     $this['config']['vendor_dir'].'/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new EntityEventAutowiring(array_merge([
-                    $this['config']['vendor_dir'].'/Entity'
+                    $this['config']['vendor_dir'].'/Entity',
+                    $this['config']['root_dir'].'/src/Eccube/Entity'
                 ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
@@ -833,7 +834,7 @@ class Application extends \Silex\Application
 
             // filters
             $config = $em->getConfiguration();
-            $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+            $config->addFilter("option_nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
             $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
 
             return $em;

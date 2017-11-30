@@ -37,6 +37,11 @@ $(function() {
         $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
 
+    $('.use_point').on('blur', function() {
+        $('#shopping_order_mode').val('use_point');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+    });
+
     $('.btn-shipping').click(function() {
         $('#shopping_order_mode').val('shipping_change');
         $('#shopping_order_param').val($(this).data('id'));
@@ -367,6 +372,18 @@ $(function() {
                     {{ form_errors(form.Payment) }}
                 </div>
             </div>
+            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                <div class="ec-orderPayment">
+                    <div class="ec-rectHeading">
+                        <h2>利用ポイント(暫定実装)</h2>
+                        <p>{{ Order.Customer.Point }} ポイントが利用可能です。</p>
+                        {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
+                        {{ form_errors(form.use_point) }}
+                    </div>
+                </div>
+            {% else %}
+                {{ form_widget(form.use_point, {'type': 'hidden'}) }}
+            {% endif %}
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>お問い合わせ</h2>

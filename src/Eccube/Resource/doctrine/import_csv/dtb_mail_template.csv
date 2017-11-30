@@ -1,4 +1,4 @@
-id,creator_id,name,file_name,subject,header,footer,create_date,update_date,discriminator_type
+id,creator_id,name,file_name,mail_subject,mail_header,mail_footer,create_date,update_date,discriminator_type
 "1",,"注文受付メール","Mail/order.twig","ご注文ありがとうございます","この度はご注文いただき誠にありがとうございます。
 下記ご注文内容にお間違えがないかご確認下さい。
 

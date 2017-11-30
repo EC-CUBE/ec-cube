@@ -182,6 +182,16 @@
                                 </div>
                             </div>
                         </div>
+                        {# 所有ポイント #}
+                        <div id="detail_box__point" class="form-group">
+                            {{ form_label(form.point) }}
+                            <div class="col-sm-9 col-lg-10">
+                                <div class="form-inline">
+                                    {{ form_widget(form.point) }}
+                                    {{ form_errors(form.point) }}
+                                </div>
+                            </div>
+                        </div>
                         {# エンティティ拡張の自動出力 #}
                         {% for f in form %}
                             {# auto_render有効時に出力 #}
@@ -298,7 +308,7 @@
                                             {{ Order.total|price }}
                                         </td>
                                         <td id="history_box__commit_date--{{ Order.id }}" class="member_mail">
-                                            {{ Order.commit_date|date_format|default('未発送') }}
+                                            {{ Order.shipping_date|date_format|default('未発送') }}
                                         </td>
                                         <td id="history_box__payment_method--{{ Order.id }}" class="member_mail">
                                             {{ Order.payment_method }}

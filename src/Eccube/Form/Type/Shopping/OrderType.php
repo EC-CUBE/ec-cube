@@ -15,12 +15,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @FormType
@@ -68,6 +70,20 @@ class OrderType extends AbstractType
                     'constraints' => [
                         new Length(['min' => 0, 'max' => 3000]),
                     ],
+                ]
+            )
+            ->add(
+                'use_point',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => '利用ポイント',
+                    'constraints' => array(
+                        new Regex(array(
+                            'pattern' => "/^\d+$/u",
+                            'message' => 'form.type.numeric.invalid'
+                        )),
+                    ),
                 ]
             )
             ->add(
@@ -145,6 +161,10 @@ class OrderType extends AbstractType
             function (FormEvent $event) {
                 /** @var Order $Order */
                 $Order = $event->getData();
+                // XXX 非会員購入の際, use_point が null で submit される？
+                if ($Order->getUsePoint() === null) {
+                    $Order->setUsePoint(0);
+                }
                 $Payment = $Order->getPayment();
                 $Order->setPaymentMethod($Payment ? $Payment->getMethod() : null);
                 // TODO CalculateChargeStrategy でセットする
