@@ -46,6 +46,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -397,6 +398,9 @@ class ProductController
      */
     public function addCart(Application $app, Request $request, Product $Product)
     {
+        // エラーメッセージの配列
+        $errorMessages = array();
+
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
         }
@@ -451,12 +455,12 @@ class ProductController
         if ($result->hasError()) {
             $this->cartService->removeProduct($addCartData['product_class_id']);
             foreach ($result->getErrors() as $error) {
-                $app->addRequestError($error->getMessage());
+                array_push($errorMessages, $error->getMessage());
             }
         }
 
         foreach ($result->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
+            array_push($errorMessages, $warning->getMessage());
         }
 
         $this->cartService->save();
@@ -482,9 +486,34 @@ class ProductController
         if ($event->getResponse() !== null) {
             return $event->getResponse();
         }
+        
+        if ($request->isXmlHttpRequest()) {
+            // ajaxでのリクエストの場合は結果をjson形式で返す。
+            
+            // 初期化
+            $done = null;
+            $messages = array();
 
-        return $app->redirect($app->url('cart'));
+            if (empty($errorMessages)) {
+                // エラーが発生していない場合
+                $done = true;
+                array_push($messages, 'カートに追加しました。');
+            } else {
+                // エラーが発生している場合
+                $done = false;
+                $messages = $errorMessages;
+            }
 
+            return new JsonResponse(array('done' => $done, 'messages' => $messages));
+
+        } else {
+            // ajax以外でのリクエストの場合はカート画面へリダイレクト
+            foreach ($errorMessages as $errorMessage) {
+                $app->addRequestError($errorMessage);
+            }
+
+            return $app->redirect($app->url('cart'));
+        }
     }
 
     /**
