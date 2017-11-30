@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
             <li class="{% if active_menus(menus)[0] == 'customer' %}active{% endif %}">
-                <a class="toggle"><svg class="cb cb-users"> <use xlink:href="#cb-users" /></svg>会員管理<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                <a class="toggle"><svg class="cb cb-users"> <use xlink:href="#cb-users" /></svg>{{'admin.customer.subnavi.148'|trans}}<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
                 <ul {% if active_menus(menus)[0] == 'customer' %}class="active" style="display: block;"{% endif %}>
                     <li  id="navi-customer-index" class="{% if active_menus(menus)[1] == 'customer_master' %}active{% endif %}"><a href="{{ url('admin_customer') }}">会員マスター</a></li>
                     <li  id="navi-customer-customer" class="{% if active_menus(menus)[1] == 'customer_edit' %}active{% endif %}"><a href="{{ url('admin_customer_new') }}">会員登録</a></li>

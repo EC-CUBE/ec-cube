@@ -24,15 +24,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'system', 'log'] %}
 
-{% block title %}システム設定{% endblock %}
-{% block sub_title %}EC-CUBE ログ表示{% endblock %}
+{% block title %}{{'admin.setting.system.log.670'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.log.671'|trans}}{% endblock %}
 
 {% block main %}
     <div class="row">
         <div class="col-md-12">
             <div id="log_box" class="box">
                 <div id="log_box__header" class="box-header">
-                    <h3 class="box-title">EC-CUBE ログ表示</h3>
+                    <h3 class="box-title">{{'admin.setting.system.log.672'|trans}}</h3>
                 </div><!-- /.box-header -->
 
                 <div id="log_box__body" class="box-body">
@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     直近の{{ form_widget(form.line_max, {'id': 'line-max', 'attr': {'class': 'form-control'}}) }}行を
                                 </div>
                                 <div id="log_conditions_box__confirm_button" class="form-group">
-                                    <button type="submit" class="btn btn-default">読み込む</button>
+                                    <button type="submit" class="btn btn-default">{{'admin.setting.system.log.674'|trans}}</button>
                                 </div>
                             </div>
                             <div class="extra-form clearfix">

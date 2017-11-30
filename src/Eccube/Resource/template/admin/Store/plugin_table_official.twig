@@ -25,13 +25,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>プラグイン名</th>
-                    <th>プラグインアイコン画像</th>
-                    <th>プラグインバージョン</th>
-                    <th>プラグインコード</th>
-                    <th>アップデート</th>
-                    <th>設定</th>
-                    <th>制作者</th>
+                    <th>{{'admin.store.plugin_table_official.901'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.902'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.903'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.904'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.905'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.906'|trans}}</th>
+                    <th>{{'admin.store.plugin_table_official.907'|trans}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,19 +40,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% set pluginDetail = officialPluginsDetail[key] %}
                         <tr class="{% if Plugin.enable == false %}active{% endif %}">
                             <td class="tp">
-                                <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
+                                <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> {{'admin.store.plugin_table_official.908'|trans}}</span>{% endif %}<br>
                                 {% if Plugin.enable %}
                                     <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        無効にする
+                                        {{'admin.store.plugin_table_official.909'|trans}}
                                     </a>
                                 {% else %}
                                     <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        有効にする
+                                        {{'admin.store.plugin_table_official.910'|trans}}
                                     </a>
                                 {% endif %}
                                 /
                                 <a href="{{ url('admin_store_plugin_delete_confirm', { id : Plugin.id }) }}">
-                                    削除
+                                    {{'admin.store.plugin_table_official.911'|trans}}
                                 </a>
                             </td>
                             <td class="tc">
@@ -74,13 +74,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.plugin_archive) }}
                                 <p></p>
                                 <a class="btn btn-primary btn-xs" href="#" onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
-                                    アップロード
+                                    {{'admin.store.plugin_table_official.913'|trans}}
                                 </a>
                             {% else %}
                                 {% if pluginDetail.update_status == 1 %}
-                                    新バージョンのプラグインが利用可能です。
-                                    <span {% if Plugin.enable %}data-toggle="tooltip" data-placement="top" title="無効にする状態で利用可能"{% endif %}>
-                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">アップデート</a>
+                                    {{'admin.store.plugin_table_official.914'|trans}}
+                                    <span {% if Plugin.enable %}data-toggle="tooltip" data-placement="top" title="{{'admin.store.plugin_table_official.909'|trans}}状態で利用可能"{% endif %}>
+                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">{{'admin.store.plugin_table_official.916'|trans}}</a>
                                     </span>
                                     <ul class="plugin-meta dl-horizontal">
                                         <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
@@ -88,14 +88,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <li class="plugin-update">更新日 : {{ pluginDetail.last_update_date|time_ago }}</li>
                                     </ul>
                                 {% else %}
-                                    <p>アップデート対象プラグインはありません。</p>
+                                    <p>{{'admin.store.plugin_table_official.920'|trans}}。</p>
                                 {% endif %}
-                                <p><a href="{{ pluginDetail.product_url }}" target="_blank">詳細情報</a></p>
+                                <p><a href="{{ pluginDetail.product_url }}" target="_blank">{{'admin.store.plugin_table_official.921'|trans}}</a></p>
                             {% endif %}
                             </td>
                             <td class="ta text-center">
                                 {% if configPages[Plugin.code] is defined %}
-                                   <a href='{{configPages[Plugin.code]}}'>設定</a>
+                                   <a href='{{configPages[Plugin.code]}}'>{{'admin.store.plugin_table_official.922'|trans}}</a>
                                 {% endif %}
                             </td>
                             <td class="tv">
@@ -109,7 +109,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
 {% else %}
     <div class="text-danger">
-        インストールされているプラグインはありません。
+        {{'admin.store.plugin_table_official.923'|trans}}
     </div>
 {% endif %}
 <script>

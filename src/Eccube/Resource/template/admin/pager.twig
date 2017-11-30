@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="text-center">
         <ul class="pagination">
             {% if pages.previous is defined %}
-                <li class="pagenation__item-previous"><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': pages.previous})) }}" aria-label="Previous"><span aria-hidden="true">前へ</span></a></li>
+                <li class="pagenation__item-previous"><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': pages.previous})) }}" aria-label="Previous"><span aria-hidden="true">{{'admin.pager.397'|trans}}</span></a></li>
             {% endif %}
             
             {% for page in pages.pagesInRange %}
@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endfor %}
             
             {% if pages.next is defined %}
-                <li class="pagenation__item-next"><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': pages.next})) }}" aria-label="Next"><span aria-hidden="true">次へ</span></a></li>
+                <li class="pagenation__item-next"><a href="{{ path(routes, app.request_stack.currentrequest.query.all|merge({'page_no': pages.next})) }}" aria-label="Next"><span aria-hidden="true">{{'admin.pager.398'|trans}}</span></a></li>
             {% endif %}
         </ul>
     </div>

@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'template', 'template_install'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}テンプレートのアップロード{% endblock %}
+{% block title %}{{'admin.store.template_add.934'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.template_add.935'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -35,18 +35,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-9">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">新規テンプレートアップロード</h3>
+                    <h3 class="box-title">{{'admin.store.template_add.936'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">テンプレートコード</label>
+                        <label class="col-sm-4 control-label">{{'admin.store.template_add.937'|trans}}</label>
                         <div class="col-sm-8">
                             {{ form_widget(form.code) }}
                             {{ form_errors(form.code) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">テンプレート名</label>
+                        <label class="col-sm-4 control-label">{{'admin.store.template_add.938'|trans}}</label>
                         <div class="col-sm-8">
                             {{ form_widget(form.name) }}
                             {{ form_errors(form.name) }}
@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">テンプレートファイル<br>(zip、tar、tar.gz形式)</label>
+                        <label class="col-sm-4 control-label">{{'admin.store.template_add.939'|trans}}<br>(zip、tar、tar.gz形式)</label>
                         <div class="col-sm-8">
                             {{ form_widget(form.file, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
                             {{ form_errors(form.file) }}
@@ -70,7 +70,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="box-body">
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">アップロード</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.store.template_add.940'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

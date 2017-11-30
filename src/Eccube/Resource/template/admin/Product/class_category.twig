@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'class_name'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}規格編集{% endblock %}
+{% block title %}{{'admin.product.class_category.416'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.class_category.417'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -84,15 +84,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="edit_list_box" class="col-md-12">
             <div id="edit_list_box__body" class="box">
                 <div id="edit_box__header" class="box-header">
-                    <h3 class="box-title">規格名： {{ ClassName.name }}</h3>
+                    <h3 class="box-title">{{'admin.product.class_category.418'|trans}}： {{ ClassName.name }}</h3>
                 </div>
                 <div id="edit_box__body" class="box-body">
                     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
                         <div class="form-group">
                             <div class="col-md-12 form-inline">
                                 {{ form_widget(form._token) }}
-                                {{ form_widget(form.name, {attr: {placeholder: '分類名を入力'}}) }}
-                                <button class="btn btn-default btn-sm" type="submit">分類作成</button>
+                                {{ form_widget(form.name, {attr: {placeholder: 'admin.product.class_category.419'|trans}}) }}
+                                <button class="btn btn-default btn-sm" type="submit">{{'admin.product.class_category.420'|trans}}</button>
                             </div>
                         </div>
                         <div class="extra-form">
@@ -130,28 +130,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <ul id="sortable_list_box__menu--{{ ClassCategory.id }}" class="dropdown-menu dropdown-menu-right">
                                                     {% if ClassCategory.id != TargetClassCategory.id %}
                                                         <li>
-                                                            <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">編集</a>
+                                                            <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">{{'admin.product.class_category.421'|trans}}</a>
                                                         </li>
                                                     {% else %}
-                                                        <li><a>編集中</a></li>
+                                                        <li><a>{{'admin.product.class_category.422'|trans}}</a></li>
                                                     {% endif %}
                                                     {% if ClassCategory.isVisible %}
                                                         <li>
                                                             <a href="{{ url('admin_product_class_category_visibility', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}
                                                                data-method="put"
-                                                               data-message="分類名を非表示に変更しますか？">非表示</a>
+                                                               data-message="{{'admin.product.class_category.423'|trans}}">非表示</a>
                                                         </li>
                                                     {% else %}
                                                         <li>
                                                             <a href="{{ url('admin_product_class_category_visibility', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}
                                                                data-method="put"
-                                                               data-message="分類名を表示に変更しますか？">表示</a>
+                                                               data-message="{{'admin.product.class_category.424'|trans}}">表示</a>
                                                         </li>
                                                     {% endif %}
                                                     <li>
                                                         <a href="{{ url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}
                                                            data-method="delete"
-                                                           data-message="分類名を削除すると、その分類を利用している商品規格が無効になります。整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。">削除</a>
+                                                           data-message="{{'admin.product.class_category.425'|trans}}">削除</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -166,7 +166,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div  id="sortable_list_box" class="box-body no-padding">
                         <div id="sortable_list_box__not_find_message" class="data-empty">
                             <svg class="cb cb-inbox"><use xlink:href="#cb-inbox"/></svg>
-                            <p>データはありません</p>
+                            <p>{{'admin.product.class_category.426'|trans}}</p>
                         </div>
                     </div><!-- /.box-body -->
                 {% endif %}
@@ -176,7 +176,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
     <div id="edit_list__footer" class="row">
         <div id="edit_list__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-            <p><a href="{{ url('admin_product_class_name') }}">規格一覧に戻る</a></p>
+            <p><a href="{{ url('admin_product_class_name') }}">{{'admin.product.class_category.427'|trans}}</a></p>
         </div>
     </div>
 

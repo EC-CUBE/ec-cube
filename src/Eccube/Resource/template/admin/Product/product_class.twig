@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['product', 'product_master'] %}
 
-{% block title %}商品管理{% endblock %}
-{% block sub_title %}商品登録(商品規格){% endblock %}
+{% block title %}{{'admin.product.product_class.524'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.product.product_class.525'|trans}}{% endblock %}
 
 {% if not_product_class  %}
     {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
@@ -146,12 +146,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <form class="form-inline" method="post" action="{{ url('admin_product_product_class', {id : Product.id}) }}">
             <div id="edit_info_box__body" class="box">
                 <div id="edit_info_box__header" class="box-header">
-                    商品名 : <h3 class="box-title">{{ Product.name }}</h3>
+                    {{'admin.product.product_class.527'|trans}} : <h3 class="box-title">{{ Product.name }}</h3>
                 </div><!-- /.box-header -->
                 <div id="edit_info_box__body" class="box-body" style="padding-bottom: 30px;">
                     {% if not_product_class  %}
                         {{ form_widget(form._token) }}
-                        <button type="submit" class="btn btn-primary pull-right">商品規格の設定</button>
+                        <button type="submit" class="btn btn-primary pull-right">{{'admin.product.product_class.528'|trans}}</button>
                         <div id="edit_info_box__class_name" class="form-horizontal">
                             {{ form_widget(form.class_name1) }}
                             {{ form_errors(form.class_name1) }}
@@ -171,11 +171,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% endfor %}
                         </div>
                     {% else %}
-                        <button type="button" id="delete" class="btn btn-default pull-right" name="mode" value="delete">商品規格を初期化</button>
+                        <button type="button" id="delete" class="btn btn-default pull-right" name="mode" value="delete">{{'admin.product.product_class.529'|trans}}</button>
                         <div id="edit_info_box__class_name">
-                          規格1 : <strong>{{ class_name1 }}</strong>
+                          {{'admin.product.product_class.530'|trans}} : <strong>{{ class_name1 }}</strong>
                           {% if class_name2 is not null %}
-                          <br>規格2 : <strong>{{ class_name2 }}</strong>
+                          <br>{{'admin.product.product_class.531'|trans}} : <strong>{{ class_name2 }}</strong>
                           {% endif %}
                         </div>
                     {% endif %}
@@ -195,7 +195,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="result_box__body" class="box">
             {% if classForm.product_classes|length > 0 and has_class_category_flg %}
             <div id="result_box__header" class="box-header">
-                <button type="button" id="copy" class="btn btn-default pull-right btn-xs">1行目のデータをコピーする</button>
+                <button type="button" id="copy" class="btn btn-default pull-right btn-xs">{{'admin.product.product_class.532'|trans}}</button>
                 <h3 class="box-title">検索結果 <span class="normal"><strong>{{ classForm.product_classes|length }} 件</strong> が該当しました</span></h3>
                 {% if error is not null %}
                     <div id="result_box__error" class="text-danger">{{ error.message }}</div>
@@ -207,20 +207,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <table class="table table-striped">
                             <thead>
                                 <tr id="result_box__header">
-                                    <th id="result_box__header_add" class="text-center">登録<input id="add-all" type="checkbox" value="0"></th>
-                                    <th id="result_box__header_class_category1">規格1</th>
-                                    <th id="result_box__header_class_category2">規格2</th>
-                                    <th id="result_box__header_code">商品コード</th>
-                                    <th id="result_box__header_stock">在庫数</th>
-                                    <th id="result_box__header_sale_limit">販売制限数</th>
-                                    <th id="result_box__header_price01">通常価格(円)</th>
-                                    <th id="result_box__header_price02">販売価格(円)</th>
+                                    <th id="result_box__header_add" class="text-center">{{'admin.product.product_class.534'|trans}}<input id="add-all" type="checkbox" value="0"></th>
+                                    <th id="result_box__header_class_category1">{{'admin.product.product_class.535'|trans}}</th>
+                                    <th id="result_box__header_class_category2">{{'admin.product.product_class.536'|trans}}</th>
+                                    <th id="result_box__header_code">{{'admin.product.product_class.537'|trans}}</th>
+                                    <th id="result_box__header_stock">{{'admin.product.product_class.538'|trans}}</th>
+                                    <th id="result_box__header_sale_limit">{{'admin.product.product_class.539'|trans}}</th>
+                                    <th id="result_box__header_price01">{{'admin.product.product_class.540'|trans}}</th>
+                                    <th id="result_box__header_price02">{{'admin.product.product_class.541'|trans}}</th>
                                     {% if BaseInfo.option_product_delivery_fee %}
-                                    <th id="result_box__header_delivery_fee">送料</th>
+                                    <th id="result_box__header_delivery_fee">{{'admin.product.product_class.542'|trans}}</th>
                                     {% endif %}
-                                    <th id="result_box__header_delivery_date">お届け可能日</th>
+                                    <th id="result_box__header_delivery_date">{{'admin.product.product_class.543'|trans}}</th>
                                     {% if BaseInfo.option_product_tax_rule %}
-                                    <th id="result_box__header_tax_rate">販売税率</th>
+                                    <th id="result_box__header_tax_rate">{{'admin.product.product_class.544'|trans}}</th>
                                     {% endif %}
                                     <th id="result_box__header_sale_type">販売種別</th>
                                 </tr>
@@ -293,7 +293,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box-body -->
             {% else %}
             <div id="result_box__error_message" class="box-header">
-                <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+                <h3 class="box-title">{{'admin.product.product_class.546'|trans}}</h3>
             </div><!-- /.box-header -->
             {% endif %}
         </div><!-- /.box -->
@@ -304,12 +304,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div id="edit_box__footer" class="row">
     <div id="edit_box__button_menu" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
 {% if not_product_class  %}
-        <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="edit">登録</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="edit">{{'admin.product.product_class.547'|trans}}</button>
 {% else %}
         <input id="mode" type="hidden" name="mode">
-        <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="update">更新</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="update">{{'admin.product.product_class.548'|trans}}</button>
 {% endif %}
-        <p><a href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1">前のページに戻る</a></p>
+        <p><a href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1">{{'admin.product.product_class.549'|trans}}</a></p>
     </div>
 </div>
 </form>

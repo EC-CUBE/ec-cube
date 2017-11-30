@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['store', 'authentication_setting'] %}
 
-{% block title %}オーナーズストア{% endblock %}
-{% block sub_title %}認証キー設定{% endblock %}
+{% block title %}{{'admin.store.authentication_setting.803'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.store.authentication_setting.804'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -35,11 +35,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-9">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">認証キー設定</h3>
+                    <h3 class="box-title">{{'admin.store.authentication_setting.805'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-3 col-lg-2 control-label">認証キー</label>
+                        <label class="col-sm-3 col-lg-2 control-label">{{'admin.store.authentication_setting.806'|trans}}</label>
                         <div class="col-sm-9 col-lg-10">
                             {{ form_widget(form.authentication_key) }}
                             {{ form_errors(form.authentication_key) }}
@@ -56,7 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="box-body">
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">設定</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.store.authentication_setting.808'|trans}}</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

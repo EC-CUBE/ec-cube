@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}支払方法管理{% endblock %}
+{% block title %}{{'admin.setting.shop.payment.595'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.shop.payment.596'|trans}}{% endblock %}
 
 {% block main %}
     <div id="payment_wrap" class="row">
@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="payment_list_box__body" class="box">
                 <div id="payment_list_box__header" class="box-header with-arrow">
                     <h3 class="box-title">
-                        支払方法
+                        {{'admin.setting.shop.payment.597'|trans}}
                     </h3>
                 </div><!-- /.box-header -->
                 <div id="payment_list_box__body_inner" class="box-body">
@@ -41,9 +41,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <table class="table table-striped">
                                 <thead>
                                 <tr id="payment_list__list_header">
-                                    <th id="payment_list__header_method">支払方法</th>
-                                    <th id="payment_list__header_charge">手数料</th>
-                                    <th id="payment_list__header_rule">利用条件</th>
+                                    <th id="payment_list__header_method">{{'admin.setting.shop.payment.597'|trans}}</th>
+                                    <th id="payment_list__header_charge">{{'admin.setting.shop.payment.599'|trans}}</th>
+                                    <th id="payment_list__header_rule">{{'admin.setting.shop.payment.600'|trans}}</th>
                                     <th id="payment_list__header_menu_box">&nbsp;</th>
                                 </tr>
                                 </thead>
@@ -62,12 +62,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {{ Payment.rule_min }}
                                             {% else %}
                                                 0
-                                            {% endif %}円
+                                            {% endif %}{{'admin.setting.shop.payment.601'|trans}}
 
                                             {% if Payment.rule_max > 0 %}
-                                                ～{{ Payment.rule_max }}円
+                                                ～{{ Payment.rule_max }}{{'admin.setting.shop.payment.602'|trans}}
                                             {% elseif Payment.rule_max is null %}
-                                                ～無制限
+                                                ～{{'admin.setting.shop.payment.603'|trans}}
                                             {% endif %}
                                         </td>
                                         <td id="payment_list__menu_box--{{ Payment.id }}" class="icon_edit">
@@ -75,21 +75,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="payment_list__menu--{{ Payment.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
-                                                        <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
+                                                        <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">{{'admin.setting.shop.payment.604'|trans}}</a>
                                                     </li>
                                                     <li>
                                                         {% if Payment.visible %}
-                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="非表示にしてもよろしいですか?">非表示にする</a>
+                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.setting.shop.payment.605'|trans}}">非表示にする</a>
                                                         {% else %}
                                                             <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="表示にしてもよろしいですか">表示にする</a>
                                                         {% endif %}
                                                     </li>
                                                     <li>
-                                                        <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
+                                                        <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">{{'admin.setting.shop.payment.607'|trans}}</a>
                                                     </li>
                                                     <li>
                                                         {% if loop.first == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a></li>
+                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.shop.payment.608'|trans}}</a></li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
                                                             <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
@@ -112,7 +112,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div id="payment_list__footer" class="row">
         <div id="payment_list__insert_button" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
+            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.setting.shop.payment.597'|trans}}を新規入力</a>
         </div>
     </div>
 {% endblock %}

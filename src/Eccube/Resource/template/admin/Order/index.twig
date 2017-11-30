@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_master'] %}
 
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}受注マスター{% endblock %}
+{% block title %}{{'admin.order.index.295'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.order.index.296'|trans}}{% endblock %}
 
 {% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -118,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {{ form_widget(searchForm._token) }}
     <div id="search_box_main" class="row">
       <div id="search_box_main__body" class="col-md-12 accordion">
-        {{ form_widget(searchForm.multi, { attr: { placeholder: '受注ID・注文者名・注文者会社名', class : 'input_search' } } ) }}
+        {{ form_widget(searchForm.multi, { attr: { placeholder: 'admin.order.index.297'|trans, class : 'input_search' } } ) }}
 
         <a href="#" class="toggle{% if active %} active{% endif %}">
           <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>
@@ -130,7 +130,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               <div class="row">
                 <div class="col-sm-12">
                   <div id="search_box_main__multi_status" class="form-group">
-                    <label>対応状況</label>
+                    <label>{{'admin.order.index.298'|trans}}</label>
                     <div>
                       {{ form_widget(searchForm.multi_status) }}
                     </div>
@@ -140,13 +140,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               <div class="row">
                 <div class="col-md-6">
                   <div id="search_box_main__name" class="form-group">
-                    <label>お名前</label>
+                    <label>{{'admin.order.index.299'|trans}}</label>
                     {{ form_widget(searchForm.name) }}
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div id="search_box_main__kana" class="form-group">
-                    <label>お名前(フリガナ)</label>
+                    <label>{{'admin.order.index.300'|trans}}</label>
                     {{ form_widget(searchForm.kana) }}
                     {{ form_errors(searchForm.kana) }}
                   </div>
@@ -155,13 +155,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               <div class="row">
                 <div class="col-sm-6">
                   <div id="search_box_main__tel" class="form-group">
-                    <label>電話番号</label>
+                    <label>{{'admin.order.index.301'|trans}}</label>
                     {{ form_widget(searchForm.tel) }}
                     {{ form_errors(searchForm.tel) }}
                   </div>
                 </div>
                 <div id="search_box_main__email" class="col-sm-6">
-                  <label>メールアドレス</label>
+                  <label>{{'admin.order.index.302'|trans}}</label>
                   <div class="form-group">
                     {{ form_widget(searchForm.email) }}
                     {{ form_errors(searchForm.email) }}
@@ -172,7 +172,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               <div class="row">
                 <div class="col-xs-12">
                   <div id="search_box_main__sex" class="form-group">
-                    <label>性別</label>
+                    <label>{{'admin.order.index.303'|trans}}</label>
                     {{ form_widget(searchForm.sex) }}
                   </div>
                 </div>
@@ -181,7 +181,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               <div class="row">
                 <div class="col-sm-12">
                   <div id="search_box_main__payment" class="form-group">
-                    <label>支払方法</label>
+                    <label>{{'admin.order.index.304'|trans}}</label>
                     <div>
                       {{ form_widget(searchForm.payment) }}
                     </div>
@@ -191,30 +191,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
               <div class="row">
                 <div id="search_box_main__order_date" class="col-sm-6">
-                  <label>受注日</label>
+                  <label>{{'admin.order.index.305'|trans}}</label>
                   <div class="form-group range">
-                    {{ form_widget(searchForm.order_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.order_date_end, {'attr': {'class': 'input_cal'}}) }}
+                    {{ form_widget(searchForm.order_date_start, {'attr': {'class': 'input_cal'}}) }} {{'admin.order.index.306'|trans}} {{ form_widget(searchForm.order_date_end, {'attr': {'class': 'input_cal'}}) }}
                   </div>
                 </div>
                 <div id="search_box_main__payment_date" class="col-sm-6">
-                  <label>入金日</label>
+                  <label>{{'admin.order.index.307'|trans}}</label>
                   <div class="form-group range">
-                    {{ form_widget(searchForm.payment_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.payment_date_end, {'attr': {'class': 'input_cal'}}) }}
+                    {{ form_widget(searchForm.payment_date_start, {'attr': {'class': 'input_cal'}}) }} {{'admin.order.index.308'|trans}} {{ form_widget(searchForm.payment_date_end, {'attr': {'class': 'input_cal'}}) }}
                   </div>
                 </div>
               </div><!-- /.row -->
 
               <div class="row">
                 <div id="search_box_main__commit_date" class="col-sm-6">
-                  <label>発送日</label>
+                  <label>{{'admin.order.index.309'|trans}}</label>
                   <div class="form-group range">
-                    {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
+                    {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} {{'admin.order.index.310'|trans}} {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
                   </div>
                 </div>
                 <div id="search_box_main__update_date" class="col-sm-6">
-                  <label>更新日</label>
+                  <label>{{'admin.order.index.311'|trans}}</label>
                   <div class="form-group range">
-                    {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
+                    {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} {{'admin.order.index.312'|trans}} {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                   </div>
                 </div>
               </div><!-- /.row -->
@@ -222,13 +222,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               <div class="row">
                 <div class="col-sm-6">
                   <div id="search_box_main__payment_total" class="form-group range">
-                    <label>購入金額</label>
-                    {{ form_widget(searchForm.payment_total_start) }} ～ {{ form_widget(searchForm.payment_total_end) }}
+                    <label>{{'admin.order.index.313'|trans}}</label>
+                    {{ form_widget(searchForm.payment_total_start) }} {{'admin.order.index.314'|trans}} {{ form_widget(searchForm.payment_total_end) }}
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div id="search_box_main__buy_product_name" class="form-group">
-                    <label>購入商品名</label>
+                    <label>{{'admin.order.index.315'|trans}}</label>
                     {{ form_widget(searchForm.buy_product_name) }}
                   </div>
                 </div>
@@ -247,7 +247,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               </div><!-- /.row -->
               <div id="search_box_main__clear" class="row">
                 <div class="col-sm-12">
-                  <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
+                  <p class="text-center"><a href="#" class="search-clear">{{'admin.order.index.316'|trans}}</a></p>
                 </div>
               </div><!-- /.row -->
             </div>
@@ -259,7 +259,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div id="search_box_footer" class="row btn_area">
       <div id="search_box_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
         <button type="submit" class="btn btn-primary btn-block btn-lg">
-          検索する <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+          {{'admin.order.index.317'|trans}} <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
         </button>
       </div>
       <!-- /.col -->
@@ -291,18 +291,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </ul>
                                 </li>
                                 <li id="result_list_main__csv_menu" class="dropdown">
-                                    <a id="result_list_main__csv_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                    <a id="result_list_main__csv_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">{{'admin.order.index.321'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ url('admin_order_export_order') }}">受注CSVダウンロード</a></li>
-                                        <li><a href="{{ url('admin_order_export_shipping') }}">配送CSVダウンロード</a></li>
+                                        <li><a href="{{ url('admin_order_export_order') }}">{{'admin.order.index.322'|trans}}</a></li>
+                                        <li><a href="{{ url('admin_order_export_shipping') }}">{{'admin.order.index.323'|trans}}</a></li>
                                         <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}">受注CSV出力項目設定</a></li>
                                         <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}">配送CSV出力項目設定</a></li>
                                     </ul>
                                 </li>
                                 <li id="dropmenu" class="dropdown">
-                                    <a id="result_list_main__other_menu_toggle"class="dropdown-toggle" data-toggle="dropdown">その他<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                    <a id="result_list_main__other_menu_toggle"class="dropdown-toggle" data-toggle="dropdown">{{'admin.order.index.326'|trans}}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ url('admin_order_mail_all') }}">メール一括通知</a></li>
+                                        <li><a href="{{ url('admin_order_mail_all') }}">{{'admin.order.index.327'|trans}}</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -315,13 +315,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <thead>
                                     <tr id="result_list_main__header">
                                         <th class="text-center"><input type="checkbox" id="check-all"></th>
-                                        <th id="result_list_main__header_order_date">受注日</th>
-                                        <th id="result_list_main__header_id">注文番号</th>
-                                        <th id="result_list_main__header_name">お名前</th>
-                                        <th id="result_list_main__header_payment_method">支払方法</th>
-                                        <th id="result_list_main__header_payment_total">購入金額(円)</th>
-                                        <th id="result_list_main__header_commit_date">発送日</th>
-                                        <th id="result_list_main__header_order_status">対応状況</th>
+                                        <th id="result_list_main__header_order_date">{{'admin.order.index.328'|trans}}</th>
+                                        <th id="result_list_main__header_id">{{'admin.order.index.329'|trans}}</th>
+                                        <th id="result_list_main__header_name">{{'admin.order.index.330'|trans}}</th>
+                                        <th id="result_list_main__header_payment_method">{{'admin.order.index.331'|trans}}</th>
+                                        <th id="result_list_main__header_payment_total">{{'admin.order.index.332'|trans}}</th>
+                                        <th id="result_list_main__header_commit_date">{{'admin.order.index.333'|trans}}</th>
+                                        <th id="result_list_main__header_order_status">{{'admin.order.index.334'|trans}}</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -340,9 +340,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div id="result_list_main__item_menu--{{ Order.id }}" class="dropdown">
                                                 <a id="result_list_main__item_menu_toggle--{{ Order.id }}" class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="result_list_main_item_menu--{{ Order.id }}" class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="{{ url('admin_order_edit', { id : Order.id }) }}">編集</a></li>
-                                                <li><a href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この受注情報を削除してもよろしいですか？">削除</a></li>
-                                                <li><a href="{{ url('admin_order_mail', { id : Order.id }) }}">メール通知</a></li>
+                                                <li><a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{'admin.order.index.335'|trans}}</a></li>
+                                                <li><a href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="こ{{'admin.order.index.336'|trans}}">削除</a></li>
+                                                <li><a href="{{ url('admin_order_mail', { id : Order.id }) }}">{{'admin.order.index.337'|trans}}</a></li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -359,7 +359,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% endif %}
                 {% else %}
                 <div class="box-header with-arrow">
-                    <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+                    <h3 class="box-title">{{'admin.order.index.338'|trans}}</h3>
                 </div><!-- /.box-header -->
                 {% endif %}
             </div><!-- /.box -->

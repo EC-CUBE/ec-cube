@@ -20,11 +20,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
             <li class="{% if active_menus(menus)[0] == 'product' %}active{% endif %}">
-                <a class="toggle"><svg class="cb cb-tag"> <use xlink:href="#cb-tag" /></svg>商品管理<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                <a class="toggle"><svg class="cb cb-tag"> <use xlink:href="#cb-tag" /></svg>{{'admin.product.subnavi.550'|trans}}<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
                 <ul {% if active_menus(menus)[0] == 'product' %}class="active" style="display: block;"{% endif %}>
-                    <li id="navi-products-index" class="{% if active_menus(menus)[1] == 'product_master' %}active{% endif %}"><a href="{{ url('admin_product') }}">商品マスター</a></li>
-                    <li id="navi-products-product" class="{% if active_menus(menus)[1] == 'product_edit' %}active{% endif %}"><a href="{{ url('admin_product_product_new') }}">商品登録</a></li>
-                    <li id="navi-products-class" class="{% if active_menus(menus)[1] == 'class_name' %}active{% endif %}"><a href="{{ url('admin_product_class_name') }}">規格管理</a></li>
-                    <li id="navi-products-category" class="{% if active_menus(menus)[1] == 'class_category' %}active{% endif %}"><a href="{{ url('admin_product_category') }}">カテゴリ登録</a></li>
+                    <li id="navi-products-index" class="{% if active_menus(menus)[1] == 'product_master' %}active{% endif %}"><a href="{{ url('admin_product') }}">{{'admin.product.subnavi.551'|trans}}</a></li>
+                    <li id="navi-products-product" class="{% if active_menus(menus)[1] == 'product_edit' %}active{% endif %}"><a href="{{ url('admin_product_product_new') }}">{{'admin.product.subnavi.552'|trans}}</a></li>
+                    <li id="navi-products-class" class="{% if active_menus(menus)[1] == 'class_name' %}active{% endif %}"><a href="{{ url('admin_product_class_name') }}">{{'admin.product.subnavi.553'|trans}}</a></li>
+                    <li id="navi-products-category" class="{% if active_menus(menus)[1] == 'class_category' %}active{% endif %}"><a href="{{ url('admin_product_category') }}">{{'admin.product.subnavi.554'|trans}}</a></li>
                 </ul>
             </li>

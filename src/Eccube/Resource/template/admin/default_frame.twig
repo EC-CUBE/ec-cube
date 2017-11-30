@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>{{ BaseInfo.shop_name }} - EC-CUBE管理画面</title>
+<title>{{ BaseInfo.shop_name }} - {{'admin.default_frame.151'|trans}}</title>
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,10 +69,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </svg>
                         </dt>
                         <dd class="dropdown-menu">
-                            最終ログイン<br>
+                            {{'admin.default_frame.153'|trans}}<br>
                             {{ app.user.login_date.format('Y/m/d H:i')|default('') }}
-                            <a class="btn btn-primary btn-xs" href="{{ url('admin_change_password') }}">パスワード変更</a>
-                            <a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_logout') }}">ログアウト</a>
+                            <a class="btn btn-primary btn-xs" href="{{ url('admin_change_password') }}">{{'admin.default_frame.154'|trans}}</a>
+                            <a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_logout') }}">{{'admin.default_frame.155'|trans}}</a>
                         </dd>
                     {% endif %}
                 </dl>
@@ -85,7 +85,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <ul class="nav nav-sidebar">
             <li>
                 <a href="{{ url('admin_homepage') }}">
-                    <svg class="cb cb-home"><use xlink:href="#cb-home" /></svg>ホーム<svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg>
+                    <svg class="cb cb-home"><use xlink:href="#cb-home" /></svg>{{'admin.default_frame.156'|trans}}<svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg>
                 </a>
             </li>
             {{ include('nav.twig') }}

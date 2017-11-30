@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['setting', 'system', 'member'] %}
 
-{% block title %}システム設定{% endblock %}
-{% block sub_title %}メンバー管理{% endblock %}
+{% block title %}{{'admin.setting.system.member.684'|trans}}{% endblock %}
+{% block sub_title %}{{'admin.setting.system.member.685'|trans}}{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="member_wrap" class="col-md-12">
             <div id="member_list_box" class="box">
                 <div id="member_list_box__header" class="box-header">
-                    <h3 class="box-title">メンバー管理</h3>
+                    <h3 class="box-title">{{'admin.setting.system.member.686'|trans}}</h3>
                 </div><!-- /.box-header -->
                 <div id="member_list_box__body" class="box-body">
                     <form name="form1" id="form1" method="post" action="">
@@ -50,10 +50,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <table class="table table-striped">
                                     <thead>
                                     <tr id="member_list__list_header">
-                                        <th id="member_list__header_name">名前</th>
-                                        <th id="member_list__header_department">所属</th>
-                                        <th id="member_list__header_authority_name">権限</th>
-                                        <th id="member_list__header_work_name">稼働</th>
+                                        <th id="member_list__header_name">{{'admin.setting.system.member.687'|trans}}</th>
+                                        <th id="member_list__header_department">{{'admin.setting.system.member.688'|trans}}</th>
+                                        <th id="member_list__header_authority_name">{{'admin.setting.system.member.689'|trans}}</th>
+                                        <th id="member_list__header_work_name">{{'admin.setting.system.member.690'|trans}}</th>
                                         <th id="member_list__header_menu_box">&nbsp;</th>
                                     </tr>
                                     </thead>
@@ -68,14 +68,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div id="member_list__menu_box_toggle--{{ Member.id }}" class="dropdown">
                                                 <a class="dropdown-toggle--{{ Member.id }}" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="member_list__menu--{{ Member.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >編集</a></li>
+                                                    <li><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >{{'admin.setting.system.member.691'|trans}}</a></li>
                                                     {% if Member.id == app.user.id %}
                                                         <li>
-                                                            <a>削除</a>
+                                                            <a>{{'admin.setting.system.member.692'|trans}}</a>
                                                         </li>
                                                     {% else %}
                                                         <li>
-                                                            <a href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
+                                                            <a href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">{{'admin.setting.system.member.693'|trans}}</a>
                                                         </li>
                                                     {% endif %}
                                                     {% if loop.first == false %}
@@ -104,7 +104,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="member_list__footer" class="row">
                 <div id="member_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     <a href="{{ url('admin_setting_system_member_new') }}" class="btn btn-primary btn-block btn-lg">
-                            新規登録
+                            {{'admin.setting.system.member.696'|trans}}
                     </a>
                 </div>
             </div>
