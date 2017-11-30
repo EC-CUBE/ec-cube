@@ -85,9 +85,7 @@ class MailType extends AbstractType
             ->add('tpl_data', HiddenType::class, array(
                 'label' => false,
                 'mapped' => false,
-                'required' => true,
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new TwigLint(),
                 ]
             ))
