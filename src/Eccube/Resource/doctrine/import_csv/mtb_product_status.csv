@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","公開","0","productstatus"
 "2","非公開","1","productstatus"
 "3","廃止","2","productstatus"

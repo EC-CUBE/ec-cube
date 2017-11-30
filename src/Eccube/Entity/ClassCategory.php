@@ -64,9 +64,9 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="integer")
+     * @ORM\Column(name="sort_no", type="integer")
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var boolean
@@ -159,27 +159,27 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return ClassCategory
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**

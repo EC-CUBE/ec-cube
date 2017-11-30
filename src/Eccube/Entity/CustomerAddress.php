@@ -269,7 +269,7 @@ class CustomerAddress extends AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pref", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      */
     private $Pref;

@@ -2,9 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
+use Eccube\Tests\EccubeTestCase;
 
 
 /**

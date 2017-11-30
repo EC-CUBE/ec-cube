@@ -60,7 +60,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Tag", inversedBy="ProductTag")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tag", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      * })
      */
     private $Tag;

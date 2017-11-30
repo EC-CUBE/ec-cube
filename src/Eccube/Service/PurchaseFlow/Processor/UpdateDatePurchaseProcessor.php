@@ -2,7 +2,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Eccube\Annotation\Inject;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
@@ -42,11 +41,11 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
             if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
-                    $TargetOrder->setCommitDate($dateTime);
+                    $TargetOrder->setShippingDate($dateTime);
                     // お届け先情報の発送日も更新する.
                     $Shippings = $TargetOrder->getShippings();
                     foreach ($Shippings as $Shipping) {
-                        $Shipping->setShippingCommitDate($dateTime);
+                        $Shipping->setShippingDate($dateTime);
                     }
                 }
                 // 入金済
@@ -60,11 +59,11 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
         } else {
             // 発送済
             if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
-                $TargetOrder->setCommitDate($dateTime);
+                $TargetOrder->setShippingDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
                 foreach ($Shippings as $Shipping) {
-                    $Shipping->setShippingCommitDate($dateTime);
+                    $Shipping->setShippingDate($dateTime);
                 }
                 // 入金済
             } elseif ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_pre_end']) {

@@ -59,7 +59,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $SaleType = new SaleType();
         $SaleType->setId(1000);
         $SaleType->setName('テスト種別');
-        $SaleType->setRank(1000);
+        $SaleType->setSortNo(1000);
         $this->app['orm.em']->persist($SaleType);
         $this->app['orm.em']->flush($SaleType);
 

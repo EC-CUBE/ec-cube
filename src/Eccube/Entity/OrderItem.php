@@ -40,6 +40,8 @@ use Eccube\Util\EntityUtil;
  */
 class OrderItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
 {
+    use PointRateTrait;
+
     private $price_inc_tax = null;
 
     /**

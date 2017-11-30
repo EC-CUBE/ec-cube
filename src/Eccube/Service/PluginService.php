@@ -156,6 +156,8 @@ class PluginService
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
+            // リソースファイルをコピー
+            $this->copyAssets($pluginBaseDir, $config['code']);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -334,7 +336,7 @@ class PluginService
             $p = new \Eccube\Entity\Plugin();
             // インストール直後はプラグインは有効にしない
             $p->setName($meta['name'])
-                ->setEnable(false)
+                ->setEnabled(false)
                 ->setClassName(isset($meta['event']) ? $meta['event'] : '')
                 ->setVersion($meta['version'])
                 ->setSource($source)
@@ -396,6 +398,7 @@ class PluginService
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+        $this->removeAssets($plugin->getCode());
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
@@ -443,7 +446,7 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnable()) {
+        if ($temporary || $plugin->isEnabled()) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
@@ -472,7 +475,7 @@ class PluginService
             CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
-            $plugin->setEnable($enable ? true : false);
+            $plugin->setEnabled($enable ? true : false);
             $em->persist($plugin);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
@@ -774,7 +777,7 @@ class PluginService
         $criteria = Criteria::create()
             ->where(Criteria::expr()->neq('code', $pluginCode));
         if ($enableOnly) {
-            $criteria->andWhere(Criteria::expr()->eq('enable', Constant::ENABLED));
+            $criteria->andWhere(Criteria::expr()->eq('enabled', Constant::ENABLED));
         }
         /**
          * @var Plugin[] $plugins
@@ -865,6 +868,42 @@ class PluginService
     }
 
     /**
+     * リソースファイル等をコピー
+     * コピー元となるファイルの置き場所は固定であり、
+     * [プラグインコード]/Resource/assets
+     * 配下に置かれているファイルが所定の位置へコピーされる
+     *
+     * @param $pluginBaseDir
+     * @param $pluginCode
+     */
+    public function copyAssets($pluginBaseDir, $pluginCode)
+    {
+        $assetsDir = $pluginBaseDir.'/Resource/assets';
+
+        // プラグインにリソースファイルがあれば所定の位置へコピー
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->mirror($assetsDir, $this->appConfig['plugin_html_realdir'].$pluginCode.'/assets');
+        }
+    }
+
+    /**
+     * コピーしたリソースファイル等を削除
+     *
+     * @param $pluginCode
+     */
+    public function removeAssets($pluginCode)
+    {
+        $assetsDir = $this->appConfig['plugin_html_realdir'].$pluginCode;
+
+        // コピーされているリソースファイルがあれば削除
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->remove($assetsDir);
+        }
+    }
+
+    /*
      * @param string $pluginVersion
      * @param string $remoteVersion
      * @return mixed
@@ -897,7 +936,7 @@ class PluginService
     private function isEnable($code)
     {
         $Plugin = $this->pluginRepository->findOneBy([
-            'enable' => Constant::ENABLED,
+            'enabled' => Constant::ENABLED,
             'code' => $code
         ]);
         if ($Plugin) {

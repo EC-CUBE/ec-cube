@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td>{{ Plugin.name }} </td>
                                         <td>{{ Plugin.version }}</td>
                                         <td>{{ Plugin.code }} </td>
-                                        <td>{% if Plugin.enable %}稼働中{% else %}停止中{% endif %}</td>
+                                        <td>{% if Plugin.enabled %}稼働中{% else %}停止中{% endif %}</td>
                                         <td>{% if Plugin.source %}<a href="https://www.ec-cube.net/products/detail.php?product_id={{ Plugin.source }}" target="_blank">詳細</a>{% else %}--{% endif %}</td>
                                     </tr>
                                     {% endfor %}

@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","モバイル","0","devicetype"
 "2","スマートフォン","1","devicetype"
 "10","PC","2","devicetype"

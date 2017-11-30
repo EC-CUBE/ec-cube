@@ -29,7 +29,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
             $ClassName
                 ->setName('class-'.$i)
                 ->setCreator($this->Member)
-                ->setRank($i)
+                ->setSortNo($i)
                 ;
             $this->app['orm.em']->persist($ClassName);
         }
@@ -64,7 +64,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
 
         $this->actual = array();
         foreach ($ClassNames as $ClassName) {
-            $this->actual[] = $ClassName->getRank();
+            $this->actual[] = $ClassName->getSortNo();
         }
         $this->expected = array(2, 1, 0);
         $this->verify('ソート順が違います');
@@ -81,11 +81,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.class_name']->save($ClassName);
 
         $this->expected = 3;
-        $this->actual = $ClassName->getRank();
-        $this->verify('rank は'.$this->expected.'ではありません');
+        $this->actual = $ClassName->getSortNo();
+        $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
-    public function testSaveWithRankNull()
+    public function testSaveWithSortNoNull()
     {
         $this->removeClass();    // 一旦全件削除
         $faker = $this->getFaker();
@@ -97,8 +97,8 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.class_name']->save($ClassName);
 
         $this->expected = 1;
-        $this->actual = $ClassName->getRank();
-        $this->verify('rank は'.$this->expected.'ではありません');
+        $this->actual = $ClassName->getSortNo();
+        $this->verify('sort_no は'.$this->expected.'ではありません');
     }
 
     public function testDelete()
@@ -116,11 +116,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
     {
         $ClassName = new ClassName();
         $ClassName->setName('sample');
-        $ClassName->setRank(100);
+        $ClassName->setSortNo(100);
         $ClassCateogory = new ClassCategory();
         $ClassCateogory->setClassName($ClassName);
         $ClassCateogory->setName('sample');
-        $ClassCateogory->setRank(100);
+        $ClassCateogory->setSortNo(100);
         $ClassCateogory->setVisible(true);
 
         $em = $this->app['orm.em'];

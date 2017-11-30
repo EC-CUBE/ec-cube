@@ -24,8 +24,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-
 class OrderServiceTest extends AbstractServiceTestCase
 {
     protected $app;

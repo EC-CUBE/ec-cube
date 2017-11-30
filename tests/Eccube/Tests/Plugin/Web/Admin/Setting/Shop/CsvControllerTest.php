@@ -37,8 +37,8 @@ class CsvControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setRank(1);
-        $Csv->setEnable(Constant::DISABLED);
+        $Csv->setSortNo(1);
+        $Csv->setEnabled(Constant::DISABLED);
         $this->app['orm.em']->flush();
     }
 

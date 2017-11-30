@@ -352,7 +352,7 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->isEnable()) {
+        if ($Plugin->getEnabled()) {
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();

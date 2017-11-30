@@ -26,16 +26,10 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
-use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Form\Type\Master\OrderStatusType;
-use Eccube\Form\Type\Master\PaymentType;
-use Eccube\Form\Type\Master\SexType;
 use Eccube\Form\Type\Master\ShippingStatusType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -126,7 +120,7 @@ class SearchShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('commit_date_start', DateType::class, array(
+            ->add('shipping_date_start', DateType::class, array(
                 'label' => '発送日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
@@ -134,7 +128,7 @@ class SearchShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('commit_date_end', DateType::class, array(
+            ->add('shipping_date_end', DateType::class, array(
                 'label' => '発送日(TO)',
                 'required' => false,
                 'input' => 'datetime',

@@ -205,7 +205,7 @@
         eccube.fileManager.treeStatusHidden = treeHidden;
         eccube.fileManager.modeHidden = mode;
 
-        var id, level, old_id, old_level, tmp_level, rank_img, display, arrFileSplit, file_name, folder_img;
+        var id, level, old_id, old_level, tmp_level, sort_no_img, display, arrFileSplit, file_name, folder_img;
 
         for(var i = 0; i < arrTree.length; i++) {
             id = arrTree[i][0];
@@ -240,18 +240,18 @@
             // 階層画像の表示・非表示処理
             if(arrTree[i][4]) {
                 if(arrTree[i][1] === '_parent') {
-                    rank_img = eccube.fileManager.IMG_MINUS;
+                    sort_no_img = eccube.fileManager.IMG_MINUS;
                 } else {
-                    rank_img = eccube.fileManager.IMG_NORMAL;
+                    sort_no_img = eccube.fileManager.IMG_NORMAL;
                 }
                 // 開き状態を保持
                 eccube.fileManager.arrTreeStatus.push(arrTree[i][2]);
                 display = 'block';
             } else {
                 if(arrTree[i][1] === '_parent') {
-                    rank_img = eccube.fileManager.IMG_PLUS;
+                    sort_no_img = eccube.fileManager.IMG_PLUS;
                 } else {
-                    rank_img = eccube.fileManager.IMG_NORMAL;
+                    sort_no_img = eccube.fileManager.IMG_NORMAL;
                 }
                 display = 'none';
             }
@@ -268,10 +268,10 @@
             }
 
             // 階層画像に子供がいたらオンクリック処理をつける
-            if(rank_img !== eccube.fileManager.IMG_NORMAL) {
-                eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><span id="rank_img'+ i +'">' + rank_img + '</span>';
+            if(sort_no_img !== eccube.fileManager.IMG_NORMAL) {
+                eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'sort_no_img'+ i +'\',\''+ arrTree[i][2] +'\')"><span id="sort_no_img'+ i +'">' + sort_no_img + '</span>';
             } else {
-                eccube.fileManager.tree += '<span id="rank_img'+ i +'">' + rank_img + '</span>';
+                eccube.fileManager.tree += '<span id="sort_no_img'+ i +'">' + sort_no_img + '</span>';
 
             }
             eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.openFolder(\''+ arrTree[i][2] +'\')"><span id="tree_img'+ i +'">' + folder_img + '&nbsp;'+ file_name +'</span></a><br/>';
@@ -332,7 +332,7 @@
                             }
                         }
                         if(!open_flag) {
-                            eccube.fileManager.toggleTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);
+                            eccube.fileManager.toggleTreeMenu('tree'+cnt, 'sort_no_img'+cnt, arrTree[cnt][2]);
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "15","15件","0","productlistmax"
 "30","30件","1","productlistmax"
 "50","50件","2","productlistmax"

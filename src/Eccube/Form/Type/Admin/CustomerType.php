@@ -41,6 +41,7 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -146,6 +147,20 @@ class CustomerType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
+            ->add(
+                'point',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => '所有ポイント',
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^\d+$/u",
+                            'message' => 'form.type.numeric.invalid'
+                        )),
+                    ),
+                ]
+            )
             ->add('note', TextareaType::class, array(
                 'label' => 'SHOP用メモ',
                 'required' => false,
