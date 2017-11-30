@@ -48,6 +48,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'sex' => 1,
             'job' => 1,
             'status' => 1,
+            'point' => 0,
             '_token' => 'dummy',
         );
 

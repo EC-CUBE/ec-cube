@@ -29,7 +29,6 @@ use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Util\StringUtil;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * ProductRepository

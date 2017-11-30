@@ -164,6 +164,18 @@
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
+                <div id="point_box" class="box">
+                    <div id="point_box__header" class="box-header">
+                        <h3 class="box-title">ポイント設定</h3>
+                    </div><!-- /.box-header -->
+                    <div id="point_box__body" class="box-body">
+
+                        {{ form_row(form.option_point) }}
+                        {{ form_row(form.basic_point_rate) }}
+                        {{ form_row(form.point_conversion_rate) }}
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
             </div>
             <div class="col-md-3" id="aside_column">
                 <div id="common_box" class="col_inner">

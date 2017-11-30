@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Util;
 
-use Eccube\Util\StringUtil;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Util\StringUtil;
 
 /**
  * Str test cases.

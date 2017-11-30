@@ -25,6 +25,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -37,9 +38,9 @@ use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
- * 送料明細追加.
+ * 加算ポイント.
  */
-class DeliveryFeeProcessor implements ItemHolderProcessor
+class AddPointProcessor implements ItemHolderProcessor
 {
     /**
      * @Inject("orm.em")
@@ -48,13 +49,20 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
     protected $entityManager;
 
     /**
-     * DeliveryFeeProcessor constructor.
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+
+    /**
+     * AddPointProcessor constructor.
      *
      * @param $app
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, BaseInfo $BaseInfo)
     {
         $this->entityManager = $entityManager;
+        $this->BaseInfo = $BaseInfo;
     }
 
     /**
@@ -65,62 +73,28 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
      */
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
     {
-        if ($this->containsDeliveryFeeItem($itemHolder) == false) {
-            $this->addDeliveryFeeItem($itemHolder);
+        $addPoint = 0;
+        foreach ($itemHolder->getItems() as $item) {
+            $rate = $item->getPointRate();
+            if ($rate === null) {
+                $rate = $this->BaseInfo->getBasicPointRate();
+            }
+            $addPoint += $this->priceToAddPoint($rate, $item->getPriceIncTax(), $item->getQuantity());
         }
-
+        $itemHolder->setAddPoint($addPoint);
         return ProcessResult::success();
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
+     * 単価と数量から加算ポイントに換算する.
      *
-     * @return bool
+     * @param integer $pointRate ポイント付与率(%)
+     * @param integer $price 単価
+     * @param integer $quantity 数量
+     * @return integer additional point
      */
-    private function containsDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    protected function priceToAddPoint($pointRate, $price, $quantity)
     {
-        foreach ($itemHolder->getItems() as $item) {
-            if ($item->isDeliveryFee()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * TODO 送料無料計算.
-     *
-     * @param ItemHolderInterface $itemHolder
-     */
-    private function addDeliveryFeeItem(ItemHolderInterface $itemHolder)
-    {
-        $DeliveryFeeType = $this->entityManager
-            ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
-        // TODO
-        $TaxInclude = $this->entityManager
-            ->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-        $Taxion = $this->entityManager
-            ->find(TaxType::class, TaxType::TAXATION);
-
-        /** @var Order $Order */
-        $Order = $itemHolder;
-        /* @var Shipping $Shipping */
-        foreach ($Order->getShippings() as $Shipping) {
-            $OrderItem = new OrderItem();
-            $OrderItem->setProductName('送料')
-                ->setPrice($Shipping->getShippingDeliveryFee())
-                ->setPriceIncTax($Shipping->getShippingDeliveryFee())
-                ->setTaxRate(8)
-                ->setQuantity(1)
-                ->setOrderItemType($DeliveryFeeType)
-                ->setShipping($Shipping)
-                ->setOrder($itemHolder)
-                ->setTaxDisplayType($TaxInclude)
-                ->setTaxType($Taxion);
-
-            $itemHolder->addItem($OrderItem);
-            $Shipping->addOrderItem($OrderItem);
-        }
+        return round($price * ($pointRate / 100)) * $quantity;
     }
 }

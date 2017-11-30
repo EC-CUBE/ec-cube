@@ -266,6 +266,13 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $currency_code;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true}, nullable=true)
+     */
+    private $point_rate;
+
+    /**
      * @var \Eccube\Entity\ProductStock
      *
      * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductStock", mappedBy="ProductClass", cascade={"persist","remove"})
@@ -802,5 +809,29 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+
+    /**
+     * Set pointRate
+     *
+     * @param string $pointRate
+     *
+     * @return ProductClass
+     */
+    public function setPointRate($pointRate)
+    {
+        $this->point_rate = $pointRate;
+
+        return $this;
+    }
+
+    /**
+     * Get pointRate
+     *
+     * @return string
+     */
+    public function getPointRate()
+    {
+        return $this->point_rate;
     }
 }

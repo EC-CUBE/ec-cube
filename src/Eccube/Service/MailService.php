@@ -458,4 +458,31 @@ class MailService
         return $count;
     }
 
+    /**
+     * ポイントでマイナス発生時にメール通知する。
+     *
+     * @param Order $Order
+     * @param int $currentPoint
+     * @param int $changePoint
+     */
+    public function sendPointNotifyMail(\Eccube\Entity\Order $Order, $currentPoint = 0, $changePoint = 0)
+    {
+
+        $body = $this->app->renderView('Mail/point_notify.twig', array(
+            'Order' => $Order,
+            'currentPoint' => $currentPoint,
+            'changePoint' => $changePoint,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('['.$this->BaseInfo->getShopName().'] ポイント通知')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setTo(array($this->BaseInfo->getEmail01()))
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
+            ->setBody($body);
+
+        $this->app->mail($message);
+    }
 }

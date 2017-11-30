@@ -127,7 +127,8 @@ class Generator {
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
-            ->setUpdateDate(new \DateTime());
+            ->setUpdateDate(new \DateTime())
+            ->setPoint($faker->randomNumber(5));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush($Customer);
 
@@ -444,7 +445,10 @@ class Generator {
             ->setPayment($Payments[$faker->numberBetween(0, count($Payments) - 1)])
             ->setPaymentMethod($Order->getPayment()->getMethod())
             ->setMessage($faker->realText())
-            ->setNote($faker->realText());
+            ->setNote($faker->realText())
+            ->setAddPoint(0)    // TODO
+            ->setUsePoint(0)    // TODO
+        ;
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush($Order);
         if (!is_object($Delivery)) {

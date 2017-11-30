@@ -35,7 +35,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -254,6 +253,60 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
+            // ポイント設定
+            ->add('option_point', ChoiceType::class, array(
+                'label' => 'ポイント機能を利用する',
+                'choices' => array_flip(array(
+                    '0' => '無効',
+                    '1' => '有効',
+                )),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add(
+                'basic_point_rate',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => 'ポイント付与率',
+                    'constraints' => array(
+                        new Assert\Regex(
+                            [
+                                'pattern' => "/^\d+$/u",
+                                'message' => 'form.type.numeric.invalid'
+                            ]
+                        ),
+                        new Assert\Range(
+                            [
+                                'min' => 1,
+                                'max' => 100,
+                            ]
+                        ),
+                    ),
+                ]
+            )
+            ->add(
+                'point_conversion_rate',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => 'ポイント換算レート',
+                    'constraints' => array(
+                        new Assert\Regex(
+                            [
+                                'pattern' => "/^\d+$/u",
+                                'message' => 'form.type.numeric.invalid'
+                            ]
+                        ),
+                        new Assert\Range(
+                            [
+                                'min' => 1,
+                                'max' => 100,
+                            ]
+                        ),
+                    ),
+                ]
+            )
         ;
 
         $builder->add(
