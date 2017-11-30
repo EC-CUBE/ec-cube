@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Entity;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Order;
 use Eccube\Tests\EccubeTestCase;
 

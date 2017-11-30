@@ -4,8 +4,6 @@ namespace Eccube\Tests\Util;
 
 use Eccube\Util\CacheUtil;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamWrapper;
 use Symfony\Component\Finder\Finder;
 
 /**

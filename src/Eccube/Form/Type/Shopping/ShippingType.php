@@ -5,7 +5,6 @@ namespace Eccube\Form\Type\Shopping;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -156,6 +156,8 @@ class PluginService
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
+            // リソースファイルをコピー
+            $this->copyAssets($pluginBaseDir, $config['code']);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -396,6 +398,7 @@ class PluginService
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+        $this->removeAssets($plugin->getCode());
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
@@ -865,6 +868,42 @@ class PluginService
     }
 
     /**
+     * リソースファイル等をコピー
+     * コピー元となるファイルの置き場所は固定であり、
+     * [プラグインコード]/Resource/assets
+     * 配下に置かれているファイルが所定の位置へコピーされる
+     *
+     * @param $pluginBaseDir
+     * @param $pluginCode
+     */
+    public function copyAssets($pluginBaseDir, $pluginCode)
+    {
+        $assetsDir = $pluginBaseDir.'/Resource/assets';
+
+        // プラグインにリソースファイルがあれば所定の位置へコピー
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->mirror($assetsDir, $this->appConfig['plugin_html_realdir'].$pluginCode.'/assets');
+        }
+    }
+
+    /**
+     * コピーしたリソースファイル等を削除
+     *
+     * @param $pluginCode
+     */
+    public function removeAssets($pluginCode)
+    {
+        $assetsDir = $this->appConfig['plugin_html_realdir'].$pluginCode;
+
+        // コピーされているリソースファイルがあれば削除
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->remove($assetsDir);
+        }
+    }
+
+    /*
      * @param string $pluginVersion
      * @param string $remoteVersion
      * @return mixed
