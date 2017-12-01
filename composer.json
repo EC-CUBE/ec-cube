@@ -69,6 +69,7 @@
         "symfony/property-access": "^3.3",
         "symfony/routing": "^3.3",
         "symfony/security": "^3.3",
+        "symfony/security-bundle": "^3.4",
         "symfony/serializer": "^3.3",
         "symfony/stopwatch": "^3.3",
         "symfony/translation": "^3.3",
