@@ -286,15 +286,13 @@ class OwnerStoreController extends AbstractController
         );
 
         try {
-            $return = $this->composerService->execRequire($packageNames);
-            if ($return) {
-                // Do report to package repo
-                $url = $this->appConfig['package_repo_url'] . '/report';
-                $this->postRequestApi($url, $data);
-                $app->addSuccess('admin.plugin.install.complete', 'admin');
+            $this->composerService->execRequire($packageNames);
+            // Do report to package repo
+            $url = $this->appConfig['package_repo_url'] . '/report';
+            $this->postRequestApi($url, $data);
+            $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-                return $app->redirect($app->url('admin_store_plugin'));
-            }
+            return $app->redirect($app->url('admin_store_plugin'));
         } catch (\Exception $exception) {
             log_info($exception);
         }
@@ -377,14 +375,11 @@ class OwnerStoreController extends AbstractController
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
         try {
-            $return = $this->composerService->execRemove($packageName);
-            if ($return) {
-                $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-            } else {
-                $app->addError('admin.plugin.uninstall.error', 'admin');
-            }
+            $this->composerService->execRemove($packageName);
+            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
         } catch (\Exception $exception) {
             log_info($exception);
+            $app->addError('admin.plugin.uninstall.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_store_plugin'));

@@ -64,16 +64,14 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * This function to install a plugin by composer require
-     *
      * @param string $packageName format "foo/bar foo/bar2:1.0.0"
      * @return bool
      */
     public function execRequire($packageName)
     {
         set_time_limit(0);
-        if (false === $this->init()) {
-            return false;
-        }
+        $this->init();
+
         // Build command
         $command = $this->pathPHP.' '.$this->composerFile.' require '.$packageName;
         $command .= ' --prefer-dist --no-progress --no-suggest --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
@@ -86,16 +84,14 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * This function to remove a plugin by composer remove
-     *
      * @param string $packageName format "foo/bar foo/bar2"
      * @return bool
      */
     public function execRemove($packageName)
     {
         set_time_limit(0);
-        if (false === $this->init()) {
-            return false;
-        }
+        $this->init();
+
         // Build command
         $command = $this->pathPHP.' '.$this->composerFile.' remove '.$packageName;
         $command .= ' --no-progress --no-scripts --ignore-platform-reqs --profile --no-ansi --no-interaction -d ';
@@ -119,16 +115,13 @@ class ComposerProcessService implements ComposerServiceInterface
         $output = array();
         try {
             // Execute command
-            exec($command, $output);
-            if (empty($output)) {
-                throw new PluginException('Error when run php "exec" command line.');
-            }
+            $returnValue = -1;
+            exec($command, $output, $returnValue);
 
             $outputString = implode(PHP_EOL, $output);
-            if (strpos($outputString, 'Exception') !== false) {
+            if ($returnValue == true) {
                 throw new PluginException($outputString);
             }
-
             log_info(PHP_EOL . $outputString . PHP_EOL);
         } catch (\Exception $exception) {
             throw new PluginException($exception->getMessage());
@@ -146,18 +139,19 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Set init
-     * @return bool
+     * @throws PluginException
      */
     private function init()
     {
         if (!$this->isPhpCommandLine()) {
-            return false;
+            throw new PluginException("Php cli not found.");
         }
 
+        $composerMemory = $this->appConfig['composer_memory_limit'];
         if (!$this->isSetCliMemoryLimit()) {
-            $composerMemory = $this->appConfig['composer_memory_limit'];
-            if ($this->getCliMemoryLimit() < $composerMemory && $this->getCliMemoryLimit() != -1) {
-                return false;
+            $cliMemoryLimit = $this->getCliMemoryLimit();
+            if ($cliMemoryLimit < $composerMemory && $cliMemoryLimit != -1) {
+                throw new PluginException("Not enough memory limit.");
             }
         }
 
@@ -172,13 +166,11 @@ class ComposerProcessService implements ComposerServiceInterface
             $em->getConnection()->beginTransaction();
         }
 
-        @ini_set('memory_limit', '1536M');
+        @ini_set('memory_limit', $composerMemory.'M');
         // Config for some environment
         putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
         $this->setupComposer();
-
-        return true;
     }
 
     /**
