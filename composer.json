@@ -10,7 +10,7 @@
     "support": {
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
-    "minimum-stability": "RC",
+    "minimum-stability": "stable",
     "repositories": [
         {
             "type": "vcs",
