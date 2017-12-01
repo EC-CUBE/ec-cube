@@ -24,6 +24,7 @@ namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Service;
+use Eccube\Exception\PluginException;
 
 /**
  * Class ComposerProcessService
@@ -109,7 +110,7 @@ class ComposerProcessService implements ComposerServiceInterface
 
     /**
      * Run command
-     * @throws \RuntimeException
+     * @throws PluginException
      * @param string $command
      * @return void
      */
@@ -120,17 +121,17 @@ class ComposerProcessService implements ComposerServiceInterface
             // Execute command
             exec($command, $output);
             if (empty($output)) {
-                throw new \RuntimeException('Error when run php "exec" command line.');
+                throw new PluginException('Error when run php "exec" command line.');
             }
 
             $outputString = implode(PHP_EOL, $output);
             if (strpos($outputString, 'Exception') !== false) {
-                throw new \RuntimeException($outputString);
+                throw new PluginException($outputString);
             }
 
             log_info(PHP_EOL . $outputString . PHP_EOL);
         } catch (\Exception $exception) {
-            throw new \RuntimeException($exception->getMessage());
+            throw new PluginException($exception->getMessage());
         }
     }
 
