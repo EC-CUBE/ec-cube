@@ -70,7 +70,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% if pluginDetail.update_status == 1 %}
                                     新バージョンのプラグインが利用可能です。
                                     <span {% if Plugin.enable %}data-toggle="tooltip" data-placement="top" title="無効にする状態で利用可能"{% endif %}>
-                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'id': Plugin.id, 'version': pluginDetail.version}) }}">アップデート</a>
+                                        <a class="btn btn-default btn-xs prevention-mask {% if Plugin.enable %}disabled{% endif %}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'id': Plugin.id, 'version': pluginDetail.version}) }}">アップデート</a>
                                     </span>
                                     <ul class="plugin-meta dl-horizontal">
                                         <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
