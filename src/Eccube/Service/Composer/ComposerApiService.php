@@ -73,7 +73,8 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return bool
+     * @return void
+     * @throws PluginException
      */
     public function execRequire($packageName)
     {
@@ -86,15 +87,14 @@ class ComposerApiService implements ComposerServiceInterface
             '--prefer-dist' => true,
             '--ignore-platform-reqs' => true,
         ));
-
-        return true;
     }
 
     /**
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return bool
+     * @return void
+     * @throws PluginException
      */
     public function execRemove($packageName)
     {
@@ -106,8 +106,6 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
         ));
-
-        return true;
     }
 
     /**

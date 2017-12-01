@@ -65,7 +65,8 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * This function to install a plugin by composer require
      * @param string $packageName format "foo/bar foo/bar2:1.0.0"
-     * @return bool
+     * @return void
+     * @throws PluginException
      */
     public function execRequire($packageName)
     {
@@ -78,14 +79,13 @@ class ComposerProcessService implements ComposerServiceInterface
         $command .= $this->workingDir.' 2>&1';
         log_info($command);
         $this->runCommand($command);
-
-        return true;
     }
 
     /**
      * This function to remove a plugin by composer remove
      * @param string $packageName format "foo/bar foo/bar2"
-     * @return bool
+     * @return void
+     * @throws PluginException
      */
     public function execRemove($packageName)
     {
@@ -100,8 +100,6 @@ class ComposerProcessService implements ComposerServiceInterface
 
         // Execute command
         $this->runCommand($command);
-
-        return true;
     }
 
     /**
