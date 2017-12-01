@@ -207,7 +207,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
      * @param Application $app
      * @param Request     $request
@@ -337,7 +337,7 @@ class OwnerStoreController extends AbstractController
      * New ways to remove plugin: using composer command
      *
      * @Method("DELETE")
-     * @Route("/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @Route("/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -376,16 +376,6 @@ class OwnerStoreController extends AbstractController
     {
         /** @var Session $session */
         $session = $app['session'];
-//        if ($Plugin->isEnable()) {
-//            $token = $app['csrf.token_manager']->getToken(Constant::TOKEN_NAME)->getValue();
-//            $app->forward($app->url('admin_store_plugin_disable', ['id' => $Plugin->getId(), Constant::TOKEN_NAME => $token]));
-//            if ($session->getFlashBag()->has('eccube.admin.error')) {
-//                $session->getFlashBag()->clear();
-//                $app->addError('admin.plugin.update.error', 'admin');
-//
-//                return $app->redirect($app->url('admin_store_plugin'));
-//            }
-//        }
 
         // Run install plugin
         $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $Plugin->getCode(), 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
@@ -453,8 +443,8 @@ class OwnerStoreController extends AbstractController
         $message = curl_error($curl);
         $info['message'] = $message;
         curl_close($curl);
-
         log_info('http post_info', $info);
+
         return array($result, $info);
     }
 
