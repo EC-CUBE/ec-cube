@@ -163,6 +163,7 @@ return [
 先に%depend_name%プラグインを削除してください。',
     'admin.plugin.uninstall.error' => 'プラグインを削除できませんでした。',
     'admin.plugin.uninstall.error.not_disable' => 'プラグインを無効化してください。',
+    'admin.plugin.update.error' => 'プラグインの更新に失敗しました。',
     'admin.plugin.update.complete' => '更新が完了しました。',
     'plugin already installed.' => 'プラグインは既にインストールされています。',
     'admin.plugin.not.found' => 'プラグインが見つかりません。',

@@ -67,20 +67,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% endif %}
                             </td>
                             <td class="tu">
-                            {% if Plugin.source == 0 %}
-                                {{ form_widget(form._token) }}
-                                {{ form_widget(form.plugin_id) }}
-                                {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
-                                {{ form_errors(form.plugin_archive) }}
-                                <p></p>
-                                <a class="btn btn-primary btn-xs" href="#" onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
-                                    アップロード
-                                </a>
-                            {% else %}
                                 {% if pluginDetail.update_status == 1 %}
                                     新バージョンのプラグインが利用可能です。
                                     <span {% if Plugin.enable %}data-toggle="tooltip" data-placement="top" title="無効にする状態で利用可能"{% endif %}>
-                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">アップデート</a>
+                                        <a class="btn btn-default btn-xs {% if Plugin.enable %}disabled{% endif %}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'id': Plugin.id, 'version': pluginDetail.version}) }}">アップデート</a>
                                     </span>
                                     <ul class="plugin-meta dl-horizontal">
                                         <li class="plugin-version">プラグインバージョン : {{ pluginDetail.version }}</li>
@@ -91,7 +81,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <p>アップデート対象プラグインはありません。</p>
                                 {% endif %}
                                 <p><a href="{{ pluginDetail.product_url }}" target="_blank">詳細情報</a></p>
-                            {% endif %}
                             </td>
                             <td class="ta text-center">
                                 {% if configPages[Plugin.code] is defined %}

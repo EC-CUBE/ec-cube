@@ -31,6 +31,7 @@ use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
+use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -549,35 +550,44 @@ class PluginService
         return true;
     }
 
-    public function updatePlugin(\Eccube\Entity\Plugin $plugin, $meta, $event_yml)
+    /**
+     * Update plugin
+     *
+     * @param Plugin $plugin
+     * @param array  $meta     Config data
+     * @param array  $eventYml event data
+     * @throws \Exception
+     */
+    public function updatePlugin(Plugin $plugin, $meta, $eventYml)
     {
+        $em = $this->entityManager;
         try {
-            $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
             $plugin->setVersion($meta['version'])
                 ->setName($meta['name']);
-
             if (isset($meta['event'])) {
                 $plugin->setClassName($meta['event']);
             }
-
             $rep = $this->pluginEventHandlerRepository;
-
-            if (is_array($event_yml)) {
-                foreach ($event_yml as $event => $handlers) {
+            if (!empty($eventYml) && is_array($eventYml)) {
+                foreach ($eventYml as $event => $handlers) {
                     foreach ($handlers as $handler) {
                         if (!$this->checkSymbolName($handler[0])) {
                             throw new PluginException('Handler name format error');
                         }
                         // updateで追加されたハンドラかどうか調べる
-                        $peh = $rep->findBy(array(
+                        $peh = $rep->findBy(
+                            array(
                             'plugin_id' => $plugin->getId(),
                             'event' => $event,
                             'handler' => $handler[0],
-                            'handler_type' => $handler[1],));
+                            'handler_type' => $handler[1],
+                                )
+                        );
 
-                        if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
-                            $peh = new \Eccube\Entity\PluginEventHandler();
+                        // 新規にevent.ymlに定義されたハンドラなのでinsertする
+                        if (!$peh) {
+                            $peh = new PluginEventHandler();
                             $peh->setPlugin($plugin)
                                 ->setEvent($event)
                                 ->setHandler($handler[0])
@@ -589,14 +599,15 @@ class PluginService
                     }
                 }
 
-                # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
+                // アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
+                /** @var PluginEventHandler $peh */
                 foreach ($rep->findBy(array('plugin_id' => $plugin->getId())) as $peh) {
-                    if (!isset($event_yml[$peh->getEvent()])) {
+                    if (!isset($eventYml[$peh->getEvent()])) {
                         $em->remove($peh);
                         $em->flush();
                     } else {
                         $match = false;
-                        foreach ($event_yml[$peh->getEvent()] as $handler) {
+                        foreach ($eventYml[$peh->getEvent()] as $handler) {
                             if ($peh->getHandler() == $handler[0] && $peh->getHandlerType() == $handler[1]) {
                                 $match = true;
                             }
@@ -651,6 +662,8 @@ class PluginService
             // Check duplicate in dependency
             $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
             if ($index === false) {
+                // Update require version
+                $dependPlugin['version'] = $version;
                 $dependents[] = $dependPlugin;
                 // Check child dependency
                 $dependents = $this->getDependency($plugins, $dependPlugin, $dependents);
@@ -903,7 +916,9 @@ class PluginService
         }
     }
 
-    /*
+    /**
+     * Is update
+     *
      * @param string $pluginVersion
      * @param string $remoteVersion
      * @return mixed
@@ -914,11 +929,13 @@ class PluginService
     }
 
     /**
-     * @param array  $plugins get from api
+     * Plugin is exist check
+     *
+     * @param array  $plugins    get from api
      * @param string $pluginCode
      * @return false|int|string
      */
-    private function checkPluginExist($plugins, $pluginCode)
+    public function checkPluginExist($plugins, $pluginCode)
     {
         if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
