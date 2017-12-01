@@ -171,9 +171,10 @@ class OwnerStoreController extends AbstractController
      * @param Application $app
      * @param Request     $request
      * @param string      $id
+     * @param  bool $isUpdate
      * @return array
      */
-    public function doConfirm(Application $app, Request $request, $id)
+    public function doConfirm(Application $app, Request $request, $id, $isUpdate = false)
     {
         // Owner's store communication
         $url = $this->appConfig['package_repo_url'].'/search/packages.json';
@@ -200,6 +201,7 @@ class OwnerStoreController extends AbstractController
         return [
             'item' => $plugin,
             'dependents' => $dependents,
+            'isUpdate' => $isUpdate
         ];
     }
 
@@ -442,5 +444,20 @@ class OwnerStoreController extends AbstractController
         }
 
         return $message;
+    }
+
+    /**
+     * Do confirm update page
+     *
+     * @Route("/{_admin}/store/plugin/{id}/confirm/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
+     * @Template("Store/plugin_confirm.twig")
+     * @param Application $app
+     * @param Request $request
+     * @param string $id
+     * @return array
+     */
+    public function doUpdateConfirm(Application $app, Request $request, $id)
+    {
+        return $this->doConfirm($app, $request, $id, true);
     }
 }
