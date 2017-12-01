@@ -69,7 +69,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'delivery_date' => ''
             ),
             'name' => $faker->word,
-            'product_image' => null,
+            'product_image' => array(),
             'description_detail' => $faker->text,
             'description_list' => $faker->paragraph,
             'Category' => null,
