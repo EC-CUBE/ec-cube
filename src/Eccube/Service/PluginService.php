@@ -738,29 +738,31 @@ class PluginService
     {
         $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
         $composerFile = $dir.'/composer.json';
-        $requires = [];
         if (!file_exists($composerFile)) {
-            return $requires;
+            return [];
         }
         $jsonText = file_get_contents($composerFile);
-        if ($jsonText) {
-            $json = json_decode($jsonText, true);
-            $require = $json['require'];
+        $json = json_decode($jsonText, true);
+        // Check require
+        if (!isset($json['require']) || empty($json['require'])) {
+            return [];
+        }
+        $require = $json['require'];
 
-            // Remove vendor plugin
-            if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
-                unset($require[self::VENDOR_NAME.'/plugin-installer']);
-            }
-            foreach ($require as $name => $version) {
-                // Check plugin of ec-cube only
-                if (strpos($name, self::VENDOR_NAME.'/') !== false) {
-                    $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
-                    $ret = $this->isEnable($requireCode);
-                    if ($ret) {
-                        continue;
-                    }
-                    $requires[] = $requireCode;
+        // Remove vendor plugin
+        if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
+            unset($require[self::VENDOR_NAME.'/plugin-installer']);
+        }
+        $requires = [];
+        foreach ($require as $name => $version) {
+            // Check plugin of ec-cube only
+            if (strpos($name, self::VENDOR_NAME.'/') !== false) {
+                $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
+                $ret = $this->isEnable($requireCode);
+                if ($ret) {
+                    continue;
                 }
+                $requires[] = $requireCode;
             }
         }
 
