@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block title %}オーナーズストア{% endblock %}
 {% block sub_title %}
-    {% if isUpdate %}
+    {% if is_update %}
         プラグインアップデート
     {% else %}
         プラグインインストール
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">
-                        {% if isUpdate %}
+                        {% if is_update %}
                             以下のプラグインをアップデートします。
                         {% else %}
                             以下のプラグインをインストールします。
@@ -77,7 +77,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">
-                        {% if isUpdate %}
+                        {% if is_update %}
                             {{ item.name }}をアップデートするために、以下のプラグインもアップデートします。
                         {% else %}
                             {{ item.name }}をインストールするために、以下のプラグインもインストールします。
@@ -90,7 +90,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row grid">
                                 {% for plugin in dependents %}
                                 <div class="col-xs-12 grid-item">
-                                    {% include 'Store/plugin_confirm_panel.twig' with {'item': plugin, 'isUpdate': isUpdate} only %}
+                                    {% include 'Store/plugin_confirm_panel.twig' with {'item': plugin, 'is_update': is_update} only %}
                                 </div>
                                 {% endfor %}
                             </div><!-- .row -->
@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row">
                         <div class="col-xs-12">
                             <span class="pull-right">
-                                {% if isUpdate %}
+                                {% if is_update %}
                                     <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id':  item.product_id, 'version': item.version}) }}">アップデート</a>
                                 {% else %}
                                     <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.product_code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">インストール</a>
