@@ -119,7 +119,7 @@ class ComposerProcessService implements ComposerServiceInterface
             exec($command, $output, $returnValue);
 
             $outputString = implode(PHP_EOL, $output);
-            if ($returnValue == true) {
+            if ($returnValue) {
                 throw new PluginException($outputString);
             }
             log_info(PHP_EOL . $outputString . PHP_EOL);
