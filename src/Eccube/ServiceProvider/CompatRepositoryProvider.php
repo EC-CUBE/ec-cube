@@ -150,9 +150,6 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.category'] = function () use ($app) {
             return $app['Eccube\Repository\CategoryRepository'];
         };
-        $app['eccube.repository.help'] = function () use ($app) {
-            return $app['Eccube\Repository\HelpRepository'];
-        };
         $app['eccube.repository.plugin'] = function () use ($app) {
             return $app['Eccube\Repository\PluginRepository'];
         };
