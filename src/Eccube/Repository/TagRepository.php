@@ -37,8 +37,7 @@ use Eccube\Entity\Tag;
  * @Repository
  */
 class TagRepository extends AbstractRepository
-{
-    
+{   
     /**
      * タグを保存する.
      *
@@ -46,30 +45,14 @@ class TagRepository extends AbstractRepository
      */
     public function save($tag)
     {
-<<<<<<< HEAD:src/Eccube/Repository/TagRepository.php
         if (!$tag->getId()) {
-            $RankTop = $this->findOneBy(array(), array('rank' => 'DESC'));
-            $rank = 0;
-            if (!is_null($RankTop)) {
-                $rank = $RankTop->getRank();
+            $sortNoTop = $this->findOneBy(array(), array('sort_no' => 'DESC'));
+            $sort_no = 0;
+            if (!is_null($sortNoTop)) {
+                $sort_no = $sortNoTop->getSortNo();
             }
             
-            $tag->setRank($rank + 1);
-=======
-        $Tag = $this->findOneBy(array('name' => $tag_name));
-
-        if (is_null($Tag)) {
-            $SortNoTop = $this->findOneBy(array(), array('sort_no' => 'DESC'));
-            $sortNo = 0;
-            if (!is_null($SortNoTop)) {
-                $sortNo = $SortNoTop->getSortNo();
-            }
-
-            $Tag = new \Eccube\Entity\Master\Tag();
-            $Tag
-                ->setName($tag_name)
-                ->setSortNo($sortNo + 1);
->>>>>>> f3df3b2befcbb88a671e02a29858a9cd577cc98c:src/Eccube/Repository/Master/TagRepository.php
+            $tag->setSortNo($sort_no + 1);
         }
         
         $em = $this->getEntityManager();
@@ -84,7 +67,7 @@ class TagRepository extends AbstractRepository
      */
     public function getList()
     {
-        $qb = $this->createQueryBuilder('t')->orderBy('t.rank', 'DESC');
+        $qb = $this->createQueryBuilder('t')->orderBy('t.sort_no', 'DESC');
         return $qb->getQuery()->getResult();
     }
     
@@ -103,9 +86,9 @@ class TagRepository extends AbstractRepository
         $this
             ->createQueryBuilder('t')
             ->update()
-            ->set('t.rank', 't.rank - 1')
-            ->where('t.rank > :rank')
-            ->setParameter('rank', $Tag->getRank())
+            ->set('t.sort_no', 't.sort_no - 1')
+            ->where('t.sort_no > :sort_no')
+            ->setParameter('sort_no', $Tag->getSortNo())
             ->getQuery()
             ->execute();
     

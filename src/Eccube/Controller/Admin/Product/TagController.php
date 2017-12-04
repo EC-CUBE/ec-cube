@@ -167,17 +167,17 @@ class TagController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/tag/rank/move", name="admin_product_tag_rank_move")
+     * @Route("/{_admin}/product/tag/sort_no/move", name="admin_product_tag_sort_no_move")
      */
-    public function moveRank(Application $app, Request $request)
+    public function moveSortNo(Application $app, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $ranks = $request->request->all();
-            foreach ($ranks as $tagId => $rank) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $tagId => $sortNo) {
                 /* @var $Tag \Eccube\Entity\Tag */
                 $Tag = $this->tagRepository
                     ->find($tagId);
-                $Tag->setRank($rank);
+                $Tag->setSortNo($sortNo);
                 $this->entityManager->persist($Tag);
             }
             $this->entityManager->flush();

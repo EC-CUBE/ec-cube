@@ -117,7 +117,7 @@ class ProductType extends AbstractType
                 'class' => 'Eccube\Entity\Tag',
                 'query_builder' => function($er) {
                     return $er->createQueryBuilder('t')
-                    ->orderBy('t.rank', 'DESC');
+                    ->orderBy('t.sort_no', 'DESC');
                 },
                 'required' => false,
                 'multiple' => true,

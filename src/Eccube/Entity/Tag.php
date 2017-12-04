@@ -44,9 +44,9 @@ class Tag extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
-    protected $rank;
+    protected $sort_no;
     
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -112,27 +112,27 @@ class Tag extends \Eccube\Entity\AbstractEntity
     }
     
     /**
-     * Set rank.
+     * Set sort_no.
      *
-     * @param int $rank
+     * @param int $sort_no
      *
      * @return $this
      */
-    public function setRank($rank)
+    public function setSortNo($sort_no)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sort_no;
     
         return $this;
     }
     
     /**
-     * Get rank.
+     * Get sort_no.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**
