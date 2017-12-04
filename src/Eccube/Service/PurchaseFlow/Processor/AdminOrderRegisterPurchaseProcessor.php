@@ -27,6 +27,7 @@ class AdminOrderRegisterPurchaseProcessor implements PurchaseProcessor
         foreach ($target->getItems() as $OrderItem) {
             $OrderItem->setOrder($target);
         }
+        
         return ProcessResult::success();
     }
 }
