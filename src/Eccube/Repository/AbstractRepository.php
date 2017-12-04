@@ -39,7 +39,8 @@ class AbstractRepository extends EntityRepository
 
     protected function getCacheLifetime()
     {
-        $options = $this->appConfig['doctrine_cache'];
-        return $options['result_cache']['lifetime'];
+        // $options = $this->appConfig['doctrine_cache'];
+        // return $options['result_cache']['lifetime'];
+        return 0;               // FIXME
     }
 }

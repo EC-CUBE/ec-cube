@@ -41,7 +41,12 @@ class TopController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $BaseInfo = $em->find(\Eccube\Entity\BaseInfo::class, 1);
+
+        // FIXME 引数の $app とは別物...
+        $application = $this->get('app');
+        $BaseInfo = $application[\Eccube\Entity\BaseInfo::class];
+
+        // $BaseInfo = $em->find(\Eccube\Entity\BaseInfo::class, 1);
         $Page = $em->find(\Eccube\Entity\Page::class, 1);
         return [
             'BaseInfo' => $BaseInfo,

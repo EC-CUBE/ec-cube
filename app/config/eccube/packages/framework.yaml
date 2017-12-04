@@ -16,6 +16,7 @@ framework:
     php_errors:
         log: true
     assets:
+      base_path: '/html/template/default'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     cache:
         # this value is used as part of the "namespace" generated for the cache item keys
