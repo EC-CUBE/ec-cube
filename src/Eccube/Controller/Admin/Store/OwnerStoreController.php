@@ -167,7 +167,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
+     * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
      * @param Application $app
      * @param Request     $request
@@ -207,7 +207,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
      * @param Application $app
      * @param Request     $request
@@ -343,7 +343,7 @@ class OwnerStoreController extends AbstractController
      * New ways to remove plugin: using composer command
      *
      * @Method("DELETE")
-     * @Route("/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -381,11 +381,12 @@ class OwnerStoreController extends AbstractController
      */
     public function apiUpgrade(Application $app, Plugin $Plugin, $version)
     {
-        /** @var Session $session */
-        $session = $app['session'];
-
+        $this->isTokenValid($app);
         // Run install plugin
         $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $Plugin->getCode(), 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
+
+        /** @var Session $session */
+        $session = $app['session'];
         if ($session->getFlashBag()->has('eccube.admin.error')) {
             $session->getFlashBag()->clear();
             $app->addError('admin.plugin.update.error', 'admin');
