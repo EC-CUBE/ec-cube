@@ -37,6 +37,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -200,6 +201,7 @@ class OwnerStoreController extends AbstractController
         return [
             'item' => $plugin,
             'dependents' => $dependents,
+            'is_update' => $request->get('is_update', false)
         ];
     }
 
@@ -449,5 +451,22 @@ class OwnerStoreController extends AbstractController
         }
 
         return $message;
+    }
+
+    /**
+     * Do confirm update page
+     *
+     * @Route("/{_admin}/store/plugin/{id}/update/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
+     * @Template("Store/plugin_confirm.twig")
+     * @param Application $app
+     * @param Plugin $plugin
+     * @return Response
+     */
+    public function doUpdateConfirm(Application $app, Plugin $plugin)
+    {
+        $source = $plugin->getSource();
+        $url = $app->url('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
+
+        return $app->forward($url);
     }
 }
