@@ -69,7 +69,7 @@ class ShippingItemType extends AbstractType
                 $form = $event->getForm();
 
                 // お届け日を取得
-                $deliveryDates = $this->shoppingService->getFormDeliveryDates($data->getOrder());
+                $deliveryDurations = $this->shoppingService->getFormDeliveryDurations($data->getOrder());
 
                 // 配送業者
                 // 販売種別に紐づく配送業者を取得
@@ -101,8 +101,8 @@ class ShippingItemType extends AbstractType
                             new Assert\NotBlank(),
                         ),
                     ))
-                    ->add('shippingDeliveryDate', ChoiceType::class, array(
-                        'choices' => array_flip($deliveryDates),
+                    ->add('shippingDeliveryDuration', ChoiceType::class, array(
+                        'choices' => array_flip($deliveryDurations),
                         'required' => false,
                         'placeholder' => '指定なし',
                         'mapped' => false,
@@ -125,9 +125,9 @@ class ShippingItemType extends AbstractType
                     return;
                 }
 
-                $shippingDeliveryDate = $data->getShippingDeliveryDate();
-                if (!empty($shippingDeliveryDate)) {
-                    $form['shippingDeliveryDate']->setData($shippingDeliveryDate->format('Y/m/d'));
+                $shippingDeliveryDuration = $data->getShippingDeliveryDuration();
+                if (!empty($shippingDeliveryDuration)) {
+                    $form['shippingDeliveryDuration']->setData($shippingDeliveryDuration->format('Y/m/d'));
                 }
 
             })
@@ -136,11 +136,11 @@ class ShippingItemType extends AbstractType
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
-                $shippingDeliveryDate = $form['shippingDeliveryDate']->getData();
-                if (!empty($shippingDeliveryDate)) {
-                    $data->setShippingDeliveryDate(new \DateTime($form['shippingDeliveryDate']->getData()));
+                $shippingDeliveryDuration = $form['shippingDeliveryDuration']->getData();
+                if (!empty($shippingDeliveryDuration)) {
+                    $data->setShippingDeliveryDuration(new \DateTime($form['shippingDeliveryDuration']->getData()));
                 } else {
-                    $data->setShippingDeliveryDate(null);
+                    $data->setShippingDeliveryDuration(null);
                 }
             });
     }

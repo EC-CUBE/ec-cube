@@ -153,7 +153,7 @@ function initializeDefaultVariables($database)
         default:
     }
     putenv('ECCUBE_DB_DEFAULT='.$database);
-    putenv('ECCUBE_AUTH_MAGIC='.env('ECCUBE_AUTH_MAGIC', \Eccube\Util\Str::random(32)));
+    putenv('ECCUBE_AUTH_MAGIC='.env('ECCUBE_AUTH_MAGIC', \Eccube\Util\StringUtil::random(32)));
     putenv('ECCUBE_ADMIN_USER='.env('ECCUBE_ADMIN_USER', 'admin'));
     putenv('ECCUBE_ADMIN_PASS='.env('ECCUBE_ADMIN_PASS', 'password'));
     putenv('ECCUBE_ADMIN_MAIL='.env('ECCUBE_ADMIN_MAIL', 'admin@example.com'));
@@ -337,7 +337,7 @@ function initializeDatabase(\Doctrine\ORM\EntityManager $em)
         'auth_magic' => env('ECCUBE_AUTH_MAGIC'),
         'password_hash_algos' => 'sha256',
     ]);
-    $salt = \Eccube\Util\Str::random(32);
+    $salt = \Eccube\Util\StringUtil::random(32);
     $password = $encoder->encodePassword($login_password, $salt);
 
     $conn = $em->getConnection();
@@ -350,10 +350,10 @@ function initializeDatabase(\Doctrine\ORM\EntityManager $em)
         'login_id' => $login_id,
         'password' => $password,
         'salt' => $salt,
-        'work' => 1,
-        'authority' => 0,
+        'work_id' => 1,
+        'authority_id' => 0,
         'creator_id' => 1,
-        'rank' => 1,
+        'sort_no' => 1,
         'update_date' => new \DateTime(),
         'create_date' => new \DateTime(),
         'name' => '管理者',

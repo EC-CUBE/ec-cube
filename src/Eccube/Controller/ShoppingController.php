@@ -286,8 +286,11 @@ class ShoppingController extends AbstractShoppingController
 
         log_info('購入処理完了', array($orderId));
 
+        $hasNextCart = !empty($this->cartService->getCarts());
+
         return [
             'orderId' => $orderId,
+            'hasNextCart' => $hasNextCart,
         ];
     }
 
@@ -795,6 +798,11 @@ class ShoppingController extends AbstractShoppingController
                 if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
                     throw new ShoppingException();
+                }
+                try {
+                    $this->purchaseFlow->purchase($Order, $app['eccube.purchase.context']($Order, $Order->getCustomer())); // TODO 変更前の Order を渡す必要がある？
+                } catch (PurchaseException $e) {
+                    $app->addError($e->getMessage(), 'front');
                 }
 
                 // 購入処理

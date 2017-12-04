@@ -25,12 +25,10 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
-use Eccube\Util\Str;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Eccube\Util\StringUtil;
 
 /**
  * ProductRepository
@@ -86,13 +84,16 @@ class ProductRepository extends AbstractRepository
         }
 
         // name
-        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
+        if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR NORMALIZE(p.search_word) LIKE NORMALIZE(:%s)', $key, $key))
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR 
+                        NORMALIZE(p.search_word) LIKE NORMALIZE(:%s) OR 
+                        EXISTS (SELECT wpc%d FROM \Eccube\Entity\ProductClass wpc%d WHERE p = wpc%d.Product AND NORMALIZE(wpc%d.code) LIKE NORMALIZE(:%s))', 
+                        $key, $key, $index, $index, $index, $index, $key))
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
@@ -122,7 +123,7 @@ class ProductRepository extends AbstractRepository
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_newer']) {
             // 在庫切れ商品非表示の設定が有効時対応
             // @see https://github.com/EC-CUBE/ec-cube/issues/1998
-            if ($this->entityManager->getFilters()->isEnabled('nostock_hidden') == true) {
+            if ($this->entityManager->getFilters()->isEnabled('option_nostock_hidden') == true) {
                 $qb->innerJoin('p.ProductClasses', 'pc');
             }
             $qb->orderBy('p.create_date', 'DESC');
@@ -151,7 +152,7 @@ class ProductRepository extends AbstractRepository
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
-        if (isset($searchData['id']) && Str::isNotBlank($searchData['id'])) {
+        if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')

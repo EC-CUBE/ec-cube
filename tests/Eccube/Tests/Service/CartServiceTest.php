@@ -27,7 +27,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 
 class CartServiceTest extends AbstractServiceTestCase
 {
@@ -168,9 +168,9 @@ class CartServiceTest extends AbstractServiceTestCase
             $CartItems = $cartService->getCart()->getCartItems();
             self::assertEquals(2, count($CartItems));
             self::assertEquals(1, $CartItems[0]->getProductClassId());
-            self::assertEquals(1, $CartItems[0]->getQuantity());
+            self::assertEquals(2, $CartItems[0]->getQuantity());
             self::assertEquals(1, $CartItems[1]->getProductClassId());
-            self::assertEquals(2, $CartItems[1]->getQuantity());
+            self::assertEquals(1, $CartItems[1]->getQuantity());
         }
     }
 
@@ -216,7 +216,7 @@ class CartServiceTest extends AbstractServiceTestCase
     public function testSave()
     {
         $cartService = $this->app['eccube.service.cart'];
-        $preOrderId = sha1(Str::random(32));
+        $preOrderId = sha1(StringUtil::random(32));
 
         $cartService->setPreOrderId($preOrderId);
         $cartService->save();

@@ -46,6 +46,7 @@ class TagRepository extends AbstractRepository
      */
     public function save($tag)
     {
+<<<<<<< HEAD:src/Eccube/Repository/TagRepository.php
         if (!$tag->getId()) {
             $RankTop = $this->findOneBy(array(), array('rank' => 'DESC'));
             $rank = 0;
@@ -54,6 +55,21 @@ class TagRepository extends AbstractRepository
             }
             
             $tag->setRank($rank + 1);
+=======
+        $Tag = $this->findOneBy(array('name' => $tag_name));
+
+        if (is_null($Tag)) {
+            $SortNoTop = $this->findOneBy(array(), array('sort_no' => 'DESC'));
+            $sortNo = 0;
+            if (!is_null($SortNoTop)) {
+                $sortNo = $SortNoTop->getSortNo();
+            }
+
+            $Tag = new \Eccube\Entity\Master\Tag();
+            $Tag
+                ->setName($tag_name)
+                ->setSortNo($sortNo + 1);
+>>>>>>> f3df3b2befcbb88a671e02a29858a9cd577cc98c:src/Eccube/Repository/Master/TagRepository.php
         }
         
         $em = $this->getEntityManager();

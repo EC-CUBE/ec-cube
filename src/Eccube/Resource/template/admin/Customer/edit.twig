@@ -182,6 +182,16 @@
                                 </div>
                             </div>
                         </div>
+                        {# 所有ポイント #}
+                        <div id="detail_box__point" class="form-group">
+                            {{ form_label(form.point) }}
+                            <div class="col-sm-9 col-lg-10">
+                                <div class="form-inline">
+                                    {{ form_widget(form.point) }}
+                                    {{ form_errors(form.point) }}
+                                </div>
+                            </div>
+                        </div>
                         {# エンティティ拡張の自動出力 #}
                         {% for f in form %}
                             {# auto_render有効時に出力 #}
@@ -205,6 +215,68 @@
             </div><!-- /.box -->
 
             {% if Customer.id %}
+            <div id="address_box" class="box accordion">
+                <div id="address_box__toggle" class="box-header toggle">
+                    <h3 class="box-title">お届け先<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                </div>
+                <div id="address_box__body" class="box-body accpanel">
+                    {% if Customer.CustomerAddresses|length > 0 %}
+                    <div id="address_box__list" class="table_list">
+                        <div class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr id="address_box__list_header">
+                                        <th id="address_box__header_address_id">お届け先ID</th>
+                                        <th id="address_box__header_address_name">お名前</th>
+                                        <th id="address_box__header_address_addr">住所</th>
+                                        <th id="address_box__header_address_tel">電話番号</th>
+                                        <th id="address_box__header_menu_box">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for CustomerAddress in Customer.CustomerAddresses %}
+                                    <tr id="address_box__item--{{ CustomerAddress.id }}">
+                                        <td id="address_box__address_id--{{ CustomerAddress.id }}" class="address_id">
+                                            {{ CustomerAddress.id }}
+                                        </td>
+                                        <td id="address_box__address_name--{{ CustomerAddress.id }}" class="address_name">
+                                            {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}
+                                        </td>
+                                        <td id="address_box_address_addr--{{ CustomerAddress.id }}" class="address_addr">
+                                            〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}
+                                        </td>
+                                        <td id="address_box_address_tel--{{ CustomerAddress.id }}" class="address_tel">
+                                            {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}
+                                        </td>
+                                        <td id="address_box__menu_box--{{ CustomerAddress.id }}" class="icon_edit">
+                                            <div id="address_box__menu_box_toggle--{{ CustomerAddress.id }}" class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul id="address_box__menu--{{ CustomerAddress.id }}" class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">編集</a></li>
+                                                    <!--
+                                                        <li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>
+                                                    -->
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
+                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
+                        {% else %}
+                            <span class="ec-errorMessage">お届け先登録の上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div id="address_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
+                    </div>
+                    <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
+                    {% endif %}
+                </div>
+            </div>
             <div id="history_box" class="box accordion">
                 <div id="history_box__toggle" class="box-header toggle">
                     <h3 class="box-title">購入履歴<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
@@ -236,7 +308,7 @@
                                             {{ Order.total|price }}
                                         </td>
                                         <td id="history_box__commit_date--{{ Order.id }}" class="member_mail">
-                                            {{ Order.commit_date|date_format|default('未発送') }}
+                                            {{ Order.shipping_date|date_format|default('未発送') }}
                                         </td>
                                         <td id="history_box__payment_method--{{ Order.id }}" class="member_mail">
                                             {{ Order.payment_method }}

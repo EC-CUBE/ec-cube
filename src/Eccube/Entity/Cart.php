@@ -30,6 +30,8 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 
 class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
 {
+    use PointTrait;
+
     /**
      * @var bool
      */

@@ -203,7 +203,7 @@
                                     <div id="search_box_main__payment_date" class="col-sm-6">
                                         <label>出荷日</label>
                                         <div class="form-group range">
-                                            {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
+                                            {{ form_widget(searchForm.shipping_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.shipping_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
@@ -343,7 +343,7 @@
                                                         <td id="result_list_main__name--{{ Shipping.id }}">{{ Shipping.name01 }} {{ Shipping.name02 }}</td>
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
                                                         <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.ShippingDeliveryDate|date_format }}</td>
-                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.commit_date|date_format }}</td>
+                                                        <td id="result_list_main__payment_total--{{ Shipping.id }}">{{ Shipping.shipping_date|date_format }}</td>
                                                         <td id="result_list_main__shipping_status--{{ Shipping.id }}">{{ Shipping.ShippingStatus }}</td>
                                                     </tr>
                                                 {% endfor %}

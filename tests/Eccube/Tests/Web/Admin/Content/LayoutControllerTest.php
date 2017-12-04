@@ -29,11 +29,11 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 ),
                 'name_1' => 'カゴの中',
                 'block_id_1' => 2,
-                'target_id_1' => 2,
+                'section_1' => 2,
                 'block_row_1' => 2,
                 'name_2' => '商品検索',
                 'block_id_2' => 3,
-                'target_id_2' => 3,
+                'section_2' => 3,
                 'block_row_2' => 3,
             )
         );
@@ -59,11 +59,11 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
                 ),
                 'name_1' => 'カゴの中',
                 'id_1' => 2,
-                'target_id_1' => 2,
+                'section_1' => 2,
                 'top_1' => 2,
                 'name_2' => '商品検索',
                 'id_2' => 3,
-                'target_id_2' => 3,
+                'section_2' => 3,
                 'top_2' => 3,
             )
         );

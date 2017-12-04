@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","公務員","0","job"
 "2","コンサルタント","1","job"
 "3","コンピューター関連技術職","2","job"

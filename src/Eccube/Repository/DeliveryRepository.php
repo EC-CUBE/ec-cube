@@ -52,18 +52,18 @@ class DeliveryRepository extends AbstractRepository
 
             $SaleType = $em
                 ->getRepository(SaleType::class)
-                ->findOneBy(array(), array('rank' => 'DESC'));
+                ->findOneBy(array(), array('sort_no' => 'DESC'));
 
-            $Delivery = $this->findOneBy(array(), array('rank' => 'DESC'));
+            $Delivery = $this->findOneBy(array(), array('sort_no' => 'DESC'));
 
-            $rank = 1;
+            $sortNo = 1;
             if ($Delivery) {
-                $rank = $Delivery->getRank() + 1;
+                $sortNo = $Delivery->getSortNo() + 1;
             }
 
             $Delivery = new Delivery();
             $Delivery
-                ->setRank($rank)
+                ->setSortNo($sortNo)
                 ->setVisible(true)
                 ->setSaleType($SaleType);
         } else {

@@ -45,7 +45,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * is default
@@ -58,26 +58,26 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set sortNo
      *
-     * @param  integer $rank
+     * @param  integer $sortNo
      * @return TaxRule
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank
+     * Get sortNo
      *
      * @return integer
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**
@@ -179,7 +179,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="calc_rule", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="rounding_type_id", referencedColumnName="id")
      * })
      */
     private $RoundingType;
@@ -469,7 +469,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      * 小さければ負の整数を返す.
      *
      * 1. apply_date
-     * 2. rank
+     * 2. sort_no
      *
      * このメソッドは usort() 関数などで使用する.
      *
@@ -479,10 +479,10 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     public function compareTo(TaxRule $Target)
     {
         if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
-            if ($this->getRank() == $Target->getRank()) {
+            if ($this->getSortNo() == $Target->getSortNo()) {
                 return 0;
             }
-            if ($this->getRank() > $Target->getRank()) {
+            if ($this->getSortNo() > $Target->getSortNo()) {
                 return -1;
             } else {
                 return 1;

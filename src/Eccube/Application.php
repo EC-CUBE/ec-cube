@@ -42,6 +42,7 @@ use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Routing\EccubeRouter;
 use Eccube\ServiceProvider\CompatRepositoryProvider;
 use Eccube\ServiceProvider\CompatServiceProvider;
+use Eccube\ServiceProvider\ComposerServiceProvider;
 use Eccube\ServiceProvider\EntityEventServiceProvider;
 use Eccube\ServiceProvider\ForwardOnlyServiceProvider;
 use Eccube\ServiceProvider\MobileDetectServiceProvider;
@@ -54,6 +55,7 @@ use Eccube\ServiceProvider\TwigLintServiceProvider;
 use Sergiors\Silex\Routing\ChainUrlGenerator;
 use Sergiors\Silex\Routing\ChainUrlMatcher;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -330,7 +332,8 @@ class Application extends \Silex\Application
                     $this['config']['vendor_dir'].'/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new EntityEventAutowiring(array_merge([
-                    $this['config']['vendor_dir'].'/Entity'
+                    $this['config']['vendor_dir'].'/Entity',
+                    $this['config']['root_dir'].'/src/Eccube/Entity'
                 ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
@@ -338,6 +341,7 @@ class Application extends \Silex\Application
 
         $this->register(new CompatRepositoryProvider());
         $this->register(new CompatServiceProvider());
+        $this->register(new ComposerServiceProvider());
         $this->register(new ServiceProvider\EccubeServiceProvider());
         $this->register(new PagenatorServiceProvider());
         $this->register(new PaymentServiceProvider());
@@ -506,6 +510,17 @@ class Application extends \Silex\Application
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
+        });
+
+        // TwigRendererがdeprecatedになり, Rendererを取得できないエラーが発生するため,
+        // twig.runtimesにFormRendererを追加.
+        // @see https://github.com/silexphp/Silex/pull/1571
+        $this->extend('twig.runtimes', function($runtimes) {
+            if (!isset($runtimes[FormRenderer::class])) {
+                $runtimes[FormRenderer::class] = 'twig.form.renderer';
+            }
+
+            return $runtimes;
         });
 
         $this->before(function (Request $request, \Silex\Application $app) {
@@ -831,7 +846,7 @@ class Application extends \Silex\Application
 
             // filters
             $config = $em->getConfiguration();
-            $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+            $config->addFilter("option_nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
             $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
 
             return $em;

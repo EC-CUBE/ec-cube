@@ -38,7 +38,7 @@ use Eccube\Form\Type\Admin\PluginManagementType;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -118,7 +118,6 @@ class PluginController extends AbstractController
     {
         $pluginForms = array();
         $configPages = array();
-
         $Plugins = $this->pluginRepository->findBy(array(), array('code' => 'ASC'));
 
         // ファイル設置プラグインの取得.
@@ -156,7 +155,6 @@ class PluginController extends AbstractController
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
-
             if ($Plugin->getSource() == 0) {
                 // 商品IDが設定されていない場合、非公式プラグイン
                 $unofficialPlugins[] = $Plugin;
@@ -168,8 +166,6 @@ class PluginController extends AbstractController
         // Todo: Need new authentication mechanism
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
-//        if (!is_null($authKey)) {
-
         // オーナーズストア通信
         $url = $this->appConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
@@ -178,17 +174,14 @@ class PluginController extends AbstractController
         if ($json) {
             // 接続成功時
             $data = json_decode($json, true);
-            if (isset($data['success'])) {
-                $success = $data['success'];
-                if ($success == '1') {
-                    foreach ($data['item'] as $item) {
-                        foreach ($officialPlugins as $key => $plugin) {
-                            if ($plugin->getSource() == $item['product_id']) {
-                                $officialPluginsDetail[$key] = $item;
-                                $officialPluginsDetail[$key]['update_status'] = 0;
-                                if ($plugin->getVersion() != $item['version']) {
-                                    $officialPluginsDetail[$key]['update_status'] = 1;
-                                }
+            if (isset($data['success']) && $data['success']) {
+                foreach ($data['item'] as $item) {
+                    foreach ($officialPlugins as $key => $plugin) {
+                        if ($plugin->getSource() == $item['product_id']) {
+                            $officialPluginsDetail[$key] = $item;
+                            $officialPluginsDetail[$key]['update_status'] = 0;
+                            if ($this->pluginService->isUpdate($plugin->getVersion(), $item['version'])) {
+                                $officialPluginsDetail[$key]['update_status'] = 1;
                             }
                         }
                     }
@@ -237,7 +230,7 @@ class PluginController extends AbstractController
             try {
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
-                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
+                $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $this->pluginService->update($Plugin, $tmpDir.'/'.$tmpFile);
                 $fs = new Filesystem();
@@ -286,7 +279,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->isEnable()) {
+        if ($Plugin->isEnabled()) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
             $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
@@ -321,7 +314,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->isEnable()) {
+        if ($Plugin->isEnabled()) {
             $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
             if (!empty($dependents)) {
                 $dependName = $dependents[0];
@@ -442,7 +435,7 @@ class PluginController extends AbstractController
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $service->createTempDir();
                 // 拡張子を付けないとpharが動かないので付ける
-                $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
+                $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
                 $formFile->move($tmpDir, $tmpFile);
                 $tmpPath = $tmpDir.'/'.$tmpFile;
                 $service->install($tmpPath);
@@ -484,7 +477,7 @@ class PluginController extends AbstractController
      * オーナーズストアプラグインインストール画面
      *
      * @Route("/{_admin}/store/plugin/owners_install", name="admin_store_plugin_owners_install")
-     * @Template("Store/plugin_owners_install.twig")
+     * @Template("Store/plugin_search.twig")
      */
     public function ownersInstall(Application $app, Request $request)
     {
@@ -628,7 +621,7 @@ class PluginController extends AbstractController
                             $file = base64_decode($item['data']);
                             $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
                             $tmpDir = $service->createTempDir();
-                            $tmpFile = sha1(Str::random(32)).'.'.$extension;
+                            $tmpFile = sha1(StringUtil::random(32)).'.'.$extension;
 
                             // ファイル作成
                             $fs = new Filesystem();
@@ -818,7 +811,7 @@ class PluginController extends AbstractController
             $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
             $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
             $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
-            $unregisteredPlugins[$pluginCode]['enable'] = Constant::DISABLED;
+            $unregisteredPlugins[$pluginCode]['enabled'] = Constant::DISABLED;
             $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
         }
 

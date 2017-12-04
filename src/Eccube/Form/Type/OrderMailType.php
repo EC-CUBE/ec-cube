@@ -49,28 +49,21 @@ class OrderMailType extends AbstractType
                 'required' => true,
                 'mapped' => false,
             ))
-            ->add('subject', TextType::class, array(
+            ->add('mail_subject', TextType::class, array(
                 'label' => 'タイトル',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('header', TextareaType::class, array(
+            ->add('mail_header', TextareaType::class, array(
                 'label' => 'ヘッダー',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('footer', TextareaType::class, array(
-                'label' => 'フッター',
-                'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
-            ->add('footer', TextareaType::class, array(
+            ->add('mail_footer', TextareaType::class, array(
                 'label' => 'フッター',
                 'required' => true,
                 'constraints' => array(

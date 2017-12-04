@@ -24,7 +24,6 @@
 
 namespace Eccube\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,7 +51,7 @@ EOF
 
         $this->app = $this->getSilexApplication();
         
-        \Eccube\Util\Cache::clear($this->app,$input->getOption('all'));
+        \Eccube\Util\CacheUtil::clear($this->app,$input->getOption('all'));
         $output->writeln(sprintf("%s <info>success</info>", 'cache:clear'));
 
     }

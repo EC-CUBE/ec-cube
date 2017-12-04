@@ -2,14 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
-use Eccube\Entity\OrderItem;
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * OrderRepository::getQueryBuilderBySearchDataForAdminTest test cases.
@@ -376,7 +370,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->app['eccube.repository.order']->changeStatus($this->Order2->getId(), $Status);
 
         $this->searchData = array(
-            'commit_date_start' => new \DateTime('- 1 days')
+            'shipping_date_start' => new \DateTime('- 1 days')
         );
 
         $this->scenario();
@@ -391,7 +385,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $Status = $this->app['eccube.repository.order_status']->find(5);
         $this->app['eccube.repository.order']->changeStatus($this->Order2->getId(), $Status);
         $this->searchData = array(
-            'commit_date_end' => new \DateTime('+ 1 days')
+            'shipping_date_end' => new \DateTime('+ 1 days')
         );
 
         $this->scenario();

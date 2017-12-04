@@ -5,15 +5,15 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * DeliveryDate
+ * DeliveryDuration
  *
- * @ORM\Table(name="dtb_delivery_date")
+ * @ORM\Table(name="dtb_delivery_duration")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDateRepository")
+ * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDurationRepository")
  */
-class DeliveryDate extends \Eccube\Entity\AbstractEntity
+class DeliveryDuration extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @return string
@@ -42,16 +42,16 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="value", type="smallint", options={"default":0})
+     * @ORM\Column(name="duration", type="smallint", options={"default":0})
      */
-    private $value = 0;
+    private $duration = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
      */
-    private $rank;
+    private $sort_no;
 
 
     /**
@@ -69,7 +69,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
      *
      * @param string|null $name
      *
-     * @return DeliveryDate
+     * @return DeliveryDuration
      */
     public function setName($name = null)
     {
@@ -89,50 +89,50 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set value.
+     * Set duration.
      *
-     * @param int $value
+     * @param int $duration
      *
-     * @return DeliveryDate
+     * @return DeliveryDuration
      */
-    public function setValue($value)
+    public function setDuration($duration)
     {
-        $this->value = $value;
+        $this->duration = $duration;
 
         return $this;
     }
 
     /**
-     * Get value.
+     * Get duration.
      *
      * @return int
      */
-    public function getValue()
+    public function getDuration()
     {
-        return $this->value;
+        return $this->duration;
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
-     * @return DeliveryDate
+     * @return DeliveryDuration
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 }

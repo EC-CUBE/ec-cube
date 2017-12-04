@@ -132,7 +132,68 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
         });
     </script>
+    <script>
+        $('#add-cart').on('click', function () {
+            {% if form.classcategory_id1 is defined %}
+            // 規格1フォームの必須チェック
+            if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
+                $('#classcategory_id1')[0].setCustomValidity("項目が選択されていません。");
+                return true;
+            }else{
+                $('#classcategory_id1')[0].setCustomValidity("");
+            }
+            {% endif %}
 
+            {% if form.classcategory_id2 is defined %}
+            // 規格2フォームの必須チェック
+            if ($('#classcategory_id2').val() == '__unselected' || $('#classcategory_id2').val() == '') {
+                $('#classcategory_id2')[0].setCustomValidity("項目が選択されていません。");
+                return true;
+            }else{
+                $('#classcategory_id2')[0].setCustomValidity("");
+            }
+            {% endif %}
+
+            // 個数フォームのチェック
+            if ($('#quantity').val() < 1) {
+                $('#quantity')[0].setCustomValidity("1以上で入力してください。");
+                return true;
+            }else{
+                $('#quantity')[0].setCustomValidity("");
+            }
+
+            $form = $('#form1');
+            $.ajax({
+                url : $form.attr('action'),
+                type: $form.attr('method'),
+                data: $form.serialize(),
+                dataType: 'json',
+                beforeSend : function(xhr, settings){
+                    // Buttonを無効にする
+                    $('#add-cart').attr('disabled' , true);
+                }
+            }).done(function (data) {
+                // レスポンス内のメッセージをalertで表示
+                $.each(data.messages,function(){
+                    alert(this);
+                });
+
+                // カートブロックを更新する
+                $.ajax({
+                    url: "{{ url('block_cart') }}",
+                    type: 'GET',
+                    dataType: 'html'
+                }).done(function(html) {
+                    $('.ec-headerRole__cart').html(html);
+                });
+            }).fail(function (data) {
+                alert('カートの追加に失敗しました。');
+            }).always(function (data) {
+                // Buttonを有効にする
+                $('#add-cart').attr('disabled' , false);
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -257,8 +318,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </div>
                             <div class="ec-productRole__btn">
-                                <button type="submit" id="add-cart"
-                                        class="ec-blockBtn--action prevention-btn prevention-mask">カートに入れる
+                                <button type="submit" id="add-cart" class="ec-blockBtn--action">
+                                    カートに入れる
                                 </button>
                             </div>
                         {% else %}

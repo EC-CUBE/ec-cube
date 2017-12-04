@@ -36,9 +36,9 @@ use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
-use Eccube\Util\Cache;
-use Eccube\Util\Str;
+use Eccube\Service\Composer\ComposerServiceInterface;
+use Eccube\Util\CacheUtil;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -90,8 +90,8 @@ class PluginService
     protected $schemaService;
 
     /**
-     * @Inject(ComposerApiService::class)
-     * @var ComposerApiService
+     * @Inject("eccube.service.composer")
+     * @var ComposerServiceInterface
      */
     protected $composerService;
 
@@ -156,6 +156,8 @@ class PluginService
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
+            // リソースファイルをコピー
+            $this->copyAssets($pluginBaseDir, $config['code']);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -173,7 +175,7 @@ class PluginService
     {
         // キャッシュの削除
         PluginConfigManager::removePluginConfigCache();
-        Cache::clear($this->app, false);
+        CacheUtil::clear($this->app, false);
     }
 
     // インストール事後処理
@@ -181,7 +183,7 @@ class PluginService
     {
         // Proxyのクラスをロードせずにスキーマを更新するために、
         // インストール時には一時的なディレクトリにProxyを生成する
-        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . Str::random(12);
+        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
         @mkdir($tmpProxyOutputDir);
 
         try {
@@ -204,7 +206,7 @@ class PluginService
     public function createTempDir()
     {
         @mkdir($this->appConfig['plugin_temp_realdir']);
-        $d = ($this->appConfig['plugin_temp_realdir'].'/'.sha1(Str::random(16)));
+        $d = ($this->appConfig['plugin_temp_realdir'].'/'.sha1(StringUtil::random(16)));
 
         if (!mkdir($d, 0777)) {
             throw new PluginException($php_errormsg.$d);
@@ -334,7 +336,7 @@ class PluginService
             $p = new \Eccube\Entity\Plugin();
             // インストール直後はプラグインは有効にしない
             $p->setName($meta['name'])
-                ->setEnable(false)
+                ->setEnabled(false)
                 ->setClassName(isset($meta['event']) ? $meta['event'] : '')
                 ->setVersion($meta['version'])
                 ->setSource($source)
@@ -390,12 +392,13 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         ConfigManager::removePluginConfigCache();
-        Cache::clear($this->app, false);
+        CacheUtil::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+        $this->removeAssets($plugin->getCode());
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
@@ -443,7 +446,7 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnable()) {
+        if ($temporary || $plugin->isEnabled()) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
@@ -469,10 +472,10 @@ class PluginService
         $em = $this->entityManager;
         try {
             PluginConfigManager::removePluginConfigCache();
-            Cache::clear($this->app, false);
+            CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
-            $plugin->setEnable($enable ? true : false);
+            $plugin->setEnabled($enable ? true : false);
             $em->persist($plugin);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
@@ -506,7 +509,7 @@ class PluginService
         $tmp = null;
         try {
             PluginConfigManager::removePluginConfigCache();
-            Cache::clear($this->app, false);
+            CacheUtil::clear($this->app, false);
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
@@ -774,7 +777,7 @@ class PluginService
         $criteria = Criteria::create()
             ->where(Criteria::expr()->neq('code', $pluginCode));
         if ($enableOnly) {
-            $criteria->andWhere(Criteria::expr()->eq('enable', Constant::ENABLED));
+            $criteria->andWhere(Criteria::expr()->eq('enabled', Constant::ENABLED));
         }
         /**
          * @var Plugin[] $plugins
@@ -865,6 +868,52 @@ class PluginService
     }
 
     /**
+     * リソースファイル等をコピー
+     * コピー元となるファイルの置き場所は固定であり、
+     * [プラグインコード]/Resource/assets
+     * 配下に置かれているファイルが所定の位置へコピーされる
+     *
+     * @param $pluginBaseDir
+     * @param $pluginCode
+     */
+    public function copyAssets($pluginBaseDir, $pluginCode)
+    {
+        $assetsDir = $pluginBaseDir.'/Resource/assets';
+
+        // プラグインにリソースファイルがあれば所定の位置へコピー
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->mirror($assetsDir, $this->appConfig['plugin_html_realdir'].$pluginCode.'/assets');
+        }
+    }
+
+    /**
+     * コピーしたリソースファイル等を削除
+     *
+     * @param $pluginCode
+     */
+    public function removeAssets($pluginCode)
+    {
+        $assetsDir = $this->appConfig['plugin_html_realdir'].$pluginCode;
+
+        // コピーされているリソースファイルがあれば削除
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->remove($assetsDir);
+        }
+    }
+
+    /*
+     * @param string $pluginVersion
+     * @param string $remoteVersion
+     * @return mixed
+     */
+    public function isUpdate($pluginVersion, $remoteVersion)
+    {
+        return version_compare($pluginVersion, $remoteVersion, '<');
+    }
+
+    /**
      * @param array  $plugins get from api
      * @param string $pluginCode
      * @return false|int|string
@@ -887,7 +936,7 @@ class PluginService
     private function isEnable($code)
     {
         $Plugin = $this->pluginRepository->findOneBy([
-            'enable' => Constant::ENABLED,
+            'enabled' => Constant::ENABLED,
             'code' => $code
         ]);
         if ($Plugin) {

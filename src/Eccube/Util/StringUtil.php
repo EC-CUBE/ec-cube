@@ -25,7 +25,7 @@ namespace Eccube\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Str
+class StringUtil
 {
 
     /**
@@ -227,7 +227,7 @@ class Str
      */
     public static function isBlank($value, $greedy = false)
     {
-        $deprecated = '\Eccube\Util\Str::isBlank() の第一引数は文字型、数値を使用してください';
+        $deprecated = '\Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください';
         // テストカバレッジを上げるために return の前で trigger_error をスローしている
         if (is_object($value)) {
             if ($value instanceof ArrayCollection) {

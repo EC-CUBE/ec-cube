@@ -28,7 +28,7 @@ use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Util\Str;
+use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -65,10 +65,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'stock_unlimited' => 0,
                 'code' => $faker->word,
                 'sale_limit' => null,
-                'delivery_date' => ''
+                'delivery_duration' => ''
             ),
             'name' => $faker->word,
-            'product_image' => null,
+            'product_image' => array(),
             'description_detail' => $faker->realText,
             'description_list' => $faker->paragraph,
             'Category' => null,
@@ -129,7 +129,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testProductSearchByName()
     {
         $TestProduct = $this->createProduct();
-        $TestProduct->setName(Str::random());
+        $TestProduct->setName(StringUtil::random());
         $this->app['orm.em']->flush($TestProduct);
 
         $post = array('admin_search_product' =>

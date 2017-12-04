@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -22,10 +21,10 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\ShippingStatusRepository;
-use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
-use Eccube\Util\Str;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Util\StringUtil;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -143,7 +142,7 @@ class OrderHelper
     {
         // ランダムなpre_order_idを作成
         do {
-            $preOrderId = sha1(Str::random(32));
+            $preOrderId = sha1(StringUtil::random(32));
 
             $Order = $this->orderRepository->findOneBy(
                 [

@@ -30,7 +30,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * キャッシュ関連のユーティリティクラス.
  */
-class Cache
+class CacheUtil
 {
 
     /**
