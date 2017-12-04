@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","課税","0","taxtype"
 "2","不課税","1","taxtype"
 "3","非課税","2","taxtype"

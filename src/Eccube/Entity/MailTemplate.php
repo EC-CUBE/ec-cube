@@ -42,7 +42,7 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getSubject() ? $this->getSubject() : '';
+        return $this->getName() ? $this->getName() : '';
     }
 
     /**
@@ -71,23 +71,23 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
+     * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
      */
-    private $subject;
+    private $mail_subject;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="header", type="string", length=4000, nullable=true)
+     * @ORM\Column(name="mail_header", type="string", length=4000, nullable=true)
      */
-    private $header;
+    private $mail_header;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="footer", type="string", length=4000, nullable=true)
+     * @ORM\Column(name="mail_footer", type="string", length=4000, nullable=true)
      */
-    private $footer;
+    private $mail_footer;
 
     /**
      * @var \DateTime
@@ -173,75 +173,75 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set subject.
+     * Set mailSubject.
      *
-     * @param string|null $subject
+     * @param string|null $mailSubject
      *
      * @return MailTemplate
      */
-    public function setSubject($subject = null)
+    public function setMailSubject($mailSubject = null)
     {
-        $this->subject = $subject;
+        $this->mail_subject = $mailSubject;
 
         return $this;
     }
 
     /**
-     * Get subject.
+     * Get mailSubject.
      *
      * @return string|null
      */
-    public function getSubject()
+    public function getMailSubject()
     {
-        return $this->subject;
+        return $this->mail_subject;
     }
 
     /**
-     * Set header.
+     * Set mailHeader.
      *
-     * @param string|null $header
+     * @param string|null $mailHeader
      *
      * @return MailTemplate
      */
-    public function setHeader($header = null)
+    public function setMailHeader($mailHeader = null)
     {
-        $this->header = $header;
+        $this->mail_header = $mailHeader;
 
         return $this;
     }
 
     /**
-     * Get header.
+     * Get mailHeader.
      *
      * @return string|null
      */
-    public function getHeader()
+    public function getMailHeader()
     {
-        return $this->header;
+        return $this->mail_header;
     }
 
     /**
-     * Set footer.
+     * Set mailFooter.
      *
-     * @param string|null $footer
+     * @param string|null $mailFooter
      *
      * @return MailTemplate
      */
-    public function setFooter($footer = null)
+    public function setMailFooter($mailFooter = null)
     {
-        $this->footer = $footer;
+        $this->mail_footer = $mailFooter;
 
         return $this;
     }
 
     /**
-     * Get footer.
+     * Get mailFooter.
      *
      * @return string|null
      */
-    public function getFooter()
+    public function getMailFooter()
     {
-        return $this->footer;
+        return $this->mail_footer;
     }
 
     /**

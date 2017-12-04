@@ -337,7 +337,7 @@ class PluginService
             $p = new \Eccube\Entity\Plugin();
             // インストール直後はプラグインは有効にしない
             $p->setName($meta['name'])
-                ->setEnable(false)
+                ->setEnabled(false)
                 ->setClassName(isset($meta['event']) ? $meta['event'] : '')
                 ->setVersion($meta['version'])
                 ->setSource($source)
@@ -447,7 +447,7 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnable()) {
+        if ($temporary || $plugin->isEnabled()) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
@@ -476,7 +476,7 @@ class PluginService
             CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
-            $plugin->setEnable($enable ? true : false);
+            $plugin->setEnabled($enable ? true : false);
             $em->persist($plugin);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
@@ -792,7 +792,7 @@ class PluginService
         $criteria = Criteria::create()
             ->where(Criteria::expr()->neq('code', $pluginCode));
         if ($enableOnly) {
-            $criteria->andWhere(Criteria::expr()->eq('enable', Constant::ENABLED));
+            $criteria->andWhere(Criteria::expr()->eq('enabled', Constant::ENABLED));
         }
         /**
          * @var Plugin[] $plugins
@@ -955,7 +955,7 @@ class PluginService
     private function isEnable($code)
     {
         $Plugin = $this->pluginRepository->findOneBy([
-            'enable' => Constant::ENABLED,
+            'enabled' => Constant::ENABLED,
             'code' => $code
         ]);
         if ($Plugin) {

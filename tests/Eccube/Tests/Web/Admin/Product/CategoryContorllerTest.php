@@ -39,31 +39,31 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function createCategories()
     {
         $categories = array(
-            array('name' => '親1', 'hierarchy' => 1, 'rank' => 1,
+            array('name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
                   'child' => array(
-                      array('name' => '子1', 'hierarchy' => 2, 'rank' => 4,
+                      array('name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
                             'child' => array(
-                                array('name' => '孫1', 'hierarchy' => 3, 'rank' => 9)
+                                array('name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9)
                             ),
                       ),
                   ),
             ),
-            array('name' => '親2', 'hierarchy' => 1, 'rank' => 2,
+            array('name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
                   'child' => array(
-                      array('name' => '子2-0', 'hierarchy' => 2, 'rank' => 5,
+                      array('name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
                             'child' => array(
-                                array('name' => '孫2', 'hierarchy' => 3, 'rank' => 10)
+                                array('name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10)
                             )
                       ),
-                      array('name' => '子2-1', 'hierarchy' => 2, 'rank' => 6),
-                      array('name' => '子2-2', 'hierarchy' => 2, 'rank' => 7)
+                      array('name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6),
+                      array('name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7)
                   ),
             ),
-            array('name' => '親3', 'hierarchy' => 1, 'rank' => 3,
+            array('name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
                   'child' => array(
-                      array('name' => '子3', 'hierarchy' => 2, 'rank' => 8,
+                      array('name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
                             'child' => array(
-                                array('name' => '孫3', 'hierarchy' => 3, 'rank' => 11)
+                                array('name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11)
                             )
                       )
                   ),
@@ -239,13 +239,13 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
-    public function testMoveRank()
+    public function testMoveSortNo()
     {
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子1'));
 
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_product_category_rank_move'),
+            $this->app->url('admin_product_category_sort_no_move'),
             array($Category->getId() => 10),
             array(),
             array(
@@ -257,7 +257,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         $MovedCategory = $this->app['eccube.repository.category']->find($Category->getId());
         $this->expected = 10;
-        $this->actual = $MovedCategory->getRank();
+        $this->actual = $MovedCategory->getSortNo();
         $this->verify();
     }
 
@@ -276,13 +276,13 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $TestCategory = new \Eccube\Entity\Category();
         if ($TestParentCategory == null) {
             $TestCategory->setName('テスト家具')
-                ->setRank(100)
+                ->setSortNo(100)
                 ->setHierarchy(100)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         } else {
             $TestCategory->setName($TestParentCategory->getName() . '_c')
-                ->setRank($TestParentCategory->getRank() + 1)
+                ->setSortNo($TestParentCategory->getSortNo() + 1)
                 ->setHierarchy($TestParentCategory->getHierarchy() + 1)
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
@@ -291,21 +291,21 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         return $TestCategory;
     }
 
-    public function testMoveRankAndShow()
+    public function testMoveSortNoAndShow()
     {
         // Give
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
         $Category2 = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
-        $newRanks = array(
-            $Category->getId() => $Category2->getRank(),
-            $Category2->getId() => $Category->getRank()
+        $newSortNos = array(
+            $Category->getId() => $Category2->getSortNo(),
+            $Category2->getId() => $Category->getSortNo()
         );
 
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_category_rank_move'),
-            $newRanks,
+            $this->app->url('admin_product_category_sort_no_move'),
+            $newSortNos,
             array(),
             array(
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -316,8 +316,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // Then
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = $newRanks[$Category->getId()];
-        $this->actual = $Category->getRank();
+        $this->expected = $newSortNos[$Category->getId()];
+        $this->actual = $Category->getSortNo();
         $this->verify();
 
         $crawler = $this->client->request('GET',

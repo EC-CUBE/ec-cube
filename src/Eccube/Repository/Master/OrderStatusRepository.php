@@ -85,7 +85,7 @@ class OrderStatusRepository extends AbstractRepository
 
         $query = $this
             ->getEntityManager()
-            ->createQuery('SELECT os FROM Eccube\Entity\Master\OrderStatus os INDEX BY os.id ORDER BY os.rank ASC')
+            ->createQuery('SELECT os FROM Eccube\Entity\Master\OrderStatus os INDEX BY os.id ORDER BY os.sort_no ASC')
         ;
         $result = $query
             ->getResult(Query::HYDRATE_ARRAY)

@@ -29,96 +29,96 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
                 <div class="ec-borderedDefs">
-                    {% if help.law_company is defined %}
-                        <dl id="tradelaw__law_company">
+                    {% if help.company is defined %}
+                        <dl id="trade_company">
                             <dt>販売業者</dt>
-                            <dd>{{ help.law_company }}</dd>
+                            <dd>{{ help.company }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_manager is defined %}
-                        <dl id="tradelaw__law_manager">
+                    {% if help.manager is defined %}
+                        <dl id="trade_manager">
                             <dt>運営責任者</dt>
-                            <dd>{{ help.law_manager }}</dd>
+                            <dd>{{ help.manager }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_zip01 is defined %}
-                        <dl id="tradelaw__zip">
+                    {% if help.zip01 is defined %}
+                        <dl id="trade_zip">
                             <dt>住所</dt>
-                            <dd>〒{{ help.law_zip01 }}-{{ help.law_zip02 }}<br />
-                                {{ help.law_pref|default('') }}{{ help.law_addr01 }}{{ help.law_addr02 }}
+                            <dd>〒{{ help.zip01 }}-{{ help.zip02 }}<br />
+                                {{ help.pref|default('') }}{{ help.addr01 }}{{ help.addr02 }}
                             </dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_tel01 is defined %}
-                        <dl id="tradelaw__tel">
+                    {% if help.tel01 is defined %}
+                        <dl id="trade_tel">
                             <dt>電話番号</dt>
-                            <dd>{{ help.law_tel01 }}-{{ help.law_tel02 }}-{{ help.law_tel03 }}</dd>
+                            <dd>{{ help.tel01 }}-{{ help.tel02 }}-{{ help.tel03 }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_fax01 is defined and help.law_fax01 is not empty %}
-                        <dl id="tradelaw__fax">
+                    {% if help.fax01 is defined and help.fax01 is not empty %}
+                        <dl id="trade_fax">
                             <dt>FAX番号</dt>
-                            <dd>{{ help.law_fax01 }}-{{ help.law_fax02 }}-{{ help.law_fax03 }}</dd>
+                            <dd>{{ help.fax01 }}-{{ help.fax02 }}-{{ help.fax03 }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_email is defined %}
-                        <dl id="tradelaw__email">
+                    {% if help.email is defined %}
+                        <dl id="trade_email">
                             <dt>メールアドレス</dt>
-                            <dd><a href="mailto:{{ help.law_email }}">{{ help.law_email }}</a></dd>
+                            <dd><a href="mailto:{{ help.email }}">{{ help.email }}</a></dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_url is defined %}
-                        <dl id="tradelaw__law_url">
+                    {% if help.url is defined %}
+                        <dl id="trade_url">
                             <dt>URL</dt>
-                            <dd><a href="{{ help.law_url }}">{{ help.law_url }}</a></dd>
+                            <dd><a href="{{ help.url }}">{{ help.url }}</a></dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_term01 is defined %}
-                        <dl id="tradelaw__law_term01">
+                    {% if help.term01 is defined %}
+                        <dl id="trade_term01">
                             <dt>商品以外の必要代金</dt>
-                            <dd>{{ help.law_term01|nl2br }}</dd>
+                            <dd>{{ help.term01|nl2br }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_term02 is defined %}
-                        <dl id="tradelaw__law_term02">
+                    {% if help.term02 is defined %}
+                        <dl id="trade_term02">
                             <dt>注文方法</dt>
-                            <dd>{{ help.law_term02|nl2br }}</dd>
+                            <dd>{{ help.term02|nl2br }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_term03 is defined %}
-                        <dl id="tradelaw__law_term03">
+                    {% if help.term03 is defined %}
+                        <dl id="trade_term03">
                             <dt>支払方法</dt>
-                            <dd>{{ help.law_term03|nl2br }}</dd>
+                            <dd>{{ help.term03|nl2br }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_term04 is defined %}
-                        <dl id="tradelaw__law_term04">
+                    {% if help.term04 is defined %}
+                        <dl id="trade_term04">
                             <dt>支払期限</dt>
-                            <dd>{{ help.law_term04|nl2br }}</dd>
+                            <dd>{{ help.term04|nl2br }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_term05 is defined %}
-                        <dl id="tradelaw__law_term05">
+                    {% if help.term05 is defined %}
+                        <dl id="trade_term05">
                             <dt>引渡し時期</dt>
-                            <dd>{{ help.law_term05|nl2br }}</dd>
+                            <dd>{{ help.term05|nl2br }}</dd>
                         </dl>
                     {% endif %}
 
-                    {% if help.law_term06 is defined %}
-                        <dl id="tradelaw__law_term06">
+                    {% if help.term06 is defined %}
+                        <dl id="trade_term06">
                             <dt>返品・交換について</dt>
-                            <dd>{{ help.law_term06|nl2br }}</dd>
+                            <dd>{{ help.term06|nl2br }}</dd>
                         </dl>
                     {% endif %}
                 </div>

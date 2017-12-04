@@ -506,7 +506,7 @@ class ProductController extends AbstractController
                     $ProductImage
                         ->setFileName($add_image)
                         ->setProduct($Product)
-                        ->setRank(1);
+                        ->setSortNo(1);
                     $Product->addProductImage($ProductImage);
                     $this->entityManager->persist($ProductImage);
 
@@ -537,16 +537,16 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
 
 
-                $ranks = $request->get('rank_images');
-                if ($ranks) {
-                    foreach ($ranks as $rank) {
-                        list($filename, $rank_val) = explode('//', $rank);
+                $sortNos = $request->get('sort_no_images');
+                if ($sortNos) {
+                    foreach ($sortNos as $sortNo) {
+                        list($filename, $sortNo_val) = explode('//', $sortNo);
                         $ProductImage = $this->productImageRepository
                             ->findOneBy(array(
                                 'file_name' => $filename,
                                 'Product' => $Product,
                             ));
-                        $ProductImage->setRank($rank_val);
+                        $ProductImage->setSortNo($sortNo_val);
                         $this->entityManager->persist($ProductImage);
                     }
                 }
@@ -930,7 +930,7 @@ class ProductController extends AbstractController
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setRank($count);
+        $ProductCategory->setSortNo($count);
         
         return $ProductCategory;
     }

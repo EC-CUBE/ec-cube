@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <tbody>
             {% for Plugin in Plugins %}
                 <form id="{{ Plugin.name }}" name="{{ Plugin.name }}" method="post" action="">
-                    <tr class="{% if Plugin.enable == false %}active{% endif %}">
+                    <tr class="{% if Plugin.enabled == false %}active{% endif %}">
                         {% if Plugin.name is defined %}
                             <td class="tp">
                                 <strong>{{ Plugin.name }}</strong>

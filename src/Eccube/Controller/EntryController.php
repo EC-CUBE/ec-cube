@@ -164,7 +164,8 @@ class EntryController extends AbstractController
                     $Customer
                         ->setSalt($salt)
                         ->setPassword($password)
-                        ->setSecretKey($secretKey);
+                        ->setSecretKey($secretKey)
+                        ->setPoint(0);
 
                     $CustomerAddress = new CustomerAddress();
                     $CustomerAddress

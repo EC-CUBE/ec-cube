@@ -30,7 +30,7 @@ class BlockRepositoryTest extends EccubeTestCase
             $Block
                 ->setName('block-'.$i)
                 ->setFileName('block/block-'.$i)
-                ->setLogical(true)
+                ->setUseController(true)
                 ->setDeletable(false)
                 ->setDeviceType($this->DeviceType);
             $this->app['orm.em']->persist($Block);

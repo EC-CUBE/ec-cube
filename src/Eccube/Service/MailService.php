@@ -29,7 +29,6 @@ use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -257,13 +256,13 @@ class MailService
         $MailTemplate = $this->mailTemplateRepository->find(1);
 
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
-            'header' => $MailTemplate->getHeader(),
-            'footer' => $MailTemplate->getFooter(),
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -345,13 +344,13 @@ class MailService
         log_info('受注管理通知メール送信開始');
 
         $body = $this->app->renderView('Mail/order.twig', array(
-            'header' => $formData['header'],
-            'footer' => $formData['footer'],
+            'header' => $formData['mail_header'],
+            'footer' => $formData['mail_footer'],
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['subject'])
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['mail_subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())

@@ -178,20 +178,20 @@ class ShippingRepository extends AbstractRepository
                 ->setParameter('shipping_delivery_date_end', $date);
         }
 
-        // commit_date
-        if (!empty($searchData['commit_date_start']) && $searchData['commit_date_start']) {
-            $date = $searchData['commit_date_start'];
+        // shipping_date
+        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
+            $date = $searchData['shipping_date_start'];
             $qb
-                ->andWhere('s.commit_date >= :commit_date_start')
-                ->setParameter('commit_date_start', $date);
+                ->andWhere('s.shipping_date >= :shipping_date_start')
+                ->setParameter('shipping_date_start', $date);
         }
-        if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
-            $date = clone $searchData['commit_date_end'];
+        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
+            $date = clone $searchData['shipping_date_end'];
             $date = $date
                 ->modify('+1 days');
             $qb
-                ->andWhere('s.commit_date < :commit_date_end')
-                ->setParameter('commit_date_end', $date);
+                ->andWhere('s.shipping_date < :shipping_date_end')
+                ->setParameter('shipping_date_end', $date);
         }
 
 

@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% set NewsList = app['eccube.repository.news'].findBy({}, {'rank': 'DESC'}) %}
+{% set NewsList = app['eccube.repository.news'].findBy({}, {'sort_no': 'DESC'}) %}
 
 {% block javascript %}
 <script>
@@ -52,18 +52,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <li class="ec-news__item">
             <div class="ec-newsline">
                 <div class="ec-newsline__info">
-                    <div class="ec-newsline__date">{{ News.date|date("Y/m/d") }}</div>
-                    <div class="ec-newsline__comment">{{ News.title }}</div>
-                    {% if News.comment or News.url %}
+                    <div class="ec-newsline__date">{{ News.publish_date|date("Y/m/d") }}</div>
+                    <div class="ec-newsline__title">{{ News.title }}</div>
+                    {% if News.description or News.url %}
                         <div class="ec-newsline__close">
                             <a class="ec-closeBtn--circle"><div class="ec-icon"><img src="{{ asset('assets/icon/angle-down-white.svg') }}" alt=""></div>
                             </a>
                         </div>
                     {% endif %}
                 </div>
-                {% if News.comment or News.url %}
+                {% if News.description or News.url %}
                 <div class="ec-newsline__description">
-                    {{ News.comment|raw|nl2br }}
+                    {{ News.description|raw|nl2br }}
                     {% if News.url %}<br>
                     <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>詳しくはこちら</a>
                     {% endif %}

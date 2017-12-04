@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "7","注文未完了","0","customerorderstatus"
 "1","注文受付","1","customerorderstatus"
 "2","入金待ち","2","customerorderstatus"
