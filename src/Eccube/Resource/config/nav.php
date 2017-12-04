@@ -1,9 +1,9 @@
 <?php return [
     [
-        'id' => 'product',
+        'id' => 'productManagement',
         'name' => '商品管理',
         'has_child' => true,
-        'icon' => 'cb-tag',
+        'icon' => 'fa-cube',
         'child' =>
             [
                 [
@@ -39,10 +39,10 @@
             ],
     ],
     [
-        'id' => 'order',
+        'id' => 'orderManagement',
         'name' => '受注管理',
         'has_child' => true,
-        'icon' => 'cb-shopping-cart',
+        'icon' => 'fa-inbox',
         'child' =>
             [
                 [
@@ -58,10 +58,10 @@
             ],
     ],
     [
-        'id' => 'shipping',
+        'id' => 'shipManagement',
         'name' => '出荷管理',
         'has_child' => true,
-        'icon' => 'cb-shopping-cart',
+        'icon' => 'fa-truck',
         'child' =>
             [
                 [
@@ -77,10 +77,10 @@
             ],
     ],
     [
-        'id' => 'customer',
+        'id' => 'userManagement',
         'name' => '会員管理',
         'has_child' => true,
-        'icon' => 'cb-users',
+        'icon' => 'fa-users',
         'child' =>
             [
                 [
@@ -96,10 +96,10 @@
             ],
     ],
     [
-        'id' => 'content',
+        'id' => 'contentsManagement',
         'name' => 'コンテンツ管理',
         'has_child' => true,
-        'icon' => 'cb-file-text',
+        'icon' => 'fa-file-text-o',
         'child' =>
             [
                 [
@@ -135,14 +135,14 @@
             ],
     ],
     [
-        'id' => 'setting',
+        'id' => 'config',
         'name' => '設定',
         'has_child' => true,
-        'icon' => 'cb-cog',
+        'icon' => 'fa-cog',
         'child' =>
             [
                 [
-                    'id' => 'shop',
+                    'id' => 'commonConfig',
                     'name' => '基本情報設定',
                     'has_child' => true,
                     'child' =>
@@ -190,7 +190,7 @@
                         ],
                 ],
                 [
-                    'id' => 'system',
+                    'id' => 'systemConfig',
                     'name' => 'システム情報設定',
                     'has_child' => true,
                     'child' =>
@@ -230,10 +230,10 @@
             ],
     ],
     [
-        'id' => 'store',
+        'id' => 'ornersStore',
         'name' => 'オーナーズストア',
         'has_child' => true,
-        'icon' => 'cb-info-circle',
+        'icon' => 'fa-info-circle',
         'child' =>
             [
                 [
