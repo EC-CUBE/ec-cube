@@ -46,9 +46,9 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="logical", type="boolean", options={"default":false})
+     * @ORM\Column(name="use_controller", type="boolean", options={"default":false})
      */
-    private $logical = false;
+    private $use_controller = false;
 
     /**
      * @var boolean
@@ -169,27 +169,27 @@ class Block extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set logical
+     * Set useController
      *
-     * @param boolean $logical
+     * @param boolean $useController
      *
      * @return Block
      */
-    public function setLogical($logical)
+    public function setUseController($useController)
     {
-        $this->logical = $logical;
+        $this->use_controller = $useController;
 
         return $this;
     }
 
     /**
-     * Get logical
+     * Get useController
      *
      * @return boolean
      */
-    public function isLogical()
+    public function isUseController()
     {
-        return $this->logical;
+        return $this->use_controller;
     }
 
     /**

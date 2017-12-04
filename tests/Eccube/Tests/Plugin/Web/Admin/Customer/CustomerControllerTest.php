@@ -23,7 +23,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
             $CsvType = new CsvType();
             $CsvType->setId(2);
             $CsvType->setName('会員CSV');
-            $CsvType->setRank(4);
+            $CsvType->setSortNo(4);
             $this->app['orm.em']->persist($CsvType);
             $this->app['orm.em']->flush();
         }

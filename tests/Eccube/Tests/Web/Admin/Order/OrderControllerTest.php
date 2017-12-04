@@ -30,7 +30,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $OrderCsvType = new CsvType();
             $OrderCsvType->setId(3);
             $OrderCsvType->setName('受注CSV');
-            $OrderCsvType->setRank(4);
+            $OrderCsvType->setSortNo(4);
             $this->app['orm.em']->persist($OrderCsvType);
             $this->app['orm.em']->flush();
         }
@@ -39,7 +39,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $ShipCsvType = new CsvType();
             $ShipCsvType->setId(4);
             $ShipCsvType->setName('配送CSV');
-            $ShipCsvType->setRank(5);
+            $ShipCsvType->setSortNo(5);
             $this->app['orm.em']->persist($ShipCsvType);
             $this->app['orm.em']->flush();
         }

@@ -59,7 +59,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $Category = new Category();
         $Category
             ->setName('test')
-            ->setRank(1)
+            ->setSortNo(1)
             ->setHierarchy(1)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
@@ -204,7 +204,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
-                $this->actual[] = $ProductImage->getRank();
+                $this->actual[] = $ProductImage->getSortNo();
             }
 
             $this->verify();
@@ -215,11 +215,11 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     {
         $this->ProductListMax->setId(15);
         $this->ProductListMax->setName('15件');
-        $this->ProductListMax->setRank(0);
+        $this->ProductListMax->setSortNo(0);
 
         $this->ProductListOrderBy->setId(1);
         $this->ProductListOrderBy->setName('価格順');
-        $this->ProductListOrderBy->setRank(0);
+        $this->ProductListOrderBy->setSortNo(0);
 
 
         $this->searchData = array(
@@ -247,11 +247,11 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     {
         $this->ProductListMax->setId(15);
         $this->ProductListMax->setName('15件');
-        $this->ProductListMax->setRank(0);
+        $this->ProductListMax->setSortNo(0);
 
         $this->ProductListOrderBy->setId(2);
         $this->ProductListOrderBy->setName('新着順');
-        $this->ProductListOrderBy->setRank(0);
+        $this->ProductListOrderBy->setSortNo(0);
 
 
         $this->searchData = array(

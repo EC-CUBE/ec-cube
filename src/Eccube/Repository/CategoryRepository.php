@@ -81,11 +81,11 @@ class CategoryRepository extends AbstractRepository
             ->leftJoin('c2.Children', 'c3')
             ->leftJoin('c3.Children', 'c4')
             ->leftJoin('c4.Children', 'c5')
-            ->orderBy('c1.rank', 'DESC')
-            ->addOrderBy('c2.rank', 'DESC')
-            ->addOrderBy('c3.rank', 'DESC')
-            ->addOrderBy('c4.rank', 'DESC')
-            ->addOrderBy('c5.rank', 'DESC');
+            ->orderBy('c1.sort_no', 'DESC')
+            ->addOrderBy('c2.sort_no', 'DESC')
+            ->addOrderBy('c3.sort_no', 'DESC')
+            ->addOrderBy('c4.sort_no', 'DESC')
+            ->addOrderBy('c5.sort_no', 'DESC');
 
         if ($Parent) {
             $qb->where('c1.Parent = :Parent')->setParameter('Parent', $Parent);
@@ -117,22 +117,22 @@ class CategoryRepository extends AbstractRepository
         if (!$Category->getId()) {
             $Parent = $Category->getParent();
             if ($Parent) {
-                $rank = $Parent->getRank() - 1;
+                $sortNo = $Parent->getSortNo() - 1;
             } else {
-                $rank = $this->createQueryBuilder('c')
-                    ->select('COALESCE(MAX(c.rank), 0)')
+                $sortNo = $this->createQueryBuilder('c')
+                    ->select('COALESCE(MAX(c.sort_no), 0)')
                     ->getQuery()
                     ->getSingleScalarResult();
             }
 
-            $Category->setRank($rank + 1);
+            $Category->setSortNo($sortNo + 1);
 
             $this
                 ->createQueryBuilder('c')
                 ->update()
-                ->set('c.rank', 'c.rank + 1')
-                ->where('c.rank > :rank')
-                ->setParameter('rank', $rank)
+                ->set('c.sort_no', 'c.sort_no + 1')
+                ->where('c.sort_no > :sort_no')
+                ->setParameter('sort_no', $sortNo)
                 ->getQuery()
                 ->execute();
         }
@@ -155,9 +155,9 @@ class CategoryRepository extends AbstractRepository
         $this
             ->createQueryBuilder('c')
             ->update()
-            ->set('c.rank', 'c.rank - 1')
-            ->where('c.rank > :rank')
-            ->setParameter('rank', $Category->getRank())
+            ->set('c.sort_no', 'c.sort_no - 1')
+            ->where('c.sort_no > :sort_no')
+            ->setParameter('sort_no', $Category->getSortNo())
             ->getQuery()
             ->execute();
 

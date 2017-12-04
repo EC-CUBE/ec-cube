@@ -27,13 +27,12 @@ namespace Eccube\Form\Type\Master;
 use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @FormType
  */
-class DeliveryDateType extends AbstractType
+class DeliveryDurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -41,8 +40,8 @@ class DeliveryDateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\DeliveryDate',
-            'placeholder' => 'form.delivery_date.empty_value',
+            'class' => 'Eccube\Entity\DeliveryDuration',
+            'placeholder' => 'form.delivery_duration.empty_value',
         ));
     }
 
@@ -51,7 +50,7 @@ class DeliveryDateType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'delivery_date';
+        return 'delivery_duration';
     }
 
     /**

@@ -51,7 +51,7 @@ class NewsController
         $NewsList = $this->newsRepository
             ->findBy(
                 array(),
-                array('rank' => 'DESC')
+                array('sort_no' => 'DESC')
             );
 
         return [

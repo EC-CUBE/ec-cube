@@ -193,7 +193,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             ->setDepartment('EC-CUBE事業部')
             ->setLoginId('takahashi')
             ->setPassword('password')
-            ->setRank(100)
+            ->setSortNo(100)
             ->setSalt('abcdefg')
             ->setAuthority($Authority)
             ->setWork($Work);

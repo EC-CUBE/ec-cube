@@ -35,6 +35,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -244,7 +245,7 @@ class ShopMasterType extends AbstractType
             ))
 
             // 商品設定
-            ->add('nostock_hidden', ChoiceType::class, array(
+            ->add('option_nostock_hidden', ChoiceType::class, array(
                 'label' => '在庫切れ商品を非表示にする',
                 'choices' => array_flip(array(
                     '0' => '無効',

@@ -1,4 +1,4 @@
-product_id,category_id,rank,discriminator_type
+product_id,category_id,sort_no,discriminator_type
 "1","5","1","productcategory"
 "1","6","1","productcategory"
 "2","1","1","productcategory"

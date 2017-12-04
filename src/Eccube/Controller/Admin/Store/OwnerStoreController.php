@@ -261,7 +261,6 @@ class OwnerStoreController extends AbstractController
             }
         }
         $packageNames .= self::$vendorName . '/' . $pluginCode;
-        $return = $this->composerService->execRequire($packageNames);
         $data = array(
             'code' => $pluginCode,
             'version' => $version,
@@ -275,13 +274,20 @@ class OwnerStoreController extends AbstractController
             'composer_execute_mode' => $this->composerService->getMode(),
             'dependents' => json_encode($dependentModifier)
         );
-        if ($return) {
+
+        try {
+            $this->composerService->execRequire($packageNames);
+            // Do report to package repo
             $url = $this->appConfig['package_repo_url'] . '/report';
             $this->postRequestApi($url, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
+        } catch (\Exception $exception) {
+            log_info($exception);
         }
+
+        // Do report to package repo
         $url = $this->appConfig['package_repo_url'] . '/report/fail';
         $this->postRequestApi($url, $data);
         $app->addError('admin.plugin.install.fail', 'admin');
@@ -353,15 +359,16 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->isEnable()) {
+        if ($Plugin->isEnabled()) {
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
-        $return = $this->composerService->execRemove($packageName);
-        if ($return) {
+        try {
+            $this->composerService->execRemove($packageName);
             $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } else {
+        } catch (\Exception $exception) {
+            log_info($exception);
             $app->addError('admin.plugin.uninstall.error', 'admin');
         }
 

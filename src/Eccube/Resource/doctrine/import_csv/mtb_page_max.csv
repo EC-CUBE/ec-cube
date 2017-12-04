@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "10","10","0","pagemax"
 "20","20","1","pagemax"
 "30","30","2","pagemax"

@@ -117,7 +117,7 @@ class ShippingType extends AbstractType
 
                 // お届け日の設定
                 $minDate = 0;
-                $deliveryDateFlag = false;
+                $deliveryDurationFlag = false;
 
                 // 配送時に最大となる商品日数を取得
                 foreach ($Shipping->getOrderItems() as $detail) {
@@ -125,28 +125,28 @@ class ShippingType extends AbstractType
                     if (is_null($ProductClass)) {
                         continue;
                     }
-                    $deliveryDate = $ProductClass->getDeliveryDate();
-                    if (is_null($deliveryDate)) {
+                    $deliveryDuration = $ProductClass->getDeliveryDuration();
+                    if (is_null($deliveryDuration)) {
                         continue;
                     }
-                    if ($deliveryDate->getValue() < 0) {
+                    if ($deliveryDuration->getDuration() < 0) {
                         // 配送日数がマイナスの場合はお取り寄せなのでスキップする
-                        $deliveryDateFlag = false;
+                        $deliveryDurationFlag = false;
                         break;
                     }
 
-                    if ($minDate < $deliveryDate->getValue()) {
-                        $minDate = $deliveryDate->getValue();
+                    if ($minDate < $deliveryDuration->getDuration()) {
+                        $minDate = $deliveryDuration->getDuration();
                     }
                     // 配送日数が設定されている
-                    $deliveryDateFlag = true;
+                    $deliveryDurationFlag = true;
                 }
 
                 // 配達最大日数期間を設定
-                $deliveryDates = array();
+                $deliveryDurations = array();
 
                 // 配送日数が設定されている
-                if ($deliveryDateFlag) {
+                if ($deliveryDurationFlag) {
                     $period = new \DatePeriod (
                         new \DateTime($minDate.' day'),
                         new \DateInterval('P1D'),
@@ -154,7 +154,7 @@ class ShippingType extends AbstractType
                     );
 
                     foreach ($period as $day) {
-                        $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
+                        $deliveryDurations[$day->format('Y/m/d')] = $day->format('Y/m/d');
                     }
                 }
 
@@ -164,7 +164,7 @@ class ShippingType extends AbstractType
                         'shipping_delivery_date',
                         ChoiceType::class,
                         array(
-                            'choices' => array_flip($deliveryDates),
+                            'choices' => array_flip($deliveryDurations),
                             'required' => false,
                             'placeholder' => '指定なし',
                             'mapped' => false,

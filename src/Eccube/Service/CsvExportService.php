@@ -199,10 +199,10 @@ class CsvExportService
 
         $criteria = array(
             'CsvType' => $CsvType,
-            'enable' => true,
+            'enabled' => true,
         );
         $orderBy = array(
-            'rank' => 'ASC'
+            'sort_no' => 'ASC'
         );
         $this->Csvs = $this->csvRepository->findBy($criteria, $orderBy);
     }

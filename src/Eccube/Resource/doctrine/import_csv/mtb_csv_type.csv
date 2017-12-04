@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","商品CSV","3","csvtype"
 "2","会員CSV","4","csvtype"
 "3","受注CSV","1","csvtype"

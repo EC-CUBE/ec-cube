@@ -35,8 +35,8 @@ class CsvControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setRank(1);
-        $Csv->setEnable(false);
+        $Csv->setSortNo(1);
+        $Csv->setEnabled(false);
         $this->app['orm.em']->flush();
     }
 
@@ -52,7 +52,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(1);
         $this->assertNotEmpty($CsvType);
 
-        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable' => true), array('rank' => 'ASC'));
+        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enabled' => true), array('sort_no' => 'ASC'));
         $this->assertNotEmpty($Csv);
     }
 
@@ -62,13 +62,13 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->getConnection()->beginTransaction();
 
         $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setRank(1);
-        $Csv->setEnable(false);
+        $Csv->setSortNo(1);
+        $Csv->setEnabled(false);
 
         $this->app['orm.em']->flush();
 
         $Csv2 = $this->app['eccube.repository.csv']->find(1);
-        $this->assertEquals(false, $Csv2->isEnable());
+        $this->assertEquals(false, $Csv2->isEnabled());
 
         $this->app['orm.em']->getConnection()->rollback();
     }
@@ -108,7 +108,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->app->url('admin_setting_shop_csv', array('id' => $csvType));
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = array($CsvNotOut->isEnable(), $CsvOut->isEnable());
+        $this->actual = array($CsvNotOut->isEnabled(), $CsvOut->isEnabled());
         $this->expected = array(Constant::ENABLED, Constant::DISABLED);
         $this->verify();
     }
@@ -118,10 +118,10 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $CsvType = $this->app['eccube.repository.master.csv_type']->find($csvType);
         $Creator = $this->app['eccube.repository.member']->find(2);
 
-        $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('rank' => 'DESC'));
-        $rank = 1;
+        $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('sort_no' => 'DESC'));
+        $sortNo = 1;
         if ($csv) {
-            $rank = $csv->getRank() + 1;
+            $sortNo = $csv->getSortNo() + 1;
         }
 
         $Csv = new Csv();
@@ -131,8 +131,8 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $Csv->setFieldName($field);
         $Csv->setReferenceFieldName($ref);
         $Csv->setDispName('Test');
-        $Csv->setEnable(false);
-        $Csv->setRank($rank);
+        $Csv->setEnabled(false);
+        $Csv->setSortNo($sortNo);
 
         $this->app['orm.em']->persist($Csv);
         $this->app['orm.em']->flush();

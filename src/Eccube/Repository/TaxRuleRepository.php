@@ -206,19 +206,19 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         foreach ($TaxRules as $TaxRule) {
-            $rank = 0;
+            $sortNo = 0;
             foreach ($priorityKeys as $index => $key) {
                 $arrayProperties = array_change_key_case($TaxRule->toArray());
                 if ($arrayProperties[$key]) {
 
                     // 配列の数値添字を重みとして利用する
-                    $rank += 1 << ($index + 1);
+                    $sortNo += 1 << ($index + 1);
                 }
             }
-            $TaxRule->setRank($rank);
+            $TaxRule->setSortNo($sortNo);
         }
 
-        // 適用日降順, rank 降順にソートする
+        // 適用日降順, sortNo 降順にソートする
         usort($TaxRules, function($a, $b) {
             return $a->compareTo($b);
         });

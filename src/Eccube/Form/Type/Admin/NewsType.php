@@ -29,7 +29,6 @@ use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -63,7 +62,7 @@ class NewsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateType::class, array(
+            ->add('publish_date', DateType::class, array(
                 'label' => '日付',
                 'required' => true,
                 'input' => 'datetime',
@@ -95,15 +94,12 @@ class NewsType extends AbstractType
                 'label' => '別ウィンドウを開く',
                 'value' => '1',
             ))
-            ->add('comment', TextareaType::class, array(
+            ->add('description', TextareaType::class, array(
                 'label' => '本文',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->appConfig['ltext_len'])),
                 ),
-            ))
-            ->add('select', HiddenType::class, array(
-                'data' => '0',
             ));
     }
 

@@ -39,8 +39,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div id="confirm_box__subject" class="form-group">
                     <label class="col-sm-2 control-label">タイトル</label>
                     <div class="col-sm-9 col-lg-10">
-                        {{ form_widget(form.subject) }}
-                        {{ form_errors(form.subject) }}
+                        {{ form_widget(form.mail_subject) }}
+                        {{ form_errors(form.mail_subject) }}
                     </div>
                 </div>
                 <div id="confirm_box__item_body" class="form-group">
@@ -50,8 +50,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
                 {{ form_widget(form.template, {freeze_display_text: false}) }}
-                {{ form_widget(form.header, {freeze_display_text: false}) }}
-                {{ form_widget(form.footer, {freeze_display_text: false}) }}
+                {{ form_widget(form.mail_header, {freeze_display_text: false}) }}
+                {{ form_widget(form.mail_footer, {freeze_display_text: false}) }}
             </div><!-- /.box-body -->
         </div><!-- /.box -->
         <div class="extra-form">

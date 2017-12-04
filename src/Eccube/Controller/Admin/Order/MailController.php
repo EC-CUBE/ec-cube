@@ -132,9 +132,9 @@ class MailController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
                     $form->get('template')->setData($MailTemplate);
-                    $form->get('subject')->setData($MailTemplate->getSubject());
-                    $form->get('header')->setData($MailTemplate->getHeader());
-                    $form->get('footer')->setData($MailTemplate->getFooter());
+                    $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
+                    $form->get('mail_header')->setData($MailTemplate->getMailHeader());
+                    $form->get('mail_footer')->setData($MailTemplate->getMailFooter());
                 }
             } else if ($form->isValid()) {
                 switch ($mode) {
@@ -145,7 +145,7 @@ class MailController
                         $builder->setAttribute('freeze_display_text', true);
 
                         $data = $form->getData();
-                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+                        $body = $this->createBody($app, $data['mail_header'], $data['mail_footer'], $Order);
 
                         $MailTemplate = $form->get('template')->getData();
 
@@ -174,7 +174,7 @@ class MailController
                     case 'complete':
 
                         $data = $form->getData();
-                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+                        $body = $this->createBody($app, $data['mail_header'], $data['mail_footer'], $Order);
 
                         // メール送信
                         $this->mailService->sendAdminOrderMail($Order, $data);
@@ -183,7 +183,7 @@ class MailController
                         $MailTemplate = $form->get('template')->getData();
                         $MailHistory = new MailHistory();
                         $MailHistory
-                            ->setSubject($data['subject'])
+                            ->setMailSubject($data['mail_subject'])
                             ->setMailBody($body)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
@@ -251,7 +251,7 @@ class MailController
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE, $event);
 
             return [
-                'subject' => $MailHistory->getSubject(),
+                'mail_subject' => $MailHistory->getMailSubject(),
                 'body' => $MailHistory->getMailBody()
             ];
         }
@@ -303,9 +303,9 @@ class MailController
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE, $event);
 
                     $form->get('template')->setData($MailTemplate);
-                    $form->get('subject')->setData($MailTemplate->getSubject());
-                    $form->get('header')->setData($MailTemplate->getHeader());
-                    $form->get('footer')->setData($MailTemplate->getFooter());
+                    $form->get('mail_subject')->setData($MailTemplate->getMailSubject());
+                    $form->get('mail_header')->setData($MailTemplate->getMailHeader());
+                    $form->get('mail_footer')->setData($MailTemplate->getMailFooter());
                 }
             } else if ($form->isValid()) {
                 switch ($mode) {
@@ -325,7 +325,7 @@ class MailController
                             throw new NotFoundHttpException('order not found.');
                         }
 
-                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+                        $body = $this->createBody($app, $data['mail_header'], $data['mail_footer'], $Order);
 
                         $MailTemplate = $form->get('template')->getData();
 
@@ -361,7 +361,7 @@ class MailController
 
                             $Order = $this->orderRepository->find($value);
 
-                            $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+                            $body = $this->createBody($app, $data['mail_header'], $data['mail_footer'], $Order);
 
                             // メール送信
                             $this->mailService->sendAdminOrderMail($Order, $data);
@@ -369,7 +369,7 @@ class MailController
                             // 送信履歴を保存.
                             $MailHistory = new MailHistory();
                             $MailHistory
-                                ->setSubject($data['subject'])
+                                ->setMailSubject($data['mail_subject'])
                                 ->setMailBody($body)
                                 ->setSendDate(new \DateTime())
                                 ->setOrder($Order);
