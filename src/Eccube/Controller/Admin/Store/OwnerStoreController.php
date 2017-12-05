@@ -37,6 +37,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -201,6 +202,7 @@ class OwnerStoreController extends AbstractController
         return [
             'item' => $plugin,
             'dependents' => $dependents,
+            'is_update' => $request->get('is_update', false),
         ];
     }
 
@@ -372,18 +374,18 @@ class OwnerStoreController extends AbstractController
      * オーナーズブラグインインストール、アップデート
      *
      * @Method("PUT")
-     * @Route("/upgrade/{id}/{version}", requirements={"id" = "\d+"}, name="admin_store_plugin_api_upgrade")
+     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade")
      *
      * @param Application $app
-     * @param Plugin      $Plugin
+     * @param string      $pluginCode
      * @param string      $version
      * @return RedirectResponse
      */
-    public function apiUpgrade(Application $app, Plugin $Plugin, $version)
+    public function apiUpgrade(Application $app, $pluginCode, $version)
     {
         $this->isTokenValid($app);
         // Run install plugin
-        $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $Plugin->getCode(), 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
+        $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
 
         /** @var Session $session */
         $session = $app['session'];
@@ -397,6 +399,23 @@ class OwnerStoreController extends AbstractController
         $app->addSuccess('admin.plugin.update.complete', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin'));
+    }
+
+    /**
+     * Do confirm update page
+     *
+     * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
+     * @Template("Store/plugin_confirm.twig")
+     * @param Application $app
+     * @param Plugin      $plugin
+     * @return Response
+     */
+    public function doUpdateConfirm(Application $app, Plugin $plugin)
+    {
+        $source = $plugin->getSource();
+        $url = $app->url('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
+
+        return $app->forward($url);
     }
 
     /**
