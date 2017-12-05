@@ -56,7 +56,7 @@ $(function(){
         </div><br>
         <div class="row">
             <div class="col-sm-4">
-                <div class="card">
+                <div class="card" id="order_info">
                     <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
                         {{ form_widget(searchOrderForm._token) }}
                         <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
@@ -83,7 +83,7 @@ $(function(){
                 </div>
             </div>
             <div class="col-sm-8">
-                <div class="card">
+                <div class="card" id="sale_info">
                     <div class="card-header">売上状況</div>
                     <div class="card-body">
                         <p>
@@ -118,7 +118,7 @@ $(function(){
         </div><br>
         <div class="row">
             <div class="col-sm-6">
-                <div class="card">
+                <div class="card" id="shop_info">
                     <div class="card-header">ショップ状況</div>
                     <div class="card-body">
                         <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}" method="post">
@@ -151,7 +151,7 @@ $(function(){
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="card">
+                <div class="card" id="cube_news">
                     <div class="card-header">お知らせ</div>
                     <div class="card-body">
                         <iframe name="information" class="link_list_wrap" src="{{ app.config.eccube_info_url }}"></iframe>
