@@ -274,7 +274,7 @@ class OrderRepository extends AbstractRepository
         }
         // multi
         if (isset( $searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
+            $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti')

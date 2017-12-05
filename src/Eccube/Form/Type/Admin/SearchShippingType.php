@@ -167,6 +167,9 @@ class SearchShippingType extends AbstractType
             ->add('order_id', TextType::class, array(
                 'label' => '注文番号',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => 10)),
+                ),
             ))
         ;
 

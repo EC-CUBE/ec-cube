@@ -56,7 +56,7 @@ class ShippingRepository extends AbstractRepository
         }
         // multi
         if (isset( $searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
+            $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('s.id = :multi OR s.name01 LIKE :likemulti OR s.name02 LIKE :likemulti OR ' .
                            's.kana01 LIKE :likemulti OR s.kana02 LIKE :likemulti OR s.company_name LIKE :likemulti')
