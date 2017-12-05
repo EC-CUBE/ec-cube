@@ -87,15 +87,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <span class="c-pageTitle__subTitle">{{ block('sub_title') }}</span>
                 </div>
             </div>
-            <div class="c-contentsArea__cols">
-                <div class="c-contentsArea__primaryCol">
-                    {# TODO alert.twigの読み込み位置はここでいいのか？ #}
-                    {{ include('alert.twig') }}
+            {{ include('alert.twig') }}
 
-                    {% block main %}{% endblock %}
-
-                </div>
-            </div>
+            {% block main %}{% endblock %}
         </div>
         <!-- ▲ #main ▲ -->
 
