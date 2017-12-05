@@ -118,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {{ form_widget(searchForm._token) }}
     <div id="search_box_main" class="row">
       <div id="search_box_main__body" class="col-md-12 accordion">
-        {{ form_widget(searchForm.multi, { attr: { placeholder: '受注ID・注文者名・注文者会社名', class : 'input_search' } } ) }}
+        {{ form_widget(searchForm.multi, { attr: { placeholder: '受注ID・受注コード・注文者名・注文者会社名', class : 'input_search' } } ) }}
 
         <a href="#" class="toggle{% if active %} active{% endif %}">
           <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>

@@ -168,6 +168,10 @@ class SearchShippingType extends AbstractType
                 'label' => '注文番号',
                 'required' => false,
             ))
+            ->add('order_code', TextType::class, array(
+                'label' => '注文コード',
+                'required' => false,
+            ))
         ;
 
         $builder->add(

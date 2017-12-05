@@ -77,6 +77,13 @@ class ShippingRepository extends AbstractRepository
                 ->andWhere('o.id = :order_id')
                 ->setParameter('order_id', $searchData['order_id']);
         }
+        
+        // order_code
+        if (isset($searchData['order_code']) && StringUtil::isNotBlank($searchData['order_code'])) {
+            $qb
+                ->andWhere('o.code LIKE :order_code')
+                ->setParameter('order_code', "%{$searchData['order_code']}%");
+        }
 
         // order status
         if (isset($searchData['order_status']) && count($searchData['order_status'])) {
