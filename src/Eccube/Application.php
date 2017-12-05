@@ -156,8 +156,8 @@ class Application extends \Silex\Application
 
     public function initLogger()
     {
-        $app = $this;
-        $this->register(new ServiceProvider\LogServiceProvider($app));
+        // $app = $this;
+        // $this->register(new ServiceProvider\LogServiceProvider($app));
     }
 
     public function initClassLoader()

@@ -34,6 +34,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TopController extends AbstractController
 {
+    public function __construct(Application $app)
+    {
+    }
+
     /**
      * @Route("/", name="homepage")
      * @Template("index.twig")
@@ -44,13 +48,9 @@ class TopController extends AbstractController
 
         // FIXME 引数の $app とは別物...
         $application = $this->get('app');
-        $BaseInfo = $application[\Eccube\Entity\BaseInfo::class];
-
-        // $BaseInfo = $em->find(\Eccube\Entity\BaseInfo::class, 1);
-        $Page = $em->find(\Eccube\Entity\Page::class, 1);
+        // orm.em も使える
+        $Page = $application['orm.em']->find(\Eccube\Entity\Page::class, 1);
         return [
-            'BaseInfo' => $BaseInfo,
-            'Page' => $Page
         ];
     }
 }

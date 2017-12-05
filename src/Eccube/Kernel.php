@@ -47,7 +47,7 @@ class Kernel extends BaseKernel
 
         parent::__construct($environment, $debug);
         $_ENV['DATABASE_URL'] = str_replace('%kernel.project_dir%', $this->getProjectDir(), $_ENV['DATABASE_URL']); //  FIXME
-        $this->app = new PimpleContainer();
+        // $this->app = new \Eccube\Application();
     }
 
     public function getCacheDir(): string
@@ -98,15 +98,17 @@ class Kernel extends BaseKernel
         parent::boot();
         require __DIR__.'/../../app/cache/provider/ServiceProviderCache.php';
 
+        $em = $this->container->get('doctrine')->getManager();
         $this->app = $this->container->get('app');
         // Symfony で用意されているコンポーネントはここで追加
-        $this->app['orm.em'] = function () {
-            return $this->container->get('doctrine')->getManager();
+        $this->app['orm.em'] = function () use ($em) {
+            return $em;
         };
         $this->app['config'] = function () {
             return require __DIR__.'/../../app/config/eccube/config.php';
         };
         $this->app['debug'] = true;
+
         // see Silex\Application::boot()
         foreach ($this->providers as $provider) {
             if ($provider instanceof EventListenerProviderInterface) {
@@ -133,7 +135,7 @@ class Kernel extends BaseKernel
         $container->register('ServiceProviderCache', 'ServiceProviderCache');
         $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
         $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
-        $container->register('app', 'Pimple\Container')
+        $container->register('app', 'Eccube\Application')
             ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
             ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
