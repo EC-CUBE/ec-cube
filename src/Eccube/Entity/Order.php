@@ -454,7 +454,7 @@ class Order extends \Eccube\Entity\AbstractEntity implements PurchaseInterface, 
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerOrderStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
      * })
      */
     private $CustomerOrderStatus;

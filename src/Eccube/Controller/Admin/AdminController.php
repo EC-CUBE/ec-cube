@@ -366,16 +366,16 @@ class AdminController extends AbstractController
     protected function getOrderEachStatus($em, array $excludes)
     {
         $sql = 'SELECT
-                    t1.status as status,
+                    t1.order_status_id as status,
                     COUNT(t1.id) as count
                 FROM
                     dtb_order t1
                 WHERE
-                    t1.status NOT IN (:excludes)
+                    t1.order_status_id NOT IN (:excludes)
                 GROUP BY
-                    t1.status
+                    t1.order_status_id
                 ORDER BY
-                    t1.status';
+                    t1.order_status_id';
         $rsm = new ResultSetMapping();;
         $rsm->addScalarResult('status', 'status');
         $rsm->addScalarResult('count', 'count');
