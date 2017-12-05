@@ -326,7 +326,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea__primaryCol')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -370,7 +370,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea__primaryCol')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -412,7 +412,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea__primaryCol')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -471,7 +471,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea__primaryCol')->html();
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
@@ -514,7 +514,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // THEN
         // check submit
         $crawler = $this->client->followRedirect();
-        $htmlMessage = $crawler->filter('body .container-fluid')->html();
+        $htmlMessage = $crawler->filter('body .c-contentsArea__primaryCol')->html();
         $this->assertContains('商品規格を削除しました。', $htmlMessage);
 
         // check database
