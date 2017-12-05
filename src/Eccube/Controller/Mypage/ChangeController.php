@@ -104,6 +104,7 @@ class ChangeController extends AbstractController
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
+        $builder->remove('point');
 
         $event = new EventArgs(
             array(
@@ -153,6 +154,7 @@ class ChangeController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'loginCustomer' => $LoginCustomer,
         ];
     }
 
