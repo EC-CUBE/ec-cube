@@ -247,11 +247,6 @@
                                 'name' => 'プラグイン一覧',
                                 'url' => 'admin_store_plugin',
                             ],
-//          [
-//            'id' => 'plugin_owners_install',
-//            'name' => '購入済プラグイン',
-//            'url' => 'admin_store_plugin_owners_install',
-//          ],
                             [
                                 'id' => 'plugin_search',
                                 'name' => 'プラグインを探す',

@@ -103,7 +103,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="col-xs-12">
                             <span class="pull-right">
                                 {% if is_update %}
-                                    <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id':  item.product_id, 'version': item.version}) }}">アップデート</a>
+                                    <a class="btn btn-warning btn-xs prevention-mask" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false" href="{{ url('admin_store_plugin_api_upgrade', {'pluginCode': item.product_code, 'version': item.version}) }}">アップデート</a>
                                 {% else %}
                                     <a class="btn btn-warning btn-xs prevention-mask" href="{{ url('admin_store_plugin_api_install', {'pluginCode': item.product_code, 'eccubeVersion': constant('Eccube\\Common\\Constant::VERSION'), 'version': item.version}) }}">インストール</a>
                                 {% endif %}

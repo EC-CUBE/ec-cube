@@ -86,6 +86,7 @@ class ComposerApiService implements ComposerServiceInterface
             '--profile' => true,
             '--prefer-dist' => true,
             '--ignore-platform-reqs' => true,
+            '--update-with-dependencies' => true,
         ));
     }
 
