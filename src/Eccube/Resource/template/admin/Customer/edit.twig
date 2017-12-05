@@ -290,6 +290,7 @@
                                     <tr id="history_box__list_header">
                                         <th id="history_box__header_order_date">注文日時</th>
                                         <th id="history_box__header_order_id">受注番号</th>
+                                        <th id="history_box__header_order_code">受注コード</th>
                                         <th id="history_box__header_order_total">購入金額</th>
                                         <th id="history_box__header_commit_date">発送日</th>
                                         <th id="history_box__header_payment_method">支払方法</th>
@@ -303,6 +304,9 @@
                                         </td>
                                         <td id="history_box__order_id--{{ Order.id }}" class="member_name">
                                             <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">{{ Order.id }}</a>
+                                        </td>
+                                        <td id="history_box__order_code--{{ Order.id }}" class="member_name">
+                                            {{ Order.OrderCode }}
                                         </td>
                                         <td id="history_box__order_total--{{ Order.id }}" class="member_tel">
                                             {{ Order.total|price }}

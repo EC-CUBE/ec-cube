@@ -227,6 +227,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Order in Shipping.Orders  %}
                                         <div class="form-group">
                                             注文番号: <span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span><br>
+                                            注文コード: <span class="number">{{ Order.code }}</span><br>
                                             {{ Order.Name01 }} {{ Order.Name02 }} ({{ Order.Kana01 }} {{ Order.Kana02 }})<br>
                                             〒{{ Order.Zip01 }}-{{ Order.Zip02 }}<br>
                                             {{ Order.Pref }}{{ Order.Addr01 }}{{ Order.Addr02 }}
@@ -387,6 +388,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
                                             <span>注文番号: <a href="{{ url('admin_order_edit', { id : orderItemForm.vars.value.Order.id }) }}">{{ orderItemForm.vars.value.Order.id }}</a></span><br>
+                                            <span>注文コード: {{ orderItemForm.vars.value.Order.code }}</span><br>
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderItemForm.vars.value.product_name }}</strong><br>
                                             <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderItemForm.vars.value.product_code }}</span>
                                             <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
