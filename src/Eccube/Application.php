@@ -332,8 +332,7 @@ class Application extends \Silex\Application
                     $this['config']['vendor_dir'].'/Repository'
                 ], $pluginSubDirs('Repository'))),
                 new EntityEventAutowiring(array_merge([
-                    $this['config']['vendor_dir'].'/Entity',
-                    $this['config']['root_dir'].'/src/Eccube/Entity'
+                    $this['config']['vendor_dir'].'/Entity'
                 ], $pluginSubDirs('Entity')))
             ],
             'eccube.di.generator.dir' => $this['config']['root_dir'].'/app/cache/provider'
