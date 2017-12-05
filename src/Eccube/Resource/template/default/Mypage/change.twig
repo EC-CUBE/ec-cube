@@ -220,11 +220,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% if BaseInfo.isOptionPoint %}
                                     <dl>
                                         <dt>
-                                            {{ form_label(form.point, 'ポイント', {'label_attr': {'class': 'ec-label'}}) }}
+                                            <label class="ec-label">ポイント</label>
                                         </dt>
                                         <dd>
-                                            {% if form.vars.value.point > 0 %}
-                                                {{ form.vars.value.point }} pt
+                                            {% if loginCustomer.point > 0 %}
+                                                {{ loginCustomer.point }} pt
                                             {% else  %}
                                                 0 pt
                                             {% endif %}
