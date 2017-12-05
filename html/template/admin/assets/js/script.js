@@ -7,3 +7,14 @@ var toolTip = function(){
 };
 
 toolTip();
+
+//popover ポップオーバー
+// header
+var popoverHeader = function(){
+    $(function () {
+        $('.c-headerBar__userMenu').popover({
+            container: 'body'
+        })
+    })
+};
+popoverHeader();

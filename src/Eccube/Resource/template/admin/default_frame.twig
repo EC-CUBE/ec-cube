@@ -56,36 +56,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <span>{{ BaseInfo.shop_name }}</span>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
-            {# TODO 左上メニューの組み込み #}
-            <a class="c-headerBar__userMenu" href="">
+            {#<!-- Navbar Right Menu -->#}
+            {% if is_granted('ROLE_ADMIN') %}
+            {# TODO 左上メニューのボタンにリンクを追加 #}
+            <a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="最終ログイン" data-content="&lt;p&gt;{{ app.user.login_date.format('Y/m/d H:i')|default('') }}&lt;/p&gt;&lt;button class='btn btn-outline-dark btn-block'&gt;パスワード変更&lt;/button&gt;&lt;button class='btn btn-light btn-block'&gt;ログアウト&lt;/button&gt;" data-html="true">
+            {#<a class="c-headerBar__userMenu" data-container="body" data-toggle="popover" data-placement="bottom" title="最終ログイン" data-content="&lt;p&gt;{{ app.user.login_date.format('Y/m/d H:i')|default('') }}&lt;/p&gt;&lt;button class='btn btn-outline-dark btn-block' href='{{ url('admin_change_password') }}'&gt;パスワード変更&lt;/button&gt;&lt;button class='btn btn-light btn-block' href='{{ url(app.config.admin_route ~ '_logout') }}'&gt;ログアウト&lt;/button&gt;" data-html="true">#}
                 <i class="fa fa-user-circle" aria-hidden="true"></i>
                 <span>{{ app.user.name }} 様</span>
                 <i class="fa fa-angle-down" aria-hidden="true"></i>
             </a>
-
-            {#<!-- Navbar Right Menu -->#}
-            {#<div class="navbar-menu">#}
-                {#<dl class="dropdown">#}
-                    {#{% if is_granted('ROLE_ADMIN') %}#}
-                        {#<dt class="dropdown-toggle" data-toggle="dropdown">#}
-                            {#<svg class="cb cb-user-circle">#}
-                                {#<use xlink:href="#cb-user-circle" />#}
-                            {#</svg>#}
-                            {#<span class="hidden-xs">{{ app.user.name }} 様</span>#}
-                            {#<svg class="cb cb-angle-down icon_down">#}
-                                {#<use xlink:href="#cb-angle-down" />#}
-                            {#</svg>#}
-                        {#</dt>#}
-                        {#<dd class="dropdown-menu">#}
-                            {#最終ログイン<br>#}
-                            {#{{ app.user.login_date.format('Y/m/d H:i')|default('') }}#}
-                            {#<a class="btn btn-primary btn-xs" href="{{ url('admin_change_password') }}">パスワード変更</a>#}
-                            {#<a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_logout') }}">ログアウト</a>#}
-                        {#</dd>#}
-                    {#{% endif %}#}
-                {#</dl>#}
-            {#</div>#}
-
+            {% endif %}
         </div>
     </header>
     <!-- ▲ #header ▲ -->
