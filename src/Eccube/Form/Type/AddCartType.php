@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
@@ -72,6 +73,13 @@ class AddCartType extends AbstractType
      */
     protected $productClassRepository;
 
+    protected $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -89,7 +97,7 @@ class AddCartType extends AbstractType
                         'data_class' => null,
                         'data' => $ProductClass,
                     ])
-                    ->addModelTransformer(new EntityToIdTransformer($this->em, ProductClass::class))
+                ->addModelTransformer(new EntityToIdTransformer($this->doctrine->getManager(), ProductClass::class))
             )
         ;
 
