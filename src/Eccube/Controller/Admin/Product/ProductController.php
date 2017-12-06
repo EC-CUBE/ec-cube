@@ -149,8 +149,8 @@ class ProductController extends AbstractController
     protected $session;
 
     /**
-     * @Route("/{_admin}/product", name="admin_product")
-     * @Route("/{_admin}/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
+     * @Route("/%admin_route%/product", name="admin_product")
+     * @Route("/%admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
      * @Template("Product/index.twig")
      */
     public function index(Application $app, Request $request, $page_no = null)
@@ -297,7 +297,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/product/image/add", name="admin_product_image_add")
+     * @Route("/%admin_route%/product/product/image/add", name="admin_product_image_add")
      */
     public function addImage(Application $app, Request $request)
     {
@@ -339,8 +339,8 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/product/product/new", name="admin_product_product_new")
-     * @Route("/{_admin}/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
+     * @Route("/%admin_route%/product/product/new", name="admin_product_product_new")
+     * @Route("/%admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
      * @Template("Product/product.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
@@ -624,7 +624,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
+     * @Route("/%admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
      */
     public function delete(Application $app, Request $request, $id = null)
     {
@@ -695,7 +695,7 @@ class ProductController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
+     * @Route("/%admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
      */
     public function copy(Application $app, Request $request, $id = null)
     {
@@ -788,7 +788,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
+     * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
     public function display(Application $app, Request $request, $id = null)
     {

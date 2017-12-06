@@ -68,7 +68,7 @@ class LayoutController extends AbstractController
     protected $layoutRepository;
 
     /**
-     * @Route("/{_admin}/content/layout", name="admin_content_layout")
+     * @Route("/%admin_route%/content/layout", name="admin_content_layout")
      * @Template("Content/layout_list.twig")
      */
     public function index(Application $app, Request $request)
@@ -82,7 +82,7 @@ class LayoutController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
+     * @Route("/%admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {
@@ -105,8 +105,8 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/content/layout/new", name="admin_content_layout_new")
-     * @Route("/{_admin}/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
+     * @Route("/%admin_route%/content/layout/new", name="admin_content_layout_new")
+     * @Route("/%admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
      * @Template("Content/layout.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
@@ -226,7 +226,7 @@ class LayoutController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/content/layout/view_block", name="admin_content_layout_view_block")
+     * @Route("/%admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
      */
     public function viewBlock(Application $app, Request $request)
     {

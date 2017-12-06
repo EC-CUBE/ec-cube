@@ -60,7 +60,7 @@ class CacheController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Route("/{_admin}/content/cache", name="admin_content_cache")
+     * @Route("/%admin_route%/content/cache", name="admin_content_cache")
      * @Template("Content/cache.twig")
      */
     public function index(Application $app, Request $request)

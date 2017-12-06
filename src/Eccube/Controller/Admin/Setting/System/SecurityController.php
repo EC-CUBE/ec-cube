@@ -55,7 +55,7 @@ class SecurityController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Route("/{_admin}/setting/system/security", name="admin_setting_system_security")
+     * @Route("/%admin_route%/setting/system/security", name="admin_setting_system_security")
      * @Template("Setting/System/security.twig")
      */
     public function index(Application $app, Request $request)

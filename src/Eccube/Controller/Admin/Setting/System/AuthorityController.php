@@ -69,7 +69,7 @@ class AuthorityController extends AbstractController
     protected $authorityRoleRepository;
 
     /**
-     * @Route("/{_admin}/setting/system/authority", name="admin_setting_system_authority")
+     * @Route("/%admin_route%/setting/system/authority", name="admin_setting_system_authority")
      * @Template("Setting/System/authority.twig")
      */
     public function index(Application $app, Request $request)

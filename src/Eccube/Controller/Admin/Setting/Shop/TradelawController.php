@@ -68,7 +68,7 @@ class TradelawController extends AbstractController
     protected $helpRepository;
 
     /**
-     * @Route("/{_admin}/setting/shop/tradelaw", name="admin_setting_shop_tradelaw")
+     * @Route("/%admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw")
      * @Template("Setting/Shop/tradelaw.twig")
      */
     public function index(Application $app, Request $request)

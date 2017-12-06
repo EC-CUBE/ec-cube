@@ -71,8 +71,8 @@ class ClassNameController extends AbstractController
     protected $classNameRepository;
 
     /**
-     * @Route("/{_admin}/product/class_name", name="admin_product_class_name")
-     * @Route("/{_admin}/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
+     * @Route("/%admin_route%/product/class_name", name="admin_product_class_name")
+     * @Route("/%admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
      * @Template("Product/class_name.twig")
      */
     public function index(Application $app, Request $request, $id = null)
@@ -135,7 +135,7 @@ class ClassNameController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
+     * @Route("/%admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
      */
     public function delete(Application $app, Request $request, ClassName $ClassName)
     {
@@ -165,7 +165,7 @@ class ClassNameController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/class_name/rank/move", name="admin_product_class_name_rank_move")
+     * @Route("/%admin_route%/product/class_name/rank/move", name="admin_product_class_name_rank_move")
      */
     public function moveRank(Application $app, Request $request)
     {

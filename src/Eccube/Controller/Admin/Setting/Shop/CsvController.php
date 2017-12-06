@@ -70,7 +70,7 @@ class CsvController extends AbstractController
     protected $csvTypeRepository;
 
     /**
-     * @Route("/{_admin}/setting/shop/csv/{id}",
+     * @Route("/%admin_route%/setting/shop/csv/{id}",
      *     requirements={"id" = "\d+"},
      *     defaults={"id" = CsvType::CSV_TYPE_ORDER},
      *     name="admin_setting_shop_csv"

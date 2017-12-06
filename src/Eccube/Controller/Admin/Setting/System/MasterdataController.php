@@ -63,8 +63,8 @@ class MasterdataController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Route("/{_admin}/setting/system/masterdata", name="admin_setting_system_masterdata")
-     * @Route("/{_admin}/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view")
+     * @Route("/%admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata")
+     * @Route("/%admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view")
      * @Template("Setting/System/masterdata.twig")
      */
     public function index(Application $app, Request $request, $entity = null)
@@ -145,7 +145,7 @@ class MasterdataController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit")
+     * @Route("/%admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit")
      * @Template("Setting/System/masterdata.twig")
      */
     public function edit(Application $app, Request $request)

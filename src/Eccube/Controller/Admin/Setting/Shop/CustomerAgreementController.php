@@ -69,7 +69,7 @@ class CustomerAgreementController extends AbstractController
     public $form;
 
     /**
-     * @Route("/{_admin}/setting/shop/customer_agreement", name="admin_setting_shop_customer_agreement")
+     * @Route("/%admin_route%/setting/shop/customer_agreement", name="admin_setting_shop_customer_agreement")
      * @Template("Setting/Shop/customer_agreement.twig")
      */
     public function index(Application $app, Request $request)

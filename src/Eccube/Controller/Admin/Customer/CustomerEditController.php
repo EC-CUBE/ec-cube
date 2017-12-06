@@ -85,8 +85,8 @@ class CustomerEditController extends AbstractController
     protected $encoderFactory;
 
     /**
-     * @Route("/{_admin}/customer/new", name="admin_customer_new")
-     * @Route("/{_admin}/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
+     * @Route("/%admin_route%/customer/new", name="admin_customer_new")
+     * @Route("/%admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
      * @Template("Customer/edit.twig")
      */
     public function index(Application $app, Request $request, $id = null)

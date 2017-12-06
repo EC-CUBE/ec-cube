@@ -124,7 +124,7 @@ class ProductClassController
     /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
      *
-     * @Route("/{_admin}/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
+     * @Route("/%admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
      * @Template("Product/product_class.twig")
      */
     public function index(Application $app, Request $request, $id)
@@ -342,7 +342,7 @@ class ProductClassController
     /**
      * 商品規格の登録、更新、削除を行う
      *
-     * @Route("/{_admin}/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
+     * @Route("/%admin_route%/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
      * @Template("Product/product_class.twig")
      *
      * @param Application $app

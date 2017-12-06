@@ -80,7 +80,7 @@ class PaymentController extends AbstractController
     protected $paymentRepository;
 
     /**
-     * @Route("/{_admin}/setting/shop/payment", name="admin_setting_shop_payment")
+     * @Route("/%admin_route%/setting/shop/payment", name="admin_setting_shop_payment")
      * @Template("Setting/Shop/payment.twig")
      */
     public function index(Application $app, Request $request)
@@ -105,8 +105,8 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/setting/shop/payment/new", name="admin_setting_shop_payment_new")
-     * @Route("/{_admin}/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit")
+     * @Route("/%admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new")
+     * @Route("/%admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit")
      * @Template("Setting/Shop/payment_edit.twig")
      */
     public function edit(Application $app, Request $request, Payment $Payment = null)
@@ -172,7 +172,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/setting/shop/payment/image/add", name="admin_payment_image_add")
+     * @Route("/%admin_route%/setting/shop/payment/image/add", name="admin_payment_image_add")
      */
     public function imageAdd(Application $app, Request $request)
     {
@@ -210,7 +210,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete")
+     * @Route("/%admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete")
      */
     public function delete(Application $app, Request $request, Payment $TargetPayment)
     {
@@ -247,7 +247,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up")
+     * @Route("/%admin_route%/setting/shop/payment/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_up")
      */
     public function up(Application $app, Payment $current)
     {
@@ -270,7 +270,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down")
+     * @Route("/%admin_route%/setting/shop/payment/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_down")
      */
     public function down(Application $app, Payment $current)
     {
@@ -293,7 +293,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible")
+     * @Route("/%admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible")
      */
     public function visible(Application $app, Payment $Payment)
     {

@@ -88,7 +88,7 @@ class PageController extends AbstractController
     protected $deviceTypeRepository;
 
     /**
-     * @Route("/{_admin}/content/page", name="admin_content_page")
+     * @Route("/%admin_route%/content/page", name="admin_content_page")
      * @Template("Content/page.twig")
      */
     public function index(Application $app, Request $request)
@@ -113,8 +113,8 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/content/page/new", name="admin_content_page_new")
-     * @Route("/{_admin}/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
+     * @Route("/%admin_route%/content/page/new", name="admin_content_page_new")
+     * @Route("/%admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
      * @Template("Content/page_edit.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
@@ -254,7 +254,7 @@ class PageController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
+     * @Route("/%admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
      */
     public function delete(Application $app, Request $request, $id = null)
     {

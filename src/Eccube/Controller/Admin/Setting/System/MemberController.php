@@ -89,7 +89,7 @@ class MemberController extends AbstractController
     protected $encoderFactory;
 
     /**
-     * @Route("/{_admin}/setting/system/member", name="admin_setting_system_member")
+     * @Route("/%admin_route%/setting/system/member", name="admin_setting_system_member")
      * @Template("Setting/System/member.twig")
      */
     public function index(Application $app, Request $request)
@@ -116,7 +116,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/setting/system/member/new", name="admin_setting_system_member_new")
+     * @Route("/%admin_route%/setting/system/member/new", name="admin_setting_system_member_new")
      * @Template("Setting/System/member_edit.twig")
      */
     public function create(Application $app, Request $request)
@@ -173,7 +173,7 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
+     * @Route("/%admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit")
      * @Template("Setting/System/member_edit.twig")
      */
     public function edit(Application $app, Request $request, Member $Member)
@@ -244,7 +244,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
+     * @Route("/%admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
      */
     public function up(Application $app, Request $request, Member $Member)
     {
@@ -266,7 +266,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
+     * @Route("/%admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
      */
     public function down(Application $app, Request $request, Member $Member)
     {
@@ -287,7 +287,7 @@ class MemberController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
+     * @Route("/%admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
      */
     public function delete(Application $app, Request $request, Member $Member)
     {

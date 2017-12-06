@@ -155,8 +155,8 @@ class EditController extends AbstractController
     /**
      * 受注登録/編集画面.
      *
-     * @Route("/{_admin}/order/edit", name="admin_order_new")
-     * @Route("/{_admin}/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
+     * @Route("/%admin_route%/order/edit", name="admin_order_new")
+     * @Route("/%admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
      * @Template("Order/edit.twig")
      */
     public function index(Application $app, Request $request, $id = null)
@@ -340,7 +340,7 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/{_admin}/order/search/customer", name="admin_order_search_customer")
+     * @Route("/%admin_route%/order/search/customer", name="admin_order_search_customer")
      *
      * @param Application $app
      * @param Request $request
@@ -404,8 +404,8 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/{_admin}/order/search/customer/html", name="admin_order_search_customer_html")
-     * @Route("/{_admin}/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
+     * @Route("/%admin_route%/order/search/customer/html", name="admin_order_search_customer_html")
+     * @Route("/%admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
      * @Template("Order/search_customer.twig")
      *
      * @param Application $app
@@ -503,7 +503,7 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @Method("POST")
-     * @Route("/{_admin}/order/search/customer/id", name="admin_order_search_customer_by_id")
+     * @Route("/%admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id")
      *
      * @param Application $app
      * @param Request $request
@@ -570,8 +570,8 @@ class EditController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/order/search/product", name="admin_order_search_product")
-     * @Route("/{_admin}/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
+     * @Route("/%admin_route%/order/search/product", name="admin_order_search_product")
+     * @Route("/%admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
      * @Template("Order/search_product.twig")
      */
     public function searchProduct(Application $app, Request $request, $page_no = null)

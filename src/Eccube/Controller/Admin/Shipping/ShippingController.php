@@ -78,8 +78,8 @@ class ShippingController
     protected $formFactory;
 
     /**
-     * @Route("/{_admin}/shipping", name="admin/shipping")
-     * @Route("/{_admin}/shipping/page/{page_no}", name="admin/shipping/page")
+     * @Route("/%admin_route%/shipping", name="admin/shipping")
+     * @Route("/%admin_route%/shipping/page/{page_no}", name="admin/shipping/page")
      *
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("Shipping/index.twig")

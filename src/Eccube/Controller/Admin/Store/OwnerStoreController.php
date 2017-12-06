@@ -85,7 +85,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @Route("/{_admin}/store/plugin/search", name="admin_store_plugin_owners_search")
+     * @Route("/%admin_route%/store/plugin/search", name="admin_store_plugin_owners_search")
      * @Template("Store/plugin_search.twig")
      * @param Application $app
      * @param Request     $request
@@ -166,7 +166,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{_admin}/store/plugin/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
+     * @Route("/%admin_route%/store/plugin/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
      * @param Application $app
      * @param Request     $request
@@ -206,7 +206,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/{_admin}/store/plugin/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/%admin_route%/store/plugin/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
      * @param Application $app
      * @param Request     $request
@@ -291,7 +291,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{_admin}/store/plugin/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
+     * @Route("/%admin_route%/store/plugin/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
      * @Template("Store/plugin_confirm_uninstall.twig")
      * @param Application $app
      * @param Plugin      $Plugin
@@ -343,7 +343,7 @@ class OwnerStoreController extends AbstractController
      * New ways to remove plugin: using composer command
      *
      * @Method("DELETE")
-     * @Route("/{_admin}/store/plugin/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @Route("/%admin_route%/store/plugin/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse

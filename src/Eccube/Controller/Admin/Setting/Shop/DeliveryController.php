@@ -92,7 +92,7 @@ class DeliveryController extends AbstractController
     protected $deliveryRepository;
 
     /**
-     * @Route("/{_admin}/setting/shop/delivery", name="admin_setting_shop_delivery")
+     * @Route("/%admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
      * @Template("Setting/Shop/delivery.twig")
      */
     public function index(Application $app, Request $request)
@@ -114,8 +114,8 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
-     * @Route("/{_admin}/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
+     * @Route("/%admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
+     * @Route("/%admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
      * @Template("Setting/Shop/delivery_edit.twig")
      */
     public function edit(Application $app, Request $request, Delivery $Delivery = null)
@@ -257,7 +257,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
+     * @Route("/%admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
      */
     public function delete(Application $app, Request $request, Delivery $Delivery)
     {
@@ -295,7 +295,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("PUT")
-     * @Route("/{_admin}/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
+     * @Route("/%admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
      */
     public function visibility(Application $app, Request $request, Delivery $Delivery)
     {
@@ -328,7 +328,7 @@ class DeliveryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/setting/shop/delivery/rank/move", name="admin_setting_shop_delivery_rank_move")
+     * @Route("/%admin_route%/setting/shop/delivery/rank/move", name="admin_setting_shop_delivery_rank_move")
      */
     public function moveRank(Application $app, Request $request)
     {

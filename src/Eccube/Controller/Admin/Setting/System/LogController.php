@@ -59,7 +59,7 @@ class LogController
     protected $formFactory;
 
     /**
-     * @Route("/{_admin}/setting/system/log", name="admin_setting_system_log")
+     * @Route("/%admin_route%/setting/system/log", name="admin_setting_system_log")
      * @Template("Setting/System/log.twig")
      */
     public function index(Application $app, Request $request)

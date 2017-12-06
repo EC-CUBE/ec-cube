@@ -86,7 +86,7 @@ class BlockController extends AbstractController
     protected $deviceTypeRepository;
 
     /**
-     * @Route("/{_admin}/content/block", name="admin_content_block")
+     * @Route("/%admin_route%/content/block", name="admin_content_block")
      * @Template("Content/block.twig")
      */
     public function index(Application $app, Request $request)
@@ -112,8 +112,8 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/content/block/new", name="admin_content_block_new")
-     * @Route("/{_admin}/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
+     * @Route("/%admin_route%/content/block/new", name="admin_content_block_new")
+     * @Route("/%admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
      * @Template("Content/block_edit.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
@@ -213,7 +213,7 @@ class BlockController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
+     * @Route("/%admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {

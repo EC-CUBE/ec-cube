@@ -115,8 +115,8 @@ class CustomerController extends AbstractController
     protected $customerRepository;
 
     /**
-     * @Route("/{_admin}/customer", name="admin_customer")
-     * @Route("/{_admin}/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
+     * @Route("/%admin_route%/customer", name="admin_customer")
+     * @Route("/%admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
      * @Template("Customer/index.twig")
      */
     public function index(Application $app, Request $request, $page_no = null)
@@ -234,7 +234,7 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
+     * @Route("/%admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
      */
     public function resend(Application $app, Request $request, $id)
     {
@@ -268,7 +268,7 @@ class CustomerController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
+     * @Route("/%admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {
@@ -315,7 +315,7 @@ class CustomerController extends AbstractController
     /**
      * 会員CSVの出力.
      *
-     * @Route("/{_admin}/customer/export", name="admin_customer_export")
+     * @Route("/%admin_route%/customer/export", name="admin_customer_export")
      *
      * @param Application $app
      * @param Request $request

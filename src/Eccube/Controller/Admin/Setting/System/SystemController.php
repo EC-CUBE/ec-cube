@@ -44,7 +44,7 @@ class SystemController
     protected $systemService;
 
     /**
-     * @Route("/{_admin}/setting/system/system", name="admin_setting_system_system")
+     * @Route("/%admin_route%/setting/system/system", name="admin_setting_system_system")
      * @Template("Setting/System/system.twig")
      */
     public function index(Application $app, Request $request)
@@ -65,7 +65,7 @@ class SystemController
     }
 
     /**
-     * @Route("/{_admin}/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo")
+     * @Route("/%admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo")
      */
     public function phpinfo(Application $app, Request $request)
     {

@@ -70,7 +70,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/content/file_manager", name="admin_content_file")
+     * @Route("/%admin_route%/content/file_manager", name="admin_content_file")
      * @Template("Content/file.twig")
      */
     public function index(Application $app, Request $request)
@@ -129,7 +129,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/content/file_view", name="admin_content_file_view")
+     * @Route("/%admin_route%/content/file_view", name="admin_content_file_view")
      */
     public function view(Application $app, Request $request)
     {
@@ -179,7 +179,7 @@ class FileController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/content/file_delete", name="admin_content_file_delete")
+     * @Route("/%admin_route%/content/file_delete", name="admin_content_file_delete")
      */
     public function delete(Application $app, Request $request)
     {
@@ -198,7 +198,7 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/content/file_download", name="admin_content_file_download")
+     * @Route("/%admin_route%/content/file_download", name="admin_content_file_download")
      */
     public function download(Application $app, Request $request)
     {
