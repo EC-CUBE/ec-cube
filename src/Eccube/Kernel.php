@@ -96,7 +96,9 @@ class Kernel extends BaseKernel
     public function boot()
     {
         parent::boot();
-        require __DIR__.'/../../app/cache/provider/ServiceProviderCache.php';
+        if (!class_exists('\ServiceProviderCache')) {
+            require __DIR__.'/../../app/cache/provider/ServiceProviderCache.php';
+        }
 
         $em = $this->container->get('doctrine')->getManager();
         $this->app = $this->container->get('app');
