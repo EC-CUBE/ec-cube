@@ -64,7 +64,7 @@ class AuthorityVoter implements VoterInterface
             $path = rawurldecode($request->getPathInfo());
         }
 
-        $Member = $this->app->user();
+        $Member = $token->getUser();
 
         if ($Member instanceof \Eccube\Entity\Member) {
             // 管理者のロールをチェック

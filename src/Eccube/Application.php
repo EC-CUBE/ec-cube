@@ -66,10 +66,10 @@ class Application extends \Silex\Application
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\MonologTrait;
     use \Silex\Application\SwiftmailerTrait;
-    use \Silex\Application\SecurityTrait;
+    // use \Silex\Application\SecurityTrait;
     use \Silex\Application\TranslationTrait;
     use \Eccube\Application\ApplicationTrait;
-    use \Eccube\Application\SecurityTrait;
+    // use \Eccube\Application\SecurityTrait;
     use \Eccube\Application\TwigTrait;
 
     protected static $instance;

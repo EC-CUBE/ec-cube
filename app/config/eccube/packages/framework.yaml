@@ -17,6 +17,9 @@ framework:
         log: true
     assets:
       base_path: '/html/template/default'
+      packages:
+        admin:
+          base_path: '/html/template/admin'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     cache:
         # this value is used as part of the "namespace" generated for the cache item keys

@@ -47,12 +47,24 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route(service=AdminController::class)
  */
 class AdminController extends AbstractController
 {
+    public function __construct(EventDispatcher $eventDispatcher, AuthenticationUtils $helper)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->helper = $helper;
+    }
+
+    /**
+     * @var AuthenticationUtils
+     */
+    protected $helper;
+
     /**
      * @Inject(MemberRepository::class)
      * @var MemberRepository
@@ -90,18 +102,19 @@ class AdminController extends AbstractController
     protected $encoderFactory;
 
     /**
-     * @Route("/{_admin}/login", name="admin_login")
+     * @Route("/%admin_route%/login", name="admin_login")
      * @Template("login.twig")
      */
     public function login(Application $app, Request $request)
     {
-        if ($app->isGranted('ROLE_ADMIN')) {
-            return $app->redirect($app->url('admin_homepage'));
-        }
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
+        // if ($app->isGranted('ROLE_ADMIN')) {
+        //     return $app->redirect($app->url('admin_homepage'));
+        // }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $this->formFactory
-            ->createNamedBuilder('', LoginType::class);
+        $builder = $this->container->get('form.factory')->createNamedBuilder('', LoginType::class);
 
         $event = new EventArgs(
             array(
@@ -114,13 +127,13 @@ class AdminController extends AbstractController
         $form = $builder->getForm();
 
         return [
-            'error' => $app['security.last_error']($request),
+            'error' => $this->helper->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/{_admin}/", name="admin_homepage")
+     * @Route("/%admin_route%/", name="admin_homepage")
      * @Template("index.twig")
      */
     public function index(Application $app, Request $request)
@@ -140,14 +153,11 @@ class AdminController extends AbstractController
         }
 
         // 受注マスター検索用フォーム
-        $searchOrderBuilder = $this->formFactory
-            ->createBuilder(SearchOrderType::class);
+        $searchOrderBuilder = $this->createFormBuilder(SearchOrderType::class);
         // 商品マスター検索用フォーム
-        $searchProductBuilder = $this->formFactory
-            ->createBuilder(SearchProductType::class);
+        $searchProductBuilder = $this->createFormBuilder(SearchProductType::class);
         // 会員マスター検索用フォーム
-        $searchCustomerBuilder = $this->formFactory
-            ->createBuilder(SearchCustomerType::class);
+        $searchCustomerBuilder = $this->createFormBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(
@@ -187,9 +197,9 @@ class AdminController extends AbstractController
         $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
-        $Orders = $this->getOrderEachStatus($this->entityManager, $excludes);
+        $Orders = $this->getOrderEachStatus($this->getDoctrine()->getManager(), $excludes);
         // 受注ステータスの一覧.
-        $OrderStatuses = $this->findOrderStatus($this->entityManager, $excludes);
+        $OrderStatuses = $this->findOrderStatus($this->getDoctrine()->getManager(), $excludes);
 
         /**
          * 売り上げ状況
@@ -209,19 +219,19 @@ class AdminController extends AbstractController
         $excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
-        $salesToday = $this->getSalesByDay($this->entityManager, new \DateTime(), $excludes);
+        $salesToday = $this->getSalesByDay($this->getDoctrine()->getManager(), new \DateTime(), $excludes);
         // 昨日の売上/件数
-        $salesYesterday = $this->getSalesByDay($this->entityManager, new \DateTime('-1 day'), $excludes);
+        $salesYesterday = $this->getSalesByDay($this->getDoctrine()->getManager(), new \DateTime('-1 day'), $excludes);
         // 今月の売上/件数
-        $salesThisMonth = $this->getSalesByMonth($this->entityManager, new \DateTime(), $excludes);
+        $salesThisMonth = $this->getSalesByMonth($this->getDoctrine()->getManager(), new \DateTime(), $excludes);
 
         /**
          * ショップ状況
          */
         // 在庫切れ商品数
-        $countNonStockProducts = $this->countNonStockProducts($this->entityManager);
+        $countNonStockProducts = $this->countNonStockProducts($this->getDoctrine()->getManager());
         // 本会員数
-        $countCustomers = $this->countCustomers($this->entityManager);
+        $countCustomers = $this->countCustomers($this->getDoctrine()->getManager());
 
         $event = new EventArgs(
             array(
