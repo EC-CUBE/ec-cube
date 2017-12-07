@@ -163,16 +163,12 @@ class PluginController extends AbstractController
             }
         }
 
-        // Todo: Need new authentication mechanism
-        // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $authKey = $this->BaseInfo->getAuthenticationKey();
-        // オーナーズストア通信
-        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
-        list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
-
         $officialPluginsDetail = [];
-        if ($json) {
-            // 接続成功時
+        if (count($officialPlugins) > 0) {
+            // Todo: Need new authentication mechanism
+            $authKey = $this->BaseInfo->getAuthenticationKey();
+            $url = $this->appConfig['package_repo_url'].'/search/packages.json';
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
             $data = json_decode($json, true);
             if (isset($data['success']) && $data['success']) {
                 foreach ($data['item'] as $item) {

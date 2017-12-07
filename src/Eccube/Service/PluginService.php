@@ -25,7 +25,7 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Application;
@@ -33,7 +33,6 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
-use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Eccube\Repository\PluginEventHandlerRepository;
 use Eccube\Repository\PluginRepository;
@@ -56,7 +55,7 @@ class PluginService
 
     /**
      * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -135,7 +134,7 @@ class PluginService
             $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
             $event = $this->readYml($tmp.'/'.self::EVENT_YML);
             // テンポラリのファイルを削除
-            $this->deleteFile($tmp);
+            $this->deleteDirs([$tmp]);
 
             // 重複していないかチェック
             $this->checkSamePlugin($config['code']);
@@ -195,7 +194,7 @@ class PluginService
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
             $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
 
-            ConfigManager::writePluginConfigCache();
+            PluginConfigManager::writePluginConfigCache();
         } finally {
             foreach (glob("${tmpProxyOutputDir}/*") as  $f) {
                 unlink($f);
@@ -216,11 +215,19 @@ class PluginService
         return $d;
     }
 
-    public function deleteDirs($arr)
+    /**
+     * Deletes files, directories and symlinks
+     *
+     * @param array|string $dirs
+     */
+    public function deleteDirs($dirs)
     {
-        foreach ($arr as $dir) {
-            if (file_exists($dir)) {
-                $fs = new Filesystem();
+        if (!is_array($dirs)) {
+            $dirs = [$dirs];
+        }
+        $fs = new Filesystem();
+        foreach ($dirs as $dir) {
+            if (is_dir($dir) || file_exists($dir)) {
                 $fs->remove($dir);
             }
         }
@@ -300,12 +307,6 @@ class PluginService
         // plugin_nameやplugin_codeに使える文字のチェック
         // a-z A-Z 0-9 _
         // ディレクトリ名などに使われれるので厳しめ
-    }
-
-    public function deleteFile($path)
-    {
-        $f = new Filesystem();
-        $f->remove($path);
     }
 
     public function checkSamePlugin($code)
@@ -392,19 +393,19 @@ class PluginService
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
-        ConfigManager::removePluginConfigCache();
+        PluginConfigManager::removePluginConfigCache();
         CacheUtil::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
-        $this->deleteFile($pluginDir);
+        $this->deleteDirs([$pluginDir]);
         $this->removeAssets($plugin->getCode());
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
 
-        ConfigManager::writePluginConfigCache();
+        PluginConfigManager::writePluginConfigCache();
         return true;
     }
 
@@ -478,9 +479,7 @@ class PluginService
             $em->getConnection()->beginTransaction();
             $plugin->setEnabled($enable ? true : false);
             $em->persist($plugin);
-
-            $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
-
+            $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), $enable ? 'enable' : 'disable');
             // Proxyだけ再生成してスキーマは更新しない
             $this->regenerateProxy($plugin, false);
 
@@ -517,14 +516,14 @@ class PluginService
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
-            $event = $this->readYml($tmp.'/event.yml');
+            $event = $this->readYml($tmp.'/'.self::EVENT_YML);
 
             if ($plugin->getCode() != $config['code']) {
                 throw new PluginException('new/old plugin code is different.');
             }
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
-            $this->deleteFile($tmp); // テンポラリのファイルを削除
+            $this->deleteDirs([$tmp]); // テンポラリのファイルを削除
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
@@ -888,8 +887,8 @@ class PluginService
      * [プラグインコード]/Resource/assets
      * 配下に置かれているファイルが所定の位置へコピーされる
      *
-     * @param $pluginBaseDir
-     * @param $pluginCode
+     * @param string $pluginBaseDir
+     * @param string $pluginCode
      */
     public function copyAssets($pluginBaseDir, $pluginCode)
     {
@@ -905,17 +904,12 @@ class PluginService
     /**
      * コピーしたリソースファイル等を削除
      *
-     * @param $pluginCode
+     * @param string $pluginCode
      */
     public function removeAssets($pluginCode)
     {
         $assetsDir = $this->appConfig['plugin_html_realdir'].$pluginCode;
-
-        // コピーされているリソースファイルがあれば削除
-        if (file_exists($assetsDir)) {
-            $file = new Filesystem();
-            $file->remove($assetsDir);
-        }
+        $this->deleteDirs($assetsDir);
     }
 
     /**
@@ -946,6 +940,82 @@ class PluginService
         $index = array_search($pluginCode, array_column($plugins, 'product_code'));
 
         return $index;
+    }
+
+    /**
+     * Do rollback when update fail
+     *
+     * @param array $updateData
+     * @throws \Exception
+     */
+    public function doUpgradeRollback($updateData)
+    {
+        $pluginRealDir = $this->appConfig['plugin_realdir'];
+        $pluginTempRealDir = $this->appConfig['plugin_temp_realdir'];
+        $file = new Filesystem();
+
+        // rollback composer file
+        $targetFile = $this->appConfig['root_dir'].'/composer.json';
+        $backupComposerFile = $pluginTempRealDir.'/composer.json';
+        if (file_exists($backupComposerFile)) {
+            $this->deleteDirs($targetFile);
+            $file->copy($backupComposerFile, $targetFile);
+            $file->remove($backupComposerFile);
+        }
+        $targetLockFile = $this->appConfig['root_dir'].'/composer.lock';
+        $backupLockFile = $pluginTempRealDir.'/composer.lock';
+        if (file_exists($backupLockFile)) {
+            $this->deleteDirs($targetLockFile);
+            $file->copy($backupLockFile, $targetLockFile);
+            $file->remove($backupLockFile);
+        }
+
+        foreach ($updateData as $value) {
+            $code = $value['product_code'];
+            $pluginDir = $pluginRealDir.'/'.$code;
+            $backupDir = $pluginTempRealDir.'/'.$code;
+            $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
+            try {
+                $file->mirror($backupDir, $pluginDir, null, ['override' => true, 'delete' => true]);
+                $file->remove($backupDir);
+                if ($Plugin) {
+                    $configYml = $this->readYml($pluginDir.'/config.yml');
+                    $eventYml = $this->readYml($pluginDir.'/event.yml');
+                    $this->updatePlugin($Plugin, $configYml, $eventYml);
+                }
+            } catch (\Exception $e) {
+                log_error($e->getMessage());
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * Backup file before upgrade
+     *
+     * @param array $updateData
+     */
+    public function doUpgradeBackup($updateData)
+    {
+        $pluginRealDir = $this->appConfig['plugin_realdir'];
+        $pluginTempRealDir = $this->appConfig['plugin_temp_realdir'];
+
+        $file = new Filesystem();
+        // Backup composer file
+        $file->copy($this->appConfig['root_dir'].'/composer.json', $pluginTempRealDir.'/composer.json', true);
+        $file->copy($this->appConfig['root_dir'].'/composer.lock', $pluginTempRealDir.'/composer.lock', true);
+
+        foreach ($updateData as $value) {
+            $pluginDir = $pluginRealDir.'/'.$value['product_code'];
+            $backupDir = $pluginTempRealDir.'/'.$value['product_code'];
+            try {
+                $file->remove($backupDir);
+                $file->mirror($pluginDir, $backupDir);
+            } catch (\Exception $e) {
+                log_error($e->getMessage());
+                continue;
+            }
+        }
     }
 
     /**
