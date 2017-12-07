@@ -947,9 +947,13 @@ class PluginService
      *
      * @param array $updateData
      * @throws \Exception
+     * @return bool
      */
     public function doUpgradeRollback($updateData)
     {
+        if (empty($updateData)) {
+            return false;
+        }
         $pluginRealDir = $this->appConfig['plugin_realdir'];
         $pluginTempRealDir = $this->appConfig['plugin_temp_realdir'];
         $file = new Filesystem();
@@ -971,16 +975,22 @@ class PluginService
         }
 
         foreach ($updateData as $value) {
+            if (!isset($value['product_code'])) {
+                throw new PluginException('The format incorrect!');
+            }
             $code = $value['product_code'];
             $pluginDir = $pluginRealDir.'/'.$code;
             $backupDir = $pluginTempRealDir.'/'.$code;
+            if (!is_dir($backupDir)) {
+                continue;
+            }
             $Plugin = $this->pluginRepository->findOneBy(['code' => $code]);
             try {
                 $file->mirror($backupDir, $pluginDir, null, ['override' => true, 'delete' => true]);
                 $file->remove($backupDir);
                 if ($Plugin) {
-                    $configYml = $this->readYml($pluginDir.'/config.yml');
-                    $eventYml = $this->readYml($pluginDir.'/event.yml');
+                    $configYml = $this->readYml($pluginDir.'/'.self::CONFIG_YML);
+                    $eventYml = $this->readYml($pluginDir.'/'.self::EVENT_YML);
                     $this->updatePlugin($Plugin, $configYml, $eventYml);
                 }
             } catch (\Exception $e) {
@@ -988,15 +998,22 @@ class PluginService
                 throw $e;
             }
         }
+
+        return true;
     }
 
     /**
      * Backup file before upgrade
      *
      * @param array $updateData
+     * @throws PluginException
+     * @return bool
      */
     public function doUpgradeBackup($updateData)
     {
+        if (empty($updateData)) {
+            return false;
+        }
         $pluginRealDir = $this->appConfig['plugin_realdir'];
         $pluginTempRealDir = $this->appConfig['plugin_temp_realdir'];
 
@@ -1006,7 +1023,13 @@ class PluginService
         $file->copy($this->appConfig['root_dir'].'/composer.lock', $pluginTempRealDir.'/composer.lock', true);
 
         foreach ($updateData as $value) {
+            if (!isset($value['product_code'])) {
+                throw new PluginException('The format incorrect!');
+            }
             $pluginDir = $pluginRealDir.'/'.$value['product_code'];
+            if (!is_dir($pluginDir)) {
+                continue;
+            }
             $backupDir = $pluginTempRealDir.'/'.$value['product_code'];
             try {
                 $file->remove($backupDir);
@@ -1016,6 +1039,8 @@ class PluginService
                 continue;
             }
         }
+
+        return true;
     }
 
     /**

@@ -24,8 +24,9 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
+use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
-use Eccube\Service\Composer\ComposerApiService;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Symfony\Component\Filesystem\Filesystem;
@@ -52,7 +53,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $prop->setValue($this->service, $this->createMock(SchemaService::class));
         $prop = $rc->getProperty('composerService');
         $prop->setAccessible(true);
-        $prop->setValue($this->service, $this->createMock(ComposerApiService::class));
+        $prop->setValue($this->service, $this->createMock(ComposerServiceInterface::class));
     }
 
     public function tearDown()
@@ -808,6 +809,140 @@ EOD;
             $expected2 .= $packages.':'.$version.' ';
         }
         $this->assertEquals(trim($expected2), $actual2);
+    }
+
+    /**
+     * Test backup plugin
+     */
+    public function testUpgradeBackupAndRollbackOnFail()
+    {
+        // Install plugin
+        $tmpname="dummy".sha1(mt_rand());
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $jsonPHP = $this->createComposerJsonFile($config);
+        $text = json_encode($jsonPHP);
+        $tar->addFromString('composer.json', $text);
+        // install
+        $this->service->install($tmpfile);
+        $plugin = $this->app['eccube.repository.plugin']->findOneBy(['code' => $config['code']]);
+
+        // backup test
+        $updateData = [];
+
+        // Do backup
+        $return = $this->service->doUpgradeBackup($updateData);
+        $this->assertFalse($return);
+        $backupPluginDir = $this->app['config']['plugin_temp_realdir'].'/'.$config['code'];
+        $this->assertDirectoryNotExists($backupPluginDir);
+
+        // Do rollback test
+        $return = $this->service->doUpgradeRollback($updateData);
+        $this->assertFalse($return);
+        $configYml = $this->app['config']['plugin_realdir'] . '/' . $config['code'].'/'.PluginService::CONFIG_YML;
+        $configData = $this->service->readYml($configYml);
+        $this->assertEquals($config['version'], $configData['version']);
+        // Test rollback in db
+        $this->assertEquals($config['version'], $plugin->getVersion());
+    }
+
+    /**
+     * Test backup plugin
+     */
+    public function testUpgradeBackupAndRollbackPluginDoesNotExist()
+    {
+        $this->expectException(PluginException::class);
+        // Install plugin
+        $tmpname="dummy".sha1(mt_rand());
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $jsonPHP = $this->createComposerJsonFile($config);
+        $text = json_encode($jsonPHP);
+        $tar->addFromString('composer.json', $text);
+        // install
+        $this->service->install($tmpfile);
+        $plugin = $this->app['eccube.repository.plugin']->findOneBy(['code' => $config['code']]);
+
+        // backup test
+        $updateData = [
+            'product_code' => $config['code'].'test',
+        ];
+
+        // Do backup
+        $this->service->doUpgradeBackup($updateData);
+    }
+
+    /**
+     * Test backup plugin
+     */
+    public function testUpgradeBackupAndRollbackSuccess()
+    {
+        // Install plugin
+        $tmpname="dummy".sha1(mt_rand());
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $jsonPHP = $this->createComposerJsonFile($config);
+        $text = json_encode($jsonPHP);
+        $tar->addFromString('composer.json', $text);
+        // install
+        $this->service->install($tmpfile);
+
+        // backup test
+        $updateData[] = [
+            'product_code' => $config['code'],
+        ];
+
+        // Do backup
+        $return = $this->service->doUpgradeBackup($updateData);
+        $this->assertTrue($return);
+        $backupPluginDir = $this->app['config']['plugin_temp_realdir'].'/'.$config['code'];
+        $this->assertDirectoryExists($backupPluginDir);
+
+        // Change data for test
+        $configYml = $this->app['config']['plugin_realdir'] . '/' . $config['code'].'/'.PluginService::CONFIG_YML;
+        $configData = $this->service->readYml($configYml);
+        $testVersion = '9.9.9';
+        $configData['version'] = $testVersion;
+        $yaml = Yaml::dump($configData);
+        file_put_contents($configYml, $yaml);
+        $plugin = $this->app['eccube.repository.plugin']->findOneBy(['code' => $config['code']]);
+        $plugin->setVersion($testVersion);
+        $this->app['orm.em']->persist($plugin);
+        $this->app['orm.em']->flush();
+        $this->assertEquals($testVersion, $plugin->getVersion());
+
+        // Do rollback
+        $return = $this->service->doUpgradeRollback($updateData);
+        $this->assertTrue($return);
+        $configYml = $this->app['config']['plugin_realdir'] . '/' . $config['code'].'/'.PluginService::CONFIG_YML;
+        $configData = $this->service->readYml($configYml);
+        $this->assertEquals($config['version'], $configData['version']);
+        // Test rollback in db
+        $this->assertEquals($config['version'], $plugin->getVersion());
     }
 
     /**
