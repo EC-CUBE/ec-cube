@@ -23,6 +23,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Symfony\Component\Filesystem\Filesystem;
 use \Twig_Token;
 use \Twig_Node_Include;
 use Eccube\Event\TemplateEvent;
@@ -55,15 +56,18 @@ class Twig_TokenParser_Extends extends \Twig_TokenParser
 
         $event = new TemplateEvent($view, $source);
         $eventName = $view;
+        $path = $this->app['config']['template_realdir'];
         if ($this->app->isAdminRequest()) {
             // 管理画面の場合、event名に「Admin/」を付ける
             $eventName = 'Admin/' . $view;
+            $path = $path.'/../admin';
         }
 
         $this->app['monolog']->debug('Template Event Name : ' . $eventName);
-
         $this->app['eccube.event.dispatcher']->dispatch($eventName, $event);
         // Begin create event for extend
+        $this->createFile($path, $view, $event, $expr);
+        $expr->setAttribute('value', $this->getTag().'/'.$view);
 
         $this->parser->setParent($expr);
 
@@ -73,5 +77,14 @@ class Twig_TokenParser_Extends extends \Twig_TokenParser
     public function getTag()
     {
         return 'extends';
+    }
+
+    private function createFile($path, $view, $event)
+    {
+        // 一時ディレクトリ
+        $tmpFile = $path.'/'.$this->getTag().'/'.$view;
+        // 該当テンプレート
+        $fs = new Filesystem();
+        $fs->dumpFile($tmpFile, $event->getSource());
     }
 }
