@@ -43,7 +43,7 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
-use Eccube\Repository\Master\TagRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
