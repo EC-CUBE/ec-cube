@@ -401,11 +401,10 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getClassCategories()
     {
         $this->_calc();
-
         $class_categories = array(
             '__unselected' => array(
                 '__unselected' => array(
-                    'name'              => $app->trans('product.text.please_select'),
+                    'name'              => $this->trans('product.text.please_select'),
                     'product_class_id'  => '',
                 ),
             ),
@@ -419,12 +418,12 @@ class Product extends \Eccube\Entity\AbstractEntity
             }
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : $app->trans('product.text.out_of_stock')) : '';
-            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : $app->trans('product.text.out_of_stock')) : '';
+            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : $this->trans('product.text.out_of_stock')) : '';
+            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : $this->trans('product.text.out_of_stock')) : '';
 
             $class_categories[$class_category_id1]['#'] = array(
                 'classcategory_id2' => '',
-                'name'              => $app->trans('product.text.please_select'),
+                'name'              => $this->trans('product.text.please_select'),
                 'product_class_id'  => '',
             );
             $class_categories[$class_category_id1]['#'.$class_category_id2] = array(
