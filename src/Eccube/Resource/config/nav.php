@@ -1,135 +1,135 @@
 <?php return [
     [
         'id' => 'product',
-        'name' => '商品管理',
+        'name' => 'nav.label.product',
         'has_child' => true,
         'icon' => 'cb-tag',
         'child' =>
             [
                 [
                     'id' => 'product_master',
-                    'name' => '商品マスター',
+                    'name' => 'nav.label.product_master',
                     'url' => 'admin_product',
                 ],
                 [
                     'id' => 'product_edit',
-                    'name' => '商品登録',
+                    'name' => 'nav.label.add_product',
                     'url' => 'admin_product_product_new',
                 ],
                 [
                     'id' => 'class_name',
-                    'name' => '規格登録',
+                    'name' => 'nav.label.add_option',
                     'url' => 'admin_product_class_name',
                 ],
                 [
                     'id' => 'class_category',
-                    'name' => 'カテゴリ登録',
+                    'name' => 'nav.label.add_categories',
                     'url' => 'admin_product_category',
                 ],
                 [
                     'id' => 'product_csv_import',
-                    'name' => '商品CSV登録',
+                    'name' => 'nav.label.import_product_csv',
                     'url' => 'admin_product_csv_import',
                 ],
                 [
                     'id' => 'category_csv_import',
-                    'name' => 'カテゴリCSV登録',
+                    'name' => 'nav.label.import_category_csv',
                     'url' => 'admin_product_category_csv_import',
                 ],
             ],
     ],
     [
         'id' => 'order',
-        'name' => '受注管理',
+        'name' => 'nav.label.orders',
         'has_child' => true,
         'icon' => 'cb-shopping-cart',
         'child' =>
             [
                 [
                     'id' => 'order_master',
-                    'name' => '受注マスター',
+                    'name' => 'nav.label.order_master',
                     'url' => 'admin_order',
                 ],
                 [
                     'id' => 'order_edit',
-                    'name' => '受注登録',
+                    'name' => 'nav.label.add_order',
                     'url' => 'admin_order_new',
                 ],
             ],
     ],
     [
         'id' => 'shipping',
-        'name' => '出荷管理',
+        'name' => 'nav.label.shipments',
         'has_child' => true,
         'icon' => 'cb-shopping-cart',
         'child' =>
             [
                 [
                     'id' => 'shipping_master',
-                    'name' => '出荷マスター',
+                    'name' => 'nav.label.shipping_master',
                     'url' => 'admin/shipping',
                 ],
                 [
                     'id' => 'shipping_edit',
-                    'name' => '出荷登録',
+                    'name' => 'nav.label.add_shipment',
                     'url' => 'admin/shipping/new',
                 ],
             ],
     ],
     [
         'id' => 'customer',
-        'name' => '会員管理',
+        'name' => 'nav.label.customers',
         'has_child' => true,
         'icon' => 'cb-users',
         'child' =>
             [
                 [
                     'id' => 'customer_master',
-                    'name' => '会員マスター',
+                    'name' => 'nav.label.customer_master',
                     'url' => 'admin_customer',
                 ],
                 [
                     'id' => 'customer_edit',
-                    'name' => '会員登録',
+                    'name' => 'nav.label.add_customer',
                     'url' => 'admin_customer_new',
                 ],
             ],
     ],
     [
         'id' => 'content',
-        'name' => 'コンテンツ管理',
+        'name' => 'nav.label.contents',
         'has_child' => true,
         'icon' => 'cb-file-text',
         'child' =>
             [
                 [
                     'id' => 'news',
-                    'name' => '新着情報管理',
+                    'name' => 'nav.label.whats_new',
                     'url' => 'admin_content_news',
                 ],
                 [
                     'id' => 'file',
-                    'name' => 'ファイル管理',
+                    'name' => 'nav.label.files',
                     'url' => 'admin_content_file',
                 ],
                 [
                     'id' => 'layout',
-                    'name' => 'レイアウト管理',
+                    'name' => 'nav.label.laytouts',
                     'url' => 'admin_content_layout',
                 ],
                 [
                     'id' => 'page',
-                    'name' => 'ページ管理',
+                    'name' => 'nav.label.pages',
                     'url' => 'admin_content_page',
                 ],
                 [
                     'id' => 'block',
-                    'name' => 'ブロック管理',
+                    'name' => 'nav.label.blocks',
                     'url' => 'admin_content_block',
                 ],
                 [
                     'id' => 'cache',
-                    'name' => 'キャッシュ管理',
+                    'name' => 'nav.label.caches',
                     'url' => 'admin_content_cache',
                 ],
             ],
@@ -154,75 +154,75 @@
                             ],
                             [
                                 'id' => 'tradelaw',
-                                'name' => '特定商取引法',
+                                'name' => 'nav.label.company_info_shopping-guide',
                                 'url' => 'admin_setting_shop_tradelaw',
                             ],
                             [
                                 'id' => 'customer_agreement',
-                                'name' => '利用規約設定',
+                                'name' => 'nav.label.terms_conditions',
                                 'url' => 'admin_setting_shop_customer_agreement',
                             ],
                             [
                                 'id' => 'shop_payment',
-                                'name' => '支払方法設定',
+                                'name' => 'nav.label.payment_method',
                                 'url' => 'admin_setting_shop_payment',
                             ],
                             [
                                 'id' => 'shop_delivery',
-                                'name' => '配送方法設定',
+                                'name' => 'nav.label.delivery_methods',
                                 'url' => 'admin_setting_shop_delivery',
                             ],
                             [
                                 'id' => 'shop_tax',
-                                'name' => '税率設定',
+                                'name' => 'nav.label.tax_rates',
                                 'url' => 'admin_setting_shop_tax',
                             ],
                             [
                                 'id' => 'shop_mail',
-                                'name' => 'メール設定',
+                                'name' => 'nav.label.email',
                                 'url' => 'admin_setting_shop_mail',
                             ],
                             [
                                 'id' => 'shop_csv',
-                                'name' => 'CSV出力項目設定',
+                                'name' => 'nav.label.csv_export_settings',
                                 'url' => 'admin_setting_shop_csv',
                             ],
                         ],
                 ],
                 [
                     'id' => 'system',
-                    'name' => 'システム情報設定',
+                    'name' => 'nav.label.system_info_settings定',
                     'has_child' => true,
                     'child' =>
                         [
                             [
                                 'id' => 'system_index',
-                                'name' => 'システム情報',
+                                'name' => 'nav.label.system_info',
                                 'url' => 'admin_setting_system_system',
                             ],
                             [
                                 'id' => 'member',
-                                'name' => 'メンバー管理',
+                                'name' => 'nav.label.member_management',
                                 'url' => 'admin_setting_system_member',
                             ],
                             [
                                 'id' => 'authority',
-                                'name' => '権限管理',
+                                'name' => 'nav.label.authorizationgs',
                                 'url' => 'admin_setting_system_authority',
                             ],
                             [
                                 'id' => 'security',
-                                'name' => 'セキュリティ管理',
+                                'name' => 'nav.label.security',
                                 'url' => 'admin_setting_system_security',
                             ],
                             [
                                 'id' => 'log',
-                                'name' => 'EC-CUBE ログ表示',
+                                'name' => 'nav.label.eccube_logs',
                                 'url' => 'admin_setting_system_log',
                             ],
                             [
                                 'id' => 'masterdata',
-                                'name' => 'マスターデータ管理',
+                                'name' => 'nav.label.master',
                                 'url' => 'admin_setting_system_masterdata',
                             ],
                         ],
@@ -231,20 +231,20 @@
     ],
     [
         'id' => 'store',
-        'name' => 'オーナーズストア',
+        'name' => 'nav.label.owner_store',
         'has_child' => true,
         'icon' => 'cb-info-circle',
         'child' =>
             [
                 [
                     'id' => 'plugin',
-                    'name' => 'プラグイン',
+                    'name' => 'nav.label.plugins',
                     'has_child' => true,
                     'child' =>
                         [
                             [
                                 'id' => 'plugin_list',
-                                'name' => 'プラグイン一覧',
+                                'name' => 'nav.label.all_plugins',
                                 'url' => 'admin_store_plugin',
                             ],
 //          [
@@ -254,37 +254,37 @@
 //          ],
                             [
                                 'id' => 'plugin_search',
-                                'name' => 'プラグインを探す',
+                                'name' => 'nav.label.search_plugins',
                                 'url' => 'admin_store_plugin_owners_search',
                             ],
                             [
                                 'id' => 'plugin_handler',
-                                'name' => '高度な設定',
+                                'name' => 'nav.label.advanced_setting',
                                 'url' => 'admin_store_plugin_handler',
                             ],
                         ],
                 ],
                 [
                     'id' => 'template',
-                    'name' => 'テンプレート',
+                    'name' => 'nav.label.templates',
                     'has_child' => true,
                     'child' =>
                         [
                             [
                                 'id' => 'template_list',
-                                'name' => 'テンプレート一覧',
+                                'name' => 'nav.label.all_templates',
                                 'url' => 'admin_store_template',
                             ],
                             [
                                 'id' => 'template_install',
-                                'name' => 'アップロード',
+                                'name' => 'nav.label.uploads',
                                 'url' => 'admin_store_template_install',
                             ],
                         ],
                 ],
                 [
                     'id' => 'authentication_setting',
-                    'name' => '認証キー設定',
+                    'name' => 'nav.label.auth_key',
                     'url' => 'admin_store_authentication_setting',
                 ],
             ],

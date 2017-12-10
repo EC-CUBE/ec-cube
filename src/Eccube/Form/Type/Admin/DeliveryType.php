@@ -52,25 +52,25 @@ class DeliveryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => '配送業者名',
+                'label' => 'delivery.label.shipping_company',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank,
                 ),
             ))
             ->add('service_name', TextType::class, array(
-                'label' => '名称',
+                'label' => 'delivery.label.name',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('description', TextareaType::class, array(
-                'label' => 'ショップ用メモ欄',
+                'label' => 'delivery.label.owner_note',
                 'required' => false,
             ))
             ->add('confirm_url', TextType::class, array(
-                'label' => '伝票No.URL',
+                'label' => 'delivery.label.tracking_num',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
@@ -82,14 +82,14 @@ class DeliveryType extends AbstractType
                 ),
             ))
             ->add('payments', PaymentType::class, array(
-                'label' => '支払方法',
+                'label' => 'delivery.label.payment',
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
                 'mapped' => false,
             ))
             ->add('delivery_times', CollectionType::class, array(
-                'label' => 'お届け時間',
+                'label' => 'delivery.label.delivery_time',
                 'required' => false,
                 'entry_type' => DeliveryTimeType::class,
                 'allow_add' => true,
@@ -102,7 +102,7 @@ class DeliveryType extends AbstractType
                 'mapped' => false
             ))
             ->add('delivery_fees', CollectionType::class, array(
-                'label' => '都道府県別設定',
+                'label' => 'delivery.label.pref_setting',
                 'required' => true,
                 'entry_type' => DeliveryFeeType::class,
                 'allow_add' => true,
@@ -114,7 +114,7 @@ class DeliveryType extends AbstractType
                 $payments = $form['payments']->getData();
 
                 if (empty($payments) || count($payments) < 1) {
-                    $form['payments']->addError(new FormError('支払方法を選択してください。'));
+                    $form['payments']->addError(new FormError('delivery.text.error.select_payment_method'));
                 }
             })
         ;

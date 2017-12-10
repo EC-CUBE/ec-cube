@@ -70,7 +70,7 @@ class LogType extends AbstractType
 
         $builder
             ->add('files', ChoiceType::class, array(
-                'label' => 'ログファイル',
+                'label' => 'logtype.label.log_file',
                 'choices' => array_flip($files),
                 'data' => 'site_'.date('Y-m-d').'.log',
                 'expanded' => false,
@@ -80,7 +80,7 @@ class LogType extends AbstractType
                 ),
             ))
             ->add('line_max', TextType::class, array(
-                'label' => '表示行数',
+                'label' => 'logtype.label.number_of_rows',
                 'data' => '50',
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),

@@ -57,7 +57,7 @@ class SearchProductType extends AbstractType
     {
         $builder
             ->add('id', TextType::class, array(
-                'label' => '商品ID',
+                'label' => 'searchproduct.label.product_code',
                 'required' => false,
             ))
             /*
@@ -71,12 +71,12 @@ class SearchProductType extends AbstractType
             ))
              */
             ->add('category_id', MasterCategoryType::class, array(
-                'label' => 'カテゴリ',
-                'placeholder' => '選択してください',
+                'label' => 'searchproduct.label.category',
+                'placeholder' => 'searchproduct.placeholder.select',
                 'required' => false,
             ))
             ->add('status', ProductStatusType::class, array(
-                'label' => '種別',
+                'label' => 'searchproduct.label.type',
                 'multiple'=> true,
                 'required' => false,
                 'data' => $this->productStatusRepository->findBy(['id' => [
@@ -85,7 +85,7 @@ class SearchProductType extends AbstractType
                 ]])
             ))
             ->add('create_date_start', DateType::class, array(
-                'label' => '登録日(FROM)',
+                'label' => 'searchproduct.label.registration_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -93,7 +93,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('create_date_end', DateType::class, array(
-                'label' => '登録日(TO)',
+                'label' => 'searchproduct.label.registration_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -109,7 +109,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
-                'label' => '更新日(TO)',
+                'label' => 'searchproduct.label.updated_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',

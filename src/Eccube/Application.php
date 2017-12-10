@@ -241,16 +241,16 @@ class Application extends \Silex\Application
 
             switch ($code) {
                 case 403:
-                    $title = 'アクセスできません。';
-                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                    $title = $app->trans('application.text.error.permission');
+                    $message = $app->trans('application.text.error.access.message');
                     break;
                 case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
+                    $title = $app->trans('application.text.error.page_not_found');
+                    $message = $app->trans('application.text.error.page_not_found.message');
                     break;
                 default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+                    $title = $app->trans('application.text.error.system');
+                    $message = $app->trans('application.text.error.system.message');
                     break;
             }
 
@@ -1017,8 +1017,8 @@ class Application extends \Silex\Application
             $this['monolog']->error($e->getMessage());
             $this['twig.path'] = array(__DIR__.'/Resource/template/exception');
             $html = $this['twig']->render('error.twig', array(
-                'error_title' => 'データーベース接続エラー',
-                'error_message' => 'データーベースを確認してください',
+                'error_title' => $app->trans('application.text.error.database'),
+                'error_message' => $app->trans('application.text.error.database.message'),
             ));
             $response = new Response();
             $response->setContent($html);

@@ -60,19 +60,19 @@ class SearchShippingType extends AbstractType
         $builder
             // 配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名
             ->add('multi', TextType::class, array(
-                'label' => '配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名',
+                'label' => 'searchshipping.label.tracking_num',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->appConfig['stext_len'])),
                 ),
             ))
             ->add('order_status', OrderStatusType::class, array(
-                'label' => '受注状況',
+                'label' => 'searchshipping.label.order_status',
                 'expanded' => true,
                 'multiple' => true,
             ))
             ->add('shipping_status', ShippingStatusType::class, array(
-                'label' => '出荷状況',
+                'label' => 'searchshipping.label.shipping_status',
                 'expanded' => true,
                 'multiple' => true,
             ))
@@ -95,7 +95,7 @@ class SearchShippingType extends AbstractType
                 ),
             ))
             ->add('order_date_start', DateType::class, array(
-                'label' => '受注日(FROM)',
+                'label' => 'searchshipping.label.order_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -103,7 +103,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('order_date_end', DateType::class, array(
-                'label' => '受注日(TO)',
+                'label' => 'searchshipping.label.order_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -111,7 +111,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('shipping_delivery_date_start', DateType::class, array(
-                'label' => 'お届け予定日(FROM)',
+                'label' => 'searchshipping.label.delivery_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -119,7 +119,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('shipping_delivery_date_end', DateType::class, array(
-                'label' => 'お届け予定日(TO)',
+                'label' => 'searchshipping.label.delivery_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -127,7 +127,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('commit_date_start', DateType::class, array(
-                'label' => '発送日(FROM)',
+                'label' => 'searchshipping.label.shipping_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -135,7 +135,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('commit_date_end', DateType::class, array(
-                'label' => '発送日(TO)',
+                'label' => 'searchshipping.label.shipping_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -143,7 +143,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
-                'label' => '更新日(FROM)',
+                'label' => 'searchshipping.label.updated_date_from',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -151,7 +151,7 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
-                'label' => '更新日(TO)',
+                'label' => 'searchshipping.label.updated_date_to',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
@@ -159,19 +159,19 @@ class SearchShippingType extends AbstractType
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_total_start', IntegerType::class, array(
-                'label' => '購入金額(下限)',
+                'label' => 'searchshipping.label.purchased_amount_min',
                 'required' => false,
             ))
             ->add('payment_total_end', IntegerType::class, array(
-                'label' => '購入金額(上限)',
+                'label' => 'searchshipping.label.purchased_amount_max',
                 'required' => false,
             ))
             ->add('buy_product_name', TextType::class, array(
-                'label' => '購入商品名',
+                'label' => 'searchshipping.label.purchased_products',
                 'required' => false,
             ))
             ->add('order_id', TextType::class, array(
-                'label' => '注文番号',
+                'label' => 'searchshipping.label.order_id',
                 'required' => false,
             ))
         ;

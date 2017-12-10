@@ -133,7 +133,6 @@ class ShopMasterType extends AbstractType
                 ),
             ))
             ->add('email02', EmailType::class, array(
-                'label' => '問い合わせ受付メールアドレス(From, ReplyTo)',
                 'label' => 'common.label.email_for_inquiries',
                 'required' => false,
                 'constraints' => array(
@@ -250,7 +249,6 @@ class ShopMasterType extends AbstractType
 
             // 商品設定
             ->add('nostock_hidden', ChoiceType::class, array(
-                'label' => '在庫切れ商品を非表示にする',
                 'label' => 'common.label.nostock_hidden',
                 'choices' => array_flip(array(
                     '0' => 'common.label.disabled',
@@ -286,7 +284,6 @@ class ShopMasterType extends AbstractType
         $builder->add(
             $builder
                 ->create('company_kana', TextType::class, array(
-                    'label' => '会社名(フリガナ)',
                     'label' => 'common.label.company_name_kana',
                     'required' => false,
                     'constraints' => array(
@@ -304,7 +301,6 @@ class ShopMasterType extends AbstractType
         $builder->add(
             $builder
                 ->create('shop_kana', TextType::class, array(
-                    'label' => '店名(フリガナ)',
                     'label' => 'common.label.shop_name_kana',
                     'required' => false,
                     'constraints' => array(

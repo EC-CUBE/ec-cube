@@ -104,7 +104,7 @@ class ShippingItemType extends AbstractType
                     ->add('shippingDeliveryDate', ChoiceType::class, array(
                         'choices' => array_flip($deliveryDates),
                         'required' => false,
-                        'placeholder' => '指定なし',
+                        'placeholder' => 'shippingitem.placeholder.not_selected',
                         'mapped' => false,
                     ))
                     ->add('deliveryTime', EntityType::class, array(
@@ -112,7 +112,7 @@ class ShippingItemType extends AbstractType
                         'choice_label' => 'deliveryTime',
                         'choices' => $deliveryTimes,
                         'required' => false,
-                        'placeholder' => '指定なし',
+                        'placeholder' => 'shippingitem.placeholder.not_selected',
                     ));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {

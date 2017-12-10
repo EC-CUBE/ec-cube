@@ -576,7 +576,7 @@ class PluginController extends AbstractController
                     }
                 } else {
                     $success = 0;
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                    $message = $app->trans('plugin.text.error.ec_cube_error');
                 }
             }
 
@@ -664,7 +664,7 @@ class PluginController extends AbstractController
                         $message = $data['error_code'].' : '.$data['error_message'];
                     }
                 } else {
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                    $message = $app->trans('plugin.text.error.ec_cube_error');
                 }
             }
         }
@@ -695,7 +695,7 @@ class PluginController extends AbstractController
             'authentication_key',
             TextType::class,
             [
-                'label' => '認証キー',
+                'label' => $app->trans('plugin.label.auth_key'),
                 'constraints' => [
                     new Assert\Regex(['pattern' => "/^[0-9a-zA-Z]+$/",]),
                 ],
@@ -774,7 +774,7 @@ class PluginController extends AbstractController
             $message = $statusCode.' : '.$message;
 
         } else {
-            $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
+            $message = $app->trans('plugin.text.error.timeout_or_invalid_url');
         }
 
         return $message;

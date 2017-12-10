@@ -228,7 +228,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
         if ($this->isVisible()) {
             return $this->getServiceName();
         } else {
-            return $this->getServiceName().'(非表示)';
+            return $this->getServiceName().$app->trans('delivery.text.hidden');
         }
     }
 

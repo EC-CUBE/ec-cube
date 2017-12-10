@@ -234,7 +234,7 @@ class ProductController
             null,
             array(
                 'required' => false,
-                'label' => '表示件数',
+                'label' => $app->trans('productcontroller.label.result'),
                 'allow_extra_fields' => true,
             )
         );
@@ -261,7 +261,7 @@ class ProductController
             null,
             array(
                 'required' => false,
-                'label' => '表示順',
+                'label' => $app->trans('productcontroller.label.sort'),
                 'allow_extra_fields' => true,
             )
         );
@@ -498,11 +498,11 @@ class ProductController
     private function getPageTitle($searchData)
     {
         if (isset($searchData['name']) && !empty($searchData['name'])) {
-            return '検索結果';
+            return $app->trans('productcontroller.text.return.search');
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
         } else {
-            return '全商品';
+            return $app->trans('productcontroller.text.return.all_products');
         }
     }
 

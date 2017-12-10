@@ -62,7 +62,7 @@ class PaymentRegisterType extends AbstractType
 
         $builder
             ->add('method', TextType::class, array(
-                'label' => '支払方法',
+                'label' => 'paymentregister.label.payment_method',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -76,7 +76,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => false,
             ))
             ->add('payment_image_file', FileType::class, array(
-                'label' => 'ロゴ画像',
+                'label' => 'paymentregister.label.logo_image',
                 'mapped' => false,
                 'required' => false,
             ))
@@ -84,7 +84,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => false,
             ))
             ->add('charge', PriceType::class, array(
-                'label' => '手数料',
+                'label' => 'paymentregister.label.commision',
             ))
             ->add('fixed', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {

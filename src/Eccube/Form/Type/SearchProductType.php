@@ -72,23 +72,23 @@ class SearchProductType extends AbstractType
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
-            'placeholder' => '全ての商品',
+            'placeholder' => 'searchproduct.placeholder.all_products',
             'required' => false,
-            'label' => '商品カテゴリから選ぶ',
+            'label' => 'searchproduct.label.select_categories',
         ));
         $builder->add('name', SearchType::class, array(
             'required' => false,
-            'label' => '商品名を入力',
+            'label' => 'searchproduct.label.product_name',
             'attr' => array(
                 'maxlength' => 50,
             ),
         ));
         $builder->add('pageno', HiddenType::class, array());
         $builder->add('disp_number', ProductListMaxType::class, array(
-            'label' => '表示件数',
+            'label' => 'searchproduct.label.number_results',
         ));
         $builder->add('orderby', ProductListOrderByType::class, array(
-            'label' => '表示順',
+            'label' => 'searchproduct.label.sort_by',
         ));
     }
 

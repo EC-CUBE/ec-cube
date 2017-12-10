@@ -134,7 +134,7 @@ class ProductClassController
         $hasClassCategoryFlg = false;
 
         if (!$Product) {
-            throw new NotFoundHttpException('商品が存在しません');
+            throw new NotFoundHttpException($app->trans('product.text.error.product_not_found'));
         }
 
         // 商品規格情報が存在しなければ新規登録させる
@@ -149,7 +149,7 @@ class ProductClassController
                 ->add('class_name1', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
                     'choice_label' => 'name',
-                    'placeholder' => '規格1を選択',
+                    'placeholder' => $app->trans('product.placeholder.select_category01'),
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
@@ -157,7 +157,7 @@ class ProductClassController
                 ->add('class_name2', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
                     'choice_label' => 'name',
-                    'placeholder' => '規格2を選択',
+                    'placeholder' => $app->trans('product.placeholder.select_category02'),
                     'required' => false,
                 ));
 
@@ -198,7 +198,7 @@ class ProductClassController
 
                     if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
                         // 規格1と規格2が同じ値はエラー
-                        $form['class_name2']->addError(new FormError('規格1と規格2は、同じ値を使用できません。'));
+                        $form['class_name2']->addError(new FormError($app->trans('product.text.error.same_value')));
                     } else {
                         // 規格分類が設定されていない商品規格を取得
                         $orgProductClasses = $Product->getProductClasses();
@@ -356,7 +356,7 @@ class ProductClassController
         $Product = $this->productRepository->find($id);
 
         if (!$Product) {
-            throw new NotFoundHttpException('商品が存在しません');
+            throw new NotFoundHttpException($app->trans('product.text.error.product_not_found'));
         }
 
         /* @var FormBuilder $builder */
@@ -414,7 +414,7 @@ class ProductClassController
                     if (count($addProductClasses) == 0) {
                         // 対象がなければエラー
                         log_info('商品規格が未選択', array($id));
-                        $error = array('message' => '商品規格が選択されていません。');
+                        $error = array('message' => $app->trans('product.text.error.category_not_selected'));
                         return $this->render($app, $Product, $tmpProductClass, true, $form, $error);
                     }
 
@@ -478,7 +478,7 @@ class ProductClassController
                     if (count($checkProductClasses) == 0) {
                         // 対象がなければエラー
                         log_info('商品規格が存在しません', array($id));
-                        $error = array('message' => '商品規格が選択されていません。');
+                        $error = array('message' => $app->trans('product.text.error.category_not_selected'));
                         return $this->render($app, $Product, $tempProductClass, false, $form, $error);
                     }
 
@@ -622,13 +622,13 @@ class ProductClassController
             ->add('class_name1', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
                 'choice_label' => 'name',
-                'placeholder' => '規格1を選択',
+                'placeholder' => $app->trans('product.placeholder.select_category01'),
                 'data' => $ClassName1,
             ))
             ->add('class_name2', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
                 'choice_label' => 'name',
-                'placeholder' => '規格2を選択',
+                'placeholder' => $app->trans('product.placeholder.select_category02'),
                 'data' => $ClassName2,
             ))
             ->getForm();

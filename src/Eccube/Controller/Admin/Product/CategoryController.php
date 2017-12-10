@@ -96,7 +96,7 @@ class CategoryController extends AbstractController
         if ($parent_id) {
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
-                throw new NotFoundHttpException('親カテゴリが存在しません');
+                throw new NotFoundHttpException($app->trans('category.text.error.no_parent_category'));
             }
         } else {
             $Parent = null;
@@ -104,7 +104,7 @@ class CategoryController extends AbstractController
         if ($id) {
             $TargetCategory = $this->categoryRepository->find($id);
             if (!$TargetCategory) {
-                throw new NotFoundHttpException('カテゴリが存在しません');
+                throw new NotFoundHttpException($app->trans('category.text.error.no_category'));
             }
             $Parent = $TargetCategory->getParent();
         } else {
@@ -138,7 +138,7 @@ class CategoryController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($this->appConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
-                    throw new BadRequestHttpException('リクエストが不正です');
+                    throw new BadRequestHttpException($app->trans('category.text.error.invalid_requesy'));
                 }
                 log_info('カテゴリ登録開始', array($id));
 

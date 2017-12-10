@@ -44,7 +44,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
         $metadata->addConstraint(new UniqueEntity(array(
             'fields'  => 'login_id',
-            'message' => '既に利用されているログインIDです'
+            'message' => $app->trans('member.text.error.login_id_registered')
         )));
     }
 

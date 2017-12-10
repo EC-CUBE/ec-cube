@@ -50,14 +50,14 @@ class TradelawType extends AbstractType
     {
         $builder
             ->add('law_company', TextType::class, array(
-                'label' => '販売業者',
+                'tradelaw.label.seller' => '販売業者',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('law_manager', TextType::class, array(
-                'label' => '運営責任者',
+                'label' => 'tradelaw.label.operation_director',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -67,7 +67,7 @@ class TradelawType extends AbstractType
                 'required' => true,
             ))
             ->add('law_address', AddressType::class, array(
-                'label' => '所在地',
+                'label' => 'tradelaw.label.company_address',
                 'required' => true,
                 'pref_name' => 'law_pref',
                 'addr01_name' => 'law_addr01',
@@ -82,7 +82,7 @@ class TradelawType extends AbstractType
                 'required' => false,
             ))
             ->add('law_email', EmailType::class, array(
-                'label' => 'メールアドレス',
+                'label' => 'tradelaw.label.email',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -102,42 +102,42 @@ class TradelawType extends AbstractType
                 ),
             ))
             ->add('law_term01', TextareaType::class, array(
-                'label' => '商品代金以外の必要料金',
+                'label' => 'tradelaw.label.required_fee',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('law_term02', TextareaType::class, array(
-                'label' => '注文方法',
+                'label' => 'radelaw.label.how_to_order',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('law_term03', TextareaType::class, array(
-                'label' => '支払方法',
+                'label' => 'tradelaw.label.howo_to_pay',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('law_term04', TextareaType::class, array(
-                'label' => '支払期限',
+                'label' => 'tradelaw.label.payment_due',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('law_term05', TextareaType::class, array(
-                'label' => '引き渡し時期',
+                'label' => 'tradelaw.label.delivery_timing',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
             ->add('law_term06', TextareaType::class, array(
-                'label' => '返品・交換について',
+                'label' => 'tradelaw.label.return_exchange_policy',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),

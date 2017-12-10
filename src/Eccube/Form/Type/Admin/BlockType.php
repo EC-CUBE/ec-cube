@@ -75,7 +75,7 @@ class BlockType extends AbstractType
 
         $builder
             ->add('name', TextType::class, array(
-                'label' => 'ブロック名',
+                'label' => 'admin.content.block.form.label.block_name',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -85,7 +85,7 @@ class BlockType extends AbstractType
                 )
             ))
             ->add('file_name', TextType::class, array(
-                'label' => 'ファイル名',
+                'label' => 'common.label.file_name',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -98,7 +98,7 @@ class BlockType extends AbstractType
                 )
             ))
             ->add('block_html', HiddenType::class, array(
-                'label' => 'ブロックデータ',
+                'label' => 'block.label.block_type',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

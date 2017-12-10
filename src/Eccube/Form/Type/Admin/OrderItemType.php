@@ -239,21 +239,21 @@ class OrderItemType extends AbstractType
                         $data['class_category_name2'] = null;
                         switch ($data['order_item_type']) {
                             case OrderItemTypeMaster::DELIVERY_FEE:
-                                $data['product_name'] = '送料';
+                                $data['product_name'] = 'orderitem.text.data.shipping_charge';
                                 $data['price'] = 0;
                                 $data['quantity'] = 1;
                                 $data['tax_type'] = TaxType::TAXATION;
                                 $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                                 break;
                             case OrderItemTypeMaster::CHARGE:
-                                $data['product_name'] = '手数料';
+                                $data['product_name'] = 'orderitem.text.data.commision';
                                 $data['price'] = 0;
                                 $data['quantity'] = 1;
                                 $data['tax_type'] = TaxType::TAXATION;
                                 $data['tax_display_type'] = TaxDisplayType::INCLUDED;
                                 break;
                             case OrderItemTypeMaster::DISCOUNT:
-                                $data['product_name'] = '値引き';
+                                $data['product_name'] = 'orderitem.text.data.discount';
                                 $data['price'] = -0;
                                 $data['quantity'] = 1;
                                 $data['tax_type'] = TaxType::NON_TAXABLE;

@@ -66,13 +66,13 @@ class SearchProductBlockType extends AbstractType
             'class' => 'Eccube\Entity\Category',
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
-            'placeholder' => '全ての商品',
+            'placeholder' => 'searchproductblock.placeholder.all_products',
             'required' => false,
-            'label' => '商品カテゴリから選ぶ',
+            'label' => 'searchproductblock.label.select_categories',
         ));
         $builder->add('name', SearchType::class, array(
             'required' => false,
-            'label' => '商品名を入力',
+            'label' => 'searchproductblock.label.product_name',
             'attr' => array(
                 'maxlength' => 50,
             ),

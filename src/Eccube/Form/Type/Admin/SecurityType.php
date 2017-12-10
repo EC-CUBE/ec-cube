@@ -72,7 +72,7 @@ class SecurityType extends AbstractType
         $app = $this->app;
         $builder
             ->add('admin_route_dir', TextType::class, array(
-                'label' => 'ディレクトリ名',
+                'label' => 'security.label.directory_name',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array('max' => $this->appConfig['stext_len'])),
@@ -83,13 +83,13 @@ class SecurityType extends AbstractType
             ))
             ->add('admin_allow_hosts', TextareaType::class, array(
                 'required' => false,
-                'label' => 'IP制限',
+                'label' => 'security.label.ip_restriction',
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->appConfig['stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(
-                'label' => 'SSLを強制',
+                'label' => 'security.label.ssl_mandatory',
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app) {

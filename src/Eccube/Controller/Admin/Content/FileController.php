@@ -162,11 +162,11 @@ class FileController extends AbstractController
             $pattern = "/[^[:alnum:]_.\\-]/";
             $pattern2 = "/^\.(.*)$/";
             if (empty($filename)) {
-                $this->error = array('message' => 'フォルダ作成名が入力されていません。');
+                $this->error = array('message' => $app->trans('file.text.error.folder_name'));
             } elseif (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->error = array('message' => 'フォルダ名には、英数字、記号（_ - .）のみを入力して下さい。');
+                $this->error = array('message' => $app->trans('file.text.error.folder_symbol'));
             } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
-                $this->error = array('message' => '.から始まるフォルダ名は作成できません。');
+                $this->error = array('message' => $app->trans('file.text.error.folder_period'));
             } else {
                 $topDir = $this->appConfig['user_data_realdir'];
                 $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
@@ -242,7 +242,7 @@ class FileController extends AbstractController
         if ($form->isValid()) {
             $data = $form->getData();
             if (empty($data['file'])) {
-                $this->error = array('message' => 'ファイルが選択されていません。');
+                $this->error = array('message' => $app->trans('file.text.error.file_not_selectedd.'));
             } else {
                 $topDir = $this->appConfig['user_data_realdir'];
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {

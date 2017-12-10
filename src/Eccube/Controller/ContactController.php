@@ -108,7 +108,7 @@ class ContactController
                     $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
-                    $title = 'お問い合わせ(確認ページ)';
+                    $title = $apps->trans('contactcontroller.label.title.inquiry');
 
                     return $app->render(
                         'Contact/confirm.twig',

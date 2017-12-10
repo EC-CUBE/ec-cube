@@ -108,7 +108,7 @@ class DeliveryFeeProcessor implements ItemHolderProcessor
         /* @var Shipping $Shipping */
         foreach ($Order->getShippings() as $Shipping) {
             $OrderItem = new OrderItem();
-            $OrderItem->setProductName('送料')
+            $OrderItem->setProductName($app->trans('deliveryfeeprocessor.label.shippint_charge'))
                 ->setPrice($Shipping->getShippingDeliveryFee())
                 ->setPriceIncTax($Shipping->getShippingDeliveryFee())
                 ->setTaxRate(8)

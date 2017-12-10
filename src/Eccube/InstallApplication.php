@@ -48,7 +48,7 @@ class InstallApplication extends \Silex\Application
 
         if (is_writable($logDir)) {
             if (file_exists($installLog) && !is_writable($installLog)) {
-                die($installLog . ' の書込権限を変更して下さい。');
+                die($app->trans('install.text.error.permission',$installLog));
             }
             // install step2 でログディレクトリに書き込み権限が付与されればログ出力を開始する.
             $app->register(new \Silex\Provider\MonologServiceProvider(), array(
@@ -126,7 +126,7 @@ class InstallApplication extends \Silex\Application
             }
 
             return $app['twig']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
+                'error' => $app->trans('install.text.error.error'),
             ));
         });
 

@@ -94,7 +94,7 @@ class ShippingType extends AbstractType
                     EntityType::class,
                     array(
                         'required' => false,
-                        'label' => '配送業者',
+                        'label' => 'shipping.label.delivery_hour',
                         'class' => 'Eccube\Entity\Delivery',
                         'choice_label' => 'name',
                         'choices' => $Deliveries,

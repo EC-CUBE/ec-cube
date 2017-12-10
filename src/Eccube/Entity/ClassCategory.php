@@ -154,7 +154,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
         if ($this->isVisible()) {
             return $this->getName();
         } else {
-            return $this->getName().'(非表示)';
+            return $this->getName().$app->trans('class.text.hidden');
         }
     }
 

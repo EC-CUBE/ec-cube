@@ -251,7 +251,7 @@ class EntryController extends AbstractController
             log_info('本会員登録開始');
             $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
             if (is_null($Customer)) {
-                throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
+                throw new HttpException\NotFoundHttpException($app->trans('entrycontroller.text.error.registration'));
             }
 
             $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::REGULAR);
@@ -280,7 +280,7 @@ class EntryController extends AbstractController
 
             return [];
         } else {
-            throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
+            throw new HttpException\AccessDeniedHttpException($app->trans('entrycontroller.text.error.authorization'));
         }
     }
 }
