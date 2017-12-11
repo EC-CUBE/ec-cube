@@ -35,9 +35,12 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 class EccubeExtension extends \Twig_Extension
 {
 
-    public function __construct()
+    public function __construct(TaxRuleService $TaxRuleService)
     {
+        $this->TaxRuleService = $TaxRuleService;
     }
+
+    protected $TaxRuleService;
 
     /**
      * Returns a list of functions to add to the existing list.
@@ -123,7 +126,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getCalcIncTax($price, $tax_rate, $tax_rule)
     {
-        return $price + $this->app[TaxRuleService::class]->calcTax($price, $tax_rate, $tax_rule);
+        return $price + $this->TaxRuleService->calcTax($price, $tax_rate, $tax_rule);
     }
 
     /**
@@ -184,9 +187,12 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
-        $locale = $this->app['config']['locale'];
-        $currency = $this->app['config']['currency'];
+        // $locale = $this->app['config']['locale'];
+        // $currency = $this->app['config']['currency'];
 
+        // FIXME
+        $locale = 'ja_JP';
+        $currency = 'JPY';
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($number, $currency);

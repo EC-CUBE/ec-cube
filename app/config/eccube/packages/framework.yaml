@@ -20,6 +20,8 @@ framework:
       packages:
         admin:
           base_path: '/html/template/admin'
+        save_image:
+          base_path: '/html/upload/save_image'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     cache:
         # this value is used as part of the "namespace" generated for the cache item keys
