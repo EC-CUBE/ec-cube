@@ -24,17 +24,39 @@
 
 namespace Eccube\Security\Core\Encoder;
 
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class PasswordEncoder implements PasswordEncoderInterface
 {
+    /**
+     * @var string
+     */
+    public $auth_magic;
 
-    /* @var $config array */
-    public $config;
+    /**
+     * @var string
+     */
+    public $auth_type;
 
-    public function __construct(array $config)
+    /**
+     * @var string
+     */
+    public $password_hash_algos;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct($auth_magic, $auth_type, $password_hash_algos, LoggerInterface $logger)
     {
-        $this->config = $config;
+        $this->auth_magic = $auth_magic;
+        $this->auth_type = $auth_type;
+        $this->password_hash_algos = $password_hash_algos;
+        $this->logger = $logger;
     }
 
     /**
@@ -48,12 +70,12 @@ class PasswordEncoder implements PasswordEncoderInterface
     public function encodePassword($raw, $salt)
     {
         if ($salt == '') {
-            $salt = $this->config['auth_magic'];
+            $salt = $this->auth_magic;
         }
-        if ($this->config['auth_type'] == 'PLAIN') {
+        if ($this->auth_type == 'PLAIN') {
             $res = $raw;
         } else {
-            $res = hash_hmac($this->config['password_hash_algos'], $raw . ':' . $this->config['auth_magic'], $salt);
+            $res = hash_hmac($this->password_hash_algos, $raw . ':' . $this->auth_magic, $salt);
         }
 
         return $res;
@@ -74,14 +96,14 @@ class PasswordEncoder implements PasswordEncoderInterface
             return false;
         }
 
-        if ($this->config['auth_type'] == 'PLAIN') {
+        if ($this->auth_type == 'PLAIN') {
             if ($raw === $encoded) {
                 return true;
             }
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) {
-                $hash = sha1($raw . ':' . $this->config['auth_magic']);
+                $hash = sha1($raw . ':' . $this->auth_magic);
             } else {
                 $hash = $this->encodePassword($raw, $salt);
             }

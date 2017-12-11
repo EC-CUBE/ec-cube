@@ -330,20 +330,20 @@ class ProductController extends AbstractController
             ),
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
+        // $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
 
-        $is_favorite = false;
-        if ($app->isGranted('ROLE_USER')) {
-            $Customer = $app->user();
-            $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
-        }
+        // $is_favorite = false;
+        // if ($app->isGranted('ROLE_USER')) {
+        //     $Customer = $app->user();
+        //     $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
+        // }
 
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
             'form' => $builder->getForm()->createView(),
             'Product' => $Product,
-            'is_favorite' => $is_favorite,
+            'is_favorite' => false,
         ];
     }
 

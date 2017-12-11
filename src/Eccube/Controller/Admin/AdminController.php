@@ -46,6 +46,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -54,11 +55,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class AdminController extends AbstractController
 {
-    public function __construct(EventDispatcher $eventDispatcher, AuthenticationUtils $helper)
+    public function __construct(EventDispatcher $eventDispatcher, AuthenticationUtils $helper, AuthorizationChecker $authorizationChecker)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->helper = $helper;
+        $this->authorizationChecker = $authorizationChecker;
     }
+
+    /**
+     * @var AuthorizationChecker
+     */
+    protected $authorizationChecker;
 
     /**
      * @var AuthenticationUtils
@@ -103,15 +110,13 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/%admin_route%/login", name="admin_login")
-     * @Template("login.twig")
+     * @Template("@admin/login.twig")
      */
     public function login(Application $app, Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
-
-        // if ($app->isGranted('ROLE_ADMIN')) {
-        //     return $app->redirect($app->url('admin_homepage'));
-        // }
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+            return $app->redirect($app->url('admin_homepage'));
+        }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $builder = $this->container->get('form.factory')->createNamedBuilder('', LoginType::class);
@@ -134,7 +139,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/%admin_route%/", name="admin_homepage")
-     * @Template("index.twig")
+     * @Template("@admin/index.twig")
      */
     public function index(Application $app, Request $request)
     {

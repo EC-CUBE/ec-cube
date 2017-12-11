@@ -19,17 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'login_frame.twig' %}
+{% extends '@admin/login_frame.twig' %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
 
     <div class="login-box">
-        {{ include('alert.twig') }}
+        {{ include('@admin/alert.twig') }}
         <div class="login-box-body">
             <p class="login-logo2"><img src="{{ asset('assets/img/logo2.png', 'admin') }}" width="106"></p>
-            <form name="form1" id="form1" method="post" action="{{ path('admin_homepage') }}">
+            <form name="form1" id="form1" method="post" action="">
                 {% if app.session.flashBag.has('eccube.admin.login.target.path') %}
                     {% for targetPath in app.session.flashBag.get('eccube.admin.login.target.path') %}
                         <input type="hidden" name="_target_path" value="{{ targetPath }}" />
@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 {% if error %}
                 <div class="form-group">
-                    <span class="text-danger">{{ error|trans|raw }}</span>
+                    <span class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
                 </div>
                 {% endif %}
                 <p class="btn_area"><button type="submit" class="btn btn-primary btn-block btn-lg">ログイン</button></p>
