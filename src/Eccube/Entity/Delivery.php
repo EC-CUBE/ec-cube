@@ -85,9 +85,9 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * @var int|null
      *
-     * @ORM\Column(name="rank", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="integer", nullable=true, options={"unsigned":true})
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var boolean
@@ -281,27 +281,27 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int|null $rank
+     * @param int|null $sortNo
      *
      * @return Delivery
      */
-    public function setRank($rank = null)
+    public function setSortNo($sortNo = null)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int|null
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**

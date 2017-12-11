@@ -53,15 +53,15 @@ class NewsRepository extends AbstractRepository
      */
     public function up(News $News)
     {
-        $rank = $News->getRank();
-        $News2 = $this->findOneBy(array('rank' => $rank + 1));
+        $sortNo = $News->getSortNo();
+        $News2 = $this->findOneBy(array('sort_no' => $sortNo + 1));
 
         if (!$News2) {
             throw new \Exception(sprintf('%s より上位の新着情報が存在しません.', $News->getId()));
         }
 
-        $News->setRank($rank + 1);
-        $News2->setRank($rank);
+        $News->setSortNo($sortNo + 1);
+        $News2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
         $em->flush([$News, $News2]);
@@ -75,15 +75,15 @@ class NewsRepository extends AbstractRepository
      */
     public function down(News $News)
     {
-        $rank = $News->getRank();
-        $News2 = $this->findOneBy(array('rank' => $rank - 1));
+        $sortNo = $News->getSortNo();
+        $News2 = $this->findOneBy(array('sort_no' => $sortNo - 1));
 
         if (!$News2) {
             throw new \Exception();
         }
 
-        $News->setRank($rank - 1);
-        $News2->setRank($rank);
+        $News->setSortNo($sortNo - 1);
+        $News2->setSortNo($sortNo);
 
         $em = $this->getEntityManager();
         $em->flush([$News, $News2]);
@@ -97,12 +97,12 @@ class NewsRepository extends AbstractRepository
     public function save($News)
     {
         if (!$News->getId()) {
-            $rank = $this->createQueryBuilder('n')
-                ->select('COALESCE(MAX(n.rank), 0)')
+            $sortNo = $this->createQueryBuilder('n')
+                ->select('COALESCE(MAX(n.sort_no), 0)')
                 ->getQuery()
                 ->getSingleScalarResult();
             $News
-                ->setRank($rank + 1);
+                ->setSortNo($sortNo + 1);
         }
 
         $em = $this->getEntityManager();
@@ -122,9 +122,9 @@ class NewsRepository extends AbstractRepository
     {
        $this->createQueryBuilder('n')
             ->update()
-            ->set('n.rank', 'n.rank - 1')
-            ->where('n.rank > :rank')
-            ->setParameter('rank', $News->getRank())
+            ->set('n.sort_no', 'n.sort_no - 1')
+            ->where('n.sort_no > :sort_no')
+            ->setParameter('sort_no', $News->getSortNo())
             ->getQuery()
             ->execute();
 

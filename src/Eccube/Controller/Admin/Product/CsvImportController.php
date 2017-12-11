@@ -40,10 +40,10 @@ use Eccube\Exception\CsvImportException;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ClassCategoryRepository;
-use Eccube\Repository\DeliveryDateRepository;
+use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
-use Eccube\Repository\Master\TagRepository;
+use Eccube\Repository\TagRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
@@ -61,10 +61,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CsvImportController
 {
     /**
-     * @Inject(DeliveryDateRepository::class)
-     * @var DeliveryDateRepository
+     * @Inject(DeliveryDurationRepository::class)
+     * @var DeliveryDurationRepository
      */
-    protected $deliveryDateRepository;
+    protected $deliveryDurationRepository;
 
     /**
      * @Inject(SaleTypeRepository::class)
@@ -751,16 +751,16 @@ class CsvImportController
 
             // 画像の登録
             $images = explode(',', $row['商品画像']);
-            $rank = 1;
+            $sortNo = 1;
             foreach ($images as $image) {
 
                 $ProductImage = new ProductImage();
                 $ProductImage->setFileName(StringUtil::trimAll($image));
                 $ProductImage->setProduct($Product);
-                $ProductImage->setRank($rank);
+                $ProductImage->setSortNo($sortNo);
 
                 $Product->addProductImage($ProductImage);
-                $rank++;
+                $sortNo++;
                 $this->em->persist($ProductImage);
             }
         }
@@ -787,7 +787,7 @@ class CsvImportController
 
         // カテゴリの登録
         $categories = explode(',', $row['商品カテゴリ(ID)']);
-        $rank = 1;
+        $sortNo = 1;
         $categoriesIdList = array();
         foreach ($categories as $category) {
 
@@ -798,16 +798,16 @@ class CsvImportController
                 } else {
                     foreach($Category->getPath() as $ParentCategory){
                         if (!isset($categoriesIdList[$ParentCategory->getId()])){
-                            $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $rank);
+                            $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $sortNo);
                             $this->entityManager->persist($ProductCategory);
-                            $rank++;
+                            $sortNo++;
                             $Product->addProductCategory($ProductCategory);
                             $categoriesIdList[$ParentCategory->getId()] = true;
                         }
                     }
                     if (!isset($categoriesIdList[$Category->getId()])){
-                        $ProductCategory = $this->makeProductCategory($Product, $Category, $rank);
-                        $rank++;
+                        $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
+                        $sortNo++;
                         $this->em->persist($ProductCategory);
                         $Product->addProductCategory($ProductCategory);
                         $categoriesIdList[$Category->getId()] = true;
@@ -898,11 +898,11 @@ class CsvImportController
 
         if ($row['発送日目安(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDate = $this->deliveryDateRepository->find($row['発送日目安(ID)']);
-                if (!$DeliveryDate) {
+                $DeliveryDuration = $this->deliveryDurationRepository->find($row['発送日目安(ID)']);
+                if (!$DeliveryDuration) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
                 } else {
-                    $ProductClass->setDeliveryDate($DeliveryDate);
+                    $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
@@ -1050,11 +1050,11 @@ class CsvImportController
 
         if ($row['発送日目安(ID)'] != '') {
             if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
-                $DeliveryDate = $this->deliveryDateRepository->find($row['発送日目安(ID)']);
-                if (!$DeliveryDate) {
+                $DeliveryDuration = $this->deliveryDurationRepository->find($row['発送日目安(ID)']);
+                if (!$DeliveryDuration) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
                 } else {
-                    $ProductClass->setDeliveryDate($DeliveryDate);
+                    $ProductClass->setDeliveryDuration($DeliveryDuration);
                 }
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
@@ -1211,14 +1211,14 @@ class CsvImportController
      * @param \Eccube\Entity\Category $Category
      * @return ProductCategory
      */
-    private function makeProductCategory($Product, $Category, $rank)
+    private function makeProductCategory($Product, $Category, $sortNo)
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
         $ProductCategory->setCategoryId($Category->getId());
-        $ProductCategory->setRank($rank);
+        $ProductCategory->setSortNo($sortNo);
         
         return $ProductCategory;
     }

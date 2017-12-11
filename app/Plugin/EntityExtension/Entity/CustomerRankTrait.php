@@ -30,10 +30,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @EntityExtension("Eccube\Entity\Customer")
  */
-trait CustomerRankTrait
+trait CustomerSortNoTrait
 {
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    public $rank;
+    public $sort_no;
 }

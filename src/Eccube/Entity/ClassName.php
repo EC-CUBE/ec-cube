@@ -64,9 +64,9 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="integer")
+     * @ORM\Column(name="sort_no", type="integer")
      */
-    private $rank;
+    private $sort_no;
 
 
     /**
@@ -88,7 +88,7 @@ class ClassName extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\OneToMany(targetEntity="Eccube\Entity\ClassCategory", mappedBy="ClassName")
      * @ORM\OrderBy({
-     *     "rank"="DESC"
+     *     "sort_no"="DESC"
      * })
      */
     private $ClassCategories;
@@ -146,27 +146,27 @@ class ClassName extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return ClassName
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**

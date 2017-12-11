@@ -24,6 +24,7 @@ namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
 use Eccube\Annotation\Service;
+use Eccube\Exception\PluginException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -72,28 +73,29 @@ class ComposerApiService implements ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return array
+     * @return void
+     * @throws PluginException
      */
     public function execRequire($packageName)
     {
         $packageName = explode(" ", trim($packageName));
-        $output = $this->runCommand(array(
+        $this->runCommand(array(
             'command' => 'require',
             'packages' => $packageName,
             '--no-interaction' => true,
             '--profile' => true,
             '--prefer-dist' => true,
             '--ignore-platform-reqs' => true,
+            '--update-with-dependencies' => true,
         ));
-
-        return OutputParser::parseRequire($output);
     }
 
     /**
      * Run remove command
      *
      * @param string $packageName format "foo/bar foo/bar:1.0.0"
-     * @return bool
+     * @return void
+     * @throws PluginException
      */
     public function execRemove($packageName)
     {
@@ -105,8 +107,6 @@ class ComposerApiService implements ComposerServiceInterface
             '--no-interaction' => true,
             '--profile' => true,
         ));
-
-        return true;
     }
 
     /**
@@ -178,7 +178,7 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * Run composer command
-     *
+     * @throws PluginException
      * @param array $commands
      * @return string
      */
@@ -195,7 +195,7 @@ class ComposerApiService implements ComposerServiceInterface
         $log = $output->fetch();
         if ($exitCode) {
             log_error($log);
-            throw new \RuntimeException($log);
+            throw new PluginException($log);
         }
         log_info($log, $commands);
 

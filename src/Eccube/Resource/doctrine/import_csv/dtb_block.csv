@@ -1,4 +1,4 @@
-"id","device_type_id","block_name","file_name","create_date","update_date","logical","deletable","discriminator_type"
+"id","device_type_id","block_name","file_name","create_date","update_date","use_controller","deletable","discriminator_type"
 "1","10","カテゴリ","category","2017-03-07 10:14:52","2017-03-07 10:14:52","0","0","block"
 "2","10","カゴの中","cart","2017-03-07 10:14:52","2017-03-07 10:14:52","0","0","block"
 "3","10","商品検索","search_product","2017-03-07 10:14:52","2017-03-07 10:14:52","1","0","block"

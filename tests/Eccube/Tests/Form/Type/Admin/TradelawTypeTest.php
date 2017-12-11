@@ -35,35 +35,35 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'law_company' => '販売業者名',
-        'law_manager' => '運営責任者名',
-        'law_zip' => array(
-            'law_zip01' => '530',
-            'law_zip02' => '0001',
+        'company' => '販売業者名',
+        'manager' => '運営責任者名',
+        'zip' => array(
+            'zip01' => '530',
+            'zip02' => '0001',
         ),
-        'law_address' => array(
-            'law_pref' => '5',
-            'law_addr01' => '北区',
-            'law_addr02' => '梅田',
+        'address' => array(
+            'pref' => '5',
+            'addr01' => '北区',
+            'addr02' => '梅田',
         ),
-        'law_tel' => array(
-            'law_tel01' => '03',
-            'law_tel02' => '1111',
-            'law_tel03' => '1111',
+        'tel' => array(
+            'tel01' => '03',
+            'tel02' => '1111',
+            'tel03' => '1111',
         ),
-        'law_fax' => array(
-            'law_fax01' => '03',
-            'law_fax02' => '1111',
-            'law_fax03' => '4444',
+        'fax' => array(
+            'fax01' => '03',
+            'fax02' => '1111',
+            'fax03' => '4444',
         ),
-        'law_email' => 'eccube@example.com',
-        'law_url' => 'http://www.eccube.net',
-        'law_term01' => 'law_term01',
-        'law_term02' => 'law_term01',
-        'law_term03' => 'law_term01',
-        'law_term04' => 'law_term01',
-        'law_term05' => 'law_term01',
-        'law_term06' => 'law_term01',
+        'email' => 'eccube@example.com',
+        'url' => 'http://www.eccube.net',
+        'term01' => 'term01',
+        'term02' => 'term01',
+        'term03' => 'term01',
+        'term04' => 'term01',
+        'term05' => 'term01',
+        'term06' => 'term01',
     );
 
     public function setUp()
@@ -88,9 +88,9 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidFax_Blank()
     {
-        $this->formData['law_fax']['law_fax01'] = '';
-        $this->formData['law_fax']['law_fax02'] = '';
-        $this->formData['law_fax']['law_fax03'] = '';
+        $this->formData['fax']['fax01'] = '';
+        $this->formData['fax']['fax02'] = '';
+        $this->formData['fax']['fax03'] = '';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -98,9 +98,9 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTel_Blank()
     {
-        $this->formData['law_tel']['law_tel01'] = '';
-        $this->formData['law_tel']['law_tel02'] = '';
-        $this->formData['law_tel']['law_tel03'] = '';
+        $this->formData['tel']['tel01'] = '';
+        $this->formData['tel']['tel02'] = '';
+        $this->formData['tel']['tel03'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -109,7 +109,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawTerm01_Blank()
     {
-        $this->formData['law_term01'] = '';
+        $this->formData['term01'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -117,7 +117,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawTerm02_Blank()
     {
-        $this->formData['law_term02'] = '';
+        $this->formData['term02'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -125,7 +125,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawTerm03_Blank()
     {
-        $this->formData['law_term03'] = '';
+        $this->formData['term03'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -133,7 +133,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawTerm04_Blank()
     {
-        $this->formData['law_term04'] = '';
+        $this->formData['term04'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -141,7 +141,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawTerm05_Blank()
     {
-        $this->formData['law_term05'] = '';
+        $this->formData['term05'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -149,7 +149,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawTerm06_Blank()
     {
-        $this->formData['law_term06'] = '';
+        $this->formData['term06'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -157,7 +157,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawCompany_Blank()
     {
-        $this->formData['law_company'] = '';
+        $this->formData['company'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -165,7 +165,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawManager_Blank()
     {
-        $this->formData['law_manager'] = '';
+        $this->formData['manager'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -173,7 +173,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawZip01_Blank()
     {
-        $this->formData['law_zip']['law_zip01'] = '';
+        $this->formData['zip']['zip01'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -181,7 +181,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawZip02_Blank()
     {
-        $this->formData['law_zip']['law_zip02'] = '';
+        $this->formData['zip']['zip02'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -189,7 +189,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawPref_Blank()
     {
-        $this->formData['law_address']['law_pref'] = '';
+        $this->formData['address']['pref'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -197,7 +197,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawAddr01_Blank()
     {
-        $this->formData['law_address']['law_addr01'] = '';
+        $this->formData['address']['addr01'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -205,7 +205,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawAddr02_Blank()
     {
-        $this->formData['law_address']['law_addr02'] = '';
+        $this->formData['address']['addr02'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -213,7 +213,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawEmail_Blank()
     {
-        $this->formData['law_email'] = '';
+        $this->formData['email'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -221,7 +221,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawUrl_Blank()
     {
-        $this->formData['law_url'] = '';
+        $this->formData['url'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -229,7 +229,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLawUrl()
     {
-        $this->formData['law_url'] = 'hogehoge';
+        $this->formData['url'] = 'hogehoge';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -237,7 +237,7 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidLawUrl_Nihongo()
     {
-        $this->formData['law_url'] = 'http://日本語.com';
+        $this->formData['url'] = 'http://日本語.com';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

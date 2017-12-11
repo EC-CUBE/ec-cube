@@ -246,9 +246,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="nostock_hidden", type="boolean", options={"default":false})
+     * @ORM\Column(name="option_nostock_hidden", type="boolean", options={"default":false})
      */
-    private $nostock_hidden = false;
+    private $option_nostock_hidden = false;
 
     /**
      * @var boolean
@@ -329,7 +329,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pref", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
@@ -1019,27 +1019,27 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set nostockHidden.
+     * Set optionNostockHidden.
      *
-     * @param integer $nostockHidden
+     * @param integer $optionNostockHidden
      *
      * @return BaseInfo
      */
-    public function setNostockHidden($nostockHidden)
+    public function setOptionNostockHidden($optionNostockHidden)
     {
-        $this->nostock_hidden = $nostockHidden;
+        $this->option_nostock_hidden = $optionNostockHidden;
 
         return $this;
     }
 
     /**
-     * Get nostockHidden.
+     * Get optionNostockHidden.
      *
      * @return boolean
      */
-    public function isNostockHidden()
+    public function isOptionNostockHidden()
     {
-        return $this->nostock_hidden;
+        return $this->option_nostock_hidden;
     }
 
     /**

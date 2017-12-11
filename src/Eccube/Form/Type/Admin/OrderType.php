@@ -241,7 +241,7 @@ class OrderType extends AbstractType
                 'placeholder' => '選択してください',
                 'query_builder' => function ($er) {
                     return $er->createQueryBuilder('o')
-                        ->orderBy('o.rank', 'ASC');
+                        ->orderBy('o.sort_no', 'ASC');
                 },
                 'constraints' => array(
                     new Assert\NotBlank(),

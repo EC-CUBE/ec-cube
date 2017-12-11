@@ -132,8 +132,8 @@ class ProductController extends AbstractController
     public function index(Application $app, Request $request)
     {
         // Doctrine SQLFilter
-        // if ($this->BaseInfo->isNostockHidden()) {
-        //     $this->entityManager->getFilters()->enable('nostock_hidden');
+        // if ($this->BaseInfo->isOptionNostockHidden()) {
+        //     $this->entityManager->getFilters()->enable('option_nostock_hidden');
         // }
 
         // handleRequestは空のqueryの場合は無視するため
@@ -551,7 +551,7 @@ class ProductController extends AbstractController
         // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
         if (!$is_admin) {
             // 在庫なし商品の非表示オプションが有効な場合.
-            // if ($this->BaseInfo->isNostockHidden()) {
+            // if ($this->BaseInfo->isOptionNostockHidden()) {
             //     if (!$Product->getStockFind()) {
             //         return false;
             //     }

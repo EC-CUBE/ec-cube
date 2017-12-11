@@ -75,7 +75,7 @@ class NewsController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $NewsList = $this->newsRepository->findBy(array(), array('rank' => 'DESC'));
+        $NewsList = $this->newsRepository->findBy(array(), array('sort_no' => 'DESC'));
 
         $builder = $this->formFactory->createBuilder();
 

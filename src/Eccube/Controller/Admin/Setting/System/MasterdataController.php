@@ -109,7 +109,7 @@ class MasterdataController extends AbstractController
                 try {
                     $masterdata = $this->entityManager->getRepository($entityName)->findBy(
                         array(),
-                        array('rank' => 'ASC')
+                        array('sort_no' => 'ASC')
                     );
                     $data['data'] = array();
                     $data['masterdata_name'] = $entity;
@@ -170,7 +170,7 @@ class MasterdataController extends AbstractController
 
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $entity = new $entityName();
-                $rank = 0;
+                $sortNo = 0;
                 $ids = array_map(
                     function ($v) {
                         return $v['id'];
@@ -181,7 +181,7 @@ class MasterdataController extends AbstractController
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
-                        $entity->setRank($rank++);
+                        $entity->setSortNo($sortNo++);
                         $this->entityManager->merge($entity);
                     } elseif (!in_array($key, $ids)) {
                         // remove

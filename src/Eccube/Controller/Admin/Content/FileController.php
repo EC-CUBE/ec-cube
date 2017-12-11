@@ -257,7 +257,7 @@ class FileController extends AbstractController
     {
         $str = "arrTree = new Array();\n";
         foreach ($tree as $key => $val) {
-            $str .= 'arrTree[' . $key . "] = new Array(" . $key . ", '" . $val['type'] . "', '" . $val['path'] . "', " . $val['rank'] . ',';
+            $str .= 'arrTree[' . $key . "] = new Array(" . $key . ", '" . $val['type'] . "', '" . $val['path'] . "', " . $val['sort_no'] . ',';
             if ($val['open']) {
                 $str .= "true);\n";
             } else {
@@ -278,11 +278,11 @@ class FileController extends AbstractController
         $tree[] = array(
             'path' => $topDir,
             'type' => '_parent',
-            'rank' => 0,
+            'sort_no' => 0,
             'open' => true,
         );
 
-        $defaultRank = count(explode('/', $topDir));
+        $defaultSortNo = count(explode('/', $topDir));
 
         $openDirs = array();
         if ($request->get('tree_status')) {
@@ -292,12 +292,12 @@ class FileController extends AbstractController
         foreach ($finder as $dirs) {
             $path = $this->normalizePath($dirs->getRealPath());
             $type = (iterator_count(Finder::create()->in($path)->directories())) ? '_parent' : '_child';
-            $rank = count(explode('/', $path)) - $defaultRank;
+            $sortNo = count(explode('/', $path)) - $defaultSortNo;
 
             $tree[] = array(
                 'path' => $path,
                 'type' => $type,
-                'rank' => $rank,
+                'sort_no' => $sortNo,
                 'open' => (in_array($path, $openDirs)) ? true : false,
             );
         }

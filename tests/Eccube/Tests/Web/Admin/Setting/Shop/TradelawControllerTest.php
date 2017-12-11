@@ -50,7 +50,7 @@ class TradelawControllerTest extends AbstractAdminWebTestCase
     {
         $formData = $this->createFormData();
         if (!$isSuccess) {
-            $formData['law_company'] = '';
+            $formData['company'] = '';
         }
         $this->client->request(
             'POST',
@@ -73,35 +73,35 @@ class TradelawControllerTest extends AbstractAdminWebTestCase
 
         $form = array(
             '_token' => 'dummy',
-            'law_company' => $faker->word,
-            'law_manager' => $faker->word,
-            'law_zip' => array(
-                'law_zip01' => $faker->postcode1(),
-                'law_zip02' => $faker->postcode2(),
+            'company' => $faker->word,
+            'manager' => $faker->word,
+            'zip' => array(
+                'zip01' => $faker->postcode1(),
+                'zip02' => $faker->postcode2(),
             ),
-            'law_address' => array(
-                'law_pref' => '5',
-                'law_addr01' => $faker->city,
-                'law_addr02' => $faker->streetAddress,
+            'address' => array(
+                'pref' => '5',
+                'addr01' => $faker->city,
+                'addr02' => $faker->streetAddress,
             ),
-            'law_tel' => array(
-                'law_tel01' => $tel[0],
-                'law_tel02' => $tel[1],
-                'law_tel03' => $tel[2],
+            'tel' => array(
+                'tel01' => $tel[0],
+                'tel02' => $tel[1],
+                'tel03' => $tel[2],
             ),
-            'law_fax' => array(
-                'law_fax01' => $tel[0],
-                'law_fax02' => $tel[1],
-                'law_fax03' => $tel[2],
+            'fax' => array(
+                'fax01' => $tel[0],
+                'fax02' => $tel[1],
+                'fax03' => $tel[2],
             ),
-            'law_email' => $faker->email,
-            'law_url' => $faker->url,
-            'law_term01' => $faker->word,
-            'law_term02' => $faker->word,
-            'law_term03' => $faker->word,
-            'law_term04' => $faker->word,
-            'law_term05' => $faker->word,
-            'law_term06' => $faker->word,
+            'email' => $faker->email,
+            'url' => $faker->url,
+            'term01' => $faker->word,
+            'term02' => $faker->word,
+            'term03' => $faker->word,
+            'term04' => $faker->word,
+            'term05' => $faker->word,
+            'term06' => $faker->word,
         );
 
         return $form;

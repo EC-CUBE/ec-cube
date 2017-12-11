@@ -45,6 +45,6 @@ class PluginRepository extends AbstractRepository
 
     public function findAllEnabled()
     {
-        return $this->findBy(['enable' => '1']);
+        return $this->findBy(['enabled' => '1']);
     }
 }

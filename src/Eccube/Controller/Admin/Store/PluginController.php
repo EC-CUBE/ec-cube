@@ -279,7 +279,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->isEnable()) {
+        if ($Plugin->isEnabled()) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
             $requires = $this->pluginService->findRequirePluginNeedEnable($Plugin->getCode());
@@ -314,7 +314,7 @@ class PluginController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->isEnable()) {
+        if ($Plugin->isEnabled()) {
             $dependents = $this->pluginService->findDependentPluginNeedDisable($Plugin->getCode());
             if (!empty($dependents)) {
                 $dependName = $dependents[0];
@@ -474,207 +474,6 @@ class PluginController extends AbstractController
     }
 
     /**
-     * オーナーズストアプラグインインストール画面
-     *
-     * @Route("/%admin_route%/store/plugin/owners_install", name="admin_store_plugin_owners_install")
-     * @Template("Store/plugin_search.twig")
-     */
-    public function ownersInstall(Application $app, Request $request)
-    {
-        // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $authKey = $this->BaseInfo->getAuthenticationKey();
-        $authResult = true;
-        $success = 0;
-        $items = array();
-        $promotionItems = array();
-        $message = '';
-        if (!is_null($authKey)) {
-
-            // オーナーズストア通信
-            $url = $this->appConfig['package_repo_url'].'/search/packages.json';
-            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
-
-            if ($json === false) {
-                // 接続失敗時
-                $success = 0;
-
-                $message = $this->getResponseErrorMessage($info);
-
-            } else {
-                // 接続成功時
-
-                $data = json_decode($json, true);
-
-                if (isset($data['success'])) {
-                    $success = $data['success'];
-                    if ($success == '1') {
-                        $items = array();
-
-                        // 既にインストールされているかどうか確認
-                        $Plugins = $this->pluginRepository->findAll();
-                        $status = false;
-                        // update_status 1 : 未インストール、2 : インストール済、 3 : 更新あり、4 : 有料購入
-                        foreach ($data['item'] as $item) {
-                            foreach ($Plugins as $plugin) {
-                                if ($plugin->getSource() == $item['product_id']) {
-                                    if ($plugin->getVersion() == $item['version']) {
-                                        // バージョンが同じ
-                                        $item['update_status'] = 2;
-                                    } else {
-                                        // バージョンが異なる
-                                        $item['update_status'] = 3;
-                                    }
-                                    $items[] = $item;
-                                    $status = true;
-                                    break;
-                                }
-                            }
-                            if (!$status) {
-                                // 未インストール
-                                $item['update_status'] = 1;
-                                $items[] = $item;
-                            }
-                            $status = false;
-                        }
-
-                        // EC-CUBEのバージョンチェック
-                        // 参照渡しをして値を追加
-                        foreach ($items as &$item) {
-                            if (in_array(Constant::VERSION, $item['eccube_version'])) {
-                                // 対象バージョン
-                                $item['version_check'] = 1;
-                            } else {
-                                // 未対象バージョン
-                                $item['version_check'] = 0;
-                            }
-                            if ($item['price'] != '0' && $item['purchased'] == '0') {
-                                // 有料商品で未購入
-                                $item['update_status'] = 4;
-                            }
-                        }
-                        unset($item);
-
-                        // promotionアイテム
-                        $i = 0;
-                        foreach ($items as $item) {
-                            if ($item['promotion'] == 1) {
-                                $promotionItems[] = $item;
-                                unset($items[$i]);
-                            }
-                            $i++;
-                        }
-
-                    } else {
-                        $message = $data['error_code'].' : '.$data['error_message'];
-                    }
-                } else {
-                    $success = 0;
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
-                }
-            }
-
-        } else {
-            $authResult = false;
-        }
-
-        return [
-            'authResult' => $authResult,
-            'success' => $success,
-            'items' => $items,
-            'promotionItems' => $promotionItems,
-            'message' => $message,
-        ];
-    }
-
-    /**
-     * オーナーズブラグインインストール、アップデート
-     *
-     * @Route("/%admin_route%/store/plugin/upgrade/{action}/{id}/{version}", requirements={"id" = "\d+"}, name="admin_store_plugin_upgrade")
-     * @param Application $app
-     * @param Request     $request
-     * @param string      $action
-     * @param int         $id
-     * @param string      $version
-     * @return RedirectResponse
-     */
-    public function upgrade(Application $app, Request $request, $action, $id, $version)
-    {
-        $authKey = $this->BaseInfo->getAuthenticationKey();
-        $message = '';
-        if (!is_null($authKey)) {
-            // オーナーズストア通信
-            $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?method=download&product_id='.$id;
-            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
-            if ($json === false) {
-                // 接続失敗時
-                $message = $this->getResponseErrorMessage($info);
-            } else {
-                // 接続成功時
-                $data = json_decode($json, true);
-                if (isset($data['success'])) {
-                    $success = $data['success'];
-                    if ($success == '1') {
-                        $tmpDir = null;
-                        try {
-                            $service = $this->pluginService;
-                            $item = $data['item'];
-                            $file = base64_decode($item['data']);
-                            $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
-                            $tmpDir = $service->createTempDir();
-                            $tmpFile = sha1(StringUtil::random(32)).'.'.$extension;
-
-                            // ファイル作成
-                            $fs = new Filesystem();
-                            $fs->dumpFile($tmpDir.'/'.$tmpFile, $file);
-
-                            if ($action == 'install') {
-                                $service->install($tmpDir.'/'.$tmpFile, $id);
-                                $app->addSuccess('admin.plugin.install.complete', 'admin');
-                            } else {
-                                if ($action == 'update') {
-                                    $Plugin = $this->pluginRepository->findOneBy(array('source' => $id));
-                                    $service->update($Plugin, $tmpDir.'/'.$tmpFile);
-                                    $app->addSuccess('admin.plugin.update.complete', 'admin');
-                                }
-                            }
-
-                            $fs = new Filesystem();
-                            $fs->remove($tmpDir);
-
-                            // ダウンロード完了通知処理(正常終了時)
-                            $url = $this->appConfig['package_repo_url'].'/search/packages.json'.'?method=commit&product_id='.$id.'&status=1&version='.$version;
-                            $this->getRequestApi($request, $authKey, $url, $app);
-
-                            return $app->redirect($app->url('admin_store_plugin'));
-                        } catch (PluginException $e) {
-                            if (!empty($tmpDir) && file_exists($tmpDir)) {
-                                $fs = new Filesystem();
-                                $fs->remove($tmpDir);
-                            }
-                            $message = $e->getMessage();
-                        }
-                    } else {
-                        $message = $data['error_code'].' : '.$data['error_message'];
-                    }
-                } else {
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
-                }
-            }
-        }
-
-        // ダウンロード完了通知処理(エラー発生時)
-        $url = $this->appConfig['package_repo_url']
-            .'/search/packages.json'
-            .'?method=commit&product_id='.$id
-            .'&status=0&version='.$version
-            .'&message='.urlencode($message);
-        $this->getRequestApi($request, $authKey, $url, $app);
-        $app->addError($message, 'admin');
-
-        return $app->redirect($app->url('admin_store_plugin_owners_install'));
-    }
-
-    /**
      * 認証キー設定画面
      *
      * @Route("/%admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
@@ -811,7 +610,7 @@ class PluginController extends AbstractController
             $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
             $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
             $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
-            $unregisteredPlugins[$pluginCode]['enable'] = Constant::DISABLED;
+            $unregisteredPlugins[$pluginCode]['enabled'] = Constant::DISABLED;
             $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
         }
 

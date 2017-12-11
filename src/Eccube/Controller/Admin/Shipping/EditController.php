@@ -10,9 +10,9 @@ use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -194,7 +194,7 @@ class EditController
                     if ($form->isValid()) {
                         $ShippingStatus = $this->shippingStatusReposisotry->find(ShippingStatus::SHIPPED);
                         $TargetShipping->setShippingStatus($ShippingStatus);
-                        $TargetShipping->setCommitDate(new \DateTime());
+                        $TargetShipping->setShippingDate(new \DateTime());
                     }
                     // no break
                 case 'register':

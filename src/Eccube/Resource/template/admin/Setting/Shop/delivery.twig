@@ -33,36 +33,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js', 'admin') }}"></script>
     <script>
         $(function() {
-            var oldRanks = [];
-            // 画面の中のrank一覧を保持
+            var oldSortNos = [];
+            // 画面の中のsortNo一覧を保持
             $("div.tableish > .item_box").each(function() {
-                oldRanks.push(this.dataset.rank);
+                oldSortNos.push(this.dataset.sortNo);
             });
             // rsort
-            oldRanks.sort(function(a,b){return a - b;}).reverse();
+            oldSortNos.sort(function(a,b){return a - b;}).reverse();
 
             $("div.tableish").sortable({
                 items: '> .item_box',
                 cursor: 'move',
                 update: function(e, ui) {
                     $("body").append($('<div class="modal-backdrop in"></div>'));
-                    updateRank();
+                    updateSortNo();
                 }
             });
 
-            var updateRank = function() {
-                // 並び替え後にrankを更新
-                var newRanks = {};
+            var updateSortNo = function() {
+                // 並び替え後にsortNoを更新
+                var newSortNos = {};
                 var i = 0;
                 $("div.tableish > .item_box").each(function() {
-                    newRanks[this.dataset.deliveryId] = oldRanks[i];
+                    newSortNos[this.dataset.deliveryId] = oldSortNos[i];
                     i++;
                 });
 
                 $.ajax({
-                    url: '{{ url('admin_setting_shop_delivery_rank_move') }}',
+                    url: '{{ url('admin_setting_shop_delivery_sort_no_move') }}',
                     type: 'POST',
-                    data: newRanks
+                    data: newSortNos
                 }).done(function() {
                     $(".modal-backdrop").remove();
                 }).fail(function() {
@@ -88,7 +88,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 {% for Delivery in Deliveries%}
 
-                                    <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-rank="{{ Delivery.rank }}">
+                                    <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
                                         <div class="icon_sortable td">
                                             <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                         </div>

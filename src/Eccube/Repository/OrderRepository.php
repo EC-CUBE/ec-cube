@@ -68,7 +68,7 @@ class OrderRepository extends AbstractRepository
 
         switch ($Status->getId()) {
             case '5': // 発送済へ
-                $Order->setCommitDate(new \DateTime());
+                $Order->setShippingDate(new \DateTime());
                 break;
             case '6': // 入金済へ
                 $Order->setPaymentDate(new \DateTime());
@@ -399,20 +399,20 @@ class OrderRepository extends AbstractRepository
                 ->setParameter('payment_date_end', $date);
         }
 
-        // commit_date
-        if (!empty($searchData['commit_date_start']) && $searchData['commit_date_start']) {
-            $date = $searchData['commit_date_start'];
+        // shipping_date
+        if (!empty($searchData['shipping_date_start']) && $searchData['shipping_date_start']) {
+            $date = $searchData['shipping_date_start'];
             $qb
-                ->andWhere('o.commit_date >= :commit_date_start')
-                ->setParameter('commit_date_start', $date);
+                ->andWhere('o.shipping_date >= :shipping_date_start')
+                ->setParameter('shipping_date_start', $date);
         }
-        if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
-            $date = clone $searchData['commit_date_end'];
+        if (!empty($searchData['shipping_date_end']) && $searchData['shipping_date_end']) {
+            $date = clone $searchData['shipping_date_end'];
             $date = $date
                 ->modify('+1 days');
             $qb
-                ->andWhere('o.commit_date < :commit_date_end')
-                ->setParameter('commit_date_end', $date);
+                ->andWhere('o.shipping_date < :shipping_date_end')
+                ->setParameter('shipping_date_end', $date);
         }
 
 

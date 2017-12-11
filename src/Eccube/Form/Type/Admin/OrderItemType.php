@@ -208,7 +208,7 @@ class OrderItemType extends AbstractType
                     // 受注済み明細の場合
                     if (array_key_exists('id', $data) && isset($data['id'])) {
                         /** @var \Eccube\Entity\OrderItem $OrderItem */
-                        $OrderItem = $this->OrderItemRepository
+                        $OrderItem = $this->orderItemRepository
                             ->find($data['id']);
                         $data = array_merge($data, $OrderItem->toArray(['Order', 'Product', 'ProductClass', 'Shipping', 'TaxType', 'TaxDisplayType', 'OrderItemType']));
 

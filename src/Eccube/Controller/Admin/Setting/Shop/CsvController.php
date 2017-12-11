@@ -95,8 +95,8 @@ class CsvController extends AbstractController
         );
 
         $CsvNotOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enable' => false),
-            array('rank' => 'ASC')
+            array('CsvType' => $CsvType, 'enabled' => false),
+            array('sort_no' => 'ASC')
         );
 
         $builder->add(
@@ -113,8 +113,8 @@ class CsvController extends AbstractController
         );
 
         $CsvOutput = $this->csvRepository->findBy(
-            array('CsvType' => $CsvType, 'enable' => true),
-            array('rank' => 'ASC')
+            array('CsvType' => $CsvType, 'enabled' => true),
+            array('sort_no' => 'ASC')
         );
 
         $builder->add(
@@ -147,23 +147,23 @@ class CsvController extends AbstractController
             $data = $request->get('form');
             if (isset($data['csv_not_output'])) {
                 $Csvs = $data['csv_not_output'];
-                $rank = 1;
+                $sortNo = 1;
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
-                    $c->setRank($rank);
-                    $c->setEnable(false);
-                    $rank++;
+                    $c->setSortNo($sortNo);
+                    $c->setEnabled(false);
+                    $sortNo++;
                 }
             }
 
             if (isset($data['csv_output'])) {
                 $Csvs = $data['csv_output'];
-                $rank = 1;
+                $sortNo = 1;
                 foreach ($Csvs as $csv) {
                     $c = $this->csvRepository->find($csv);
-                    $c->setRank($rank);
-                    $c->setEnable(true);
-                    $rank++;
+                    $c->setSortNo($sortNo);
+                    $c->setEnabled(true);
+                    $sortNo++;
                 }
             }
 

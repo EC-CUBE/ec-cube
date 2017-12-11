@@ -134,7 +134,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         // アンインストールできるか
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
-        $this->assertEquals(Constant::DISABLED,$plugin->isEnable());
+        $this->assertEquals(Constant::DISABLED,$plugin->isEnabled());
         $this->assertTrue($this->service->uninstall($plugin));
 
 
@@ -418,7 +418,7 @@ EOD;
         // アンインストールできるか
         $this->assertTrue($this->service->uninstall($plugin));
         // ちゃんとファイルが消えているか
-        $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enable'=>1)));
+        $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enabled'=>1)));
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
@@ -476,13 +476,13 @@ EOD;
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
         $this->assertTrue($this->service->install($tmpfile));
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
-        $this->assertEquals(Constant::DISABLED,$plugin->isEnable()); // インストール直後にプラグインがdisableになっているか
+        $this->assertEquals(Constant::DISABLED,$plugin->isEnabled()); // インストール直後にプラグインがdisableになっているか
         try{
             $this->assertTrue($this->service->enable($plugin));// enableにしようとするが、例外発生
         }catch(\Exception $e){ }
         $this->app['orm.em']->detach($plugin);
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
-        $this->assertEquals(Constant::DISABLED,$plugin->isEnable()); // プラグインがdisableのままになっていることを確認
+        $this->assertEquals(Constant::DISABLED,$plugin->isEnabled()); // プラグインがdisableのままになっていることを確認
 
     }
 

@@ -15,7 +15,6 @@
 - mtb_sale_type.csv
 - mtb_sex.csv
 - mtb_shipping_status.csv
-- mtb_tag.csv
 - mtb_rounding_type.csv
 - mtb_tax_type.csv
 - mtb_tax_display_type.csv
@@ -30,6 +29,7 @@
 - dtb_authority_role.csv
 - dtb_base_info.csv
 - dtb_category.csv
+- dtb_tag.csv
 - dtb_class_name.csv
 - dtb_class_category.csv
 - dtb_csv.csv
@@ -37,7 +37,7 @@
 - dtb_customer_address.csv
 - dtb_customer_favorite_product.csv
 - dtb_delivery.csv
-- dtb_delivery_date.csv
+- dtb_delivery_duration.csv
 - dtb_delivery_fee.csv
 - dtb_delivery_time.csv
 - dtb_help.csv

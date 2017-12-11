@@ -53,16 +53,16 @@ class PaymentRepository extends AbstractRepository
     {
         if ($id == 0) {
 
-            $Payment = $this->findOneBy(array(), array('rank' => 'DESC'));
+            $Payment = $this->findOneBy(array(), array('sort_no' => 'DESC'));
 
-            $rank = 1;
+            $sortNo = 1;
             if ($Payment) {
-                $rank = $Payment->getRank() + 1;
+                $sortNo = $Payment->getSortNo() + 1;
             }
 
             $Payment = new \Eccube\Entity\Payment();
             $Payment
-                ->setRank($rank)
+                ->setSortNo($sortNo)
                 ->setFixed(true)
                 ->setVisible(true);
         } else {
@@ -98,7 +98,7 @@ class PaymentRepository extends AbstractRepository
         $query = $this->createQueryBuilder('p')
             ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
             ->where('po.Delivery = (:delivery)')
-            ->orderBy('p.rank', 'DESC')
+            ->orderBy('p.sort_no', 'DESC')
             ->setParameter('delivery', $delivery)
             ->getQuery();
 

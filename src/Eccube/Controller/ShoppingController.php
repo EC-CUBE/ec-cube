@@ -213,9 +213,49 @@ class ShoppingController extends AbstractShoppingController
      *
      * @Route("/shopping/confirm", name="shopping_confirm")
      * @Method("POST")
-     * @Template("Shopping/index.twig")
+     * @Template("Shopping/confirm.twig")
      */
     public function confirm(Application $app, Request $request)
+    {
+        // カートチェック
+        $response = $app->forward($app->path("shopping_check_to_cart"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
+
+        // 受注の存在チェック
+        $response = $app->forward($app->path("shopping_exists_order"));
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
+        }
+
+        // フォームの生成
+        $app->forward($app->path("shopping_create_form"));
+        $form = $this->parameterBag->get(OrderType::class);
+        $form->handleRequest($request);
+
+        $form = $this->parameterBag->get(OrderType::class);
+        $Order = $this->parameterBag->get('Order');
+
+        $flowResult = $this->executePurchaseFlow($app, $Order);
+        if ($flowResult->hasWarning() || $flowResult->hasError()) {
+            return $app->redirect($app->url('shopping_error'));
+        }
+
+        return [
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ];
+    }
+
+    /**
+     * 購入処理
+     *
+     * @Route("/shopping/order", name="shopping_order")
+     * @Method("POST")
+     * @Template("Shopping/index.twig")
+     */
+    public function order(Application $app, Request $request)
     {
         // カートチェック
         $response = $app->forward($app->path("shopping_check_to_cart"));

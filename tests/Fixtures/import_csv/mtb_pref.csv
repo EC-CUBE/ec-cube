@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "1","北海道","1","pref"
 "2","青森県","2","pref"
 "3","岩手県","3","pref"
