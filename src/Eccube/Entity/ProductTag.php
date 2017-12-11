@@ -56,9 +56,9 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     private $Product;
 
     /**
-     * @var \Eccube\Entity\Master\Tag
+     * @var \Eccube\Entity\Tag
      *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Tag", inversedBy="ProductTag")
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Tag", inversedBy="ProductTag")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      * })
@@ -137,11 +137,11 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Set tag.
      *
-     * @param \Eccube\Entity\Master\Tag|null $tag
+     * @param \Eccube\Entity\Tag|null $tag
      *
      * @return ProductTag
      */
-    public function setTag(\Eccube\Entity\Master\Tag $tag = null)
+    public function setTag(\Eccube\Entity\Tag $tag = null)
     {
         $this->Tag = $tag;
 
@@ -151,7 +151,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get tag.
      *
-     * @return \Eccube\Entity\Master\Tag|null
+     * @return \Eccube\Entity\Tag|null
      */
     public function getTag()
     {

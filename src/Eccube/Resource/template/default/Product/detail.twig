@@ -133,7 +133,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         });
     </script>
     <script>
-        $('#add-cart').on('click', function () {
+        $('#add-cart').on('click', function (e) {
+            e.preventDefault();
             {% if form.classcategory_id1 is defined %}
             // 規格1フォームの必須チェック
             if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
@@ -229,8 +230,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                     {# タグ #}
                     <ul class="ec-productRole__tags">
-                        {% for ProductTag in Product.ProductTag %}
-                            <li class="ec-productRole__tag">{{ ProductTag.Tag }}
+                        {% for Tag in Product.Tags %}
+                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}
                             </li>
                         {% endfor %}
                     </ul>

@@ -37,10 +37,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Route(service=OwnerStoreController::class)
+ * @Route("/{_admin}/store/plugin/api", service=OwnerStoreController::class)
  */
 class OwnerStoreController extends AbstractController
 {
@@ -85,7 +87,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @Route("/{_admin}/store/plugin/search", name="admin_store_plugin_owners_search")
+     * @Route("/search", name="admin_store_plugin_owners_search")
      * @Template("Store/plugin_search.twig")
      * @param Application $app
      * @param Request     $request
@@ -166,7 +168,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{_admin}/store/plugin/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
+     * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm")
      * @Template("Store/plugin_confirm.twig")
      * @param Application $app
      * @param Request     $request
@@ -200,13 +202,14 @@ class OwnerStoreController extends AbstractController
         return [
             'item' => $plugin,
             'dependents' => $dependents,
+            'is_update' => $request->get('is_update', false),
         ];
     }
 
     /**
      * Api Install plugin by composer connect with package repo
      *
-     * @Route("/{_admin}/store/plugin/api/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
+     * @Route("/install/{pluginCode}/{eccubeVersion}/{version}" , name="admin_store_plugin_api_install")
      *
      * @param Application $app
      * @param Request     $request
@@ -222,16 +225,8 @@ class OwnerStoreController extends AbstractController
         list($json, $info) = $this->getRequestApi($url);
         $existFlg = false;
         $data = json_decode($json, true);
-        if ($data && isset($data['success'])) {
-            $success = $data['success'];
-            if ($success == '1' && isset($data['item'])) {
-                foreach ($data['item'] as $item) {
-                    if ($item['product_code'] == $pluginCode) {
-                        $existFlg = true;
-                        break;
-                    }
-                }
-            }
+        if (isset($data['item']) && !empty($data['item'])) {
+            $existFlg = $this->pluginService->checkPluginExist($data['item'], $pluginCode);
         }
         if ($existFlg === false) {
             log_info(sprintf('%s plugin not found!', $pluginCode));
@@ -239,48 +234,56 @@ class OwnerStoreController extends AbstractController
 
             return $app->redirect($app->url('admin_store_plugin_owners_search'));
         }
-        $dependents = array();
+
         $items = $data['item'];
         $plugin = $this->pluginService->buildInfo($items, $pluginCode);
         $dependents[] = $plugin;
         $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
-
         // Unset first param
         unset($dependents[0]);
         $dependentModifier = [];
         $packageNames = '';
         if (!empty($dependents)) {
-            foreach ($dependents as $item) {
-                $packageNames .= self::$vendorName . '/' . $item['product_code'] . ' ';
+            foreach ($dependents as $key => $item) {
                 $pluginItem = [
                     "product_code" => $item['product_code'],
-                    "version" => $item['version']
+                    "version" => $item['version'],
                 ];
                 array_push($dependentModifier, $pluginItem);
+                // Re-format plugin code
+                $dependents[$key]['product_code'] = self::$vendorName.'/'.$item['product_code'];
             }
+            $packages = array_column($dependents, 'version', 'product_code');
+            $packageNames = $this->pluginService->parseToComposerCommand($packages);
         }
-        $packageNames .= self::$vendorName . '/' . $pluginCode;
-        $return = $this->composerService->execRequire($packageNames);
+        $packageNames .= ' '.self::$vendorName.'/'.$pluginCode.':'.$version;
         $data = array(
             'code' => $pluginCode,
             'version' => $version,
             'core_version' => $eccubeVersion,
             'php_version' => phpversion(),
             'db_version' => $this->systemService->getDbversion(),
-            'os' => php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('v'),
+            'os' => php_uname('s').' '.php_uname('r').' '.php_uname('v'),
             'host' => $request->getHost(),
             'web_server' => $request->server->get("SERVER_SOFTWARE"),
             'composer_version' => $this->composerService->composerVersion(),
             'composer_execute_mode' => $this->composerService->getMode(),
-            'dependents' => json_encode($dependentModifier)
+            'dependents' => json_encode($dependentModifier),
         );
-        if ($return) {
+
+        try {
+            $this->composerService->execRequire($packageNames);
+            // Do report to package repo
             $url = $this->appConfig['package_repo_url'] . '/report';
             $this->postRequestApi($url, $data);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
+        } catch (\Exception $exception) {
+            log_info($exception);
         }
+
+        // Do report to package repo
         $url = $this->appConfig['package_repo_url'] . '/report/fail';
         $this->postRequestApi($url, $data);
         $app->addError('admin.plugin.install.fail', 'admin');
@@ -291,7 +294,7 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/{_admin}/store/plugin/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
+     * @Route("/delete/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_delete_confirm")
      * @Template("Store/plugin_confirm_uninstall.twig")
      * @param Application $app
      * @param Plugin      $Plugin
@@ -315,7 +318,6 @@ class OwnerStoreController extends AbstractController
             if ($DependPlugin) {
                 $dependName = $DependPlugin->getName();
             }
-
             $message = $app->trans('admin.plugin.uninstall.depend', ['%name%' => $Plugin->getName(), '%depend_name%' => $dependName]);
             $app->addError($message, 'admin');
 
@@ -343,7 +345,7 @@ class OwnerStoreController extends AbstractController
      * New ways to remove plugin: using composer command
      *
      * @Method("DELETE")
-     * @Route("/{_admin}/store/plugin/api/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
+     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -352,19 +354,68 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        if ($Plugin->getEnabled()) {
+        if ($Plugin->isEnabled()) {
             $this->pluginService->disable($Plugin);
         }
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
-        $return = $this->composerService->execRemove($packageName);
-        if ($return) {
+        try {
+            $this->composerService->execRemove($packageName);
             $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
-        } else {
+        } catch (\Exception $exception) {
+            log_info($exception);
             $app->addError('admin.plugin.uninstall.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_store_plugin'));
+    }
+
+    /**
+     * オーナーズブラグインインストール、アップデート
+     *
+     * @Method("PUT")
+     * @Route("/upgrade/{pluginCode}/{version}", name="admin_store_plugin_api_upgrade")
+     *
+     * @param Application $app
+     * @param string      $pluginCode
+     * @param string      $version
+     * @return RedirectResponse
+     */
+    public function apiUpgrade(Application $app, $pluginCode, $version)
+    {
+        $this->isTokenValid($app);
+        // Run install plugin
+        $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
+
+        /** @var Session $session */
+        $session = $app['session'];
+        if ($session->getFlashBag()->has('eccube.admin.error')) {
+            $session->getFlashBag()->clear();
+            $app->addError('admin.plugin.update.error', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
+        }
+        $session->getFlashBag()->clear();
+        $app->addSuccess('admin.plugin.update.complete', 'admin');
+
+        return $app->redirect($app->url('admin_store_plugin'));
+    }
+
+    /**
+     * Do confirm update page
+     *
+     * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm")
+     * @Template("Store/plugin_confirm.twig")
+     * @param Application $app
+     * @param Plugin      $plugin
+     * @return Response
+     */
+    public function doUpdateConfirm(Application $app, Plugin $plugin)
+    {
+        $source = $plugin->getSource();
+        $url = $app->url('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
+
+        return $app->forward($url);
     }
 
     /**
@@ -419,8 +470,8 @@ class OwnerStoreController extends AbstractController
         $message = curl_error($curl);
         $info['message'] = $message;
         curl_close($curl);
-
         log_info('http post_info', $info);
+
         return array($result, $info);
     }
 

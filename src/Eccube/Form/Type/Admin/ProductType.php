@@ -29,7 +29,6 @@ use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\Type\Master\ProductStatusType;
-use Eccube\Form\Type\Master\TagType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -114,7 +113,12 @@ class ProductType extends AbstractType
             ))
 
             // 詳細な説明
-            ->add('Tag', TagType::class, array(
+            ->add('Tag', EntityType::class, array(
+                'class' => 'Eccube\Entity\Tag',
+                'query_builder' => function($er) {
+                    return $er->createQueryBuilder('t')
+                    ->orderBy('t.sort_no', 'DESC');
+                },
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,

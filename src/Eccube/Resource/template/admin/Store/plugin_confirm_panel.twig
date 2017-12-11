@@ -56,7 +56,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         {% if item.depend is not empty %}
             {% for depend in item.depend %}
-                <p class="text-danger">{{ depend.name }}が必要です。同時にインストールされます。</p>
+                    {% if is_update %}
+                        <p class="text-danger">{{ depend.name }}が必要です。同時にアップデートされます。</p>
+                    {% else %}
+                        <p class="text-danger">{{ depend.name }}が必要です。同時にインストールされます。</p>
+                    {% endif %}
             {% endfor %}
         {% endif %}
         <p class="plugin-developer">

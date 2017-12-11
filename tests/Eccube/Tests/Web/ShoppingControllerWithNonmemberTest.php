@@ -60,7 +60,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     }
 
     /**
-     * 非会員情報入力→購入確認画面
+     * 非会員情報入力→注文手続画面
      */
     public function testConfirmWithNonmember()
     {
@@ -71,7 +71,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioInput($client, $formData);
 
         $crawler = $client->request('GET', $this->app->path('shopping'));
-        $this->expected = 'ご注文内容のご確認';
+        $this->expected = 'ご注文手続き';
         $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
@@ -79,7 +79,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     }
 
     /**
-     * 非会員情報入力→購入確認画面→完了画面
+     * 非会員情報入力→注文手続画面→購入確認画面→完了画面
      */
     public function testCompleteWithNonmember()
     {
@@ -91,12 +91,16 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioInput($client, $formData);
 
         $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('h1')->text();
+        $this->verify();
+
+        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
-
+        $this->scenarioComplete($client, $this->app->path('shopping_order'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();

@@ -32,7 +32,8 @@ interface ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @return array|mixed
+     * @return void
+     * @throws \Eccube\Exception\PluginException
      */
     public function execRequire($packageName);
 
@@ -40,7 +41,8 @@ interface ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @return void|mixed
+     * @return void
+     * @throws \Eccube\Exception\PluginException
      */
     public function execRemove($packageName);
 
