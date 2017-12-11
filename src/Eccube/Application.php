@@ -109,13 +109,13 @@ class Application extends \Silex\Application
         $this->initConfig();
 
         // init monolog
-        $this->initLogger();
+        // $this->initLogger();
 
         // init class loader.
-        $this->initClassLoader();
+        // $this->initClassLoader();
 
         // init request.
-        $this->initRequest();
+        // $this->initRequest();
     }
 
     /**
@@ -154,12 +154,18 @@ class Application extends \Silex\Application
         };
     }
 
+    /**
+     * @deprecated
+     */
     public function initLogger()
     {
         // $app = $this;
         // $this->register(new ServiceProvider\LogServiceProvider($app));
     }
 
+    /**
+     * @deprecated
+     */
     public function initClassLoader()
     {
         if (!isset($this['config']['vendor_name'])) {
@@ -964,6 +970,9 @@ class Application extends \Silex\Application
         $this->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
+    /**
+     * @deprecated
+     */
     protected function initRequest()
     {
         // PUTやDELETEメソッドを有効にする

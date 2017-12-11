@@ -1,7 +1,9 @@
 twig:
-    paths: ['%kernel.project_dir%/src/Eccube/Resource/template/default', '%kernel.project_dir%/src/Eccube/Resource/template/admin']
+    paths:
+      '%kernel.project_dir%/src/Eccube/Resource/template/default': ~
+      '%kernel.project_dir%/src/Eccube/Resource/template/admin': admin
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    form_themes:
-        - 'default_frame.twig'
-        - 'Form/form_div_layout.twig'
+    # form_themes:
+    #     - 'default_frame.twig'
+    #     - 'Form/form_div_layout.twig'

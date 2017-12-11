@@ -46,7 +46,7 @@ class Kernel extends BaseKernel
         }
 
         parent::__construct($environment, $debug);
-        $_ENV['DATABASE_URL'] = str_replace('%kernel.project_dir%', $this->getProjectDir(), $_ENV['DATABASE_URL']); //  FIXME
+        // $_ENV['DATABASE_URL'] = str_replace('%kernel.project_dir%', $this->getProjectDir(), $_ENV['DATABASE_URL']); //  FIXME
         // $this->app = new \Eccube\Application();
     }
 
@@ -106,6 +106,7 @@ class Kernel extends BaseKernel
         $this->app['orm.em'] = function () use ($em) {
             return $em;
         };
+         // TODO
         $this->app['config'] = function () {
             return require __DIR__.'/../../app/config/eccube/config.php';
         };
@@ -134,12 +135,12 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
 
         // Pimple の ServiceProvider を追加
-        $container->register('ServiceProviderCache', 'ServiceProviderCache');
-        $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
-        $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
-        $container->register('app', 'Eccube\Application')
-            ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
-            ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
+        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
+        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
+        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
+        $container->register('app', 'Eccube\Application');
+            // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
+            // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
