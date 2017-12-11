@@ -90,7 +90,6 @@ class ChangeControllerTest extends AbstractWebTestCase
             ),
             'sex' => 1,
             'job' => 1,
-            'point' => 10,
             '_token' => 'dummy'
         );
         return $form;
