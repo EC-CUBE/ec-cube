@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Help;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * HelpRepository
@@ -36,6 +38,11 @@ use Eccube\Annotation\Repository;
  */
 class HelpRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Help::class);
+    }
+
     /**
      * get
      *

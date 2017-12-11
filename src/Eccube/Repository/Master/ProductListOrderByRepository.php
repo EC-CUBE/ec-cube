@@ -24,7 +24,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ProductListOrderByRepository
@@ -36,4 +38,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class ProductListOrderByRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ProductListOrderBy::class);
+    }
 }

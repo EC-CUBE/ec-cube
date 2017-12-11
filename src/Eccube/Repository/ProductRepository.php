@@ -28,7 +28,9 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
+use Eccube\Entity\Product;
 use Eccube\Util\StringUtil;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ProductRepository
@@ -57,6 +59,11 @@ class ProductRepository extends AbstractRepository
      * @var array
      */
     protected $appConfig;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Product::class);
+    }
 
    /**
      * get query builder.

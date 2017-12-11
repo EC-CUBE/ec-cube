@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\DeliveryDate;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * DeliveryDateRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class DeliveryDateRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, DeliveryDate::class);
+    }
 }

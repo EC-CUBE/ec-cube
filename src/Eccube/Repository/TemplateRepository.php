@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Template;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TemplateRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class TemplateRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Template::class);
+    }
 }

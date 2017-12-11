@@ -28,6 +28,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\News;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * NewsRepository
@@ -39,6 +40,11 @@ use Eccube\Entity\News;
  */
 class NewsRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, News::class);
+    }
+
     /**
      * 新着情報の表示順を1上げる.
      *

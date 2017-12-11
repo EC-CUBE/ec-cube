@@ -33,6 +33,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * MemberRepository
@@ -44,6 +45,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class MemberRepository extends AbstractRepository implements UserProviderInterface
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Member::class);
+    }
+
     /**
      * Loads the user for the given username.
      *

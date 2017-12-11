@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\ProductImage;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ProductImageRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class ProductImageRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ProductImage::class);
+    }
 }

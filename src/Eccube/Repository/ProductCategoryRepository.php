@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\ProductCategory;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ProductCategoryRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class ProductCategoryRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ProductCategory::class);
+    }
 }

@@ -25,8 +25,10 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\MailHistory;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * MailHistoryRepository
@@ -38,6 +40,11 @@ use Doctrine\ORM\NoResultException;
  */
 class MailHistoryRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, MailHistory::class);
+    }
+
     /**
      * @param \Eccube\Entity\Customer
      * @param integer $id

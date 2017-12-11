@@ -28,6 +28,7 @@ use Eccube\Annotation\Repository;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Payment;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * DelivRepository
@@ -39,6 +40,10 @@ use Eccube\Entity\Payment;
  */
 class DeliveryRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Delivery::class);
+    }
 
     /**
      * @deprecated 呼び出し元で制御する

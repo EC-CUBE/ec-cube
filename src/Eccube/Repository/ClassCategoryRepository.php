@@ -28,6 +28,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\ClassCategory;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ClasscategoryRepository
@@ -39,6 +40,11 @@ use Eccube\Entity\ClassCategory;
  */
 class ClassCategoryRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ClassCategory::class);
+    }
+
     /**
      * 規格カテゴリの一覧を取得します.
      *

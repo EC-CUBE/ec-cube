@@ -25,7 +25,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ShippingStatusRepository
@@ -37,4 +39,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class ShippingStatusRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ShippingStatus::class);
+    }
 }

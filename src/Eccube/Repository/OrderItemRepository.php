@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\OrderItem;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * OrderItemRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class OrderItemRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, OrderItem::class);
+    }
 }

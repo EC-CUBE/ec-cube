@@ -25,7 +25,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\Tag;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TagRepository
@@ -37,6 +39,11 @@ use Eccube\Repository\AbstractRepository;
  */
 class TagRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Tag::class);
+    }
+
     public function findOrCreateByTagName($tag_name)
     {
         $Tag = $this->findOneBy(array('name' => $tag_name));

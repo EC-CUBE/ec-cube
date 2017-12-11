@@ -28,7 +28,9 @@ use Doctrine\ORM\QueryBuilder;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
+use Eccube\Entity\Order;
 use Eccube\Util\StringUtil;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * OrderRepository
@@ -51,6 +53,11 @@ class OrderRepository extends AbstractRepository
      * @var Queries
      */
     protected $queries;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Order::class);
+    }
 
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
     {

@@ -4,11 +4,11 @@
 namespace Eccube\Repository;
 
 
-use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\Inject;
 use Eccube\Entity\AbstractEntity;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-class AbstractRepository extends EntityRepository
+abstract class AbstractRepository extends ServiceEntityRepository
 {
     /**
      * @Inject("config")

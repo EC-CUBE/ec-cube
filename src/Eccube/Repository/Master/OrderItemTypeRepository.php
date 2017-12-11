@@ -3,7 +3,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * OrderItemTypeRepository
@@ -15,4 +17,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class OrderItemTypeRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, OrderItemType::class);
+    }
 }

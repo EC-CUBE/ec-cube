@@ -29,6 +29,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\Category;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * CategoryRepository
@@ -45,6 +46,11 @@ class CategoryRepository extends AbstractRepository
      * @var array
      */
     protected $appConfig;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Category::class);
+    }
 
     /**
      * 全カテゴリの合計を取得する.

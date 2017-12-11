@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\PaymentOption;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * PaymentOptionRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class PaymentOptionRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, PaymentOption::class);
+    }
 }

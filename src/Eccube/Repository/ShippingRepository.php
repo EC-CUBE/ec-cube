@@ -25,7 +25,9 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Shipping;
 use Eccube\Util\StringUtil;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ShippingRepository
@@ -37,6 +39,11 @@ use Eccube\Util\StringUtil;
  */
 class ShippingRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Shipping::class);
+    }
+
     /**
      *
      * @param  array        $searchData

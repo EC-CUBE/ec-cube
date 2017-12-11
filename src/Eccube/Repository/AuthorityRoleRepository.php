@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\AuthorityRole;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * AuthorityRoleRepository
@@ -36,6 +38,11 @@ use Eccube\Annotation\Repository;
  */
 class AuthorityRoleRepository extends AbstractRepository
 {
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, AuthorityRole::class);
+    }
 
     /**
      * 権限、拒否URLでソートする

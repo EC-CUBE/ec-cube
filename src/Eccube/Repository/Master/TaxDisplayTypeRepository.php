@@ -3,7 +3,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TaxDisplayTypeRepository
@@ -15,4 +17,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class TaxDisplayTypeRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, TaxDisplayType::class);
+    }
 }

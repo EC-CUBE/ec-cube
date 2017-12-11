@@ -28,6 +28,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\ClassName;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * ClassNameRepository
@@ -39,6 +40,11 @@ use Eccube\Entity\ClassName;
  */
 class ClassNameRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ClassName::class);
+    }
+
     /**
      * 規格一覧を取得する.
      *
