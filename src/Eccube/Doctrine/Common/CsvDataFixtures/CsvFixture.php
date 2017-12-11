@@ -17,7 +17,7 @@ class CsvFixture implements FixtureInterface
     /** @var \SplFileObject $file */
     protected $file;
 
-    public function __construct(\SplFileObject $file)
+    public function __construct(\SplFileObject $file = null)
     {
         $this->file = $file;
     }

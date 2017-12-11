@@ -51,7 +51,7 @@ class PasswordEncoder implements PasswordEncoderInterface
      */
     private $logger;
 
-    public function __construct($auth_magic, $auth_type, $password_hash_algos, LoggerInterface $logger)
+    public function __construct($auth_magic, $auth_type, $password_hash_algos, LoggerInterface $logger = null)
     {
         $this->auth_magic = $auth_magic;
         $this->auth_type = $auth_type;
