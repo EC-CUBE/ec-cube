@@ -11,6 +11,7 @@
 
 namespace Eccube;
 
+use Eccube\DependencyInjection\EccubeExtension;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -128,6 +129,8 @@ class Kernel extends BaseKernel
 
     public function build(ContainerBuilder $container)
     {
+        $container->registerExtension(new EccubeExtension());
+
         // Pimple の ServiceProvider を追加
         // $container->register('ServiceProviderCache', 'ServiceProviderCache');
         // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
