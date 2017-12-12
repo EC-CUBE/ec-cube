@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3c5b675fe03ba2fbe893da85615c2b5",
+    "content-hash": "478f72e2c656094b8bf561b61844a2ad",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -4637,6 +4637,63 @@
             "time": "2017-11-19T18:41:20+00:00"
         },
         {
+            "name": "symfony/maker-bundle",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/maker-bundle.git",
+                "reference": "bf97703ddb68c6b37bd6bab5f5ebd5c7542ca1ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/bf97703ddb68c6b37bd6bab5f5ebd5c7542ca1ef",
+                "reference": "bf97703ddb68c6b37bd6bab5f5ebd5c7542ca1ef",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0.8",
+                "symfony/config": "^3.4|^4.0",
+                "symfony/console": "^3.4|^4.0",
+                "symfony/dependency-injection": "^3.4|^4.0",
+                "symfony/filesystem": "^3.4|^4.0",
+                "symfony/framework-bundle": "^3.4|^4.0",
+                "symfony/http-kernel": "^3.4|^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.8",
+                "symfony/phpunit-bridge": "^3.4|^4.0",
+                "symfony/process": "^3.4|^4.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Bundle\\MakerBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "keywords": [
+                "code generator",
+                "generator",
+                "scaffold",
+                "scaffolding"
+            ],
+            "time": "2017-12-04T17:50:28+00:00"
+        },
+        {
             "name": "symfony/monolog-bridge",
             "version": "v3.4.1",
             "source": {
@@ -6581,6 +6638,56 @@
             "time": "2017-10-19T11:52:38+00:00"
         },
         {
+            "name": "easycorp/easy-log-handler",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EasyCorp/easy-log-handler.git",
+                "reference": "79104f113f562ab6c677d482457d4474204d34a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/79104f113f562ab6c677d482457d4474204d34a5",
+                "reference": "79104f113f562ab6c677d482457d4474204d34a5",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "~1.6",
+                "php": ">=5.3.0",
+                "symfony/yaml": "~2.3|~3.0|~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasyCorp\\EasyLog\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Javier Eguiluz",
+                    "email": "javiereguiluz@gmail.com"
+                },
+                {
+                    "name": "Project Contributors",
+                    "homepage": "https://github.com/EasyCorp/easy-log-handler"
+                }
+            ],
+            "description": "A handler for Monolog that optimizes log messages to be processed by humans instead of software. Improve your productivity with logs that are easy to understand.",
+            "homepage": "https://github.com/EasyCorp/easy-log-handler",
+            "keywords": [
+                "easy",
+                "log",
+                "logging",
+                "monolog",
+                "productivity"
+            ],
+            "time": "2017-10-20T08:47:57+00:00"
+        },
+        {
             "name": "friendsofphp/php-cs-fixer",
             "version": "v2.9.0",
             "source": {
@@ -8158,6 +8265,129 @@
             "time": "2017-11-07T14:20:24+00:00"
         },
         {
+            "name": "symfony/debug-pack",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/debug-pack.git",
+                "reference": "49e4492f347df60176375c285528f07ec1319f63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/debug-pack/zipball/49e4492f347df60176375c285528f07ec1319f63",
+                "reference": "49e4492f347df60176375c285528f07ec1319f63",
+                "shasum": ""
+            },
+            "require": {
+                "easycorp/easy-log-handler": "^1.0.2",
+                "php": "^7.0",
+                "symfony/debug-bundle": "^3.3|^4.0",
+                "symfony/monolog-bundle": "^3.0",
+                "symfony/phpunit-bridge": "^3.3|^4.0",
+                "symfony/profiler-pack": "^1.0",
+                "symfony/var-dumper": "^3.3|^4.0"
+            },
+            "type": "metapackage",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A debug pack for Symfony projects",
+            "time": "2017-11-09T14:26:26+00:00"
+        },
+        {
+            "name": "symfony/lts",
+            "version": "v3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/lts.git",
+                "reference": "3a4e88df038e3197e6b66d091d2495fd7d255c0b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/lts/zipball/3a4e88df038e3197e6b66d091d2495fd7d255c0b",
+                "reference": "3a4e88df038e3197e6b66d091d2495fd7d255c0b",
+                "shasum": ""
+            },
+            "conflict": {
+                "symfony/asset": ">=4",
+                "symfony/browser-kit": ">=4",
+                "symfony/cache": ">=4",
+                "symfony/class-loader": ">=4",
+                "symfony/config": ">=4",
+                "symfony/console": ">=4",
+                "symfony/css-selector": ">=4",
+                "symfony/debug": ">=4",
+                "symfony/debug-bundle": ">=4",
+                "symfony/dependency-injection": ">=4",
+                "symfony/doctrine-bridge": ">=4",
+                "symfony/dom-crawler": ">=4",
+                "symfony/dotenv": ">=4",
+                "symfony/event-dispatcher": ">=4",
+                "symfony/expression-language": ">=4",
+                "symfony/filesystem": ">=4",
+                "symfony/finder": ">=4",
+                "symfony/form": ">=4",
+                "symfony/framework-bundle": ">=4",
+                "symfony/http-foundation": ">=4",
+                "symfony/http-kernel": ">=4",
+                "symfony/inflector": ">=4",
+                "symfony/intl": ">=4",
+                "symfony/ldap": ">=4",
+                "symfony/lock": ">=4",
+                "symfony/monolog-bridge": ">=4",
+                "symfony/options-resolver": ">=4",
+                "symfony/process": ">=4",
+                "symfony/property-access": ">=4",
+                "symfony/property-info": ">=4",
+                "symfony/proxy-manager-bridge": ">=4",
+                "symfony/routing": ">=4",
+                "symfony/security": ">=4",
+                "symfony/security-bundle": ">=4",
+                "symfony/security-core": ">=4",
+                "symfony/security-csrf": ">=4",
+                "symfony/security-guard": ">=4",
+                "symfony/security-http": ">=4",
+                "symfony/serializer": ">=4",
+                "symfony/stopwatch": ">=4",
+                "symfony/symfony": ">=4",
+                "symfony/templating": ">=4",
+                "symfony/translation": ">=4",
+                "symfony/twig-bridge": ">=4",
+                "symfony/twig-bundle": ">=4",
+                "symfony/validator": ">=4",
+                "symfony/var-dumper": ">=4",
+                "symfony/web-link": ">=4",
+                "symfony/web-profiler-bundle": ">=4",
+                "symfony/web-server-bundle": ">=4",
+                "symfony/workflow": ">=4",
+                "symfony/yaml": ">=4"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Enforces Long Term Supported versions of Symfony components",
+            "homepage": "https://symfony.com",
+            "time": "2017-10-19T02:02:36+00:00"
+        },
+        {
             "name": "symfony/phpunit-bridge",
             "version": "v3.4.1",
             "source": {
@@ -8273,6 +8503,34 @@
                 "shim"
             ],
             "time": "2017-10-11T12:05:26+00:00"
+        },
+        {
+            "name": "symfony/profiler-pack",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/profiler-pack.git",
+                "reference": "ff9e32daca50ce4d98fcfeabdc27c9028cf6747b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/profiler-pack/zipball/ff9e32daca50ce4d98fcfeabdc27c9028cf6747b",
+                "reference": "ff9e32daca50ce4d98fcfeabdc27c9028cf6747b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "symfony/stopwatch": "^3.3|^4.0",
+                "symfony/twig-bundle": "^3.3|^4.0",
+                "symfony/web-profiler-bundle": "^3.3|^4.0"
+            },
+            "type": "metapackage",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A pack for the Symfony web profiler",
+            "time": "2017-09-27T22:22:21+00:00"
         },
         {
             "name": "symfony/web-server-bundle",
