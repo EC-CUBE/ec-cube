@@ -77,17 +77,17 @@ class Kernel extends BaseKernel
     {
         parent::boot();
 
-        $em = $this->container->get('doctrine')->getManager();
-        $this->app = $this->container->get('app');
         // Symfony で用意されているコンポーネントはここで追加
-        $this->app['orm.em'] = function () use ($em) {
+        $app = Application::getInstance();
+        $em = $this->container->get('doctrine')->getManager();
+        $app['orm.em'] = function () use ($em) {
             return $em;
         };
          // TODO
-        $this->app['config'] = function () {
+        $app['config'] = function () {
             return require __DIR__.'/../../app/config/eccube/config.php';
         };
-        $this->app['debug'] = true;
+        $app['debug'] = true;
 
         // see Silex\Application::boot()
         foreach ($this->providers as $provider) {
@@ -99,6 +99,8 @@ class Kernel extends BaseKernel
                 $provider->boot($this->app);
             }
         }
+
+        $this->container->set('app', $app);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -110,14 +112,6 @@ class Kernel extends BaseKernel
         }
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
-
-        // Pimple の ServiceProvider を追加
-        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
-        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
-        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
-        $container->register('app', 'Eccube\Application');
-            // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
-            // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
@@ -130,5 +124,17 @@ class Kernel extends BaseKernel
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    public function build(ContainerBuilder $container)
+    {
+        // Pimple の ServiceProvider を追加
+        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
+        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
+        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
+        $container->register('app', Application::class)
+            ->setSynthetic(true);
+        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
+        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 }
