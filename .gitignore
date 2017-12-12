@@ -35,3 +35,4 @@ composer.phar
 .idea
 *.php~
 .env
+.web-server-pid

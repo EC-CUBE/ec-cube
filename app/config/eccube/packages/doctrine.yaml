@@ -17,10 +17,3 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-        mappings:
-            Eccube:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Eccube/Entity'
-                prefix: 'Eccube\Entity\'
-                alias: Eccube

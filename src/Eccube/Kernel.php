@@ -11,17 +11,18 @@
 
 namespace Eccube;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Eccube\DependencyInjection\EccubeExtension;
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
-
-use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class Kernel extends BaseKernel
 {
@@ -127,8 +128,10 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
     }
 
-    public function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container)
     {
+        $this->addEntityExtensionPass($container);
+
         $container->registerExtension(new EccubeExtension());
 
         // Pimple の ServiceProvider を追加
@@ -139,5 +142,13 @@ class Kernel extends BaseKernel
             ->setSynthetic(true);
         // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
         // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
+    }
+
+    protected function addEntityExtensionPass(ContainerBuilder $container)
+    {
+        $reader = new Reference('annotation_reader');
+        $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, ["%kernel.project_dir%/src/Eccube/Entity"]));
+        $driver->addMethodCall('setTraitProxiesDirectory', [$container->getParameter('kernel.project_dir')."/app/proxy/entity"]);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity\\'], []));
     }
 }
