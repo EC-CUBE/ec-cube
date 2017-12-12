@@ -72,12 +72,12 @@
                 [
                     'id' => 'shipping_master',
                     'name' => '出荷マスター',
-                    'url' => 'admin/shipping',
+                    'url' => 'admin_shipping',
                 ],
                 [
                     'id' => 'shipping_edit',
                     'name' => '出荷登録',
-                    'url' => 'admin/shipping/new',
+                    'url' => 'admin_shipping_new',
                 ],
             ],
     ],
