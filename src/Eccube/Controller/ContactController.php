@@ -35,12 +35,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * @Route(service=ContactController::class)
  */
-class ContactController
+class ContactController extends AbstractController
 {
+    public function __construct(MailService $mailService, EventDispatcher $eventDispatcher, FormFactory $formFactory, AuthorizationChecker $authorizationChecker)
+    {
+        $this->mailService = $mailService;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
     /**
      * @Inject(MailService::class)
      * @var MailService
@@ -60,6 +69,11 @@ class ContactController
     protected $formFactory;
 
     /**
+     * @var AuthorizationChecker
+     */
+    protected $authorizationChecker;
+
+    /**
      * お問い合わせ画面.
      *
      * @Route("/contact", name="contact")
@@ -69,7 +83,7 @@ class ContactController
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
-        if ($app->isGranted('ROLE_USER')) {
+        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
             $user = $app['user'];
             $builder->setData(
                 array(
@@ -110,7 +124,7 @@ class ContactController
                     $form->handleRequest($request);
                     $title = 'お問い合わせ(確認ページ)';
 
-                    return $app->render(
+                    return $this->render(
                         'Contact/confirm.twig',
                         array(
                             'form' => $form->createView(),
@@ -136,7 +150,7 @@ class ContactController
                     // メール送信
                     $this->mailService->sendContactMail($data);
 
-                    return $app->redirect($app->url('contact_complete'));
+                    return $this->redirect($this->generateUrl('contact_complete'));
             }
         }
 

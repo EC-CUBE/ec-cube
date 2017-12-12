@@ -77,7 +77,8 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['kana_len'],
+                        // 'max' => $this->appConfig['kana_len'],
+                        'max' => 25 // FIXME
                     )),
                 ),
             ),
@@ -90,7 +91,8 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['kana_len'],
+                        // 'max' => $this->appConfig['kana_len'],
+                        'max' => 25 // FIXME
                     )),
                 ),
             ),
