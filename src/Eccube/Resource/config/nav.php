@@ -191,7 +191,7 @@
                 ],
                 [
                     'id' => 'system',
-                    'name' => 'nav.label.system_info_settings定',
+                    'name' => 'nav.label.system_info_settings',
                     'has_child' => true,
                     'child' =>
                         [

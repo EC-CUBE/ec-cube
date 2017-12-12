@@ -26,16 +26,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>新規会員登録（完了）</h1>
+            <h1>{{'signup.text.message.completed'|trans}}</h1>
         </div>
     </div>
     <div class="ec-registerCompleteRole">
         <div class="ec-off3Grid ec-text-ac">
             <div class="ec-off3Grid__cell">
                 <div class="ec-reportHeading">
-                    <h2>会員登録ありがとうございます</h2>
+                    <h2>{{'signup.text.message.thanks'|trans}}</h2>
                 </div>
-                <p class="ec-reportDescription">現在仮会員の状態です。<br>ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、<br>本会員登録になった上でお買い物をお楽しみください。<br>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+                <p class="ec-reportDescription">現在仮会員の状態です。<br>ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、<br>本会員登録になった上でお買い物をお楽しみください。<br>{{'signup.text.message.look_forward'|trans}}</p>
                 <div class="ec-off4Grid">
                     <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
                 </div>

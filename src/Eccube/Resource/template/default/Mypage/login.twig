@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
-            <h1>ログイン</h1>
+            <h1>{{'mypage.label.login'|trans}}</h1>
         </div>
         <div class="ec-off2Grid">
             <div class="ec-off2Grid__cell">
@@ -64,13 +64,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="ec-grid2">
                             <div class="ec-grid2__cell">
-                                <div class="ec-login__actions"><button type="submit" class="ec-blockBtn--cancel">ログイン</button>
+                                <div class="ec-login__actions"><button type="submit" class="ec-blockBtn--cancel">{{'mypage.label.log_in'|trans}}</button>
                                 </div>
                             </div>
                             <div class="ec-grid2__cell">
-                                <div class="ec-login__link"><a class="ec-link" href="{{ url('forgot') }}">ログイン情報をお忘れですか?</a>
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('forgot') }}">{{'mypage.text.message.forgot_login'|trans}}</a>
                                 </div>
-                                <div class="ec-login__link"><a class="ec-link" href="{{ url('entry') }}">新規会員登録</a>
+                                <div class="ec-login__link"><a class="ec-link" href="{{ url('entry') }}">{{'mypage.label.register'|trans}}</a>
                                 </div>
                             </div>
                         </div>

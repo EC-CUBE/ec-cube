@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>マイページ/お届け先編集</h1>
+                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.edit_address'|trans}}</h1>
             </div>
             {{ include('Mypage/navi.twig') }}
         </div>
@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-addressRole">
                         <div class="ec-addressRole__actions">
                             {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
-                                <a class="ec-inlineBtn" href="{{ url('mypage_delivery_new') }}">新規お届け先を追加する</a>
+                                <a class="ec-inlineBtn" href="{{ url('mypage_delivery_new') }}">{{'mypage.label.add_address'|trans}}</a>
                             {% else %}
                                 <span class="ec-errorMessage">お届け先登録の上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
                             {% endif %}
@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div>〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
                                         <div>{{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</div>
                                     </div>
-                                    <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">変更</a></div>
+                                    <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">変{{'mypage.label.btn.edit'|trans}}</a></div>
                                 </div>
                             {% endfor %}
                         </div>

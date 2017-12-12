@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>マイページ/退会手続き</h1>
+                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.cancel_membership'|trans}}</h1>
             </div>
             {{ include('Mypage/navi.twig') }}
         </div>
@@ -40,16 +40,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div style="font-size:100px;text-align:center;">
                             <div class="ec-icon"><img src="{{ asset('assets/icon/exclamation.svg') }}" alt=""></div>
                         </div>
-                        <p class="ec-withdrawConfirmRole__title">退会手続きを実行してもよろしいでしょうか？</p>
-                        <p class="ec-withdrawConfirmRole__description">退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。
+                        <p class="ec-withdrawConfirmRole__title">{{'mypage.text.message.are_you_sure'|trans}}</p>
+                        <p class="ec-withdrawConfirmRole__description">{{'mypage.text.message.will_deleted'|trans}}
                         </p>
                     </div>
                 </div>
                 <form method="post" action="{{ url('mypage_withdraw') }}">
                     {{ form_widget(form._token) }}
                     <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell"><a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel" href="{{ url('mypage') }}">いいえ、退会しません</a>
-                            <button type="submit" class="ec-blockBtn" name="mode" value="complete">はい、退会します</button>
+                        <div class="ec-off4Grid__cell"><a class="ec-withdrawConfirmRole__cancel ec-blockBtn--cancel" href="{{ url('mypage') }}">{{'mypage.label.btn.not_cancel'|trans}}</a>
+                            <button type="submit" class="ec-blockBtn" name="mode" value="complete">{{'mypage.label.btn.yes_cancel'|trans}}</button>
                         </div>
                     </div>
                 </form>

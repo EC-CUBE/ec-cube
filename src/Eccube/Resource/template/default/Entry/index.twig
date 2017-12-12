@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <div class="ec-registerRole">
         <div class="ec-pageHeader">
-            <h1>新規会員登録</h1>
+            <h1>{{'signup.label.new_registration'|trans}}</h1>
         </div>
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
@@ -228,8 +228,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <p>
                                     <a class="ec-link" href="{{ url('help_agreement') }}" target="_blank">利用規約</a><span>に同意してお進みください。</span>
                                 </p>
-                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">同意する</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">同意しない</a>
+                                <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{'signup.label.radio.accept'|trans}}</button>
+                                <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'signup.label.radio.decline'|trans}}</a>
                             </div>
                         </div>
                     </div>

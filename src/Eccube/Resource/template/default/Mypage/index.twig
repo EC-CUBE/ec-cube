@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <div class="ec-mypageRole">
         <div class="ec-pageHeader">
-            <h1>マイページ/ご注文履歴</h1>
+            <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.order_history'|trans}}</h1>
         </div>
         {% include 'Mypage/navi.twig' %}
     </div>
@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="ec-historyListHeader">
                                 <p class="ec-historyListHeader__date">{{ Order.order_date|date("Y/m/d H:i:s") }}</p>
                                 <dl class="ec-definitions">
-                                    <dt>ご注文番号：</dt>
+                                    <dt>{{'admin.mail.order.200'|trans}}：</dt>
                                     <dd>{{ Order.id }}</dd>
                                 </dl>
                                 <dl class="ec-definitions">
@@ -83,7 +83,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% include "pagination.twig" with {'pages': pagination.paginationData} %}
             </div>
         {% else %}
-            <div class="text-center">ご注文履歴がありません。</div>
+            <div class="text-center">{{'mypage.text.message.no_order_history'|trans}}</div>
         {% endif %}
     </div>
 {% endblock %}

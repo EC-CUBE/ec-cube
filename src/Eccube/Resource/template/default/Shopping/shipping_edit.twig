@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="ec-zipInputHelp__icon">
                                                 <div class="ec-icon"><img src="{{ asset('assets/icon/question-white.svg') }}" alt=""></div>
                                             </div>
-                                            <span>郵便番号検索</span></a></div>
+                                            <span>{{'signup.label.search_postal_code'|trans}}</span></a></div>
                                     <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
                                         {{ form_widget(form.address.pref) }}
                                         {{ form_errors(form.address.pref) }}
@@ -158,8 +158,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="ec-RegisterRole__actions">
                             <div class="ec-off4Grid">
                                 <div class="ec-off4Grid__cell">
-                                    <button type="submit" class="ec-blockBtn--action">登録する</button>
-                                    <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">戻る</a>
+                                    <button type="submit" class="ec-blockBtn--action">{{'common.label.register'|trans}}</button>
+                                    <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{'common.label.btn.go_back'|trans}}</a>
                                 </div>
                             </div>
                         </div>

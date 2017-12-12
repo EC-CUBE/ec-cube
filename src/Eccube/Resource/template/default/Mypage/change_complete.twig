@@ -29,7 +29,7 @@
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>マイページ/会員情報編集(完了)</h1>
+                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.customer_info'|trans}}(完了)</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
         </div>
@@ -39,9 +39,9 @@
                     <div class="ec-reportHeading">
                         <h2>会員登録内容の変更が完了いたしました</h2>
                     </div>
-                    <p class="ec-reportDescription">今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+                    <p class="ec-reportDescription">{{'shopping.text.message.thank_you_with_us'|trans}}</p>
                     <div class="ec-off4Grid">
-                        <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
+                        <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{'common.label.back_to_top'|trans}}</a></div>
                     </div>
                 </div>
             </div>

@@ -46,7 +46,7 @@ $(function(){
 {% block main %}
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
                 {{ form_widget(searchOrderForm._token) }}
                 <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
@@ -72,43 +72,44 @@ $(function(){
                 </div><!-- /.box -->
                 </form>
             </div><!-- /.col -->
-
+<!--
             <div class="col-md-6">
                 <div class="box" id="cube_news">
                     <div class="box-header">
                         <h3 class="box-title">{{'admin.index.161'|trans}}</h3>
-                    </div><!-- /.box-header -->
+                    </div>
                     <div class="box-body no-padding no-border">
                         <iframe name="information" class="link_list_wrap" src="{{ app.config.eccube_info_url }}"></iframe>
-                    </div><!-- /.box-body -->
+                    </div>
 
-                </div><!-- /.box -->
-            </div><!-- /.col -->
+                </div>
+            </div>
+-->
         </div>
 
         <div class="row">
             <div class="col-md-8">
                 <div class="box" id="sale_info">
                     <div class="box-header">
-                        <h3 class="box-title">売り上げ状況</h3>
+                        <h3 class="box-title">{{'admin.index.162'|trans}}</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
                         <div class="sale_box clearfix">
                             <div class="monthly_sale">
                                 <div class="item_number">
-                                    {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
+                                    {{ salesThisMonth is empty ? 0 : salesThisMonth.order_amount|price }} : {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>{{'admin.index.label.order_num'|trans}}</span>
                                     <div class="small">{{'admin.index.164'|trans}}</div>
                                 </div>
                             </div>
                             <div class="yesterday_sale">
                                 <div class="item_number">
-                                    {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
+                                    {{ salesYesterday is empty ? 0 : salesYesterday.order_amount|price }} : {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>{{'admin.index.label.order_num'|trans}}</span>
                                     <div class="small">{{'admin.index.166'|trans}}</div>
                                 </div>
                             </div>
                             <div class="today_sale">
                                 <div class="item_number">
-                                    {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }}  <span>件</span>
+                                    {{ salesToday is empty ? 0 : salesToday.order_amount|price }} : {{ salesToday is empty ? 0 : salesToday.order_count|number_format }}  <span>{{'admin.index.label.order_num'|trans}}</span>
                                     <div class="small">{{'admin.index.168'|trans}}</div>
                                 </div>
                             </div>

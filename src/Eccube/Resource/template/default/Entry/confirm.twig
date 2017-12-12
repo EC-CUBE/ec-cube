@@ -28,13 +28,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <div class="ec-registerRole">
         <div class="ec-pageHeader">
-            <h1>新規会員登録確認</h1>
+            <h1>{{'signup.label.review'|trans}}</h1>
         </div>
         <div class="ec-off1Grid">
             <div class="ec-off1Grid__cell">
                 <form method="post" action="{{ url('entry') }}">
                     {{ form_widget(form._token) }}
-                    <p>下記の内容で送信してもよろしいでしょうか？<br>よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
+                    <p>{{'signup.text.message.submit_confirmation'|trans}}<br>{{'signup.text.message.press_registration'|trans}}</p>
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
@@ -169,8 +169,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-registerRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <button class="ec-blockBtn--action" type="submit" name="mode" value="complete">会員登録をする</button>
-                                <button class="ec-blockBtn--cancel" type="submit" name="mode" value="back">戻る</button>
+                                <button class="ec-blockBtn--action" type="submit" name="mode" value="complete">{{'signup.label.btn.register'|trans}}</button>
+                                <button class="ec-blockBtn--cancel" type="submit" name="mode" value="back">{{'signup.label.btn.go_back'|trans}}</button>
                             </div>
                         </div>
                     </div>

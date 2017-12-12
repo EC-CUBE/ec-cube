@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-layoutRole__main">
         <div class="ec-mypageRole">
             <div class="ec-pageHeader">
-                <h1>マイページ/退会手続き</h1>
+                <h1>{{'mypage.label.my_account'|trans}}/{{'mypage.label.cancel_membership'|trans}}</h1>
             </div>
             {{ include('Mypage/navi.twig') }}
         </div>
@@ -41,14 +41,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div style="font-size:100px;text-align:center;">
                             <div class="ec-icon"><img src="{{ asset('assets/icon/exclamation.svg') }}" alt=""></div>
                         </div>
-                        <p class="ec-withdrawRole__title">退会手続きの前にご確認ください
+                        <p class="ec-withdrawRole__title">{{'mypage.text.message.make_sure'|trans}}
                         </p>
-                        <p class="ec-withdrawRole__description">会員を退会された場合には、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますがよろしいでしょうか？
+                        <p class="ec-withdrawRole__description">{{'mypage.text.message.if_canceled'|trans}}
                         </p>
                     </div>
                 </div>
                 <div class="ec-off4Grid">
-                    <div class="ec-off4Grid__cell"><button type="submit" class="ec-blockBtn--cancel" name="mode" value="confirm">会員退会手続きへ</button></div>
+                    <div class="ec-off4Grid__cell"><button type="submit" class="ec-blockBtn--cancel" name="mode" value="confirm">{{'mypage.label.btn.to_cancel_membership'|trans}}</button></div>
                 </div>
             </form>
         </div>

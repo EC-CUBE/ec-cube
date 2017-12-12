@@ -36,6 +36,7 @@ class InstallApplication extends \Silex\Application
     use \Eccube\Application\ApplicationTrait;
     use \Eccube\Application\SecurityTrait;
     use \Eccube\Application\TwigTrait;
+    use \Silex\Application\TranslationTrait;
 
     public function __construct(array $values = array())
     {
@@ -93,7 +94,7 @@ class InstallApplication extends \Silex\Application
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
-            'locale' => 'ja',
+            'locale' => 'en',
         ));
         $app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());

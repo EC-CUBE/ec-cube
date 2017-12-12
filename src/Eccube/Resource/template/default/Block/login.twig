@@ -23,36 +23,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="ec-headerNav">
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('mypage') }}"><img src="{{ asset('assets/icon/user.svg') }}"
-                                                              alt=""><span>マイページ</span></a>
+                                                              alt=""><span>{{'login.label.mypage'|trans}}</span></a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
                 <a class="ec-icon" href="{{ url('mypage_favorite') }}"><img
                             src="{{ asset('assets/icon/favorite.svg') }}"
-                            alt=""><span>お気に入り</span></a>
+                            alt=""><span>{{'common.label.favorites'|trans}}</span></a>
             </div>
         {% endif %}
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('logout') }}"><img src="{{ asset('assets/icon/login.svg') }}"
-                                                                     alt=""><span>ログアウト</span></a>
+                                                                     alt=""><span>{{'login.label.logout'|trans}}</span></a>
         </div>
     </div>
 {% else %}
     <div class="ec-headerNav">
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('entry') }}"><img src="{{ asset('assets/icon/user.svg') }}"
-                                                              alt=""><span>新規会員登録</span></a>
+                                                              alt=""><span>{{'signup.label.new_registration'|trans}}</span></a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
                 <a class="ec-icon" href="{{ url('mypage_favorite') }}"><img
                             src="{{ asset('assets/icon/favorite.svg') }}"
-                            alt=""><span>お気に入り</span></a>
+                            alt=""><span>{{'common.label.favorites'|trans}}</span></a>
             </div>
         {% endif %}
         <div class="ec-headerNav__item">
             <a class="ec-icon" href="{{ url('mypage_login') }}"><img src="{{ asset('assets/icon/login.svg') }}"
-                                                                     alt=""><span>ログイン</span></a>
+                                                                     alt=""><span>{{'login.label.login'|trans}}</span></a>
         </div>
     </div>
 {% endif %}

@@ -177,18 +177,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% if Product.hasProductClass -%}
                         <div class="ec-productRole__priceRegular">
                             {% if Product.getPrice01Min is not null and Product.getPrice01IncTaxMin == Product.getPrice01IncTaxMax %}
-                                <span class="ec-productRole__priceRegularPrice">通常価格：{{ Product.getPrice01IncTaxMin|price }}</span>
-                                <span class="ec-productRole__priceRegularTax">税込</span>
+                                <span class="ec-productRole__priceRegularPrice">{{'normal_price_title'|trans}}：{{ Product.getPrice01IncTaxMin|price }}</span>
+                                <span class="ec-productRole__priceRegularTax">{{'shopping.label.tax_incl'|trans}}</span>
                             {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
-                                <span class="ec-productRole__priceRegularPrice">通常価格：{{ Product.getPrice01IncTaxMin|price }}
+                                <span class="ec-productRole__priceRegularPrice">{{'normal_price_title'|trans}}：{{ Product.getPrice01IncTaxMin|price }}
                                     ～ {{ Product.getPrice01IncTaxMax|price }}</span>
-                                <span class="ec-productRole__priceRegularTax">税込</span>
+                                <span class="ec-productRole__priceRegularTax">{{'shopping.label.tax_incl'|trans}}</span>
                             {% endif %}
                         </div>
                     {% else %}
                         {% if Product.getPrice01Max is not null %}
-                            <span class="ec-productRole__priceRegularPrice">通常価格：{{ Product.getPrice01IncTaxMin|price }}</span>
-                            <span class="ec-productRole__priceRegularTax">税込</span>
+                            <span class="ec-productRole__priceRegularPrice">{{'normal_price_title'|trans}}：{{ Product.getPrice01IncTaxMin|price }}</span>
+                            <span class="ec-productRole__priceRegularTax">{{'shopping.label.tax_incl'|trans}}</span>
                         {% endif %}
                     {% endif %}
                     {# 販売価格 #}
@@ -197,33 +197,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% if Product.getPrice02IncTaxMin == Product.getPrice02IncTaxMax %}
                                 <div class="ec-price"><span class="ec-price__unit">¥</span><span
                                             class="ec-price__price">{{ Product.getPrice02IncTaxMin }}</span><span
-                                            class="ec-price__tax">税込</span>
+                                            class="ec-price__tax">{{'shopping.label.tax_incl'|trans}}</span>
                                 </div>
                             {% else %}
                                 <div class="ec-price"><span class="ec-price__unit">¥</span><span
                                             class="ec-price__price">{{ Product.getPrice02IncTaxMin }}</span>
                                     ～ <span class="ec-price__unit">¥</span><span
                                             class="ec-price__price">{{ Product.getPrice02IncTaxMax }}</span><span
-                                            class="ec-price__tax">税込</span>
+                                            class="ec-price__tax">{{'shopping.label.tax_incl'|trans}}</span>
                                 </div>
                             {% endif %}
                         {% else %}
                             <div class="ec-price"><span class="ec-price__unit">¥</span><span
                                         class="ec-price__price">{{ Product.getPrice02IncTaxMin }}</span><span
-                                        class="ec-price__tax">税込</span>
+                                        class="ec-price__tax">{{'shopping.label.tax_incl'|trans}}</span>
                             </div>
                         {% endif %}
                     </div>
                     {# 商品コード #}
                     {% if Product.code_min is not empty %}
                         <div class="ec-productRole__code">
-                            商品コード： {{ Product.code_min }}{% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
+                            {{'product_description.label.product_code'|trans}}： {{ Product.code_min }}{% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
                         </div>
                     {% endif %}
                     {# 関連カテゴリ #}
                     {% if Product.ProductCategories is not empty %}
                         <div class="ec-productRole__category">
-                            <div>関連カテゴリ</div>
+                            <div>{{'product_description.label.related_category'|trans}}</div>
                             {% for ProductCategory in Product.ProductCategories %}
                                 <ul>
                                     <li>
@@ -251,14 +251,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     {% endif %}
                                 {% endif %}
-                                <div class="ec-numberInput"><span>数量</span>
+                                <div class="ec-numberInput"><span>{{'common.label.qty'|trans}}</span>
                                     {{ form_widget(form.quantity) }}
                                     {{ form_errors(form.quantity) }}
                                 </div>
                             </div>
                             <div class="ec-productRole__btn">
                                 <button type="submit" id="add-cart"
-                                        class="ec-blockBtn--action prevention-btn prevention-mask">カートに入れる
+                                        class="ec-blockBtn--action prevention-btn prevention-mask">{{'common.label.add_cart'|trans}}
                                 </button>
                             </div>
                         {% else %}
@@ -276,7 +276,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="ec-productRole__btn">
                                 {% if is_favorite == false %}
                                     <button type="submit" id="favorite" class="ec-blockBtn--cancel">
-                                        お気に入りに追加
+                                        {{'common.label.add_favorite'|trans}}
                                     </button>
                                 {% else %}
                                     <button type="submit" id="favorite" class="ec-blockBtn--cancel"

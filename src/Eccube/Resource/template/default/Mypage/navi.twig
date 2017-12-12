@@ -23,18 +23,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="ec-navlistRole">
 
     <ul class="ec-navlistRole__navlist {% if favorite %}favorite{% endif %}">
-        <li class="ec-navlistRole__item {% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}">ご注文履歴</a>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}">{{'mypage.label.order_history'|trans}}</a>
         </li>
-        <li class="ec-navlistRole__item {% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">お気に入り一覧</a>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">{{'mypage.label.favorites'|trans}}</a>
         </li>
-        <li class="ec-navlistRole__item {% if mypageno|default('') == 'change' %}active{% endif %}"><a href="{{ url('mypage_change') }}">会員情報編集</a>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'change' %}active{% endif %}"><a href="{{ url('mypage_change') }}">{{'mypage.label.customer_info'|trans}}</a>
         </li>
-        <li class="ec-navlistRole__item {% if mypageno|default('') == 'delivery' %}active{% endif %}"><a href="{{ url('mypage_delivery') }}">お届け先編集</a>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'delivery' %}active{% endif %}"><a href="{{ url('mypage_delivery') }}">{{'mypage.label.edit_address'|trans}}</a>
         </li>
-        <li class="ec-navlistRole__item {% if mypageno|default('') == 'withdraw' %}active{% endif %}"><a href="{{ url('mypage_withdraw') }}">退会手続き</a>
+        <li class="ec-navlistRole__item {% if mypageno|default('') == 'withdraw' %}active{% endif %}"><a href="{{ url('mypage_withdraw') }}">{{'mypage.label.cancel_membership'|trans}}</a>
         </li>
     </ul>
 </div>
 
-<div class="ec-welcomeMsg">ようこそ ／ {{ app.user.name01 }} {{ app.user.name02 }} 様</div>
+<div class="ec-welcomeMsg">{{'mypage.message.welcome'|trans}} ／ {{ app.user.name01 }} {{ app.user.name02 }} 様</div>
 

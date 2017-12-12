@@ -502,7 +502,7 @@ class ProductController
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
         } else {
-            return $app->trans('productcontroller.text.return.all_products');
+            return Application::getInstance()->trans('productcontroller.text.return.all_products');
         }
     }
 
