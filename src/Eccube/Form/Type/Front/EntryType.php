@@ -41,6 +41,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -115,7 +116,22 @@ class EntryType extends AbstractType
             ))
             ->add('job', JobType::class, array(
                 'required' => false,
-            ));
+            ))
+            ->add(
+                'point',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'label' => 'ポイント',
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^\d+$/u",
+                            'message' => 'form.type.numeric.invalid'
+                        )),
+                    ),
+                    'mapped' => false
+                ]
+            );
     }
 
     /**

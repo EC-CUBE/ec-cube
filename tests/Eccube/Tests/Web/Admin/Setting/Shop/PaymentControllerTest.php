@@ -141,14 +141,14 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         $pid = 4;
         $Payment = $this->app['eccube.repository.payment']->find($pid);
-        $before = $Payment->getRank();
+        $before = $Payment->getSortNo();
         $this->client->request('PUT',
             $this->app->url('admin_setting_shop_payment_up', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $after = $Payment->getRank();
+        $after = $Payment->getSortNo();
         $this->actual = $after;
         $this->expected = $before + 1;
         $this->verify();
@@ -158,14 +158,14 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         $pid = 1;
         $Payment = $this->app['eccube.repository.payment']->find($pid);
-        $before = $Payment->getRank();
+        $before = $Payment->getSortNo();
         $this->client->request('PUT',
             $this->app->url('admin_setting_shop_payment_down', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $after = $Payment->getRank();
+        $after = $Payment->getSortNo();
         $this->actual = $after;
         $this->expected = $before - 1;
         $this->verify();

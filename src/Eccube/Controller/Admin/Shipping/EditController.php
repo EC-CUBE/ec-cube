@@ -10,9 +10,9 @@ use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
-use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -117,8 +117,8 @@ class EditController
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/{_admin}/shipping/edit", name="admin/shipping/new")
-     * @Route("/{_admin}/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
+     * @Route("/{_admin}/shipping/edit", name="admin_shipping_new")
+     * @Route("/{_admin}/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
      * @Template("Shipping/edit.twig")
      *
      * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
@@ -194,7 +194,7 @@ class EditController
                     if ($form->isValid()) {
                         $ShippingStatus = $this->shippingStatusReposisotry->find(ShippingStatus::SHIPPED);
                         $TargetShipping->setShippingStatus($ShippingStatus);
-                        $TargetShipping->setCommitDate(new \DateTime());
+                        $TargetShipping->setShippingDate(new \DateTime());
                     }
                     // no break
                 case 'register':
@@ -233,7 +233,7 @@ class EditController
 
                         log_info('出荷登録完了', array($TargetShipping->getId()));
 
-                        return $app->redirect($app->url('admin/shipping/edit', array('id' => $TargetShipping->getId())));
+                        return $app->redirect($app->url('admin_shipping_edit', array('id' => $TargetShipping->getId())));
                     }
 
                     break;

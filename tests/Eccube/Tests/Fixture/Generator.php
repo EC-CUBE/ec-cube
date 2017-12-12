@@ -127,7 +127,8 @@ class Generator {
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
-            ->setUpdateDate(new \DateTime());
+            ->setUpdateDate(new \DateTime())
+            ->setPoint($faker->randomNumber(5));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush($Customer);
 
@@ -265,7 +266,7 @@ class Generator {
         $Member = $this->app['eccube.repository.member']->find(2);
         $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
         $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
-        $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
+        $DeliveryDurations = $this->app['eccube.repository.delivery_duration']->findAll();
 
         $Product = new Product();
         if (is_null($product_name)) {
@@ -298,7 +299,7 @@ class Generator {
             $ProductImage
                 ->setCreator($Member)
                 ->setFileName($image)
-                ->setRank($i)
+                ->setSortNo($i)
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
             $this->app['orm.em']->persist($ProductImage);
@@ -338,7 +339,7 @@ class Generator {
                 ->setSaleType($SaleType)
                 ->setStockUnlimited(false)
                 ->setPrice02($faker->randomNumber(5))
-                ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
+                ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
                 ->setVisible(true);
@@ -382,7 +383,7 @@ class Generator {
             ->setProduct($Product)
             ->setSaleType($SaleType)
             ->setPrice02($faker->randomNumber(5))
-            ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
+            ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
@@ -405,7 +406,7 @@ class Generator {
                 ->setProduct($Product)
                 ->setCategoryId($Category->getId())
                 ->setProductId($Product->getId())
-                ->setRank($i);
+                ->setSortNo($i);
             $this->app['orm.em']->persist($ProductCategory);
             $this->app['orm.em']->flush($ProductCategory);
             $Product->addProductCategory($ProductCategory);
@@ -444,7 +445,10 @@ class Generator {
             ->setPayment($Payments[$faker->numberBetween(0, count($Payments) - 1)])
             ->setPaymentMethod($Order->getPayment()->getMethod())
             ->setMessage($faker->realText())
-            ->setNote($faker->realText());
+            ->setNote($faker->realText())
+            ->setAddPoint(0)    // TODO
+            ->setUsePoint(0)    // TODO
+        ;
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush($Order);
         if (!is_object($Delivery)) {
@@ -655,7 +659,7 @@ class Generator {
             ->setName($faker->word)
             ->setDescription($faker->paragraph())
             ->setConfirmUrl($faker->url)
-            ->setRank($faker->randomNumber(2))
+            ->setSortNo($faker->randomNumber(2))
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)

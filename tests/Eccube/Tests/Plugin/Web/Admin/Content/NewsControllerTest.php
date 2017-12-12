@@ -178,16 +178,15 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->deleteTestNews($TestNews2);
     }
 
-    private function newTestNews($TestCreator, $rank = 1)
+    private function newTestNews($TestCreator, $sortNo = 1)
     {
         $TestNews = new \Eccube\Entity\News();
         $TestNews
-            ->setDate(new \DateTime())
-            ->setTitle('テストタイトル' . $rank)
-            ->setComment('テスト内容' . $rank)
+            ->setPublishDate(new \DateTime())
+            ->setTitle('テストタイトル' . $sortNo)
+            ->setDescription('テスト内容' . $sortNo)
             ->setUrl('http://example.com/')
-            ->setRank(100 + $rank)
-            ->setSelect(0)
+            ->setSortNo(100 + $sortNo)
             ->setLinkMethod(0)
             ->setCreator($TestCreator);
 
@@ -228,11 +227,10 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     {
 
         $form = array(
-            'date' => '2016-02-11',
+            'publish_date' => '2016-02-11',
             'title' => 'dummy',
             'url' => 'http://examples.com',
-            'comment' => 'dummy',
-            'select' => '0',
+            'description' => 'dummy',
             '_token' => 'dummy'
         );
         return $form;

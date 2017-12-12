@@ -51,6 +51,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
+                <div class="ec-progress__label">ご注文手続き
+                </div>
+            </li>
+            <li class="ec-progress__item">
+                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                </div>
                 <div class="ec-progress__label">ご注文内容確認
                 </div>
             </li>
@@ -72,7 +78,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <p class="ec-reportDescription">ただいま、ご注文の確認メールをお送りさせていただきました。<br>万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
             <div class="ec-off4Grid">
-                <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
+                {% if hasNextCart %}
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--primary" href="{{ url('cart') }}">購入を続ける</a></div>
+                {% else %}
+                    <div class="ec-off4Grid__cell"><a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">トップページへ</a></div>
+                {% endif %}
             </div>
         </div>
     </div>

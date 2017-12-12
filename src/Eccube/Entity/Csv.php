@@ -55,16 +55,16 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enable", type="boolean", options={"default":true})
+     * @ORM\Column(name="enabled", type="boolean", options={"default":true})
      */
-    private $enable = true;
+    private $enabled = true;
 
     /**
      * @var \DateTime
@@ -85,7 +85,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="csv_type", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="csv_type_id", referencedColumnName="id")
      * })
      */
     private $CsvType;
@@ -208,51 +208,51 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return Csv
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**
-     * Set enable.
+     * Set enabled.
      *
-     * @param boolean $enable
+     * @param boolean $enabled
      *
      * @return Csv
      */
-    public function setEnable($enable)
+    public function setEnabled($enabled)
     {
-        $this->enable = $enable;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get enable.
+     * Get enabled.
      *
      * @return boolean
      */
-    public function isEnable()
+    public function isEnabled()
     {
-        return $this->enable;
+        return $this->enabled;
     }
 
     /**

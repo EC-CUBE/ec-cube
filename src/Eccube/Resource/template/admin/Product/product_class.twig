@@ -109,8 +109,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             var delivery_fee = $('#form_product_classes_0_delivery_fee').val();
             $('input[id$=_delivery_fee]').val(delivery_fee);
 
-            var delivery_date = $('#form_product_classes_0_delivery_date').val();
-            $('select[id$=_delivery_date]').val(delivery_date);
+            var delivery_duration = $('#form_product_classes_0_delivery_duration').val();
+            $('select[id$=_delivery_duration]').val(delivery_duration);
 
             var tax_rate = $('#form_product_classes_0_tax_rate').val();
             $('input[id$=_tax_rate]').val(tax_rate);
@@ -218,7 +218,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if BaseInfo.option_product_delivery_fee %}
                                     <th id="result_box__header_delivery_fee">送料</th>
                                     {% endif %}
-                                    <th id="result_box__header_delivery_date">お届け可能日</th>
+                                    <th id="result_box__header_delivery_duration">お届け可能日</th>
                                     {% if BaseInfo.option_product_tax_rule %}
                                     <th id="result_box__header_tax_rate">販売税率</th>
                                     {% endif %}
@@ -270,9 +270,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_errors(product_class_form.delivery_fee) }}
                                 </td>
                                 {% endif %}
-                                <td id="result_box__delivery_date--{{ product_class_form.vars.name }}">
-                                    {{ form_widget(product_class_form.delivery_date) }}
-                                    {{ form_errors(product_class_form.delivery_date) }}
+                                <td id="result_box__delivery_duration--{{ product_class_form.vars.name }}">
+                                    {{ form_widget(product_class_form.delivery_duration) }}
+                                    {{ form_errors(product_class_form.delivery_duration) }}
                                 </td>
                                 {% if BaseInfo.option_product_tax_rule %}
                                 <td id="result_box__tax_rate--{{ product_class_form.vars.name }}">

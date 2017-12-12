@@ -210,9 +210,10 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
 
         // tel
         if (isset($searchData['tel']) && StringUtil::isNotBlank($searchData['tel'])) {
+            $tel = preg_replace('/[^0-9]/ ', '', $searchData['tel']);
             $qb
                 ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
-                ->setParameter('tel', '%'.$searchData['tel'].'%');
+                ->setParameter('tel', '%'.$tel.'%');
         }
 
         // buy_total

@@ -2,13 +2,10 @@
 
 namespace Eccube\Tests\Util;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Entity\Member;
-use Eccube\Common\Constant;
+use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\EntityUtil;
 
 /**

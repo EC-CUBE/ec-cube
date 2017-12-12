@@ -88,7 +88,7 @@ class PaymentController extends AbstractController
         $Payments = $this->paymentRepository
             ->findBy(
                 array(),
-                array('rank' => 'DESC')
+                array('sort_no' => 'DESC')
             );
 
         $event = new EventArgs(
@@ -216,10 +216,10 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $rank = 1;
-        $Payments = $this->paymentRepository->findBy(array(), array('rank' => 'ASC'));
+        $sortNo = 1;
+        $Payments = $this->paymentRepository->findBy(array(), array('sort_no' => 'ASC'));
         foreach ($Payments as $Payment) {
-                $Payment->setRank($rank++);
+                $Payment->setSortNo($sortNo++);
         }
 
         try {
@@ -253,17 +253,17 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $currentRank = $current->getRank();
-        $targetRank = $currentRank + 1;
+        $currentSortNo = $current->getSortNo();
+        $targetSortNo = $currentSortNo + 1;
 
-        $target = $this->paymentRepository->findOneBy(array('rank' => $targetRank));
+        $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setRank($currentRank);
-        $current->setRank($targetRank);
+        $target->setSortNo($currentSortNo);
+        $current->setSortNo($targetSortNo);
 
         $this->entityManager->flush();
 
-        $app->addSuccess('admin.rank.move.complete', 'admin');
+        $app->addSuccess('admin.sort_no.move.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
@@ -276,17 +276,17 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $currentRank = $current->getRank();
-        $targetRank = $currentRank - 1;
+        $currentSortNo = $current->getSortNo();
+        $targetSortNo = $currentSortNo - 1;
 
-        $target = $this->paymentRepository->findOneBy(array('rank' => $targetRank));
+        $target = $this->paymentRepository->findOneBy(array('sort_no' => $targetSortNo));
 
-        $target->setRank($currentRank);
-        $current->setRank($targetRank);
+        $target->setSortNo($currentSortNo);
+        $current->setSortNo($targetSortNo);
 
         $this->entityManager->flush();
 
-        $app->addSuccess('admin.rank.move.complete', 'admin');
+        $app->addSuccess('admin.sort_no.move.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }

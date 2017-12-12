@@ -208,7 +208,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div id="search_box_main__commit_date" class="col-sm-6">
                   <label>発送日</label>
                   <div class="form-group range">
-                    {{ form_widget(searchForm.commit_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.commit_date_end, {'attr': {'class': 'input_cal'}}) }}
+                    {{ form_widget(searchForm.shipping_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.shipping_date_end, {'attr': {'class': 'input_cal'}}) }}
                   </div>
                 </div>
                 <div id="search_box_main__update_date" class="col-sm-6">
@@ -334,7 +334,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td id="result_list_main__name--{{ Order.id }}">{{ Order.name01 }} {{ Order.name02 }}</td>
                                         <td id="result_list_main__payment_method--{{ Order.id }}">{{ Order.payment_method }}</td>
                                         <td id="result_list_main__payment_total--{{ Order.id }}" class="text-right">{{ Order.payment_total|number_format }}</td>
-                                        <td id="result_list_main__commit_date--{{ Order.id }}">{{ Order.commit_date|date_format }}</td>
+                                        <td id="result_list_main__commit_date--{{ Order.id }}">{{ Order.shipping_date|date_format }}</td>
                                         <td id="result_list_main__order_status--{{ Order.id }}">{{ Order.OrderStatus }}</td>
                                         <td id="result_list_main__item_menu_box--{{ Order.id }}" class="icon_edit">
                                             <div id="result_list_main__item_menu--{{ Order.id }}" class="dropdown">

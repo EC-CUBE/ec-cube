@@ -1,4 +1,4 @@
-id,name,rank,discriminator_type
+id,name,sort_no,discriminator_type
 "352","アイスランド","1","country"
 "372","アイルランド","2","country"
 "31","アゼルバイジャン","3","country"

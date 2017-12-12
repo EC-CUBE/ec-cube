@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\DI\AutoWiring\FormTypeAutoWiring;
 use Eccube\DI\DIServiceProvider;
+use Symfony\Component\Form\FormRenderer;
 
 class InstallApplication extends \Silex\Application
 {
@@ -88,6 +89,17 @@ class InstallApplication extends \Silex\Application
             'twig.path' => array(__DIR__.'/Resource/template/install'),
             'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
         ));
+
+        // TwigRendererがdeprecatedになり, Rendererを取得できないエラーが発生するため,
+        // twig.runtimesにFormRendererを追加.
+        // @see https://github.com/silexphp/Silex/pull/1571
+        $this->extend('twig.runtimes', function($runtimes) {
+            if (!isset($runtimes[FormRenderer::class])) {
+                $runtimes[FormRenderer::class] = 'twig.form.renderer';
+            }
+
+            return $runtimes;
+        });
 
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());

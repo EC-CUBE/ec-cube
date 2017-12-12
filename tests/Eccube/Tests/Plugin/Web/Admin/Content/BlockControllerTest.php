@@ -105,7 +105,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         $Block = new Block();
         $Block->setDeviceType($DeviceType);
         $Block->setFileName('dummy');
-        $Block->setLogical($Block::UNUSED_BLOCK_ID);
+        $Block->setUseController($Block::UNUSED_BLOCK_ID);
         $Block->setDeletable(true);
         $this->app['orm.em']->persist($Block);
         $this->app['orm.em']->flush();

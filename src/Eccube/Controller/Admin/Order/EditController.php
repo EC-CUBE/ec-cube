@@ -176,12 +176,6 @@ class EditController extends AbstractController
 
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
-        $OriginalOrderItems = new ArrayCollection();
-
-        // 編集前の情報を保持
-        foreach ($TargetOrder->getOrderItems() as $tmpOrderItem) {
-            $OriginalOrderItems->add($tmpOrderItem);
-        }
 
         $builder = $this->formFactory
             ->createBuilder(OrderType::class, $TargetOrder,
@@ -202,7 +196,7 @@ class EditController extends AbstractController
 
         $form = $builder->getForm();
         $form->handleRequest($request);
-        $purchaseContext = $app['eccube.purchase.context']($OriginOrder);
+        $purchaseContext = $app['eccube.purchase.context']($OriginOrder, $OriginOrder->getCustomer());
 
         if ($form->isSubmitted()) {
             $event = new EventArgs(
@@ -216,7 +210,6 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
-
             $flowResult = $this->purchaseFlow->calculate($TargetOrder, $purchaseContext);
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
@@ -224,6 +217,7 @@ class EditController extends AbstractController
                     $app->addWarning($warning->getMessage(), 'admin');
                 }
             }
+
             if ($flowResult->hasError()) {
                 foreach ($flowResult->getErrors() as $error) {
                     $app->addError($error->getMessage(), 'admin');
@@ -705,11 +699,11 @@ class EditController extends AbstractController
             if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
-                    $TargetOrder->setCommitDate($dateTime);
+                    $TargetOrder->setShippingDate($dateTime);
                     // お届け先情報の発送日も更新する.
                     $Shippings = $TargetOrder->getShippings();
                     foreach ($Shippings as $Shipping) {
-                        $Shipping->setShippingCommitDate($dateTime);
+                        $Shipping->setShippingDate($dateTime);
                     }
                 }
                 // 入金済
@@ -723,11 +717,11 @@ class EditController extends AbstractController
         } else {
             // 発送済
             if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
-                $TargetOrder->setCommitDate($dateTime);
+                $TargetOrder->setShippingDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
                 foreach ($Shippings as $Shipping) {
-                    $Shipping->setShippingCommitDate($dateTime);
+                    $Shipping->setShippingDate($dateTime);
                 }
                 // 入金済
             } elseif ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_pre_end']) {

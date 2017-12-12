@@ -195,7 +195,7 @@ class PaginationTest extends EccubeTestCase
     public function testWhereWithJoinEntity()
     {
         // `新商品`のTagが登録されたProductを生成
-        $Tag = $this->app['eccube.repository.master.tag']
+        $Tag = $this->app['eccube.repository.tag']
             ->find(1);
         $Member = $this->app['eccube.repository.member']
             ->find(2);

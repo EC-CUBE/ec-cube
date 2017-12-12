@@ -246,6 +246,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $reset_expire;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
+     */
+    private $point = '0';
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_date", type="datetimetz")
@@ -288,7 +295,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="customer_status_id", referencedColumnName="id")
      * })
      */
     private $Status;
@@ -298,7 +305,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sex", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sex_id", referencedColumnName="id")
      * })
      */
     private $Sex;
@@ -308,7 +315,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="job", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      * })
      */
     private $Job;
@@ -328,7 +335,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pref", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
      * })
      */
     private $Pref;
@@ -1343,5 +1350,29 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Set point
+     *
+     * @param string $point
+     *
+     * @return Customer
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string
+     */
+    public function getPoint()
+    {
+        return $this->point;
     }
 }

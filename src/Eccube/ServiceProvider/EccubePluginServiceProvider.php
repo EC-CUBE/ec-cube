@@ -287,7 +287,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
             ->getHandlers();
 
         foreach ($handlers as $handler) {
-            if ($handler->getPlugin()->isEnable()) {
+            if ($handler->getPlugin()->isEnabled()) {
 
                 $priority = $handler->getPriority();
             } else {
@@ -318,7 +318,7 @@ class EccubePluginServiceProvider implements ServiceProviderInterface, BootableP
                 ->findOneBy(array('code' => $config['code']));
 
             // const
-            if (is_null($plugin) || !$plugin->isEnable()) {
+            if (is_null($plugin) || !$plugin->isEnabled()) {
                 // プラグインが無効化されていれば読み込まない
                 continue;
             }

@@ -20,13 +20,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace Eccube\Form\Type\Master;
+
+
+namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
-use Eccube\Form\Type\MasterType;
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @FormType
@@ -34,21 +39,48 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TagType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @Inject("config")
+     * @var array
      */
-    public function configureOptions(OptionsResolver $resolver)
+    protected $appConfig;
+
+
+    /**
+     * @var \Eccube\Application $app
+     * @Inject(Application::class)
+     */
+    protected $app;
+
+    public function __construct()
     {
-        $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Tag',
-        ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        return MasterType::class;
+        $builder
+            ->add('name', TextType::class, array(
+                'label' => 'タグ名',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->appConfig['stext_len'],
+                    )),
+                ),
+            ))
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Eccube\Entity\Tag',
+        ));
     }
 
     /**
@@ -56,6 +88,6 @@ class TagType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'tag';
+        return 'admin_tag';
     }
 }

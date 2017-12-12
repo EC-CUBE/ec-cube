@@ -21,38 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-
-{% block javascript %}
-{% if BaseInfo.latitude is not null and BaseInfo.longitude is not null %}
-<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script>
-$(function() {
-    $("#maps").css({
-        'margin-top': '15px',
-        'margin-left': 'auto',
-        'margin-right': 'auto',
-        'width': '98%',
-        'height': '300px'
-    });
-    var lat = {{ BaseInfo.latitude|escape('js') }};
-    var lng = {{ BaseInfo.longitude|escape('js') }};
-    if (lat && lng) {
-        var latlng = new google.maps.LatLng(lat, lng);
-        var mapOptions = {
-            zoom: 15,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map($("#maps").get(0), mapOptions);
-        var marker = new google.maps.Marker({map: map, position: latlng});
-    } else {
-        $("#maps").remove();
-    }
-});
-</script>
-{% endif %}
-{% endblock javascript %}
-
 {% block main %}
 
 <div class="ec-role">
@@ -119,8 +87,6 @@ $(function() {
                     </dl>
                 {% endif %}
             </div>
-
-            <div id="maps"></div>
 
         </div>
     </div>

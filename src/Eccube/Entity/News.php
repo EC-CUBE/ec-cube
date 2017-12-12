@@ -57,44 +57,37 @@ class News extends AbstractEntity
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="news_date", type="datetimetz", nullable=true)
+     * @ORM\Column(name="publish_date", type="datetimetz", nullable=true)
      */
-    private $date;
+    private $publish_date;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="smallint", options={"unsigned":true})
+     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
-    private $rank;
+    private $sort_no;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="news_title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="news_comment", type="text", nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $comment;
+    private $description;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="news_url", type="string", length=4000, nullable=true)
+     * @ORM\Column(name="url", type="string", length=4000, nullable=true)
      */
     private $url;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="news_select", type="smallint", options={"unsigned":true,"default":0})
-     */
-    private $select = 0;
 
     /**
      * @var boolean
@@ -139,51 +132,51 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set date.
+     * Set publishDate.
      *
-     * @param \DateTime|null $date
+     * @param \DateTime|null $publishDate
      *
      * @return News
      */
-    public function setDate($date = null)
+    public function setPublishDate($publishDate = null)
     {
-        $this->date = $date;
+        $this->publish_date = $publishDate;
 
         return $this;
     }
 
     /**
-     * Get date.
+     * Get publishDate.
      *
      * @return \DateTime|null
      */
-    public function getDate()
+    public function getPublishDate()
     {
-        return $this->date;
+        return $this->publish_date;
     }
 
     /**
-     * Set rank.
+     * Set sortNo.
      *
-     * @param int $rank
+     * @param int $sortNo
      *
      * @return News
      */
-    public function setRank($rank)
+    public function setSortNo($sortNo)
     {
-        $this->rank = $rank;
+        $this->sort_no = $sortNo;
 
         return $this;
     }
 
     /**
-     * Get rank.
+     * Get sortNo.
      *
      * @return int
      */
-    public function getRank()
+    public function getSortNo()
     {
-        return $this->rank;
+        return $this->sort_no;
     }
 
     /**
@@ -211,27 +204,27 @@ class News extends AbstractEntity
     }
 
     /**
-     * Set comment.
+     * Set description.
      *
-     * @param string|null $comment
+     * @param string|null $description
      *
      * @return News
      */
-    public function setComment($comment = null)
+    public function setDescription($description = null)
     {
-        $this->comment = $comment;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get comment.
+     * Get description.
      *
      * @return string|null
      */
-    public function getComment()
+    public function getDescription()
     {
-        return $this->comment;
+        return $this->description;
     }
 
     /**
@@ -256,30 +249,6 @@ class News extends AbstractEntity
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Set select.
-     *
-     * @param int $select
-     *
-     * @return News
-     */
-    public function setSelect($select)
-    {
-        $this->select = $select;
-
-        return $this;
-    }
-
-    /**
-     * Get select.
-     *
-     * @return int
-     */
-    public function getSelect()
-    {
-        return $this->select;
     }
 
     /**
