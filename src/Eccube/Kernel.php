@@ -11,10 +11,10 @@
 
 namespace Eccube;
 
+use Eccube\DependencyInjection\EccubeExtension;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -27,37 +27,18 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
     protected $providers = [];
     protected $app;
 
-    public function __construct($environment, $debug)
-    {
-        /*
-         * Workaround to avoid: An exception occurred in driver: SQLSTATE[HY000] [14] unable to open database file
-         * As environment variables is not supported yet to be used with configuration parameters.
-         *
-         * @TODO remove in 3.4
-         */
-        if (isset($_ENV['DATABASE_URL']) && false !== mb_strpos($_ENV['DATABASE_URL'], '%kernel.project_dir%')) {
-            (new Dotenv())->populate([
-                'DATABASE_URL' => str_replace('%kernel.project_dir%', $this->getProjectDir(), $_ENV['DATABASE_URL']),
-            ]);
-        }
-
-        parent::__construct($environment, $debug);
-        // $_ENV['DATABASE_URL'] = str_replace('%kernel.project_dir%', $this->getProjectDir(), $_ENV['DATABASE_URL']); //  FIXME
-        // $this->app = new \Eccube\Application();
-    }
-
     public function getCacheDir(): string
     {
-        return dirname(__DIR__).'/var/cache/'.$this->environment;
+        return dirname(__DIR__).'/../var/cache/'.$this->environment;
     }
 
     public function getLogDir(): string
     {
-        return dirname(__DIR__).'/var/log';
+        return dirname(__DIR__).'/../var/log';
     }
 
     public function registerBundles()
@@ -97,17 +78,17 @@ class Kernel extends BaseKernel
     {
         parent::boot();
 
-        $em = $this->container->get('doctrine')->getManager();
-        $this->app = $this->container->get('app');
         // Symfony で用意されているコンポーネントはここで追加
-        $this->app['orm.em'] = function () use ($em) {
+        $app = Application::getInstance();
+        $em = $this->container->get('doctrine')->getManager();
+        $app['orm.em'] = function () use ($em) {
             return $em;
         };
          // TODO
-        $this->app['config'] = function () {
+        $app['config'] = function () {
             return require __DIR__.'/../../app/config/eccube/config.php';
         };
-        $this->app['debug'] = true;
+        $app['debug'] = true;
 
         // see Silex\Application::boot()
         foreach ($this->providers as $provider) {
@@ -119,6 +100,8 @@ class Kernel extends BaseKernel
                 $provider->boot($this->app);
             }
         }
+
+        $this->container->set('app', $app);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -130,14 +113,6 @@ class Kernel extends BaseKernel
         }
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
-
-        // Pimple の ServiceProvider を追加
-        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
-        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
-        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
-        $container->register('app', 'Eccube\Application');
-            // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
-            // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
@@ -150,5 +125,19 @@ class Kernel extends BaseKernel
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    public function build(ContainerBuilder $container)
+    {
+        $container->registerExtension(new EccubeExtension());
+
+        // Pimple の ServiceProvider を追加
+        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
+        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
+        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
+        $container->register('app', Application::class)
+            ->setSynthetic(true);
+        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
+        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 }
