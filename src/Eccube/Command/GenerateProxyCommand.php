@@ -24,37 +24,45 @@
 namespace Eccube\Command;
 
 use Eccube\Entity\ProxyGenerator;
-use Eccube\Repository\PluginRepository;
 use Eccube\Service\EntityProxyService;
-use Knp\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class GenerateProxyCommand extends Command
+class GenerateProxyCommand extends ContainerAwareCommand
 {
+    /**
+     * @var EntityProxyService
+     */
+    private $entityProxyService;
+
+    public function __construct(EntityProxyService $entityProxyService)
+    {
+        parent::__construct();
+        $this->entityProxyService = $entityProxyService;
+    }
+
     protected function configure()
     {
         $this
-            ->setName('generate-proxies')
-            ->setDescription('generate entity proxies');
+            ->setName('eccube:generate:proxies')
+            ->setDescription('Generate entity proxies');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Eccube\Application $app */
-        $app = $this->getSilexApplication();
-        /** @var EntityProxyService $entityProxyService */
-        $entityProxyService = $app[EntityProxyService::class];
+        // TODO プラグインディレクトリ
+//        $dirs = array_map(function($p) use ($app) {
+//            return $app['config']['root_dir'].'/app/Plugin/'.$p->getCode().'/Entity';
+//        }, $app[PluginRepository::class]->findAllEnabled());
+//
 
-        $dirs = array_map(function($p) use ($app) {
-            return $app['config']['root_dir'].'/app/Plugin/'.$p->getCode().'/Entity';
-        }, $app[PluginRepository::class]->findAllEnabled());
-
-        $entityProxyService->generate(
-            array_merge([$app['config']['vendor_dir'].'/Entity'], $dirs),
+        $projectRoot = $this->getContainer()->getParameter('kernel.project_dir');
+        $this->entityProxyService->generate(
+            [$projectRoot.'/app/Acme/Entity'], // TODO Acme
             [],
-            $app['config']['root_dir'].'/app/proxy/entity',
+            $projectRoot.'/app/proxy/entity',
             $output
         );
     }

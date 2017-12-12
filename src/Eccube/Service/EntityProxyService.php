@@ -26,8 +26,8 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\EntityExtension;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -43,10 +43,14 @@ use Zend\Code\Reflection\ClassReflection;
 class EntityProxyService
 {
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * EntityのProxyを生成します。

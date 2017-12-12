@@ -102,6 +102,7 @@
             "src/Eccube/Resource/functions/env.php"
         ],
         "psr-4": {
+            "Acme\\": "app/Acme",
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
