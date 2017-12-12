@@ -2,6 +2,8 @@
 !.gitmodule
 composer.phar
 /vendor/
+/var/*
+!/var/.gitkeep
 /app/cache/*
 !/app/cache/.gitkeep
 /app/log/*
@@ -34,5 +36,3 @@ composer.phar
 *.php~
 .env
 .web-server-pid
-var/
-src/var/
