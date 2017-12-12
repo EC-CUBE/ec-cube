@@ -839,13 +839,13 @@ EOD;
         $updateData = [];
 
         // Do backup
-        $return = $this->service->doUpgradeBackup($updateData);
+        $return = $this->service->doBackup($updateData);
         $this->assertFalse($return);
         $backupPluginDir = $this->app['config']['plugin_temp_realdir'].'/'.$config['code'];
         $this->assertDirectoryNotExists($backupPluginDir);
 
         // Do rollback test
-        $return = $this->service->doUpgradeRollback($updateData);
+        $return = $this->service->doRollback($updateData);
         $this->assertFalse($return);
         $configYml = $this->app['config']['plugin_realdir'] . '/' . $config['code'].'/'.PluginService::CONFIG_YML;
         $configData = $this->service->readYml($configYml);
@@ -885,7 +885,7 @@ EOD;
         ];
 
         // Do backup
-        $this->service->doUpgradeBackup($updateData);
+        $this->service->doBackup($updateData);
     }
 
     /**
@@ -917,7 +917,7 @@ EOD;
         ];
 
         // Do backup
-        $return = $this->service->doUpgradeBackup($updateData);
+        $return = $this->service->doBackup($updateData);
         $this->assertTrue($return);
         $backupPluginDir = $this->app['config']['plugin_temp_realdir'].'/'.$config['code'];
         $this->assertDirectoryExists($backupPluginDir);
@@ -936,7 +936,7 @@ EOD;
         $this->assertEquals($testVersion, $plugin->getVersion());
 
         // Do rollback
-        $return = $this->service->doUpgradeRollback($updateData);
+        $return = $this->service->doRollback($updateData);
         $this->assertTrue($return);
         $configYml = $this->app['config']['plugin_realdir'] . '/' . $config['code'].'/'.PluginService::CONFIG_YML;
         $configData = $this->service->readYml($configYml);

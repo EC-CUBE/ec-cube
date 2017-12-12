@@ -266,9 +266,7 @@ class OwnerStoreController extends AbstractController
             'product_code' => $pluginCode,
             'version' => $version,
         ];
-        if ($isUpgrade) {
-            $this->pluginService->doUpgradeBackup($updateData);
-        }
+        $this->pluginService->doBackup($updateData);
 
         $reportData = array(
             'code' => $pluginCode,
@@ -294,9 +292,7 @@ class OwnerStoreController extends AbstractController
         } catch (\Exception $exception) {
             log_error($exception->getMessage());
             // Do rollback when error
-            if ($isUpgrade) {
-                $this->pluginService->doUpgradeRollback($updateData);
-            }
+            $this->pluginService->doRollback($updateData);
         } finally {
             // Remove temp files
             $pluginTempRealDir = $this->appConfig['plugin_temp_realdir'];

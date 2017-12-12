@@ -949,7 +949,7 @@ class PluginService
      * @throws \Exception
      * @return bool
      */
-    public function doUpgradeRollback($updateData)
+    public function doRollback($updateData)
     {
         if (empty($updateData)) {
             return false;
@@ -1009,7 +1009,7 @@ class PluginService
      * @throws PluginException
      * @return bool
      */
-    public function doUpgradeBackup($updateData)
+    public function doBackup($updateData)
     {
         if (empty($updateData)) {
             return false;
