@@ -422,7 +422,7 @@ class InstallController
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
-                $app->addDanger($app->trans('install.text.error.required_module_not_enable', $module), 'install');
+                $app->addDanger($app->trans('install.text.error.required_module_not_enable', array($module)), 'install');
             }
         }
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
@@ -435,7 +435,7 @@ class InstallController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $app->addInfo($app->trans('install.text.error.recommended_module_not_enable', $module), 'install');
+                $app->addInfo($app->trans('install.text.error.recommended_module_not_enable', array($module)), 'install');
             }
         }
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
