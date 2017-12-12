@@ -25,6 +25,9 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\BlockPosition;
+
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * BlockPositionRepository
@@ -36,4 +39,8 @@ use Eccube\Annotation\Repository;
  */
 class BlockPositionRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Page::class);
+    }
 }

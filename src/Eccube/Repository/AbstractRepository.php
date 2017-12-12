@@ -4,11 +4,11 @@
 namespace Eccube\Repository;
 
 
-use Doctrine\ORM\EntityRepository;
 use Eccube\Annotation\Inject;
 use Eccube\Entity\AbstractEntity;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-class AbstractRepository extends EntityRepository
+abstract class AbstractRepository extends ServiceEntityRepository
 {
     /**
      * @Inject("config")
@@ -39,7 +39,8 @@ class AbstractRepository extends EntityRepository
 
     protected function getCacheLifetime()
     {
-        $options = $this->appConfig['doctrine_cache'];
-        return $options['result_cache']['lifetime'];
+        // $options = $this->appConfig['doctrine_cache'];
+        // return $options['result_cache']['lifetime'];
+        return 0;               // FIXME
     }
 }

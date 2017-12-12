@@ -41,12 +41,12 @@ class LoginType extends AbstractType
 {
     /**
      * @var SessionInterface $session
-     * @Inject("session")
      */
     protected $session;
 
-    public function __construct()
+    public function __construct(SessionInterface $session)
     {
+        $this->session = $session;
     }
 
     /**

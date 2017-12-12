@@ -25,9 +25,11 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\OrderStatus;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * OrderStatusRepository
@@ -39,6 +41,11 @@ use Eccube\Repository\AbstractRepository;
  */
 class OrderStatusRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, OrderStatus::class);
+    }
+
     /**
      * NOT IN で検索する.
      *

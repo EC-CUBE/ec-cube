@@ -26,6 +26,8 @@ namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
 use Eccube\Repository\AbstractRepository;
+use Eccube\Entity\Master\Authority;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * AuthorityRepository
@@ -37,4 +39,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class AuthorityRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Authority::class);
+    }
 }

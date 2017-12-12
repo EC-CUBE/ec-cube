@@ -26,6 +26,8 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\Query;
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Payment;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * PaymentRepository
@@ -37,6 +39,10 @@ use Eccube\Annotation\Repository;
  */
 class PaymentRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Payment::class);
+    }
 
     /**
      * @deprecated 呼び出し元で制御する

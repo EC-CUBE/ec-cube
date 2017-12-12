@@ -27,6 +27,7 @@ namespace Eccube\Repository;
 use Eccube\Annotation\Repository;
 use Eccube\Repository\AbstractRepository;
 use Eccube\Entity\Tag;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TagRepository
@@ -37,7 +38,12 @@ use Eccube\Entity\Tag;
  * @Repository
  */
 class TagRepository extends AbstractRepository
-{   
+{
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Tag::class);
+    }
+
     /**
      * タグを保存する.
      *

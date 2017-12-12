@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Plugin;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * PluginRepository
@@ -36,6 +38,11 @@ use Eccube\Annotation\Repository;
  */
 class PluginRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Plugin::class);
+    }
+
     public function findAllEnabled()
     {
         return $this->findBy(['enabled' => '1']);

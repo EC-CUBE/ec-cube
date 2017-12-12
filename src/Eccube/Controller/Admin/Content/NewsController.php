@@ -67,7 +67,7 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
-     * @Route("/{_admin}/content/news", name="admin_content_news")
+     * @Route("/%admin_route%/content/news", name="admin_content_news")
      * @Template("Content/news.twig")
      *
      * @param Application $app
@@ -99,8 +99,8 @@ class NewsController extends AbstractController
     /**
      * 新着情報を登録・編集する。
      *
-     * @Route("/{_admin}/content/news/new", name="admin_content_news_new")
-     * @Route("/{_admin}/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
+     * @Route("/%admin_route%/content/news/new", name="admin_content_news_new")
+     * @Route("/%admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
      * @Template("Content/news_edit.twig")
      *
      * @param Application $app
@@ -166,7 +166,7 @@ class NewsController extends AbstractController
      * 指定した新着情報の表示順を1つ上げる。
      *
      * @Method("PUT")
-     * @Route("/{_admin}/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
+     * @Route("/%admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
      *
      * @param Application $app
      * @param Request $request
@@ -195,7 +195,7 @@ class NewsController extends AbstractController
      * 指定した新着情報の表示順を1つ下げる。
      *
      * @Method("PUT")
-     * @Route("/{_admin}/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
+     * @Route("/%admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
      *
      * @param Application $app
      * @param Request $request
@@ -224,7 +224,7 @@ class NewsController extends AbstractController
      * 指定した新着情報を削除する。
      *
      * @Method("DELETE")
-     * @Route("/{_admin}/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
+     * @Route("/%admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
      *
      * @param Application $app
      * @param Request $request

@@ -28,8 +28,10 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
+use Eccube\Entity\TaxRule;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TaxRuleRepository
@@ -72,6 +74,11 @@ class TaxRuleRepository extends AbstractRepository
     protected $app;
 
     private $rules = array();
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, TaxRule::class);
+    }
 
     public function newTaxRule()
     {

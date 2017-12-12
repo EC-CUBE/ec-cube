@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\DeliveryFee;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * DelivFeeRepository
@@ -36,6 +38,11 @@ use Eccube\Annotation\Repository;
  */
 class DeliveryFeeRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, DeliveeryFee::class);
+    }
+
     /**
      * 都道府県と配送業者から配送料を検索します.
      *

@@ -88,7 +88,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧画面
      *
-     * @Route("/{_admin}/store/template", name="admin_store_template")
+     * @Route("/%admin_route%/store/template", name="admin_store_template")
      * @Template("Store/template.twig")
      */
     public function index(Application $app, Request $request)
@@ -135,7 +135,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧からのダウンロード
      *
-     * @Route("/{_admin}/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
+     * @Route("/%admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
      */
     public function download(Application $app, Request $request, \Eccube\Entity\Template $Template)
     {
@@ -196,7 +196,7 @@ class TemplateController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"})
+     * @Route("/%admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"})
      * @Method("DELETE")
      */
     public function delete(Application $app, Request $request, \Eccube\Entity\Template $Template)
@@ -239,7 +239,7 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @Route("/{_admin}/store/template/install", name="admin_store_template_install")
+     * @Route("/%admin_route%/store/template/install", name="admin_store_template_install")
      * @Template("Store/template_add.twig")
      */
     public function install(Application $app, Request $request)

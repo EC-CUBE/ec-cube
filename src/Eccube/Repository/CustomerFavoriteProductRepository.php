@@ -26,6 +26,8 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Annotation\Repository;
+use Eccube\Entity\CustomerFavoriteProduct;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * CustomerFavoriteProductRepository
@@ -37,6 +39,11 @@ use Eccube\Annotation\Repository;
  */
 class CustomerFavoriteProductRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CustomerFavoriteProduct::class);
+    }
+
     /**
      * @param \Eccube\Entity\Customer $Customer
      * @param \Eccube\Entity\Product  $Product

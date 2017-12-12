@@ -25,7 +25,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\PageMax;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * PageMaxRepository
@@ -37,4 +39,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class PageMaxRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, PageMax::class);
+    }
 }

@@ -34,12 +34,13 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class EccubeExtension extends \Twig_Extension
 {
-    private $app;
 
-    public function __construct(Application $app)
+    public function __construct(TaxRuleService $TaxRuleService)
     {
-        $this->app = $app;
+        $this->TaxRuleService = $TaxRuleService;
     }
+
+    protected $TaxRuleService;
 
     /**
      * Returns a list of functions to add to the existing list.
@@ -48,9 +49,9 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
+        // $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
 
-        $app = $this->app;
+        // $app = $this->app;
         return array(
             new \Twig_SimpleFunction('has_errors', array($this, 'hasErrors')),
             new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
@@ -59,9 +60,9 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
 
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::url
-            new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
-            // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
-            new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
+            // new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
+            // // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
+            // new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
 
             new \Twig_SimpleFunction('php_*', function() {
                     $arg_list = func_get_args();
@@ -73,22 +74,22 @@ class EccubeExtension extends \Twig_Extension
 
             }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
 
-            new \Twig_SimpleFunction('eccube_block_*', function() use ($app) {
-                    $sources = $app['eccube.twig.block.templates'];
-                    $arg_list = func_get_args();
-                    $block_name = array_shift($arg_list);
-                    foreach ($sources as $source) {
-                        $template = $app['twig']->loadTemplate($source);
-                        if (!isset($arg_list[0])) {
-                            $arg_list[0] = [];
-                        }
-                        if ($template->hasBlock($block_name, $arg_list[0])) {
-                            echo $result = $template->renderBlock($block_name, $arg_list[0]);
-                            return;
-                        }
-                    }
-                    trigger_error($block_name.' block is not found', E_USER_WARNING);
-            }, ['pre_escape' => 'html', 'is_safe' => ['html']])
+            // new \Twig_SimpleFunction('eccube_block_*', function() use ($app) {
+            //         $sources = $app['eccube.twig.block.templates'];
+            //         $arg_list = func_get_args();
+            //         $block_name = array_shift($arg_list);
+            //         foreach ($sources as $source) {
+            //             $template = $app['twig']->loadTemplate($source);
+            //             if (!isset($arg_list[0])) {
+            //                 $arg_list[0] = [];
+            //             }
+            //             if ($template->hasBlock($block_name, $arg_list[0])) {
+            //                 echo $result = $template->renderBlock($block_name, $arg_list[0]);
+            //                 return;
+            //             }
+            //         }
+            //         trigger_error($block_name.' block is not found', E_USER_WARNING);
+            // }, ['pre_escape' => 'html', 'is_safe' => ['html']])
         );
     }
 
@@ -125,7 +126,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getCalcIncTax($price, $tax_rate, $tax_rule)
     {
-        return $price + $this->app[TaxRuleService::class]->calcTax($price, $tax_rate, $tax_rule);
+        return $price + $this->TaxRuleService->calcTax($price, $tax_rate, $tax_rule);
     }
 
     /**
@@ -186,9 +187,12 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
-        $locale = $this->app['config']['locale'];
-        $currency = $this->app['config']['currency'];
+        // $locale = $this->app['config']['locale'];
+        // $currency = $this->app['config']['currency'];
 
+        // FIXME
+        $locale = 'ja_JP';
+        $currency = 'JPY';
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($number, $currency);

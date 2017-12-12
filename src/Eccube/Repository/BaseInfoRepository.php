@@ -27,6 +27,8 @@ namespace Eccube\Repository;
 use Eccube\Annotation\Repository;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\BaseInfo;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * BaseInfoRepository
@@ -43,6 +45,11 @@ class BaseInfoRepository extends AbstractRepository
      * @Inject(Application::class)
      */
     protected $app;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, BaseInfo::class);
+    }
 
     public function get($id = 1)
     {

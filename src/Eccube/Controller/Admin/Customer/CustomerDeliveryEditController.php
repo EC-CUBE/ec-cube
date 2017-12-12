@@ -86,8 +86,8 @@ class CustomerDeliveryEditController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/{_admin}/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"})
-     * @Route("/{_admin}/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
+     * @Route("/%admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"})
+     * @Route("/%admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
      * @Template("Customer/delivery_edit.twig")
      */
     public function edit(Application $app, Request $request, Customer $Customer, $did = null)
@@ -166,7 +166,7 @@ class CustomerDeliveryEditController extends AbstractController
     
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete")
+     * @Route("/%admin_route%/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete")
      */
     public function delete(Application $app, Request $request, Customer $Customer, $did)
     {

@@ -31,6 +31,7 @@ use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Util\StringUtil;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -76,6 +77,12 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
      * @var EncoderFactory
      */
     protected $encoderFactory;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Customer::class);
+    }
+
 
     public function newCustomer()
     {

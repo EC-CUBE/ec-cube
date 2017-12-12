@@ -25,17 +25,18 @@
 namespace Eccube\Security\Voter;
 
 use Eccube\Application;
+use Eccube\Repository\AuthorityRoleRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoter implements VoterInterface
 {
+    protected $authorityRoleRepository;
 
-    public $app;
-
-    public function __construct(Application $app)
+    public function __construct(AuthorityRoleRepository $authorityRoleRepository)
     {
-        $this->app     = $app;
+        $this->authorityRoleRepository = $authorityRoleRepository;
     }
 
     public function supportsAttribute($attribute)
@@ -50,25 +51,25 @@ class AuthorityVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-
         $request = null;
         $path = null;
-        try {
-            $request = $this->app['request_stack']->getMasterRequest();
-        } catch (\RuntimeException $e) {
-            // requestが取得できない場合、無視する(テストプログラムで不要なため)
-            return;
-        }
+        // TODO 別の方法で判定する
+        // try {
+        //     $request = $this->app['request_stack']->getMasterRequest();
+        // } catch (\RuntimeException $e) {
+        //     // requestが取得できない場合、無視する(テストプログラムで不要なため)
+        //     return;
+        // }
 
         if (is_object($request)) {
             $path = rawurldecode($request->getPathInfo());
         }
 
-        $Member = $this->app->user();
-
+        $Member = $token->getUser();
         if ($Member instanceof \Eccube\Entity\Member) {
             // 管理者のロールをチェック
-            $AuthorityRoles = $this->app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
+            $AuthorityRoles = $this->authorityRoleRepository->findBy(array('Authority' => $Member->getAuthority()));
+
             foreach ($AuthorityRoles as $AuthorityRole) {
                 // 許可しないURLが含まれていればアクセス拒否
                 try {
@@ -85,6 +86,8 @@ class AuthorityVoter implements VoterInterface
                     }
                 }
             }
+        } else {
+            return  VoterInterface::ACCESS_DENIED;
         }
 
         return VoterInterface::ACCESS_GRANTED;

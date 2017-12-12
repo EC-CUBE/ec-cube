@@ -83,7 +83,7 @@ class MailController
     protected $orderRepository;
 
     /**
-     * @Route("/{_admin}/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
+     * @Route("/%admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
      * @Template("Order/mail.twig")
      */
     public function index(Application $app, Request $request, $id)
@@ -219,7 +219,7 @@ class MailController
     }
 
     /**
-     * @Route("/{_admin}/order/mail_complete", name="admin_order_mail_complete")
+     * @Route("/%admin_route%/order/mail_complete", name="admin_order_mail_complete")
      * @Template("Order/mail_complete.twig")
      */
     public function complete(Application $app)
@@ -228,7 +228,7 @@ class MailController
     }
 
     /**
-     * @Route("/{_admin}/order/mail/view", name="admin_order_mail_view")
+     * @Route("/%admin_route%/order/mail/view", name="admin_order_mail_view")
      * @Template("Order/mail_view.twig")
      */
     public function view(Application $app, Request $request)
@@ -259,7 +259,7 @@ class MailController
     }
 
     /**
-     * @Route("/{_admin}/order/mail/mail_all", name="admin_order_mail_all")
+     * @Route("/%admin_route%/order/mail/mail_all", name="admin_order_mail_all")
      * @Template("Order/mail_all.twig")
      */
     public function mailAll(Application $app, Request $request)

@@ -64,26 +64,26 @@ class SearchProductController
      */
     public function index(Application $app, Request $request)
     {
-        $builder = $this->formFactory
-            ->createNamedBuilder('', SearchProductBlockType::class)
-            ->setMethod('GET');
+        // $builder = $this->formFactory
+        //     ->createNamedBuilder('', SearchProductBlockType::class)
+        //     ->setMethod('GET');
 
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-            ),
-            $request
-        );
+        // $event = new EventArgs(
+        //     array(
+        //         'builder' => $builder,
+        //     ),
+        //     $request
+        // );
 
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
+        // $this->eventDispatcher->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
 
-        $request = $this->requestStack->getMasterRequest();
+        // $request = $this->requestStack->getMasterRequest();
 
-        $form = $builder->getForm();
-        $form->handleRequest($request);
+        // $form = $builder->getForm();
+        // $form->handleRequest($request);
 
         return [
-            'form' => $form->createView(),
+            'form' => null
         ];
     }
 }

@@ -27,6 +27,8 @@ namespace Eccube\Repository;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Annotation\Repository;
+use Eccube\Entity\CustomerAddress;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * CustomerAddressRepository
@@ -38,6 +40,11 @@ use Eccube\Annotation\Repository;
  */
 class CustomerAddressRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CustomerAddress::class);
+    }
+
     /**
      * @deprecated 呼び出し元で制御する
      * @param \Eccube\Entity\Customer $Customer

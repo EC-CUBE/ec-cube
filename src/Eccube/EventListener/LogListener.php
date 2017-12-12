@@ -24,9 +24,11 @@ class LogListener implements EventSubscriberInterface, LoggerAwareInterface
      * @var LoggerInterface
      */
     protected $logger;
+    protected $em;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, \Doctrine\ORM\EntityManager $em)
     {
+        $this->em = $em;
         $this->setLogger($logger);
     }
 

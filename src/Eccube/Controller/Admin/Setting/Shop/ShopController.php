@@ -75,7 +75,7 @@ class ShopController extends AbstractController
     protected $BaseInfo;
 
     /**
-     * @Route("/{_admin}/setting/shop", name="admin_setting_shop")
+     * @Route("/%admin_route%/setting/shop", name="admin_setting_shop")
      * @Template("Setting/Shop/shop_master.twig")
      */
     public function index(Application $app, Request $request)

@@ -111,7 +111,7 @@ class PluginController extends AbstractController
     /**
      * インストール済プラグイン画面
      *
-     * @Route("/{_admin}/store/plugin", name="admin_store_plugin")
+     * @Route("/%admin_route%/store/plugin", name="admin_store_plugin")
      * @Template("Store/plugin.twig")
      */
     public function index(Application $app, Request $request)
@@ -204,7 +204,7 @@ class PluginController extends AbstractController
      * インストール済プラグインからのアップデート
      *
      * @Method("POST")
-     * @Route("/{_admin}/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
+     * @Route("/%admin_route%/store/plugin/{id}/update", requirements={"id" = "\d+"}, name="admin_store_plugin_update")
      * @param Application $app
      * @param Request     $request
      * @param Plugin      $Plugin
@@ -270,7 +270,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを有効にします。
      *
      * @Method("PUT")
-     * @Route("/{_admin}/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
+     * @Route("/%admin_route%/store/plugin/{id}/enable", requirements={"id" = "\d+"}, name="admin_store_plugin_enable")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -305,7 +305,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを無効にします。
      *
      * @Method("PUT")
-     * @Route("/{_admin}/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
+     * @Route("/%admin_route%/store/plugin/{id}/disable", requirements={"id" = "\d+"}, name="admin_store_plugin_disable")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -341,7 +341,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを削除します。
      *
      * @Method("DELETE")
-     * @Route("/{_admin}/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
+     * @Route("/%admin_route%/store/plugin/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_uninstall")
      * @param Application $app
      * @param Plugin      $Plugin
      * @return RedirectResponse
@@ -371,7 +371,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/plugin/handler", name="admin_store_plugin_handler")
+     * @Route("/%admin_route%/store/plugin/handler", name="admin_store_plugin_handler")
      * @Template("Store/plugin_handler.twig")
      */
     public function handler(Application $app)
@@ -390,7 +390,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
+     * @Route("/%admin_route%/store/plugin/handler_up/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_up")
      */
     public function handler_up(Application $app, PluginEventHandler $Handler)
     {
@@ -401,7 +401,7 @@ class PluginController extends AbstractController
     }
 
     /**
-     * @Route("/{_admin}/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
+     * @Route("/%admin_route%/store/plugin/handler_down/{id}", requirements={"id" = "\d+"}, name="admin_store_plugin_handler_down")
      */
     public function handler_down(Application $app, PluginEventHandler $Handler)
     {
@@ -414,7 +414,7 @@ class PluginController extends AbstractController
     /**
      * プラグインファイルアップロード画面
      *
-     * @Route("/{_admin}/store/plugin/install", name="admin_store_plugin_install")
+     * @Route("/%admin_route%/store/plugin/install", name="admin_store_plugin_install")
      * @Template("Store/plugin_install.twig")
      * @param Application $app
      * @param Request     $request
@@ -476,7 +476,7 @@ class PluginController extends AbstractController
     /**
      * 認証キー設定画面
      *
-     * @Route("/{_admin}/store/plugin/authentication_setting", name="admin_store_authentication_setting")
+     * @Route("/%admin_route%/store/plugin/authentication_setting", name="admin_store_authentication_setting")
      * @Template("Store/authentication_setting.twig")
      */
     public function authenticationSetting(Application $app, Request $request)

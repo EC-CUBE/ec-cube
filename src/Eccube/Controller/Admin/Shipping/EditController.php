@@ -117,8 +117,8 @@ class EditController
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/{_admin}/shipping/edit", name="admin/shipping/new")
-     * @Route("/{_admin}/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
+     * @Route("/%admin_route%/shipping/edit", name="admin/shipping/new")
+     * @Route("/%admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
      * @Template("Shipping/edit.twig")
      *
      * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
@@ -299,7 +299,7 @@ class EditController
     }
 
     /**
-     * @Route("/{_admin}/shipping/search/product", name="admin_shipping_search_product")
+     * @Route("/%admin_route%/shipping/search/product", name="admin_shipping_search_product")
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("shipping/search_product.twig")
      *

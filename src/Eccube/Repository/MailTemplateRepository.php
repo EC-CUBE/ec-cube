@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
 use Eccube\Entity\MailTemplate;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * MailTemplateRepository
@@ -37,6 +38,11 @@ use Eccube\Entity\MailTemplate;
  */
 class MailTemplateRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, MailTemplate::class);
+    }
+
     /**
      * @deprecated 呼び出し元で制御する
      * @param $id

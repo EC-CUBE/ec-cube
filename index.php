@@ -1,51 +1,39 @@
 <?php
 
 /*
- * This file is part of EC-CUBE
+ * This file is part of the Symfony package.
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-$loader = require __DIR__.'/autoload.php';
+use Eccube\Kernel;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\HttpFoundation\Request;
 
-ini_set('display_errors', 'Off');
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+require __DIR__.'/vendor/autoload.php';
 
-// see http://silex.sensiolabs.org/doc/web_servers.html#php-5-4
-$filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
-if (php_sapi_name() === 'cli-server' && is_file($filename)) {
-    return false;
+// The check is to ensure we don't use .env in production
+if (!isset($_SERVER['APP_ENV'])) {
+    (new Dotenv())->load(__DIR__.'/.env');
 }
 
-$app = \Eccube\Application::getInstance(['eccube.autoloader' => $loader]);
+if ($_SERVER['APP_DEBUG'] ?? false) {
+    // WARNING: You should setup permissions the proper way!
+    // REMOVE the following PHP line and read
+    // https://symfony.com/doc/current/book/installation.html#checking-symfony-application-configuration-and-setup
+    umask(0000);
 
-// インストールされてなければインストーラにリダイレクト
-if ($app['config']['eccube_install']) {
-    $app->initialize();
-    $app->initializePlugin();
-    if ($app['config']['http_cache']['enabled']) {
-        $app['http_cache']->run($app['eccube.request']);
-    } else {
-        $app->run($app['eccube.request']);
-    }
-} else {
-    $location = str_replace('index.php', 'install.php', $_SERVER['SCRIPT_NAME']);
-    header('Location:'.$location);
-    exit;
+    Debug::enable();
 }
+
+// Request::setTrustedProxies(['0.0.0.0/0'], Request::HEADER_FORWARDED);
+
+$kernel = new Kernel($_SERVER['APP_ENV'] ?? 'dev', $_SERVER['APP_DEBUG'] ?? false);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);

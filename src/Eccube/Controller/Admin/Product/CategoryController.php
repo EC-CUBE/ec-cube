@@ -86,9 +86,9 @@ class CategoryController extends AbstractController
     protected $categoryRepository;
 
     /**
-     * @Route("/{_admin}/product/category", name="admin_product_category")
-     * @Route("/{_admin}/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
-     * @Route("/{_admin}/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
+     * @Route("/%admin_route%/product/category", name="admin_product_category")
+     * @Route("/%admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
+     * @Route("/%admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
      * @Template("Product/category.twig")
      */
     public function index(Application $app, Request $request, $parent_id = null, $id = null)
@@ -182,7 +182,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete")
+     * @Route("/%admin_route%/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {
@@ -228,7 +228,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/{_admin}/product/category/sort_no/move", name="admin_product_category_sort_no_move")
+     * @Route("/%admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move")
      */
     public function moveSortNo(Application $app, Request $request)
     {
@@ -250,7 +250,7 @@ class CategoryController extends AbstractController
     /**
      * カテゴリCSVの出力.
      *
-     * @Route("/{_admin}/product/category/export", name="admin_product_category_export")
+     * @Route("/%admin_route%/product/category/export", name="admin_product_category_export")
      *
      * @param Application $app
      * @param Request $request

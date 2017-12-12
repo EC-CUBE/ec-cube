@@ -128,8 +128,8 @@ class OrderController extends AbstractController
     protected $orderRepository;
 
     /**
-     * @Route("/{_admin}/order", name="admin_order")
-     * @Route("/{_admin}/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
+     * @Route("/%admin_route%/order", name="admin_order")
+     * @Route("/%admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
      * @Template("Order/index.twig")
      */
     public function index(Application $app, Request $request, $page_no = null)
@@ -281,7 +281,7 @@ class OrderController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/{_admin}/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
+     * @Route("/%admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
      */
     public function delete(Application $app, Request $request, $id)
     {

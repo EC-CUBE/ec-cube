@@ -50,11 +50,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route(service=ProductController::class)
  */
-class ProductController
+class ProductController extends AbstractController
 {
     /**
      * @Inject("eccube.purchase.flow.cart")
@@ -110,6 +111,11 @@ class ProductController
      */
     protected $BaseInfo;
 
+    /**
+     * @var AuthenticationUtils
+     */
+    protected $helper;
+
     private $title;
 
     public function __construct()
@@ -126,9 +132,9 @@ class ProductController
     public function index(Application $app, Request $request)
     {
         // Doctrine SQLFilter
-        if ($this->BaseInfo->isOptionNostockHidden()) {
-            $this->entityManager->getFilters()->enable('option_nostock_hidden');
-        }
+        // if ($this->BaseInfo->isOptionNostockHidden()) {
+        //     $this->entityManager->getFilters()->enable('option_nostock_hidden');
+        // }
 
         // handleRequestは空のqueryの場合は無視するため
         if ($request->getMethod() === 'GET') {
@@ -137,7 +143,7 @@ class ProductController
 
         // searchForm
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
+        $builder = $this->get('form.factory')->createNamedBuilder('', SearchProductType::class);
         $builder->setAttribute('freeze', true);
         $builder->setAttribute('freeze_display_text', false);
         if ($request->getMethod() === 'GET') {
@@ -181,7 +187,7 @@ class ProductController
         $forms = array();
         foreach ($pagination as $Product) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-            $builder = $this->formFactory->createNamedBuilder(
+            $builder = $this->get('form.factory')->createNamedBuilder(
                 '',
                 AddCartType::class,
                 null,
@@ -228,7 +234,7 @@ class ProductController
         }
 
         // 表示件数
-        $builder = $this->formFactory->createNamedBuilder(
+        $builder = $this->get('form.factory')->createNamedBuilder(
             'disp_number',
             ProductListMaxType::class,
             null,
@@ -255,7 +261,7 @@ class ProductController
         $dispNumberForm->handleRequest($request);
 
         // ソート順
-        $builder = $this->formFactory->createNamedBuilder(
+        $builder = $this->get('form.factory')->createNamedBuilder(
             'orderby',
             ProductListOrderByType::class,
             null,
@@ -307,7 +313,7 @@ class ProductController
             throw new NotFoundHttpException();
         }
 
-        $builder = $this->formFactory->createNamedBuilder(
+        $builder = $this->get('form.factory')->createNamedBuilder(
             '',
             AddCartType::class,
             null,
@@ -324,20 +330,20 @@ class ProductController
             ),
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
+        // $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
 
-        $is_favorite = false;
-        if ($app->isGranted('ROLE_USER')) {
-            $Customer = $app->user();
-            $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
-        }
+        // $is_favorite = false;
+        // if ($app->isGranted('ROLE_USER')) {
+        //     $Customer = $app->user();
+        //     $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
+        // }
 
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
             'form' => $builder->getForm()->createView(),
             'Product' => $Product,
-            'is_favorite' => $is_favorite,
+            'is_favorite' => false,
         ];
     }
 
@@ -405,7 +411,7 @@ class ProductController
             throw new NotFoundHttpException();
         }
 
-        $builder = $this->formFactory->createNamedBuilder(
+        $builder = $this->get('form.factory')->createNamedBuilder(
             '',
             AddCartType::class,
             null,
@@ -540,16 +546,16 @@ class ProductController
      */
     private function checkVisibility(Product $Product)
     {
-        $is_admin = $this->session->has('_security_admin');
+        $is_admin = $this->get('session')->has('_security_admin');
 
         // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
         if (!$is_admin) {
             // 在庫なし商品の非表示オプションが有効な場合.
-            if ($this->BaseInfo->isOptionNostockHidden()) {
-                if (!$Product->getStockFind()) {
-                    return false;
-                }
-            }
+            // if ($this->BaseInfo->isOptionNostockHidden()) {
+            //     if (!$Product->getStockFind()) {
+            //         return false;
+            //     }
+            // }
             // 公開ステータスでない商品は表示しない.
             if ($Product->getStatus()->getId() !== ProductStatus::DISPLAY_SHOW) {
                 return false;

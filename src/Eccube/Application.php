@@ -67,10 +67,10 @@ class Application extends \Silex\Application
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\MonologTrait;
     use \Silex\Application\SwiftmailerTrait;
-    use \Silex\Application\SecurityTrait;
+    // use \Silex\Application\SecurityTrait;
     use \Silex\Application\TranslationTrait;
     use \Eccube\Application\ApplicationTrait;
-    use \Eccube\Application\SecurityTrait;
+    // use \Eccube\Application\SecurityTrait;
     use \Eccube\Application\TwigTrait;
 
     protected static $instance;
@@ -110,13 +110,13 @@ class Application extends \Silex\Application
         $this->initConfig();
 
         // init monolog
-        $this->initLogger();
+        // $this->initLogger();
 
         // init class loader.
-        $this->initClassLoader();
+        // $this->initClassLoader();
 
         // init request.
-        $this->initRequest();
+        // $this->initRequest();
     }
 
     /**
@@ -155,12 +155,18 @@ class Application extends \Silex\Application
         };
     }
 
+    /**
+     * @deprecated
+     */
     public function initLogger()
     {
-        $app = $this;
-        $this->register(new ServiceProvider\LogServiceProvider($app));
+        // $app = $this;
+        // $this->register(new ServiceProvider\LogServiceProvider($app));
     }
 
+    /**
+     * @deprecated
+     */
     public function initClassLoader()
     {
         if (!isset($this['config']['vendor_name'])) {
@@ -180,8 +186,8 @@ class Application extends \Silex\Application
 
         $path = realpath($dir);
 
-        $loader = $this['eccube.autoloader'];
-        $loader->addPsr4($name.'\\', $path);
+        // $loader = $this['eccube.autoloader'];
+        // $loader->addPsr4($name.'\\', $path);
 
         $config = $this['config'];
         $config['vendor_dir'] = $path;
@@ -975,6 +981,9 @@ class Application extends \Silex\Application
         $this->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
+    /**
+     * @deprecated
+     */
     protected function initRequest()
     {
         // PUTやDELETEメソッドを有効にする

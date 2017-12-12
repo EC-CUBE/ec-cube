@@ -25,7 +25,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\Sex;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * SexRepository
@@ -37,4 +39,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class SexRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Sex::class);
+    }
 }

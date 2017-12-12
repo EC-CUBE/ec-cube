@@ -24,7 +24,7 @@
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;

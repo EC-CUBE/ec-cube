@@ -690,33 +690,33 @@ class ShoppingController extends AbstractShoppingController
         return new Response();
     }
 
-    /**
-     * フォームを作成し, イベントハンドラを設定する
-     *
-     * @ForwardOnly
-     * @Route("/shopping/create_form", name="shopping_create_form")
-     */
-    public function createForm(Application $app, Request $request)
-    {
-        $Order = $this->parameterBag->get('Order');
-        // フォームの生成
-        $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
+    // /**
+    //  * フォームを作成し, イベントハンドラを設定する
+    //  *
+    //  * @ForwardOnly
+    //  * @Route("/shopping/create_form", name="shopping_create_form")
+    //  */
+    // public function createForm(Application $app, Request $request)
+    // {
+    //     $Order = $this->parameterBag->get('Order');
+    //     // フォームの生成
+    //     $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
-        $event = new EventArgs(
-            array(
-                'builder' => $builder,
-                'Order' => $Order,
-            ),
-            $request
-        );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+    //     $event = new EventArgs(
+    //         array(
+    //             'builder' => $builder,
+    //             'Order' => $Order,
+    //         ),
+    //         $request
+    //     );
+    //     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
-        $form = $builder->getForm();
+    //     $form = $builder->getForm();
 
-        $this->parameterBag->set(OrderType::class, $form);
+    //     $this->parameterBag->set(OrderType::class, $form);
 
-        return new Response();
-    }
+    //     return new Response();
+    // }
 
     /**
      * mode に応じて各変更ページへリダイレクトする.

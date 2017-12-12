@@ -25,7 +25,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * SaleTypeRepository
@@ -37,4 +39,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class SaleTypeRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, SaleType::class);
+    }
 }

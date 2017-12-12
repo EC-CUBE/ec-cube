@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * PluginEventHandlerRepository
@@ -37,6 +38,10 @@ use Eccube\Exception\PluginException;
  */
 class PluginEventHandlerRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, PluginEventHandler::class);
+    }
 
     public function getHandlers()
     {

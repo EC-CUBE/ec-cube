@@ -47,10 +47,10 @@ class OrderSearchType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
+    // public function __construct(\Silex\Application $app)
+    // {
+    //     $this->app = $app;
+    // }
 
     /**
      * {@inheritdoc}

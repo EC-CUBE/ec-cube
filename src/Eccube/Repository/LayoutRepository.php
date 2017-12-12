@@ -25,6 +25,8 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Layout;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * LayoutRepository
@@ -36,4 +38,8 @@ use Eccube\Annotation\Repository;
  */
 class LayoutRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Layout::class);
+    }
 }

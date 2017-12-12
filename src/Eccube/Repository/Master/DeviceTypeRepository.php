@@ -25,7 +25,9 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\AbstractRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * DeviceTypeRepository
@@ -37,4 +39,8 @@ use Eccube\Repository\AbstractRepository;
  */
 class DeviceTypeRepository extends AbstractRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, DeviceType::class);
+    }
 }
