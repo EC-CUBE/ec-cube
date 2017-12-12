@@ -222,7 +222,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     <h4>お届け先名</h4>
                                     {% for Shipping in Order.Shippings  %}
                                         <div class="form-group">
-                                            出荷番号: <span class="number"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}" }}">{{ Shipping.id }}</a></span><br>
+                                            出荷番号: <span class="number"><a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></span><br>
                                             {{ Shipping.Name01 }} {{ Shipping.Name02 }} ({{ Shipping.Kana01 }} {{ Shipping.Kana02 }})<br>
                                             〒{{ Shipping.Zip01 }}-{{ Shipping.Zip02 }}<br>
                                             {{ Shipping.Pref }}{{ Shipping.Addr01 }}{{ Shipping.Addr02 }}
@@ -446,7 +446,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             </div>
                                         </div>
                                         {% if orderItemForm.vars.value.Shipping.id is defined %}
-                                        出荷情報 <a href="{{ url('admin/shipping/edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a><br>
+                                        出荷情報 <a href="{{ url('admin_shipping_edit', { id : orderItemForm.vars.value.Shipping.id }) }}">{{ orderItemForm.vars.value.Shipping.id }}</a><br>
                                         {% endif %}
 
                                     </div>
@@ -477,12 +477,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     <dd class="form-group form-inline">
                                         {{ Order.charge|price }}
                                     </dd>
-                                    <dt id="product_info_result_box__add_point" {{ form_label(form.add_point) }}：</dt>
+                                    <dt id="product_info_result_box__add_point" {{ form_label(form.add_point) }}>：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.add_point) }}
                                         {{ form_errors(form.add_point) }}
                                     </dd>
-                                    <dt id="product_info_result_box__use_point" {{ form_label(form.use_point) }}：</dt>
+                                    <dt id="product_info_result_box__use_point" {{ form_label(form.use_point) }}>：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.use_point) }}
                                         {{ form_errors(form.use_point) }}

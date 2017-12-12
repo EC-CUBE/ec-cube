@@ -66,7 +66,7 @@ class Layout extends AbstractEntity
     {
         return $this->BlockPositions->filter(
             function ($BlockPosition) use ($targetId) {
-                return $BlockPosition->getSeciton() == $targetId;
+                return $BlockPosition->getSection() == $targetId;
             }
         );
     }

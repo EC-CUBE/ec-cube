@@ -129,6 +129,7 @@ class EntryType extends AbstractType
                             'message' => 'form.type.numeric.invalid'
                         )),
                     ),
+                    'mapped' => false
                 ]
             );
     }
