@@ -27,6 +27,9 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!env('ECCUBE_AUTH_MAGIC')) {
+            throw new \Exception('Require environment variable of ECCUBE_AUTH_MAGIC=<auth magic string> to .env file.');
+        }
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();

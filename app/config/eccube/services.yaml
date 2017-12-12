@@ -19,7 +19,7 @@ services:
         public: false
 
         bind:
-          $auth_magic: 'authmagic'
+          $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
           $auth_type: 'HMAC'
           $password_hash_algos: 'sha256'
 
