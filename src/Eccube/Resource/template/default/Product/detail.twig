@@ -195,21 +195,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-productRole__price">
                         {% if Product.hasProductClass -%}
                             {% if Product.getPrice02IncTaxMin == Product.getPrice02IncTaxMax %}
-                                <div class="ec-price"><span class="ec-price__unit">¥</span><span
-                                            class="ec-price__price">{{ Product.getPrice02IncTaxMin }}</span><span
+                                <div class="ec-price"><span
+                                            class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span><span
                                             class="ec-price__tax">{{'shopping.label.tax_incl'|trans}}</span>
                                 </div>
                             {% else %}
-                                <div class="ec-price"><span class="ec-price__unit">¥</span><span
-                                            class="ec-price__price">{{ Product.getPrice02IncTaxMin }}</span>
+                                <div class="ec-price"><span
+                                            class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span>
                                     ～ <span class="ec-price__unit">¥</span><span
-                                            class="ec-price__price">{{ Product.getPrice02IncTaxMax }}</span><span
+                                            class="ec-price__price">{{ Product.getPrice02IncTaxMax|price }}</span><span
                                             class="ec-price__tax">{{'shopping.label.tax_incl'|trans}}</span>
                                 </div>
                             {% endif %}
                         {% else %}
-                            <div class="ec-price"><span class="ec-price__unit">¥</span><span
-                                        class="ec-price__price">{{ Product.getPrice02IncTaxMin }}</span><span
+                            <div class="ec-price"><span
+                                        class="ec-price__price">{{ Product.getPrice02IncTaxMin|price }}</span><span
                                         class="ec-price__tax">{{'shopping.label.tax_incl'|trans}}</span>
                             </div>
                         {% endif %}

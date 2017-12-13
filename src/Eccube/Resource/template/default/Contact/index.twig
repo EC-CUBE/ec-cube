@@ -42,12 +42,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
-                                {{ form_label(form.name, 'お名前', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.name, 'signup.label.name', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error' }}">
-                                    {{ form_widget(form.name.name01, {'attr': {'placeholder': '姓'}}) }}
-                                    {{ form_widget(form.name.name02, {'attr': {'placeholder': '名'}}) }}
+                                    {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}
+                                    {{ form_widget(form.name.name02, {'attr': {'placeholder': 'signup.label.last_name'}}) }}
                                     {{ form_errors(form.name.name01) }}
                                     {{ form_errors(form.name.name02) }}
                                 </div>
@@ -55,12 +55,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.kana, 'お名前(フリガナ)', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.kana, 'signup.label.name_kana', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error' }}">
-                                    {{ form_widget(form.kana.kana01, {'attr': {'placeholder': 'セイ'}}) }}
-                                    {{ form_widget(form.kana.kana02, {'attr': {'placeholder': 'メイ'}}) }}
+                                    {{ form_widget(form.kana.kana01, {'attr': {'placeholder': 'signup.label.family_name_kana'}}) }}
+                                    {{ form_widget(form.kana.kana02, {'attr': {'placeholder': 'signup.label.last_name_kana'}}) }}
                                     {{ form_errors(form.kana.kana01) }}
                                     {{ form_errors(form.kana.kana02) }}
                                 </div>
@@ -68,7 +68,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.address, '住所', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.address, 'signup.label.address', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 <div class="ec-zipInput{{ has_errors(form.zip.zip01, form.zip.zip02) ? ' error' }}">
@@ -85,24 +85,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         src="{{ asset('assets/icon/question-white.svg') }}"
                                                         alt=""></div>
                                         </div>
-                                        <span>郵便番号検索</span></a></div>
+                                        <span>{{'signup.label.search_postal_code'|trans}}</span></a></div>
                                 <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
                                     {{ form_widget(form.address.pref) }}
                                     {{ form_errors(form.address.pref) }}
                                 </div>
                                 <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
-                                    {{ form_widget(form.address.addr01, {'attr': {'placeholder': '市区町村名 (例：千代田区神田神保町)' }}) }}
+                                    {{ form_widget(form.address.addr01, {'attr': {'placeholder': 'signup.label.city_town_village' }}) }}
                                     {{ form_errors(form.address.addr01) }}
                                 </div>
                                 <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
-                                    {{ form_widget(form.address.addr02, {'attr': {'placeholder': '番地・ビル名 (例：1-3-5)' }}) }}
+                                    {{ form_widget(form.address.addr02, {'attr': {'placeholder': 'signup.label.house_number' }}) }}
                                     {{ form_errors(form.address.addr02) }}
                                 </div>
                             </dd>
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.tel, '電話番号', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.tel, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 <div class="ec-telInput{{ has_errors(form.tel.tel01, form.tel.tel02, form.tel.tel03) ? ' error' }}">
@@ -117,7 +117,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.email, 'メールアドレス', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.email, 'signup.label.email', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 <div class="ec-input{{ has_errors(form.email) ? ' error' }}">
@@ -128,7 +128,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.email, 'お問い合わせ内容', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.email, 'common.label.inquiry_content', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 <div class="ec-input{{ has_errors(form.contents) ? ' error' }}">
@@ -142,7 +142,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-RegisterRole__actions">
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
-                                <button type="submit" class="ec-blockBtn--action" name="mode" value="confirm">確認ページへ
+                                <button type="submit" class="ec-blockBtn--action" name="mode" value="confirm">{{'common.label.goto_conf'|trans}}
                                 </button>
                             </div>
                         </div>

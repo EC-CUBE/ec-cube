@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
-                                {{ form_label(form.name, 'お名前', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.name, 'signup.label.name', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.name.name01.vars.data }} {# form.vars.value = form.vars.data = Customer #}
@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.kana, 'お名前(フリガナ)', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.kana, 'signup.label.name_kana', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.kana.kana01.vars.data }}
@@ -60,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.company_name, '会社名', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.company_name, 'signup.label.company_name', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.company_name.vars.data }}
@@ -69,7 +69,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.address, '住所', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.address, 'signup.label.address', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {# 郵便番号 #}
@@ -85,7 +85,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.tel, '電話番号', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.tel, 'signup.label.tel_number', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>{{ form.tel.tel01.vars.data }} - {{ form.tel.tel02.vars.data }}
                                 - {{ form.tel.tel03.vars.data }}
@@ -96,7 +96,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.fax, 'FAX番号', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.fax, 'signup.label.fax', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.fax.fax01.vars.data }} - {{ form.fax.fax02.vars.data }}
@@ -108,7 +108,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.email, 'メールアドレス', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.email, 'signup.label.email', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.email.vars.data }}
@@ -118,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.password, 'パスワード', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.password, 'signup.label.pass', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 ********
@@ -128,7 +128,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.birth, '生年月日', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.birth, 'signup.label.dob', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.birth.vars.data ? form.birth.vars.data|date('Y/m/d') }}
@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.sex, '性別', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.sex, 'signup.label.gender', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
                                 {{ form.sex.vars.data }}
@@ -148,7 +148,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                         <dl>
                             <dt>
-                                {{ form_label(form.job, '職業', {'label_attr': {'class': 'ec-label'}}) }}
+                                {{ form_label(form.job, 'signup.label.occupation', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>{{ form.job.vars.data }}
                                 {{ form_widget(form.job, { type: 'hidden'}) }}

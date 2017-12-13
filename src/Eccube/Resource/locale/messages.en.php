@@ -11,6 +11,7 @@ return [
     'common.label.company_name' => 'Company name',
     'common.label.shop_name' => 'Store name',
     'common.label.shop_name_en' => 'Store name (English notation)',
+    'common.label.postal_code' => 'Zip Code',
     'common.label.address' => 'address',
     'common.label.phone_number' => 'phone number',
     'common.label.fax_number' => 'FAX number',
@@ -30,8 +31,8 @@ return [
     'common.label.option_remember_me' => 'Enable auto login function',
     'common.label.nostock_hidden' => 'Hide out of stock items',
     'common.label.company_name_kana' => 'Company name (phonetic)',
-    'common.label.shop_name_kana' => 'Store name (phonetic)',
-    'common.placeholder.address01' => 'City name (example: Chiyoda ku Kanda Jimbocho)',
+    'common.label.shop_name_kana' => 'Store name (pchiyodahonetic)',
+    'common.placeholder.address01' => 'City name',
     'common.placeholder.address02' => 'Street / building name (ex: 1-3-5)',
     
     //Store Front
@@ -57,6 +58,8 @@ return [
     'common.label.policy' => 'Privacy Policy',
     'common.label.notation_scta' => 'Notation based on the Specified Commercial Transaction Act',
     'common.label.inquiry' => 'Inquiry',
+    'common.label.inquiry_content' => 'Contents of inquiry',
+    'common.label.goto_conf' => 'Go to Confirmation',
     
     'common.label.qty' => 'Qty',
     'common.label.add_cart' => 'Add to Cart',
@@ -76,6 +79,9 @@ return [
     'common.label.goto_next_page' => 'Go to Next Page',
     
     'common.label.user_guide' => 'User Guide',
+    'common.label.login' => 'Login',
+    
+    'common.text.message.required' => 'Required',
     
     //home
     'front_home.label.casual_dining' => 'Casual Dining Room',
@@ -170,25 +176,25 @@ return [
     
     //sign up
     'signup.label.new_registration' => 'New Customer Registration',
-    'signup.label.name' => 'Your Name  Required',
+    'signup.label.name' => 'Your Name',
     'signup.label.family_name' => 'Family Name',
     'signup.label.last_name' => 'Last Name',
-    'signup.label.name_kana' => 'Your Name (Kana)  Required',
+    'signup.label.name_kana' => 'Your Name (Kana)',
     'signup.label.family_name_kana' => 'Family Name (Kana)',
     'signup.label.last_name_kana' => 'Last Name (Kana)',
     'signup.label.company_name' => 'Company Name',
-    'signup.label.address' => 'Address  Required',
+    'signup.label.address' => 'Address',
     'signup.label.postal_code' => 'Postal Code',
     'signup.label.search_postal_code' => 'Search Your Postal Code',
     'signup.label.auto_input_by_postal_code' => 'Auto-input by Postal Code',
     'signup.label.select_pref' => 'Select your prefecture',
-    'signup.label.city_town_village' => 'Name of city, ward, town, village (e.g. Jimbo-cho, Kanda, Chiyodaku',
+    'signup.label.city_town_village' => 'Address',
     'signup.label.house_number' => 'House number, name of building (e.g. 1-3-5)',
-    'signup.label.tel_number' => 'Phone number  Required',
+    'signup.label.tel_number' => 'Phone number',
     'signup.label.fax' => 'Fax',
-    'signup.label.email' => 'Email  Required',
+    'signup.label.email' => 'Email',
     'signup.label.email_check' => 'Please re-enter your email',
-    'signup.label.pass' => 'Password  Required',
+    'signup.label.pass' => 'Password',
     'signup.text.note.half_width_alphanumeric' => 'Half-width alphanumeric characters and symbols 8 - 32 digits.',
     'signup.label.pass_check' => 'Please re-enter your password',
     'signup.label.dob' => 'Date of Birth',
@@ -215,6 +221,7 @@ return [
     'signup.label.select.homemaker' => 'Homemaker',
     'signup.label.select.other' => 'Other',
     'signup.text.message.accept_terms_conditions' => 'Please accept the user policy before confirm.',
+    'signup.label.btn.user_policy' => 'User Plolicy',
     'signup.label.radio.accept' => 'Accept',
     'signup.label.radio.decline' => 'Decline',
     'signup.label.review' => 'Review Your Registration',
@@ -239,6 +246,7 @@ return [
     'login.label.btn.login' => 'Log In',
     'login.text.note.forgot' => 'Forgot your login credentials?',
     'login.text.link.new_customer' => 'New Customer Registration',
+    'login.label.reset_pass' => 'Reset Your Passeword',
     
     //shopping
     'shopping.label.cart' => 'Shopping Cart',
@@ -291,6 +299,7 @@ return [
     'shopping.text.error.no_item_in_cart' => 'There are no items in the cart.',
     'shopping.label.enter_customer_info' => 'Enter Customer Information',
     'shopping.label.btn.back_to_cart' => 'Back to Cart',
+    'shopping.text.message.enjoy' => 'Please enjoy your shopping.',
 
     //mypage
 
@@ -2035,7 +2044,6 @@ Please delete the% depend_name% plugin first. ',
     'device.label.type'=>'Device type',
     'producttypetype.682'=>'Product type',
     'salestype.label.sales_type'=>'Sales type',
-    'shipping.label.shipping_company'=>'Shipping company',
     'shipping.placeholder.not_specified'=>'Not specified',
     'shipping.label.delivery_hour'=>'Delivery hours',
     'memberrepository.689'=>'There is no upper level admin than %id%.',

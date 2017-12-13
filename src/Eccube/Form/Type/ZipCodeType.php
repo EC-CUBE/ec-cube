@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @FormType
  */
-class ZipType extends AbstractType
+class ZipCodeType extends AbstractType
 {
     /**
      * @Inject("config")
@@ -64,33 +64,20 @@ class ZipType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $options['zip01_options']['required'] = $options['required'];
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['options']['constraints'] = array_merge(array(
+            $options['constraints'] = array_merge(array(
                 new Assert\NotBlank(array()),
-            ), $options['options']['constraints']);
+            ), $options['constraints']);
         }
 
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
+        if (!isset($options['error_bubbling'])) {
+            $options['error_bubbling'] = $options['error_bubbling'];
         }
 
-        if (empty($options['zip01_name'])) {
-            $options['zip01_name'] = $builder->getName().'01';
-        }
-        if (empty($options['zip02_name'])) {
-            $options['zip02_name'] = $builder->getName().'02';
-        }
-
-        $builder
-            ->add($options['zip01_name'], TextType::class, array_merge_recursive($options['options'], $options['zip01_options']))
-            ->add($options['zip02_name'], TextType::class, $options['zip02_options'])
-        ;
-
-        $builder->setAttribute('zip01_name', $options['zip01_name']);
-        $builder->setAttribute('zip02_name', $options['zip02_name']);
+        $builder->add('zip_code', TextType::class, $options);
+        $builder->setAttribute('zip_cdoe', $options);
     }
 
     /**
@@ -99,8 +86,7 @@ class ZipType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $builder = $form->getConfig();
-        $view->vars['zip01_name'] = $builder->getAttribute('zip01_name');
-        $view->vars['zip02_name'] = $builder->getAttribute('zip02_name');
+        $view->vars['zip_code'] = $builder->getAttribute('zip_code');
     }
 
     /**
@@ -109,21 +95,11 @@ class ZipType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'options' => array('constraints' => array(), 'attr' => array('class' => 'p-postal-code')),
-            'zip01_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])),
-                ),
+            'constraints' => array(
+                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                new Assert\Length(array('min' => 3, 'max' => 7)
             ),
-            'zip02_options' => array(
-                'constraints' => array(
-                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])),
-                ),
-            ),
-            'zip01_name' => '',
-            'zip02_name' => '',
+            'attr' => array('class' => 'p-postal-code')),
             'error_bubbling' => false,
             'inherit_data' => true,
             'trim' => true,
