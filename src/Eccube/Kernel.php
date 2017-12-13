@@ -12,12 +12,14 @@
 namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Eccube\DependencyInjection\Compiler\PluginFormPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -145,6 +147,11 @@ class Kernel extends BaseKernel
         $this->addEntityExtensionPass($container);
 
         $container->registerExtension(new EccubeExtension());
+
+        // サービスタグの収集より先に実行し, 付与されているタグをクリアする.
+        // FormPassは優先度0で実行されているので, それより速いタイミングで実行させる.
+        // 自動登録されるタグやコンパイラパスの登録タイミングは, FrameworkExtension::load(), FrameworkBundle::build()を参考に.
+        $container->addCompilerPass(new PluginFormPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
 
         // Pimple の ServiceProvider を追加
         // $container->register('ServiceProviderCache', 'ServiceProviderCache');
