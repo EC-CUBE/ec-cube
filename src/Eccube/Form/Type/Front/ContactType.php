@@ -74,7 +74,7 @@ class ContactType extends AbstractType
                 ),
             ))
             ->add('contents', TextareaType::class, array(
-                'help' => 'form.contact.contents.help',
+                // 'help' => 'form.contact.contents.help',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

@@ -118,7 +118,8 @@ class NameType extends AbstractType
                 ),
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['name_len'],
+                        // 'max' => $this->appConfig['name_len'],
+                        'max' => 15 // FIXME
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',
@@ -132,7 +133,8 @@ class NameType extends AbstractType
                 ),
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['name_len'],
+                        // 'max' => $this->appConfig['name_len'],
+                        'max' => 15 // FIXME
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',

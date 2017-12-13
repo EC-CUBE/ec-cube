@@ -342,7 +342,7 @@
         }
     },
     "symfony/debug-pack": {
-        "version": "v1.0.3"
+        "version": "v1.0.4"
     },
     "symfony/dependency-injection": {
         "version": "v3.4.1"
@@ -456,7 +456,7 @@
         "version": "v3.4.1"
     },
     "symfony/profiler-pack": {
-        "version": "v1.0.2"
+        "version": "v1.0.3"
     },
     "symfony/property-access": {
         "version": "v3.4.1"

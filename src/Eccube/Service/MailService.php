@@ -29,6 +29,7 @@ use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -37,6 +38,11 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class MailService
 {
+    /**
+     * @var \Swift_Mailer
+     */
+    protected $mailer;
+
     /**
      * @Inject(MailTemplateRepository::class)
      * @var MailTemplateRepository
@@ -62,6 +68,20 @@ class MailService
     protected $app;
 
     /**
+     * @var \Twig_Environment
+     */
+    protected $twig;
+
+    public function __construct(\Swift_Mailer $mailer, MailTemplateRepository $mailTemplateRepository, BaseInfoRepository $baseInfoRepository, EventDispatcher $eventDispatcher, \Twig_Environment $twig)
+    {
+        $this->mailer = $mailer;
+        $this->mailTemplateRepository = $mailTemplateRepository;
+        $this->BaseInfo = $baseInfoRepository->get();
+        $this->eventDispatcher = $eventDispatcher;
+        $this->twig = $twig;
+    }
+
+    /**
      * Send customer confirm mail.
      *
      * @param $Customer 会員情報
@@ -72,13 +92,13 @@ class MailService
 
         log_info('仮会員登録メール送信開始');
 
-        $body = $this->app->renderView('Mail/entry_confirm.twig', array(
+        $body = $this->twig->render('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
@@ -98,7 +118,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
 
-        $count = $this->app->mail($message, $failures);
+        $count = $this->mailer->send($message, $failures);
 
         log_info('仮会員登録メール送信完了', array('count' => $count));
 
@@ -114,12 +134,12 @@ class MailService
     {
         log_info('会員登録完了メール送信開始');
 
-        $body = $this->app->renderView('Mail/entry_complete.twig', array(
+        $body = $this->twig->render('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
@@ -138,7 +158,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('会員登録完了メール送信完了', array('count' => $count));
 
@@ -156,12 +176,12 @@ class MailService
     {
         log_info('退会手続き完了メール送信開始');
 
-        $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
+        $body = $this->twig->render('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($email))
@@ -181,7 +201,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('退会手続き完了メール送信完了', array('count' => $count));
 
@@ -198,13 +218,13 @@ class MailService
     {
         log_info('お問い合わせ受付メール送信開始');
 
-        $body = $this->app->renderView('Mail/contact_mail.twig', array(
+        $body = $this->twig->render('Mail/contact_mail.twig', array(
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
         ));
 
         // 問い合わせ者にメール送信
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
             ->setFrom(array($this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
@@ -223,7 +243,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_CONTACT, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('お問い合わせ受付メール送信完了', array('count' => $count));
 
@@ -255,13 +275,13 @@ class MailService
 
         $MailTemplate = $this->mailTemplateRepository->find(1);
 
-        $body = $this->app->renderView($MailTemplate->getFileName(), array(
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
             'footer' => $MailTemplate->getMailFooter(),
             'Order' => $Order,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
@@ -281,7 +301,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ORDER, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('受注メール送信完了', array('count' => $count));
 
@@ -300,12 +320,12 @@ class MailService
     {
         log_info('仮会員登録再送メール送信開始');
 
-        $body = $this->app->renderView('Mail/entry_confirm.twig', array(
+        $body = $this->twig->render('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
             ->setFrom(array($this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
@@ -325,7 +345,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('仮会員登録再送メール送信完了', array('count' => $count));
 
@@ -343,13 +363,13 @@ class MailService
     {
         log_info('受注管理通知メール送信開始');
 
-        $body = $this->app->renderView('Mail/order.twig', array(
+        $body = $this->twig->render('Mail/order.twig', array(
             'header' => $formData['mail_header'],
             'footer' => $formData['mail_footer'],
             'Order' => $Order,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['mail_subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
@@ -369,7 +389,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('受注管理通知メール送信完了', array('count' => $count));
 
@@ -385,12 +405,12 @@ class MailService
     {
         log_info('パスワード再発行メール送信開始');
 
-        $body = $this->app->renderView('Mail/forgot_mail.twig', array(
+        $body = $this->twig->render('Mail/forgot_mail.twig', array(
             'Customer' => $Customer,
             'reset_url' => $reset_url
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
@@ -410,7 +430,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('パスワード再発行メール送信完了', array('count' => $count));
 
@@ -426,12 +446,12 @@ class MailService
     {
         log_info('パスワード変更完了メール送信開始');
 
-        $body = $this->app->renderView('Mail/reset_complete_mail.twig', array(
+        $body = $this->twig->render('Mail/reset_complete_mail.twig', array(
             'Customer' => $Customer,
             'password' => $password,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
@@ -451,7 +471,7 @@ class MailService
         );
         $this->eventDispatcher->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
 
-        $count = $this->app->mail($message);
+        $count = $this->mailer->send($message);
 
         log_info('パスワード変更完了メール送信完了', array('count' => $count));
 
@@ -468,13 +488,13 @@ class MailService
     public function sendPointNotifyMail(\Eccube\Entity\Order $Order, $currentPoint = 0, $changePoint = 0)
     {
 
-        $body = $this->app->renderView('Mail/point_notify.twig', array(
+        $body = $this->twig->render('Mail/point_notify.twig', array(
             'Order' => $Order,
             'currentPoint' => $currentPoint,
             'changePoint' => $changePoint,
         ));
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('['.$this->BaseInfo->getShopName().'] ポイント通知')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($this->BaseInfo->getEmail01()))
@@ -483,6 +503,6 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->app->mail($message);
+        $this->mailer->send($message);
     }
 }

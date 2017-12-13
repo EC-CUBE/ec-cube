@@ -136,19 +136,22 @@ class TelType extends AbstractType
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    // new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => 5, 'min' => 1)), // FIXME
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    // new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => 5, 'min' => 1)), // FIXME
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    // new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => 5, 'min' => 1)), // FIXME
                 ),
             ),
             'tel01_name' => '',
