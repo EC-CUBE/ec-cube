@@ -129,6 +129,15 @@ class Kernel extends BaseKernel
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+
+        // 有効なプラグインのルーティングをインポートする.
+        $plugins = $this->getContainer()->getParameter('eccube.plugins.enabled');
+        dump($plugins);
+        $pluginDir = dirname(__DIR__).'/../app/plugins';
+        foreach ($plugins as $plugin) {
+            $dir = $pluginDir.'/'.$plugin['code'];
+            $routes->import($dir.'/Resource/config/routes/*'.self::CONFIG_EXTS, '/', 'glob');
+        }
     }
 
     protected function build(ContainerBuilder $container)
