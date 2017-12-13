@@ -44,13 +44,24 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
         $conn = \Doctrine\DBAL\DriverManager::getConnection($params);
 
-        // TODO booleanの判定が必要なのでquery builderにする.
-        $stmt = $conn->query('select * from dtb_plugin where enabled = 1');
+        $stmt = $conn->query('select * from dtb_plugin');
         $plugins = $stmt->fetchAll();
+
+        $enabled = array_filter($plugins, function($plugin) {
+            return true === (bool) $plugin['enabled'];
+        });
+
+        $disabled = array_filter($plugins, function($plugin) {
+            return false === (bool) $plugin['enabled'];
+        });
+
+        // 他で使いまわすため, パラメータで保持しておく.
+        $container->setParameter('eccube.plugins.enabled', $enabled);
+        $container->setParameter('eccube.plugins.disabled', $disabled);
 
         // mapping情報の構築
         $mappings = [];
-        foreach ($plugins as $plugin) {
+        foreach ($enabled as $plugin) {
             // TODO Entityディレクトリの存在チェックが必要.
             $code = $plugin['code'];
             $namespace = sprintf('Plugin\%s\Entity', $code);
