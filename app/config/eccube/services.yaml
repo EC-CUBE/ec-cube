@@ -38,6 +38,10 @@ services:
         resource: '../../../src/Eccube/Controller'
         tags: ['controller.service_arguments']
 
+    Plugin\:
+        resource: '../../../app/plugins/*'
+        exclude: '../../../app/plugins/*/{Resource,ServiceProvider}'
+
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly
     # Eccube\Command\ListUsersCommand:
