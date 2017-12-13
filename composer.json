@@ -108,7 +108,7 @@
             "Eccube\\Entity\\": "app/proxy/entity",
             "Acme\\": "app/Acme",
             "Eccube\\": "src/Eccube",
-            "Plugin\\": "app/Plugin",
+            "Plugin\\": "app/plugins",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
         },
         "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
