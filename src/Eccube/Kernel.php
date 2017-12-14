@@ -135,7 +135,7 @@ class Kernel extends BaseKernel
         // 有効なプラグインのルーティングをインポートする.
         $plugins = $this->getContainer()->getParameter('eccube.plugins.enabled');
         dump($plugins);
-        $pluginDir = dirname(__DIR__).'/../app/plugins';
+        $pluginDir = dirname(__DIR__).'/../app/Plugin';
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin['code'];
             $routes->import($dir.'/Resource/config/routes/*'.self::CONFIG_EXTS, '/', 'glob');
