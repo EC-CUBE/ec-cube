@@ -60,11 +60,18 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $container->setParameter('eccube.plugins.disabled', $disabled);
 
         // mapping情報の構築
+        $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
         $mappings = [];
         foreach ($enabled as $plugin) {
-            // TODO Entityディレクトリの存在チェックが必要.
             $code = $plugin['code'];
             $namespace = sprintf('Plugin\%s\Entity', $code);
+
+            $dir = $pluginDir.'/'.$code.'/Entity';
+
+            if (false === file_exists($dir)) {
+                continue;
+            }
+
             $mappings[$code] = [
                 'is_bundle' => false,
                 'type' => 'annotation',
