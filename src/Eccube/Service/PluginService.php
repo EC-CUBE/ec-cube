@@ -415,6 +415,10 @@ class PluginService
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
 
+        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+        $this->schemaService->dropTable($namespace);
+
         ConfigManager::writePluginConfigCache();
         return true;
     }
