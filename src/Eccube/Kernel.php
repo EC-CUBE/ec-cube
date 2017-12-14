@@ -149,6 +149,6 @@ class Kernel extends BaseKernel
         $reader = new Reference('annotation_reader');
         $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, ["%kernel.project_dir%/src/Eccube/Entity"]));
         $driver->addMethodCall('setTraitProxiesDirectory', [$container->getParameter('kernel.project_dir')."/app/proxy/entity"]);
-        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity\\'], []));
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity'], []));
     }
 }

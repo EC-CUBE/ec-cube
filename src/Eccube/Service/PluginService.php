@@ -111,6 +111,30 @@ class PluginService
     const OTHER_LIBRARY = 2;
 
     /**
+     * @var string %kernel.project_dir%
+     */
+    private $projectRoot;
+
+    /**
+     * PluginService constructor.
+     * @param PluginEventHandlerRepository $pluginEventHandlerRepository
+     * @param EntityManager $entityManager
+     * @param PluginRepository $pluginRepository
+     * @param EntityProxyService $entityProxyService
+     * @param SchemaService $schemaService
+     */
+    public function __construct(PluginEventHandlerRepository $pluginEventHandlerRepository, EntityManager $entityManager, PluginRepository $pluginRepository, EntityProxyService $entityProxyService, SchemaService $schemaService, $projectRoot)
+    {
+        $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
+        $this->entityManager = $entityManager;
+        $this->pluginRepository = $pluginRepository;
+        $this->entityProxyService = $entityProxyService;
+        $this->schemaService = $schemaService;
+        $this->projectRoot = $projectRoot;
+    }
+
+
+    /**
      * ファイル指定してのプラグインインストール
      *
      * @param string $path   path to tar.gz/zip plugin file
@@ -318,7 +342,7 @@ class PluginService
 
     public function calcPluginDir($name)
     {
-        return $this->appConfig['plugin_realdir'].'/'.$name;
+        return $this->projectRoot.'/app/Plugin/'.$name;
     }
 
     public function createPluginDir($d)
@@ -341,7 +365,10 @@ class PluginService
                 ->setClassName(isset($meta['event']) ? $meta['event'] : '')
                 ->setVersion($meta['version'])
                 ->setSource($source)
-                ->setCode($meta['code']);
+                ->setCode($meta['code'])
+                // TODO 日付の自動設定
+                ->setCreateDate(new \DateTime())
+                ->setUpdateDate(new \DateTime());
 
             $em->persist($p);
             $em->flush();
@@ -402,7 +429,7 @@ class PluginService
         $this->removeAssets($plugin->getCode());
 
         // スキーマを更新する
-        $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
+        $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
 
         ConfigManager::writePluginConfigCache();
         return true;
@@ -437,7 +464,7 @@ class PluginService
     private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null)
     {
         if (is_null($outputDir)) {
-            $outputDir = $this->appConfig['root_dir'].'/app/proxy/entity';
+            $outputDir = $this->projectRoot.'/app/proxy/entity';
         }
         @mkdir($outputDir);
 
@@ -453,16 +480,16 @@ class PluginService
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
             if ($index >= 0) {
                 array_splice($enabledPluginCodes, $index, 1);
-                $excludes = [$this->appConfig['root_dir']."/app/Plugin/".$plugin->getCode()."/Entity"];
+                $excludes = [$this->projectRoot."/app/Plugin/".$plugin->getCode()."/Entity"];
             }
         }
 
         $enabledPluginEntityDirs = array_map(function($code) {
-            return $this->appConfig['root_dir']."/app/Plugin/${code}/Entity";
+            return $this->projectRoot."/app/Plugin/${code}/Entity";
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
-            array_merge([$this->appConfig['root_dir'].'/app/Acme/Entity'], $enabledPluginEntityDirs),
+            array_merge([$this->projectRoot.'/app/Acme/Entity'], $enabledPluginEntityDirs),
             $excludes,
             $outputDir
         );
