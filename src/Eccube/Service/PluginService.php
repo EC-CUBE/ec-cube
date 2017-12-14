@@ -416,7 +416,7 @@ class PluginService
         }
     }
 
-    public function uninstall(\Eccube\Entity\Plugin $plugin)
+    public function uninstall(\Eccube\Entity\Plugin $plugin, $force = true)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         ConfigManager::removePluginConfigCache();
@@ -425,8 +425,11 @@ class PluginService
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
-        $this->deleteFile($pluginDir);
-        $this->removeAssets($plugin->getCode());
+
+        if ($force) {
+            $this->deleteFile($pluginDir);
+            $this->removeAssets($plugin->getCode());
+        }
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
