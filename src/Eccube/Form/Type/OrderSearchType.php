@@ -67,6 +67,7 @@ class OrderSearchType extends AbstractType
                     new Assert\Type(array(
                         'type' => 'integer',
                     )),
+                    new Assert\Length(array('max' => 10)),
                 ),
             ))
             ->add('order_id_end', IntegerType::class, array(
@@ -76,6 +77,7 @@ class OrderSearchType extends AbstractType
                     new Assert\Type(array(
                         'type' => 'integer',
                     )),
+                    new Assert\Length(array('max' => 10)),
                 ),
             ))
             ->add('status', OrderStatusType::class, array(

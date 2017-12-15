@@ -160,7 +160,7 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $id = preg_match('/^\d+$/', $clean_key_multi) ? $clean_key_multi : null;
+            $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
             $qb
                 ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
                 ->setParameter('customer_id', $id)
