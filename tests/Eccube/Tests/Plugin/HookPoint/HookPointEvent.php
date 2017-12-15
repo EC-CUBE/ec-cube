@@ -554,20 +554,6 @@ class HookPointEvent
     }
 
 
-// Admin/Setting/Shop/CustomerAgreementController
-
-// index
-    public function onAdminAgree1(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE;
-    }
-
-    public function onAdminAgree2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE;
-    }
-
-
 // Admin/Setting/Shop/DeliveryController
 
 // index
