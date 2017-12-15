@@ -13,6 +13,7 @@ namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Eccube\DependencyInjection\Compiler\PluginFormPass;
+use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -153,6 +154,9 @@ class Kernel extends BaseKernel
         // FormPassは優先度0で実行されているので, それより速いタイミングで実行させる.
         // 自動登録されるタグやコンパイラパスの登録タイミングは, FrameworkExtension::load(), FrameworkBundle::build()を参考に.
         $container->addCompilerPass(new PluginFormPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
+
+        // DocumentRootをルーティディレクトリに設定する.
+        $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
         // Pimple の ServiceProvider を追加
         // $container->register('ServiceProviderCache', 'ServiceProviderCache');
