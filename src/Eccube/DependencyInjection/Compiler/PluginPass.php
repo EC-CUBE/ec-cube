@@ -5,7 +5,7 @@ namespace Eccube\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PluginFormPass implements CompilerPassInterface
+class PluginPass implements CompilerPassInterface
 {
     /**
      * You can modify the container here before it is dumped to PHP code.
