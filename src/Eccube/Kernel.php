@@ -136,8 +136,10 @@ class Kernel extends BaseKernel
         $plugins = $this->getContainer()->getParameter('eccube.plugins.enabled');
         $pluginDir = dirname(__DIR__).'/../app/Plugin';
         foreach ($plugins as $plugin) {
-            $dir = $pluginDir.'/'.$plugin['code'];
-            $routes->import($dir.'/Resource/config/routes/*'.self::CONFIG_EXTS, '/', 'glob');
+            $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
+            if (file_exists($dir)) {
+                $routes->import($dir, '/', 'annotation');
+            }
         }
     }
 

@@ -1,2 +1,0 @@
-Plugin\HogePlugin:
-    resource: '../../app/Plugin/HogePlugin/Controller'
