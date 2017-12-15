@@ -185,10 +185,10 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div id="search_box_main__tel" class="form-group">
-                                            <label>お届け先 電話番号</label>
-                                            {{ form_widget(searchForm.tel) }}
-                                            {{ form_errors(searchForm.tel) }}
+                                        <div id="search_box_main__order_id" class="form-group">
+                                            <label>注文コード</label>
+                                            {{ form_widget(searchForm.order_code) }}
+                                            {{ form_errors(searchForm.order_code) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
@@ -213,6 +213,13 @@
                                         <label>更新日</label>
                                         <div class="form-group range">
                                             {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div id="search_box_main__tel" class="form-group">
+                                            <label>お届け先 電話番号</label>
+                                            {{ form_widget(searchForm.tel) }}
+                                            {{ form_errors(searchForm.tel) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
