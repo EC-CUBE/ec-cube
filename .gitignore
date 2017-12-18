@@ -36,3 +36,8 @@ composer.phar
 *.php~
 .env
 .web-server-pid
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###

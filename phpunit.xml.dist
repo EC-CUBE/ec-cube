@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
-    colors="true"
-    bootstrap="./tests/bootstrap.php"
-    >
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+>
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <env name="KERNEL_CLASS" value="App\Kernel" />
+        <env name="APP_ENV" value="test" />
+        <env name="APP_DEBUG" value="1" />
+        <env name="APP_SECRET" value="s$cretf0rt3st" />
+        <env name="SHELL_VERBOSITY" value="-1" />
+        <!-- define your env variables for the test env here -->
+    </php>
 
-    <!-- テストの場所 -->
     <testsuites>
-        <testsuite name="EC-CUBE Test Suite">
-            <directory>./tests</directory>
-            <exclude>./tests/Eccube/Tests/Plugin</exclude>
+        <testsuite name="Project Test Suite">
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
-    <!-- 出力するログファイル
-    <logging>
-        <log type="coverage-clover" target="./reports/coverage.clover"/>
-    </logging>
-    -->
-    
-    <!-- カバーレージのターゲット -->
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-          <directory suffix=".php">./src/Eccube/</directory>
-          <exclude>
-            <directory suffix=".php">./src/Eccube/Resource</directory>
-            <directory suffix=".php">./src/Eccube/Command/GeneratorCommand/generatortemplate</directory>
-          </exclude>
+        <whitelist>
+            <directory>./src/</directory>
         </whitelist>
+        <exclude>
+          <directory suffix=".php">./src/Eccube/Resource</directory>
+          <directory suffix=".php">./src/Eccube/Command/GeneratorCommand/generatortemplate</directory>
+        </exclude>
     </filter>
-    <php>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-    </php>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
 </phpunit>

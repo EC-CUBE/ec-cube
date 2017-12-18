@@ -49,8 +49,6 @@
         "symfony/config": "^3.4",
         "symfony/console": "^3.4",
         "symfony/css-selector": "^3.4",
-        "symfony/debug": "^3.4",
-        "symfony/debug-bundle": "^3.4",
         "symfony/debug-pack": "^1.0",
         "symfony/doctrine-bridge": "^3.4",
         "symfony/dom-crawler": "^3.4",
@@ -92,11 +90,9 @@
         "friendsofphp/php-cs-fixer": "^2.2",
         "fzaninotto/faker": "^1.7",
         "mikey179/vfsStream": "^1.6",
-        "phpunit/phpunit": "^5.7",
         "satooshi/php-coveralls": "2.0.x-dev",
         "symfony/browser-kit": "^3.4",
         "symfony/web-server-bundle": "^3.4",
-        "symfony/phpunit-bridge": "^3.4",
         "dama/doctrine-test-bundle": "^4.0"
     },
     "autoload": {

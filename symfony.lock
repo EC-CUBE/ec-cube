@@ -143,9 +143,6 @@
     "monolog/monolog": {
         "version": "1.23.0"
     },
-    "myclabs/deep-copy": {
-        "version": "1.7.0"
-    },
     "nesbot/carbon": {
         "version": "1.22.1"
     },
@@ -163,45 +160,6 @@
     },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
-    },
-    "phpdocumentor/reflection-common": {
-        "version": "1.0.1"
-    },
-    "phpdocumentor/reflection-docblock": {
-        "version": "4.2.0"
-    },
-    "phpdocumentor/type-resolver": {
-        "version": "0.4.0"
-    },
-    "phpspec/prophecy": {
-        "version": "1.7.3"
-    },
-    "phpunit/php-code-coverage": {
-        "version": "4.0.8"
-    },
-    "phpunit/php-file-iterator": {
-        "version": "1.4.5"
-    },
-    "phpunit/php-text-template": {
-        "version": "1.2.1"
-    },
-    "phpunit/php-timer": {
-        "version": "1.0.9"
-    },
-    "phpunit/php-token-stream": {
-        "version": "2.0.2"
-    },
-    "phpunit/phpunit": {
-        "version": "4.7",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.7",
-            "ref": "fc35828893288f0bb786291377433ee8d7e14738"
-        }
-    },
-    "phpunit/phpunit-mock-objects": {
-        "version": "3.4.4"
     },
     "pimple/pimple": {
         "version": "v3.2.2"
@@ -232,36 +190,6 @@
     },
     "saxulum/saxulum-webprofiler-provider": {
         "version": "2.0.0"
-    },
-    "sebastian/code-unit-reverse-lookup": {
-        "version": "1.0.1"
-    },
-    "sebastian/comparator": {
-        "version": "1.2.4"
-    },
-    "sebastian/diff": {
-        "version": "1.4.3"
-    },
-    "sebastian/environment": {
-        "version": "2.0.0"
-    },
-    "sebastian/exporter": {
-        "version": "2.0.0"
-    },
-    "sebastian/global-state": {
-        "version": "1.1.1"
-    },
-    "sebastian/object-enumerator": {
-        "version": "2.0.1"
-    },
-    "sebastian/recursion-context": {
-        "version": "2.0.0"
-    },
-    "sebastian/resource-operations": {
-        "version": "1.0.0"
-    },
-    "sebastian/version": {
-        "version": "2.0.1"
     },
     "seld/cli-prompt": {
         "version": "1.0.3"
@@ -428,7 +356,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "3.3",
-            "ref": "fd6e5b56573f4576359472e8b77a11d61af73518"
+            "ref": "179470cb6492db92dffee208cfdb436f175c93b4"
         }
     },
     "symfony/polyfill-apcu": {
@@ -553,9 +481,6 @@
     },
     "twig/twig": {
         "version": "v2.4.4"
-    },
-    "webmozart/assert": {
-        "version": "1.2.0"
     },
     "white-october/pagerfanta-bundle": {
         "version": "v1.1.1"
