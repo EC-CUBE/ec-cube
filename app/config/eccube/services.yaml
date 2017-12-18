@@ -60,10 +60,8 @@ services:
         tags: ['doctrine.event_subscriber']
     Eccube\Doctrine\EventSubscriber\SaveEventSubscriber:
         tags: ['doctrine.event_subscriber']
-# Serialization of 'Closure' is not allowedが発生するので一旦コメントアウト
-#    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
-##        resource: '../../../src/Eccube/Doctrine/EventSubscriber'
-#        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
+        tags: ['doctrine.event_subscriber']
 
     Eccube\Twig\Extension\EccubeBlockExtension:
         tags: ['twig.extension']
