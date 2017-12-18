@@ -27,23 +27,9 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Event\ConnectionEventArgs;
 use Doctrine\DBAL\Events;
-use Eccube\Application;
 
 class InitSubscriber implements EventSubscriber
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -59,7 +45,7 @@ class InitSubscriber implements EventSubscriber
     {
         $db = $args->getConnection();
         $platform = $args->getDatabasePlatform()->getName();
-        
+
         if ($platform === 'mysql') {
             $db->executeQuery("SET SESSION time_zone = '+00:00'");
         } elseif ($platform === 'postgresql') {
