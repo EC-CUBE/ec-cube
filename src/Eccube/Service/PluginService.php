@@ -191,6 +191,17 @@ class PluginService
             // dbにプラグイン登録
             $plugin = $this->registerPlugin($config, $event, $source);
 
+            // プラグインmetadata定義を追加
+            $entityDir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+            if (file_exists($entityDir)) {
+                $ormConfig = $this->entityManager->getConfiguration();
+                $chain = $ormConfig->getMetadataDriverImpl();
+                $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                $chain->addDriver($driver, $namespace);
+                $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+            }
+
             // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
             $this->schemaService->updateSchema($generatedFiles, $tmpProxyOutputDir);
@@ -403,6 +414,10 @@ class PluginService
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
+
+        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+        $this->schemaService->dropTable($namespace);
 
         ConfigManager::writePluginConfigCache();
         return true;
