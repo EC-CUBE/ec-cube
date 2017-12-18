@@ -5,13 +5,14 @@ namespace Eccube\Tests\Util;
 use Eccube\Util\CacheUtil;
 use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Finder\Finder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * CacheUtil test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class CacheUtilTest extends \PHPUnit_Framework_TestCase
+class CacheUtilTest extends TestCase
 {
     private $actual;
     private $expected;

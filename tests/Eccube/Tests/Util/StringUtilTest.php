@@ -4,13 +4,14 @@ namespace Eccube\Tests\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Str test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class StringUtilTest extends \PHPUnit_Framework_TestCase
+class StringUtilTest extends TestCase
 {
     private $actual;
     private $expected;

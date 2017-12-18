@@ -27,8 +27,9 @@ use Eccube\Annotation\EntityExtension;
 use Eccube\Service\EntityProxyService;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\TestCase;
 
-class EntityProxyServiceTest extends \PHPUnit_Framework_TestCase
+class EntityProxyServiceTest extends TestCase
 {
     private $tempOutputDir;
 

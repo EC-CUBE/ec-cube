@@ -4,8 +4,9 @@ namespace Eccube\Tests\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 use Eccube\EventListener\ConvertKanaListener;
+use PHPUnit\Framework\TestCase;
 
-class ConvertKanaListenerTest extends \PHPUnit_Framework_TestCase
+class ConvertKanaListenerTest extends TestCase
 {
     public function testConvertKana_string()
     {

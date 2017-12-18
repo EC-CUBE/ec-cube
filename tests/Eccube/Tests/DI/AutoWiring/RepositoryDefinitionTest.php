@@ -26,11 +26,13 @@ namespace Eccube\Tests\DI\AutoWiring;
 use Eccube\DI\AutoWiring\RepositoryDefinition;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\DI\Test\Repository\TestRepository;
+use PHPUnit\Framework\TestCase;
 
-class RepositoryDefinitionTest extends \PHPUnit_Framework_TestCase
+class RepositoryDefinitionTest extends TestCase
 {
     public function testGetEntityName_Ecucube_Entity()
     {
+        $this->markTestIncomplete('Eccube\DI は使用しないかも');
         $refClass = new \ReflectionClass(ProductRepository::class);
         $def = new RepositoryDefinition(ProductRepository::class, $refClass, null);
         self::assertEquals("Eccube\\Entity\\Product", $def->getEntityName());
@@ -38,6 +40,7 @@ class RepositoryDefinitionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEntityName_Test()
     {
+        $this->markTestIncomplete('Eccube\DI は使用しないかも');
         $refClass = new \ReflectionClass(TestRepository::class);
         $def = new RepositoryDefinition(TestRepository::class, $refClass, null);
         self::assertEquals("Eccube\\Tests\\DI\\Test\\Entity\\Test", $def->getEntityName());
