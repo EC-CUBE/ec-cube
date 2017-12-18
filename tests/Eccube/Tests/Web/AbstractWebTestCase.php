@@ -42,7 +42,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->client = $this->createClient();
+        $this->client = static::createClient();
     }
 
     public function tearDown()
