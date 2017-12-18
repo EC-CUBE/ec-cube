@@ -57,7 +57,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             $mappings[$code] = [
                 'is_bundle' => false,
                 'type' => 'annotation',
-                'dir' => '%kernel.project_dir%/app/plugins/'.$code.'/Entity',
+                'dir' => '%kernel.project_dir%/app/Plugin/'.$code.'/Entity',
                 'prefix' => $namespace,
                 'alias' => $code,
             ];

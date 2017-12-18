@@ -126,7 +126,10 @@ class EntityProxyService
             $includedFileSets[] = $includedFiles;
         }
 
-        $declaredTraits = get_declared_traits();
+        $declaredTraits = array_map(function ($fqcn) {
+            // FQCNが'\'で始まるように正規化
+            return strpos($fqcn, '\\') === 0 ? $fqcn : '\\'.$fqcn;
+        }, get_declared_traits());
 
         // ディレクトリセットに含まれるTraitの一覧を作成
         $traitSets = array_map(function() { return []; }, $dirSets);

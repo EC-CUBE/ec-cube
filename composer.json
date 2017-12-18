@@ -105,6 +105,7 @@
             "src/Eccube/Resource/functions/env.php"
         ],
         "psr-4": {
+            "Eccube\\Entity\\": "app/proxy/entity",
             "Acme\\": "app/Acme",
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin",
