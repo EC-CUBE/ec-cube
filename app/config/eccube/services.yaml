@@ -7,6 +7,9 @@ parameters:
     app.notifications.email_sender: anonymous@example.com
     admin_route: 'admin'
 
+    eccube.twig.block.templates:
+      - render_blocks.twig
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -60,6 +63,11 @@ services:
 #    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
 ##        resource: '../../../src/Eccube/Doctrine/EventSubscriber'
 #        tags: ['doctrine.event_subscriber']
+
+    Eccube\Twig\Extension\EccubeBlockExtension:
+        tags: ['twig.extension']
+        bind:
+          $blockTemplates: %eccube.twig.block.templates%
 
     Plugin\:
         resource: '../../../app/Plugin/*'
