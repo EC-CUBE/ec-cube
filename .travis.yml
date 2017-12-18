@@ -23,6 +23,13 @@ services:
   - postgresql
 
 env:
+  global:
+    - KERNEL_CLASS=Eccube\Kernel
+    - APP_ENV=test
+    - APP_DEBUG=1
+    - APP_SECRET=s$cretf0rt3st
+    - SHELL_VERBOSITY=-1
+
   matrix:
     - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev
     - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev
