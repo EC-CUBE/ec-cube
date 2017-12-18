@@ -18,6 +18,10 @@ php:
   - 7.1
   - 7.0
 
+services:
+  - mysql
+  - postgresql
+
 env:
   matrix:
     - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev
@@ -42,6 +46,10 @@ matrix:
       env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev COVERAGE=true
     # php7.2
     - php: 7.2
+
+before_install:
+  - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cube4_dev;' ; fi
+  - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cube4_dev;' -U postgres ; fi
 
 install:
   # @see https://github.com/sj26/mailcatcher/issues/277
