@@ -22,6 +22,8 @@
  */
 namespace Eccube\Tests\Web\Admin;
 
+use Eccube\Entity\Master\OrderStatus;
+
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
     protected $Member;
@@ -53,10 +55,10 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $Today = new \DateTime();
         $Yesterday = new \DateTime('-1 days');
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
-        $OrderPending = $this->app['eccube.repository.order_status']->find($this->app['config']['order_pending']);
-        $OrderCancel = $this->app['eccube.repository.order_status']->find($this->app['config']['order_cancel']);
-        $OrderProcessing = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
+        $OrderPending = $this->app['eccube.repository.order_status']->find(OrderStatus::PENDING);
+        $OrderCancel = $this->app['eccube.repository.order_status']->find(OrderStatus::CANCEL);
+        $OrderProcessing = $this->app['eccube.repository.order_status']->find(OrderStatus::PROCESSING);
 
         $todaysSales = 0;
         for ($i = 0; $i < 3; $i++) {

@@ -30,6 +30,7 @@ use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
@@ -409,11 +410,11 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
         $arr = array(
-            $this->appConfig['order_new'],
-            $this->appConfig['order_pay_wait'],
-            $this->appConfig['order_back_order'],
-            $this->appConfig['order_deliv'],
-            $this->appConfig['order_pre_end'],
+            OrderStatus::NEW,
+            OrderStatus::PAY_WAIT,
+            OrderStatus::BACK_ORDER,
+            OrderStatus::DELIVERED,
+            OrderStatus::PAID,
         );
 
         $result = $this->orderRepository->getCustomerCount($Customer, $arr);
@@ -428,9 +429,9 @@ class CustomerRepository extends AbstractRepository implements UserProviderInter
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == $this->appConfig['order_cancel'] ||
-                $orderStatusId == $this->appConfig['order_pending'] ||
-                $orderStatusId == $this->appConfig['order_processing']
+            if ($orderStatusId == OrderStatus::CANCEL ||
+                $orderStatusId == OrderStatus::PENDING ||
+                $orderStatusId == OrderStatus::PROCESSING
             ) {
                 // キャンセル、決済処理中、購入処理中は購入時間は更新しない
             } else {

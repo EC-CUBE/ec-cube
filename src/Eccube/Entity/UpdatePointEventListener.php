@@ -106,7 +106,7 @@ class UpdatePointEventListener implements EntityEventListener
 
     protected function isUsePoint(OrderStatus $Status)
     {
-        if ($Status->getId() == $this->appConfig['order_cancel']) {
+        if ($Status->getId() == OrderStatus::CANCEL) {
             return false;
         }
         return true;
@@ -114,7 +114,7 @@ class UpdatePointEventListener implements EntityEventListener
 
     protected function isAddPoint(OrderStatus $Status)
     {
-        if ($Status->getId() == $this->appConfig['order_deliv']) {
+        if ($Status->getId() == OrderStatus::DELIVERED) {
             return true;
         }
         return false;

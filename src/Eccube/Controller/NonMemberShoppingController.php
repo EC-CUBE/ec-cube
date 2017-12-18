@@ -30,6 +30,7 @@ use Eccube\Application;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
+use Eccube\Entity\Master\OrderStatus;;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -202,7 +203,7 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             // 受注情報を取得
             /** @var Order $Order */
-            $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
+            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
 
             // 初回アクセス(受注データがない)の場合は, 受注情報を作成
             if (is_null($Order)) {
@@ -334,7 +335,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      */
     public function shippingEditChange(Application $app, Request $request, $id)
     {
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        $Order = $app['eccube.service.shopping']->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
@@ -412,7 +413,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                     return $response;
                 }
 
-                $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
+                $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
                 if (!$Order) {
                     log_info('カートが存在しません');
                     $app->addError('front.shopping.order.error');

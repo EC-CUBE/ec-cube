@@ -9,6 +9,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Master\OrderStatus;
 
 /**
  * OrderRepository::getQueryBuilderBySearchDataTest test cases.
@@ -72,13 +73,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testStatus()
     {
-        $NewStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $NewStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->Order1->setOrderStatus($NewStatus);
         $this->Order2->setOrderStatus($NewStatus);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'status' => $this->app['config']['order_new']
+            'status' => OrderStatus::NEW
         );
         $this->scenario();
 

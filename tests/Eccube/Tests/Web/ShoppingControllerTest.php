@@ -24,6 +24,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Master\OrderStatus;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
@@ -106,7 +107,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             )
         );
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();

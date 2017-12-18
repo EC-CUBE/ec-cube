@@ -7,6 +7,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -165,26 +166,26 @@ class CustomerRepositoryTest extends EccubeTestCase
     {
         $Order = $this->createOrder($this->Customer);
 
-        $OrderStatus = $this->app['eccube.repository.master.order_status']->find($this->app['config']['order_new']);
+        $OrderStatus = $this->app['eccube.repository.master.order_status']->find(OrderStatus::NEW);
 
         $Order->setOrderStatus($OrderStatus);
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush();
 
         $this->actual = 1;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_new']);
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, OrderStatus::NEW);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
 
-        $OrderStatus = $this->app['eccube.repository.master.order_status']->find($this->app['config']['order_cancel']);
+        $OrderStatus = $this->app['eccube.repository.master.order_status']->find(OrderStatus::CANCEL);
 
         $Order->setOrderStatus($OrderStatus);
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush();
 
         $this->actual = 0;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_cancel']);
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, OrderStatus::CANCEL);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 

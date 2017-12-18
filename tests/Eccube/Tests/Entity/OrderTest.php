@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Entity;
 
 use Eccube\Entity\Order;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -27,7 +28,7 @@ class OrderTest extends EccubeTestCase
 
     public function testConstructor()
     {
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
         $this->expected = 0;

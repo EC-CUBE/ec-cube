@@ -29,6 +29,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Order;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -314,7 +315,7 @@ class OrderRepository extends AbstractRepository
             // 購入処理中は検索対象から除外
             $OrderStatuses = $this->getEntityManager()
                 ->getRepository('Eccube\Entity\Master\OrderStatus')
-                ->findNotContainsBy(array('id' => $this->appConfig['order_processing']));
+                ->findNotContainsBy(array('id' => OrderStatus::PROCESSING));
             $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
                 ->setParameter('status', $OrderStatuses);
         }

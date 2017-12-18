@@ -7,9 +7,6 @@ parameters:
     default_password: '**********'
     deliv_addr_max: 20
     deliv_date_end_max: 21
-    device_type_admin: 99              # クラス定数
-    device_type_pc: 10                 # クラス定数
-    device_type_smartphone: 2          # クラス定数
     eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
     id_max_len: 50
     id_min_len: 4
@@ -24,14 +21,6 @@ parameters:
     max_total_fee: 9999999999
     mltext_len: 1000
     mtext_len: 200
-    order_back_order: 4         # クラス定数
-    order_cancel: 3             # クラス定数
-    order_deliv: 5              # クラス定数
-    order_new: 1                # クラス定数
-    order_pay_wait: 2           # クラス定数
-    order_pending: 7            # クラス定数
-    order_pre_end: 6            # クラス定数
-    order_processing: 8         # クラス定数
     plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
@@ -40,7 +29,7 @@ parameters:
     search_pmax: 10
     sltext_len: 500
     smtext_len: 100
-    tax_rule_priority: 'product_id,product_class_id,pref_id,country_id'
+    tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
     template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
     url_len: 1024
     default_page_count: 10

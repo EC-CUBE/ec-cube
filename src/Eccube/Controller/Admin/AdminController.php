@@ -32,6 +32,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ChangePasswordType;
@@ -187,10 +188,10 @@ class AdminController extends AbstractController
          * 受注状況.
          */
         $excludes = array();
-        $excludes[] = $this->appConfig['order_pending'];
-        $excludes[] = $this->appConfig['order_processing'];
-        $excludes[] = $this->appConfig['order_cancel'];
-        $excludes[] = $this->appConfig['order_deliv'];
+        $excludes[] = OrderStatus::PENDING;
+        $excludes[] = OrderStatus::PROCESSING;
+        $excludes[] = OrderStatus::CANCEL;
+        $excludes[] = OrderStatus::DELIVERED;
 
         $event = new EventArgs(
             array(
@@ -210,9 +211,9 @@ class AdminController extends AbstractController
          * 売り上げ状況
          */
         $excludes = array();
-        $excludes[] = $this->appConfig['order_processing'];
-        $excludes[] = $this->appConfig['order_cancel'];
-        $excludes[] = $this->appConfig['order_pending'];
+        $excludes[] = OrderStatus::PROCESSING;
+        $excludes[] = OrderStatus::CANCEL;
+        $excludes[] = OrderStatus::PENDING;
 
         $event = new EventArgs(
             array(
