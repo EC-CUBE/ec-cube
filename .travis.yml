@@ -48,7 +48,6 @@ matrix:
     - php: 7.2
 
 before_install:
-  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cube4_dev;' ; fi
   - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cube4_dev;' -U postgres ; fi
 
@@ -64,6 +63,7 @@ install:
 
 before_script:
   - phpenv config-rm xdebug.ini || true
+  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - mailcatcher
 
 script:
