@@ -77,6 +77,9 @@ class Kernel extends BaseKernel
      */
     public function boot()
     {
+        // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
+        $this->loadEntityProxies();
+
         parent::boot();
 
         // Symfony で用意されているコンポーネントはここで追加
@@ -153,6 +156,13 @@ class Kernel extends BaseKernel
         $reader = new Reference('annotation_reader');
         $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, ["%kernel.project_dir%/src/Eccube/Entity"]));
         $driver->addMethodCall('setTraitProxiesDirectory', [$container->getParameter('kernel.project_dir')."/app/proxy/entity"]);
-        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity\\'], []));
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity'], []));
+    }
+
+    protected function loadEntityProxies()
+    {
+        foreach (glob(__DIR__ . '/../../app/proxy/entity/*.php') as $file) {
+            require_once $file;
+        }
     }
 }

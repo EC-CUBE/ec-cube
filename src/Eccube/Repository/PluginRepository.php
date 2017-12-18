@@ -47,4 +47,13 @@ class PluginRepository extends AbstractRepository
     {
         return $this->findBy(['enabled' => '1']);
     }
+
+    /**
+     * @param $code プラグインコード
+     * @return Plugin
+     */
+    public function findByCode($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
 }
