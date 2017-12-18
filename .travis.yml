@@ -49,6 +49,7 @@ install:
   - gem install --conservative mailcatcher
   - composer install --dev --no-interaction -o
   - ./vendor/bin/simple-phpunit install
+  - bin/console doctrine:database:create
   - bin/console doctrine:schema:create
   - bin/console eccube:fixtures:load
 
