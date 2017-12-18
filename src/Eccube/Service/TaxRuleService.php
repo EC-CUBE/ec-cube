@@ -34,10 +34,14 @@ use Eccube\Repository\TaxRuleRepository;
 class TaxRuleService
 {
     /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
+
+    public function __construct(TaxRuleRepository $taxRuleRepository)
+    {
+        $this->taxRuleRepository = $taxRuleRepository;
+    }
 
     /**
      * 設定情報に基づいて税金の金額を返す
