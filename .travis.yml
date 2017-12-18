@@ -47,7 +47,7 @@ install:
   # @see https://github.com/sj26/mailcatcher/issues/277
   - gem install mime-types --version "< 3"
   - gem install --conservative mailcatcher
-  - composer install --dev --no-interaction -o
+  - composer install --no-scripts --dev --no-interaction -o
   - ./vendor/bin/simple-phpunit install
   - bin/console doctrine:database:create
   - bin/console doctrine:schema:create
