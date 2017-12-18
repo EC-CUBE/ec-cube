@@ -1,0 +1,58 @@
+parameters:
+  eccube.constants:
+    auth_type: HMAC
+    csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
+    csv_temp_realdir: /PATH/TO/WEB_ROOT/data/upload/csv/ # upload_tmp_dir に任せればよい？
+    default_country_id: 392
+    default_password: '**********'
+    deliv_addr_max: 20
+    deliv_date_end_max: 21
+    eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
+    id_max_len: 50
+    id_min_len: 4
+    image_save_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/save_image/
+    image_save_urlpath: /upload/save_image/ # asset 使う
+    image_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_image/ # upload_tmp_dir に任せればよい？
+    image_temp_urlpath: /upload/temp_image/ # asset つかう
+    int_len: 9                              # 最大値で制御したい
+    category_nest_level: 5
+    lltext_len: 99999
+    ltext_len: 3000
+    max_total_fee: 9999999999
+    mltext_len: 1000
+    mtext_len: 200
+    plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
+    plugin_html_urlpath: /plugin/ # asset 使う
+    plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
+    plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
+    price_len: 8                                                    # 最大値で制御したい
+    search_pmax: 10
+    sltext_len: 500
+    smtext_len: 100
+    tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
+    template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
+    url_len: 1024
+    default_page_count: 10
+    admin_product_stock_status: 3
+    eccube_info_url: 'https://www.ec-cube.net/info/3/'
+    customer_reset_expire: 10
+    # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
+    csv_export_separator: ,
+    # 出力エンコーディング
+    csv_export_encoding: SJIS-win
+    # 日付のフォーマット
+    csv_export_date_format: 'Y-m-d H:i:s'
+    # 複数データの区切り文字
+    csv_export_multidata_separator: ,
+    csv_import_delimiter: ,
+    csv_import_enclosure: '"'
+    csv_import_escape: \
+    owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+    name_len: 16
+    kana_len: 25
+    address1_len: 32
+    address2_len: 32
+    birth_max: 110
+    product_order_price_lower: 1
+    product_order_newer: 2
+    product_order_price_higher: 3

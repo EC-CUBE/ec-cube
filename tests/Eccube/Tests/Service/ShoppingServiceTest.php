@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -101,7 +102,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
         $this->app['orm.em']->flush();
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $Order = $this->app['eccube.service.shopping']->getOrder($OrderNew);
         $this->assertNull($Order);
     }
@@ -111,7 +112,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
 
         $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
-        $OrderProcessing = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $OrderProcessing = $this->app['eccube.repository.order_status']->find(OrderStatus::PROCESSING);
         $Order = $this->app['eccube.service.shopping']->getOrder($OrderProcessing);
 
         $this->expected = $NewOrder->getPreOrderId();
@@ -266,7 +267,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->app['eccube.service.shopping']->setFormData($Order, $data);
         $this->app['eccube.service.shopping']->setOrderUpdateData($Order);
 
-        $this->expected = $this->app['config']['order_new'];
+        $this->expected = OrderStatus::NEW;
         $this->actual = $Order->getOrderStatus()->getId();
         $this->verify();
 

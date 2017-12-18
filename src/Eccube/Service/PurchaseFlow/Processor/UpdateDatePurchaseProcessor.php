@@ -3,6 +3,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\OrderStatus;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
@@ -38,7 +39,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
         // 編集
         if ($TargetOrder->getId()) {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
+            if ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setShippingDate($dateTime);
@@ -49,7 +50,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
                     }
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_pre_end']) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == OrderStatus::PAID) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setPaymentDate($dateTime);
@@ -58,7 +59,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
             // 新規
         } else {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_deliv']) {
+            if ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
                 $TargetOrder->setShippingDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
@@ -66,7 +67,7 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
                     $Shipping->setShippingDate($dateTime);
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == $this->appConfig['order_pre_end']) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == OrderStatus::DELIVERED) {
                 $TargetOrder->setPaymentDate($dateTime);
             }
             // 受注日時

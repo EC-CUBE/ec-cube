@@ -27,7 +27,7 @@ class UpdatePointEventListenerTest extends EccubeTestCase
 
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-        $OrderNew = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_new']);
+        $OrderNew = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::NEW);
         $this->Order->setOrderStatus($OrderNew);
         $this->app['orm.em']->flush($this->Order);
     }
@@ -36,7 +36,7 @@ class UpdatePointEventListenerTest extends EccubeTestCase
     {
         $prevPoint = $this->Customer->getPoint();
         $this->Order->setAddPoint(100);
-        $OrderDeliv = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_deliv']);
+        $OrderDeliv = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::DELIVERED);
 
         $this->Order->setOrderStatus($OrderDeliv);
         $this->app['orm.em']->flush($this->Order);
@@ -48,14 +48,14 @@ class UpdatePointEventListenerTest extends EccubeTestCase
 
     public function testReturnOfAddPoint()
     {
-        $OrderDeliv = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_deliv']);
+        $OrderDeliv = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::DELIVERED);
         $this->Order->setAddPoint(100);
         $this->Order->setOrderStatus($OrderDeliv);
         $this->app['orm.em']->flush($this->Order);
 
         $prevPoint = $this->Customer->getPoint();
         // Return of add point
-        $OrderNew = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_new']);
+        $OrderNew = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::NEW);
         $this->Order->setOrderStatus($OrderNew);
         $this->app['orm.em']->flush($this->Order);
 
@@ -68,11 +68,11 @@ class UpdatePointEventListenerTest extends EccubeTestCase
     {
         $prevPoint = $this->Customer->getPoint();
         $this->Order->setUsePoint(100);
-        $OrderCancel = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_cancel']);
+        $OrderCancel = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::CANCEL);
         $this->Order->setOrderStatus($OrderCancel);
         $this->app['orm.em']->flush($this->Order);
 
-        $OrderNew = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_new']);
+        $OrderNew = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::NEW);
         $this->Order->setOrderStatus($OrderNew);
         $this->app['orm.em']->flush($this->Order);
 
@@ -87,7 +87,7 @@ class UpdatePointEventListenerTest extends EccubeTestCase
         $this->Order->setUsePoint(100);
         $this->app['orm.em']->flush($this->Order);
 
-        $OrderCancel = $this->app['orm.em']->find(OrderStatus::class, $this->app['config']['order_cancel']);
+        $OrderCancel = $this->app['orm.em']->find(OrderStatus::class, OrderStatus::CANCEL);
         $this->Order->setOrderStatus($OrderCancel);
         $this->app['orm.em']->flush($this->Order);
 

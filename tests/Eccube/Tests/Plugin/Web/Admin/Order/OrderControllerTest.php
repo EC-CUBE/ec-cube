@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Plugin\Web\Admin\Order;
 
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
@@ -17,7 +18,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $Sex = $this->app['eccube.repository.master.sex']->find(1);
         $Payment = $this->app['eccube.repository.payment']->find(1);
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         for ($i = 0; $i < 10; $i++) {
             $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
@@ -142,7 +143,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $Order->setOrderStatus($OrderStatus);
         $this->app['orm.em']->flush();
 
@@ -172,7 +173,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $Order->setOrderStatus($OrderStatus);
         $this->app['orm.em']->flush();
 

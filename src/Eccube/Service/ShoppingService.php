@@ -36,6 +36,7 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -266,7 +267,7 @@ class ShoppingService
             $preOrderId = sha1(StringUtil::random(32));
             $Order = $this->orderRepository->findOneBy(array(
                 'pre_order_id' => $preOrderId,
-                'OrderStatus' => $this->appConfig['order_processing'],
+                'OrderStatus' => OrderStatus::PROCESSING,
             ));
         } while ($Order);
 
@@ -378,7 +379,7 @@ class ShoppingService
      */
     public function newOrder()
     {
-        $OrderStatus = $this->orderStatusRepository->find($this->appConfig['order_processing']);
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $Order = new \Eccube\Entity\Order($OrderStatus);
 
         return $Order;
@@ -819,7 +820,7 @@ class ShoppingService
     {
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
-        $Order->setOrderStatus($this->orderStatusRepository->find($this->appConfig['order_new']));
+        $Order->setOrderStatus($this->orderStatusRepository->find(OrderStatus::NEW));
         $Order->setMessage($data['message']);
         // お届け先情報を更新
         $shippings = $data['shippings'];
@@ -859,7 +860,7 @@ class ShoppingService
     {
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime()); // XXX 後続の setOrderStatus でも時刻を更新している
-        $OrderStatus = $this->orderStatusRepository->find($this->appConfig['order_new']);
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $this->setOrderStatus($Order, $OrderStatus);
 
     }

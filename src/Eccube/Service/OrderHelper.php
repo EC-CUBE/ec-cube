@@ -10,6 +10,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -105,7 +106,7 @@ class OrderHelper
      */
     public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems)
     {
-        $OrderStatus = $this->orderStatusRepository->find($this->appConfig['order_processing']);
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
         // pre_order_idを生成
@@ -147,7 +148,7 @@ class OrderHelper
             $Order = $this->orderRepository->findOneBy(
                 [
                     'pre_order_id' => $preOrderId,
-                    'OrderStatus' => $this->appConfig['order_processing'],
+                    'OrderStatus' => OrderStatus::PROCESSING,
                 ]
             );
         } while ($Order);

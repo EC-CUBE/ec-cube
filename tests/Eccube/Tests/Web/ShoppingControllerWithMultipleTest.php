@@ -22,6 +22,8 @@
  */
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Master\OrderStatus;
+
 /**
  * 複数配送指定のテストケース.
  *
@@ -160,7 +162,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             )
         );
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -1604,7 +1606,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             )
         );
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -1758,7 +1760,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             )
         );
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
@@ -1969,7 +1971,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             )
         );
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();

@@ -38,4 +38,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderStatus extends \Eccube\Entity\Master\AbstractMasterEntity
 {
+    /** 新規受付. */
+    const NEW = 1;
+    /** 入金待ち. */
+    const PAY_WAIT = 2;
+    /** キャンセル. */
+    const CANCEL = 3;
+    /** 取り寄せ中. */
+    const BACK_ORDER = 4;
+    /** 発送済み. */
+    const DELIVERED = 5;
+    /** 入金済み. */
+    const PAID = 6;
+    /** 決済処理中. */
+    const PENDING = 7;
+    /** 購入処理中. */
+    const PROCESSING = 8;
 }

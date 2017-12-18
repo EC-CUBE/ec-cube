@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -28,7 +29,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->Order1 = $this->createOrder($this->Customer);
         $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));
         // 新規受付にしておく
-        $NewStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $NewStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->Order1
             ->setOrderStatus($NewStatus)
             ->setOrderDate(new \DateTime());
@@ -121,13 +122,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testStatus()
     {
-        $NewStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $NewStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
         $this->Order1->setOrderStatus($NewStatus);
         $this->Order2->setOrderStatus($NewStatus);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'status' => $this->app['config']['order_new']
+            'status' => OrderStatus::NEW
         );
         $this->scenario();
 
@@ -138,14 +139,14 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testMultiStatus()
     {
-        $this->Order1->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
-        $this->Order2->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_cancel']));
+        $this->Order1->setOrderStatus($this->app['eccube.repository.order_status']->find(OrderStatus::NEW));
+        $this->Order2->setOrderStatus($this->app['eccube.repository.order_status']->find(OrderStatus::CANCEL));
         $this->app['orm.em']->flush();
 
         $Statuses = new ArrayCollection(array(
-            $this->app['config']['order_new'],
-            $this->app['config']['order_cancel'],
-            $this->app['config']['order_pending'],
+            OrderStatus::NEW,
+            OrderStatus::CANCEL,
+            OrderStatus::PENDING,
         ));
         $this->searchData = array(
             'multi_status' => $Statuses,

@@ -32,6 +32,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -374,7 +375,7 @@ class ShoppingController extends AbstractShoppingController
             }
 
             /** @var Order $Order */
-            $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
+            $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('購入処理中の受注情報がないため購入エラー');
                 $app->addError('front.shopping.order.error');
@@ -642,7 +643,7 @@ class ShoppingController extends AbstractShoppingController
     public function initializeOrder(Application $app, Request $request)
     {
         // 購入処理中の受注情報を取得
-        $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
+        $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
 
         // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
         if (is_null($Order)) {
@@ -797,7 +798,7 @@ class ShoppingController extends AbstractShoppingController
      */
     public function existsOrder(Application $app, Request $request)
     {
-        $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
+        $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');

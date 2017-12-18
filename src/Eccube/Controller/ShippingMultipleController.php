@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
@@ -99,7 +100,7 @@ class ShippingMultipleController extends AbstractShoppingController
         }
 
         /** @var \Eccube\Entity\Order $Order */
-        $Order = $this->shoppingService->getOrder($this->appConfig['order_processing']);
+        $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');

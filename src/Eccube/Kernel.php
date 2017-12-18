@@ -90,7 +90,11 @@ class Kernel extends BaseKernel
         };
          // TODO
         $app['config'] = function () {
-            return require __DIR__.'/../../app/config/eccube/config.php';
+            if ($this->container->hasParameter('eccube.app')) {
+                return $this->container->getParameter('eccube.app');
+            }
+
+            return [];
         };
         $app['debug'] = true;
 
