@@ -31,8 +31,11 @@ use Silex\Application;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;;
+use Twig\TwigFunction;
 
-class EccubeExtension extends \Twig_Extension
+class EccubeExtension extends AbstractExtension
 {
 
     public function __construct(TaxRuleService $TaxRuleService)
@@ -53,18 +56,18 @@ class EccubeExtension extends \Twig_Extension
 
         // $app = $this->app;
         return array(
-            new \Twig_SimpleFunction('has_errors', array($this, 'hasErrors')),
-            new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
-            new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
-            new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
-            new \Twig_SimpleFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
+            new TwigFunction('has_errors', array($this, 'hasErrors')),
+            new TwigFunction('is_object', array($this, 'isObject')),
+            new TwigFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
+            new TwigFunction('active_menus', array($this, 'getActiveMenus')),
+            new TwigFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
 
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::url
             // new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
             // // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
             // new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
 
-            new \Twig_SimpleFunction('php_*', function() {
+            new TwigFunction('php_*', function() {
                     $arg_list = func_get_args();
                     $function = array_shift($arg_list);
                     if (is_callable($function)) {
@@ -74,7 +77,7 @@ class EccubeExtension extends \Twig_Extension
 
             }, ['pre_escape' => 'html', 'is_safe' => ['html']]),
 
-            // new \Twig_SimpleFunction('eccube_block_*', function() use ($app) {
+            // new TwigFunction('eccube_block_*', function() use ($app) {
             //         $sources = $app['eccube.twig.block.templates'];
             //         $arg_list = func_get_args();
             //         $block_name = array_shift($arg_list);
@@ -101,11 +104,11 @@ class EccubeExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('no_image_product', array($this, 'getNoImageProduct')),
-            new \Twig_SimpleFilter('date_format', array($this, 'getDateFormatFilter')),
-            new \Twig_SimpleFilter('price', array($this, 'getPriceFilter')),
-            new \Twig_SimpleFilter('ellipsis', array($this, 'getEllipsis')),
-            new \Twig_SimpleFilter('time_ago', array($this, 'getTimeAgo')),
+            new TwigFilter('no_image_product', array($this, 'getNoImageProduct')),
+            new TwigFilter('date_format', array($this, 'getDateFormatFilter')),
+            new TwigFilter('price', array($this, 'getPriceFilter')),
+            new TwigFilter('ellipsis', array($this, 'getEllipsis')),
+            new TwigFilter('time_ago', array($this, 'getTimeAgo')),
         );
     }
 

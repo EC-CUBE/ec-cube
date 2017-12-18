@@ -30,7 +30,7 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DataCollector,DI,Twig,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource}'
+        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DataCollector,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource}'
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
@@ -50,9 +50,9 @@ services:
             - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
 
     # DoctrineEventSubscribers
-    Eccube\Doctrine\EventSubscriber\:
-        resource: '../../../src/Eccube/Doctrine/EventSubscriber'
-        tags: ['doctrine.event_subscriber']
+#    Eccube\Doctrine\EventSubscriber\:
+#        resource: '../../../src/Eccube/Doctrine/EventSubscriber'
+#        tags: ['doctrine.event_subscriber']
 
     Plugin\:
         resource: '../../../app/Plugin/*'
