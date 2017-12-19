@@ -119,7 +119,8 @@
             "php eccube_install.php pgsql none --skip-createdb -V"
         ],
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
+            "cache:clear --no-warmup": "symfony-cmd",
+            "cache:warmup": "symfony-cmd",
             "assets:install --symlink --relative html": "symfony-cmd"
         },
         "post-install-cmd": [
