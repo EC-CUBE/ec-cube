@@ -122,10 +122,8 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
 
-        // 有効なプラグインのコンテナ定義をロードする.
-        // $plugins = $container->getParameter('eccube.plugins.enabled');
-        // TODO このタイミングではコンテナのeccube.plugins.enabledは未定義.
-        $dir = dirname(__DIR__).'/../app/Plugin/ProductReview/Resource/config';
+        // プラグインのservices.phpをロードする.
+        $dir = dirname(__DIR__).'/../app/Plugin/*/Resource/config';
         $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
     }
 
