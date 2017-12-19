@@ -158,6 +158,9 @@
     "paragonie/random_compat": {
         "version": "v2.0.11"
     },
+    "php-coveralls/php-coveralls": {
+        "version": "v2.0.0"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
     },
@@ -178,9 +181,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.0"
-    },
-    "satooshi/php-coveralls": {
-        "version": "2.0-dev"
     },
     "saxulum/saxulum-doctrine-orm-manager-registry-provider": {
         "version": "3.1.0"
