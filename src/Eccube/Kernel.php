@@ -15,6 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\Plugin\ConfigManager;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -176,10 +177,24 @@ class Kernel extends BaseKernel
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
     {
+        $projectDir = $container->getParameter('kernel.project_dir');
+
+        $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
+        $namespaces = ['Eccube\\Entity'];
+
+        $pluginConfigs = ConfigManager::getPluginConfigAll(true);
+        foreach ($pluginConfigs as $config) {
+            $code = $config['config']['code'];
+            if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
+                $paths[] = '%kernel.project_dir%/app/Plugin/'.$code.'/Entity';
+                $namespaces[] = 'Plugin\\'.$code.'\\Entity';
+            }
+        }
+
         $reader = new Reference('annotation_reader');
-        $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, ["%kernel.project_dir%/src/Eccube/Entity"]));
-        $driver->addMethodCall('setTraitProxiesDirectory', [$container->getParameter('kernel.project_dir')."/app/proxy/entity"]);
-        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity'], []));
+        $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, $paths));
+        $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
     }
 
     protected function loadEntityProxies()
