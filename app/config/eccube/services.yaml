@@ -76,7 +76,7 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
 
     twig.extension.stringloader:
         class: Twig_Extension_StringLoader
