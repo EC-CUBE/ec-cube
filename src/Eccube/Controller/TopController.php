@@ -52,7 +52,6 @@ class TopController extends AbstractController
         $application = $this->get('app');
         // orm.em も使える
         $Page = $application['orm.em']->find(\Eccube\Entity\Page::class, 1);
-        dump($Page);
         return [
         ];
     }
