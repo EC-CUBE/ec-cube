@@ -15,4 +15,5 @@ return [
     'Symfony\Bundle\WebServerBundle\WebServerBundle' => ['dev' => true],
     'Symfony\Bundle\WebProfilerBundle\WebProfilerBundle' => ['dev' => true, 'test' => true],
     'DAMA\DoctrineTestBundle\DAMADoctrineTestBundle' => ['test' => true],
+    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
 ];
