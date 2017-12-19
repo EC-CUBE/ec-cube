@@ -17,3 +17,10 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        filters:
+            option_nostock_hidden:
+                class: Eccube\Doctrine\Filter\NoStockHiddenFilter
+                enabled: true
+            incomplete_order_status_hidden:
+                class: Eccube\Doctrine\Filter\OrderStatusFilter
+                enabled: true
