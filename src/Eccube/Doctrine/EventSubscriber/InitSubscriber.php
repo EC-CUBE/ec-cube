@@ -51,7 +51,8 @@ class InitSubscriber implements EventSubscriber
         } elseif ($platform === 'postgresql') {
             $db->executeQuery("SET TIME ZONE 'UTC'");
         } elseif ($platform === 'sqlite') {
-            $db->executeQuery("PRAGMA foreign_keys = ON");
+            // FIXME schema updateが通らないので一旦コメントアウト.
+            // $db->executeQuery("PRAGMA foreign_keys = ON");
         }
     }
 }
