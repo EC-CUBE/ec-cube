@@ -78,6 +78,10 @@ services:
         resource: '../../../app/Plugin/*'
         exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider}'
 
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags: ['twig.extension']
+
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly
     # Eccube\Command\ListUsersCommand:
