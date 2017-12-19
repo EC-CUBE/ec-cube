@@ -12,6 +12,10 @@ class PluginPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if (!$container->hasParameter('eccube.plugins.disabled')) {
+            return;
+        }
+
         $plugins = $container->getParameter('eccube.plugins.disabled');
 
         if (empty($plugins)) {
