@@ -138,7 +138,11 @@
             "id": "01C0Q71D54BCVSB8ZWR3VECDRD",
             "allow-contrib": false
         },
-        "symfony-web-dir": "."
+        "symfony-web-dir": ".",
+        "bin-dir": "bin",
+        "src-dir": "src/Eccube",
+        "config-dir": "app/config/eccube",
+        "public-dir": "."
     },
     "config": {
         "platform": {
