@@ -35,6 +35,8 @@ class EntityProxyServiceTest extends TestCase
 
     protected function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+
         $this->tempOutputDir = tempnam(sys_get_temp_dir(), 'ProxyGeneratorTest');
         unlink($this->tempOutputDir);
         mkdir($this->tempOutputDir);
