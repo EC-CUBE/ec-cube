@@ -34,8 +34,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TopController extends AbstractController
 {
-    public function __construct(Application $app)
+    protected $eccubeConfig;
+    public function __construct($eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

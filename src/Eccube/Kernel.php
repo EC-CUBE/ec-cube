@@ -146,7 +146,8 @@ class Kernel extends BaseKernel
         // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
         // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
         $container->register('app', Application::class)
-            ->setSynthetic(true);
+            ->setSynthetic(true)
+            ->setPublic(true);
         // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
         // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }

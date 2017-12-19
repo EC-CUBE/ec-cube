@@ -41,8 +41,12 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
     public function setUp()
     {
+        if (!(strpos(get_class($this), 'Eccube\Tests\Web\TopControllerTest') !== false
+             || strpos(get_class($this), 'Eccube\Tests\Web\ProductControllerTest') !== false)) {
+            $this->markTestIncomplete(get_class($this).' は未実装です');
+        }
         parent::setUp();
-        $this->client = $this->createClient();
+        $this->client = static::createClient();
     }
 
     public function tearDown()

@@ -31,10 +31,10 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $config_file = __DIR__.'/../../../../../app/config/eccube/database.php';
-        $this->config = require $config_file;
     }
+
     public function testRoutingIndex()
     {
         $this->client->request('GET', $this->app->url('install'));

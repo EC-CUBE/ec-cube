@@ -24,6 +24,7 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         $this->app = $this->createApplication();
         // in the case of sqlite in-memory database only.
         if ($this->isSqliteInMemory()) {

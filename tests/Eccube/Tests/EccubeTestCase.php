@@ -8,8 +8,9 @@ use Eccube\Application;
 use Eccube\Entity\Customer;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client;
-use Silex\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -29,6 +30,24 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function setUp()
     {
+        if (strpos(get_class($this), 'Eccube\Tests\Application') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Command') !== false
+            || strpos(get_class($this), 'Eccube\Tests\DI') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Doctrine') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Entity') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Event') !== false
+            || strpos(get_class($this), 'Eccube\Tests\EventListener') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Form') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Plugin') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Repository') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Security') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Service') !== false
+            || strpos(get_class($this), 'Eccube\Tests\ServiceProvider') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Transaction') !== false
+            || strpos(get_class($this), 'Eccube\Tests\Twig') !== false
+        ) {
+            $this->markTestIncomplete(get_class($this).' は未実装です');
+        }
         $src = __DIR__.'/../../../src/Eccube/Resource/config/log.php';
         $dist = __DIR__.'/../../../app/config/eccube/log.php';
 
@@ -48,13 +67,6 @@ abstract class EccubeTestCase extends WebTestCase
         file_put_contents($dist, '<?php return '.var_export($config, true).';');
 
         parent::setUp();
-
-        if ($this->isSqliteInMemory()) {
-            $this->initializeDatabase();
-        }
-        if (isset($this->app['orm.em'])) {
-            $this->app['orm.em']->getConnection()->beginTransaction();
-        }
     }
 
     /**
@@ -64,80 +76,9 @@ abstract class EccubeTestCase extends WebTestCase
     {
         parent::tearDown();
 
-        if (!$this->isSqliteInMemory()) {
-            $this->app['orm.em']->getConnection()->rollback();
-            $this->app['orm.em']->getConnection()->close();
-        }
-
         $this->cleanUpProperties();
     }
 
-    /**
-     * データベースを初期化する.
-     *
-     * データベースを初期化し、マイグレーションを行なう.
-     * 全てのデータが初期化されるため注意すること.
-     *
-     * @link http://jamesmcfadden.co.uk/database-unit-testing-with-doctrine-2-and-phpunit/
-     */
-    public function initializeDatabase()
-    {
-        // Get an instance of your entity manager
-        $entityManager = $this->app['orm.em'];
-
-        // Retrieve PDO instance
-        $pdo = $entityManager->getConnection()->getWrappedConnection();
-
-        // Clear Doctrine to be safe
-        $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
-        $entityManager->clear();
-        gc_collect_cycles();
-
-        // Schema Tool to process our entities
-        $tool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
-        $classes = $entityManager->getMetaDataFactory()->getAllMetaData();
-
-        // Drop all classes and re-build them for each test case
-        $tool->dropSchema($classes);
-        $tool->createSchema($classes);
-        $config = new Configuration($this->app['db']);
-        $config->setMigrationsNamespace('DoctrineMigrations');
-
-        $migrationDir = __DIR__.'/../../../src/Eccube/Resource/doctrine/migration';
-        $config->setMigrationsDirectory($migrationDir);
-        $config->registerMigrationsFromDirectory($migrationDir);
-
-        $migration = new Migration($config);
-        // initialize migrations.sql from bootstrap
-        if (!file_exists(sys_get_temp_dir().'/migrations.sql')) {
-            $sql = $migration->migrate(null, false);
-            file_put_contents(sys_get_temp_dir().'/migrations.sql', json_encode($sql));
-        } else {
-            $migrations = json_decode(file_get_contents(sys_get_temp_dir().'/migrations.sql'), true);
-            foreach ($migrations as $migration_sql) {
-                foreach ($migration_sql as $sql) {
-                    if ($this->isSqliteInMemory()) {
-                        // XXX #1199 の問題を無理矢理回避...
-                        $sql = preg_replace('/CURRENT_TIMESTAMP/i', "datetime('now','-9 hours')", $sql);
-                    }
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                }
-            }
-        }
-
-        // 通常は eccube_install.sh で追加されるデータを追加する
-        $sql = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, sort_no, update_date, create_date,name,department) VALUES (2, 'admin', 'test', 'test', 1, 0, 0, 1, 1, current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP')";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $stmt->closeCursor();
-
-        $sql = "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, option_product_tax_rule) VALUES (1, 'SHOP_NAME', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'admin@example.com', current_timestamp, 0)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $stmt->closeCursor();
-    }
 
     /**
      * Faker を生成する.
@@ -289,35 +230,6 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        Application::clearInstance();
-        $app = Application::getInstance([
-            'eccube.autoloader' => $GLOBALS['eccube.autoloader']
-        ]);
-        $app['debug'] = true;
-
-        $app->initialize();
-        $app->initializePlugin();
-
-        $app['eccube.di.debug'] = false;
-        $app['eccube.listener.transaction.enabled'] = false;;
-
-        $app['session.test'] = true;
-        unset($app['exception_handler']);
-
-        $app->register(new \Eccube\Tests\ServiceProvider\CsrfMockServiceProvider());
-        $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
-
-        $app->boot();
-        $app->flush();
-
-        return $app;
-    }
-
-    /**
      * PHPUnit_* インスタンスのプロパティを初期化する.
      *
      * このメソッドは、PHPUnit のメモリリーク解消のため、 tearDown() メソッドでコールされる.
@@ -333,7 +245,8 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
-        \Eccube\Application::clearInstance();
+        // TODO
+        // \Eccube\Application::clearInstance();
     }
 
     /**
@@ -437,17 +350,9 @@ abstract class EccubeTestCase extends WebTestCase
         return quoted_printable_decode($Message->source);
     }
 
-    /**
-     * in the case of sqlite in-memory database.
-     */
-    protected function isSqliteInMemory()
+    // TODO 暫定的に実装する
+    protected function url($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        if (array_key_exists('memory', $this->app['config']['database'])
-            && $this->app['config']['database']['memory']
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->client->getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
 }

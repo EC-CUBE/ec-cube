@@ -14,6 +14,7 @@ namespace Eccube\Tests\Application;
 use Silex\Provider\MonologServiceProvider;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 
 /**
  * MonologTrait test cases.
@@ -22,10 +23,11 @@ use Monolog\Logger;
  *
  * @requires PHP 5.4
  */
-class MonologTraitTest extends \PHPUnit_Framework_TestCase
+class MonologTraitTest extends TestCase
 {
     public function testLog()
     {
+        $this->markTestIncomplete('Eccube\Application に依存しないようにする');
         $app = $this->createApplication();
 
         $app->log('Foo');
