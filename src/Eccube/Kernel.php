@@ -85,17 +85,17 @@ class Kernel extends BaseKernel
         // Symfony で用意されているコンポーネントはここで追加
         $app = Application::getInstance();
         $em = $this->container->get('doctrine')->getManager();
-        $app['orm.em'] = function () use ($em) {
+        $app['orm.em'] = $app->share(function () use ($em) {
             return $em;
-        };
+        });
          // TODO
-        $app['config'] = function () {
+        $app['config'] = $app->share(function () {
             if ($this->container->hasParameter('eccube.app')) {
                 return $this->container->getParameter('eccube.app');
             }
 
             return [];
-        };
+        });
         $app['debug'] = true;
 
         // see Silex\Application::boot()

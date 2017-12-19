@@ -61,17 +61,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class Application extends \Silex\Application
+class Application extends \Pimple
 {
-    use \Silex\Application\FormTrait;
-    use \Silex\Application\UrlGeneratorTrait;
-    use \Silex\Application\MonologTrait;
-    use \Silex\Application\SwiftmailerTrait;
+    // use \Silex\Application\FormTrait;
+    // use \Silex\Application\UrlGeneratorTrait;
+    // use \Silex\Application\MonologTrait;
+    // use \Silex\Application\SwiftmailerTrait;
     // use \Silex\Application\SecurityTrait;
-    use \Silex\Application\TranslationTrait;
-    use \Eccube\Application\ApplicationTrait;
+    // use \Silex\Application\TranslationTrait;
+    // use \Eccube\Application\ApplicationTrait;
     // use \Eccube\Application\SecurityTrait;
-    use \Eccube\Application\TwigTrait;
+    // use \Eccube\Application\TwigTrait;
 
     protected static $instance;
 
