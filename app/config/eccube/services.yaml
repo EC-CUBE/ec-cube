@@ -8,7 +8,7 @@ parameters:
     admin_route: 'admin'
     user_data_route: 'user_data'
     eccube.scheme: 'https'
-
+    eccube.theme: 'default'
     eccube.twig.block.templates:
       - render_blocks.twig
 
