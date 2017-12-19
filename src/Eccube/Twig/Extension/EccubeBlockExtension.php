@@ -19,7 +19,7 @@ class EccubeBlockExtension extends AbstractExtension
 
     protected $blockTemplates;
 
-    public function __construct(Environment $twig, $blockTemplates)
+    public function __construct(Environment $twig, array $blockTemplates)
     {
         $this->twig = $twig;
         $this->blockTemplates = $blockTemplates;
