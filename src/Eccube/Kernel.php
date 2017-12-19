@@ -12,12 +12,16 @@
 namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Eccube\DependencyInjection\Compiler\PluginPass;
+use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\Plugin\ConfigManager;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -121,6 +125,10 @@ class Kernel extends BaseKernel
         }
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        // プラグインのservices.phpをロードする.
+        $dir = dirname(__DIR__).'/../app/Plugin/*/Resource/config';
+        $loader->load($dir.'/services'.self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
@@ -133,6 +141,16 @@ class Kernel extends BaseKernel
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+
+        // 有効なプラグインのルーティングをインポートする.
+        $plugins = $this->getContainer()->getParameter('eccube.plugins.enabled');
+        $pluginDir = dirname(__DIR__).'/../app/Plugin';
+        foreach ($plugins as $plugin) {
+            $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
+            if (file_exists($dir)) {
+                $routes->import($dir, '/', 'annotation');
+            }
+        }
     }
 
     protected function build(ContainerBuilder $container)
@@ -140,6 +158,14 @@ class Kernel extends BaseKernel
         $this->addEntityExtensionPass($container);
 
         $container->registerExtension(new EccubeExtension());
+
+        // サービスタグの収集より先に実行し, 付与されているタグをクリアする.
+        // FormPassは優先度0で実行されているので, それより速いタイミングで実行させる.
+        // 自動登録されるタグやコンパイラパスの登録タイミングは, FrameworkExtension::load(), FrameworkBundle::build()を参考に.
+        $container->addCompilerPass(new PluginPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
+
+        // DocumentRootをルーティディレクトリに設定する.
+        $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
         // Pimple の ServiceProvider を追加
         // $container->register('ServiceProviderCache', 'ServiceProviderCache');
@@ -154,10 +180,24 @@ class Kernel extends BaseKernel
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
     {
+        $projectDir = $container->getParameter('kernel.project_dir');
+
+        $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
+        $namespaces = ['Eccube\\Entity'];
+
+        $pluginConfigs = ConfigManager::getPluginConfigAll(true);
+        foreach ($pluginConfigs as $config) {
+            $code = $config['config']['code'];
+            if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
+                $paths[] = '%kernel.project_dir%/app/Plugin/'.$code.'/Entity';
+                $namespaces[] = 'Plugin\\'.$code.'\\Entity';
+            }
+        }
+
         $reader = new Reference('annotation_reader');
-        $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, ["%kernel.project_dir%/src/Eccube/Entity"]));
-        $driver->addMethodCall('setTraitProxiesDirectory', [$container->getParameter('kernel.project_dir')."/app/proxy/entity"]);
-        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, ['Eccube\\Entity'], []));
+        $driver = new Definition('Eccube\\Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver', array($reader, $paths));
+        $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
     }
 
     protected function loadEntityProxies()

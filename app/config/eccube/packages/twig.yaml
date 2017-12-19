@@ -2,6 +2,7 @@ twig:
     paths:
       '%kernel.project_dir%/src/Eccube/Resource/template/default': ~
       '%kernel.project_dir%/src/Eccube/Resource/template/admin': admin
+      '%kernel.project_dir%/app/Plugin': ~
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     # form_themes:

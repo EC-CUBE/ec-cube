@@ -7,6 +7,9 @@ parameters:
     app.notifications.email_sender: anonymous@example.com
     admin_route: 'admin'
 
+    eccube.twig.block.templates:
+      - render_blocks.twig
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -38,6 +41,38 @@ services:
     Eccube\Controller\:
         resource: '../../../src/Eccube/Controller'
         tags: ['controller.service_arguments']
+
+    # Form Extensions
+    Eccube\Form\Extension\DoctrineOrmExtension:
+        tags:
+            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
+    Eccube\Form\Extension\FreezeTypeExtension:
+        tags:
+            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
+    Eccube\Form\Extension\HelpTypeExtension:
+        tags:
+            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
+
+    # DoctrineEventSubscribers
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\SaveEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+# Serialization of 'Closure' is not allowedが発生するので一旦コメントアウト
+#    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
+##        resource: '../../../src/Eccube/Doctrine/EventSubscriber'
+#        tags: ['doctrine.event_subscriber']
+
+    Eccube\Twig\Extension\EccubeBlockExtension:
+        tags: ['twig.extension']
+        bind:
+          $blockTemplates: %eccube.twig.block.templates%
+
+    Plugin\:
+        resource: '../../../app/Plugin/*'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider}'
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly

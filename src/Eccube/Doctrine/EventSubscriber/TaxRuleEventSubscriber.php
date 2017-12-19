@@ -27,19 +27,19 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Eccube\Entity\ProductClass;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\ProductClass;
+use Eccube\Service\TaxRuleService;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
-class TaxRuleEventSubscriber implements EventSubscriber
+class TaxRuleEventSubscriber implements EventSubscriber, ServiceSubscriberInterface
 {
-    /**
-     * @var \Eccube\Service\TaxRuleService
-     */
-    private $taxRateService;
+    use ContainerAwareTrait;
 
-    public function __construct(\Eccube\Service\TaxRuleService $taxRateService)
+    public function getTaxRuleService()
     {
-        $this->taxRateService = $taxRateService;
+        return $this->container->get(TaxRuleService::class);
     }
 
     public function getSubscribedEvents()
@@ -57,11 +57,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+                $entity->getProduct(), $entity));
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+                $entity->getProduct(), $entity));
         }
         if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
+            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
+                $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -70,11 +73,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+                $entity->getProduct(), $entity));
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+                $entity->getProduct(), $entity));
         }
         if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
+            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
+                $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -83,11 +89,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+                $entity->getProduct(), $entity));
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+                $entity->getProduct(), $entity));
         }
         if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
+            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
+                $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -96,11 +105,39 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+                $entity->getProduct(), $entity));
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+                $entity->getProduct(), $entity));
         }
         if ($entity instanceof OrderItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
+            $entity->setPriceIncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice(),
+                $entity->getProduct(), $entity->getProductClass()));
         }
+    }
+
+    /**
+     * Returns an array of service types required by such instances, optionally keyed by the service names used internally.
+     *
+     * For mandatory dependencies:
+     *
+     *  * array('logger' => 'Psr\Log\LoggerInterface') means the objects use the "logger" name
+     *    internally to fetch a service which must implement Psr\Log\LoggerInterface.
+     *  * array('Psr\Log\LoggerInterface') is a shortcut for
+     *  * array('Psr\Log\LoggerInterface' => 'Psr\Log\LoggerInterface')
+     *
+     * otherwise:
+     *
+     *  * array('logger' => '?Psr\Log\LoggerInterface') denotes an optional dependency
+     *  * array('?Psr\Log\LoggerInterface') is a shortcut for
+     *  * array('Psr\Log\LoggerInterface' => '?Psr\Log\LoggerInterface')
+     *
+     * @return array The required service types, optionally keyed by service names
+     */
+    public static function getSubscribedServices()
+    {
+        return [
+            TaxRuleService::class,
+        ];
     }
 }
