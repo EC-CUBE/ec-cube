@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% if app.config.locale == "ja" %}
                                         {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}                                    
                                     {% endif %}
-                                    {{ form_widget(form.name.name02, {'attr': {'placeholder': 'signup.label.last_name'}}) }}
+                                    {{ form_widget(form.name.name02, {'attr': {'placeholder': 'signup.label.first_name'}}) }}
                                     {% if app.config.locale != "ja" %}
                                         {{ form_widget(form.name.name01, {'attr': {'placeholder': 'signup.label.family_name'}}) }}                                    
                                     {% endif %}
@@ -90,11 +90,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_label(form.address, 'signup.label.address', {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
-                                <div class="ec-zipInput{{ has_errors(form.zipcode) ? ' error' }}">
-                                    {{ form_widget(form.zipcode, {'attr': {'placeholder': 'common.label.postal_code' }}) }}
-                                    {{ form_errors(form.zipcode) }}
+                                <div class="ec-zipInput{{ has_errors(form.zip.zip01, form.zip.zip02) ? ' error' }}"><span>〒</span>
+                                    {{ form_widget(form.zip.zip01) }}<span>-</span>
+                                    {{ form_widget(form.zip.zip02) }}
+                                    {{ form_errors(form.zip.zip01) }}
+                                    {{ form_errors(form.zip.zip02) }}
                                 </div>
-                                <!--
+                                {% if app.config.locale == "ja" %}
                                 <div class="ec-zipInputHelp">
                                     <a href="http://www.post.japanpost.jp/zipcode/"
                                                                 target="_blank">
@@ -104,8 +106,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span>郵便番号検索</span>
                                     </a>
                                 </div>
-                                -->
-                                {% if app.config.locale == "ja" %}
                                 <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
                                     {{ form_widget(form.address.pref) }}
                                     {{ form_errors(form.address.pref) }}

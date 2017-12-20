@@ -75,9 +75,6 @@ class EntryType extends AbstractType
             ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', KanaType::class, array(
-                'required' => true,
-            ))
             ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
@@ -116,6 +113,12 @@ class EntryType extends AbstractType
             ->add('job', JobType::class, array(
                 'required' => false,
             ));
+            if($this->app["config"]["locale"] == "ja")
+            {
+                $builder->add('kana', KanaType::class, array(
+                    'required' => true,
+                ));
+            }
     }
 
     /**
