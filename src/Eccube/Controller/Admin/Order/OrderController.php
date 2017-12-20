@@ -63,9 +63,9 @@ class OrderController extends AbstractController
 
         $page_count_param = $request->get('page_count');
         // 表示件数はURLパラメターから取得する
-        if($page_count_param && is_numeric($page_count_param)){
-            foreach($pageMaxis as $pageMax){
-                if($page_count_param == $pageMax->getName()){
+        if ($page_count_param && is_numeric($page_count_param)) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($page_count_param == $pageMax->getName()) {
                     $page_count = $pageMax->getName();
                     // 表示件数入力値正し場合はSESSIONに保存する
                     $session->set('eccube.admin.order.search.page_count', $page_count);
@@ -104,6 +104,7 @@ class OrderController extends AbstractController
                 $viewData = \Eccube\Util\FormUtil::getViewData($searchForm);
                 $session->set('eccube.admin.order.search', $viewData);
                 $session->set('eccube.admin.order.search.page_no', $page_no);
+                $session->remove('eccube.admin.order.search.sort');
             }
         } else {
             if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
@@ -111,6 +112,7 @@ class OrderController extends AbstractController
                 $session->remove('eccube.admin.order.search');
                 $session->remove('eccube.admin.order.search.page_no');
                 $session->remove('eccube.admin.order.search.page_count');
+                $session->remove('eccube.admin.order.search.sort');
             } else {
                 // pagingなどの処理
                 if (is_null($page_no)) {
@@ -121,6 +123,17 @@ class OrderController extends AbstractController
                 $viewData = $session->get('eccube.admin.order.search');
                 $searchData = null;
                 if (!is_null($viewData)) {
+
+                    $sort = $request->get('sort');
+                    if ($sort) {
+                        $orderBy = explode('_sort_', $sort);
+
+                        $viewData['sort'] = $orderBy[0];
+                        $viewData['orderBy'] = $orderBy[1];
+
+                        $session->set('eccube.admin.order.search.sort', $sort);
+                    }
+
                     // sessionに保持されている検索条件を復元.
                     $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
                 }
@@ -146,9 +159,9 @@ class OrderController extends AbstractController
                         $page_no,
                         $page_count
                     );
-                        }
-                    }
-                        }
+                }
+            }
+        }
 
         return $app->render('Order/index.twig', array(
             'searchForm' => $searchForm->createView(),
@@ -174,6 +187,7 @@ class OrderController extends AbstractController
 
         if (!$Order) {
             $app->deleteMessage();
+
             return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
@@ -280,9 +294,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'order_' . $now->format('YmdHis') . '.csv';
+        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('受注CSV出力ファイル名', array($filename));
@@ -371,9 +385,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'shipping_' . $now->format('YmdHis') . '.csv';
+        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('配送CSV出力ファイル名', array($filename));

@@ -171,7 +171,7 @@ class CsvExportService
     /**
      * Csv種別からServiceの初期化を行う.
      *
-     * @param $CsvType|integer
+     * @param $CsvType |integer
      */
     public function initCsvType($CsvType)
     {
@@ -284,6 +284,7 @@ class CsvExportService
                     $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
                 }
             }
+
             return implode($this->config['csv_export_multidata_separator'], $array);
 
         } elseif ($data instanceof \DateTime) {
@@ -309,7 +310,7 @@ class CsvExportService
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
-                (string) $value, $config['csv_export_encoding'], 'UTF-8'
+                (string)$value, $config['csv_export_encoding'], 'UTF-8'
             );
         };
     }
@@ -363,6 +364,14 @@ class CsvExportService
         $searchForm = $app['form.factory']
             ->create('admin_search_order', null, array('csrf_protection' => true));
 
+        $sort = $session->get('eccube.admin.order.search.sort');
+        if ($sort) {
+            $orderBy = explode('_sort_', $sort);
+
+            $viewData['sort'] = $orderBy[0];
+            $viewData['orderBy'] = $orderBy[1];
+        }
+
         $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
 
         // 受注データのクエリビルダを構築.
@@ -405,15 +414,15 @@ class CsvExportService
     public function getProductQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-                $viewData = $session->get('eccube.admin.product.search', array());
+        $viewData = $session->get('eccube.admin.product.search', array());
         $app = \Eccube\Application::getInstance();
         $searchForm = $app['form.factory']
             ->create('admin_search_product', null, array('csrf_protection' => true));
         $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
-        if(isset($viewData['link_status']) && strlen($viewData['link_status'])){
+        if (isset($viewData['link_status']) && strlen($viewData['link_status'])) {
             $searchData['link_status'] = $app['eccube.repository.master.disp']->find($viewData['link_status']);
         }
-        if(isset($viewData['stock_status'])){
+        if (isset($viewData['stock_status'])) {
             $searchData['stock_status'] = $viewData['stock_status'];
         }
 

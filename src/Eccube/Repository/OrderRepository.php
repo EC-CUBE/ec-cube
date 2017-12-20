@@ -450,8 +450,11 @@ class OrderRepository extends EntityRepository
         }
 
         // Order By
-        $qb->orderBy('o.update_date', 'DESC');
-        $qb->addorderBy('o.id', 'DESC');
+        if (isset($searchData['sort']) && Str::isNotBlank($searchData['sort'])) {
+            $qb->orderBy('o.'.$searchData['sort'], $searchData['orderBy']);
+        }
+        $qb->addOrderBy('o.update_date', 'DESC');
+        $qb->addOrderBy('o.id', 'DESC');
 
         return $qb;
     }
