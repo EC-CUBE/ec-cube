@@ -24,8 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Event\EccubeEvents;
@@ -34,49 +32,48 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Twig_Loader_Chain;
 
-/**
- * @Route(service=UserDataController::class)
- */
-class UserDataController
+class UserDataController extends AbstractController
 {
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("twig.loader")
-     * @var Twig_Loader_Chain
-     */
-    protected $twigLoaderChain;
-
-    /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject(PageRepository::class)
      * @var PageRepository
      */
     protected $pageRepository;
 
     /**
-     * @Inject(DeviceTypeRepository::class)
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
 
+    public function __construct(
+        array $eccubeConfig,
+        EventDispatcherInterface $dispatcher,
+        PageRepository $pageRepository,
+        DeviceTypeRepository $deviceTypeRepository
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+        $this->eventDispatcher = $dispatcher;
+        $this->pageRepository = $pageRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
+    }
+
     /**
-     * //@Route("/%user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
+     * @Route("/%user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
      */
-    public function index(Application $app, Request $request, $route)
+    public function index(Request $request, $route)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -89,16 +86,11 @@ class UserDataController
             )
         );
 
-        if (is_null($Page)) {
+        if (null === $Page) {
             throw new NotFoundHttpException();
         }
 
-        // user_dataディレクトリを探索パスに追加.
-        $paths = array();
-        $paths[] = $this->appConfig['user_data_realdir'];
-        $this->twigLoaderChain->addLoader(new \Twig_Loader_Filesystem($paths));
-
-        $file = $Page->getFileName().'.twig';
+        $file = sprintf('@user_data/%s.twig', $Page->getFileName());
 
         $event = new EventArgs(
             array(
@@ -110,6 +102,6 @@ class UserDataController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE, $event);
 
-        return $app->render($file);
+        return $this->render($file);
     }
 }
