@@ -74,7 +74,7 @@ class UserDataController
     protected $deviceTypeRepository;
 
     /**
-     * //@Route("/{_user_data}/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
+     * //@Route("/%user_data_route%/{route}", name="user_data", requirements={"route": "([0-9a-zA-Z_\-]+\/?)+(?<!\/)"})
      */
     public function index(Application $app, Request $request, $route)
     {

@@ -6,6 +6,8 @@ parameters:
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
     app.notifications.email_sender: anonymous@example.com
     admin_route: 'admin'
+    user_data_route: 'user_data'
+    eccube.scheme: 'https'
 
     eccube.twig.block.templates:
       - render_blocks.twig
