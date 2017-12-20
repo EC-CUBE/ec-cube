@@ -606,6 +606,9 @@ class Application extends ApplicationTrait
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
 
+        // Register security header: X-Frame-Options
+        $this['dispatcher']->addListener(KernelEvents::RESPONSE, array($this['eccube.event_listner.security'], 'onKernelResponse'));
+
         // Voterの設定
         $app = $this;
         $this['authority_voter'] = $this->share(function ($app) {

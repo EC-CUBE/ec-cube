@@ -24,6 +24,7 @@
 
 namespace Eccube\EventListener;
 
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class SecurityEventListener
@@ -51,5 +52,15 @@ class SecurityEventListener
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * Set Header Security
+     * Values: DENY || SAMEORIGIN || ALLOW-FROM https://example.com
+     * @param FilterResponseEvent $event
+     */
+    public function onKernelResponse(FilterResponseEvent $event)
+    {
+        $event->getResponse()->headers->set('X-Frame-Options', 'SAMEORIGIN');
     }
 }
