@@ -24,7 +24,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Repository\TaxRuleRepository;
 

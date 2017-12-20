@@ -75,9 +75,13 @@ class TaxRuleRepository extends AbstractRepository
 
     private $rules = array();
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, TokenStorage $tokenStorage, AuthorizationChecker $authorizationChecker, BaseInfoRepository $baseInfoRepository, $eccubeConfig)
     {
         parent::__construct($registry, TaxRule::class);
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->baseInfoRepository = $baseInfoRepository;
+        $this->appConfig = $eccubeConfig;
     }
 
     public function newTaxRule()
