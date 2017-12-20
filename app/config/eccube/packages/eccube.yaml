@@ -1,5 +1,6 @@
 parameters:
   eccube.constants:
+    admin_allow_hosts: {}
     auth_type: HMAC
     csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
     csv_temp_realdir: /PATH/TO/WEB_ROOT/data/upload/csv/ # upload_tmp_dir に任せればよい？

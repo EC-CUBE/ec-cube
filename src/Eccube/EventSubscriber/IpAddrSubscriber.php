@@ -25,10 +25,13 @@ class IpAddrSubscriber implements EventSubscriberInterface
         }
 
         $allowHosts = $this->eccubeConfig['admin_allow_hosts'];
-        if (count($allowHosts) > 0) {
-            if (array_search($event->getRequest()->getClientIp(), $allowHosts) === false) {
-                throw new AccessDeniedHttpException();
-            }
+
+        if (empty($allowHosts)) {
+            return;
+        }
+
+        if (array_search($event->getRequest()->getClientIp(), $allowHosts) === false) {
+            throw new AccessDeniedHttpException();
         }
     }
 
