@@ -36,7 +36,6 @@ use Eccube\Form\Type\RepeatedEmailType;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
-use Eccube\Form\Type\ZipCodeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -76,6 +75,9 @@ class EntryType extends AbstractType
             ->add('name', NameType::class, array(
                 'required' => true,
             ))
+            ->add('kana', KanaType::class, array(
+                'required' => true,
+            ))
             ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
@@ -84,14 +86,7 @@ class EntryType extends AbstractType
                     )),
                 ),
             ))
-            ->add('zipcode', TextType::class, array(
-                'required' => true,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    )),
-                ),
-            ))
+            ->add('zip', ZipType::class)
             ->add('address', AddressType::class)
             ->add('tel', TelType::class, array(
                 'required' => true,
@@ -121,18 +116,6 @@ class EntryType extends AbstractType
             ->add('job', JobType::class, array(
                 'required' => false,
             ));
-            if($this->appConfig['locale'] != "ja")
-            {
-                $builder
-                    ->add('kana', KanaType::class, array(
-                        'required' => false
-                    ));
-            }else{
-                $builder
-                    ->add('kana', KanaType::class, array(
-                        'required' => true
-                    ));
-            }
     }
 
     /**

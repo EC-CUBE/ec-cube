@@ -65,6 +65,7 @@ class ZipType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $options['zip01_options']['required'] = $options['required'];
+        $options['zip02_options']['required'] = $options['required'];
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
@@ -86,7 +87,7 @@ class ZipType extends AbstractType
 
         $builder
             ->add($options['zip01_name'], TextType::class, array_merge_recursive($options['options'], $options['zip01_options']))
-            ->add($options['zip02_name'], TextType::class, $options['zip02_options'])
+            ->add($options['zip02_name'], TextType::class, array_merge_recursive($options['options'], $options['zip02_options']))
         ;
 
         $builder->setAttribute('zip01_name', $options['zip01_name']);
