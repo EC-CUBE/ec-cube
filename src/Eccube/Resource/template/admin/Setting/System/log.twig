@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(form.files, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div id="log_conditions_box__line_max" class="form-group">
-                                    直近の{{ form_widget(form.line_max, {'id': 'line-max', 'attr': {'class': 'form-control'}}) }}行を
+                                    {{ form_widget(form.line_max, {'id': 'line-max', 'attr': {'class': 'form-control'}}) }}{{'admin.setting.system.log.673'|trans}}
                                 </div>
                                 <div id="log_conditions_box__confirm_button" class="form-group">
                                     <button type="submit" class="btn btn-default">{{'admin.setting.system.log.674'|trans}}</button>

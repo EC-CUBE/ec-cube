@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
     <div class="ec-mypageRole">
         {% if pagination.totalItemCount > 0 %}
-            <p class="ec-para-nomal"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
+            <p class="ec-para-nomal">{{'mypage.history.message.order_history_num'|trans({'%num%':pagination.totalItemCount})|raw}}</p>
             {% for Order in pagination %}
                 <div class="ec-historyRole">
                     <div class="ec-historyRole__contents">
@@ -47,10 +47,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <dd>{{ Order.id }}</dd>
                                 </dl>
                                 <dl class="ec-definitions">
-                                    <dt>ご注文状況：</dt>
+                                    <dt>{{  'mypage.history.label.order_status'|trans}}</dt>
                                     <dd>{{ Order.CustomerOrderStatus }}</dd>
                                 </dl>
-                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
+                                <p class="ec-historyListHeader__action"><a class="ec-inlineBtn" href="{{ url('mypage_history', {'id': Order.id}) }}">{{'mypage.history.label.view_detail'|trans}}</a></p>
                             </div>
                         </div>
                         <div class="ec-historyRole__detail">

@@ -59,7 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                     <ul id="news_list_box__menu--{{ News.id }}" class="dropdown-menu dropdown-menu-right">
                                                         <li><a href="{{ url('admin_content_news_edit', {id: News.id}) }}" >{{'admin.content.news.59'|trans}}</a></li>
-                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.news.60'|trans}}">削除</a></li>
+                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.news.60'|trans}}">{{'common.label.delete'|trans}}</a></li>
                                                         {% if loop.first == false %}
                                                             <li>
                                                                 <a href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.content.news.61'|trans}}</a>

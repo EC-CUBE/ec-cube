@@ -74,7 +74,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>注文日・注文ID</th><th>注文者</th><th>注文内容</th><th></th>
+                {{'admin.shipping.search_product.800'|trans|raw}}<th></th>
             </tr>
         </thead>
         <tbody>
@@ -84,7 +84,7 @@
 
                     <tr>
                         <td>
-                            {{ OrderItem.Order.order_date ? OrderItem.Order.order_date |date("Y/m/d H:i:s") : '' }}<br>注文ID: {{ OrderItem.Order.id }}
+                            {{ OrderItem.Order.order_date ? OrderItem.Order.order_date |date("Y/m/d H:i:s") : '' }}<br>{{'admin.shipping.search_product.801'|trans({'%order_id%':OrderItem.Order.id})}}
                         </td>
                         <td>
                             {{ OrderItem.Order.Name01 }} {{ OrderItem.Order.Name02 }} ({{ OrderItem.Order.Kana01 }} {{ OrderItem.Order.Kana02 }})<br>

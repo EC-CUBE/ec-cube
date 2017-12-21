@@ -80,12 +80,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% endif %}
                                                     {% if loop.first == false %}
                                                         <li>
-                                                            <a href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
+                                                            <a href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.system.member.694'|trans}}</a>
                                                         </li>
                                                     {% endif %}
                                                     {% if loop.last == false %}
                                                         <li>
-                                                            <a href="{{ url('admin_setting_system_member_down', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
+                                                            <a href="{{ url('admin_setting_system_member_down', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.system.member.695'|trans}}</a>
                                                         </li>
                                                     {% endif %}
 

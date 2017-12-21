@@ -76,7 +76,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => false,
             ))
             ->add('payment_image_file', FileType::class, array(
-                'label' => 'paymentregister.label.logo_image',
+                'label' => $app->trans('paymentregister.label.logo_image'),
                 'mapped' => false,
                 'required' => false,
             ))

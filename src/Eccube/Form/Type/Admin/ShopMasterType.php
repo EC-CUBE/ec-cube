@@ -166,7 +166,7 @@ class ShopMasterType extends AbstractType
                 ),
             ))
             ->add('message', TextareaType::class, array(
-                'label' => 'メッセージ', // 削除予定
+                'label' => 'shopmaster.label.message', // 削除予定
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -260,7 +260,7 @@ class ShopMasterType extends AbstractType
 
             // 地図設定
             ->add('latitude', NumberType::class, array(
-                'label' => '緯度', // 削除予定
+                'label' => 'shopmaster.label.latitude', // 削除予定
                 'required' => false,
                 'scale' => 6,
                 'constraints' => array(
@@ -270,7 +270,7 @@ class ShopMasterType extends AbstractType
                 )
             ))
             ->add('longitude', NumberType::class, array(
-                'label' => '経度', // 削除予定
+                'label' => 'shopmaster.label.longtitude', // 削除予定
                 'required' => false,
                 'scale' => 6,
                 'constraints' => array(

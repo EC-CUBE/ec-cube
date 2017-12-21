@@ -118,6 +118,10 @@ class EntryType extends AbstractType
                 $builder->add('kana', KanaType::class, array(
                     'required' => true,
                 ));
+            }else{
+                $builder->add('kana', KanaType::class, array(
+                    'required' => false,
+                ));
             }
     }
 

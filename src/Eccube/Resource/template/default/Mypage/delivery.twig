@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {{ include('Mypage/navi.twig') }}
         </div>
         <div class="ec-mypageRole">
-            <p><span class="ec-font-bold">{{ Customer.CustomerAddresses|length }}件</span>のお届け先があります。</p>
+            <p><span class="ec-font-bold">{{'mypage.delivery.text.results'|trans({'%num%':Customer.CustomerAddresses|length})}}</p>
         </div>
         <div class="ec-mypageRole">
             <div class="ec-off1Grid">
@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div>〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
                                         <div>{{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</div>
                                     </div>
-                                    <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">変{{'mypage.label.btn.edit'|trans}}</a></div>
+                                    <div class="ec-addressList__action"><a class="ec-inlineBtn" href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">{{'mypage.label.btn.edit'|trans}}</a></div>
                                 </div>
                             {% endfor %}
                         </div>

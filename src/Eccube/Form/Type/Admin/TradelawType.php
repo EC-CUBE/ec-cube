@@ -50,7 +50,7 @@ class TradelawType extends AbstractType
     {
         $builder
             ->add('law_company', TextType::class, array(
-                'tradelaw.label.seller' => '販売業者',
+                'label' => 'tradelaw.label.seller',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -109,7 +109,7 @@ class TradelawType extends AbstractType
                 ),
             ))
             ->add('law_term02', TextareaType::class, array(
-                'label' => 'radelaw.label.how_to_order',
+                'label' => 'tradelaw.label.how_to_order',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),

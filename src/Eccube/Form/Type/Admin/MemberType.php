@@ -107,7 +107,7 @@ class MemberType extends AbstractType
                 ),
             ))
             ->add('Authority', EntityType::class, array(
-                'label' => 'member.label.auth',
+                'label' => 'admin.setting.system.member.689',
                 'class' => 'Eccube\Entity\Master\Authority',
                 'expanded' => false,
                 'multiple' => false,
@@ -117,7 +117,7 @@ class MemberType extends AbstractType
                 ),
             ))
             ->add('Work', EntityType::class, array(
-                'label' => 'member.label.operation',
+                'label' => 'admin.setting.system.member.690',
                 'class' => 'Eccube\Entity\Master\Work',
                 'expanded' => true,
                 'multiple' => false,

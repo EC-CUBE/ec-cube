@@ -341,7 +341,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a id="result_list_main__item_menu_toggle--{{ Order.id }}" class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul id="result_list_main_item_menu--{{ Order.id }}" class="dropdown-menu dropdown-menu-right">
                                                 <li><a href="{{ url('admin_order_edit', { id : Order.id }) }}">{{'admin.order.index.335'|trans}}</a></li>
-                                                <li><a href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="こ{{'admin.order.index.336'|trans}}">削除</a></li>
+                                                <li><a href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="こ{{'admin.order.index.336'|trans}}">{{'common.label.delete'|trans}}</a></li>
                                                 <li><a href="{{ url('admin_order_mail', { id : Order.id }) }}">{{'admin.order.index.337'|trans}}</a></li>
                                                 </ul>
                                             </div>

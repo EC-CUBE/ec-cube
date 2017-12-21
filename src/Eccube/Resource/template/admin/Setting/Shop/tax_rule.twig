@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 $(function() {
 
     $('#tax_rule_apply_date').datetimepicker({
-        locale: 'ja',
+        locale: '{{app.config.locale}}',
         format: 'YYYY-MM-DD HH:mm',
         useCurrent: false,
         showTodayButton: true
@@ -78,7 +78,7 @@ $(function() {
             <div id="tax_rule_box__insert_button" class="row btn_area2">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
                     <button class="btn btn-primary btn-block btn-lg"
-                            onclick="fnChange('{{ url('admin_setting_shop_tax_edit_param') }}'); return false;">{{'admin.setting.shop.tax_rule.640'|trans}}</button>
+                            onclick="fnChange('{{ url('admin_setting_shop_tax_edit_param') }}'); return false;">{{'common.label.save'|trans}}</button>
 
                 </div>
             </div>
@@ -105,7 +105,7 @@ $(function() {
             </div><!-- /.box -->
             <div id="tax_common_rule_box__insert_button" class="row btn_area2">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
-                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'admin.setting.shop.tax_rule.642'|trans}}</button>
+                    <button class="btn btn-primary btn-block btn-lg" type="submit">{{'common.label.save'|trans}}</button>
                 </div>
             </div>
 

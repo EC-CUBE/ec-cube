@@ -301,7 +301,7 @@ class EditController
     /**
      * @Route("/{_admin}/shipping/search/product", name="admin_shipping_search_product")
      * @Security("has_role('ROLE_ADMIN')")
-     * @Template("shipping/search_product.twig")
+     * @Template("Shipping/search_product.twig")
      *
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\Response

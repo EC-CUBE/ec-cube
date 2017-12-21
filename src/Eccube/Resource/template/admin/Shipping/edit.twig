@@ -228,7 +228,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="form-group">
                                             {{'admin.shipping.edit.723'|trans}}: <span class="number"><a href="{{ url('admin_order_edit', { id : Order.id }) }}" }}">{{ Order.id }}</a></span><br>
                                             {{ Order.Name01 }} {{ Order.Name02 }} ({{ Order.Kana01 }} {{ Order.Kana02 }})<br>
-                                            〒{{ Order.Zip01 }}-{{ Order.Zip02 }}<br>
+                                            {{'admin.shipping.edit.724'|trans({'%zip01%':Order.Zip01,'%zip02%':Order.Zip02})}}<br>
                                             {{ Order.Pref }}{{ Order.Addr01 }}{{ Order.Addr02 }}
                                         </div>
                                     {% endfor %}
@@ -237,7 +237,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
                                 <div class="form-group">
-                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>お届け予定日
+                                    <svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.shipping.edit.725'|trans}}
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                 </div>
                                 <div class="form-group">

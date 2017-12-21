@@ -111,7 +111,7 @@ $(function() {
     }
     hideSvg();
     updateRank();
-    // 画像{{'admin.product.product.515'|trans}}時
+    // {{'admin.product.product.515'|trans}}
     var count_del = 0;
     $("#thumb").on("click", ".delete-image", function () {
         var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
@@ -212,7 +212,7 @@ function fnClass(action) {
 
                             <div id="detail_box__image" class="form-group">
                                 <label class="col-sm-2 control-label" for="admin_product_product_image">
-                                    {{ form.product_image.vars.label }}<br>
+                                    {{ form.product_image.vars.label|trans }}<br>
                                     <span class="small">{{'admin.product.product.501'|trans}}</span>
                                 </label>
                                 <div id="detail_files_box" class="col-sm-9 col-lg-10">
@@ -300,7 +300,7 @@ function fnClass(action) {
                                 {{ form_label(form.Tag) }}
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="accordion marT05">
-                                        <a id="detail_tags_box__toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>{{ 'Tag'|trans }}を選択</a>
+                                        <a id="detail_tags_box__toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>{{ 'admin.product.product.506'|trans }}</a>
                                         <div id="detail_tags_box__list" class="accpanel padT08">
                                             {{ form_widget(form.Tag) }}
                                             {{ form_errors(form.Tag) }}

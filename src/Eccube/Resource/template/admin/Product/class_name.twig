@@ -88,7 +88,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_widget(form._token) }}
                                 {{ form_widget(form.name, {attr: {placeholder: 'admin.product.class_name.430'|trans}}) }}
                                 {{ form_errors(form.name) }}
-                                <button class="btn btn-default btn-sm" type="submit">規格作成</button>
+                                <button class="btn btn-default btn-sm" type="submit">{{'common.label.save'|trans}}</button>
                             </div>
                         </div>
                         <div class="extra-form">
@@ -153,7 +153,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div><!-- /.box-body -->
                 {% else %}
                     <div id="sortable_list_box" class="box-body no-padding">
-                        <div id="sortable_list_box__not_find_message" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
+                        <div id="sortable_list_box__not_find_message" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>{{'admin.product.class_name.436'|trans}}</p></div>
                     </div><!-- /.box-body -->
                 {% endif %}
                 <!-- ▲ データがある時 ▲ -->

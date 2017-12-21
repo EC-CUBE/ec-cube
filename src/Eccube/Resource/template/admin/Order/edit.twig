@@ -218,7 +218,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div id="number_info_box__order_status" class="col-sm-4">
                                 <h4>{{'admin.order.edit.244'|trans}} <span class="number">{{ Order.id }}</span></h4>
                                 <div>
-                                    <h4>{{'admin.order.edit.245'|trans}}名</h4>
+                                    <h4>{{'admin.order.edit.245'|trans}}</h4>
                                     {% for Shipping in Order.Shippings  %}
                                         <div class="form-group">
                                             {{'admin.order.edit.246'|trans}}: <span class="number"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}" }}">{{ Shipping.id }}</a></span><br>
@@ -235,10 +235,10 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div id="number_info_box__order_status_info" class="small text-danger">{{'admin.order.edit.248'|trans}}</div>
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
-                                <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date ? Order.order_date |date("Y/m/d H:i:s") : '' }}</p>
-                                <p id="number_info_box__payment_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date ? Order.payment_date|date("Y/m/d H:i:s") : '' }}</p>
-                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date ? Order.commit_date|date("Y/m/d H:i:s") : '' }}</p>
-                                <p id="number_info_box__update_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date ? Order.update_date|date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.order.edit.label.order_date'|trans({'%order_date%':Order.order_date ? Order.order_date |date("Y/m/d H:i:s") : ''})}}</p>
+                                <p id="number_info_box__payment_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.order.edit.label.payment_date'|trans({'%order_date%':Order.payment_date ? Order.payment_date|date("Y/m/d H:i:s") : ''})}}</p>
+                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.order.edit.label.shipping_date'|trans({'%order_date%':Order.commit_date ? Order.commit_date|date("Y/m/d H:i:s") : ''})}}</p>
+                                <p id="number_info_box__update_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>{{'admin.order.edit.label.update_date'|trans({'%order_date%':Order.update_date ? Order.update_date|date("Y/m/d H:i:s") : ''})}}</p>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
@@ -260,7 +260,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div id="customer_info_list__customer" class="form-group">
                             <div class="col-sm-3 col-lg-2">{{'admin.order.edit.255'|trans}}</div>
                             <div class="col-sm-9 col-lg-10">
-                                <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? '非会員' :  form.Customer.vars.value }}</p>
+                                <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? 'admin.order.edit.256'|trans :  form.Customer.vars.value }}</p>
                                 {{ form_widget(form.Customer) }}
                                 {{ form_errors(form.Customer) }}
                             </div>
@@ -501,7 +501,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 </div><!-- /.box-header -->
                 <div id="payment_info_box__body" class="box-body accpanel" style="display: block;">
                     <dl id="payment_info_box__payment_method" class="dl-horizontal">
-                        <dt>お支払方法</dt>
+                        <dt>{{'admin.order.edit.284'|trans}}</dt>
                         <dd class="form-group form-inline">
                             {{ form.vars.value.payment_method }}<br/>
                             {{ form_widget(form.Payment) }}

@@ -71,7 +71,7 @@
                                                 </li>
                                                 <li>
                                                     {% if Page.edit_type == constant('Eccube\\Entity\\Page::EDIT_TYPE_USER') %}
-                                                        <a href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.page.77'|trans}}">削除</a>
+                                                        <a href="{{ url('admin_content_page_delete', { 'id': Page.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.content.page.77'|trans}}">{{'common.label.delete'|trans}}</a>
                                                     {% else %}
                                                         <a>{{'admin.content.page.78'|trans}}</a>
                                                     {% endif %}

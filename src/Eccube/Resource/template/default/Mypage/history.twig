@@ -51,16 +51,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="ec-orderRole__detail">
                 <div class="ec-orderOrder">
                     <div class="ec-definitions">
-                        <dt>ご注文日時：</dt>
+                        <dt>{{'admin.customer.edit.100'|trans}}</dt>
                         <dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
                     </div>
                     <div class="ec-definitions">
-                        <dt>ご注文番号：</dt>
+                        <dt>{{ 'mypage.history.label.order_id'|trans}}</dt>
                         <dd>{{ Order.id }}</dd>
                     </div>
                     {% if BaseInfo.option_mypage_order_status_display %}
                         <div class="ec-definitions">
-                            <dt>ご注文状況：</dt>
+                            <dt>{{  'mypage.history.label.order_status'|trans}}</dt>
                             <dd>{{ Order.CustomerOrderStatus }}</dd>
                         </div>
                     {% endif %}
@@ -105,11 +105,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 <div class="ec-orderDelivery">
                     <div class="ec-rectHeading">
-                        <h2>配送情報</h2>
+                        <h2>{{'mypage.history.detail.title.delivery'|trans}}</h2>
                     </div>
                     {% set OrderItem = Order.OrderItems.0 %}
                     {% for Shipping in Order.Shippings %}
-                        <div class="ec-orderDelivery__title">お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
+                        <div class="ec-orderDelivery__title">{{'mypage.history.detail.label.shipping'|trans}}{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
                         {% for orderItem in Shipping.orderItems %}
                             <div class="ec-orderDelivery__item">
                                 <div class="ec-imageGrid">
@@ -136,40 +136,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% endfor %}
                         <div class="ec-orderDelivery__address">
                             <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
-                                ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})&nbsp;様</p>
+                                ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
                             <p>〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
                             <p>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</p>
                         </div>
                         <div class="ec-definitions--soft">
-                            <dt>配送方法：</dt>
+                            <dt>{{'mypage.history.detail.label.shipping_method'|trans}}</dt>
                             <dd>{{ Shipping.shipping_delivery_name }}{{ Shipping.shipping_delivery_fee ? '（＋' ~ Shipping.shipping_delivery_fee|price ~ '）' : '' }}</dd>
                         </div>
                         <div class="ec-definitions--soft">
-                            <dt>お届け日：</dt>
-                            <dd>{{ Shipping.shipping_delivery_date|date_format|default('指定なし') }}</dd>
+                            <dt>{{'mypage.history.detail.label.shipping_date'|trans}} : </dt>
+                            <dd>{{ Shipping.shipping_delivery_date|date_format|default('admin.shipping.edit.719'|trans) }}</dd>
                         </div>
                         <div class="ec-definitions--soft">
-                            <dt>お届け時間：</dt>
-                            <dd>{{ Shipping.shipping_delivery_time|default('指定なし') }}</dd>
+                            <dt>{{'mypage.history.detail.label.shipping_time'|trans}} : </dt>
+                            <dd>{{ Shipping.shipping_delivery_time|default('admin.shipping.edit.719'|trans) }}</dd>
                         </div>
 
                 </div>
                     {% endfor %}
                     <div class="ec-orderPayment">
                         <div class="ec-rectHeading">
-                            <h2>お支払方法</h2>
+                            <h2>{{'mypage.history.detail.title.payment'|trans}}</h2>
                         </div>
-                        <p>支払方法： {{ Order.PaymentMethod }}</p>
+                        <p>{{'admin.setting.shop.payment.597'|trans}} : {{ Order.PaymentMethod }}</p>
                     </div>
                     <div class="ec-orderConfirm">
                         <div class="ec-rectHeading">
-                            <h2>お問い合わせ</h2>
+                            <h2>{{'shopping.label.inquiry_comment'|trans}}</h2>
                         </div>
-                        <p>{{ Order.message|default('記載なし')|nl2br }}</p>
+                        <p>{{ Order.message|default('')|nl2br }}</p>
                     </div>
                     <div class="ec-orderMails">
                         <div class="ec-rectHeading">
-                            <h2>メール配信履歴一覧</h2>
+                            <h2>{{'mypage.history.detail.title.mail'|trans}}</h2>
                         </div>
                         {% for MailHistory in Order.MailHistories %}
                             <div class="ec-orderMail">
@@ -177,30 +177,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="ec-orderMail__link"><a>{{ MailHistory.subject }}</a></div>
                                 <pre class="ec-orderMail__body" style="display: none;">
                                     {{ MailHistory.mail_body|nl2br }}
-                                    <p class="ec-orderMail__close"><a>閉じる</a></p></pre>
+                                    <p class="ec-orderMail__close"><a>{{'common.label.close'|trans}}</a></p></pre>
                             </div>
                         {% else %}
                             <p class="ec-reportDescription">メール履歴がありません。</p>
                         {% endfor %}
-                        <a href="{{ url('mypage') }}" class="ec-inlineBtn">戻る</a>
+                        <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{'common.label.btn.go_back'|trans}}</a>
                     </div>
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
                     <dl class="ec-totalBox__spec">
-                        <dt>小計</dt>
+                        <dt>{{'shopping.label.subtotal'|trans}}</dt>
                         <dd>{{ Order.subtotal|price }}</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
-                        <dt>手数料</dt>
+                        <dt>{{'shopping.label.charges'|trans}}</dt>
                         <dd>{{ Order.charge|price }}</dd>
                     </dl>
                     <dl class="ec-totalBox__spec">
-                        <dt>送料</dt>
+                        <dt>{{'shopping.label.shipping_charge'|trans}}</dt>
                         <dd>{{ Order.delivery_fee_total|price }}</dd>
                     </dl>
-                    <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
-                    <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="ec-blockBtn--action" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">再注文する</a>
+                    <div class="ec-totalBox__total">{{'common.label.cart_total'|trans}}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{'shopping.label.tax_incl'|trans}}</span></div>
+                    <a href="{{ url('mypage_order', {'id': Order.id }) }}" class="ec-blockBtn--action" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'shopping.label.btn.place_order'|trans}}</a>
 
                 </div>
                 {% if remessage %}

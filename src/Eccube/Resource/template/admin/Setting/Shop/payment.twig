@@ -55,17 +55,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                         <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.methodForAdmin }}</td>
                                         <td id="payment_list__charge--{{ Payment.id }}" class="member_name">
-                                            {{ Payment.charge }}
+                                            {{app.config.currency}} {{ Payment.charge }}
                                         </td>
                                         <td id="payment_list__rule--{{ Payment.id }}" class="member_name">
+                                            {{app.config.currency}}
                                             {% if Payment.rule_min > 0 %}
                                                 {{ Payment.rule_min }}
                                             {% else %}
                                                 0
-                                            {% endif %}{{'admin.setting.shop.payment.601'|trans}}
+                                            {% endif %}
 
                                             {% if Payment.rule_max > 0 %}
-                                                ～{{ Payment.rule_max }}{{'admin.setting.shop.payment.602'|trans}}
+                                                ～{{app.config.currency}}{{ Payment.rule_max }}
                                             {% elseif Payment.rule_max is null %}
                                                 ～{{'admin.setting.shop.payment.603'|trans}}
                                             {% endif %}
@@ -79,9 +80,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </li>
                                                     <li>
                                                         {% if Payment.visible %}
-                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.setting.shop.payment.605'|trans}}">非表示にする</a>
+                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.setting.shop.payment.605'|trans}}">{{'common.label.disabled'|trans}}</a>
                                                         {% else %}
-                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="表示にしてもよろしいですか">表示にする</a>
+                                                            <a href="{{ url('admin_setting_shop_payment_visible', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="{{'admin.setting.shop.payment.606'|trans}}">{{'common.label.enabled'|trans}}</a>
                                                         {% endif %}
                                                     </li>
                                                     <li>
@@ -92,7 +93,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.shop.payment.608'|trans}}</a></li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
+                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">{{'admin.setting.shop.payment.609'|trans}}</a></li>
                                                         {% endif %}
                                                     </li>
                                                 </ul>
@@ -112,7 +113,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div id="payment_list__footer" class="row">
         <div id="payment_list__insert_button" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.setting.shop.payment.597'|trans}}を新規入力</a>
+            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">{{'admin.setting.shop.payment.610'|trans}}</a>
         </div>
     </div>
 {% endblock %}

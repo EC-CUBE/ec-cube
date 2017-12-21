@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="ec-favoriteRole">
                 {% if pagination.totalItemCount > 0 %}
                     <div class="ec-favoriteRole__header">
-                        <p><span class="ec-font-bold">{{ pagination.totalItemCount }}件</span>のお気に入りがあります。</p>
+                        <p>{{'mypage.message.favorite_results'|trans({'%count%':pagination.totalItemCount})|raw}}</p>
                     </div>
                     <div class="ec-favoriteRole__detail">
                         <ul class="ec-favoriteRole__itemList">
