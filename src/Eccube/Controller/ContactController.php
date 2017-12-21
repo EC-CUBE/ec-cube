@@ -108,7 +108,7 @@ class ContactController
                     $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
-                    $title = $apps->trans('contactcontroller.label.title.inquiry');
+                    $title = $app->trans('contactcontroller.label.title.inquiry');
 
                     return $app->render(
                         'Contact/confirm.twig',

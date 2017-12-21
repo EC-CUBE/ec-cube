@@ -46,7 +46,7 @@ $(function(){
 {% block main %}
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
                 {{ form_widget(searchOrderForm._token) }}
                 <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
@@ -72,7 +72,6 @@ $(function(){
                 </div><!-- /.box -->
                 </form>
             </div><!-- /.col -->
-<!--
             <div class="col-md-6">
                 <div class="box" id="cube_news">
                     <div class="box-header">
@@ -84,7 +83,6 @@ $(function(){
 
                 </div>
             </div>
--->
         </div>
 
         <div class="row">

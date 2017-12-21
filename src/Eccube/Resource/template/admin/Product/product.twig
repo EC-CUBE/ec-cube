@@ -439,17 +439,17 @@ function fnClass(action) {
                                             {% else %}
                                                 <li>
                                                     <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_display', {'id' : id}) }}" target="_blank">
-                                                        {{'admin.product.product.513'|trans}}
+                                                        {{'admin.product.product.516'|trans}}
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"  {{ csrf_token_for_anchor() }} data-method="post" data-message="この商品情報を{{'admin.product.product.514'|trans}}してもよろしいですか？">
-                                                        {{'admin.product.product.514'|trans}}
+                                                    <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"  {{ csrf_token_for_anchor() }} data-method="post" data-message="{{'admin.product.product.517'|trans}}">
+                                                        {{'admin.product.product.518'|trans}}
                                                     </a>
                                                 </li>
                                                 <li>
-                                                     <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この商品情報を{{'admin.product.product.515'|trans}}してもよろしいですか？">
-                                                        {{'admin.product.product.515'|trans}}
+                                                     <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="{{'admin.product.product.519'|trans}}">
+                                                        {{'admin.product.product.520'|trans}}
                                                     </a>
                                                 </li>
                                             {% endif %}
