@@ -26,30 +26,22 @@ namespace Eccube\ServiceProvider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber;
+use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\Cart\ProductClassComparator;
 use Eccube\Service\Cart\SaleTypeCartAllocator;
-use Eccube\Service\TaxRuleService;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-use Silex\Api\EventListenerProviderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Eccube\ServiceProvider\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class EccubeServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
+class EccubeServiceProvider implements ServiceProviderInterface
 {
     /**
-     * Registers services on the given app.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param BaseApplication $app An Application instance
+     * {@inheritdoc}
      */
-    public function register(Container $app)
+    public function register(Application $app)
     {
         $app[BaseInfo::class] = function () use ($app) {
             return $app[BaseInfoRepository::class]->get();
@@ -74,12 +66,25 @@ class EccubeServiceProvider implements ServiceProviderInterface, EventListenerPr
         $app[CartItemAllocator::class] = function() {
             return new SaleTypeCartAllocator();
         };
+
+        $em = $app->getParentContainer()->get('doctrine')->getManager();
+        $app['orm.em'] = $app->share(function () use ($em) {
+            return $em;
+        });
+
+        $app['config'] = $app->share(function () {
+            if ($this->getParentContainer()->hasParameter('eccube.app')) {
+                return $this->getParentContainer()->getParameter('eccube.app');
+            }
+
+            return [];
+        });
     }
 
-    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
     {
-        // Add event subscriber to TaxRuleEvent
-        // initDoctrineのタイミングでは、TaxRuleServiceが定義されていないため, ここで追加.
-        $app['orm.em']->getEventManager()->addEventSubscriber(new TaxRuleEventSubscriber($app[TaxRuleService::class]));
     }
 }

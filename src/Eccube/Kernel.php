@@ -16,9 +16,7 @@ use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Eccube\Plugin\ConfigManager;
-use Pimple\ServiceProviderInterface;
-use Silex\Api\BootableProviderInterface;
-use Silex\Api\EventListenerProviderInterface;
+use Eccube\ServiceProvider\ServiceProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -33,7 +31,6 @@ class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
-    protected $providers = [];
     protected $app;
 
     public function getCacheDir(): string
@@ -57,25 +54,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * Registers a service provider.
-     *
-     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values   An array of values that customizes the provider
-     *
-     * @return Application
-     */
-    public function register(ServiceProviderInterface $provider, array $values = array())
-    {
-        // TODO
-        $this->providers[] = $provider;
-
-        $app = $this->container->get('app');
-        $app->register($provider, $values);
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
      */
@@ -86,32 +64,13 @@ class Kernel extends BaseKernel
 
         parent::boot();
 
-        // Symfony で用意されているコンポーネントはここで追加
+        // Activate to $app
         $app = Application::getInstance();
-        $em = $this->container->get('doctrine')->getManager();
-        $app['orm.em'] = $app->share(function () use ($em) {
-            return $em;
-        });
-         // TODO
-        $app['config'] = $app->share(function () {
-            if ($this->container->hasParameter('eccube.app')) {
-                return $this->container->getParameter('eccube.app');
-            }
+        $app->setParentContainer($this->container);
 
-            return [];
-        });
         $app['debug'] = true;
-
-        // see Silex\Application::boot()
-        foreach ($this->providers as $provider) {
-            if ($provider instanceof EventListenerProviderInterface) {
-                $provider->subscribe($this->app, $this->container->get('event_dispatcher'));
-            }
-
-            if ($provider instanceof BootableProviderInterface) {
-                $provider->boot($this->app);
-            }
-        }
+        $app->register(new \Eccube\ServiceProvider\EccubeServiceProvider());
+        $app->boot();
 
         $this->container->set('app', $app);
     }
@@ -167,15 +126,9 @@ class Kernel extends BaseKernel
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
-        // Pimple の ServiceProvider を追加
-        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
-        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
-        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
         $container->register('app', Application::class)
             ->setSynthetic(true)
             ->setPublic(true);
-        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
-        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
