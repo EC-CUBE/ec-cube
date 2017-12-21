@@ -31,11 +31,20 @@ use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
 class TaxRuleEventSubscriber implements EventSubscriber, ServiceSubscriberInterface
 {
     use ContainerAwareTrait;
+
+    /**
+     * TaxRuleEventSubscriber constructor.
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     public function getTaxRuleService()
     {
