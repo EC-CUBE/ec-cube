@@ -606,9 +606,6 @@ class Application extends ApplicationTrait
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
 
-        // Register security header: X-Frame-Options
-        $this['dispatcher']->addListener(KernelEvents::RESPONSE, array($this['eccube.event_listner.security'], 'onKernelResponse'));
-
         // Voterの設定
         $app = $this;
         $this['authority_voter'] = $this->share(function ($app) {
@@ -779,6 +776,10 @@ class Application extends ApplicationTrait
 
         // Response Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+
+            // Set Header Security
+            $event->getResponse()->headers->set('X-Frame-Options', 'SAMEORIGIN');
+
             if (!$event->isMasterRequest()) {
                 return;
             }
