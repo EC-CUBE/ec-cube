@@ -65,11 +65,9 @@ class Kernel extends BaseKernel
         parent::boot();
 
         // Activate to $app
-        $app = Application::getInstance();
+        $app = Application::getInstance(['debug' => $this->isDebug()]);
         $app->setParentContainer($this->container);
-
-        $app['debug'] = true;
-        $app->register(new \Eccube\ServiceProvider\EccubeServiceProvider());
+        $app->initialize();
         $app->boot();
 
         $this->container->set('app', $app);

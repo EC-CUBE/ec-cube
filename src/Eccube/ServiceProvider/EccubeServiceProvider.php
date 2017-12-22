@@ -24,17 +24,7 @@
 
 namespace Eccube\ServiceProvider;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber;
 use Eccube\Application;
-use Eccube\Entity\BaseInfo;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Service\Cart\CartItemAllocator;
-use Eccube\Service\Cart\CartItemComparator;
-use Eccube\Service\Cart\ProductClassComparator;
-use Eccube\Service\Cart\SaleTypeCartAllocator;
-use Eccube\ServiceProvider\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class EccubeServiceProvider implements ServiceProviderInterface
 {
@@ -43,38 +33,14 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app[BaseInfo::class] = function () use ($app) {
-            return $app[BaseInfoRepository::class]->get();
-        };
-
-        $app['request_scope'] = function () {
-            return new ParameterBag();
-        };
-
-        // Application::initRenderingと一緒に修正
-        $app['eccube.twig.block.templates'] = function () {
-            $templates = new ArrayCollection();
-            $templates[] = 'render_block.twig';
-
-            return $templates;
-        };
-
-        $app[CartItemComparator::class] = function() {
-            return new ProductClassComparator();
-        };
-
-        $app[CartItemAllocator::class] = function() {
-            return new SaleTypeCartAllocator();
-        };
-
         $em = $app->getParentContainer()->get('doctrine')->getManager();
         $app['orm.em'] = $app->share(function () use ($em) {
             return $em;
         });
 
-        $app['config'] = $app->share(function () {
-            if ($this->getParentContainer()->hasParameter('eccube.app')) {
-                return $this->getParentContainer()->getParameter('eccube.app');
+        $app['config'] = $app->share(function () use ($app) {
+            if ($app->getParentContainer()->hasParameter('eccube.app')) {
+                return $app->getParentContainer()->getParameter('eccube.app');
             }
 
             return [];
