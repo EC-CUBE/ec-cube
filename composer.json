@@ -43,6 +43,7 @@
         "sensio/generator-bundle": "^3.1",
         "silex/silex": "^2.2",
         "silex/web-profiler": "^2.0",
+        "suncat/mobile-detect-bundle": "^1.0",
         "swiftmailer/swiftmailer": "^6.0",
         "symfony/asset": "^3.4",
         "symfony/class-loader": "^3.4",
@@ -64,7 +65,6 @@
         "symfony/inflector": "^3.4",
         "symfony/intl": "^3.4",
         "symfony/lts": "^3.0",
-        "symfony/maker-bundle": "^1.0",
         "symfony/monolog-bridge": "^3.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/options-resolver": "^3.4",
@@ -93,6 +93,7 @@
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^2.0",
         "symfony/browser-kit": "^3.4",
+        "symfony/maker-bundle": "^1.0",
         "symfony/web-server-bundle": "^3.4"
     },
     "autoload": {
@@ -138,7 +139,11 @@
             "id": "01C0Q71D54BCVSB8ZWR3VECDRD",
             "allow-contrib": false
         },
-        "symfony-web-dir": "."
+        "symfony-web-dir": ".",
+        "bin-dir": "bin",
+        "src-dir": "src/Eccube",
+        "config-dir": "app/config/eccube",
+        "public-dir": "."
     },
     "config": {
         "platform": {

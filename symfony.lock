@@ -227,6 +227,15 @@
     "silex/web-profiler": {
         "version": "v2.0.9"
     },
+    "suncat/mobile-detect-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "8284b33273c99974ef84c7e544e94aefac1a4c7f"
+        }
+    },
     "swiftmailer/swiftmailer": {
         "version": "v5.4.8"
     },

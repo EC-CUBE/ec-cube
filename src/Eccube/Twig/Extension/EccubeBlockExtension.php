@@ -23,8 +23,6 @@ class EccubeBlockExtension extends AbstractExtension
     {
         $this->twig = $twig;
         $this->blockTemplates = $blockTemplates;
-
-        dump($blockTemplates);
     }
 
     public function getFunctions()

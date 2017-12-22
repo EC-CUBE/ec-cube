@@ -19,9 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% block title %}ホーム{% endblock %}
+{% block sub_title %}{% endblock %}
 
 {% block javascript %}
 <script>
@@ -79,7 +80,7 @@ $(function(){
                         <h3 class="box-title">お知らせ</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
-                        <iframe name="information" class="link_list_wrap" src="{*{ app.config.eccube_info_url }*}"></iframe>
+                        <iframe name="information" class="link_list_wrap" src="{{ eccube.config.eccube_info_url }}"></iframe>
                     </div><!-- /.box-body -->
 
                 </div><!-- /.box -->
