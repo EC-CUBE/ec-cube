@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery-1.11.3.min.js', 'admin') }}"><\/script>')</script>
 </head>
-<body id="page_{{ app.request_stack.currentrequest.get('_route') }}">
+<body id="page_{{ app.request.get('_route') }}">
 <div id="wrapper" class="sidebar-open">
     <!-- ▼ #header ▼ -->
     <header id="header" role="navigation">
@@ -72,7 +72,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             最終ログイン<br>
                             {{ app.user.login_date.format('Y/m/d H:i')|default('') }}
                             <a class="btn btn-primary btn-xs" href="{{ url('admin_change_password') }}">パスワード変更</a>
-                            <a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_logout') }}">ログアウト</a>
+                            {#<a class="btn btn-primary btn-xs" href="{{ url(eccube.config.admin_route ~ '_logout') }}">ログアウト</a>#}
                         </dd>
                     {% endif %}
                 </dl>
@@ -88,7 +88,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <svg class="cb cb-home"><use xlink:href="#cb-home" /></svg>ホーム<svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg>
                 </a>
             </li>
-            {{ include('nav.twig') }}
+            {{ include('@admin/nav.twig') }}
         </ul>
     </aside>
     <!-- ▲ #side ▲ -->
@@ -98,7 +98,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         <div class="container-fluid">
 
-            {{ include('alert.twig') }}
+            {{ include('@admin/alert.twig') }}
 
             {% block main %}{% endblock %}
 

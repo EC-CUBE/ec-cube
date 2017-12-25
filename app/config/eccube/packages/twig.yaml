@@ -1,8 +1,14 @@
 twig:
+    globals:
+      eccube:
+        config: %eccube.constants%
     paths:
+      '%kernel.project_dir%/app/template/%eccube.theme%': ~
       '%kernel.project_dir%/src/Eccube/Resource/template/default': ~
-      '%kernel.project_dir%/src/Eccube/Resource/template/admin': admin
       '%kernel.project_dir%/app/Plugin': ~
+      '%kernel.project_dir%/app/template/admin': admin
+      '%kernel.project_dir%/src/Eccube/Resource/template/admin': admin
+      '%kernel.project_dir%/html/user_data': user_data
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     # form_themes:

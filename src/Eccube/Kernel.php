@@ -90,23 +90,32 @@ class Kernel extends BaseKernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
+        $container = $this->getContainer();
+
+        $scheme = $container->getParameter('eccube.scheme');
+        $routes->setSchemes($scheme);
+
         $confDir = dirname(__DIR__).'/../app/config/eccube';
         if (is_dir($confDir.'/routes/')) {
-            $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder = $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder->setSchemes($scheme);
         }
         if (is_dir($confDir.'/routes/'.$this->environment)) {
-            $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder = $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder->setSchemes($scheme);
         }
-        $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+        $builder = $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+        $builder->setSchemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
-        if ($this->getContainer()->hasParameter('eccube.plugins.enabled')) {
-            $plugins = $this->getContainer()->getParameter('eccube.plugins.enabled');
+        if ($container->hasParameter('eccube.plugins.enabled')) {
+            $plugins = $container->getParameter('eccube.plugins.enabled');
             $pluginDir = dirname(__DIR__).'/../app/Plugin';
             foreach ($plugins as $plugin) {
                 $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
                 if (file_exists($dir)) {
-                    $routes->import($dir, '/', 'annotation');
+                    $builder = $routes->import($dir, '/', 'annotation');
+                    $builder->setSchemes($scheme);
                 }
             }
         }

@@ -25,65 +25,70 @@
 namespace Eccube\Controller\Block;
 
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\SearchProductBlockType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @Route(service=SearchProductController::class)
- */
 class SearchProductController
 {
     /**
-     * @Inject("request_stack")
      * @var RequestStack
      */
     protected $requestStack;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var
      */
     protected $eventDispatcher;
+
+    public function __construct(
+        RequestStack $requestStack,
+        FormFactoryInterface $formFactory,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->requestStack = $requestStack;
+        $this->formFactory = $formFactory;
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @Route("/block/search_product", name="block_search_product")
      * @Template("Block/search_product.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
-        // $builder = $this->formFactory
-        //     ->createNamedBuilder('', SearchProductBlockType::class)
-        //     ->setMethod('GET');
+        $builder = $this->formFactory
+            ->createNamedBuilder('', SearchProductBlockType::class)
+            ->setMethod('GET');
 
-        // $event = new EventArgs(
-        //     array(
-        //         'builder' => $builder,
-        //     ),
-        //     $request
-        // );
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
 
-        // $this->eventDispatcher->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
 
-        // $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMasterRequest();
 
-        // $form = $builder->getForm();
-        // $form->handleRequest($request);
+        $form = $builder->getForm();
+        $form->handleRequest($request);
 
         return [
-            'form' => null
+            'form' => $form->createView(),
         ];
     }
 }
