@@ -33,17 +33,47 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $em = $app->getParentContainer()->get('doctrine')->getManager();
-        $app['orm.em'] = $app->share(function () use ($em) {
-            return $em;
+        $app['orm.em'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('doctrine')->getManager();
         });
 
         $app['config'] = $app->share(function () use ($app) {
             if ($app->getParentContainer()->hasParameter('eccube.app')) {
-                return $app->getParentContainer()->getParameter('eccube.app');
+                $EccubeApplication = $app->getParentContainer()->getParameter('eccube.app');
+                return $EccubeApplication['config'];
             }
 
             return [];
+        });
+
+        $app['monolog.logger'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('logger');
+        });
+        $app['monolog'] = $app->share(function () use ($app) {
+            return $app['monolog.logger'];
+        });
+
+        $app['session'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('session');
+        });
+
+        $app['form.factory'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('form.factory');
+        });
+
+        $app['security'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('security.token_storage');
+        });
+
+        $app['user'] = $app->share(function () use ($app) {
+            return $app['security']->getToken()->getUser();
+        });
+
+        $app['dispatcher'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('event_dispatcher');
+        });
+        $app['eccube.event.dispatcher'] = $app->share(function () use ($app) {
+            return $app['dispatcher'];
         });
     }
 
