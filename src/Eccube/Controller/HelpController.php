@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Inject;
 use Eccube\Application;
-use Eccube\Repository\HelpRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,12 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class HelpController extends AbstractController
 {
-    /**
-     * @Inject(HelpRepository::class)
-     * @var HelpRepository
-     */
-    protected $helpRepository;
-
+    
     /**
      * 特定商取引法.
      *
@@ -50,11 +43,7 @@ class HelpController extends AbstractController
      */
     public function tradelaw(Application $app, Request $request)
     {
-        $Help = $this->helpRepository->get();
-
-        return [
-            'help' => $Help,
-        ];
+        return [];
     }
 
     /**
@@ -98,10 +87,6 @@ class HelpController extends AbstractController
      */
     public function agreement(Application $app, Request $request)
     {
-        $Help = $this->helpRepository->get();
-
-        return [
-            'help' => $Help,
-        ];
+        return [];
     }
 }

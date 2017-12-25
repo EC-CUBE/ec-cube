@@ -122,7 +122,15 @@ class EntityProxyService
             $includedFileSets[] = $includedFiles;
         }
 
+        // トレイトの名前を取得
+        // 先頭に必ず"\"が付与されるように正規化する
         $declaredTraits = get_declared_traits();
+        foreach ($declaredTraits as &$declaredTrait) {
+            if (!(substr($declaredTrait, 0, 1) == '\\')) {
+                $declaredTrait = '\\'.$declaredTrait;
+            }
+        }
+        unset($declaredTrait);
 
         // ディレクトリセットに含まれるTraitの一覧を作成
         $traitSets = array_map(function() { return []; }, $dirSets);

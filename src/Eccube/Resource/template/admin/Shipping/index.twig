@@ -114,7 +114,7 @@
 {% block main %}
     <!--検索条件設定テーブルここから-->
     <div id="search_wrap" class="search-box">
-        <form name="search_form" id="search_form" method="post" action="{{ url('admin/shipping') }}">
+        <form name="search_form" id="search_form" method="post" action="{{ url('admin_shipping') }}">
             {{ form_widget(searchForm._token) }}
             <div id="search_box_main" class="row">
                 <div id="search_box_main__body" class="col-md-12 accordion">
@@ -185,10 +185,10 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div id="search_box_main__tel" class="form-group">
-                                            <label>お届け先 電話番号</label>
-                                            {{ form_widget(searchForm.tel) }}
-                                            {{ form_errors(searchForm.tel) }}
+                                        <div id="search_box_main__order_id" class="form-group">
+                                            <label>注文コード</label>
+                                            {{ form_widget(searchForm.order_code) }}
+                                            {{ form_errors(searchForm.order_code) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
@@ -213,6 +213,13 @@
                                         <label>更新日</label>
                                         <div class="form-group range">
                                             {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div id="search_box_main__tel" class="form-group">
+                                            <label>お届け先 電話番号</label>
+                                            {{ form_widget(searchForm.tel) }}
+                                            {{ form_errors(searchForm.tel) }}
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
@@ -297,7 +304,7 @@
                                                 <ul class="dropdown-menu">
                                             {% endfor %}
                                             {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                                <li><a href="{{ path('admin/shipping/page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                                <li><a href="{{ path('admin_shipping_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
                                             {% endfor %}
                                                 </ul>
                                         </li>
@@ -338,7 +345,7 @@
                                                 {% for Shipping in pagination %}
                                                     <tr id="result_list_main__item--{{ Shipping.id }}">
                                                         <td id="result_list_main__id_check--{{ Shipping.id }}" class="text-center"><input type="checkbox" id="check-{{ Shipping.id }}" data-id="{{ Shipping.id }}" name="ids{{ Shipping.id }}"></td>
-                                                        <td id="result_list_main__id--{{ Shipping.id }}"><a href="{{ url('admin/shipping/edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
+                                                        <td id="result_list_main__id--{{ Shipping.id }}"><a href="{{ url('admin_shipping_edit', { id : Shipping.id }) }}">{{ Shipping.id }}</a></td>
                                                         <td id="result_list_main__tracking_number--{{ Shipping.id }}"> {{ Shipping.TrackingNumber|default('未登録') }} </td>
                                                         <td id="result_list_main__name--{{ Shipping.id }}">{{ Shipping.name01 }} {{ Shipping.name02 }}</td>
                                                         <td id="result_list_main__payment_method--{{ Shipping.id }}">{{ Shipping.zip01 }}-{{ Shipping.zip02 }}<br />{{ Shipping.pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
@@ -354,7 +361,7 @@
                             </form>
                         </div><!-- /.box-body -->
                         {% if pagination.totalItemCount > 0 %}
-                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin/shipping/page' } %}
+                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_shipping_page' } %}
                         {% endif %}
                     {% else %}
                         <div class="box-header with-arrow">

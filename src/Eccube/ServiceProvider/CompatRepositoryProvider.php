@@ -14,8 +14,8 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         $app['eccube.repository.master.authority'] = function () use ($app) {
             return $app['Eccube\Repository\Master\AuthorityRepository'];
         };
-        $app['eccube.repository.master.tag'] = function () use ($app) {
-            return $app['Eccube\Repository\Master\TagRepository'];
+        $app['eccube.repository.tag'] = function () use ($app) {
+            return $app['Eccube\Repository\TagRepository'];
         };
         $app['eccube.repository.master.pref'] = function () use ($app) {
             return $app['Eccube\Repository\Master\PrefRepository'];
@@ -149,9 +149,6 @@ class CompatRepositoryProvider implements ServiceProviderInterface
         };
         $app['eccube.repository.category'] = function () use ($app) {
             return $app['Eccube\Repository\CategoryRepository'];
-        };
-        $app['eccube.repository.help'] = function () use ($app) {
-            return $app['Eccube\Repository\HelpRepository'];
         };
         $app['eccube.repository.plugin'] = function () use ($app) {
             return $app['Eccube\Repository\PluginRepository'];

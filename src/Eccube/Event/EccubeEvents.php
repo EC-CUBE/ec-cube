@@ -209,7 +209,16 @@ final class EccubeEvents
 
     // export
     const ADMIN_PRODUCT_CATEGORY_CSV_EXPORT = 'admin.product.category.csv.export';
+    
+    /**
+     * Admin/Product/TagController
+     */
+    // index
+    const ADMIN_PRODUCT_TAG_INDEX_INITIALIZE = 'admin.product.tag.index.initialize';
+    const ADMIN_PRODUCT_TAG_INDEX_COMPLETE = 'admin.product.tag.index.complete';
 
+    // delete
+    const ADMIN_PRODUCT_TAG_DELETE_COMPLETE = 'admin.product.tag.delete.complete';
 
     /**
      * Admin/Product/ClassCategoryController
@@ -293,13 +302,6 @@ final class EccubeEvents
     const ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE = 'admin.setting.shop.csv.index.complete';
 
     /**
-     * Admin/Setting/Shop/CustomerAgreementController
-     */
-    // index
-    const ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE = 'admin.setting.shop.customer.agreement.index.initialize';
-    const ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE = 'admin.setting.shop.customer.agreement.index.complete';
-
-    /**
      * Admin/Setting/Shop/DeliveryController
      */
     // index
@@ -350,13 +352,6 @@ final class EccubeEvents
     // editParameter
     const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.setting.shop.tax.rule.edit.parameter.initialize';
     const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE = 'admin.setting.shop.tax.rule.edit.parameter.complete';
-
-    /**
-     * Admin/Setting/Shop/TradelawController
-     */
-    // index
-    const ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_INITIALIZE = 'admin.setting.shop.trade.law.index.initialize';
-    const ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE = 'admin.setting.shop.trade.law.index.complete';
 
     /**
      * Admin/Setting/System/AuthorityController

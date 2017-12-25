@@ -379,8 +379,11 @@ class OwnerStoreController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->isEnabled()) {
-            $this->pluginService->disable($Plugin);
+            $app->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+
+            return $app->redirect($app->url('admin_store_plugin'));
         }
+
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
         try {
