@@ -776,9 +776,8 @@ class Application extends ApplicationTrait
 
         // Response Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
-
             // Set Header Security
-            $event->getResponse()->headers->set('X-Frame-Options', 'SAMEORIGIN');
+            $event->getResponse()->headers->set('X-Frame-Options', $app['config']['x_frame_options']);
 
             if (!$event->isMasterRequest()) {
                 return;
