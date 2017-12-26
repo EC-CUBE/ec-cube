@@ -24,8 +24,6 @@
 namespace Eccube\Command;
 
 
-use Eccube\Repository\PluginRepository;
-use Eccube\Service\PluginService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,22 +32,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginEnableCommand extends Command
 {
-    /**
-     * @var PluginService
-     */
-    private $pluginService;
-
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
-
-    public function __construct(PluginService $pluginService, PluginRepository $pluginRepository)
-    {
-        parent::__construct();
-        $this->pluginService = $pluginService;
-        $this->pluginRepository = $pluginRepository;
-    }
+    use PluginCommandTrait;
 
     protected function configure()
     {
@@ -77,6 +60,7 @@ class PluginEnableCommand extends Command
         }
 
         $this->pluginService->enable($plugin);
+        $this->clearCache($io);
 
         $io->success('Plugin Enabled.');
     }
