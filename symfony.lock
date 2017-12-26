@@ -128,9 +128,6 @@
     "justinrainbow/json-schema": {
         "version": "5.2.6"
     },
-    "knplabs/console-service-provider": {
-        "version": "v2.1.0"
-    },
     "knplabs/knp-components": {
         "version": "1.3.5"
     },
@@ -188,9 +185,6 @@
     "saxulum/saxulum-validator-provider": {
         "version": "2.1.1"
     },
-    "saxulum/saxulum-webprofiler-provider": {
-        "version": "2.0.0"
-    },
     "seld/cli-prompt": {
         "version": "1.0.3"
     },
@@ -220,12 +214,6 @@
             "version": "4.0",
             "ref": "576d653444dade07f272c889d52fe4594caa4fc3"
         }
-    },
-    "silex/silex": {
-        "version": "v2.2.0"
-    },
-    "silex/web-profiler": {
-        "version": "v2.0.9"
     },
     "suncat/mobile-detect-bundle": {
         "version": "1.0",

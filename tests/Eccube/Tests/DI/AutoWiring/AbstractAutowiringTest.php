@@ -43,6 +43,7 @@ abstract class AbstractAutowiringTest extends TestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         $this->di = new DependencyBuilder(__DIR__, 'TestServiceProviderCache_'.(new \ReflectionClass($this))->getShortName(), [$this->getAutoWiring()], new AnnotationReader(), true);
         $this->container = new Container();
     }
