@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "316f12a5593262d80f657a84f9739f60",
+    "content-hash": "68658dfcd5e863b2ad22229679079873",
     "packages": [
         {
             "name": "composer/ca-bundle",

@@ -2,7 +2,7 @@
     "name": "ec-cube/ec-cube",
     "description": "EC-CUBE EC open platform.",
     "type": "project",
-    "homepage": "http://www.ec-cube.net/",
+    "homepage": "https://www.ec-cube.net/",
     "license": [
        "GPL-2.0",
        "Commercial"
@@ -11,12 +11,6 @@
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/EC-CUBE/sensio-framework-extra-service-provider"
-        }
-    ],
     "require": {
         "php": "^7.0.8",
         "ext-intl": "^1.1",
@@ -98,8 +92,7 @@
             "Eccube\\Entity\\": "app/proxy/entity",
             "Acme\\": "app/Acme",
             "Eccube\\": "src/Eccube",
-            "Plugin\\": "app/Plugin",
-            "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
+            "Plugin\\": "app/Plugin"
         },
         "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
     },
