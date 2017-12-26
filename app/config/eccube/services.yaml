@@ -1,7 +1,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'en'
+    locale: 'ja'
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
     base_currency_code: 'JPY'
@@ -39,7 +39,7 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource}'
+        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
 
     Eccube\Service\TaxRuleService:
         lazy: true

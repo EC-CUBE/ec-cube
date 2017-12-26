@@ -24,10 +24,14 @@
 
 namespace Eccube\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route(service=TopController::class)
@@ -54,5 +58,40 @@ class TopController extends AbstractController
         $Page = $application['orm.em']->find(\Eccube\Entity\Page::class, 1);
         return [
         ];
+    }
+
+
+    /**
+     * ページネーションのサンプル
+     *
+     * @Route("/pagination")
+     *
+     * @param Paginator $paginator
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function index2(Paginator $paginator, EntityManagerInterface $em)
+    {
+        $qb = $em->createQueryBuilder()
+            ->select('c')
+            ->from('Eccube\Entity\Customer', 'c');
+
+        /** @var SlidingPagination $pagination */
+        $pagination = $paginator->paginate(
+            $qb,
+            1,
+            10,
+            [
+                'distinct' => false,
+            ]
+        );
+
+        dump($pagination->getTotalItemCount());
+
+        foreach ($pagination as $customr) {
+            dump($customr->getId());
+        }
+
+        return new Response('paginator sample.');
     }
 }

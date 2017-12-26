@@ -24,7 +24,6 @@
 namespace Eccube\Command;
 
 
-use Eccube\Service\PluginService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,20 +32,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PluginInstallCommand extends Command
 {
-    /**
-     * @var PluginService
-     */
-    private $pluginService;
-
-    /**
-     * PluginInstallCommand constructor.
-     * @param PluginService $pluginService
-     */
-    public function __construct(PluginService $pluginService)
-    {
-        parent::__construct();
-        $this->pluginService = $pluginService;
-    }
+    use PluginCommandTrait;
 
     protected function configure()
     {
@@ -80,6 +66,7 @@ class PluginInstallCommand extends Command
             $this->pluginService->checkSamePlugin($config['code']);
             $this->pluginService->postInstall($config, $event, false);
 
+            $this->clearCache($io);
             $io->success('Installed.');
 
             return;
