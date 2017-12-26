@@ -9,7 +9,11 @@ doctrine:
     dbal:
         driver: 'pdo_sqlite'
         # server_version: '5.7'
-        # charset: utf8mb4
+        charset: utf8mb4
+
+        # for mysql only
+        default_table_options:
+          collate: 'utf8_general_ci'
 
         # With Symfony 3.3, remove the `resolve:` prefix
         url: '%env(resolve:DATABASE_URL)%'
