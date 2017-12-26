@@ -307,4 +307,16 @@ class EccubeExtension extends \Twig_Extension
         return Str::timeAgo($date);
     }
 
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getTokenParsers()
+    {
+        return array(
+            new Twig_TokenParser_Include($this->app),
+            new Twig_TokenParser_Extends($this->app),
+        );
+    }
 }
