@@ -37,7 +37,7 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DataCollector,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource}'
+        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DataCollector,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
 
     Eccube\Service\TaxRuleService:
         lazy: true

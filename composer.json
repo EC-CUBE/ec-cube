@@ -30,6 +30,7 @@
         "egulias/email-validator": "^2.1",
         "guzzlehttp/guzzle": "^6.2",
         "hirak/prestissimo": "^0.3.7",
+        "knplabs/knp-paginator-bundle": "^2.7",
         "mobiledetect/mobiledetectlib": "^2.8",
         "nesbot/carbon": "^1.22",
         "pimple/pimple": "^1.1",
