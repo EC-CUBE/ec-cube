@@ -8,6 +8,12 @@ framework:
     session:
         handler_id: session.handler.native_file
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        name: '%env(ECCUBE_COOKIE_NAME)%'
+        cookie_path: /
+        cookie_secure: !php/object env(ECCUBE_FORCE_SSL)
+        gc_maxlifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
+        cookie_httponly: true
+
     # When using the HTTP Cache, ESI allows to render page fragments separately
     # and with different cache configurations for each fragment
     # https://symfony.com/doc/current/book/http_cache.html#edge-side-includes
