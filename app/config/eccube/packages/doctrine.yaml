@@ -9,7 +9,7 @@ doctrine:
     dbal:
         driver: 'pdo_sqlite'
         # server_version: '5.7'
-        charset: utf8mb4
+        charset: utf8
 
         # for mysql only
         default_table_options:
