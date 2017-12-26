@@ -27,16 +27,16 @@ use Eccube\DI\AutoWiring\FormTypeAutoWiring;
 use Eccube\DI\DIServiceProvider;
 use Symfony\Component\Form\FormRenderer;
 
-class InstallApplication extends \Silex\Application
+class InstallApplication extends \Pimple
 {
-    use \Silex\Application\FormTrait;
-    use \Silex\Application\UrlGeneratorTrait;
-    use \Silex\Application\MonologTrait;
-    use \Silex\Application\SwiftmailerTrait;
-    use \Silex\Application\SecurityTrait;
-    use \Eccube\Application\ApplicationTrait;
-    use \Eccube\Application\SecurityTrait;
-    use \Eccube\Application\TwigTrait;
+    // use \Silex\Application\FormTrait;
+    // use \Silex\Application\UrlGeneratorTrait;
+    // use \Silex\Application\MonologTrait;
+    // use \Silex\Application\SwiftmailerTrait;
+    // use \Silex\Application\SecurityTrait;
+    // use \Eccube\Application\ApplicationTrait;
+    // use \Eccube\Application\SecurityTrait;
+    // use \Eccube\Application\TwigTrait;
 
     public function __construct(array $values = array())
     {

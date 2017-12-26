@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Web\Install;
 
-use Silex\WebTestCase;
 use Eccube\InstallApplication;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractInstallWebTestCase extends WebTestCase
 {

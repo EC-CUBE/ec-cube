@@ -16,6 +16,7 @@ class TwigLintValidatorTest extends TestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         $app = new \Silex\Application();
         $app->register(new TwigServiceProvider());
         $app->register(new ValidatorServiceProvider());

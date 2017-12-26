@@ -25,7 +25,7 @@ doctrine:
         filters:
             option_nostock_hidden:
                 class: Eccube\Doctrine\Filter\NoStockHiddenFilter
-                enabled: true
+                enabled: false
             incomplete_order_status_hidden:
                 class: Eccube\Doctrine\Filter\OrderStatusFilter
-                enabled: true
+                enabled: false

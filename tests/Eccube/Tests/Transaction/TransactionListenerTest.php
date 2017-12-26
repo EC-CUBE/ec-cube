@@ -5,7 +5,7 @@ namespace Eccube\Tests\Transaction;
 use Doctrine\DBAL\Connection;
 use Eccube\Application;
 use Eccube\Tests\Mock\CsrfTokenMock;
-use Silex\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * TransactinoListener のテストケース.

@@ -6,7 +6,9 @@ parameters:
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
     app.notifications.email_sender: anonymous@example.com
     admin_route: 'admin'
-
+    user_data_route: 'user_data'
+    eccube.scheme: 'http'
+    eccube.theme: 'default'
     eccube.twig.block.templates:
       - render_blocks.twig
 
@@ -22,6 +24,7 @@ services:
         public: false
 
         bind:
+          $admin_route: '%admin_route%'
           $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
           $auth_type: 'HMAC'
           $password_hash_algos: 'sha256'
@@ -75,6 +78,10 @@ services:
     Plugin\:
         resource: '../../../app/Plugin/*'
         exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags: ['twig.extension']
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly

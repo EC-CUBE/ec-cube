@@ -22,6 +22,7 @@ class DITest extends TestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         $this->di = new DependencyBuilder(__DIR__, 'TestServiceProviderCache', [], new AnnotationReader(), true);
 
         $this->container = new Container();

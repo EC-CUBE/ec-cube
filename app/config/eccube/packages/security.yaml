@@ -67,5 +67,5 @@ security:
     access_control:
         # this is a catch-all for the admin area
         # additional security lives in the controllers
-        - { path: ^/%admin_route%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/%admin_route%/, roles: ROLE_ADMIN }
+        - { path: ^/%admin_route%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %eccube.scheme% }
+        - { path: ^/%admin_route%/, roles: ROLE_ADMIN, requires_channel: %eccube.scheme%  }
