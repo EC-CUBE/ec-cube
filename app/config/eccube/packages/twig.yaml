@@ -9,6 +9,7 @@ twig:
       '%kernel.project_dir%/app/template/admin': admin
       '%kernel.project_dir%/src/Eccube/Resource/template/admin': admin
       '%kernel.project_dir%/html/user_data': user_data
+      '%kernel.project_dir%/src/Eccube/Resource/template/toolbar': toolbar
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     # form_themes:
