@@ -26,7 +26,7 @@ class Version20171225102300 extends AbstractMigration
 
         // Update config
         if (!array_key_exists('x_frame_options', $config)) {
-            $appendConfig['x_frame_options'] = 'SAMEORIGIN';
+            $appendConfig['x_frame_options'] = false;
         }
 
         if (count($appendConfig)) {
