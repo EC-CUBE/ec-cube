@@ -15,6 +15,8 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Plugin\ConfigManager;
 use Eccube\ServiceProvider\ServiceProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -63,6 +65,10 @@ class Kernel extends BaseKernel
         $this->loadEntityProxies();
 
         parent::boot();
+
+        // DateTime/DateTimeTzのタイムゾーンを設定.
+        UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
+        UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
 
         // Activate to $app
         $app = Application::getInstance(['debug' => $this->isDebug()]);

@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'ja'
+    timezone: 'Asia/Tokyo'
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
     base_currency_code: 'JPY'
