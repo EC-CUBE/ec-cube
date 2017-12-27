@@ -659,7 +659,7 @@ class CsvImportController
             }
         } else {
             // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = Str::characterEncoding(substr($file, 0, 6));
+            $encode = Str::characterEncoding(mb_substr($file, 0, 6));
             if ($encode != 'UTF-8') {
                 $file = mb_convert_encoding($file, 'UTF-8', $encode);
             }
