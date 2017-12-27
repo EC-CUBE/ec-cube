@@ -2,8 +2,10 @@
 
 namespace Eccube\DataCollector;
 
-use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Repository\PluginRepository;
+use Eccube\Plugin\ConfigManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -11,50 +13,45 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 /**
  * EccubeDataCollector.
  *
- * @see https://github.com/bolt/bolt/blob/master/src/Profiler/BoltDataCollector.php
+ * @see https://github.com/Sylius/SyliusCoreBundle/blob/master/Collector/SyliusCollector.php
  */
 class EccubeDataCollector extends DataCollector
 {
-    protected $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
-    public function getName()
-    {
-        return 'eccube';
-    }
 
     /**
-     * Collect the date for the Toolbar item.
-     *
-     * @param Request    $request
-     * @param Response   $response
-     * @param \Exception $exception
+     * @var ContainerInterface
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    protected $container;
+
+    /**
+     * @var ConfigManager
+     */
+    protected $configManager;
+
+    /**
+     * @var PluginRepository
+     */
+    protected $pluginRepository;
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container, ConfigManager $configManager, PluginRepository $pluginRepository)
     {
         $this->data = [
-            'version'       => Constant::VERSION,
-            'payoff'        => 'is the most popular e-commerce solution in Japan',
-            'dashboardlink' => sprintf('<a href="%s">%s</a>', '/admin', 'admin'), // FIXME
-            'branding'      => null,
-            'editlink'      => null,
-            'edittitle'     => null,
+            'version' => Constant::VERSION,
+            'base_currency_code' => null,
+            'currency_code' => null,
+            'default_locale_code' => null,
+            'locale_code' => null,
+            'plugins' => []
         ];
-
-
-        if (!empty($this->app['editlink'])) {
-            $this->data['editlink'] = $this->app['editlink'];
-            $this->data['edittitle'] = $this->app['edittitle'];
-        }
+        $this->container = $container;
+        $this->configManager = $configManager;
+        $this->pluginRepository = $pluginRepository;
     }
 
     /**
-     * Getter for version.
-     *
      * @return string
      */
     public function getVersion()
@@ -63,53 +60,81 @@ class EccubeDataCollector extends DataCollector
     }
 
     /**
-     * Getter for branding.
-     *
-     * @return string
+     * @return array
      */
-    public function getBranding()
+    public function getPlugins()
     {
-        return $this->data['branding'];
+        return $this->data['plugins'];
     }
 
     /**
-     * Getter for payoff.
-     *
      * @return string
      */
-    public function getPayoff()
+    public function getCurrencyCode()
     {
-        return $this->data['payoff'];
+        return $this->data['currency_code'];
     }
 
     /**
-     * Getter for dashboardlink.
-     *
      * @return string
      */
-    public function getDashboardlink()
+    public function getLocaleCode()
     {
-        return $this->data['dashboardlink'];
+        return $this->data['locale_code'];
     }
 
     /**
-     * Getter for editlink.
-     *
      * @return string
      */
-    public function getEditlink()
+    public function getDefaultCurrencyCode()
     {
-        return $this->data['editlink'];
+        return $this->data['base_currency_code'];
     }
 
     /**
-     * Getter for edittitle.
-     *
      * @return string
      */
-    public function getEdittitle()
+    public function getDefaultLocaleCode()
     {
-        return $this->data['edittitle'];
+        return $this->data['default_locale_code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
+        $this->data['base_currency_code'] = $this->container->getParameter('currency_code');
+        $this->data['currency_code'] = $this->container->getParameter('currency_code');
+
+        try {
+            $this->data['locale_code'] = $this->container->getParameter('locale');
+        } catch (LocaleNotFoundException $exception) {
+        }
+
+        try {
+            $this->data['plugins'] = $this->configManager->getPluginConfigAll();
+            $Plugins = $this->pluginRepository->findBy([], ['code' => 'ASC']);
+
+            foreach (array_keys($this->data['plugins']) as $pluginCode) {
+                $Plugin = array_filter($Plugins, function ($Plugin) use ($pluginCode) {
+                    return $Plugin->getCode() == $pluginCode;
+                });
+                if (!empty($Plugin) && count($Plugin) > 0) {
+                    $this->data['plugins'][$pluginCode]['enabled'] = current($Plugin)->isEnabled();
+                } else {
+                    $this->data['plugins'][$pluginCode]['enabled'] = false;
+                }
+            }
+        } catch (\Exception $exception) {
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'eccube_core';
     }
 }
-

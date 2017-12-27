@@ -1,70 +1,76 @@
-{% extends '@WebProfiler/Profiler/layout.html.twig' %}
-
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
-<style>
-.sf-toolbarreset {
-    z-index: 100026; // $zindex-veryhigh + 26
-    background-color: #4C505C;
-}
-.sf-minitoolbar {
-    background-color: transparent;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjQuNDUgMTA1LjY1Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzM1M2E0ZTt9LmNscy0ye2ZpbGw6I2ZjMDt9LmNscy0ze2ZpbGw6I2YyYjUwYTt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmVjY3ViZV9sb2dvX2Jhc2ljPC90aXRsZT48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMDYuODEsMTVzNi42Myw0OS4yLTM3LjQsNjIuMjJjLTQuMDksMC01Ni45NCw2LjU0LTU4LjYtNDYuNDJWODEuMTFMNjkuNCw5NSwxMTAuODEsNzdWMTYuNThaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMTEwLjgxLDYzLjQyVjc3TDY5LjQsOTUsMTAuODEsODEuMTFWNjVDNCw2OS4xOCwwLDc0LjIyLDAsNzkuNjVjMCwxNC4zNiwyNy44NiwyNiw2Mi4yMiwyNnM2Mi4yMi0xMS42NCw2Mi4yMi0yNkMxMjQuNDUsNzMuNTEsMTE5LjMzLDY3Ljg2LDExMC44MSw2My40MloiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02OS40LDAsMTAuODEsMjVDOSw4NC4xMyw2MS41NSw3OC40Miw2OS40LDc3LjIxWiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTEwNi44MSwxNSw2OS40LDBWNzcuMjFDMTE1LjIyLDY1Ljg0LDEwNi44MSwxNSwxMDYuODEsMTVaIi8+PC9zdmc+');
-    background-size: 32px 32px;
-    background-repeat: no-repeat;
-    z-index: 100026; // $zindex-veryhigh + 26
-}
-.sf-minitoolbar svg {
-    opacity: 0;
-}
-.sf-toolbar-icon img {
-    max-height: 32px;
-}
-</style>
-
     {% set icon %}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.45 105.65"><defs><style>.cls-1{fill:#353a4e;}.cls-2{fill:#fc0;}.cls-3{fill:#f2b50a;}</style></defs><title>eccube_logo_basic</title><path class="cls-1" d="M106.81,15s6.63,49.2-37.4,62.22c-4.09,0-56.94,6.54-58.6-46.42V81.11L69.4,95,110.81,77V16.58Z"/><path class="cls-2" d="M110.81,63.42V77L69.4,95,10.81,81.11V65C4,69.18,0,74.22,0,79.65c0,14.36,27.86,26,62.22,26s62.22-11.64,62.22-26C124.45,73.51,119.33,67.86,110.81,63.42Z"/><path class="cls-2" d="M69.4,0,10.81,25C9,84.13,61.55,78.42,69.4,77.21Z"/><path class="cls-3" d="M106.81,15,69.4,0V77.21C115.22,65.84,106.81,15,106.81,15Z"/></svg>
-
-        <span class="sf-toolbar-label">
-            <strong>EC-CUBE {{ collector.version }}</strong>
-        </span>
-
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.45 105.65"><defs><style>.cls-1{fill:#353a4e;}.cls-2{fill:#fc0;}.cls-3{fill:#f2b50a;}</style></defs><title>eccube_logo_basic</title><path class="cls-1" d="M106.81,15s6.63,49.2-37.4,62.22c-4.09,0-56.94,6.54-58.6-46.42V81.11L69.4,95,110.81,77V16.58Z"/><path class="cls-2" d="M110.81,63.42V77L69.4,95,10.81,81.11V65C4,69.18,0,74.22,0,79.65c0,14.36,27.86,26,62.22,26s62.22-11.64,62.22-26C124.45,73.51,119.33,67.86,110.81,63.42Z"/><path class="cls-2" d="M69.4,0,10.81,25C9,84.13,61.55,78.42,69.4,77.21Z"/><path class="cls-3" d="M106.81,15,69.4,0V77.21C115.22,65.84,106.81,15,106.81,15Z"/></svg>
+    <span class="sf-toolbar-value">{{ collector.version }}</span>
     {% endset %}
-
     {% set text %}
-
+    <style>
+        .sf-toolbar-block .sf-toolbar-info-piece.sf-toolbar-plugins .sf-toolbar-status {
+            display: block !important;
+            float: left;
+            margin-right: 4px !important;
+            margin-left: 0 !important;
+            margin-top: 4px;
+        }
+        .sf-toolbar-block .sf-toolbar-info-piece.sf-toolbar-plugins > b {
+            vertical-align: middle;
+        }
+    </style>
+    <div class="sf-toolbar-info-group">
         <div class="sf-toolbar-info-piece">
-            <span>
-                <strong>EC-CUBE</strong> {{ collector.payoff }}
+            <b>EC-CUBE</b>
+            <span><a href="https://www.ec-cube.net">{{ collector.version }}</a></span>
+        </div>
+        <div class="sf-toolbar-info-piece sf-toolbar-plugins">
+            <b>Plugins</b>
+            {% for plugin in collector.plugins %}
+                <div class="sf-toolbar-status sf-toolbar-status-{{ plugin.enabled ? 'green' : 'red' }}" title="{{ plugin.config.name }}">
+                    {{ plugin.config.code }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="sf-toolbar-info-group">
+        <div class="sf-toolbar-info-piece">
+            <b>Currency</b>
+            <span class="sf-toolbar-status sf-toolbar-status-green">
+                <abbr title="Current {% if collector.currencyCode == collector.defaultCurrencyCode %}and default {% endif %}currency">
+                    {{ collector.currencyCode|default('Undefined') }}
+                </abbr>
             </span>
+            {% if collector.currencyCode != collector.defaultCurrencyCode %}
+                <span class="sf-toolbar-status">
+                    <abbr title="Default locale">
+                        {{ collector.defaultCurrencyCode }}
+                    </abbr>
+                </span>
+            {% endif %}
         </div>
-
         <div class="sf-toolbar-info-piece">
-            <span>
-                Version: {{ collector.version }} - {{ collector.dashboardlink|raw }} -
-                Visit <a href="https://www.ec-cube.net" target="_blank">ec-cube.net</a>
+            <b>Locale</b>
+            <span class="sf-toolbar-status sf-toolbar-status-green">
+                <abbr title="Current {% if collector.localeCode == collector.defaultLocaleCode %}and default {% endif %}locale">
+                    {{ collector.localeCode|default('Undefined') }}
+                </abbr>
             </span>
+            {% if collector.localeCode != collector.defaultLocaleCode %}
+                <span class="sf-toolbar-status">
+                    <abbr title="Default locale">
+                        {{ collector.defaultLocaleCode }}
+                    </abbr>
+                </span>
+            {% endif %}
         </div>
-
-        {% if collector.branding is not empty %}
+    </div>
+    <div class="sf-toolbar-info-group">
         <div class="sf-toolbar-info-piece">
-
-            <span>
-                {{ collector.branding|raw }}
-            </span>
-
+            <b>Resources</b>
+            <span><a href="https://doc.ec-cube.net/" rel="help">EC-CUBE Documentation</a></span>
         </div>
-       {% endif %}
-
-        {% if collector.editlink %}
-        <div class="sf-toolbar-info-piece">
-            <hr style="margin: 8px 0 12px; padding: 0; border: 0; border-bottom: 1px solid #777;">
-            <span> Edit: <a href="{{ collector.editlink }}">{{ collector.edittitle|default("(no title)") }}</a> </span>
-        </div>
-        {% endif %}
-
-
+    </div>
     {% endset %}
-    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
-{% endblock %}
 
+    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with {'link': false, additional_classes: 'sf-toolbar-block-right'} %}
+{% endblock %}

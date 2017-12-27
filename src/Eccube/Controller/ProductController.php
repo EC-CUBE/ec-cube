@@ -25,7 +25,6 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
@@ -40,15 +39,13 @@ use Eccube\Form\Type\SearchProductType;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -58,55 +55,31 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class ProductController extends AbstractController
 {
     /**
-     * @Inject("eccube.purchase.flow.cart")
      * @var PurchaseFlow
      */
     protected $purchaseFlow;
 
     /**
-     * @Inject("session")
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @Inject(CustomerFavoriteProductRepository::class)
      * @var CustomerFavoriteProductRepository
      */
     protected $customerFavoriteProductRepository;
 
     /**
-     * @Inject(CartService::class)
      * @var CartService
      */
     protected $cartService;
 
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -116,11 +89,27 @@ class ProductController extends AbstractController
      */
     protected $helper;
 
-    private $title;
+    private $title = '';
 
-    public function __construct()
+    /**
+     * ProductController constructor.
+     * @param PurchaseFlow $purchaseFlow
+     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
+     * @param CartService $cartService
+     * @param ProductRepository $productRepository
+     * @param EntityManager $entityManager
+     * @param BaseInfo $BaseInfo
+     * @param AuthenticationUtils $helper
+     */
+    public function __construct(PurchaseFlow $purchaseFlow, CustomerFavoriteProductRepository $customerFavoriteProductRepository, CartService $cartService, ProductRepository $productRepository, EntityManager $entityManager, BaseInfo $BaseInfo, AuthenticationUtils $helper)
     {
-        $this->title = '';
+        $this->purchaseFlow = $purchaseFlow;
+        $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
+        $this->cartService = $cartService;
+        $this->productRepository = $productRepository;
+        $this->entityManager = $entityManager;
+        $this->BaseInfo = $BaseInfo;
+        $this->helper = $helper;
     }
 
     /**
@@ -143,7 +132,7 @@ class ProductController extends AbstractController
 
         // searchForm
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $this->get('form.factory')->createNamedBuilder('', SearchProductType::class);
+        $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
         $builder->setAttribute('freeze', true);
         $builder->setAttribute('freeze_display_text', false);
         if ($request->getMethod() === 'GET') {
@@ -187,7 +176,7 @@ class ProductController extends AbstractController
         $forms = array();
         foreach ($pagination as $Product) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-            $builder = $this->get('form.factory')->createNamedBuilder(
+            $builder = $this->formFactory->createNamedBuilder(
                 '',
                 AddCartType::class,
                 null,
@@ -210,7 +199,7 @@ class ProductController extends AbstractController
                             $addCartData['quantity']
                         )->save();
                     } catch (CartException $e) {
-                        $app->addRequestError($e->getMessage());
+                        $this->addRequestError($e->getMessage());
                     }
 
                     $event = new EventArgs(
@@ -226,7 +215,7 @@ class ProductController extends AbstractController
                         return $event->getResponse();
                     }
 
-                    return $app->redirect($app->url('cart'));
+                    return $this->redirectToRoute('cart');
                 }
             }
 
@@ -234,7 +223,7 @@ class ProductController extends AbstractController
         }
 
         // 表示件数
-        $builder = $this->get('form.factory')->createNamedBuilder(
+        $builder = $this->formFactory->createNamedBuilder(
             'disp_number',
             ProductListMaxType::class,
             null,
@@ -261,7 +250,7 @@ class ProductController extends AbstractController
         $dispNumberForm->handleRequest($request);
 
         // ソート順
-        $builder = $this->get('form.factory')->createNamedBuilder(
+        $builder = $this->formFactory->createNamedBuilder(
             'orderby',
             ProductListOrderByType::class,
             null,
@@ -306,14 +295,17 @@ class ProductController extends AbstractController
      * @Method("GET")
      * @Route("/products/detail/{id}", name="product_detail", requirements={"id" = "\d+"})
      * @Template("Product/detail.twig")
+     * @param Request $request
+     * @param Product $Product
+     * @return array
      */
-    public function detail(Application $app, Request $request, Product $Product)
+    public function detail(Request $request, Product $Product)
     {
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
         }
 
-        $builder = $this->get('form.factory')->createNamedBuilder(
+        $builder = $this->formFactory->createNamedBuilder(
             '',
             AddCartType::class,
             null,
@@ -330,20 +322,20 @@ class ProductController extends AbstractController
             ),
             $request
         );
-        // $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
 
-        // $is_favorite = false;
-        // if ($app->isGranted('ROLE_USER')) {
-        //     $Customer = $app->user();
-        //     $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
-        // }
+        $is_favorite = false;
+        if ($this->isGranted('ROLE_USER')) {
+            $Customer = $this->getUser();
+            $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
+        }
 
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
             'form' => $builder->getForm()->createView(),
             'Product' => $Product,
-            'is_favorite' => false,
+            'is_favorite' => $is_favorite,
         ];
     }
 
@@ -352,7 +344,7 @@ class ProductController extends AbstractController
      *
      * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"})
      */
-    public function addFavorite(Application $app, Request $request, Product $Product)
+    public function addFavorite(Request $request, Product $Product)
     {
         $this->checkVisibility($Product);
 
@@ -364,8 +356,8 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE, $event);
 
-        if ($app->isGranted('ROLE_USER')) {
-            $Customer = $app->user();
+        if ($this->isGranted('ROLE_USER')) {
+            $Customer = $this->getUser();
             $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
             $this->session->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
 
@@ -377,11 +369,11 @@ class ProductController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
 
-            return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
+            return $this->redirectToRoute('product_detail', array('id' => $Product->getId()));
         } else {
             // 非会員の場合、ログイン画面を表示
             //  ログイン後の画面遷移先を設定
-            $app->setLoginTargetPath($app->url('product_add_favorite', array('id' => $Product->getId())));
+            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', array('id' => $Product->getId())));
             $this->session->getFlashBag()->set('eccube.add.favorite', true);
 
             $event = new EventArgs(
@@ -392,7 +384,7 @@ class ProductController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE, $event);
 
-            return $app->redirect($app->url('mypage_login'));
+            return $this->redirectToRoute('mypage_login');
         }
     }
 
@@ -402,7 +394,7 @@ class ProductController extends AbstractController
      * @Method("POST")
      * @Route("/products/add_cart/{id}", name="product_add_cart", requirements={"id" = "\d+"})
      */
-    public function addCart(Application $app, Request $request, Product $Product)
+    public function addCart(Request $request, Product $Product)
     {
         // エラーメッセージの配列
         $errorMessages = array();
@@ -411,7 +403,7 @@ class ProductController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $builder = $this->get('form.factory')->createNamedBuilder(
+        $builder = $this->formFactory->createNamedBuilder(
             '',
             AddCartType::class,
             null,
@@ -455,7 +447,7 @@ class ProductController extends AbstractController
         // 明細の正規化
         $flow = $this->purchaseFlow;
         $Cart = $this->cartService->getCart();
-        $result = $flow->calculate($Cart, $app['eccube.purchase.context']($Cart, $app->user()));
+        $result = $flow->calculate($Cart, new PurchaseContext($Cart, $this->getUser()));
 
         // 復旧不可のエラーが発生した場合は追加した明細を削除.
         if ($result->hasError()) {
@@ -515,10 +507,10 @@ class ProductController extends AbstractController
         } else {
             // ajax以外でのリクエストの場合はカート画面へリダイレクト
             foreach ($errorMessages as $errorMessage) {
-                $app->addRequestError($errorMessage);
+                $this->addRequestError($errorMessage);
             }
 
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
     }
 
@@ -546,7 +538,7 @@ class ProductController extends AbstractController
      */
     private function checkVisibility(Product $Product)
     {
-        $is_admin = $this->get('session')->has('_security_admin');
+        $is_admin = $this->session->has('_security_admin');
 
         // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
         if (!$is_admin) {
