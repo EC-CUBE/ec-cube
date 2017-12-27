@@ -42,7 +42,7 @@ class MailHistory extends AbstractEntity
      */
     public function __toString()
     {
-        return (string) $this->getSubject();
+        return (string) $this->getMailSubject();
     }
 
     /**
@@ -64,9 +64,9 @@ class MailHistory extends AbstractEntity
     /**
      * @var string|null
      *
-     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
+     * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
      */
-    private $subject;
+    private $mail_subject;
 
     /**
      * @var string|null
@@ -131,27 +131,27 @@ class MailHistory extends AbstractEntity
     }
 
     /**
-     * Set subject.
+     * Set mailSubject.
      *
-     * @param string|null $subject
+     * @param string|null $mailSubject
      *
      * @return MailHistory
      */
-    public function setSubject($subject = null)
+    public function setMailSubject($mailSubject = null)
     {
-        $this->subject = $subject;
+        $this->mail_subject = $mailSubject;
 
         return $this;
     }
 
     /**
-     * Get subject.
+     * Get mailSubject.
      *
      * @return string|null
      */
-    public function getSubject()
+    public function getMailSubject()
     {
-        return $this->subject;
+        return $this->mail_subject;
     }
 
     /**

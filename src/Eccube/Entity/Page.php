@@ -80,7 +80,7 @@ class Page extends \Eccube\Entity\AbstractEntity
     {
         $BlockPositions = array();
         foreach ($this->getBlockPositions() as $BlockPosition) {
-            if ($BlockPosition->getTargetId() === $target_id) {
+            if ($BlockPosition->getSection() === $target_id) {
                 $BlockPositions[] = $BlockPosition;
             }
         }

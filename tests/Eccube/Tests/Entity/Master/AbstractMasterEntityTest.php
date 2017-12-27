@@ -37,7 +37,7 @@ class AbstractMasterEntityTest extends EccubeTestCase
 
     public function testInvalidFields()
     {
-        // id, name, rank は取得できない
+        // id, name, sortNo は取得できない
         try {
             $c = TestSexDecorator::id();
             self::fail();
@@ -51,7 +51,7 @@ class AbstractMasterEntityTest extends EccubeTestCase
             self::assertInstanceOf(\InvalidArgumentException::class, $e);
         }
         try {
-            $c = TestSexDecorator::rank();
+            $c = TestSexDecorator::sortNo();
             self::fail();
         } catch (\InvalidArgumentException $e) {
             self::assertInstanceOf(\InvalidArgumentException::class, $e);

@@ -60,24 +60,24 @@ $(function() {
                     </div>
                 </div>
                 <div id="top_box__subject" class="form-group">
-                    {{ form_label(form.subject) }}
+                    {{ form_label(form.mail_subject) }}
                     <div class="col-sm-9 col-lg-10">
-                        {{ form_widget(form.subject) }}
-                        {{ form_errors(form.subject) }}
+                        {{ form_widget(form.mail_subject) }}
+                        {{ form_errors(form.mail_subject) }}
                     </div>
                 </div>
                 <div id="top_box__item_header" class="form-group">
-                    {{ form_label(form.header) }}
+                    {{ form_label(form.mail_header) }}
                     <div class="col-sm-9 col-lg-10">
-                        {{ form_widget(form.header, {'attr': {'rows': '7'}}) }}
-                        {{ form_errors(form.header) }}
+                        {{ form_widget(form.mail_header, {'attr': {'rows': '7'}}) }}
+                        {{ form_errors(form.mail_header) }}
                     </div>
                 </div>
                 <div id="top_box__item_footer" class="form-group">
-                    {{ form_label(form.footer) }}
+                    {{ form_label(form.mail_footer) }}
                     <div class="col-sm-9 col-lg-10">
-                        {{ form_widget(form.footer, {'attr': {'rows': '7'}}) }}
-                        {{ form_errors(form.footer) }}
+                        {{ form_widget(form.mail_footer, {'attr': {'rows': '7'}}) }}
+                        {{ form_errors(form.mail_footer) }}
                     </div>
                 </div>
                 <div class="extra-form">

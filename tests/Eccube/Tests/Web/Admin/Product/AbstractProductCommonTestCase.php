@@ -113,7 +113,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $TestClassName = new ClassName();
         $TestClassName->setName($this->faker->word)
-            ->setRank($this->faker->randomNumber(3))
+            ->setSortNo($this->faker->randomNumber(3))
             ->setCreator($Creator);
 
         $this->app['orm.em']->persist($TestClassName);
@@ -136,7 +136,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $TestClassCategory = new ClassCategory();
         $TestClassCategory->setName($this->faker->word)
-            ->setRank($this->faker->randomNumber(3))
+            ->setSortNo($this->faker->randomNumber(3))
             ->setClassName($TestClassName)
             ->setVisible(true)
             ->setCreator($Creator);
@@ -163,7 +163,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         if (!$Creator) {
             $Creator = $this->createMember();
         }
-        $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
+        $DeliveryDurations = $this->app['eccube.repository.delivery_duration']->findAll();
         $ProductClass = new ProductClass();
         $SaleType = $this->app['orm.em']
             ->getRepository('\Eccube\Entity\Master\SaleType')
@@ -180,7 +180,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setPrice01(10000)
             ->setPrice02(5000)
             ->setDeliveryFee(1000)
-            ->setDeliveryDate($DeliveryDates[$this->faker->numberBetween(0, 8)])
+            ->setDeliveryDuration($DeliveryDurations[$this->faker->numberBetween(0, 8)])
             ->setCreator($Creator)
             ->setVisible(true);
 

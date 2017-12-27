@@ -2,9 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
+use Eccube\Tests\EccubeTestCase;
 
 
 /**
@@ -38,8 +37,6 @@ class BaseInfoRepositoryTest extends EccubeTestCase
             ->setAddr01($faker->address)
             ->setAddr02($faker->secondaryAddress)
             ->setEmail01($faker->email)
-            ->setLatitude($faker->latitude)
-            ->setLongitude($faker->longitude)
             ->setUpdateDate($faker->dateTime('now'));
 
         /*

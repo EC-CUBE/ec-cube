@@ -52,6 +52,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <li class="ec-progress__item">
                     <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                     </div>
+                    <div class="ec-progress__label">ご注文手続き
+                    </div>
+                </li>
+                <li class="ec-progress__item">
+                    <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                    </div>
                     <div class="ec-progress__label">ご注文内容確認
                     </div>
                 </li>
@@ -89,10 +95,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
         {% endfor %}
-        {% if Cart.CartItems|length > 0 %}
+        {% if totalQuantity > 0 %}
             <div class="ec-cartRole__totalText">
                 <p>
-                    商品の合計金額は「<strong>{{ Cart.total_price|price }}</strong>」です。
+                    商品の合計金額は「<strong>{{ totalPrice|price }}</strong>」です。
                     {% if BaseInfo.delivery_free_amount and BaseInfo.delivery_free_quantity %}
                         <br/>
                         {% if is_delivery_free %}
@@ -119,75 +125,90 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
 
             <form name="form" id="form_cart" class="ec-cartRole" method="post" action="{{ url('cart') }}">
+
+                {% for CartIndex,Cart in Carts %}
+                    {% for error in app.session.flashbag.get('eccube.front.cart.' ~ loop.index0 ~ '.request.error') %}
+                        <div class="ec-cartRole__error">
+                            <div class="ec-alert-warning">
+                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                                <div class="ec-alert-warning__text">
+                                    {{ error|trans|nl2br }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
                 <div class="ec-cartRole__cart">
                     <div class="ec-cartTable">
-                        <ol class="ec-cartHeader">
-                            <li class="ec-cartHeader__label">削除</li>
-                            <li class="ec-cartHeader__label">商品内容</li>
-                            <li class="ec-cartHeader__label">数量</li>
-                            <li class="ec-cartHeader__label">小計</li>
-                        </ol>
-
-                        {% for CartItem in Cart.CartItems %}
-                            {% set ProductClass = CartItem.ProductClass %}
-                            {% set Product = ProductClass.Product %}
-                            <ul class="ec-cartRow">
-                                <li class="ec-cartRow__delColumn">
-                                    <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
-                                        <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
-                                    </a>
-                                </li>
-                                <li class="ec-cartRow__contentColumn">
-                                    <div class="ec-cartRow__img">
-                                        <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
-                                            <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
+                            <ol class="ec-cartHeader">
+                                <li class="ec-cartHeader__label">削除</li>
+                                <li class="ec-cartHeader__label">商品内容</li>
+                                <li class="ec-cartHeader__label">数量</li>
+                                <li class="ec-cartHeader__label">小計</li>
+                            </ol>
+                            {% for CartItem in Cart.CartItems %}
+                                {% set ProductClass = CartItem.ProductClass %}
+                                {% set Product = ProductClass.Product %}
+                                <ul class="ec-cartRow">
+                                    <li class="ec-cartRow__delColumn">
+                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
+                                            <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
                                         </a>
-                                    </div>
-                                    <div class="ec-cartRow__summary">
-                                        <div class="ec-cartRow__name">
-                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
-                                            {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                                <br>{{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
-                                            {% endif %}
-                                            {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                                <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
-                                            {% endif %}
-                                        </div>
-                                        <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
-                                        <div class="ec-cartRow__sutbtotalSP">小計：{{ CartItem.total_price|price }}</div>
-                                    </div>
-                                </li>
-                                <li class="ec-cartRow__amountColumn">
-                                    <div class="ec-cartRow__amount">{{ CartItem.quantity|number_format }}</div>
-                                    <div class="ec-cartRow__amountSP">数量：{{ CartItem.quantity|number_format }}</div>
-                                    <div class="ec-cartRow__amountUpDown">
-                                        {% if CartItem.quantity > 1 %}
-                                            <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton" data-method="put" data-confirm="false">
-                                                <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
+                                    </li>
+                                    <li class="ec-cartRow__contentColumn">
+                                        <div class="ec-cartRow__img">
+                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
+                                                <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ Product.name }}"/>
                                             </a>
-                                        {% else %}
-                                            <div class="ec-cartRow__amountDownButtonDisabled">
-                                                <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
+                                        </div>
+                                        <div class="ec-cartRow__summary">
+                                            <div class="ec-cartRow__name">
+                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
+                                                {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                                    <br>{{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
+                                                {% endif %}
+                                                {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                                    <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
+                                                {% endif %}
                                             </div>
-                                        {% endif %}
-                                        <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton" data-method="put" data-confirm="false">
-                                            <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="ec-cartRow__subtotalColumn">
-                                    <div class="ec-cartRow__sutbtotal">{{ CartItem.total_price|price }}</div>
-                                </li>
-                            </ul>
-                        {% endfor %}
+                                            <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
+                                            <div class="ec-cartRow__sutbtotalSP">小計：{{ CartItem.total_price|price }}</div>
+                                        </div>
+                                    </li>
+                                    <li class="ec-cartRow__amountColumn">
+                                        <div class="ec-cartRow__amount">{{ CartItem.quantity|number_format }}</div>
+                                        <div class="ec-cartRow__amountSP">数量：{{ CartItem.quantity|number_format }}</div>
+                                        <div class="ec-cartRow__amountUpDown">
+                                            {% if CartItem.quantity > 1 %}
+                                                <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton" data-method="put" data-confirm="false">
+                                                    <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
+                                                </a>
+                                            {% else %}
+                                                <div class="ec-cartRow__amountDownButtonDisabled">
+                                                    <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
+                                                </div>
+                                            {% endif %}
+                                            <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton" data-method="put" data-confirm="false">
+                                                <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="ec-cartRow__subtotalColumn">
+                                        <div class="ec-cartRow__sutbtotal">{{ CartItem.total_price|price }}</div>
+                                    </li>
+                                </ul>
+                            {% endfor %}
                     </div>
                 </div>
                 <div class="ec-cartRole__actions">
-                    <div class="ec-cartRole__total">合計：<span class="ec-cartRole__totalAmount">{{ Cart.total_price|price }}</span>
+                    <div class="ec-cartRole__total">合計：<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
                     </div>
-                    <a class="ec-blockBtn--action" href="{{ path('cart_buystep') }}">レジに進む</a>
+                    <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'index':loop.index0}) }}">レジに進む</a>
+                    {% if loop.last %}
                     <a class="ec-blockBtn--cancel" href="{{ path('homepage') }}">お買い物を続ける</a>
+                    {% endif %}
                 </div>
+                {% endfor %}
             </form>
         {% else %}
             <div class="ec-role">
@@ -202,6 +223,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         {% endif %}
     </div>
-
 
 {% endblock %}

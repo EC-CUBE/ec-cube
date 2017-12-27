@@ -37,6 +37,11 @@ $(function() {
         $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
 
+    $('.use_point').on('blur', function() {
+        $('#shopping_order_mode').val('use_point');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+    });
+
     $('.btn-shipping').click(function() {
         $('#shopping_order_mode').val('shipping_change');
         $('#shopping_order_param').val($(this).data('id'));
@@ -150,7 +155,7 @@ $(function() {
 
 <div class="ec-role">
     <div class="ec-pageHeader">
-        <h1>ご注文内容のご確認</h1>
+        <h1>ご注文手続き</h1>
     </div>
 </div>
 
@@ -173,6 +178,12 @@ $(function() {
             </li>
             {% endif %}
             <li class="ec-progress__item is-complete">
+                <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
+                </div>
+                <div class="ec-progress__label">ご注文手続き
+                </div>
+            </li>
+            <li class="ec-progress__item">
                 <div class="ec-progress__number">{{ step }}{% set step = step + 1 %}
                 </div>
                 <div class="ec-progress__label">ご注文内容確認
@@ -226,30 +237,6 @@ $(function() {
     {{ form_widget(form.param) }}
     <div class="ec-orderRole">
         <div class="ec-orderRole__detail">
-            <div class="ec-orderOrder">
-                <ul class="ec-borderedList">
-                    {% for orderDetail in Order.orderItems %}
-                    <li>
-                        <div class="ec-imageGrid">
-                            <div class="ec-imageGrid__img">
-                                <img src="{{ asset((orderDetail.product is null ? null : orderDetail.product.MainListImage)|no_image_product, 'save_image') }}">
-                            </div>
-                            <div class="ec-imageGrid__content">
-                                <p>{{ orderDetail.productName }}</p>
-                                {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory1 %}
-                                    <p>{{ orderDetail.productClass.classCategory1.className }}：{{ orderDetail.productClass.classCategory1 }}</p>
-                                {% endif %}
-                                {% if orderDetail.productClass is not null and orderDetail.productClass.classCategory2 %}
-                                    <p>{{ orderDetail.productClass.classCategory2.className }}：{{ orderDetail.productClass.classCategory2 }}</p>
-                                {% endif %}
-                                <p>{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}<span class="ec-imageGrid__contentTotal">小計：{{ orderDetail.totalPrice|price }}</span></p>
-                            </div>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-                <a href="{{ url('cart') }}" class="ec-inlineBtn">数量を変更または削除する</a>
-            </div>
             <div class="ec-orderAccount">
                 <div class="ec-rectHeading">
                     <h2>お客様情報</h2>
@@ -367,6 +354,18 @@ $(function() {
                     {{ form_errors(form.Payment) }}
                 </div>
             </div>
+            {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+                <div class="ec-orderPayment">
+                    <div class="ec-rectHeading">
+                        <h2>利用ポイント(暫定実装)</h2>
+                        <p>{{ Order.Customer.Point }} ポイントが利用可能です。</p>
+                        {{ form_widget(form.use_point, {'attr': {'class': 'form-control use_point'}}) }}
+                        {{ form_errors(form.use_point) }}
+                    </div>
+                </div>
+            {% else %}
+                {{ form_widget(form.use_point, {'type': 'hidden'}) }}
+            {% endif %}
             <div class="ec-orderConfirm">
                 <div class="ec-rectHeading">
                     <h2>お問い合わせ</h2>
@@ -406,7 +405,8 @@ $(function() {
                 {% endif %}
                 <div class="ec-totalBox__total">合計<span class="ec-totalBox__price">{{ Order.total|price }}</span><span class="ec-totalBox__taxLabel">税込</span></div>
                 <div class="ec-totalBox__btn">
-                    <button type="submit" class="ec-blockBtn--action">注文する</button>
+                    <button type="submit" class="ec-blockBtn--action">確認する</button>
+                    <a href="{{ url("cart") }}" class="ec-blockBtn--cancel">カートに戻る</a>
                 </div>
             </div>
         </div>

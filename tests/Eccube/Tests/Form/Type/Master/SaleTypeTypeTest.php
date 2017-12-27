@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Eccube\Form\Type\Master\SaleTypeType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class SaleTypeTypeTest extends AbstractTypeTestCase
 {
@@ -65,7 +65,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
             $data[] = $choice->data;
         }
         $query = $this->app['eccube.repository.master.sale_type']->createQueryBuilder('m')
-            ->orderBy('m.rank', 'ASC')
+            ->orderBy('m.sort_no', 'ASC')
             ->getQuery();
         $res = $query->getResult();
         // order by されているか

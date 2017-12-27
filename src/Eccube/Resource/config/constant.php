@@ -63,5 +63,5 @@
     'product_order_price_higher' => 3,
     'price_max' => 2147483647,
     'pageinrange' => false,
-    'composer_memory_limit' => 1536,
+    'composer_memory_limit' => 1536
 ];

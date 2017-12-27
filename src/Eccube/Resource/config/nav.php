@@ -27,6 +27,11 @@
                     'url' => 'admin_product_category',
                 ],
                 [
+                    'id' => 'tag',
+                    'name' => 'タグ登録',
+                    'url' => 'admin_product_tag',
+                ],
+                [
                     'id' => 'product_csv_import',
                     'name' => '商品CSV登録',
                     'url' => 'admin_product_csv_import',
@@ -67,12 +72,12 @@
                 [
                     'id' => 'shipping_master',
                     'name' => '出荷マスター',
-                    'url' => 'admin/shipping',
+                    'url' => 'admin_shipping',
                 ],
                 [
                     'id' => 'shipping_edit',
                     'name' => '出荷登録',
-                    'url' => 'admin/shipping/new',
+                    'url' => 'admin_shipping_new',
                 ],
             ],
     ],
@@ -247,11 +252,6 @@
                                 'name' => 'プラグイン一覧',
                                 'url' => 'admin_store_plugin',
                             ],
-//          [
-//            'id' => 'plugin_owners_install',
-//            'name' => '購入済プラグイン',
-//            'url' => 'admin_store_plugin_owners_install',
-//          ],
                             [
                                 'id' => 'plugin_search',
                                 'name' => 'プラグインを探す',

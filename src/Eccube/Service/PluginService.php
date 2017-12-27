@@ -31,6 +31,7 @@ use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
+use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Plugin\ConfigManager as PluginConfigManager;
@@ -156,6 +157,8 @@ class PluginService
 
             // プラグイン配置後に実施する処理
             $this->postInstall($config, $event, $source);
+            // リソースファイルをコピー
+            $this->copyAssets($pluginBaseDir, $config['code']);
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -334,7 +337,7 @@ class PluginService
             $p = new \Eccube\Entity\Plugin();
             // インストール直後はプラグインは有効にしない
             $p->setName($meta['name'])
-                ->setEnable(false)
+                ->setEnabled(false)
                 ->setClassName(isset($meta['event']) ? $meta['event'] : '')
                 ->setVersion($meta['version'])
                 ->setSource($source)
@@ -396,6 +399,7 @@ class PluginService
         $this->disable($plugin);
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+        $this->removeAssets($plugin->getCode());
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->appConfig['root_dir'].'/app/proxy/entity');
@@ -443,7 +447,7 @@ class PluginService
         );
 
         $excludes = [];
-        if ($temporary || $plugin->isEnable()) {
+        if ($temporary || $plugin->isEnabled()) {
             $enabledPluginCodes[] = $plugin->getCode();
         } else {
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
@@ -472,7 +476,7 @@ class PluginService
             CacheUtil::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
-            $plugin->setEnable($enable ? true : false);
+            $plugin->setEnabled($enable ? true : false);
             $em->persist($plugin);
 
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
@@ -546,35 +550,44 @@ class PluginService
         return true;
     }
 
-    public function updatePlugin(\Eccube\Entity\Plugin $plugin, $meta, $event_yml)
+    /**
+     * Update plugin
+     *
+     * @param Plugin $plugin
+     * @param array  $meta     Config data
+     * @param array  $eventYml event data
+     * @throws \Exception
+     */
+    public function updatePlugin(Plugin $plugin, $meta, $eventYml)
     {
+        $em = $this->entityManager;
         try {
-            $em = $this->entityManager;
             $em->getConnection()->beginTransaction();
             $plugin->setVersion($meta['version'])
                 ->setName($meta['name']);
-
             if (isset($meta['event'])) {
                 $plugin->setClassName($meta['event']);
             }
-
             $rep = $this->pluginEventHandlerRepository;
-
-            if (is_array($event_yml)) {
-                foreach ($event_yml as $event => $handlers) {
+            if (!empty($eventYml) && is_array($eventYml)) {
+                foreach ($eventYml as $event => $handlers) {
                     foreach ($handlers as $handler) {
                         if (!$this->checkSymbolName($handler[0])) {
                             throw new PluginException('Handler name format error');
                         }
                         // updateで追加されたハンドラかどうか調べる
-                        $peh = $rep->findBy(array(
+                        $peh = $rep->findBy(
+                            array(
                             'plugin_id' => $plugin->getId(),
                             'event' => $event,
                             'handler' => $handler[0],
-                            'handler_type' => $handler[1],));
+                            'handler_type' => $handler[1],
+                                )
+                        );
 
-                        if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
-                            $peh = new \Eccube\Entity\PluginEventHandler();
+                        // 新規にevent.ymlに定義されたハンドラなのでinsertする
+                        if (!$peh) {
+                            $peh = new PluginEventHandler();
                             $peh->setPlugin($plugin)
                                 ->setEvent($event)
                                 ->setHandler($handler[0])
@@ -586,14 +599,15 @@ class PluginService
                     }
                 }
 
-                # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
+                // アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
+                /** @var PluginEventHandler $peh */
                 foreach ($rep->findBy(array('plugin_id' => $plugin->getId())) as $peh) {
-                    if (!isset($event_yml[$peh->getEvent()])) {
+                    if (!isset($eventYml[$peh->getEvent()])) {
                         $em->remove($peh);
                         $em->flush();
                     } else {
                         $match = false;
-                        foreach ($event_yml[$peh->getEvent()] as $handler) {
+                        foreach ($eventYml[$peh->getEvent()] as $handler) {
                             if ($peh->getHandler() == $handler[0] && $peh->getHandlerType() == $handler[1]) {
                                 $match = true;
                             }
@@ -648,6 +662,8 @@ class PluginService
             // Check duplicate in dependency
             $index = array_search($dependPlugin['product_code'], array_column($dependents, 'product_code'));
             if ($index === false) {
+                // Update require version
+                $dependPlugin['version'] = $version;
                 $dependents[] = $dependPlugin;
                 // Check child dependency
                 $dependents = $this->getDependency($plugins, $dependPlugin, $dependents);
@@ -722,29 +738,31 @@ class PluginService
     {
         $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
         $composerFile = $dir.'/composer.json';
-        $requires = [];
         if (!file_exists($composerFile)) {
-            return $requires;
+            return [];
         }
         $jsonText = file_get_contents($composerFile);
-        if ($jsonText) {
-            $json = json_decode($jsonText, true);
-            $require = $json['require'];
+        $json = json_decode($jsonText, true);
+        // Check require
+        if (!isset($json['require']) || empty($json['require'])) {
+            return [];
+        }
+        $require = $json['require'];
 
-            // Remove vendor plugin
-            if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
-                unset($require[self::VENDOR_NAME.'/plugin-installer']);
-            }
-            foreach ($require as $name => $version) {
-                // Check plugin of ec-cube only
-                if (strpos($name, self::VENDOR_NAME.'/') !== false) {
-                    $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
-                    $ret = $this->isEnable($requireCode);
-                    if ($ret) {
-                        continue;
-                    }
-                    $requires[] = $requireCode;
+        // Remove vendor plugin
+        if (isset($require[self::VENDOR_NAME.'/plugin-installer'])) {
+            unset($require[self::VENDOR_NAME.'/plugin-installer']);
+        }
+        $requires = [];
+        foreach ($require as $name => $version) {
+            // Check plugin of ec-cube only
+            if (strpos($name, self::VENDOR_NAME.'/') !== false) {
+                $requireCode = str_replace(self::VENDOR_NAME.'/', '', $name);
+                $ret = $this->isEnable($requireCode);
+                if ($ret) {
+                    continue;
                 }
+                $requires[] = $requireCode;
             }
         }
 
@@ -774,7 +792,7 @@ class PluginService
         $criteria = Criteria::create()
             ->where(Criteria::expr()->neq('code', $pluginCode));
         if ($enableOnly) {
-            $criteria->andWhere(Criteria::expr()->eq('enable', Constant::ENABLED));
+            $criteria->andWhere(Criteria::expr()->eq('enabled', Constant::ENABLED));
         }
         /**
          * @var Plugin[] $plugins
@@ -865,11 +883,61 @@ class PluginService
     }
 
     /**
-     * @param array  $plugins get from api
+     * リソースファイル等をコピー
+     * コピー元となるファイルの置き場所は固定であり、
+     * [プラグインコード]/Resource/assets
+     * 配下に置かれているファイルが所定の位置へコピーされる
+     *
+     * @param $pluginBaseDir
+     * @param $pluginCode
+     */
+    public function copyAssets($pluginBaseDir, $pluginCode)
+    {
+        $assetsDir = $pluginBaseDir.'/Resource/assets';
+
+        // プラグインにリソースファイルがあれば所定の位置へコピー
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->mirror($assetsDir, $this->appConfig['plugin_html_realdir'].$pluginCode.'/assets');
+        }
+    }
+
+    /**
+     * コピーしたリソースファイル等を削除
+     *
+     * @param $pluginCode
+     */
+    public function removeAssets($pluginCode)
+    {
+        $assetsDir = $this->appConfig['plugin_html_realdir'].$pluginCode;
+
+        // コピーされているリソースファイルがあれば削除
+        if (file_exists($assetsDir)) {
+            $file = new Filesystem();
+            $file->remove($assetsDir);
+        }
+    }
+
+    /**
+     * Is update
+     *
+     * @param string $pluginVersion
+     * @param string $remoteVersion
+     * @return mixed
+     */
+    public function isUpdate($pluginVersion, $remoteVersion)
+    {
+        return version_compare($pluginVersion, $remoteVersion, '<');
+    }
+
+    /**
+     * Plugin is exist check
+     *
+     * @param array  $plugins    get from api
      * @param string $pluginCode
      * @return false|int|string
      */
-    private function checkPluginExist($plugins, $pluginCode)
+    public function checkPluginExist($plugins, $pluginCode)
     {
         if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
@@ -887,7 +955,7 @@ class PluginService
     private function isEnable($code)
     {
         $Plugin = $this->pluginRepository->findOneBy([
-            'enable' => Constant::ENABLED,
+            'enabled' => Constant::ENABLED,
             'code' => $code
         ]);
         if ($Plugin) {

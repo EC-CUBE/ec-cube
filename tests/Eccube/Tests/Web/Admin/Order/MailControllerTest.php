@@ -23,9 +23,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $MailTemplate = new MailTemplate();
         $MailTemplate
             ->setName($faker->word)
-            ->setHeader($faker->word)
-            ->setFooter($faker->word)
-            ->setSubject($faker->word)
+            ->setMailHeader($faker->word)
+            ->setMailFooter($faker->word)
+            ->setMailSubject($faker->word)
             ->setCreator($this->Member);
         $this->app['orm.em']->persist($MailTemplate);
         $this->app['orm.em']->flush();
@@ -36,7 +36,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
                 ->setSendDate(new \DateTime())
                 ->setMailBody($faker->realText())
                 ->setCreator($this->Member)
-                ->setSubject('subject-'.$i);
+                ->setMailSubject('mail_subject-'.$i);
 
             $this->app['orm.em']->persist($this->MailHistories[$i]);
             $this->app['orm.em']->flush();
@@ -54,9 +54,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $form = array(
             'template' => 1,
-            'subject' => $faker->word,
-            'header' => $faker->paragraph,
-            'footer' => $faker->paragraph,
+            'mail_subject' => $faker->word,
+            'mail_header' => $faker->paragraph,
+            'mail_footer' => $faker->paragraph,
             '_token' => 'dummy'
         );
         return $form;
@@ -84,8 +84,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = $form['footer'];
-        $this->actual = $crawler->filter('#mail_footer')->getNode(0)->getAttribute('value');
+        $this->expected = $form['mail_footer'];
+        $this->actual = $crawler->filter('#mail_mail_footer')->getNode(0)->getAttribute('value');
         $this->verify();
     }
 
@@ -106,7 +106,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['subject'];
+        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['mail_subject'];
         $this->actual = $Message->subject;
         $this->verify();
     }
@@ -158,8 +158,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = $form['footer'];
-        $this->actual = $crawler->filter('#mail_footer')->getNode(0)->getAttribute('value');
+        $this->expected = $form['mail_footer'];
+        $this->actual = $crawler->filter('#mail_mail_footer')->getNode(0)->getAttribute('value');
         $this->verify();
     }
 
@@ -192,7 +192,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['subject'];
+        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['mail_subject'];
         $this->actual = $Message->subject;
         $this->verify();
     }

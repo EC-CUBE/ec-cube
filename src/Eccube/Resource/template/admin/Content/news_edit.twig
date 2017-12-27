@@ -41,7 +41,7 @@ $(function() {
     var inputDate = document.createElement('input');
     inputDate.setAttribute('type', 'date');
     if (inputDate.type !== 'date') {
-        $('#admin_news_date').datetimepicker({
+        $('#admin_news_publish_date').datetimepicker({
             locale: 'ja',
             format: 'YYYY-MM-DD',
             useCurrent: false,
@@ -66,10 +66,10 @@ $(function() {
                         {{ form_row(form._token) }}
 
                         <div id="detail_box__date" class="form-group">
-                            {{ form_label(form.date) }}
+                            {{ form_label(form.publish_date) }}
                             <div class="col-sm-10">
-                                {{ form_widget(form.date, {'attr': {'class': 'input_cal'}}) }}
-                                {{ form_errors(form.date) }}
+                                {{ form_widget(form.publish_date, {'attr': {'class': 'input_cal'}}) }}
+                                {{ form_errors(form.publish_date) }}
                             </div>
                         </div>
 
@@ -79,9 +79,7 @@ $(function() {
 
                         {{ form_row(form.link_method) }}
 
-                        {{ form_row(form.comment) }}
-
-                        {{ form_row(form.select) }}
+                        {{ form_row(form.description) }}
 
                         <div class="extra-form">
                             {% for f in form.getIterator %}

@@ -59,6 +59,30 @@ interface ItemHolderInterface
     public function setTax($total);
 
     /**
+     * 加算ポイントを設定します。
+     * @param $addPoint|int
+     */
+    public function setAddPoint($addPoint);
+
+    /**
+     * 加算ポイントを返します.
+     * @return int
+     */
+    public function getAddPoint();
+
+    /**
+     * 利用ポイントを設定します。
+     * @param $usePoint|int
+     */
+    public function setUsePoint($usePoint);
+
+    /**
+     * 利用ポイントを返します.
+     * @return int
+     */
+    public function getUsePoint();
+
+    /**
      * @param ItemInterface $item
      */
     public function addItem(ItemInterface $item);

@@ -76,7 +76,7 @@ class PageRepository extends AbstractRepository
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND p.id = :pageId')
-            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.section', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
         $ownResult = $qb
@@ -92,7 +92,7 @@ class PageRepository extends AbstractRepository
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
-            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.section', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
         $anyResults = $qb
@@ -126,7 +126,7 @@ class PageRepository extends AbstractRepository
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND p.url = :url')
-            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.section', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
         $ownResult = $qb
@@ -147,7 +147,7 @@ class PageRepository extends AbstractRepository
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
             ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
-            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.section', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
         $anyResults = $qb

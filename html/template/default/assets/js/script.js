@@ -86,12 +86,12 @@ $(function(){
 })
 
 $(function(){
-    $(".ec-cartNavi").on("click",function(){
+    $(document).on("click",".ec-cartNavi",function(){
         $(".ec-headerRole__cart").toggleClass("is_active")
     })
 })
 $(function(){
-    $(".ec-cartNavi--cancel").on("click",function(){
+    $(document).on("click",".ec-cartNavi--cancel",function(){
         $(".ec-headerRole__cart").toggleClass("is_active")
     })
 })

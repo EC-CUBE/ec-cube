@@ -94,7 +94,7 @@ class MemberController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $Members = $this->memberRepository->findBy([], ['rank' => 'DESC']);
+        $Members = $this->memberRepository->findBy([], ['sort_no' => 'DESC']);
 
         $builder = $this->formFactory->createBuilder();
 

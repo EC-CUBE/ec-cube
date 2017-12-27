@@ -50,7 +50,7 @@ class Layout extends AbstractEntity
                 continue;
             }
 
-            if ($BlockPosition->getTargetId() == $targetId) {
+            if ($BlockPosition->getSection() == $targetId) {
                 $Blocks[] = $BlockPosition->getBlock();
             }
         }
@@ -66,7 +66,7 @@ class Layout extends AbstractEntity
     {
         return $this->BlockPositions->filter(
             function ($BlockPosition) use ($targetId) {
-                return $BlockPosition->getTargetId() == $targetId;
+                return $BlockPosition->getSection() == $targetId;
             }
         );
     }
