@@ -29,6 +29,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ext-language_tools.js"></script>
     <script>
         $(function(){
             $("#mail_template").on("change", function(){
@@ -39,6 +41,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     location.href= '{{ url('admin_setting_shop_mail') }}';
                 }
             });
+        });
+
+        ace.require("ace/ext/language_tools");
+        var editor = ace.edit("editor");
+        editor.session.setMode("ace/mode/twig");
+        editor.setTheme("ace/theme/tomorrow");
+        editor.setValue("{{ form.tpl_data.vars.value|escape('js') }}");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            showInvisibles: true
+        });
+
+        $('#form1').on('submit', function (elem) {
+            $('#mail_tpl_data').val(editor.getValue());
         });
     </script>
 {% endblock javascript%}
@@ -58,9 +76,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                         {{ form_row(form.template) }}
                         {{ form_row(form.mail_subject) }}
+                        <div id="detail_box__tpl_data" class="form-group">
+                            {{ form_label(form.tpl_data) }}
+                            <div class="col-sm-9 col-lg-10">
+                                <div id="editor" style="height: 480px"></div>
+                                {{ form_widget(form.tpl_data) }}
+                                {{ form_errors(form.tpl_data) }}
+                            </div>
+                        </div>
                         {{ form_row(form.mail_header) }}
                         {{ form_row(form.mail_footer) }}
-
+						
                         <div class="extra-form">
                             {% for f in form.getIterator %}
                                 {% if f.vars.name matches '[^plg*]' %}
