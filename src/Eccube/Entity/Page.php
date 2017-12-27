@@ -382,6 +382,16 @@ class Page extends \Eccube\Entity\AbstractEntity
      * })
      */
     private $DeviceType;
+    
+    /**
+     * @var \Eccube\Entity\Page
+     *
+     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="master_page_id", referencedColumnName="id")
+     * })
+     */
+    private $MasterPage;
 
     /**
      * Constructor
@@ -770,5 +780,29 @@ class Page extends \Eccube\Entity\AbstractEntity
     public function getDeviceType()
     {
         return $this->DeviceType;
+    }
+    
+    /**
+     * Set MasterPage.
+     *
+     * @param \Eccube\Entity\Page|null $page
+     *
+     * @return Page
+     */
+    public function setMasterPage(\Eccube\Entity\Page $page = null)
+    {
+        $this->MasterPage = $page;
+    
+        return $this;
+    }
+    
+    /**
+     * Get MasterPage.
+     *
+     * @return \Eccube\Entity\Page|null
+     */
+    public function getMasterPage()
+    {
+        return $this->MasterPage;
     }
 }
