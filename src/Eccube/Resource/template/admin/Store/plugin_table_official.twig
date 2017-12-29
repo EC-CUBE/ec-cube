@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% if Plugins|length > 0 %}
+{% if officialPlugins|length > 0%}
     <div class="table_list plugin-table">
         <div class="table-responsive with-border">
             <table class="table table-hover table-condensed">
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </tr>
                 </thead>
                 <tbody>
-                {% for key,Plugin in Plugins %}
+                {% for key,Plugin in officialPlugins %}
                     {% set form = plugin_forms[Plugin.id] %}
                     {% set pluginDetail = officialPluginsDetail[key] %}
                         <tr class="{% if Plugin.enabled == false %}active{% endif %}">

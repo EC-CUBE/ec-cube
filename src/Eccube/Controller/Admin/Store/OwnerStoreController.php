@@ -241,6 +241,7 @@ class OwnerStoreController extends AbstractController
         $dependents = $this->pluginService->getDependency($items, $plugin, $dependents);
         // Unset first param
         unset($dependents[0]);
+
         $dependentModifier = [];
         $packageNames = '';
         if (!empty($dependents)) {
@@ -249,7 +250,7 @@ class OwnerStoreController extends AbstractController
                     "product_code" => $item['product_code'],
                     "version" => $item['version'],
                 ];
-                array_push($dependentModifier, $pluginItem);
+                $dependentModifier[] = $pluginItem;
                 // Re-format plugin code
                 $dependents[$key]['product_code'] = self::$vendorName.'/'.$item['product_code'];
             }
@@ -257,7 +258,17 @@ class OwnerStoreController extends AbstractController
             $packageNames = $this->pluginService->parseToComposerCommand($packages);
         }
         $packageNames .= ' '.self::$vendorName.'/'.$pluginCode.':'.$version;
-        $data = array(
+
+        // Upgrade plugin backup
+        $isUpgrade = $request->get('is_upgrade', false);
+        $updateData = $dependentModifier;
+        $updateData[] = [
+            'product_code' => $pluginCode,
+            'version' => $version,
+        ];
+        $this->pluginService->doBackup($updateData);
+
+        $reportData = array(
             'code' => $pluginCode,
             'version' => $version,
             'core_version' => $eccubeVersion,
@@ -270,26 +281,39 @@ class OwnerStoreController extends AbstractController
             'composer_execute_mode' => $this->composerService->getMode(),
             'dependents' => json_encode($dependentModifier),
         );
-
         try {
             $this->composerService->execRequire($packageNames);
             // Do report to package repo
-            $url = $this->appConfig['package_repo_url'] . '/report';
-            $this->postRequestApi($url, $data);
+            $url = $this->appConfig['package_repo_url'].'/report';
+            $this->postRequestApi($url, $reportData);
             $app->addSuccess('admin.plugin.install.complete', 'admin');
 
             return $app->redirect($app->url('admin_store_plugin'));
         } catch (\Exception $exception) {
-            log_info($exception);
+            log_error($exception->getMessage());
+            // Do rollback when error
+            $this->pluginService->doRollback($updateData);
+        } finally {
+            // Remove temp files
+            $pluginTempRealDir = $this->appConfig['plugin_temp_realdir'];
+            $dirs = [
+                $pluginTempRealDir.'/composer.json',
+                $pluginTempRealDir.'/composer.lock',
+            ];
+            foreach ($updateData as $value) {
+                $dirs[] = $pluginTempRealDir.'/'.$value['product_code'];
+            }
+            $this->pluginService->deleteDirs($dirs);
         }
 
         // Do report to package repo
-        $url = $this->appConfig['package_repo_url'] . '/report/fail';
-        $this->postRequestApi($url, $data);
+        $url = $this->appConfig['package_repo_url'].'/report/fail';
+        $this->postRequestApi($url, $reportData);
         $app->addError('admin.plugin.install.fail', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin_owners_search'));
     }
+
 
     /**
      * Do confirm page
@@ -388,7 +412,7 @@ class OwnerStoreController extends AbstractController
     {
         $this->isTokenValid($app);
         // Run install plugin
-        $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version]));
+        $app->forward($app->url('admin_store_plugin_api_install', ['pluginCode' => $pluginCode, 'eccubeVersion' => Constant::VERSION, 'version' => $version, 'is_upgrade' => true]));
 
         /** @var Session $session */
         $session = $app['session'];
@@ -413,7 +437,7 @@ class OwnerStoreController extends AbstractController
      * @param Plugin      $plugin
      * @return Response
      */
-    public function doUpdateConfirm(Application $app, Plugin $plugin)
+    public function doUpgradeConfirm(Application $app, Plugin $plugin)
     {
         $source = $plugin->getSource();
         $url = $app->url('admin_store_plugin_install_confirm', ['id' => $source, 'is_update' => true]);
