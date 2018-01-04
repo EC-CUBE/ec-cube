@@ -1,7 +1,6 @@
 <?php
 
 namespace Eccube\Tests\Service;
-use DoctrineProxy\__CG__\Eccube\Entity\MailTemplate;
 use Eccube\Util\MailUtil;
 
 /**

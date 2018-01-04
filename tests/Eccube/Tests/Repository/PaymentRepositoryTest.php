@@ -29,7 +29,6 @@ use Eccube\Entity\Master\ProductType;
 use Eccube\Entity\PaymentOption;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {
