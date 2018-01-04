@@ -21,6 +21,7 @@ security:
         admin:
             pattern: ^/%admin_route%/
             anonymous: true
+            provider: member_provider
             form_login:
                 check_path: admin_login
                 login_path: admin_login
@@ -29,7 +30,10 @@ security:
                 username_parameter: 'login_id'
                 password_parameter: 'password'
                 use_forward: true
-            provider: member_provider
+            logout:
+                path: admin_logout
+                target: admin_login
+                invalidate_session: true
         customer:
             # this firewall applies to all URLs
             pattern: ^/
