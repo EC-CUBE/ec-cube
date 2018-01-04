@@ -33,7 +33,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class AuthorityVoterTest extends EccubeTestCase
 {
-
     public function testSupportsClass()
     {
         $client = self::createClient();
@@ -44,5 +43,4 @@ class AuthorityVoterTest extends EccubeTestCase
 
         $this->assertTrue($voter->supportsClass('Foo'));
     }
-
 }
