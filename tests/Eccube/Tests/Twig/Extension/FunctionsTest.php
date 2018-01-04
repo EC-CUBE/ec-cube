@@ -2,34 +2,55 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
+use Eccube\Service\TaxRuleService;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Twig\Extension\EccubeExtension;
+use Eccube\Twig\Extension\RoutingExtension;
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class FunctionsTest extends EccubeTestCase
 {
     protected $templateDir;
-    protected $blockTwig = 'block.twig';
+    protected $blockTwigs = [
+        'test_block.twig',
+        'test_block2.twig'
+    ];
+
+    /**
+     * @var \Twig_Environment
+     */
+    protected $twig;
 
     public function setUp()
     {
         parent::setUp();
 
+        $client = self::createClient();
         $root = vfsStream::setup();
         $this->templateDir = $root->url();
 
-        // テンプレート探索パスを追加
-        $this->app['twig.loader']->addLoader(
-            new \Twig_Loader_Filesystem(
-                [
-                    $this->templateDir,
-                ]
-            )
-        );
+        // Rewrite to parameters using reflection
+        $container = $client->getContainer();
+        $parameters = $container->getParameterBag()->all();
+        $parameters['eccube.twig.block.templates'] = $this->blockTwigs;
 
-        // ブロックテンプレートを初期化
-        $this->app['eccube.twig.block.templates'] = [
-            $this->blockTwig,
-        ];
+        $refClass = new \ReflectionClass($container);
+        $refProp = $refClass->getProperty('parameters');
+        $refProp->setAccessible(true);
+        $refProp->setValue($container, $parameters);
+
+        // Initialize to the Twig loader
+        $this->twig = $client->getContainer()->get('twig');
+        $paths = $this->twig->getLoader()->getPaths();
+        $paths[] = $this->templateDir;
+        $this->twig->setLoader(new \Twig_Loader_Filesystem($paths));
+        $this->twig->setCache(false);
+
+        foreach ($this->blockTwigs as $twig_file) {
+            // Preventing undefined errors
+            file_put_contents($this->templateDir.'/'.$twig_file, '');
+        }
     }
 
     /**
@@ -37,9 +58,7 @@ class FunctionsTest extends EccubeTestCase
      */
     public function testPhpFunctions()
     {
-        /** @var \Twig_Environment $twig */
-        $twig = $this->app['twig'];
-        $template = $twig->createTemplate("<div id='test'>{{ php_print_r('aaa', true) }}</div>");
+        $template = $this->twig->createTemplate("<div id='test'>{{ php_print_r('aaa', true) }}</div>");
 
         $this->expected = "<div id='test'>aaa</div>";
         $this->actual = $template->render([]);
@@ -52,14 +71,11 @@ class FunctionsTest extends EccubeTestCase
      */
     public function testEccubeBlockFunctions()
     {
-        $file = $this->templateDir.'/'.$this->blockTwig;
+        $file = $this->templateDir.'/'.$this->blockTwigs[0];
         $source = '{% block exampleblock %}<div id="exampleblock">test</div>{% endblock %}';
 
         file_put_contents($file, $source);
-
-        /** @var \Twig_Environment $twig */
-        $twig = $this->app['twig'];
-        $template = $twig->createTemplate("<div id='test'>{{ eccube_block_exampleblock() }}</div>");
+        $template = $this->twig->createTemplate("<div id='test'>{{ eccube_block_exampleblock() }}</div>");
 
         $this->expected = "<div id='test'><div id=\"exampleblock\">test</div></div>";
         $this->actual = $template->render([]);
@@ -74,18 +90,17 @@ class FunctionsTest extends EccubeTestCase
      */
     public function testEccubeBlockFunctionsWithParams()
     {
-        $file = $this->templateDir.'/'.$this->blockTwig;
-        $source = '{% block exampleblock %}<div id="exampleblock">{{ variable }}</div>{% endblock %}';
+        $file = $this->templateDir.'/'.$this->blockTwigs[1];
+        $source = '{% block exampleblock2 %}<div id="exampleblock">{{ variable }}</div>{% endblock %}';
 
         file_put_contents($file, $source);
 
-        /** @var \Twig_Environment $twig */
-        $twig = $this->app['twig'];
-        $template = $twig->createTemplate(
-            "<div id='test'>{{ eccube_block_exampleblock({'variable': 'example'}) }}</div>"
+        $template = $this->twig->createTemplate(
+            "<div id='test'>{{ eccube_block_exampleblock2({'variable': 'example'}) }}</div>"
         );
 
         $this->expected = "<div id='test'><div id=\"exampleblock\">example</div></div>";
         $this->actual = $template->render(['variable' => 'example']);
+        $this->verify();
     }
 }
