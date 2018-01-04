@@ -19,23 +19,17 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         admin:
-          pattern: ^/%admin_route%/
-          anonymous: true
-          form_login:
-                # The route name that the login form submits to
+            pattern: ^/%admin_route%/
+            anonymous: true
+            form_login:
                 check_path: admin_login
-                # The name of the route where the login form lives
-                # When the user tries to access a protected page, they are redirected here
                 login_path: admin_login
-                # Secure the login form against CSRF
-                # Reference: https://symfony.com/doc/current/security/csrf_in_login_form.html
                 csrf_token_generator: security.csrf.token_manager
-                # The page users are redirect to when there is no previous page stored in the
-                # session (for example when the users access directly to the login page).
+                default_target_path: admin_homepage
                 username_parameter: 'login_id'
                 password_parameter: 'password'
                 use_forward: true
-          provider: member_provider
+            provider: member_provider
         customer:
             # this firewall applies to all URLs
             pattern: ^/
