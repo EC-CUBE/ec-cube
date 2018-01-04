@@ -10,3 +10,4 @@ timezone: Asia/Tokyo
 pageinrange: false
 trusted_proxies_connection_only: false
 trusted_proxies: {  }
+x_frame_options: false

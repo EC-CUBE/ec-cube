@@ -266,6 +266,7 @@ class PageLayoutRepository extends EntityRepository
             $readPaths = array(
                 $this->app['config']['template_realdir'],
                 $this->app['config']['template_default_realdir'],
+                $this->app['config']['plugin_realdir'],
             );
         }
 

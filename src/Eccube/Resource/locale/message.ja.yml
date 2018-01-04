@@ -74,6 +74,7 @@ shopping.delivery.not.producttype: |-
 
 shopping.total.price: 合計金額が不正です。(¥ totalPrice)
 front.shopping.order.error: 購入処理でエラーが発生しました。
+front.shopping.payment.error: お支払方法が異なるためこの配送方法は選択できません。
 front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
 front.shopping.system.error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
 
