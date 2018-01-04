@@ -409,21 +409,16 @@ class CsvImportController
      */
     public function csvCategory(Application $app, Request $request)
     {
-
         $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getCategoryCsvHeader();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
-
             if ($form->isValid()) {
-
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
-
                     log_info('カテゴリCSV登録開始');
 
                     $data = $this->getImportData($app, $formFile);
@@ -433,9 +428,12 @@ class CsvImportController
                         return $this->render($app, $form, $headers, $this->categoryTwig);
                     }
 
-                    $keys = array_keys($headers);
+                    /**
+                     * Checking the header for the data column flexible.
+                     */
+                    $requireHeader = array('カテゴリ名');
                     $columnHeaders = $data->getColumnHeaders();
-                    if ($keys !== $columnHeaders) {
+                    if (count(array_diff($requireHeader, $columnHeaders)) > 0) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
 
                         return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -448,8 +446,6 @@ class CsvImportController
                         return $this->render($app, $form, $headers, $this->categoryTwig);
                     }
 
-                    $headerSize = count($keys);
-
                     $this->em = $app['orm.em'];
                     $this->em->getConfiguration()->setSQLLogger(null);
 
@@ -457,16 +453,9 @@ class CsvImportController
 
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-
-                        if ($headerSize != count($row)) {
-                            $this->addErrors(($data->key() + 1).'行目のCSVフォーマットが一致しません。');
-
-                            return $this->render($app, $form, $headers, $this->categoryTwig);
-                        }
-
-                        if ($row['カテゴリID'] == '') {
-                            $Category = new Category();
-                        } else {
+                        /** @var $Category Category */
+                        $Category = new Category();
+                        if (isset($row['カテゴリID']) && strlen($row['カテゴリID']) > 0) {
                             if (!preg_match('/^\d+$/', $row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1).'行目のカテゴリIDが存在しません。');
 
@@ -483,10 +472,9 @@ class CsvImportController
 
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-
                         }
 
-                        if (Str::isBlank($row['カテゴリ名'])) {
+                        if (!isset($row['カテゴリ名']) || Str::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1).'行目のカテゴリ名が設定されていません。');
 
                             return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -510,7 +498,6 @@ class CsvImportController
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
                         }
-
                         $Category->setParent($ParentCategory);
 
                         // Level
@@ -536,48 +523,46 @@ class CsvImportController
                         }
 
                         // カテゴリ削除フラグ対応
-                        if ($row['カテゴリ削除フラグ'] == '') {
-                            $Category->setDelFlg(Constant::DISABLED);
-                            $status = $app['eccube.repository.category']->save($Category);
-                        } else {
-                            if ($row['カテゴリ削除フラグ'] == (string)Constant::DISABLED || $row['カテゴリ削除フラグ'] == (string)Constant::ENABLED) {
-                                $Category->setDelFlg($row['カテゴリ削除フラグ']);
-                            } else {
-                                $this->addErrors(($data->key() + 1).'行目のカテゴリ削除フラグが設定されていません。');
+                        if (isset($row['カテゴリ削除フラグ']) && Str::isNotBlank($row['カテゴリ削除フラグ'])) {
+                            $Category->setDelFlg($row['カテゴリ削除フラグ']);
+                            $status = true;
+                            switch ($row['カテゴリ削除フラグ']) {
+                                case (string)Constant::DISABLED:
+                                    break;
+
+                                case (string)Constant::ENABLED:
+                                    $status = $app['eccube.repository.category']->delete($Category);
+                                    break;
+
+                                default:
+                                    $this->addErrors(($data->key() + 1).'行目のカテゴリ削除フラグが設定されていません。');
+
+                                    return $this->render($app, $form, $headers, $this->categoryTwig);
+                                    break;
+                            }
+
+                            if (!$status) {
+                                $this->addErrors(($data->key() + 1).'行目のカテゴリが、子カテゴリまたは商品が紐付いているため削除できません。');
 
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-                            if ($row['カテゴリ削除フラグ'] == (string)Constant::ENABLED) {
-                                $status = $app['eccube.repository.category']->delete($Category);
-                                if (!$status) {
-                                    $this->addErrors(($data->key() + 1).'行目のカテゴリが、子カテゴリまたは商品が紐付いているため削除できません。');
-
-                                    return $this->render($app, $form, $headers, $this->categoryTwig);
-                                }
-                            } else {
-                                $status = $app['eccube.repository.category']->save($Category);
-                            }
-                        }
-                        if (!$status) {
-                            $this->addErrors(($data->key() + 1).'行目のカテゴリが設定できません。');
+                        } else {
+                            $Category->setDelFlg(Constant::DISABLED);
                         }
 
                         if ($this->hasErrors()) {
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
-                        $this->em->persist($Category);
-
+                        $app['eccube.repository.category']->save($Category);
                     }
 
-                    $this->em->flush();
                     $this->em->getConnection()->commit();
 
                     log_info('カテゴリCSV登録完了');
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
-
             }
         }
 
