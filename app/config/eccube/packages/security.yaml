@@ -10,8 +10,8 @@ security:
         # In this example, users are stored via Doctrine in the database
         # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
         # To load users from somewhere else: https://symfony.com/doc/current/security/custom_provider.html
-        database_users:
-            entity: { class: Eccube\Entity\Member, property: login_id }
+        member_provider:
+            id: Eccube\Security\Core\User\MemberProvider
 
     # https://symfony.com/doc/current/security.html#initial-security-yml-setup-authentication
     firewalls:
@@ -34,7 +34,7 @@ security:
                 # session (for example when the users access directly to the login page).
                 username_parameter: 'login_id'
                 password_parameter: 'password'
-          provider: database_users
+          provider: member_provider
         customer:
             # this firewall applies to all URLs
             pattern: ^/
