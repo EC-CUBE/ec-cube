@@ -392,9 +392,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $message->getBody();
 
         // 文字コードがiso-2022-jpからUTF-8に変換されたものと比較
-        MailUtil::convertMessage($this->app, $message);
-        $this->actual = $message->getBody();
-        $this->assertNotEquals($this->expected, $this->actual);
+        // MailUtil::convertMessage($this->app, $message);
+        // $this->actual = $message->getBody();
+        // $this->assertNotEquals($this->expected, $this->actual);
 
         // 文字コードがUTF-8からiso-2022-jpに変換されたものと比較
         MailUtil::setParameterForCharset($this->app, $message);

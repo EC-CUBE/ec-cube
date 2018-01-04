@@ -57,8 +57,7 @@ class MailUtil
         if (MailUtil::isISO2022JP($app)) {
             $message
                 ->setCharset($toEncoding)
-                ->setEncoder(new \Swift_Mime_ContentEncoder_PlainContentEncoder('7bit'))
-                ->setMaxLineLength(0);
+                ->setEncoder(new \Swift_Mime_ContentEncoder_PlainContentEncoder('7bit'));
 
             $body = mb_convert_encoding($message->getBody(), $toEncoding, $fromEncoding);
             $message->setBody($body);
