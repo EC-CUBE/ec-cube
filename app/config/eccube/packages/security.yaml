@@ -34,6 +34,7 @@ security:
                 # session (for example when the users access directly to the login page).
                 username_parameter: 'login_id'
                 password_parameter: 'password'
+                use_forward: true
           provider: member_provider
         customer:
             # this firewall applies to all URLs
