@@ -32,19 +32,13 @@
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-    $(function() {
-        $('#zip-search').click(function() {
-            AjaxZip3.zip2addr('admin_customer[zip][zip01]', 'admin_customer[zip][zip02]', 'admin_customer[address][pref]', 'admin_customer[address][addr01]');
-        });
-    });
-</script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
+    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}" class="h-adr">
+        <span class="p-country-name" style="display:none;">Japan</span>
         {{ form_widget(form._token) }}
         <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box accordion">
@@ -96,7 +90,6 @@
                                 {{ form_errors(form.zip) }}
                                 {{ form_errors(form.zip.zip01) }}
                                 {{ form_errors(form.zip.zip02) }}
-                                <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
                         {# 住所：都道府県 #}

@@ -53,26 +53,24 @@ class ShopController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $app['orm.em']->persist($BaseInfo);
-                $app['orm.em']->flush();
+        $form->handleRequest($request);
 
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'BaseInfo' => $BaseInfo,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $app['orm.em']->persist($BaseInfo);
+            $app['orm.em']->flush();
 
-                $app->addSuccess('admin.shop.save.complete', 'admin');
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'BaseInfo' => $BaseInfo,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
 
-                return $app->redirect($app->url('admin_setting_shop'));
-            }
-            $app->addError('admin.shop.save.error', 'admin');
+            $app->addSuccess('admin.shop.save.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_shop'));
         }
 
         $app['twig']->addGlobal('BaseInfo', $CloneInfo);

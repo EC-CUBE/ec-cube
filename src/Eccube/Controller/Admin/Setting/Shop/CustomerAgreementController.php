@@ -55,29 +55,27 @@ class CustomerAgreementController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $Help = $form->getData();
-                $app['orm.em']->persist($Help);
+        $form->handleRequest($request);
 
-                $app['orm.em']->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $Help = $form->getData();
+            $app['orm.em']->persist($Help);
 
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Help' => $Help,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE, $event);
+            $app['orm.em']->flush();
 
-                $app->addSuccess('admin.register.complete', 'admin');
-                return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Help' => $Help,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE, $event);
 
-            } else {
-                $app->addError('admin.register.failed', 'admin');
-            }
+            $app->addSuccess('admin.register.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
+
         }
 
         return $app->render('Setting/Shop/customer_agreement.twig', array(

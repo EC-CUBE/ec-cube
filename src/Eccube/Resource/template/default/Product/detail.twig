@@ -36,13 +36,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
 
-    {% if form.classcategory_id2 is defined %}
-    fnSetClassCategories(
-            document.form1, {{ form.classcategory_id2.vars.value|json_encode|raw }}
-    );
-    {% elseif form.classcategory_id1 is defined %}
-          eccube.checkStock(document.form1, {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode|raw }}, null);
-    {% endif %}
+    $(function() {
+
+        {% if form.classcategory_id2 is defined %}
+        fnSetClassCategories(
+            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode|raw }}
+        );
+        {% elseif form.classcategory_id1 is defined %}
+              eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode|raw }}, null);
+        {% endif %}
+    });
 </script>
 
 <script>
