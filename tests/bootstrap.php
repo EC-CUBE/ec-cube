@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$loader = require __DIR__ . '/../autoload.php';
-$loader->add('Eccube\Tests', __DIR__);
+$loader = require __DIR__ . '/../vendor/autoload.php';
 
-$GLOBALS['eccube.autoloader'] = $loader;
-
-if (file_exists(sys_get_temp_dir().'/migrations.sql')) {
-    unlink(sys_get_temp_dir().'/migrations.sql');
+$envFile = __DIR__.'/../.env';
+if (file_exists($envFile)) {
+    (new \Symfony\Component\Dotenv\Dotenv())->load($envFile);
 }

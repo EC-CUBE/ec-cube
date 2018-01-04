@@ -15,10 +15,10 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
+use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Plugin\ConfigManager;
-use Pimple\ServiceProviderInterface;
-use Silex\Api\BootableProviderInterface;
-use Silex\Api\EventListenerProviderInterface;
+use Eccube\ServiceProvider\ServiceProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -33,7 +33,6 @@ class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
-    protected $providers = [];
     protected $app;
 
     public function getCacheDir(): string
@@ -57,25 +56,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * Registers a service provider.
-     *
-     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values   An array of values that customizes the provider
-     *
-     * @return Application
-     */
-    public function register(ServiceProviderInterface $provider, array $values = array())
-    {
-        // TODO
-        $this->providers[] = $provider;
-
-        $app = $this->container->get('app');
-        $app->register($provider, $values);
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
      */
@@ -86,32 +66,15 @@ class Kernel extends BaseKernel
 
         parent::boot();
 
-        // Symfony で用意されているコンポーネントはここで追加
-        $app = Application::getInstance();
-        $em = $this->container->get('doctrine')->getManager();
-        $app['orm.em'] = function () use ($em) {
-            return $em;
-        };
-         // TODO
-        $app['config'] = function () {
-            if ($this->container->hasParameter('eccube.app')) {
-                return $this->container->getParameter('eccube.app');
-            }
+        // DateTime/DateTimeTzのタイムゾーンを設定.
+        UTCDateTimeType::setTimeZone($this->container->getParameter('timezone'));
+        UTCDateTimeTzType::setTimeZone($this->container->getParameter('timezone'));
 
-            return [];
-        };
-        $app['debug'] = true;
-
-        // see Silex\Application::boot()
-        foreach ($this->providers as $provider) {
-            if ($provider instanceof EventListenerProviderInterface) {
-                $provider->subscribe($this->app, $this->container->get('event_dispatcher'));
-            }
-
-            if ($provider instanceof BootableProviderInterface) {
-                $provider->boot($this->app);
-            }
-        }
+        // Activate to $app
+        $app = Application::getInstance(['debug' => $this->isDebug()]);
+        $app->setParentContainer($this->container);
+        $app->initialize();
+        $app->boot();
 
         $this->container->set('app', $app);
     }
@@ -133,23 +96,32 @@ class Kernel extends BaseKernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
+        $container = $this->getContainer();
+
+        $scheme = $container->getParameter('eccube.scheme');
+        $routes->setSchemes($scheme);
+
         $confDir = dirname(__DIR__).'/../app/config/eccube';
         if (is_dir($confDir.'/routes/')) {
-            $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder = $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder->setSchemes($scheme);
         }
         if (is_dir($confDir.'/routes/'.$this->environment)) {
-            $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder = $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+            $builder->setSchemes($scheme);
         }
-        $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+        $builder = $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+        $builder->setSchemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
-        if ($this->getContainer()->hasParameter('eccube.plugins.enabled')) {
-            $plugins = $this->getContainer()->getParameter('eccube.plugins.enabled');
+        if ($container->hasParameter('eccube.plugins.enabled')) {
+            $plugins = $container->getParameter('eccube.plugins.enabled');
             $pluginDir = dirname(__DIR__).'/../app/Plugin';
             foreach ($plugins as $plugin) {
                 $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
                 if (file_exists($dir)) {
-                    $routes->import($dir, '/', 'annotation');
+                    $builder = $routes->import($dir, '/', 'annotation');
+                    $builder->setSchemes($scheme);
                 }
             }
         }
@@ -169,15 +141,9 @@ class Kernel extends BaseKernel
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
 
-        // Pimple の ServiceProvider を追加
-        // $container->register('ServiceProviderCache', 'ServiceProviderCache');
-        // $container->register('EccubeServiceProvider', '\Eccube\ServiceProvider\EccubeServiceProvider');
-        // $this->providers[] = new \Eccube\ServiceProvider\EccubeServiceProvider(); // FIXME
         $container->register('app', Application::class)
             ->setSynthetic(true)
             ->setPublic(true);
-        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('ServiceProviderCache')])
-        // ->addMethodCall('register', [new \Symfony\Component\DependencyInjection\Reference('EccubeServiceProvider')]);
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)

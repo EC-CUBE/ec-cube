@@ -1,12 +1,17 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'en'
+    locale: 'ja'
+    timezone: 'Asia/Tokyo'
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
+    base_currency_code: 'JPY'
+    currency_code: '%base_currency_code%'
     app.notifications.email_sender: anonymous@example.com
     admin_route: 'admin'
-
+    user_data_route: 'user_data'
+    eccube.scheme: 'http'
+    eccube.theme: 'default'
     eccube.twig.block.templates:
       - render_blocks.twig
 
@@ -22,6 +27,7 @@ services:
         public: false
 
         bind:
+          $admin_route: '%admin_route%'
           $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
           $auth_type: 'HMAC'
           $password_hash_algos: 'sha256'
@@ -34,7 +40,7 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DataCollector,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource}'
+        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
 
     Eccube\Service\TaxRuleService:
         lazy: true
@@ -74,7 +80,16 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags: ['twig.extension']
+
+    eccube.collector.core:
+        class: Eccube\DataCollector\EccubeDataCollector
+        tags:
+          - { name: 'data_collector', template: '@toolbar/eccube.html.twig', id: 'eccube_core', priority: -512 }
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly

@@ -5,7 +5,7 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap.php"
 >
     <php>
         <ini name="error_reporting" value="-1" />
@@ -14,6 +14,7 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
         <!-- define your env variables for the test env here -->
     </php>
 

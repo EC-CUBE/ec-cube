@@ -24,62 +24,63 @@
 
 namespace Eccube\ServiceProvider;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber;
-use Eccube\Entity\BaseInfo;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Service\Cart\CartItemAllocator;
-use Eccube\Service\Cart\CartItemComparator;
-use Eccube\Service\Cart\ProductClassComparator;
-use Eccube\Service\Cart\SaleTypeCartAllocator;
-use Eccube\Service\TaxRuleService;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-use Silex\Api\EventListenerProviderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Eccube\Application;
 
-class EccubeServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
+class EccubeServiceProvider implements ServiceProviderInterface
 {
     /**
-     * Registers services on the given app.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param BaseApplication $app An Application instance
+     * {@inheritdoc}
      */
-    public function register(Container $app)
+    public function register(Application $app)
     {
-        $app[BaseInfo::class] = function () use ($app) {
-            return $app[BaseInfoRepository::class]->get();
-        };
+        $app['orm.em'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('doctrine')->getManager();
+        });
 
-        $app['request_scope'] = function () {
-            return new ParameterBag();
-        };
+        $app['config'] = $app->share(function () use ($app) {
+            if ($app->getParentContainer()->hasParameter('eccube.app')) {
+                $EccubeApplication = $app->getParentContainer()->getParameter('eccube.app');
+                return $EccubeApplication['config'];
+            }
 
-        // Application::initRenderingと一緒に修正
-        $app['eccube.twig.block.templates'] = function () {
-            $templates = new ArrayCollection();
-            $templates[] = 'render_block.twig';
+            return [];
+        });
 
-            return $templates;
-        };
+        $app['monolog.logger'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('logger');
+        });
+        $app['monolog'] = $app->share(function () use ($app) {
+            return $app['monolog.logger'];
+        });
 
-        $app[CartItemComparator::class] = function() {
-            return new ProductClassComparator();
-        };
+        $app['session'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('session');
+        });
 
-        $app[CartItemAllocator::class] = function() {
-            return new SaleTypeCartAllocator();
-        };
+        $app['form.factory'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('form.factory');
+        });
+
+        $app['security'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('security.token_storage');
+        });
+
+        $app['user'] = $app->share(function () use ($app) {
+            return $app['security']->getToken()->getUser();
+        });
+
+        $app['dispatcher'] = $app->share(function () use ($app) {
+            return $app->getParentContainer()->get('event_dispatcher');
+        });
+        $app['eccube.event.dispatcher'] = $app->share(function () use ($app) {
+            return $app['dispatcher'];
+        });
     }
 
-    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
     {
-        // Add event subscriber to TaxRuleEvent
-        // initDoctrineのタイミングでは、TaxRuleServiceが定義されていないため, ここで追加.
-        $app['orm.em']->getEventManager()->addEventSubscriber(new TaxRuleEventSubscriber($app[TaxRuleService::class]));
     }
 }

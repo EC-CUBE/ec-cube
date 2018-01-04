@@ -2,62 +2,81 @@
 
 namespace Eccube\Application;
 
-use Eccube\Event\TemplateEvent;
-use Monolog\Logger;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 trait ApplicationTrait
 {
     /**
      * Application Shortcut Methods
+     * @deprecated
      */
     public function addSuccess($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
     }
 
+    /**
+     * @deprecated
+     */
     public function addError($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
     }
 
+    /**
+     * @deprecated
+     */
     public function addDanger($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
     }
 
+    /**
+     * @deprecated
+     */
     public function addWarning($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
     }
 
+    /**
+     * @deprecated
+     */
     public function addInfo($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
     }
 
+    /**
+     * @deprecated
+     */
     public function addRequestError($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
     }
 
+    /**
+     * @deprecated
+     */
     public function clearMessage()
     {
         $this['session']->getFlashBag()->clear();
     }
 
+    /**
+     * @deprecated
+     */
     public function deleteMessage()
     {
         $this->clearMessage();
         $this->addWarning('admin.delete.warning', 'admin');
     }
 
+    /**
+     * @deprecated
+     */
     public function setLoginTargetPath($targetPath, $namespace = null)
     {
         if (is_null($namespace)) {
@@ -83,6 +102,7 @@ trait ApplicationTrait
      * @param string $path フォワード先のパス
      * @param array $requestParameters
      * @return Response
+     * @deprecated
      */
     public function forward($path, array $requestParameters = [])
     {
@@ -110,6 +130,7 @@ trait ApplicationTrait
      * @param array $requestParameters
      * @param Response $response
      * @return Application
+     * @deprecated
      */
     public function forwardChain($path, array $requestParameters = [], Response &$response = null)
     {

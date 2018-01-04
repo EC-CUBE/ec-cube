@@ -20,9 +20,6 @@
             "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
         }
     },
-    "dflydev/doctrine-orm-service-provider": {
-        "version": "v2.0.1"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -128,11 +125,11 @@
     "justinrainbow/json-schema": {
         "version": "5.2.6"
     },
-    "knplabs/console-service-provider": {
-        "version": "v2.1.0"
-    },
     "knplabs/knp-components": {
         "version": "1.3.5"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v2.7.1"
     },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
@@ -151,9 +148,6 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
-    },
-    "pagerfanta/pagerfanta": {
-        "version": "v1.0.5"
     },
     "paragonie/random_compat": {
         "version": "v2.0.11"
@@ -181,15 +175,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.0"
-    },
-    "saxulum/saxulum-doctrine-orm-manager-registry-provider": {
-        "version": "3.1.0"
-    },
-    "saxulum/saxulum-validator-provider": {
-        "version": "2.1.1"
-    },
-    "saxulum/saxulum-webprofiler-provider": {
-        "version": "2.0.0"
     },
     "seld/cli-prompt": {
         "version": "1.0.3"
@@ -221,11 +206,14 @@
             "ref": "576d653444dade07f272c889d52fe4594caa4fc3"
         }
     },
-    "silex/silex": {
-        "version": "v2.2.0"
-    },
-    "silex/web-profiler": {
-        "version": "v2.0.9"
+    "suncat/mobile-detect-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "8284b33273c99974ef84c7e544e94aefac1a4c7f"
+        }
     },
     "swiftmailer/swiftmailer": {
         "version": "v5.4.8"
@@ -481,9 +469,6 @@
     },
     "twig/twig": {
         "version": "v2.4.4"
-    },
-    "white-october/pagerfanta-bundle": {
-        "version": "v1.1.1"
     },
     "zendframework/zend-code": {
         "version": "3.3.0"

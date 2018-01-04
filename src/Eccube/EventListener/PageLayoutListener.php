@@ -42,6 +42,11 @@ class PageLayoutListener implements EventSubscriberInterface
     {
         $route = $event->getRequest()->attributes->get('_route');
 
+        // TODO
+        $menus = array('', '', '');
+        $this->twig->addGlobal('menus', $menus);
+        $this->twig->addGlobal('AuthorityRoles', []);
+
         $this->twig->addGlobal(
             'BaseInfo',
             $this->em->find(\Eccube\Entity\BaseInfo::class, 1));

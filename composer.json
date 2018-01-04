@@ -2,7 +2,7 @@
     "name": "ec-cube/ec-cube",
     "description": "EC-CUBE EC open platform.",
     "type": "project",
-    "homepage": "http://www.ec-cube.net/",
+    "homepage": "https://www.ec-cube.net/",
     "license": [
        "GPL-2.0",
        "Commercial"
@@ -11,19 +11,12 @@
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/EC-CUBE/sensio-framework-extra-service-provider"
-        }
-    ],
     "require": {
         "php": "^7.0.8",
         "ext-intl": "^1.1",
         "ext-mbstring": "*",
         "composer/ca-bundle": "^1.0",
         "composer/composer": "^1.5",
-        "dflydev/doctrine-orm-service-provider": "^2.0",
         "doctrine/data-fixtures": "^1.2",
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "doctrine/migrations": "^1.5",
@@ -31,18 +24,14 @@
         "egulias/email-validator": "^2.1",
         "guzzlehttp/guzzle": "^6.2",
         "hirak/prestissimo": "^0.3.7",
-        "knplabs/console-service-provider": "^2.1",
-        "knplabs/knp-components": "^1.3",
+        "knplabs/knp-paginator-bundle": "^2.7",
         "mobiledetect/mobiledetectlib": "^2.8",
         "nesbot/carbon": "^1.22",
+        "pimple/pimple": "^1.1",
         "psr/log": "^1.0",
-        "saxulum/saxulum-doctrine-orm-manager-registry-provider": "^3.1",
-        "saxulum/saxulum-validator-provider": "^2.1",
-        "saxulum/saxulum-webprofiler-provider": "^2.0",
         "sensio/framework-extra-bundle": "^5.1",
         "sensio/generator-bundle": "^3.1",
-        "silex/silex": "^2.2",
-        "silex/web-profiler": "^2.0",
+        "suncat/mobile-detect-bundle": "^1.0",
         "swiftmailer/swiftmailer": "^6.0",
         "symfony/asset": "^3.4",
         "symfony/class-loader": "^3.4",
@@ -64,7 +53,6 @@
         "symfony/inflector": "^3.4",
         "symfony/intl": "^3.4",
         "symfony/lts": "^3.0",
-        "symfony/maker-bundle": "^1.0",
         "symfony/monolog-bridge": "^3.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/options-resolver": "^3.4",
@@ -83,8 +71,7 @@
         "symfony/validator": "^3.4",
         "symfony/var-dumper": "^3.4",
         "symfony/web-profiler-bundle": "^3.4",
-        "symfony/yaml": "^3.4",
-        "white-october/pagerfanta-bundle": "^1.1"
+        "symfony/yaml": "^3.4"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^4.0",
@@ -94,6 +81,7 @@
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^2.0",
         "symfony/browser-kit": "^3.4",
+        "symfony/maker-bundle": "^1.0",
         "symfony/web-server-bundle": "^3.4"
     },
     "autoload": {
@@ -105,8 +93,7 @@
             "Eccube\\Entity\\": "app/proxy/entity",
             "Acme\\": "app/Acme",
             "Eccube\\": "src/Eccube",
-            "Plugin\\": "app/Plugin",
-            "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
+            "Plugin\\": "app/Plugin"
         },
         "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
     },
@@ -139,7 +126,11 @@
             "id": "01C0Q71D54BCVSB8ZWR3VECDRD",
             "allow-contrib": false
         },
-        "symfony-web-dir": "."
+        "symfony-web-dir": ".",
+        "bin-dir": "bin",
+        "src-dir": "src/Eccube",
+        "config-dir": "app/config/eccube",
+        "public-dir": "."
     },
     "config": {
         "platform": {
