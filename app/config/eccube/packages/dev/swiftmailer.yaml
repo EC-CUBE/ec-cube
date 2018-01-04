@@ -1,2 +1,7 @@
 #swiftmailer:
     #delivery_address: me@example.com
+swiftmailer:
+    transport: '%env(ECCUBE_MAIL_TRANSPORT)%'
+    url: '%env(ECCUBE_MAIL_HOST)%'
+    port: '%env(ECCUBE_MAIL_PORT)%'
+    spool: { type: 'memory' }

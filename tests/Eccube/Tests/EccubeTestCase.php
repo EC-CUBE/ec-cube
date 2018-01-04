@@ -2,9 +2,6 @@
 
 namespace Eccube\Tests;
 
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
-use Eccube\Application;
 use Eccube\Entity\Customer;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client;

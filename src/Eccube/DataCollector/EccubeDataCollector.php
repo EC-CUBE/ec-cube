@@ -3,8 +3,8 @@
 namespace Eccube\DataCollector;
 
 use Eccube\Common\Constant;
-use Eccube\Repository\PluginRepository;
 use Eccube\Plugin\ConfigManager;
+use Eccube\Repository\PluginRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

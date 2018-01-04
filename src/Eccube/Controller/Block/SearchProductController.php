@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Block;
 
-use Eccube\Annotation\Inject;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\SearchProductBlockType;

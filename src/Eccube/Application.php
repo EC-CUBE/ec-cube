@@ -23,8 +23,8 @@
 
 namespace Eccube;
 
-use Psr\Container\ContainerInterface;
 use Eccube\ServiceProvider\ServiceProviderInterface;
+use Psr\Container\ContainerInterface;
 
 class Application extends \Pimple
 {
