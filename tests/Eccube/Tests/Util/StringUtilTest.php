@@ -5,6 +5,7 @@ namespace Eccube\Tests\Util;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Error\Deprecated;
 
 /**
  * Str test cases.
@@ -18,7 +19,6 @@ class StringUtilTest extends TestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
     }
 
     public function testRandom()
@@ -327,7 +327,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithObject()
     {
@@ -338,7 +339,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArray()
     {
@@ -349,7 +351,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayGreedy()
     {
@@ -361,7 +364,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayGreedy2()
     {
@@ -373,7 +377,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayGreedy3()
     {
@@ -385,7 +390,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation  \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsNotBlankWithArray()
     {
@@ -396,7 +402,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayCollectionEmpty()
     {
@@ -407,7 +414,8 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @group legacy
+     * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
     public function testIsBlankWithArrayCollectionNotEmpty()
     {
