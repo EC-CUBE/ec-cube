@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\MailHistory;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Util\MailUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -125,7 +126,7 @@ class MailController
                         // メール送信
                         $message = $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
 
-                        $app['eccube.service.mail']->convertMessage($message);
+                        MailUtil::convertMessage($app, $message);
 
                         // 送信履歴を保存.
                         $MailTemplate = $form->get('template')->getData();
@@ -306,7 +307,7 @@ class MailController
                             // メール送信
                             $message = $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
 
-                            $app['eccube.service.mail']->convertMessage($message);
+                            MailUtil::convertMessage($app, $message);
 
                             // 送信履歴を保存.
                             $MailTemplate = $form->get('template')->getData();

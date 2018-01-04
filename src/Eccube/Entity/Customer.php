@@ -24,7 +24,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Eccube\Common\Constant;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -1062,7 +1061,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Add Orders
      *
-     * @param  \Eccube\Entity\Orders $order
+     * @param  \Eccube\Entity\Order $order
      * @return Customer
      */
     public function addOrder(\Eccube\Entity\Order $order)
@@ -1075,7 +1074,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Remove Orders
      *
-     * @param \Eccube\Entity\Orders $order
+     * @param \Eccube\Entity\Order $order
      */
     public function removeOrder(\Eccube\Entity\Order $order)
     {

@@ -2,14 +2,15 @@
 
 namespace Eccube\Tests\Fixture;
 
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
-use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\PageLayout;
@@ -20,10 +21,8 @@ use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
-use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
-use Eccube\Entity\Member;
-use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Shipping;
 use Faker\Factory as Faker;
 
 /**

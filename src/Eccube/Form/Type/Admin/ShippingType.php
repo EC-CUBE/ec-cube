@@ -27,7 +27,6 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -85,6 +84,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
+                    'attr' => array('class' => 'p-postal-code'),
                 ),
             ))
             ->add('address', 'address', array(
@@ -93,6 +93,7 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
+                    'attr' => array('class' => 'p-region-id'),
                 ),
                 'addr01_options' => array(
                     'constraints' => array(
@@ -101,6 +102,7 @@ class ShippingType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
+                    'attr' => array('class' => 'p-locality p-street-address'),
                 ),
                 'addr02_options' => array(
                     'required' => false,
@@ -110,6 +112,7 @@ class ShippingType extends AbstractType
                             'max' => $config['mtext_len'],
                         )),
                     ),
+                    'attr' => array('class' => 'p-extended-address'),
                 ),
             ))
             ->add('tel', 'tel', array(

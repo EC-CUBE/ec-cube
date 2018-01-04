@@ -24,7 +24,6 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Application;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
 

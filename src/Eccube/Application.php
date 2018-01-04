@@ -28,6 +28,7 @@ use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
+use Eccube\Util\MailUtil;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -151,19 +152,30 @@ class Application extends ApplicationTrait
                 return;
             }
 
-            switch ($code) {
-                case 403:
-                    $title = 'アクセスできません。';
-                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
-                    break;
-                case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
-                    break;
-                default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-                    break;
+            $title = 'システムエラーが発生しました。';
+            $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                switch ($code)
+                {
+                    case 400:
+                    case 401:
+                    case 403:
+                    case 405:
+                    case 406:
+                        $title = 'アクセスできません。';
+                        if ($e->getMessage()) {
+                            $message = $e->getMessage();
+                        } else {
+                            $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                        }
+                        break;
+                    case 404:
+                        $title = 'ページがみつかりません。';
+                        $message = 'URLに間違いがないかご確認ください。';
+                        break;
+                    default:
+                        break;
+                }
             }
 
             return $app->render('error.twig', array(
@@ -391,17 +403,14 @@ class Application extends ApplicationTrait
 
     public function initMailer()
     {
-
         // メール送信時の文字エンコード指定(デフォルトはUTF-8)
-        if (isset($this['config']['mail']['charset_iso_2022_jp']) && is_bool($this['config']['mail']['charset_iso_2022_jp'])) {
-            if ($this['config']['mail']['charset_iso_2022_jp'] === true) {
-                \Swift::init(function () {
-                    \Swift_DependencyContainer::getInstance()
-                        ->register('mime.qpheaderencoder')
-                        ->asAliasOf('mime.base64headerencoder');
-                    \Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
-                });
-            }
+        if (MailUtil::isISO2022JP($this)) {
+            \Swift::init(function () {
+                \Swift_DependencyContainer::getInstance()
+                    ->register('mime.qpheaderencoder')
+                    ->asAliasOf('mime.base64headerencoder');
+                \Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
+            });
         }
 
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
@@ -767,6 +776,12 @@ class Application extends ApplicationTrait
 
         // Response Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+            // Set Header Security
+            $config = $app['config'];
+            if (isset($config['x_frame_options']) && !empty($config['x_frame_options'])) {
+                $event->getResponse()->headers->set('X-Frame-Options', $config['x_frame_options']);
+            }
+
             if (!$event->isMasterRequest()) {
                 return;
             }

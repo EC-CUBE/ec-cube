@@ -1,6 +1,8 @@
 <?php
 
 namespace Eccube\Tests\Service;
+use DoctrineProxy\__CG__\Eccube\Entity\MailTemplate;
+use Eccube\Util\MailUtil;
 
 /**
  * MailService test cases.
@@ -391,12 +393,12 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $message->getBody();
 
         // 文字コードがiso-2022-jpからUTF-8に変換されたものと比較
-        $this->app['eccube.service.mail']->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
         $this->actual = $message->getBody();
         $this->assertNotEquals($this->expected, $this->actual);
 
         // 文字コードがUTF-8からiso-2022-jpに変換されたものと比較
-        $this->app['eccube.service.mail']->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
         $this->actual = $message->getBody();
         $this->assertEquals($this->expected, $this->actual);
 
@@ -426,12 +428,12 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $message->getBody();
 
         // 変換されない
-        $this->app['eccube.service.mail']->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
         $this->actual = $message->getBody();
         $this->verify();
 
         // 変換されない
-        $this->app['eccube.service.mail']->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
         $this->actual = $message->getBody();
         $this->verify();
 

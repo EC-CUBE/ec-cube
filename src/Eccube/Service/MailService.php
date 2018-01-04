@@ -24,14 +24,16 @@
 namespace Eccube\Service;
 
 use Eccube\Application;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Util\MailUtil;
 
 class MailService
 {
     /** @var \Eccube\Application */
     public $app;
-
 
     /** @var \Eccube\Entity\BaseInfo */
     public $BaseInfo;
@@ -46,12 +48,12 @@ class MailService
     /**
      * Send customer confirm mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
      * @param $activateUrl アクティベート用url
+     * @return int
      */
-    public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
+    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl)
     {
-
         log_info('仮会員登録メール送信開始');
 
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
@@ -69,7 +71,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -82,7 +84,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message, $failures);
 
@@ -94,9 +96,10 @@ class MailService
     /**
      * Send customer complete mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
+     * @return int
      */
-    public function sendCustomerCompleteMail(\Eccube\Entity\Customer $Customer)
+    public function sendCustomerCompleteMail(Customer $Customer)
     {
         log_info('会員登録完了メール送信開始');
 
@@ -114,7 +117,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -126,7 +129,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -139,10 +142,11 @@ class MailService
     /**
      * Send withdraw mail.
      *
-     * @param $Customer 会員情報
-     * @param $email 会員email
+     * @param Customer $Customer
+     * @param $email
+     * @return int
      */
-    public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, $email)
+    public function sendCustomerWithdrawMail(Customer $Customer, $email)
     {
         log_info('退会手続き完了メール送信開始');
 
@@ -160,7 +164,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -173,7 +177,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
 
-        $this->convertMessageSend($message);;
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -187,6 +191,7 @@ class MailService
      * Send contact mail.
      *
      * @param $formData お問い合わせ内容
+     * @return int
      */
     public function sendContactMail($formData)
     {
@@ -207,7 +212,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -219,7 +224,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CONTACT, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -244,10 +249,10 @@ class MailService
     /**
      * Send order mail.
      *
-     * @param \Eccube\Entity\Order $Order 受注情報
-     * @return string
+     * @param Order $Order 受注情報
+     * @return \Swift_Message
      */
-    public function sendOrderMail(\Eccube\Entity\Order $Order)
+    public function sendOrderMail(Order $Order)
     {
         log_info('受注メール送信開始');
 
@@ -268,7 +273,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -281,24 +286,24 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ORDER, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
         log_info('受注メール送信完了', array('count' => $count));
 
         return $message;
-
     }
 
 
     /**
      * Send admin customer confirm mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
      * @param $activateUrl アクティベート用url
+     * @return int
      */
-    public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
+    public function sendAdminCustomerConfirmMail(Customer $Customer, $activateUrl)
     {
         log_info('仮会員登録再送メール送信開始');
 
@@ -316,7 +321,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -329,7 +334,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -342,10 +347,11 @@ class MailService
     /**
      * Send admin order mail.
      *
-     * @param $Order 受注情報
+     * @param Order $Order 受注情報
      * @param $formData 入力内容
+     * @return \Swift_Message
      */
-    public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
+    public function sendAdminOrderMail(Order $Order, $formData)
     {
         log_info('受注管理通知メール送信開始');
 
@@ -364,7 +370,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -377,7 +383,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -389,9 +395,11 @@ class MailService
     /**
      * Send password reset notification mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
+     * @param $reset_url
+     * @return int
      */
-    public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
+    public function sendPasswordResetNotificationMail(Customer $Customer, $reset_url)
     {
         log_info('パスワード再発行メール送信開始');
 
@@ -408,7 +416,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -421,7 +429,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -433,9 +441,11 @@ class MailService
     /**
      * Send password reset notification mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
+     * @param $password
+     * @return int
      */
-    public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
+    public function sendPasswordResetCompleteMail(Customer $Customer, $password)
     {
         log_info('パスワード変更完了メール送信開始');
 
@@ -452,7 +462,7 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->convertMessage($message);
+        MailUtil::convertMessage($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -465,7 +475,7 @@ class MailService
         );
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
 
-        $this->convertMessageSend($message);
+        MailUtil::setParameterForCharset($this->app, $message);
 
         $count = $this->app->mail($message);
 
@@ -473,33 +483,4 @@ class MailService
 
         return $count;
     }
-
-    /**
-     * iso-2022-jpがmail.ymlで設定されていた場合、messageのcharsetを指定された文字コードに変換する
-     *
-     * @param \Swift_Message $message
-     * @param string $fromEncoding
-     * @param string $toEncoding
-     */
-    public function convertMessage(\Swift_Message $message, $fromEncoding = 'iso-2022-jp', $toEncoding = 'UTF-8')
-    {
-        if (isset($this->app['config']['mail']['charset_iso_2022_jp']) && is_bool($this->app['config']['mail']['charset_iso_2022_jp'])) {
-            if ($this->app['config']['mail']['charset_iso_2022_jp'] === true) {
-                $body = mb_convert_encoding($message->getBody(), $toEncoding, $fromEncoding);
-                $message->setCharset($toEncoding);
-                $message->setBody($body);
-            }
-        }
-    }
-
-    /**
-     * messageのcharsetをUTF-8からiso-2022-jpへ変換する
-     *
-     * @param \Swift_Message $message
-     */
-    public function convertMessageSend(\Swift_Message $message)
-    {
-        $this->convertMessage($message, 'UTF-8', 'iso-2022-jp');
-    }
-
 }
