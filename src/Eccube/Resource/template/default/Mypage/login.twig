@@ -30,12 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <div class="ec-off2Grid">
             <div class="ec-off2Grid__cell">
-                <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')">
-                    {% if app.session.flashBag.has('eccube.login.target.path') %}
-                        {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
-                            <input type="hidden" name="_target_path" value="{{ targetPath }}" />
-                        {% endfor %}
-                    {% endif %}
+                <form name="login_mypage" id="login_mypage" method="post" action="{{ url('mypage_login') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')">
+
 
                     <div class="ec-login">
                         <div class="ec-login__icon">
@@ -59,7 +55,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </label>
                             </div>
                             {% if error %}
-                                <p class="ec-errorMessage">{{ error|trans|raw }}</p>
+                                <p class="ec-errorMessage">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
                             {% endif %}
                         </div>
                         <div class="ec-grid2">

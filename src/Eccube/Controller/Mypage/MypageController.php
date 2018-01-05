@@ -29,6 +29,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -46,6 +47,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route(service=MypageController::class)
@@ -112,21 +114,21 @@ class MypageController extends AbstractController
      * @Route("/mypage/login", name="mypage_login")
      * @Template("Mypage/login.twig")
      */
-    public function login(Application $app, Request $request)
+    public function login(Request $request, AuthenticationUtils $utils)
     {
-        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             log_info('認証済のためログイン処理をスキップ');
 
-            return $app->redirect($app->url('mypage'));
+            return $this->redirectToRoute('mypage');
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 
-        if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $Customer = $app->user();
-            if ($Customer) {
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $Customer = $this->getUser();
+            if ($Customer instanceof Customer) {
                 $builder->get('login_email')->setData($Customer->getEmail());
             }
         }
@@ -142,7 +144,7 @@ class MypageController extends AbstractController
         $form = $builder->getForm();
 
         return [
-            'error' => $app['security.last_error']($request),
+            'error' => $utils->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
@@ -150,7 +152,7 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @Route("/mypage", name="mypage")
+     * @Route("/mypage/", name="mypage")
      * @Template("Mypage/index.twig")
      */
     public function index(Application $app, Request $request)
