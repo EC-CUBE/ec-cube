@@ -35,6 +35,7 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Service
@@ -43,13 +44,11 @@ class CartService
 {
     /**
      * @var Session
-     * @Inject("session")
      */
     protected $session;
 
     /**
      * @var EntityManager
-     * @Inject("orm.em")
      */
     protected $em;
 
@@ -81,6 +80,20 @@ class CartService
      * @var Cart[]
      */
     protected $carts;
+
+    public function __construct(
+        SessionInterface $session,
+        EntityManager $entityManager,
+        ProductClassRepository $productClassRepository,
+        CartItemComparator $cartItemComparator,
+        CartItemAllocator $cartItemAllocator
+    ) {
+        $this->session = $session;
+        $this->em = $entityManager;
+        $this->productClassRepository = $productClassRepository;
+        $this->cartItemComparator = $cartItemComparator;
+        $this->cartItemAllocator = $cartItemAllocator;
+    }
 
     public function getCarts()
     {
