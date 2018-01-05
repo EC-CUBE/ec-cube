@@ -64,8 +64,9 @@ class CustomerType extends AbstractType
      */
     protected $app;
 
-    public function __construct()
+    public function __construct($eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
 
     /**

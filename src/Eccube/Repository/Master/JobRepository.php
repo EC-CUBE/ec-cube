@@ -25,7 +25,7 @@
 namespace Eccube\Repository\Master;
 
 use Eccube\Annotation\Repository;
-use Eccube\Entity\Mster\Job;
+use Eccube\Entity\Master\Job;
 use Eccube\Repository\AbstractRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

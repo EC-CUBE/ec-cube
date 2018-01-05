@@ -24,10 +24,12 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -84,14 +86,22 @@ class CustomerEditController extends AbstractController
      */
     protected $encoderFactory;
 
+    public function __construct(CustomerRepository $customerRepository, EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, $eccubeConfig)
+    {
+        $this->customerRepository = $customerRepository;
+        $this->encoderFactory = $encoderFactory;
+        $this->entityManager = $em;
+        $this->appConfig = $eccubeConfig;
+    }
+
     /**
      * @Route("/%admin_route%/customer/new", name="admin_customer_new")
      * @Route("/%admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
-     * @Template("Customer/edit.twig")
+     * @Template("@admin/Customer/edit.twig")
      */
     public function index(Application $app, Request $request, $id = null)
     {
-        $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
+        //$this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
             $Customer = $this->customerRepository
@@ -182,13 +192,13 @@ class CustomerEditController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.customer.save.complete', 'admin');
+                $this->addSuccess('admin.customer.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_customer_edit', array(
+                return $this->redirectToRoute('admin_customer_edit', array(
                     'id' => $Customer->getId(),
-                )));
+                ));
             } else {
-                $app->addError('admin.customer.save.failed', 'admin');
+                $this->addError('admin.customer.save.failed', 'admin');
             }
         }
 

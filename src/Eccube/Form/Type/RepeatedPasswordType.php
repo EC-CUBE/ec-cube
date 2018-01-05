@@ -53,8 +53,9 @@ class RepeatedPasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
 
     /**
@@ -70,10 +71,10 @@ class RepeatedPasswordType extends AbstractType
             'options' => array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'min' => $this->appConfig['password_min_len'],
-                        'max' => $this->appConfig['password_max_len'],
-                    )),
+//                    new Assert\Length(array(
+//                        'min' => $this->appConfig['password_min_len'],
+//                        'max' => $this->appConfig['password_max_len'],
+//                    )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
@@ -82,7 +83,7 @@ class RepeatedPasswordType extends AbstractType
             ),
             'first_options' => array(
                 'attr' => array(
-                    'placeholder' => '半角英数字記号'.$this->appConfig['password_min_len'].'～'.$this->appConfig['password_max_len'].'文字',
+//                    'placeholder' => '半角英数字記号'.$this->appConfig['password_min_len'].'～'.$this->appConfig['password_max_len'].'文字',
                 ),
             ),
             'second_options' => array(
