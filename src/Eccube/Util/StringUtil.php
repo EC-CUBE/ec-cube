@@ -232,7 +232,7 @@ class StringUtil
         if (is_object($value)) {
             if ($value instanceof ArrayCollection) {
                 if ($value->isEmpty()) {
-                    @@trigger_error($deprecated, E_USER_DEPRECATED);
+                    @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
                 } else {
