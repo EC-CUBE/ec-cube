@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Fixture;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
@@ -25,22 +26,118 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\ClassNameRepository;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\Repository\DeliveryDurationRepository;
+use Eccube\Repository\MemberRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\PageRepository;
+use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Tests\EccubeTestCase;
 use Faker\Factory as Faker;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Fixture Object Generator.
  *
  * @author Kentaro Ohkouchi
  */
-class Generator {
-
-    protected $app;
+class Generator
+{
     protected $locale;
 
-    public function __construct($app, $locale = 'ja_JP') {
-        $this->app = $app;
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var PasswordEncoder
+     */
+    protected $passwordEncoder;
+
+    /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * @var ClassNameRepository
+     */
+    protected $classNameRepository;
+
+    /**
+     * @var ClassCategoryRepository
+     */
+    protected $classCategoryRepository;
+
+    /**
+     * @var DeliveryDurationRepository
+     */
+    protected $durationRepository;
+
+    /**
+     * @var DeliveryFeeRepository
+     */
+    protected $deliveryFeeRepository;
+
+    /**
+     * @var PaymentRepository;
+     */
+    protected $paymentRepository;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    protected $pageRepository;
+
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    public function __construct(
+        EntityManager $entityManager,
+        PasswordEncoder $passwordEncoder,
+        MemberRepository $memberRepository,
+        CategoryRepository $categoryRepository,
+        CustomerRepository $customerRepository,
+        ClassNameRepository $classNameRepository,
+        ClassCategoryRepository $classCategoryRepository,
+        DeliveryDurationRepository $durationRepository,
+        DeliveryFeeRepository $deliveryFeeRepository,
+        PaymentRepository $paymentRepository,
+        PageRepository $pageRepository,
+        TaxRuleRepository $taxRuleRepository,
+        SessionInterface $session,
+        $locale = 'ja_JP'
+    ) {
         $this->locale = $locale;
+        $this->entityManager = $entityManager;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->memberRepository = $memberRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->customerRepository = $customerRepository;
+        $this->classNameRepository = $classNameRepository;
+        $this->classCategoryRepository = $classCategoryRepository;
+        $this->durationRepository = $durationRepository;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->pageRepository = $pageRepository;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->session = $session;
     }
 
     /**
@@ -56,14 +153,13 @@ class Generator {
         if (is_null($username)) {
             $username = $faker->word;
         }
-        $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')->find(1);
-        $Authority = $this->app['eccube.repository.master.authority']->find(0);
-        $Creator = $this->app['eccube.repository.member']->find(2);
+        $Work = $this->entityManager->find(\Eccube\Entity\Master\Work::class, 1);
+        $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
+        $Creator = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
 
         $salt = bin2hex(openssl_random_pseudo_bytes(5));
         $password = 'password';
-        $encoder = $this->app['security.encoder_factory']->getEncoder($Member);
-        $password = $encoder->encodePassword($password, $salt);
+        $password = $this->passwordEncoder->encodePassword($password, $salt);
 
         $Member
             ->setLoginId($username)
@@ -73,7 +169,7 @@ class Generator {
             ->setWork($Work)
             ->setAuthority($Authority)
             ->setCreator($Creator);
-        $this->app['eccube.repository.member']->save($Member);
+        $this->memberRepository->save($Member);
         return $Member;
     }
 
@@ -92,23 +188,22 @@ class Generator {
         }
         $tel = explode('-', $faker->phoneNumber);
         $fax = explode('-', $faker->phoneNumber);
-        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
-        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
-        $Sex = $this->app['eccube.repository.master.sex']->find($faker->numberBetween(1, 2));
-        $Job = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->find($faker->numberBetween(1, 18));
+        $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
+        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
+        $Job = $this->entityManager->find(\Eccube\Entity\Master\Job::class, $faker->numberBetween(1, 18));
 
-        $encoder = $this->app['security.encoder_factory']->getEncoder($Customer);
-        $salt = $encoder->createSalt();
-        $password = $encoder->encodePassword('password', $salt);
+        $salt = $this->passwordEncoder->createSalt();
+        $password = $this->passwordEncoder->encodePassword('password', $salt);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setKana01(isset($faker->lastKanaName) ? $faker->lastKanaName : '')
-            ->setKana02(isset($faker->firstKanaName) ? $faker->firstKanaName : '')
+            ->setKana01($this->locale === 'ja_JP' ? $faker->lastKanaName : '')
+            ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01(isset($faker->postcode1) ? $faker->postcode1 : null)
-            ->setZip02(isset($faker->postcode2) ? $faker->postcode2 : null)
+            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
+            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
             ->setZipcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
@@ -124,22 +219,22 @@ class Generator {
             ->setJob($Job)
             ->setPassword($password)
             ->setSalt($salt)
-            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey())
+            ->setSecretKey($this->customerRepository->getUniqueSecretKey())
             ->setStatus($Status)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setPoint($faker->randomNumber(5));
-        $this->app['orm.em']->persist($Customer);
-        $this->app['orm.em']->flush($Customer);
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush($Customer);
 
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress->setCustomer($Customer);
         $CustomerAddress->copyProperties($Customer);
-        $this->app['orm.em']->persist($CustomerAddress);
-        $this->app['orm.em']->flush($CustomerAddress);
+        $this->entityManager->persist($CustomerAddress);
+        $this->entityManager->flush($CustomerAddress);
 
         $Customer->addCustomerAddress($CustomerAddress);
-        $this->app['orm.em']->flush($Customer);
+        $this->entityManager->flush($Customer);
         return $Customer;
     }
 
@@ -153,7 +248,7 @@ class Generator {
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
         $faker = $this->getFaker();
-        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $tel = explode('-', $faker->phoneNumber);
         $fax = explode('-', $faker->phoneNumber);
         $CustomerAddress = new CustomerAddress();
@@ -161,11 +256,11 @@ class Generator {
             ->setCustomer($Customer)
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setKana01(isset($faker->lastKanaName) ? $faker->lastKanaName : '')
-            ->setKana02(isset($faker->firstKanaName) ? $faker->firstKanaName : '')
+            ->setKana01($this->locale === 'ja_JP' ? $faker->lastKanaName : '')
+            ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
-            ->setZip01(isset($faker->postcode1) ? $faker->postcode1 : null)
-            ->setZip02(isset($faker->postcode2) ? $faker->postcode2 : null)
+            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
+            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
             ->setZipcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
@@ -180,15 +275,15 @@ class Generator {
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-            $customerAddresses = unserialize($this->app['session']->get($sessionCustomerAddressKey));
+            $customerAddresses = unserialize($this->session->get($sessionCustomerAddressKey));
             if (!is_array($customerAddresses)) {
                 $customerAddresses = array();
             }
             $customerAddresses[] = $CustomerAddress;
-            $this->app['session']->set($sessionCustomerAddressKey, serialize($customerAddresses));
+            $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
         } else {
-            $this->app['orm.em']->persist($CustomerAddress);
-            $this->app['orm.em']->flush($CustomerAddress);
+            $this->entityManager->persist($CustomerAddress);
+            $this->entityManager->flush($CustomerAddress);
         }
 
         return $CustomerAddress;
@@ -209,18 +304,18 @@ class Generator {
         if (is_null($email)) {
             $email = $faker->safeEmail;
         }
-        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
         $tel = explode('-', $faker->phoneNumber);
         $fax = explode('-', $faker->phoneNumber);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setKana01(isset($faker->lastKanaName) ? $faker->lastKanaName : '')
-            ->setKana02(isset($faker->firstKanaName) ? $faker->firstKanaName : '')
+            ->setKana01($this->locale === 'ja_JP' ? $faker->lastKanaName : '')
+            ->setKana02($this->locale === 'ja_JP' ? $faker->firstKanaName : '')
             ->setCompanyName($faker->company)
             ->setEmail($email)
-            ->setZip01(isset($faker->postcode1) ? $faker->postcode1 : null)
-            ->setZip02(isset($faker->postcode2) ? $faker->postcode2 : null)
+            ->setZip01($this->locale === 'ja_JP' ? $faker->postcode1 : null)
+            ->setZip02($this->locale === 'ja_JP' ? $faker->postcode2 : null)
             ->setZipcode($faker->postcode)
             ->setPref($Pref)
             ->setAddr01($faker->city)
@@ -240,11 +335,11 @@ class Generator {
         $nonMember = array();
         $nonMember['customer'] = $Customer;
         $nonMember['pref'] = $Customer->getPref()->getId();
-        $this->app['session']->set($sessionKey, $nonMember);
+        $this->session->set($sessionKey, $nonMember);
 
         $customerAddresses = array();
         $customerAddresses[] = $CustomerAddress;
-        $this->app['session']->set($sessionCustomerAddressKey, serialize($customerAddresses));
+        $this->session->set($sessionCustomerAddressKey, serialize($customerAddresses));
         return $Customer;
     }
 
@@ -263,10 +358,10 @@ class Generator {
     public function createProduct($product_name = null, $product_class_num = 3, $image_type = null)
     {
         $faker = $this->getFaker();
-        $Member = $this->app['eccube.repository.member']->find(2);
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
-        $DeliveryDurations = $this->app['eccube.repository.delivery_duration']->findAll();
+        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
+        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
+        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
+        $DeliveryDurations = $this->durationRepository->findAll();
 
         $Product = new Product();
         if (is_null($product_name)) {
@@ -282,8 +377,8 @@ class Generator {
             ->setDescriptionDetail($faker->realText());
         $Product->extendedParameter = "aaaa";
 
-        $this->app['orm.em']->persist($Product);
-        $this->app['orm.em']->flush($Product);
+        $this->entityManager->persist($Product);
+        $this->entityManager->flush($Product);
 
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
@@ -302,22 +397,22 @@ class Generator {
                 ->setSortNo($i)
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
-            $this->app['orm.em']->persist($ProductImage);
-            $this->app['orm.em']->flush($ProductImage);
+            $this->entityManager->persist($ProductImage);
+            $this->entityManager->flush($ProductImage);
             $Product->addProductImage($ProductImage);
         }
 
-        $ClassNames = $this->app['eccube.repository.class_name']->findAll();
+        $ClassNames = $this->classNameRepository->findAll();
         $ClassName1 = $ClassNames[$faker->numberBetween(0, count($ClassNames) - 1)];
         $ClassName2 = $ClassNames[$faker->numberBetween(0, count($ClassNames) - 1)];
         // 同じ ClassName が選択された場合は ClassName1 のみ
         if ($ClassName1->getId() === $ClassName2->getId()) {
             $ClassName2 = null;
         }
-        $ClassCategories1 = $this->app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName1));
+        $ClassCategories1 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName1));
         $ClassCategories2 = array();
         if (is_object($ClassName2)) {
-            $ClassCategories2 = $this->app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName2));
+            $ClassCategories2 = $this->classCategoryRepository->findBy(array('ClassName' => $ClassName2));
         }
 
         for ($i = 0; $i < $product_class_num; $i++) {
@@ -327,8 +422,8 @@ class Generator {
                 ->setUpdateDate(new \DateTime())
                 ->setCreator($Member)
                 ->setStock($faker->randomNumber(3));
-            $this->app['orm.em']->persist($ProductStock);
-            $this->app['orm.em']->flush($ProductStock);
+            $this->entityManager->persist($ProductStock);
+            $this->entityManager->flush($ProductStock);
             $ProductClass = new ProductClass();
             $ProductClass
                 ->setCode($faker->word)
@@ -351,12 +446,12 @@ class Generator {
                 $ProductClass->setClassCategory2($ClassCategories2[$i]);
             }
 
-            $this->app['orm.em']->persist($ProductClass);
-            $this->app['orm.em']->flush($ProductClass);
+            $this->entityManager->persist($ProductClass);
+            $this->entityManager->flush($ProductClass);
 
             $ProductStock->setProductClass($ProductClass);
             $ProductStock->setProductClassId($ProductClass->getId());
-            $this->app['orm.em']->flush($ProductStock);
+            $this->entityManager->flush($ProductStock);
             $Product->addProductClass($ProductClass);
         }
 
@@ -367,8 +462,8 @@ class Generator {
             ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
             ->setStock($faker->randomNumber(3));
-        $this->app['orm.em']->persist($ProductStock);
-        $this->app['orm.em']->flush($ProductStock);
+        $this->entityManager->persist($ProductStock);
+        $this->entityManager->flush($ProductStock);
         $ProductClass = new ProductClass();
         if ($product_class_num > 0) {
             $ProductClass->setVisible(false);
@@ -388,16 +483,16 @@ class Generator {
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setProduct($Product);
-        $this->app['orm.em']->persist($ProductClass);
-        $this->app['orm.em']->flush($ProductClass);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush($ProductClass);
 
         $ProductStock->setProductClass($ProductClass);
         $ProductStock->setProductClassId($ProductClass->getId());
-        $this->app['orm.em']->flush($ProductStock);
+        $this->entityManager->flush($ProductStock);
 
         $Product->addProductClass($ProductClass);
 
-        $Categories = $this->app['eccube.repository.category']->findAll();
+        $Categories = $this->categoryRepository->findAll();
         $i = 0;
         foreach ($Categories as $Category) {
             $ProductCategory = new ProductCategory();
@@ -407,13 +502,13 @@ class Generator {
                 ->setCategoryId($Category->getId())
                 ->setProductId($Product->getId())
                 ->setSortNo($i);
-            $this->app['orm.em']->persist($ProductCategory);
-            $this->app['orm.em']->flush($ProductCategory);
+            $this->entityManager->persist($ProductCategory);
+            $this->entityManager->flush($ProductCategory);
             $Product->addProductCategory($ProductCategory);
             $i++;
         }
 
-        $this->app['orm.em']->flush($Product);
+        $this->entityManager->flush($Product);
         return $Product;
     }
 
@@ -425,18 +520,19 @@ class Generator {
      * @param \Eccube\Entity\Delivery $Delivery Delivery インスタンス
      * @param integer $add_charge Order に加算される手数料
      * @param integer $add_discount Order に加算される値引き額
+     * @param integer $statusTypeId OrderStatus:id
      * @return \Eccube\Entity\Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusType = null)
+    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
-        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
-        $Payments = $this->app['eccube.repository.payment']->findAll();
-        if(!$statusType){
-            $statusType = 'order_processing';
+        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Payments = $this->paymentRepository->findAll();
+        if ($statusTypeId === null) {
+            $statusTypeId = \Eccube\Entity\Master\OrderStatus::PROCESSING;
         }
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config'][$statusType]);
+        $OrderStatus = $this->entityManager->find(\Eccube\Entity\Master\OrderStatus::class, $statusTypeId);
         $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
@@ -449,8 +545,8 @@ class Generator {
             ->setAddPoint(0)    // TODO
             ->setUsePoint(0)    // TODO
         ;
-        $this->app['orm.em']->persist($Order);
-        $this->app['orm.em']->flush($Order);
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush($Order);
         if (!is_object($Delivery)) {
             $Delivery = $this->createDelivery();
             foreach ($Payments as $Payment) {
@@ -461,12 +557,12 @@ class Generator {
                     ->setDelivery($Delivery)
                     ->setPayment($Payment);
                 $Payment->addPaymentOption($PaymentOption);
-                $this->app['orm.em']->persist($PaymentOption);
-                $this->app['orm.em']->flush($PaymentOption);
+                $this->entityManager->persist($PaymentOption);
+                $this->entityManager->flush($PaymentOption);
             }
-            $this->app['orm.em']->flush($Payment);
+            $this->entityManager->flush($Payment);
         }
-        $DeliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(
+        $DeliveryFee = $this->deliveryFeeRepository->findOneBy(
             array(
                 'Delivery' => $Delivery, 'Pref' => $Pref
             )
@@ -483,27 +579,27 @@ class Generator {
             ->setFeeId($DeliveryFee->getId())
             ->setShippingDeliveryFee($fee)
             ->setShippingDeliveryName($Delivery->getName());
-        $ShippingStatus = $this->app['orm.em']->find(ShippingStatus::class, ShippingStatus::PREPARED);
+        $ShippingStatus = $this->entityManager->find(ShippingStatus::class, ShippingStatus::PREPARED);
         $Shipping->setShippingStatus($ShippingStatus);
 
-        $this->app['orm.em']->persist($Shipping);
-        $this->app['orm.em']->flush($Shipping);
+        $this->entityManager->persist($Shipping);
+        $this->entityManager->flush($Shipping);
 
         if (empty($ProductClasses)) {
             $Product = $this->createProduct();
             $ProductClasses = $Product->getProductClasses();
         }
-        $Taxion = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::TAXATION);
-        $NonTaxable = $this->app['orm.em']->getRepository(TaxType::class)->find(TaxType::NON_TAXABLE);
-        $TaxExclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::EXCLUDED);
-        $TaxInclude = $this->app['orm.em']->getRepository(TaxDisplayType::class)->find(TaxDisplayType::INCLUDED);
-        $ItemProduct = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::PRODUCT);
-        $ItemDeliveryFee = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::DELIVERY_FEE);
-        $ItemCharge = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::CHARGE);
-        $ItemDiscount = $this->app['orm.em']->getRepository(OrderItemType::class)->find(OrderItemType::DISCOUNT);
+        $Taxion = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+        $TaxExclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+        $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+        $ItemProduct = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
+        $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
         foreach ($ProductClasses as $ProductClass) {
             $Product = $ProductClass->getProduct();
-            $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(); // デフォルト課税規則
+            $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
 
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
@@ -522,8 +618,8 @@ class Generator {
             ;
             $Shipping->addOrderItem($OrderItem);
             $Order->addOrderItem($OrderItem);
-            $this->app['orm.em']->persist($OrderItem);
-            $this->app['orm.em']->flush($OrderItem);
+            $this->entityManager->persist($OrderItem);
+            $this->entityManager->flush($OrderItem);
         }
 
         // TODO PurchaseFlow でやった方がよい
@@ -545,8 +641,8 @@ class Generator {
             ->setOrderItemType($ItemDeliveryFee); // 送料明細
         $Shipping->addOrderItem($OrderItemDeliveryFee);
         $Order->addOrderItem($OrderItemDeliveryFee);
-        $this->app['orm.em']->persist($OrderItemDeliveryFee);
-        $this->app['orm.em']->flush($OrderItemDeliveryFee);
+        $this->entityManager->persist($OrderItemDeliveryFee);
+        $this->entityManager->flush($OrderItemDeliveryFee);
 
         $charge = $Order->getCharge() + $add_charge;
         $OrderItemCharge = new OrderItem();
@@ -562,8 +658,8 @@ class Generator {
             ->setOrderItemType($ItemCharge); // 手数料明細
         // $Shipping->addOrderItem($OrderItemCharge); // Shipping には登録しない
         $Order->addOrderItem($OrderItemCharge);
-        $this->app['orm.em']->persist($OrderItemCharge);
-        $this->app['orm.em']->flush($OrderItemCharge);
+        $this->entityManager->persist($OrderItemCharge);
+        $this->entityManager->flush($OrderItemCharge);
 
         $discount = $Order->getDiscount() + $add_discount;
         $OrderItemDiscount = new OrderItem();
@@ -579,8 +675,8 @@ class Generator {
             ->setOrderItemType($ItemDiscount); // 値引き明細
         // $Shipping->addOrderItem($OrderItemDiscount); // Shipping には登録しない
         $Order->addOrderItem($OrderItemDiscount);
-        $this->app['orm.em']->persist($OrderItemDiscount);
-        $this->app['orm.em']->flush($OrderItemDiscount);
+        $this->entityManager->persist($OrderItemDiscount);
+        $this->entityManager->flush($OrderItemDiscount);
 
         $Order->setDeliveryFeeTotal($shipment_delivery_fee);
         $Order->setSubTotal($subTotal);
@@ -597,8 +693,8 @@ class Generator {
         }, 0);
         $Order->setTax($tax);
 
-        $this->app['orm.em']->flush($Shipping);
-        $this->app['orm.em']->flush($Order);
+        $this->entityManager->flush($Shipping);
+        $this->entityManager->flush($Order);
         return $Order;
     }
 
@@ -614,7 +710,7 @@ class Generator {
      */
     public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
-        $Member = $this->app['eccube.repository.member']->find(2);
+        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
         $Payment = new Payment();
         $Payment
             ->setMethod($method)
@@ -623,8 +719,8 @@ class Generator {
             ->setRuleMax($rule_max)
             ->setCreator($Member)
             ->setVisible(true);
-        $this->app['orm.em']->persist($Payment);
-        $this->app['orm.em']->flush($Payment);
+        $this->entityManager->persist($Payment);
+        $this->entityManager->flush($Payment);
 
         $PaymentOption = new PaymentOption();
         $PaymentOption
@@ -634,11 +730,11 @@ class Generator {
             ->setPayment($Payment);
         $Payment->addPaymentOption($PaymentOption);
 
-        $this->app['orm.em']->persist($PaymentOption);
-        $this->app['orm.em']->flush($PaymentOption);
+        $this->entityManager->persist($PaymentOption);
+        $this->entityManager->flush($PaymentOption);
 
         $Delivery->addPaymentOption($PaymentOption);
-        $this->app['orm.em']->flush($Delivery);
+        $this->entityManager->flush($Delivery);
         return $Payment;
     }
 
@@ -650,8 +746,9 @@ class Generator {
      */
     public function createDelivery($delivery_time_max_pattern = 5)
     {
-        $Member = $this->app['eccube.repository.member']->find(2);
-        $SaleType = $this->app['eccube.repository.master.sale_type']->find(1);
+        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
+        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
+
         $faker = $this->getFaker();
         $Delivery = new Delivery();
         $Delivery
@@ -665,8 +762,8 @@ class Generator {
             ->setCreator($Member)
             ->setSaleType($SaleType)
             ->setVisible(true);
-        $this->app['orm.em']->persist($Delivery);
-        $this->app['orm.em']->flush($Delivery);
+        $this->entityManager->persist($Delivery);
+        $this->entityManager->flush($Delivery);
 
         $delivery_time_patten = $faker->numberBetween(0, $delivery_time_max_pattern);
         for ($i = 0; $i < $delivery_time_patten; $i++) {
@@ -674,24 +771,25 @@ class Generator {
             $DeliveryTime
                 ->setDelivery($Delivery)
                 ->setDeliveryTime($faker->word);
-            $this->app['orm.em']->persist($DeliveryTime);
-            $this->app['orm.em']->flush($DeliveryTime);
+            $this->entityManager->persist($DeliveryTime);
+            $this->entityManager->flush($DeliveryTime);
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
-        $Prefs = $this->app['eccube.repository.master.pref']->findAll();
+        $Prefs = $this->prefRepository->findAll();
+        
         foreach ($Prefs as $Pref) {
             $DeliveryFee = new DeliveryFee();
             $DeliveryFee
                 ->setFee($faker->randomNumber(4))
                 ->setPref($Pref)
                 ->setDelivery($Delivery);
-            $this->app['orm.em']->persist($DeliveryFee);
-            $this->app['orm.em']->flush($DeliveryFee);
+            $this->entityManager->persist($DeliveryFee);
+            $this->entityManager->flush($DeliveryFee);
             $Delivery->addDeliveryFee($DeliveryFee);
         }
 
-        $this->app['orm.em']->flush($Delivery);
+        $this->entityManager->flush($Delivery);
         return $Delivery;
     }
 
@@ -703,9 +801,9 @@ class Generator {
     public function createPage()
     {
         $faker = $this->getFaker();
-        $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->find(\Eccube\Entity\Master\DeviceType::class, \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
         /** @var Page $Page */
-        $Page = $this->app['eccube.repository.page']->newPage($DeviceType);
+        $Page = $this->pageRepository->newPage($DeviceType);
         $Page
             ->setName($faker->word)
             ->setUrl($faker->word)
@@ -715,8 +813,8 @@ class Generator {
             ->setKeyword($faker->word)
             ->setMetaRobots($faker->word)
         ;
-        $this->app['orm.em']->persist($Page);
-        $this->app['orm.em']->flush($Page);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush($Page);
         return $Page;
     }
 
@@ -767,19 +865,19 @@ class Generator_Faker extends Faker
     }
 }
 
-class Generator_FakerTest extends EccubeTestCase
-{
-    public function testKana01ShouldNotEmptyInJAJP()
-    {
-        $generator = new Generator($this->app, 'ja_JP');
-        $Customer = $generator->createCustomer();
-        self::assertNotEmpty($Customer->getKana01());
-    }
+// class Generator_FakerTest extends EccubeTestCase
+// {
+//     public function testKana01ShouldNotEmptyInJAJP()
+//     {
+//         $generator = new Generator($this->app, 'ja_JP');
+//         $Customer = $generator->createCustomer();
+//         self::assertNotEmpty($Customer->getKana01());
+//     }
 
-    public function testKana01ShouldEmptyInENUS()
-    {
-        $generator = new Generator($this->app, 'en_US');
-        $Customer = $generator->createCustomer();
-        self::assertEmpty($Customer->getKana01());
-    }
-}
+//     public function testKana01ShouldEmptyInENUS()
+//     {
+//         $generator = new Generator($this->app, 'en_US');
+//         $Customer = $generator->createCustomer();
+//         self::assertEmpty($Customer->getKana01());
+//     }
+// }
