@@ -2,7 +2,11 @@
 
 namespace Eccube\Tests\Service;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Service\CsvExportService;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Repository\CsvRepository;
+use Eccube\Repository\OrderRepository;
 use org\bovigo\vfs\vfsStream;
 
 class CsvExportServiceTest extends AbstractServiceTestCase
@@ -10,30 +14,55 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 
     protected $url;
 
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var CsvExportService
+     */
+    protected $csvExportService;
+
+    /**
+     * @var CsvRepository
+     */
+    protected $csvRepository;
+
+    /**
+     * @var OrderRepository
+     */
+    protected $orderRepository;
+
     public function setUp()
     {
         parent::setUp();
         $root = vfsStream::setup('rootDir');
         $this->url = vfsStream::url('rootDir/test.csv');
 
+        $this->entityManager = $this->container->get('doctrine')->getManager();
+        $this->csvExportService = $this->container->get(CsvExportService::class);
+        $this->csvRepository = $this->container->get(CsvRepository::class);
+        $this->orderRepository = $this->container->get(OrderRepository::class);
+
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
-        $objReflect = new \ReflectionClass($this->app['eccube.service.csv.export']);
+        $objReflect = new \ReflectionClass($this->csvExportService);
         $Property = $objReflect->getProperty('fp');
         $Property->setAccessible(true);
-        $Property->setValue($this->app['eccube.service.csv.export'], fopen($this->url, 'w'));
+        $Property->setValue($this->csvExportService, fopen($this->url, 'w'));
 
-        $Csv = $this->app['eccube.repository.csv']->find(1);
+        $Csv = $this->csvRepository->find(1);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testExportHeader()
     {
-        $this->app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_PRODUCT);
-        $this->app['eccube.service.csv.export']->exportHeader();
+        $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
+        $this->csvExportService->exportHeader();
 
-        $Csv = $this->app['eccube.repository.csv']->findBy(
+        $Csv = $this->csvRepository->findBy(
             array('CsvType' => CsvType::CSV_TYPE_PRODUCT,
                   'enabled' => true,
             )
@@ -53,19 +82,19 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $Order->setNote("bbb".PHP_EOL."bbb");
         $this->createOrder($Customer);
         $this->createOrder($Customer);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $qb = $this->app['eccube.repository.order']->createQueryBuilder('o')
+        $qb = $this->orderRepository->createQueryBuilder('o')
             // FIXME https://github.com/EC-CUBE/ec-cube/issues/1236
             // jeftJoin した QueryBuilder で iterate() を実行すると QueryException が発生してしまう
             // ->select(array('o','d'))
             // ->addOrderBy('o.update_date', 'DESC')
 ;
 
-        $this->app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_ORDER);
-        $this->app['eccube.service.csv.export']->setExportQueryBuilder($qb);
+        $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
+        $this->csvExportService->setExportQueryBuilder($qb);
 
-        $this->app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+        $this->csvExportService->exportData(function ($entity, $csvService) {
 
             $Csvs = $csvService->getCsvs();
 
