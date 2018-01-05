@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -39,6 +40,7 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -108,6 +110,13 @@ class MypageController extends AbstractController
      */
     protected $formFactory;
 
+    public function __construct(EntityManagerInterface $entityManager, OrderRepository $orderRepository, $eccubeConfig)
+    {
+        $this->entityManager = $entityManager;
+        $this->orderRepository = $orderRepository;
+        $this->appConfig = $eccubeConfig;
+    }
+
     /**
      * ログイン画面.
      *
@@ -155,9 +164,9 @@ class MypageController extends AbstractController
      * @Route("/mypage/", name="mypage")
      * @Template("Mypage/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Application $app, Request $request, Paginator $paginator)
     {
-        $Customer = $app['user'];
+        $Customer = $this->getUser();
 
         // 購入処理中/決済処理中ステータスの受注を非表示にする.
         $this->entityManager
@@ -176,7 +185,7 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
 
-        $pagination = $app['paginator']()->paginate(
+        $pagination = $paginator->paginate(
             $qb,
             $request->get('pageno', 1),
             $this->appConfig['search_pmax']

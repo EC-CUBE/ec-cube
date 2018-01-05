@@ -22,4 +22,5 @@ controllers:
 #         _locale: '%locale%'
 admin_logout:
     path: /%admin_route%/logout
-
+logout:
+    path: /logout
