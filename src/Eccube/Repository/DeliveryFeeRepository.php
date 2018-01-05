@@ -40,7 +40,7 @@ class DeliveryFeeRepository extends AbstractRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, DeliveeryFee::class);
+        parent::__construct($registry, DeliveryFee::class);
     }
 
     /**
