@@ -13,6 +13,7 @@ services:
       - '@Eccube\Repository\DeliveryFeeRepository'
       - '@Eccube\Repository\PaymentRepository'
       - '@Eccube\Repository\PageRepository'
+      - '@Eccube\Repository\Master\PrefRepository'
       - '@Eccube\Repository\TaxRuleRepository'
       - '@session'
       - 'ja_JP'

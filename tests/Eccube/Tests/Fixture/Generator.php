@@ -101,7 +101,15 @@ class Generator
      */
     protected $taxRuleRepository;
 
+    /**
+     * @var PageRepository
+     */
     protected $pageRepository;
+
+    /**
+     * @var PrefRepository
+     */
+    protected $PrefRepository;
 
     /**
      * @var SessionInterface
@@ -120,6 +128,7 @@ class Generator
         DeliveryFeeRepository $deliveryFeeRepository,
         PaymentRepository $paymentRepository,
         PageRepository $pageRepository,
+        PrefRepository $prefRepository,
         TaxRuleRepository $taxRuleRepository,
         SessionInterface $session,
         $locale = 'ja_JP'
@@ -136,6 +145,7 @@ class Generator
         $this->deliveryFeeRepository = $deliveryFeeRepository;
         $this->paymentRepository = $paymentRepository;
         $this->pageRepository = $pageRepository;
+        $this->prefRepository = $prefRepository;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->session = $session;
     }
