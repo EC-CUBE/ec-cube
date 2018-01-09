@@ -54,7 +54,7 @@ class CartServiceTest extends AbstractServiceTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->SaleType1 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $this->SaleType2 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
         $this->Product = $this->createProduct();
