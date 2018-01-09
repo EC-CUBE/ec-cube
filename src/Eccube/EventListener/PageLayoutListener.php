@@ -40,8 +40,11 @@ class PageLayoutListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $route = $event->getRequest()->attributes->get('_route');
+        if (!$event->isMasterRequest()) {
+            return;
+        }
 
+        $route = $event->getRequest()->attributes->get('_route');
         // TODO
         $menus = array('', '', '');
         $this->twig->addGlobal('menus', $menus);
