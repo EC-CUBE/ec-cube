@@ -88,6 +88,7 @@ abstract class EccubeTestCase extends WebTestCase
         $this->client = self::createClient();
         $this->container = $this->client->getContainer();
         $this->entityManager = $this->container->get('doctrine')->getManager();
+        $this->entityManager->getConnection()->beginTransaction();
     }
 
     /**

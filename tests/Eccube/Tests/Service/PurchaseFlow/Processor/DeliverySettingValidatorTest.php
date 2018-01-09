@@ -6,6 +6,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -38,7 +39,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
 
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = new DeliverySettingValidator($this->app['eccube.repository.delivery']);
+        $this->validator = new DeliverySettingValidator($this->container->get(DeliveryRepository::class));
         $this->cartItem = new CartItem();
         $this->cartItem->setProductClass($this->ProductClass);
     }

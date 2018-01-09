@@ -16,7 +16,7 @@ class UsePointToCustomerPurchaseProcessorTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->BaseInfo = $this->app[BaseInfo::class];
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->BaseInfo->setBasicPointRate(10);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);

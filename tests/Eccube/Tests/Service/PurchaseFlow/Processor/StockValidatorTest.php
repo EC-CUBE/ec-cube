@@ -6,6 +6,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Fixture\Generator;
 
 class StockValidatorTest extends EccubeTestCase
 {
@@ -57,7 +58,7 @@ class StockValidatorTest extends EccubeTestCase
     public function testValidStockOrder()
     {
         $Customer = $this->createCustomer();
-        $Order = $this->app['eccube.fixture.generator']->createOrder($Customer, array($this->ProductClass));
+        $Order = $this->container->get(Generator::class)->createOrder($Customer, array($this->ProductClass));
 
         self::assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 

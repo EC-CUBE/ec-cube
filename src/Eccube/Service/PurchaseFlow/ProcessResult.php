@@ -16,7 +16,7 @@ class ProcessResult
     private function __construct($type, $message = null, $messageArgs)
     {
         $this->type = $type;
-        $this->message = Application::getInstance()->trans($message, $messageArgs);
+        $this->message = $message; // TODO translation
     }
 
     public static function warn($message, $messageArgs = [])

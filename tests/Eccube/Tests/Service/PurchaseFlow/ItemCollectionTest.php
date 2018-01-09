@@ -5,6 +5,7 @@ namespace Eccube\Tests\Service\PurchaseFlow;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Fixture\Generator;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
 class ItemCollectionTest extends EccubeTestCase
@@ -18,7 +19,7 @@ class ItemCollectionTest extends EccubeTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses()->toArray();
         $Customer = $this->createCustomer();
-        $this->ItemHolder = $this->app['eccube.fixture.generator']->createOrder(
+        $this->ItemHolder = $this->container->get(Generator::class)->createOrder(
             $Customer, $ProductClasses);
         $this->Items = $this->ItemHolder->getItems()->toArray();
     }
@@ -82,10 +83,10 @@ class ItemCollectionTest extends EccubeTestCase
 
     public function testHasItemByOrderItemType()
     {
-        $ProductClassType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::PRODUCT);
-        $DeliveryFeeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DELIVERY_FEE);
-        $ChargeType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::CHARGE);
-        $DiscountType = $this->app['eccube.repository.master.order_item_type']->find(OrderItemType::DISCOUNT);
+        $ProductClassType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        $DeliveryFeeType = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $ChargeType = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
+        $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
 
         $Items = new ItemCollection($this->Items);
 
