@@ -26,7 +26,9 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 
     public function setUp()
     {
-        parent::setUp();
+        $this->client = self::createClient();
+        $this->container = $this->client->getContainer();
+        $this->entityManager = $this->container->get('doctrine')->getManager();
     }
 
     public function tearDown()
