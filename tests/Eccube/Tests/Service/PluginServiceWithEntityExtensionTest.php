@@ -58,20 +58,20 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         parent::setUp();
 
         $this->mockSchemaService = $this->createMock(SchemaService::class);
-        $this->service = $this->app['eccube.service.plugin'];
+        $this->service = $this->container->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
         $prop = $rc->getProperty('schemaService');
         $prop->setAccessible(true);
         $prop->setValue($this->service, $this->mockSchemaService);
 
-        $this->pluginRepository = $this->app['eccube.repository.plugin'];
+        $this->pluginRepository = $this->container->get(PluginRepository::class);
     }
 
     public function tearDown()
     {
         $finder = new Finder();
         $iterator = $finder
-            ->in($this->app['config']['plugin_realdir'])
+            ->in($this->container->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
 
@@ -84,7 +84,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
             $this->deleteFile($dir);
         }
 
-        foreach (glob($this->app['config']['root_dir'].'/app/proxy/entity/*.php') as $file) {
+        foreach (glob($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/*.php') as $file) {
             unlink($file);
         }
         parent::tearDown();
@@ -110,7 +110,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         // Proxyは生成されない
-        self::assertFalse(file_exists($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php'));
+        self::assertFalse(file_exists($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php'));
     }
 
     /**
@@ -124,14 +124,14 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
-        $this->app['orm.em']->detach($pluginA);
+        $this->entityManager->detach($pluginA);
 
         // 有効化
         $this->service->enable($pluginA);
 
         // Traitは有効
         self::assertContainsTrait(
-            $this->app['config']['root_dir'].'/app/proxy/entity/Customer.php',
+            $this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -146,7 +146,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
-        $this->app['orm.em']->detach($pluginA);
+        $this->entityManager->detach($pluginA);
 
         // 有効化
         $this->service->enable($pluginA);
@@ -156,7 +156,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは無効
         self::assertNotContainsTrait(
-            $this->app['config']['root_dir'].'/app/proxy/entity/Customer.php',
+            $this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -171,7 +171,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
-        $this->app['orm.em']->detach($pluginA);
+        $this->entityManager->detach($pluginA);
 
         // 有効化
         $this->service->enable($pluginA);
@@ -187,7 +187,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは無効
         self::assertNotContainsTrait(
-            $this->app['config']['root_dir'].'/app/proxy/entity/Customer.php',
+            $this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -202,7 +202,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         $pluginA = $this->pluginRepository->findOneBy(array('code'=>$configA['code']));
-        $this->app['orm.em']->detach($pluginA);
+        $this->entityManager->detach($pluginA);
 
         // 有効化
         $this->service->enable($pluginA);
@@ -215,7 +215,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
         // Traitは無効
         self::assertNotContainsTrait(
-            $this->app['config']['root_dir'].'/app/proxy/entity/Customer.php',
+            $this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configA['code']}\\Entity\\HogeTrait");
     }
 
@@ -240,18 +240,18 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
             $this->service->install($fileEnabled);
 
             $pluginEnabled = $this->pluginRepository->findOneBy(array('code'=>$configEnabled['code']));
-            $this->app['orm.em']->detach($pluginEnabled);
+            $this->entityManager->detach($pluginEnabled);
 
             // 有効化
             $this->service->enable($pluginEnabled);
         }
 
-        self::assertNotContainsTrait($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php',
+        self::assertNotContainsTrait($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configDisabled['code']}\\Entity\\HogeTrait",
             '無効状態プラグインのTraitは利用されないはず');
 
         // 無効化状態のTraitは利用されないはず
-        self::assertContainsTrait($this->app['config']['root_dir'].'/app/proxy/entity/Customer.php',
+        self::assertContainsTrait($this->container->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php',
             "Plugin\\${configEnabled['code']}\\Entity\\HogeTrait",
             '有効状態のプラグインは利用されるはず');
     }
