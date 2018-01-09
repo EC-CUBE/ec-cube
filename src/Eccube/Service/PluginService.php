@@ -67,10 +67,9 @@ class PluginService
     protected $pluginRepository;
 
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @Inject(Application::class)
@@ -116,6 +115,11 @@ class PluginService
     private $projectRoot;
 
     /**
+     * @var string %kernel.environment%
+     */
+    private $environment;
+
+    /**
      * PluginService constructor.
      * @param PluginEventHandlerRepository $pluginEventHandlerRepository
      * @param EntityManager $entityManager
@@ -123,7 +127,7 @@ class PluginService
      * @param EntityProxyService $entityProxyService
      * @param SchemaService $schemaService
      */
-    public function __construct(PluginEventHandlerRepository $pluginEventHandlerRepository, EntityManager $entityManager, PluginRepository $pluginRepository, EntityProxyService $entityProxyService, SchemaService $schemaService, $projectRoot)
+    public function __construct(PluginEventHandlerRepository $pluginEventHandlerRepository, EntityManager $entityManager, PluginRepository $pluginRepository, EntityProxyService $entityProxyService, SchemaService $schemaService, $projectRoot, $environment)
     {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
@@ -131,6 +135,7 @@ class PluginService
         $this->entityProxyService = $entityProxyService;
         $this->schemaService = $schemaService;
         $this->projectRoot = $projectRoot;
+        $this->environment = $environment;
     }
 
 
@@ -230,8 +235,9 @@ class PluginService
 
     public function createTempDir()
     {
-        @mkdir($this->appConfig['plugin_temp_realdir']);
-        $d = ($this->appConfig['plugin_temp_realdir'].'/'.sha1(StringUtil::random(16)));
+        $tempDir = $this->projectRoot.'/var/cache/'.$this->environment.'/Plugin';
+        @mkdir($tempDir);
+        $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
 
         if (!mkdir($d, 0777)) {
             throw new PluginException($php_errormsg.$d);
@@ -939,7 +945,7 @@ class PluginService
      */
     public function removeAssets($pluginCode)
     {
-        $assetsDir = $this->appConfig['plugin_html_realdir'].$pluginCode;
+        $assetsDir = $this->projectRoot.'/app/Plugin/'.$pluginCode;
 
         // コピーされているリソースファイルがあれば削除
         if (file_exists($assetsDir)) {

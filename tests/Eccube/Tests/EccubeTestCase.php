@@ -232,7 +232,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function deleteAllRows(array $tables)
     {
         /** @var Connection $conn */
-        $conn = $this->app['db'];
+        $conn = $this->entityManager->getConnection();
 
         // MySQLの場合は参照制約を無効にする.
         if ('mysql' === $conn->getDatabasePlatform()->getName()) {
