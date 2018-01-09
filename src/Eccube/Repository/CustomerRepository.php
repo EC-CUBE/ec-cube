@@ -453,6 +453,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                     $Customer->setLastBuyDate($now);
                 }
             } else {
+                // @deprecate 3.0.15リリース以前に作られたPluginの互換性保持のため、本実装を残す
                 if ($orderStatusId == $app['config']['order_cancel'] ||
                     $orderStatusId == $app['config']['order_pending'] ||
                     $orderStatusId == $app['config']['order_processing']) {
