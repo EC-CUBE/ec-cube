@@ -24,30 +24,21 @@
 
 namespace Eccube\Form\Type\Front;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class CustomerLoginType extends AbstractType
 {
-    /**
-     * @var SessionInterface $session
-     * @Inject("session")
-     */
-    protected $session;
+    protected $authenticationUtils;
 
-    public function __construct()
+    public function __construct(AuthenticationUtils $authenticationUtils)
     {
+        $this->authenticationUtils = $authenticationUtils;
     }
 
     /**
@@ -55,7 +46,7 @@ class CustomerLoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', EmailType::class, array( // todo text -> email ?
+        $builder->add('login_email', EmailType::class, array(
             'attr' => array(
                 'max_length' => 320, // todo
             ),
@@ -63,7 +54,7 @@ class CustomerLoginType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\Email(array('strict' => true)),
             ),
-            'data' => $this->session->get('_security.last_username'),
+            'data' => $this->authenticationUtils->getLastUsername(),
         ));
         $builder->add('login_memory', CheckboxType::class, array(
             'required' => false,
@@ -75,16 +66,6 @@ class CustomerLoginType extends AbstractType
             'constraints' => array(
                 new Assert\NotBlank(),
             ),
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'csrf_protection' => false,
         ));
     }
 

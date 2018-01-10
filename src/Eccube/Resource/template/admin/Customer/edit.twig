@@ -29,7 +29,7 @@
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員登録・編集{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
 <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
@@ -254,7 +254,7 @@
                                                 <ul id="address_box__menu--{{ CustomerAddress.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_customer_delivery_edit', { 'id': Customer.id, 'did': CustomerAddress.id}) }}">編集</a></li>
                                                     <!--
-                                                        <li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>
+                                                        {#<li><a href="{{ url('admin_customer_delivery_delete', { 'id': Customer.id, 'did': CustomerAddress.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このお届け先情報を削除してもよろしいですか？">削除</a></li>#}
                                                     -->
                                                 </ul>
                                             </div>
@@ -264,11 +264,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
-                            <a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>
-                        {% else %}
-                            <span class="ec-errorMessage">お届け先登録の上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
-                        {% endif %}
+                        {#{% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}#}
+                            {#<a href="{{ url('admin_customer_delivery_new', { id: Customer.id }) }}" class="btn btn-default">お届け先追加</a>#}
+                        {#{% else %}#}
+                            {#<span class="ec-errorMessage">お届け先登録の上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>#}
+                        {#{% endif %}#}
                     </div>
                     {% else %}
                     <div id="address_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>

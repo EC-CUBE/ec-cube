@@ -30,6 +30,7 @@ parameters:
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     price_len: 8                                                    # 最大値で制御したい
     search_pmax: 10
+    stext_len: 255
     sltext_len: 500
     smtext_len: 100
     tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
