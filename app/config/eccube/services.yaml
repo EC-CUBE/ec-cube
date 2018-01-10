@@ -13,7 +13,7 @@ parameters:
     eccube.scheme: 'http'
     eccube.theme: 'default'
     eccube.twig.block.templates:
-      - render_blocks.twig
+      - render_block.twig
 
 services:
     # default configuration for services in *this* file

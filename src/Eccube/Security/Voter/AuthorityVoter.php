@@ -32,11 +32,20 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoter implements VoterInterface
 {
+    /**
+     * @var AuthorityRoleRepository
+     */
     protected $authorityRoleRepository;
 
-    public function __construct(AuthorityRoleRepository $authorityRoleRepository)
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    public function __construct(AuthorityRoleRepository $authorityRoleRepository, RequestStack $requestStack)
     {
         $this->authorityRoleRepository = $authorityRoleRepository;
+        $this->requestStack = $requestStack;
     }
 
     public function supportsAttribute($attribute)
@@ -53,13 +62,13 @@ class AuthorityVoter implements VoterInterface
     {
         $request = null;
         $path = null;
-        // TODO 別の方法で判定する
-        // try {
-        //     $request = $this->app['request_stack']->getMasterRequest();
-        // } catch (\RuntimeException $e) {
-        //     // requestが取得できない場合、無視する(テストプログラムで不要なため)
-        //     return;
-        // }
+
+        try {
+            $request = $this->requestStack->getMasterRequest();
+        } catch (\RuntimeException $e) {
+            // requestが取得できない場合、無視する(テストプログラムで不要なため)
+            return;
+        }
 
         if (is_object($request)) {
             $path = rawurldecode($request->getPathInfo());

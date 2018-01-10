@@ -20,3 +20,7 @@ controllers:
 #         _controller: FrameworkBundle:Template:template
 #         template: default/homepage.html.twig
 #         _locale: '%locale%'
+admin_logout:
+    path: /%admin_route%/logout
+logout:
+    path: /logout

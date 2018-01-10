@@ -25,7 +25,7 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
-use Eccube\Entity\DeliveryDate;
+use Eccube\Entity\DeliveryDuration;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -40,6 +40,6 @@ class DeliveryDurationRepository extends AbstractRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, DeliveryDate::class);
+        parent::__construct($registry, DeliveryDuration::class);
     }
 }

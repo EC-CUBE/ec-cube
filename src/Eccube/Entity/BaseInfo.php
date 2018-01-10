@@ -281,9 +281,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="option_remember_me", type="boolean", options={"default":false})
+     * @ORM\Column(name="option_remember_me", type="boolean", options={"default":true})
      */
-    private $option_remember_me = false;
+    private $option_remember_me = true;
 
     /**
      * @var string|null

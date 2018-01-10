@@ -37,10 +37,15 @@ use Twig\TwigFunction;
 
 class EccubeExtension extends AbstractExtension
 {
+    /**
+     * @var \Twig_Environment
+     */
+    protected $twig;
 
-    public function __construct(TaxRuleService $TaxRuleService)
+    public function __construct(TaxRuleService $TaxRuleService, \Twig_Environment $twig)
     {
         $this->TaxRuleService = $TaxRuleService;
+        $this->twig = $twig;
     }
 
     protected $TaxRuleService;
@@ -52,7 +57,7 @@ class EccubeExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        // $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
+        $RoutingExtension = $this->twig->getExtension(RoutingExtension::class);
 
         // $app = $this->app;
         return array(
