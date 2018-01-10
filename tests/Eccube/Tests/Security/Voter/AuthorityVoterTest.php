@@ -25,20 +25,22 @@ namespace Eccube\Tests\Security\Voter;
 
 use Eccube\Security\Voter\AuthorityVoter;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\AuthorityRoleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-
 class AuthorityVoterTest extends EccubeTestCase
 {
-
     public function testSupportsClass()
     {
-        $voter = new AuthorityVoter($this->app);
+        $client = self::createClient();
+        $authorityRoleRepository = $client->getContainer()->get(AuthorityRoleRepository::class);
+        $requestStack = $client->getContainer()->get('request_stack');
+
+        $voter = new AuthorityVoter($authorityRoleRepository, $requestStack);
 
         $this->assertTrue($voter->supportsClass('Foo'));
     }
-
 }

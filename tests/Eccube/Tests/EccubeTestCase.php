@@ -40,11 +40,9 @@ abstract class EccubeTestCase extends WebTestCase
             || strpos(get_class($this), 'Eccube\Tests\Form') !== false
             || strpos(get_class($this), 'Eccube\Tests\Plugin') !== false
             || strpos(get_class($this), 'Eccube\Tests\Repository') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Security') !== false
             || (strpos(get_class($this), 'Eccube\Tests\Service') !== false
                 && strpos(get_class($this), 'Eccube\Tests\ServiceProvider') === false)
             || strpos(get_class($this), 'Eccube\Tests\Transaction') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Twig') !== false
         ) {
             $this->markTestIncomplete(get_class($this).' は未実装です');
         }
