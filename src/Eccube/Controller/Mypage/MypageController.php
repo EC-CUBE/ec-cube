@@ -25,10 +25,12 @@
 namespace Eccube\Controller\Mypage;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -38,6 +40,7 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -46,6 +49,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route(service=MypageController::class)
@@ -106,27 +110,34 @@ class MypageController extends AbstractController
      */
     protected $formFactory;
 
+    public function __construct(EntityManagerInterface $entityManager, OrderRepository $orderRepository, $eccubeConfig)
+    {
+        $this->entityManager = $entityManager;
+        $this->orderRepository = $orderRepository;
+        $this->appConfig = $eccubeConfig;
+    }
+
     /**
      * ログイン画面.
      *
      * @Route("/mypage/login", name="mypage_login")
      * @Template("Mypage/login.twig")
      */
-    public function login(Application $app, Request $request)
+    public function login(Request $request, AuthenticationUtils $utils)
     {
-        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             log_info('認証済のためログイン処理をスキップ');
 
-            return $app->redirect($app->url('mypage'));
+            return $this->redirectToRoute('mypage');
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $builder = $this->formFactory
             ->createNamedBuilder('', CustomerLoginType::class);
 
-        if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $Customer = $app->user();
-            if ($Customer) {
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $Customer = $this->getUser();
+            if ($Customer instanceof Customer) {
                 $builder->get('login_email')->setData($Customer->getEmail());
             }
         }
@@ -142,7 +153,7 @@ class MypageController extends AbstractController
         $form = $builder->getForm();
 
         return [
-            'error' => $app['security.last_error']($request),
+            'error' => $utils->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
@@ -150,12 +161,12 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @Route("/mypage", name="mypage")
+     * @Route("/mypage/", name="mypage")
      * @Template("Mypage/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Application $app, Request $request, Paginator $paginator)
     {
-        $Customer = $app['user'];
+        $Customer = $this->getUser();
 
         // 購入処理中/決済処理中ステータスの受注を非表示にする.
         $this->entityManager
@@ -174,7 +185,7 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
 
-        $pagination = $app['paginator']()->paginate(
+        $pagination = $paginator->paginate(
             $qb,
             $request->get('pageno', 1),
             $this->appConfig['search_pmax']

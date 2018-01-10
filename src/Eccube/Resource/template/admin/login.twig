@@ -29,12 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{ include('@admin/alert.twig') }}
         <div class="login-box-body">
             <p class="login-logo2"><img src="{{ asset('assets/img/logo2.png', 'admin') }}" width="106"></p>
-            <form name="form1" id="form1" method="post" action="">
-                {% if app.session.flashBag.has('eccube.admin.login.target.path') %}
-                    {% for targetPath in app.session.flashBag.get('eccube.admin.login.target.path') %}
-                        <input type="hidden" name="_target_path" value="{{ targetPath }}" />
-                    {% endfor %}
-                {% endif %}
+            <form name="form1" id="form1" method="post" action="{{ path('admin_login') }}">
                 <div class="form-group has-feedback">
                     {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'style' : 'ime-mode: disabled;', 'size': 20, 'class': 'box25', 'placeholder': 'ログインID', 'autofocus': true}}) }}
                 </div>

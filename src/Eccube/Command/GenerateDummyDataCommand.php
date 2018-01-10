@@ -2,6 +2,10 @@
 
 namespace Eccube\Command;
 
+use Doctrine\ORM\EntityManager;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,13 +14,33 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateDummyDataCommand extends Command
 {
+    /**
+     * @var Generator
+     */
+    protected $generator;
 
-    protected $app;
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
+
+    public function __construct(Generator $generator, EntityManager $entityManager, DeliveryRepository $deliveryRepository)
+    {
+        parent::__construct();
+        $this->generator = $generator;
+        $this->entityManager = $entityManager;
+        $this->deliveryRepository = $deliveryRepository;
+    }
 
     protected function configure()
     {
         $this
-            ->setName('dummydata:generate')
+            ->setName('eccube:fixtures:generate')
             ->setDescription('Dummy data generator')
             ->addOption('with-locale', null, InputOption::VALUE_REQUIRED, 'Set to the locale.', 'ja_JP')
             ->addOption('without-image', null, InputOption::VALUE_NONE, 'Do not generate images.')
@@ -48,15 +72,13 @@ EOF
         $numberOfOrder = $input->getOption('orders');
         $numberOfCustomer = $input->getOption('customers');
 
-        $this->app = $this->getSilexApplication();
-        $this->app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
         $Customers = [];
         $Products = [];
 
         $faker = Faker::create($locale);
         for ($i = 0; $i < $numberOfCustomer; $i++) {
             $email = microtime(true).'.'.$faker->safeEmail;
-            $Customer = $this->app['eccube.fixture.generator.locale']($locale)->createCustomer($email);
+            $Customer = $this->generator->createCustomer($email);
             $Customer->setBirth($faker->dateTimeBetween('-110 years', '- 5 years'));
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:
@@ -76,7 +98,7 @@ EOF
             $Customers[] = $Customer;
         }
         for ($i = 0; $i < $numberOfProducts; $i++) {
-            $Product = $this->app['eccube.fixture.generator.locale']($locale)->createProduct(null, 3, $notImage ? null : $imageType);
+            $Product = $this->generator->createProduct(null, 3, $notImage ? null : $imageType);
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:
                     break;
@@ -94,7 +116,7 @@ EOF
             }
             $Products[] = $Product;
         }
-        $Deliveries = $this->app['eccube.repository.delivery']->findAll();
+        $Deliveries = $this->deliveryRepository->findAll();
         $j = 0;
         foreach ($Customers as $Customer) {
             $Delivery = $Deliveries[$faker->numberBetween(0, count($Deliveries) - 1)];
@@ -102,8 +124,8 @@ EOF
             $charge = $faker->randomNumber(4);
             $discount = $faker->randomNumber(4);
             for ($i = 0; $i < $numberOfOrder; $i++) {
-                $Order = $this->app['eccube.fixture.generator.locale']($locale)->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
-                $Status = $this->app['eccube.repository.order_status']->find($faker->numberBetween(1, 8));
+                $Order = $this->generator->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
+                $Status = $this->entityManager->find(OrderStatus::class, $faker->numberBetween(1, 8));
                 $Order->setOrderStatus($Status);
                 $Order->setOrderDate($faker->dateTimeThisYear());
                 switch ($output->getVerbosity()) {
@@ -118,7 +140,7 @@ EOF
                         $output->writeln('Order: id='.$Order->getId());
                         break;
                 }
-                $this->app['orm.em']->flush($Order);
+                $this->entityManager->flush($Order);
                 $j++;
                 if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0 && $j > 0) {
                     $output->writeln(' ...'.$j);
@@ -126,6 +148,6 @@ EOF
             }
         }
         $output->writeln('');
-        $output->writeln(sprintf("%s <info>success</info>", 'dummydata:generate'));
+        $output->writeln(sprintf("%s <info>success</info>", 'eccube:fixtures:generate'));
     }
 }

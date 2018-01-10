@@ -3,9 +3,12 @@
 namespace Eccube\Tests;
 
 use Eccube\Entity\Customer;
+use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as HttpClient;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -23,6 +26,16 @@ abstract class EccubeTestCase extends WebTestCase
     protected $expected;
 
     /**
+     * @var Client
+     */
+    protected $client;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * Applicaiton を生成しトランザクションを開始する.
      */
     public function setUp()
@@ -37,11 +50,9 @@ abstract class EccubeTestCase extends WebTestCase
             || strpos(get_class($this), 'Eccube\Tests\Form') !== false
             || strpos(get_class($this), 'Eccube\Tests\Plugin') !== false
             || strpos(get_class($this), 'Eccube\Tests\Repository') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Security') !== false
             || (strpos(get_class($this), 'Eccube\Tests\Service') !== false
                 && strpos(get_class($this), 'Eccube\Tests\ServiceProvider') === false)
             || strpos(get_class($this), 'Eccube\Tests\Transaction') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Twig') !== false
         ) {
             $this->markTestIncomplete(get_class($this).' は未実装です');
         }
@@ -64,6 +75,9 @@ abstract class EccubeTestCase extends WebTestCase
         file_put_contents($dist, '<?php return '.var_export($config, true).';');
 
         parent::setUp();
+
+        $this->client = self::createClient();
+        $this->container = $this->client->getContainer();
     }
 
     /**
@@ -108,7 +122,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createMember($username = null)
     {
-        return $this->app['eccube.fixture.generator']->createMember($username);
+        return $this->container->get(Generator::class)->createMember($username);
     }
 
     /**
@@ -119,7 +133,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createCustomer($email = null)
     {
-        return $this->app['eccube.fixture.generator']->createCustomer($email);
+        return $this->container->get(Generator::class)->createCustomer($email);
     }
 
     /**
@@ -131,7 +145,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
-        return $this->app['eccube.fixture.generator']->createCustomerAddress($Customer, $is_nonmember);
+        return $this->container->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
     }
 
     /**
@@ -142,7 +156,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createNonMember($email = null)
     {
-        return $this->app['eccube.fixture.generator']->createNonMember($email);
+        return $this->container->get(Generator::class)>createNonMember($email);
     }
 
     /**
@@ -154,7 +168,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createProduct($product_name = null, $product_class_num = 3)
     {
-        return $this->app['eccube.fixture.generator']->createProduct($product_name, $product_class_num);
+        return $this->container->get(Generator::class)->createProduct($product_name, $product_class_num);
     }
 
     /**
@@ -169,7 +183,7 @@ abstract class EccubeTestCase extends WebTestCase
         $ProductClasses = $Product->getProductClasses();
 
         // 後方互換のため最初の1つのみ渡す
-        return $this->app['eccube.fixture.generator']->createOrder($Customer, array($ProductClasses[0]));
+        return $this->container->get(Generator::class)->createOrder($Customer, array($ProductClasses[0]));
     }
 
     /**
@@ -184,7 +198,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
-        return $this->app['eccube.fixture.generator']->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
+        return $this->container->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
 
     /**
@@ -194,7 +208,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createPage()
     {
-        return $this->app['eccube.fixture.generator']->createPage();
+        return $this->container->get(Generator::class)->createPage();
     }
 
     /**
@@ -281,8 +295,8 @@ abstract class EccubeTestCase extends WebTestCase
     protected function checkMailCatcherStatus()
     {
         try {
-            $client = new Client();
-            $response = $client->get(self::MAILCATCHER_URL.'messages');
+            $httpClient = new HttpClient();
+            $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
             if ($response->getStatusCode() !== 200) {
                 throw new HttpException($response->getStatusCode());
             }
@@ -301,8 +315,8 @@ abstract class EccubeTestCase extends WebTestCase
     protected function cleanUpMailCatcherMessages()
     {
         try {
-            $client = new Client();
-            $response = $client->delete(self::MAILCATCHER_URL.'messages');
+            $httpClient = new HttpClient();
+            $response = $httpClient->delete(self::MAILCATCHER_URL.'messages');
         } catch (\Exception $e) {
             // FIXME
             // $this->app->log('['.get_class().'] '.$e->getMessage());
@@ -316,8 +330,8 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function getMailCatcherMessages()
     {
-        $client = new Client();
-        $response = $client->get(self::MAILCATCHER_URL.'messages');
+        $httpClient = new HttpClient();
+        $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
 
         return json_decode($response->getBody(true));
     }
@@ -330,8 +344,8 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function getMailCatcherMessage($id)
     {
-        $client = new Client();
-        $response = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
+        $httpClient = new HttpClient();
+        $response = $httpClient->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
 
         return json_decode($response->getBody(true));
     }
@@ -350,6 +364,6 @@ abstract class EccubeTestCase extends WebTestCase
     // TODO 暫定的に実装する
     protected function url($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->client->getContainer()->get('router')->generate($route, $parameters, $referenceType);
+        return $this->container->get('router')->generate($route, $parameters, $referenceType);
     }
 }

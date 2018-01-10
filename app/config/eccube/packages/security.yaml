@@ -4,64 +4,56 @@ security:
         # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
         Eccube\Entity\Member:
           id: Eccube\Security\Core\Encoder\PasswordEncoder
-
+        Eccube\Entity\Customer:
+          id: Eccube\Security\Core\Encoder\PasswordEncoder
     providers:
         # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
         # In this example, users are stored via Doctrine in the database
         # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
         # To load users from somewhere else: https://symfony.com/doc/current/security/custom_provider.html
-        database_users:
-            entity: { class: Eccube\Entity\Member, property: login_id }
-
+        member_provider:
+            id: Eccube\Security\Core\User\MemberProvider
+        customer_provider:
+            id: Eccube\Security\Core\User\CustomerProvider
     # https://symfony.com/doc/current/security.html#initial-security-yml-setup-authentication
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         admin:
-          pattern: ^/%admin_route%/
-          anonymous: true
-          form_login:
-                # The route name that the login form submits to
+            pattern: ^/%admin_route%/
+            anonymous: true
+            provider: member_provider
+            form_login:
                 check_path: admin_login
-                # The name of the route where the login form lives
-                # When the user tries to access a protected page, they are redirected here
                 login_path: admin_login
-                # Secure the login form against CSRF
-                # Reference: https://symfony.com/doc/current/security/csrf_in_login_form.html
                 csrf_token_generator: security.csrf.token_manager
-                # The page users are redirect to when there is no previous page stored in the
-                # session (for example when the users access directly to the login page).
+                default_target_path: admin_homepage
                 username_parameter: 'login_id'
                 password_parameter: 'password'
-          provider: database_users
-        customer:
-            # this firewall applies to all URLs
-            pattern: ^/
-
-            # but the firewall does not require login on every page
-            # denying access is done in access_control or in your controllers
-            anonymous: true
-
-            # This allows the user to login by submitting a username and password
-            # Reference: https://symfony.com/doc/current/security/form_login_setup.html
-            form_login:
-                # The route name that the login form submits to
-                check_path: security_login
-                # The name of the route where the login form lives
-                # When the user tries to access a protected page, they are redirected here
-                login_path: security_login
-                # Secure the login form against CSRF
-                # Reference: https://symfony.com/doc/current/security/csrf_in_login_form.html
-                csrf_token_generator: security.csrf.token_manager
-                # The page users are redirect to when there is no previous page stored in the
-                # session (for example when the users access directly to the login page).
-                default_target_path: blog_index
-
+                use_forward: true
             logout:
-                # The route name the user can go to in order to logout
-                path: /logout
-                # The name of the route to redirect to after logging out
+                path: admin_logout
+                target: admin_login
+        customer:
+            pattern: ^/
+            anonymous: true
+            provider: customer_provider
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 3600
+                name: eccube_remember_me
+                remember_me_parameter: 'login_memory'
+            form_login:
+                check_path: mypage_login
+                login_path: mypage_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: homepage
+                username_parameter: 'login_email'
+                password_parameter: 'login_pass'
+                use_forward: true
+            logout:
+                path: logout
                 target: homepage
 
     access_control:
@@ -69,3 +61,7 @@ security:
         # additional security lives in the controllers
         - { path: ^/%admin_route%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %eccube.scheme% }
         - { path: ^/%admin_route%/, roles: ROLE_ADMIN, requires_channel: %eccube.scheme%  }
+        - { path: ^/mypage/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %eccube.scheme% }
+        - { path: ^/mypage/withdraw_complete, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %eccube.scheme% }
+        - { path: ^/mypage/change, roles: IS_AUTHENTICATED_FULLY, requires_channel: %eccube.scheme% }
+        - { path: ^/mypage/, roles: ROLE_USER, requires_channel: %eccube.scheme%  }

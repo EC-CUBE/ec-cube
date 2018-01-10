@@ -10,7 +10,8 @@ framework:
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
         name: '%env(ECCUBE_COOKIE_NAME)%'
         cookie_path: /
-        cookie_secure: !php/object env(ECCUBE_FORCE_SSL)
+        # TODO cookieが発行されないため、いったんfalseに変更
+        cookie_secure: false
         gc_maxlifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
         cookie_httponly: true
 

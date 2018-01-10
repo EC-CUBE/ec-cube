@@ -232,22 +232,22 @@ class StringUtil
         if (is_object($value)) {
             if ($value instanceof ArrayCollection) {
                 if ($value->isEmpty()) {
-                    trigger_error($deprecated, E_USER_DEPRECATED);
+                    @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
                 } else {
-                    trigger_error($deprecated, E_USER_DEPRECATED);
+                    @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return false;
                 }
             }
-            trigger_error($deprecated, E_USER_DEPRECATED);
+            @trigger_error($deprecated, E_USER_DEPRECATED);
             return false;
         }
         if (is_array($value)) {
             if ($greedy) {
                 if (empty($value)) {
-                    trigger_error($deprecated, E_USER_DEPRECATED);
+                    @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
                 }
@@ -255,16 +255,16 @@ class StringUtil
                 foreach ($value as $in) {
                     $array_result = self::isBlank($in, $greedy);
                     if (!$array_result) {
-                        trigger_error($deprecated, E_USER_DEPRECATED);
+                        @trigger_error($deprecated, E_USER_DEPRECATED);
 
                         return false;
                     }
                 }
-                trigger_error($deprecated, E_USER_DEPRECATED);
+                @trigger_error($deprecated, E_USER_DEPRECATED);
 
                 return $array_result;
             } else {
-                trigger_error($deprecated, E_USER_DEPRECATED);
+                @trigger_error($deprecated, E_USER_DEPRECATED);
 
                 return empty($value);
             }
