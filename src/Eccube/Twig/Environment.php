@@ -23,38 +23,11 @@ class Environment extends \Twig_Environment
      */
     protected $requestContext;
 
-    public function __construct()
-    {
-    }
-
-    /**
-     * @param \Twig_Environment $twig
-     *
-     * @required
-     */
-    public function setTwig(\Twig_Environment $twig)
+    public function __construct(\Twig_Environment $twig, EventDispatcherInterface $eventDispatcher, Context $context)
     {
         $this->twig = $twig;
-    }
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @required
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * @param Context $requestContext
-     *
-     * @required
-     */
-    public function setRequestContext(Context $requestContext)
-    {
-        $this->requestContext = $requestContext;
+        $this->requestContext = $context;
     }
 
     public function render($name, array $context = array())
