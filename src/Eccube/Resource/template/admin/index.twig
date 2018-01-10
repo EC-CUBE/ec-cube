@@ -24,131 +24,143 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}ホーム{% endblock %}
 
 {% block javascript %}
-<script>
-$(function(){
-    $('.order-summary-detail').click(function() {
-        $('#admin_search_order_status').val($(this).attr('data-order-status'));
-        $('#order-state').submit();
-        return false;
-    });
-    $('.shop-stock-detail').click(function() {
-        $('#shop-state-stock').submit();
-        return false;
-    });
-    $('.shop-member-detail').click(function() {
-        $('#shop-state-member').submit();
-        return false;
-    });
-});
-</script>
+    <script>
+        $(function(){
+            $('.order-summary-detail').click(function() {
+                $('#admin_search_order_status').val($(this).attr('data-order-status'));
+                $('#order-state').submit();
+                return false;
+            });
+            $('.shop-stock-detail').click(function() {
+                $('#shop-state-stock').submit();
+                return false;
+            });
+            $('.shop-member-detail').click(function() {
+                $('#shop-state-member').submit();
+                return false;
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
-
-        <div class="row">
-            <div class="col-md-6">
-                <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
-                {{ form_widget(searchOrderForm._token) }}
-                <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
-                <div class="box" id="order_info">
-                    <div class="box-header">
-                        <h3 class="box-title">受注状況<a href="{{ url('admin_order') }}" class="icon_wrap"><svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg></a></h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body no-padding no-border">
-                        <div class="link_list">
-                            <div class="tableish">
-                                {% for OrderStatus in OrderStatuses %}
-                                <a href="" class="item_box tr order-summary-detail" data-order-status="{{ OrderStatus.id }}">
-                                    <div class="td">{{ OrderStatus.name }}</div>
-                                    <div class="item_number text-right td">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</div>
-                                    <div class="icon_link td">
-                                        <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card">
+                    <div class="card-header">ようこそ、EC-CUBEへ</div>
+                    <div class="card-body">
+                        <p>hoge</p>
+                        <hr>
+                        <p>hoge</p>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card" id="order_info">
+                            <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
+                                {{ form_widget(searchOrderForm._token) }}
+                                <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
+                                <div class="card-header">
+                                    <a href="{{ url('admin_order') }}">受注状況</a>
+                                </div>
+                                <div class="card-body">
+                                    {% for OrderStatus in OrderStatuses %}
+                                        <p>
+                                            <a href="" class="item_box tr order-summary-detail" data-order-status="{{ OrderStatus.id }}">
+                                                <div class="td">{{ OrderStatus.name }}</div>
+                                                <div class="item_number text-right td">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</div>
+                                                {#<div class="icon_link td">#}
+                                                {#<svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>#}
+                                                {#</div>#}
+                                            </a><!-- /.item_box -->
+                                        </p>
+                                        {% if loop.last == false %}
+                                            <hr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="card" id="sale_info">
+                            <div class="card-header">売上状況</div>
+                            <div class="card-body">
+                                <p>
+                                <div class="monthly_sale">
+                                    <div class="item_number">
+                                        {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
+                                        <div class="small">今月の売上高 / 売上件数</div>
                                     </div>
-                                </a><!-- /.item_box -->
-                                {% endfor %}
+                                </div>
+                                </p>
+                                <hr>
+                                <p>
+                                <div class="yesterday_sale">
+                                    <div class="item_number">
+                                        {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
+                                        <div class="small">昨日の売上高 / 売上件数</div>
+                                    </div>
+                                </div>
+                                </p>
+                                <hr>
+                                <p>
+                                <div class="today_sale">
+                                    <div class="item_number">
+                                        {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }}  <span>件</span>
+                                        <div class="small">今日の売上高 / 売上件数</div>
+                                    </div>
+                                </div>
+                                </p>
                             </div>
                         </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                </form>
-            </div><!-- /.col -->
-
-            <div class="col-md-6">
-                <div class="box" id="cube_news">
-                    <div class="box-header">
-                        <h3 class="box-title">お知らせ</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body no-padding no-border">
-                        <iframe name="information" class="link_list_wrap" src="{{ app.config.eccube_info_url }}"></iframe>
-                    </div><!-- /.box-body -->
-
-                </div><!-- /.box -->
-            </div><!-- /.col -->
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card" id="shop_info">
+                            <div class="card-header">ショップ状況</div>
+                            <div class="card-body">
+                                <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}" method="post">
+                                    {{ form_widget(searchProductForm._token) }}
+                                </form>
+                                <form id="shop-state-member" name="form3" action="{{ url('admin_customer') }}" method="post">
+                                    {{ form_widget(searchCustomerForm._token) }}
+                                    <input type="hidden" id="admin_search_customer_status_1" name="admin_search_customer[customer_status]" value="2">
+                                </form>
+                                <p>
+                                    <a href="" class="item_box tr shop-stock-detail">
+                                        {#<div class="icon td"><svg class="cb cb-tag-slash"><use xlink:href="#cb-tag-slash" /></svg></div>#}
+                                        <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">在庫切れ商品</div></div>
+                                        {#<div class="icon_link td">#}
+                                        {#<svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>#}
+                                        {#</div>#}
+                                    </a><!-- /.item_box -->
+                                </p>
+                                <hr>
+                                <p>
+                                    <a href="" class="item_box tr shop-member-detail">
+                                        {#<div class="icon td"><svg class="cb cb-users"><use xlink:href="#cb-users" /></svg></div>#}
+                                        <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">会員数</div></div>
+                                        {#<div class="icon_link td">#}
+                                        {#<svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>#}
+                                        {#</div>#}
+                                    </a><!-- /.item_box -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card" id="cube_news">
+                            <div class="card-header">お知らせ</div>
+                            <div class="card-body">
+                                <iframe name="information" class="link_list_wrap" src="{{ app.config.eccube_info_url }}"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+            </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="box" id="sale_info">
-                    <div class="box-header">
-                        <h3 class="box-title">売り上げ状況</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body no-padding no-border">
-                        <div class="sale_box clearfix">
-                            <div class="monthly_sale">
-                                <div class="item_number">
-                                    {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
-                                    <div class="small">今月の売上高 / 売上件数</div>
-                                </div>
-                            </div>
-                            <div class="yesterday_sale">
-                                <div class="item_number">
-                                    {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
-                                    <div class="small">昨日の売上高 / 売上件数</div>
-                                </div>
-                            </div>
-                            <div class="today_sale">
-                                <div class="item_number">
-                                    {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }}  <span>件</span>
-                                    <div class="small">今日の売上高 / 売上件数</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div><!-- /.col -->
-            <div class="col-md-4">
-                <div class="box" id="shop_info">
-                    <div class="box-header">
-                        <h3 class="box-title">ショップ状況</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body no-padding no-border">
-                        <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}" method="post">
-                            {{ form_widget(searchProductForm._token) }}
-                        </form>
-                        <form id="shop-state-member" name="form3" action="{{ url('admin_customer') }}" method="post">
-                            {{ form_widget(searchCustomerForm._token) }}
-                            <input type="hidden" id="admin_search_customer_status_1" name="admin_search_customer[customer_status]" value="2">
-                        </form>
-                        <div class="link_list">
-                            <div class="tableish">
-                                <a href="" class="item_box tr shop-stock-detail">
-                                    <div class="icon td"><svg class="cb cb-tag-slash"><use xlink:href="#cb-tag-slash" /></svg></div>
-                                    <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">在庫切れ商品</div></div>
-                                    <div class="icon_link td">
-                                        <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
-                                    </div>
-                                </a><!-- /.item_box -->
-                                <a href="" class="item_box tr shop-member-detail">
-                                    <div class="icon td"><svg class="cb cb-users"><use xlink:href="#cb-users" /></svg></div>
-                                    <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">会員数</div></div>
-                                    <div class="icon_link td">
-                                        <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
-                                    </div>
-                                </a><!-- /.item_box -->
-                            </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div><!-- /.col -->
-        </div>
+    </div>
 {% endblock %}

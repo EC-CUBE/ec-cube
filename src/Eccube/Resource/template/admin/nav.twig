@@ -20,53 +20,82 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
-{% for level1 in app.config.nav if app.request_stack.currentrequest.baseUrl ~ '/' ~ app.config.admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
-    <li class="{% if active_menus(menus)[0] == level1.id %}active{% endif %}">
+<ul class="c-mainNavArea__nav">
+
+    <li class="c-mainNavArea__navItem">
+        <a class="c-mainNavArea__navItemTitle" href="{{ url('admin_homepage') }}">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <span>ホーム</span>
+        </a>
+    </li>
+
+    {% for level1 in app.config.nav if app.request_stack.currentrequest.baseUrl ~ '/' ~ app.config.admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
+        <li class="c-mainNavArea__navItem">
         {% if level1.has_child is defined and level1.has_child == true %}
-            <a class="toggle">
-                <svg class="cb {{ level1.icon }}"> <use xlink:href="#{{ level1.icon }}" /></svg>
-                {{ level1.name }}
-                <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
+            {# TODO level1Code #}
+            {% set level1Code = level1.name %}
+            <a class="c-mainNavArea__navItemTitle collapsed{% if active_menus(menus)[0] == level1.id %} active{% endif %}" data-toggle="collapse" href="#{{ level1Code }}" aria-expanded="false" aria-controls="{{ level1Code }}">
+                <i class="fa {{ level1.icon }}" aria-hidden="true"></i>
+                <span>{{ level1.name }}</span>
             </a>
-            <ul {% if active_menus(menus)[0] == level1.id %}class="active" style="display: block;"{% endif %}>
-                {% for level2 in level1.child if app.request_stack.currentrequest.baseUrl ~ '/' ~ app.config.admin_route ~ '/' ~ level1.id ~ '/' ~ level2.id not in AuthorityRoles %}
-                    {% if level2.url is defined and path(level2.url)  in AuthorityRoles %}
-                    {% else %}
-                    <li class="{% if active_menus(menus)[1] == level2.id %}active{% endif %}">
-                        {% if level2.has_child is defined and level2.has_child == true %}
-                            <a class="toggle">
-                                {{ level2.name }}
-                                <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
-                            </a>
-                            <ul {% if active_menus(menus)[1] == level2.id %}class="active" style="display: block;"{% endif %}>
-                                {% for level3 in level2.child %}
-                                    {% if level3.url is defined and path(level3.url)  in AuthorityRoles %}
-                                    {% else %}
+            {% for level2 in level1.child if app.request_stack.currentrequest.baseUrl ~ '/' ~ app.config.admin_route ~ '/' ~ level1.id ~ '/' ~ level2.id not in AuthorityRoles %}
+                {% if level2.url is defined and path(level2.url)  in AuthorityRoles %}
+                {% else %}
+                    {% if level2.has_child is defined and level2.has_child == true %}
+                        {# TODO level2Code #}
+                        {% set level2Code = level2.name %}
+                        <a class="c-mainNavArea__navItemSubTitle collapsed{% if active_menus(menus)[1] == level2.id %} active{% endif %}" data-toggle="collapse" href="#{{ level2Code }}" aria-expanded="false" aria-controls="{{ level2Code }}">
+                            <span>{{ level2.name }}</span>
+                        </a>
+                        <ul class="collapse{% if active_menus(menus)[1] == level2.id %} active{% endif %}" id="{{ level2Code }}">
+                            {% for level3 in level2.child %}
+                                {% if level3.url is defined and path(level3.url)  in AuthorityRoles %}
+                                {% else %}
                                     <li class="{% if active_menus(menus)[2] == level3.id %}active{% endif %}">
                                         <a href="{{ url(level3.url) }}">
                                             {{ level3.name }}
                                         </a>
                                     </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <a href="{{ url(level2.url) }}">
-                                {{ level2.name }}
-                            </a>
-                        {% endif %}
-                    </li>
-                   {% endif %}
-                {% endfor %}
-            </ul>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <ul class="collapse{% if active_menus(menus)[1] == level2.id %} active{% endif %}" id="{{ level1Code }}">
+                            <li class="{% if active_menus(menus)[1] == level2.id %}active{% endif %}">
+                                <a href="{{ url(level2.url) }}">
+                                    {{ level2.name }}
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
         {% else %}
             {% if level1.url is defined %}
-                <a href="{{ url(level1.url) }}">
-                    {{ level1.name }}
-                </a>
+                <li class="{% if active_menus(menus)[0] == level1.id %}active{% endif %}">
+                    <a href="{{ url(level1.url) }}">
+                        {{ level1.name }}
+                    </a>
+                </li>
             {% else %}
                 {{ level1.name }}
             {% endif %}
         {% endif %}
+        </li>
+    {% endfor %}
+
+    {# TODO スタイルガイド機能の実装 #}
+    {# 可能ならばconfigで設定して下記を削除する #}
+    <li class="c-mainNavArea__navItem">
+        <a class="c-mainNavArea__navItemTitle collapsed" data-toggle="collapse" href="#others" aria-expanded="false" aria-controls="others">
+            <i class="fa fa-truck" aria-hidden="true"></i>
+            <span>その他</span>
+        </a>
+        <ul class="collapse" id="others">
+            <li>
+                <a href="/styleguide/">スタイルガイド</a>
+            </li>
+        </ul>
     </li>
-{% endfor %}
+
+</ul>
