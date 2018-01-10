@@ -10,6 +10,12 @@ use Eccube\Tests\EccubeTestCase;
 class WhereCustomizerTest extends EccubeTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testCustomizeNOP()
     {
         $builder = $this->createQueryBuilder();

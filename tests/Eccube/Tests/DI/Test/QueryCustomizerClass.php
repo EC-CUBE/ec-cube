@@ -35,6 +35,12 @@ use Eccube\Repository\QueryKey;
 class QueryCustomizerClass implements QueryCustomizer
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public $customized = false;
 
     /**

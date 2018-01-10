@@ -32,6 +32,12 @@ use Eccube\Tests\DI\Test\NoComponentClass;
 class AutoWiring extends AbstractAutowiringTest
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     protected function getAutoWiring()
     {
         return new ComponentAutoWiring([__DIR__.'/../Test']);

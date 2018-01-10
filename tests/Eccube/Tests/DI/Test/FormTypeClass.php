@@ -9,4 +9,10 @@ use Eccube\Annotation\FormType;
  */
 class FormTypeClass
 {
-}
+public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
+    }

@@ -27,4 +27,10 @@ namespace Eccube\Tests\DI\Test\Entity;
 class Test
 {
 
-}
+public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
+    }

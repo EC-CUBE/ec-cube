@@ -32,6 +32,12 @@ use Eccube\Tests\EccubeTestCase;
 
 class DeliveryFeeProcessorTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testProcess()
     {
         $processor = new DeliveryFeeProcessor($this->app['orm.em']);

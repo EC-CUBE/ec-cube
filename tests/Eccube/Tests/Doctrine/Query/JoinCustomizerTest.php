@@ -9,6 +9,12 @@ use Eccube\Tests\EccubeTestCase;
 
 class JoinCustomizerTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testCustomize()
     {
         $builder = $this->createQueryBuilder();

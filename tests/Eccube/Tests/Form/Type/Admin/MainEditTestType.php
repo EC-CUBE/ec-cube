@@ -46,6 +46,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         $options = array(

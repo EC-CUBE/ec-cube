@@ -15,6 +15,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $Sex = $this->app['eccube.repository.master.sex']->find(1);
         $Payment = $this->app['eccube.repository.payment']->find(1);

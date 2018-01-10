@@ -33,6 +33,12 @@ use Eccube\Entity\Event\EntityEventListener;
  */
 class PreUpdateEventClass implements EntityEventListener
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public $executed = false;
 
     public function execute(LifecycleEventArgs $eventArgs)

@@ -12,6 +12,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 {
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->initializeMailCatcher();
         for ($i = 0; $i < 10; $i++) {

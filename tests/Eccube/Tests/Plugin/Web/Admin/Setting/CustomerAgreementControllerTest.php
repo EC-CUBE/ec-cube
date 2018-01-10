@@ -32,6 +32,12 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
  */
 class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRoutingAdminSettingCustomerAgreement()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_customer_agreement'));

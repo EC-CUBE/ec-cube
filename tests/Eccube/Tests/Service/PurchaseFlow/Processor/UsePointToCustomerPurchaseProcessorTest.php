@@ -15,6 +15,7 @@ class UsePointToCustomerPurchaseProcessorTest extends EccubeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->BaseInfo = $this->app[BaseInfo::class];
         $this->BaseInfo->setBasicPointRate(10);

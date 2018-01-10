@@ -42,6 +42,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->SaleType1 = $this->app['eccube.repository.master.sale_type']->find(1);
         $this->SaleType2 = $this->app['eccube.repository.master.sale_type']->find(2);
