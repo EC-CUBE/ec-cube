@@ -72,6 +72,8 @@ services:
         tags: ['doctrine.event_subscriber']
     Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
         tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\UpdatePointEventSubscriber:
+        tags: ['doctrine.event_subscriber']
 
     Eccube\Twig\Extension\EccubeBlockExtension:
         tags: ['twig.extension']
