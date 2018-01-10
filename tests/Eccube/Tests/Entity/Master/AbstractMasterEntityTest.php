@@ -12,6 +12,12 @@ use Eccube\Entity\Master\Sex;
  */
 class AbstractMasterEntityTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testGetConstant()
     {
         self::assertEquals(1, TestSexDecorator::TEST_MALE, 'constant access');

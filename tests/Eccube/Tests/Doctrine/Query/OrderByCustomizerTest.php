@@ -12,6 +12,12 @@ use Eccube\Tests\EccubeTestCase;
 class OrderByCustomizerTest extends EccubeTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();

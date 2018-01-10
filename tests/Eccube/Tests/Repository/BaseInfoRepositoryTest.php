@@ -23,6 +23,7 @@ class BaseInfoRepositoryTest extends EccubeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         // テスト時に Application やデータベース接続が不要な場合は、この行を削除してください.
         parent::setUp();
 

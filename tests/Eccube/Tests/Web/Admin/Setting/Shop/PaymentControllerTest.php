@@ -30,6 +30,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRouting()
     {
         $this->client->request('GET', $this->app->url('admin_setting_shop_payment'));

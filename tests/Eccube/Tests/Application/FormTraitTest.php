@@ -22,6 +22,12 @@ use Eccube\Tests\EccubeTestCase;
  */
 class FormTraitTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testForm()
     {
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->app->form());

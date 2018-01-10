@@ -10,6 +10,12 @@ use Symfony\Component\Form\AbstractTypeExtension;
  */
 class FormExtensionClass extends AbstractTypeExtension
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     /**
      * Returns the name of the type being extended.
      *

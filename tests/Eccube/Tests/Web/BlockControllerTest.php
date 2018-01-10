@@ -4,6 +4,12 @@ namespace Eccube\Tests\Web;
 
 class BlockControllerTest extends AbstractWebTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testIndex()
     {
         $client = $this->createClient();

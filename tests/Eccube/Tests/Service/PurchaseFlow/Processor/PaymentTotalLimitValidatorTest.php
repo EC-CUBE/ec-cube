@@ -31,6 +31,12 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testCartValidate()
     {
         $validator = new PaymentTotalLimitValidator(1000);

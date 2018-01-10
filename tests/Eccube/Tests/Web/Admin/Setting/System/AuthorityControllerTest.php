@@ -32,6 +32,12 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class AuthorityControllerTest extends AbstractAdminWebTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     /**
      * testRoutingAdminSettingSystemAuthority
      */

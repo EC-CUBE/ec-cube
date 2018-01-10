@@ -30,6 +30,12 @@ use Symfony\Component\DomCrawler\Crawler;
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRoutingShoppingLogin()
     {
         $client = $this->client;

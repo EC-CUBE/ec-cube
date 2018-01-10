@@ -29,6 +29,12 @@ use Eccube\Tests\DI\Test\ServiceClass;
 class ServiceAutoWiringTest extends AbstractAutowiringTest
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     protected function getAutoWiring()
     {
         return new ServiceAutoWiring([__DIR__.'/../Test']);

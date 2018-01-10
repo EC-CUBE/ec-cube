@@ -30,6 +30,12 @@ use Eccube\Tests\DI\Test\RepositoryClazz;
 class RepositoryAutoWiringTest extends AbstractAutowiringTest
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     protected function getAutoWiring()
     {
         return new RepositoryAutoWiring([__DIR__.'/../Test']);

@@ -23,6 +23,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         $this->DateTimeNow = new \DateTime('+1 minutes');
         parent::setUp();
         $this->BaseInfo = $this->app['eccube.repository.base_info']->get();
