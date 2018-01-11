@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step4Type;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step4TypeTest extends AbstractTypeTestCase
 {

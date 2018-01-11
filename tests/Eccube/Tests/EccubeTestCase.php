@@ -43,6 +43,11 @@ abstract class EccubeTestCase extends WebTestCase
     protected $entityManager;
 
     /**
+     * @var array
+     */
+    protected $eccubeConfig;
+
+    /**
      * Applicaiton を生成しトランザクションを開始する.
      */
     public function setUp()
@@ -53,6 +58,7 @@ abstract class EccubeTestCase extends WebTestCase
         $this->container = $this->client->getContainer();
         $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->entityManager->getConnection()->beginTransaction();
+        $this->eccubeConfig = $this->container->getParameter('eccube.constants');
     }
 
     /**

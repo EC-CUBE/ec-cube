@@ -28,9 +28,6 @@ use Eccube\Form\Type\NameType;
 
 class NameTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -46,9 +43,8 @@ class NameTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('name', NameType::class)
             ->getForm();
