@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\EventSubscriber;
+namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Member;
@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-class SecurityEventSubscriber implements EventSubscriberInterface
+class SecurityListener implements EventSubscriberInterface
 {
     protected $em;
 

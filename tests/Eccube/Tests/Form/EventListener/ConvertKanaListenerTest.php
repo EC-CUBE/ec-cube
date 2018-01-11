@@ -1,10 +1,10 @@
 <?php
 
-namespace Eccube\Tests\EventListener;
+namespace Eccube\Tests\Form\EventListener;
 
-use Symfony\Component\Form\FormEvent;
-use Eccube\EventListener\ConvertKanaListener;
+use Eccube\Form\EventListener\ConvertKanaListener;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\FormEvent;
 
 class ConvertKanaListenerTest extends TestCase
 {

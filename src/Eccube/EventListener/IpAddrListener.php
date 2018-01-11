@@ -1,12 +1,12 @@
 <?php
 
-namespace Eccube\EventSubscriber;
+namespace Eccube\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class IpAddrSubscriber implements EventSubscriberInterface
+class IpAddrListener implements EventSubscriberInterface
 {
     /**
      * @var array
