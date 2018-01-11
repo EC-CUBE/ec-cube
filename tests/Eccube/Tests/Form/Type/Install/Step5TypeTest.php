@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step5Type;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step5TypeTest extends AbstractTypeTestCase
 {

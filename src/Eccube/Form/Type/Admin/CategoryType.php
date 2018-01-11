@@ -39,20 +39,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CategoryType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
-
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    public function __construct()
+    public function __construct($eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -66,7 +59,7 @@ class CategoryType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     )),
                 ),
             ))
