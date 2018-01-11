@@ -346,8 +346,19 @@ abstract class EccubeTestCase extends WebTestCase
         return $this->client->getProfile()->getCollector('swiftmailer');
     }
 
-    // TODO 暫定的に実装する
-    protected function url($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param string $route         The name of the route
+     * @param array  $parameters    An array of parameters
+     * @param int    $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     *
+     * @return string The generated URL
+     *
+     * @see UrlGeneratorInterface
+     * @see \Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait::generateUrl
+     */
+    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->container->get('router')->generate($route, $parameters, $referenceType);
     }
