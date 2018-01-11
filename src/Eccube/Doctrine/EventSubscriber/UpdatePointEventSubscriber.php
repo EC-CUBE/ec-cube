@@ -1,42 +1,36 @@
 <?php
 
-namespace Eccube\Entity;
+namespace Eccube\Doctrine\EventSubscriber;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\PreUpdate;
-use Eccube\Entity\Event\EntityEventListener;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
+use Doctrine\ORM\Events;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Service\MailService;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
-/**
- * @PreUpdate("Eccube\Entity\Order")
- */
-class UpdatePointEventListener implements EntityEventListener
+class UpdatePointEventSubscriber implements EventSubscriber, ServiceSubscriberInterface
 {
+    use ContainerAwareTrait;
+
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(MailService::class)
-     * @var MailService
-     */
-    protected $mailService;
-
-    public function execute(LifecycleEventArgs $eventArgs)
+    public function __construct($eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
+    public function preUpdate(LifecycleEventArgs $eventArgs)
+    {
+        if (!$eventArgs->getObject() instanceof Order) {
+            return;
+        }
+
         /** @var PreUpdateEventArgs $eventArgs */
         if ($eventArgs->hasChangedField('OrderStatus')) {
             $addCustomerPoint = 0;
@@ -90,16 +84,18 @@ class UpdatePointEventListener implements EntityEventListener
                 $newPoint = $Customer->getPoint() + $addCustomerPoint;
                 if ($newPoint < 0) {
                     // ポイントがマイナスになるためメールを送信する
-                    $this->mailService->sendPointNotifyMail($newOrder, $Customer->getPoint(), $addCustomerPoint);
+                    $mailService = $this->container->get(MailService::class);
+                    $mailService->sendPointNotifyMail($newOrder, $Customer->getPoint(), $addCustomerPoint);
                 }
                 $Customer->setPoint($newPoint);
+                $entityManager = $eventArgs->getObjectManager();
                 // この時点で Customer は Doctrine の更新対象となっていないので, 更新対象に設定する
-                $meta = $this->entityManager->getClassMetadata(Customer::class);
+                $meta = $entityManager->getClassMetadata(Customer::class);
                 // Customer の変更内容を設定する
-                $this->entityManager->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $Customer);
+                $entityManager->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $Customer);
                 // Customer の ChangeSet を scheduleExtraUpdate に設定する
-                $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($Customer);
-                $this->entityManager->getUnitOfWork()->scheduleExtraUpdate($Customer, $changeSet);
+                $changeSet = $entityManager->getUnitOfWork()->getEntityChangeSet($Customer);
+                $entityManager->getUnitOfWork()->scheduleExtraUpdate($Customer, $changeSet);
             }
         }
     }
@@ -109,6 +105,7 @@ class UpdatePointEventListener implements EntityEventListener
         if ($Status->getId() == OrderStatus::CANCEL) {
             return false;
         }
+
         return true;
     }
 
@@ -117,6 +114,42 @@ class UpdatePointEventListener implements EntityEventListener
         if ($Status->getId() == OrderStatus::DELIVERED) {
             return true;
         }
+
         return false;
+    }
+
+    /**
+     * Returns an array of events this subscriber wants to listen to.
+     *
+     * @return array
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::preUpdate,
+        ];
+    }
+
+    /**
+     * Returns an array of service types required by such instances, optionally keyed by the service names used internally.
+     *
+     * For mandatory dependencies:
+     *
+     *  * array('logger' => 'Psr\Log\LoggerInterface') means the objects use the "logger" name
+     *    internally to fetch a service which must implement Psr\Log\LoggerInterface.
+     *  * array('Psr\Log\LoggerInterface') is a shortcut for
+     *  * array('Psr\Log\LoggerInterface' => 'Psr\Log\LoggerInterface')
+     *
+     * otherwise:
+     *
+     *  * array('logger' => '?Psr\Log\LoggerInterface') denotes an optional dependency
+     *  * array('?Psr\Log\LoggerInterface') is a shortcut for
+     *  * array('Psr\Log\LoggerInterface' => '?Psr\Log\LoggerInterface')
+     *
+     * @return array The required service types, optionally keyed by service names
+     */
+    public static function getSubscribedServices()
+    {
+        return [MailService::class];
     }
 }
