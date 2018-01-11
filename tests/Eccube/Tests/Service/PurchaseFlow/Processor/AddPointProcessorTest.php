@@ -15,7 +15,6 @@ class AddPointProcessorTest extends EccubeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->BaseInfo->setBasicPointRate(10);

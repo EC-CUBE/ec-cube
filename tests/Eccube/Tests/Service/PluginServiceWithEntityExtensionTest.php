@@ -55,7 +55,6 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         $this->mockSchemaService = $this->createMock(SchemaService::class);

@@ -53,7 +53,6 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->SaleType1 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
