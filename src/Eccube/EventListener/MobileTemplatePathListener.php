@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\EventSubscriber;
+namespace Eccube\EventListener;
 
 use Eccube\Request\Context;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Twig\Environment;
 
-class MobileSubscriber implements EventSubscriberInterface
+class MobileTemplatePathListener implements EventSubscriberInterface
 {
     /**
      * @var Context
