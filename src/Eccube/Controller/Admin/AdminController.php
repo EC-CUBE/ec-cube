@@ -116,7 +116,7 @@ class AdminController extends AbstractController
     public function login(Application $app, Request $request)
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            return $app->redirect($app->url('admin_homepage'));
+            return $this->redirect($this->generateUrl('admin_homepage'));
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */

@@ -337,12 +337,15 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Get the MailCollector
      *
+     * @param boolean $sendRequest True to send requests internally.
      * @return MessageDataCollector
      */
-    protected function getMailCollector()
+    protected function getMailCollector($sendRequest = true)
     {
-        $this->client->enableProfiler();
-        $this->client->request('POST', '/confirm');
+        if ($sendRequest) {
+            $this->client->enableProfiler();
+            $this->client->request('POST', '/confirm');
+        }
         return $this->client->getProfile()->getCollector('swiftmailer');
     }
 
@@ -361,5 +364,22 @@ abstract class EccubeTestCase extends WebTestCase
     protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->container->get('router')->generate($route, $parameters, $referenceType);
+    }
+
+    /**
+     * Returns a CSRF token for the given ID.
+     *
+     * If previously no token existed for the given ID.
+     * ATTENTION: Call this function before login.
+     *
+     * @param string $csrfTokenId The token ID (e.g. `authenticate`, `<FormTypeBlockPrefix>`)
+     *
+     * @return CsrfToken The CSRF token
+     * @see \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     * @see https://stackoverflow.com/a/38661340/4956633
+     */
+    protected function getCsrfToken($csrfTokenId)
+    {
+        return $this->container->get('security.csrf.token_manager')->getToken($csrfTokenId);
     }
 }

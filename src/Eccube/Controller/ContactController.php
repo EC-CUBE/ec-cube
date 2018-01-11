@@ -79,12 +79,12 @@ class ContactController extends AbstractController
      * @Route("/contact", name="contact")
      * @Template("Contact/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
         if ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            $user = $app['user'];
+            $user = $this->getUser();
             $builder->setData(
                 array(
                     'name01' => $user->getName01(),
@@ -165,7 +165,7 @@ class ContactController extends AbstractController
      * @Route("/contact/complete", name="contact_complete")
      * @Template("Contact/complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete(Request $request)
     {
         return [];
     }

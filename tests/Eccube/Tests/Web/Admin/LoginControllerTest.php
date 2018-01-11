@@ -30,13 +30,12 @@ class LoginControllerTest extends AbstractWebTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
     public function testRoutingAdminLogin()
     {
-        $this->client->request('GET', $this->app->url('admin_login'));
+        $this->client->request('GET', $this->generateUrl('admin_login'));
 
         // ログイン
         $this->assertEquals(
@@ -48,21 +47,23 @@ class LoginControllerTest extends AbstractWebTestCase
 
     public function testRoutingAdminLoginCheck()
     {
+        // see https://stackoverflow.com/a/38661340/4956633
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_login'),
+            'POST', $this->generateUrl('admin_login'),
             array(
                 'login_id' => 'admin',
                 'password' => 'password',
-                '_csrf_token' => 'dummy'
+                '_csrf_token' => $this->getCsrfToken('authenticate')
             )
         );
 
-        $this->assertNotNull($this->app['security.token_storage']->getToken(), 'ログインしているかどうか');
+        $this->assertNotNull($this->container->get('security.token_storage')->getToken(), 'ログインしているかどうか');
     }
 
     public function testRoutingAdminLogin_ログインしていない場合は401エラーがかえる()
     {
-        $this->client->request('GET', $this->app->url('admin_homepage'));
+        $this->markTestIncomplete('BaseInfo が取得できず500エラーが返ってくる');
+        $this->client->request('GET', $this->generateUrl('admin_homepage'));
 
         // ログイン
         $this->assertEquals(
