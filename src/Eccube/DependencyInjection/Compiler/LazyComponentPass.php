@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2017 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,11 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\DependencyInjection\Compiler;
 
-namespace Eccube\Tests\Service;
 
-use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-abstract class AbstractServiceTestCase extends EccubeTestCase
+class LazyComponentPass implements CompilerPassInterface
 {
+    public function process(ContainerBuilder $container)
+    {
+        foreach ($container->getDefinitions() as $definition) {
+            $definition->setLazy(true);
+        }
+    }
 }
