@@ -14,12 +14,13 @@ class PaymentServiceTest extends AbstractServiceTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $previousTotal = $Order->getSubtotal();
-        $paymentService = $this->app['eccube.service.payment']($Order->getPayment()->getServiceClass());
+
+        $paymentService = $this->container->get($Order->getPayment()->getServiceClass());
         $this->assertInstanceOf(\Eccube\Service\PaymentService::class, $paymentService);
 
         $form = new \Eccube\Form\Type\ShoppingType();
-        $paymentMethod = $this->app['payment.method']($Order->getPayment()->getMethodClass(), $form);
+        $paymentMethod = $this->container->get($Order->getPayment()->getMethodClass());
+        $paymentMethod->setFormType($form);
         $this->assertInstanceOf(\Eccube\Service\Payment\Method\Cash::class, $paymentMethod);
 
         $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.

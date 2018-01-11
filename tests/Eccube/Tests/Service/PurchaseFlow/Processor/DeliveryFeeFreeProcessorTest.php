@@ -45,10 +45,10 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
-        $this->processor = new DeliveryFeeFreeProcessor($this->app[BaseInfo::class]);
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->processor = new DeliveryFeeFreeProcessor($this->BaseInfo);
         $this->Order = $this->createOrder($this->createCustomer());
     }
 
@@ -78,7 +78,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     public function testProcessWithAmount()
     {
         /** @var BaseInfo $BaseInfo */
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $BaseInfo->setDeliveryFreeAmount(1); // 1円以上で送料無料
 
         $result = $this->processor->process($this->Order, new PurchaseContext());
@@ -97,7 +97,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     public function testProcessWithQuantity()
     {
         /** @var BaseInfo $BaseInfo */
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $BaseInfo->setDeliveryFreeQuantity(1); // 1個以上で送料無料
 
         $result = $this->processor->process($this->Order, new PurchaseContext());

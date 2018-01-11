@@ -35,7 +35,6 @@ class DisplayStatusValidatorTest extends EccubeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         $this->Product = $this->createProduct('テスト商品', 1);
@@ -56,9 +55,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
      */
     public function testDisplayStatusWithShow()
     {
-        /** @var Application $app */
-        $app = $this->app;
-        $ProductStatus = $app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_SHOW);
+        $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_SHOW);
         $this->Product->setStatus($ProductStatus);
 
         $this->validator->process($this->cartItem, new PurchaseContext());
@@ -71,9 +68,7 @@ class DisplayStatusValidatorTest extends EccubeTestCase
      */
     public function testDisplayStatusWithClosed()
     {
-        /** @var Application $app */
-        $app = $this->app;
-        $ProductStatus = $app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_HIDE);
         $this->Product->setStatus($ProductStatus);
 
         $this->validator->process($this->cartItem, new PurchaseContext());

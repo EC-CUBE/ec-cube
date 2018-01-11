@@ -34,13 +34,12 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 {
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
     public function testProcess()
     {
-        $processor = new DeliveryFeeProcessor($this->app['orm.em']);
+        $processor = new DeliveryFeeProcessor($this->entityManager);
         $Order = $this->createOrder($this->createCustomer());
         /**
          * @var OrderItem
@@ -59,7 +58,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
      */
     public function testProcessWithDeliveryFee()
     {
-        $processor = new DeliveryFeeProcessor($this->app['orm.em']);
+        $processor = new DeliveryFeeProcessor($this->entityManager);
         $Order = $this->createOrder($this->createCustomer());
         /**
          * @var OrderItem

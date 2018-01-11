@@ -2,7 +2,7 @@
 
 namespace Eccube\Tests\Fixture;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
@@ -52,7 +52,7 @@ class Generator
     protected $locale;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -117,7 +117,7 @@ class Generator
     protected $session;
 
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         PasswordEncoder $passwordEncoder,
         MemberRepository $memberRepository,
         CategoryRepository $categoryRepository,

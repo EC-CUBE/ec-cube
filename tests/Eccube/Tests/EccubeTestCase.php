@@ -2,12 +2,14 @@
 
 namespace Eccube\Tests;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -36,6 +38,11 @@ abstract class EccubeTestCase extends WebTestCase
     protected $container;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
      * Applicaiton を生成しトランザクションを開始する.
      */
     public function setUp()
@@ -44,6 +51,8 @@ abstract class EccubeTestCase extends WebTestCase
 
         $this->client = self::createClient();
         $this->container = $this->client->getContainer();
+        $this->entityManager = $this->container->get('doctrine')->getManager();
+        $this->entityManager->getConnection()->beginTransaction();
     }
 
     /**
@@ -188,7 +197,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function deleteAllRows(array $tables)
     {
         /** @var Connection $conn */
-        $conn = $this->app['db'];
+        $conn = $this->entityManager->getConnection();
 
         // MySQLの場合は参照制約を無効にする.
         if ('mysql' === $conn->getDatabasePlatform()->getName()) {
@@ -235,31 +244,22 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see \Eccube\Tests\Service\MailServiceTest
      * @link http://mailcatcher.me/
+     * @deprecated
      */
     protected function initializeMailCatcher()
     {
         $this->checkMailCatcherStatus();
-        $config = $this->app['config'];
-        $config['mail']['transport'] = 'smtp';
-        $config['mail']['host'] = '127.0.0.1';
-        $config['mail']['port'] = 1025;
-        $config['mail']['username'] = null;
-        $config['mail']['password'] = null;
-        $config['mail']['encryption'] = null;
-        $config['mail']['auth_mode'] = null;
-        $this->app->offsetUnset('config');
-        $this->app['config'] = $config;
-        $this->app['swiftmailer.use_spool'] = false;
-        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
     }
 
     /**
      * MailCatcher の起動状態をチェックする.
      *
      * MailCatcher が起動していない場合は, テストをスキップする.
+     * @deprecated
      */
     protected function checkMailCatcherStatus()
     {
+        trigger_error('MailCatcher is deprecated. Please implementation to the EccubeTestCase::getMailCollector().', E_USER_ERROR);
         try {
             $httpClient = new HttpClient();
             $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
@@ -271,12 +271,13 @@ abstract class EccubeTestCase extends WebTestCase
         } catch (\Exception $e) {
             $message = 'MailCatcher is not available';
             $this->markTestSkipped($message);
-            $this->app->log($message);
+            log_error($message);
         }
     }
 
     /**
      * MailCatcher のメッセージをすべて削除する.
+     * @deprecated
      */
     protected function cleanUpMailCatcherMessages()
     {
@@ -284,8 +285,7 @@ abstract class EccubeTestCase extends WebTestCase
             $httpClient = new HttpClient();
             $response = $httpClient->delete(self::MAILCATCHER_URL.'messages');
         } catch (\Exception $e) {
-            // FIXME
-            // $this->app->log('['.get_class().'] '.$e->getMessage());
+            log_error('['.get_class().'] '.$e->getMessage());
         }
     }
 
@@ -293,12 +293,12 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher のメッセージをすべて取得する.
      *
      * @return array MailCatcher のメッセージの配列
+     * @deprecated
      */
     protected function getMailCatcherMessages()
     {
         $httpClient = new HttpClient();
         $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
-
         return json_decode($response->getBody(true));
     }
 
@@ -307,12 +307,12 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param integer $id メッセージの ID
      * @return object MailCatcher のメッセージ
+     * @deprecated
      */
     protected function getMailCatcherMessage($id)
     {
         $httpClient = new HttpClient();
         $response = $httpClient->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-
         return json_decode($response->getBody(true));
     }
 
@@ -321,10 +321,23 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param object $Message MailCatcher のメッセージ
      * @return string デコードされた eml 形式のソース
+     * @deprecated
      */
     protected function parseMailCatcherSource($Message)
     {
         return quoted_printable_decode($Message->source);
+    }
+
+    /**
+     * Get the MailCollector
+     *
+     * @return MessageDataCollector
+     */
+    protected function getMailCollector()
+    {
+        $this->client->enableProfiler();
+        $this->client->request('POST', '/confirm');
+        return $this->client->getProfile()->getCollector('swiftmailer');
     }
 
     // TODO 暫定的に実装する

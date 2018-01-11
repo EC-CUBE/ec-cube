@@ -15,9 +15,8 @@ class AddPointProcessorTest extends EccubeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->BaseInfo = $this->app[BaseInfo::class];
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->BaseInfo->setBasicPointRate(10);
         $this->Cart = new Cart();
         $this->Product = $this->createProduct('テスト商品', 5);
@@ -35,7 +34,7 @@ class AddPointProcessorTest extends EccubeTestCase
 
     public function testProcess()
     {
-        $processor = new AddPointProcessor($this->app['orm.em'], $this->BaseInfo);
+        $processor = new AddPointProcessor($this->entityManager, $this->BaseInfo);
         $processor->process($this->Cart, new PurchaseContext());
         $actual = $this->Cart->getAddPoint();
         self::assertGreaterThan(0, $actual);

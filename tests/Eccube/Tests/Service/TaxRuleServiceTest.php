@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\TaxRuleService;

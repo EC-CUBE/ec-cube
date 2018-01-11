@@ -15,9 +15,8 @@ class UsePointProcessorTest extends EccubeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->BaseInfo = $this->app[BaseInfo::class];
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->BaseInfo->setPointConversionRate(10);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
@@ -27,7 +26,7 @@ class UsePointProcessorTest extends EccubeTestCase
     {
         $this->Order->setUsePoint(10);
         $OriginalOrder = clone $this->Order;
-        $processor = new UsePointProcessor($this->app['orm.em'], $this->BaseInfo);
+        $processor = new UsePointProcessor($this->entityManager, $this->BaseInfo);
         $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
         $OrderItem = $this->Order->getOrderItems()->filter(
             function ($OrderItem) {
@@ -44,7 +43,7 @@ class UsePointProcessorTest extends EccubeTestCase
     {
         $this->Order->setUsePoint($this->Customer->getPoint() + 1);
         $OriginalOrder = clone $this->Order;
-        $processor = new UsePointProcessor($this->app['orm.em'], $this->BaseInfo);
+        $processor = new UsePointProcessor($this->entityManager, $this->BaseInfo);
         $ProcessResult = $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
 
         self::assertTrue($ProcessResult->isError());
@@ -62,7 +61,7 @@ class UsePointProcessorTest extends EccubeTestCase
         $this->Customer->setPoint(PHP_INT_MAX);
         $this->Order->setUsePoint($this->Order->getTotal() + 1);
         $OriginalOrder = clone $this->Order;
-        $processor = new UsePointProcessor($this->app['orm.em'], $this->BaseInfo);
+        $processor = new UsePointProcessor($this->entityManager, $this->BaseInfo);
         $ProcessResult = $processor->process($this->Order, new PurchaseContext($OriginalOrder, $this->Customer));
 
         self::assertTrue($ProcessResult->isError());
