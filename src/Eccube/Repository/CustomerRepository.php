@@ -422,9 +422,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      *
      * @param $app
      * @param  Customer $Customer
+     * @param  $orderStatusId
      * @param  $isNewOrder
      */
-    public function updateBuyData($app, Customer $Customer, $isNewOrder = false)
+    public function updateBuyData($app, Customer $Customer, $orderStatusId, $isNewOrder = null)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
@@ -447,8 +448,19 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 $Customer->setFirstBuyDate($now);
             }
 
-            if($isNewOrder) {
-                $Customer->setLastBuyDate($now);
+            if (!is_null($isNewOrder)) {
+                if ($isNewOrder) {
+                    $Customer->setLastBuyDate($now);
+                }
+            } else {
+                // @deprecate 3.0.15リリース以前に作られたPluginの互換性保持のため、本実装を残す
+                if ($orderStatusId == $app['config']['order_cancel'] ||
+                    $orderStatusId == $app['config']['order_pending'] ||
+                    $orderStatusId == $app['config']['order_processing']) {
+                    // キャンセル、決済処理中、購入処理中は購入時間は更新しない
+                } else {
+                    $Customer->setLastBuyDate($now);
+                }
             }
 
             $Customer->setBuyTimes($data['buy_times']);
