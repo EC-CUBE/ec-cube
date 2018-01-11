@@ -21,6 +21,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     protected $Results;
     protected $searchData;
 

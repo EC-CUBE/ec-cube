@@ -29,6 +29,12 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 class TemplateControllerTest extends AbstractAdminWebTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function test_routing_AdminTemplate_index()
     {
         $this->client->request('GET', $this->app->url('admin_store_template'));

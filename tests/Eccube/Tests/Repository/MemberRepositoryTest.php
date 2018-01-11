@@ -20,6 +20,7 @@ class MemberRepositoryTest extends EccubeTestCase
     protected $Member;
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Member = $this->app['eccube.repository.member']->find(1);
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')

@@ -35,6 +35,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class DeliveryControllerTest extends AbstractAdminWebTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     /**
      * @return mixed
      */

@@ -35,6 +35,12 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 class PageControllerTest extends AbstractAdminWebTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function test_routing_AdminContentPage_index()
     {
         $this->client->request('GET', $this->app->url('admin_content_page'));

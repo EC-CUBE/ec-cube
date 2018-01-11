@@ -2,10 +2,7 @@
 
 namespace Eccube\Tests;
 
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\ORM\EntityManager;
-use Eccube\Application;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
@@ -50,39 +47,6 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function setUp()
     {
-        if (strpos(get_class($this), 'Eccube\Tests\Application') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Command') !== false
-            || strpos(get_class($this), 'Eccube\Tests\DI') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Doctrine') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Entity') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Event') !== false
-            || strpos(get_class($this), 'Eccube\Tests\EventListener') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Form') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Plugin') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Repository') !== false
-            || strpos(get_class($this), 'Eccube\Tests\ServiceProvider') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Transaction') !== false
-        ) {
-            $this->markTestIncomplete(get_class($this).' は未実装です');
-        }
-        $src = __DIR__.'/../../../src/Eccube/Resource/config/log.php';
-        $dist = __DIR__.'/../../../app/config/eccube/log.php';
-
-        $config = require $src;
-        $config['log']['log_level'] = 'ERROR';
-        $config['log']['action_level'] = 'ERROR';
-        $config['log']['passthru_level'] = 'ERROR';
-
-        $channel = $config['log']['channel'];
-        foreach (array('monolog', 'front', 'admin') as $key) {
-            $channel[$key]['log_level'] = 'ERROR';
-            $channel[$key]['action_level'] = 'ERROR';
-            $channel[$key]['passthru_level'] = 'ERROR';
-        }
-        $config['log']['channel'] = $channel;
-
-        file_put_contents($dist, '<?php return '.var_export($config, true).';');
-
         parent::setUp();
 
         $this->client = self::createClient();

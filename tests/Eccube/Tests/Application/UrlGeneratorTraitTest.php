@@ -23,6 +23,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UrlGeneratorTraitTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testUrl()
     {
         $generator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();

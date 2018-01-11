@@ -55,9 +55,10 @@ class OrderRepository extends AbstractRepository
      */
     protected $queries;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, Queries $queries)
     {
         parent::__construct($registry, Order::class);
+        $this->queries = $queries;
     }
 
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)

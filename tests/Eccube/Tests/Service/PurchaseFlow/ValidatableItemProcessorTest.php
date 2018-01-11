@@ -33,6 +33,12 @@ use Eccube\Tests\EccubeTestCase;
 
 class ValidatableItemProcessorTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     /*
      * カートの場合
      *      エラーなら明細丸め処理 ＆ カート画面にエラー表示¨

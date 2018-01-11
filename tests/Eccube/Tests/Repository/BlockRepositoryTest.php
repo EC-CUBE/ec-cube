@@ -20,6 +20,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->removeBlock();
         $this->DeviceType = $this->app['eccube.repository.master.device_type']

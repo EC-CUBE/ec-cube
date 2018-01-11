@@ -36,6 +36,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {

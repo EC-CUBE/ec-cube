@@ -16,6 +16,7 @@ class DbalExecutorTest extends EccubeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
         foreach ($Jobs as $Job) {

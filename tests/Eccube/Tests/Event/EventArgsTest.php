@@ -31,6 +31,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventArgsrTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRequest()
     {
         $event = new EventArgs(array());

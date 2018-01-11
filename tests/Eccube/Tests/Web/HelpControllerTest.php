@@ -27,6 +27,12 @@ namespace Eccube\Tests\Web;
 class HelpControllerTest extends AbstractWebTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     /**
      * 特定商取引法のテスト
      */
