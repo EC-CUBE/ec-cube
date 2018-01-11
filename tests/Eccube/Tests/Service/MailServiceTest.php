@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\MailService;
@@ -12,11 +11,6 @@ use Eccube\Service\MailService;
  */
 class MailServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
     /**
      * @var Customer
      */

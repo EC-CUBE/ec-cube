@@ -24,7 +24,7 @@
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
@@ -46,15 +46,9 @@ class CartServiceTest extends AbstractServiceTestCase
 
     protected $SaleType2;
 
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
     public function setUp()
     {
         parent::setUp();
-        $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->SaleType1 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $this->SaleType2 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
         $this->Product = $this->createProduct();

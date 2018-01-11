@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Service\CsvExportService;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Repository\CsvRepository;
@@ -13,11 +12,6 @@ class CsvExportServiceTest extends AbstractServiceTestCase
 {
 
     protected $url;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
      * @var CsvExportService
@@ -41,7 +35,6 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $root = vfsStream::setup('rootDir');
         $this->url = vfsStream::url('rootDir/test.csv');
 
-        $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->csvExportService = $this->container->get(CsvExportService::class);
         $this->csvRepository = $this->container->get(CsvRepository::class);
         $this->orderRepository = $this->container->get(OrderRepository::class);

@@ -2,7 +2,7 @@
 
 namespace Eccube\Tests;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
@@ -38,7 +38,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $container;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 

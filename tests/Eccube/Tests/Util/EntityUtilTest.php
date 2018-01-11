@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Util;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
@@ -21,23 +20,16 @@ class EntityUtilTest extends EccubeTestCase
     private $memberId;
     private $productClassId;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
     public function setUp()
     {
         parent::setUp();
-        $client = self::createClient();
-        $this->em = $client->getContainer()->get('doctrine')->getManager();
         // eccube_install.sh で追加される Member
-        $Member = $this->em->find(\Eccube\Entity\Member::class, 1);
+        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 1);
 
         $Product = new Product();
         $ProductClass = new ProductClass();
-        $ProductStatus = $this->em->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
-        $SaleType = $this->em->find(\Eccube\Entity\Master\SaleType::class, 1);
+        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $Product
             ->setName('test')
             ->setCreator($Member)
@@ -55,10 +47,10 @@ class EntityUtilTest extends EccubeTestCase
         $ProductClass->setProductStock($ProductStock);
         $ProductStock->setProductClass($ProductClass);
 
-        $this->em->persist($Product);
-        $this->em->persist($ProductClass);
-        $this->em->persist($ProductStock);
-        $this->em->flush();
+        $this->entityManager->persist($Product);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->persist($ProductStock);
+        $this->entityManager->flush();
 
         $this->Product = $Product;
         $this->ProductClass = $ProductClass;
@@ -67,7 +59,7 @@ class EntityUtilTest extends EccubeTestCase
     public function testIsEmptyWithFalse()
     {
         // setUp() で追加したサンプル商品
-        $Product = $this->em->find(Product::class, $this->Product->getId());
+        $Product = $this->entityManager->find(Product::class, $this->Product->getId());
         // eccube_install.sh で追加される Member
         $Member = $Product->getCreator();
         /*
