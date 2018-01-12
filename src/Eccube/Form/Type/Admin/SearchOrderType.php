@@ -196,7 +196,7 @@ class SearchOrderType extends AbstractType
                         )),
                     ),
                 ))
-                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
         );
     }
 

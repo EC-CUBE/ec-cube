@@ -130,6 +130,11 @@ class EccubeDataCollector extends DataCollector
         }
     }
 
+    public function reset()
+    {
+        $this->data = [];
+    }
+
     /**
      * {@inheritdoc}
      */

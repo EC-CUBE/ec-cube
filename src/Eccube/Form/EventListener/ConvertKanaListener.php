@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\EventListener;
+namespace Eccube\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -8,6 +8,16 @@ use Symfony\Component\Form\FormEvents;
 
 class ConvertKanaListener implements EventSubscriberInterface
 {
+    /**
+     * @var string
+     */
+    protected $option;
+
+    /**
+     * @var string
+     */
+    protected $encoding;
+
     public function __construct($option = 'a', $encoding = 'utf-8')
     {
         $this->option = $option;
