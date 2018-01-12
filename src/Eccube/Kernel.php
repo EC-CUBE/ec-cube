@@ -12,7 +12,9 @@
 namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Eccube\DependencyInjection\Compiler\LazyComponentPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
+use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
@@ -139,6 +141,14 @@ class Kernel extends BaseKernel
 
         // DocumentRootをルーティディレクトリに設定する.
         $container->addCompilerPass(new WebServerDocumentRootPass('%kernel.project_dir%/'));
+
+        // テスト時はコンテナからコンポーネントを直接取得できるようにしておく
+        if ($this->environment === 'test') {
+            $container->addCompilerPass(new LazyComponentPass());
+        }
+
+        // テンプレートフックポイントを動作させるように.
+        $container->addCompilerPass(new TemplateListenerPass());
 
         $container->register('app', Application::class)
             ->setSynthetic(true)

@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step5Type;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step5TypeTest extends AbstractTypeTestCase
 {
@@ -70,6 +71,7 @@ class Step5TypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成

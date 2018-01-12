@@ -32,6 +32,12 @@ use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 class LoginControllerTest extends AbstractWebTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRoutingAdminLogin()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_login'));

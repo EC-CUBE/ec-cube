@@ -60,21 +60,21 @@ class PaymentProcessorTest extends EccubeTestCase
         $SaleType->setId(1000);
         $SaleType->setName('テスト種別');
         $SaleType->setSortNo(1000);
-        $this->app['orm.em']->persist($SaleType);
-        $this->app['orm.em']->flush($SaleType);
+        $this->entityManager->persist($SaleType);
+        $this->entityManager->flush($SaleType);
 
         $Delivery = new Delivery();
         $Delivery->setName('テスト配送');
         $Delivery->setSaleType($SaleType);
         $Delivery->setVisible(true);
-        $this->app['orm.em']->persist($Delivery);
-        $this->app['orm.em']->flush($Delivery);
+        $this->entityManager->persist($Delivery);
+        $this->entityManager->flush($Delivery);
 
         $Payment = new Payment();
         $Payment->setMethod('テスト支払');
         $Payment->setVisible(true);
-        $this->app['orm.em']->persist($Payment);
-        $this->app['orm.em']->flush($Payment);
+        $this->entityManager->persist($Payment);
+        $this->entityManager->flush($Payment);
 
         $PaymentOption = new PaymentOption();
         $PaymentOption->setDeliveryId($Delivery->getId());
@@ -83,8 +83,8 @@ class PaymentProcessorTest extends EccubeTestCase
         $PaymentOption->setPayment($Payment);
         $Delivery->addPaymentOption($PaymentOption);
         $Payment->addPaymentOption($PaymentOption);
-        $this->app['orm.em']->persist($PaymentOption);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($PaymentOption);
+        $this->entityManager->flush();
 
         $this->Product = $this->createProduct('テスト商品', 3);
         $this->ProductClass1 = $this->Product->getProductClasses()[0];
@@ -92,7 +92,7 @@ class PaymentProcessorTest extends EccubeTestCase
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
         $this->ProductClass3->setSaleType($SaleType);
 
-        $this->validator = new PaymentProcessor($this->app[DeliveryRepository::class]);
+        $this->validator = new PaymentProcessor($this->container->get(DeliveryRepository::class));
     }
 
     public function testInstance()

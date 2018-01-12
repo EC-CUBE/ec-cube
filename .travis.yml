@@ -11,7 +11,6 @@ cache:
   directories:
     - vendor
     - $HOME/.composer/cache
-    - $(gem environment gemdir)
     - bin/.phpunit
 
 php:
@@ -61,9 +60,6 @@ before_install:
   - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cube4_dev;' -U postgres ; fi
 
 install:
-  # @see https://github.com/sj26/mailcatcher/issues/277
-  - gem install mime-types --version "< 3"
-  - gem install --conservative mailcatcher
   - composer install --dev --no-interaction -o
   - ./vendor/bin/simple-phpunit install
   # - bin/console doctrine:database:create
@@ -73,7 +69,6 @@ install:
 before_script:
   - phpenv config-rm xdebug.ini || true
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - mailcatcher
 
 script:
   - if [ $COVERAGE ]  ; then phpdbg -qrr ./bin/phpunit --coverage-clover=coverage.clover ; fi

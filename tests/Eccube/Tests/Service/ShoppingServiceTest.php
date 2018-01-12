@@ -17,6 +17,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->app['security.token_storage']->setToken(

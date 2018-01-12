@@ -31,6 +31,12 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRoutingAdminIndex()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_homepage'));

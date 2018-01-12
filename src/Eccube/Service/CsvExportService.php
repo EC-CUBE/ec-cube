@@ -24,6 +24,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
@@ -56,7 +57,6 @@ class CsvExportService
     protected $convertEncodingCallBack;
 
     /**
-     * @Inject("orm.em")
      * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
@@ -67,7 +67,6 @@ class CsvExportService
     protected $qb;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $config;
@@ -83,34 +82,45 @@ class CsvExportService
     protected $Csvs;
 
     /**
-     * @Inject(CsvRepository::class)
      * @var CsvRepository
      */
     protected $csvRepository;
 
     /**
-     * @Inject(CsvTypeRepository::class)
      * @var CsvTypeRepository
      */
     protected $csvTypeRepository;
 
     /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
 
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
+
+    public function __construct(
+        EntityManager $entityManager,
+        CsvRepository $csvRepository,
+        CsvTypeRepository $csvTypeRepository,
+        OrderRepository $orderRepository,
+        CustomerRepository $customerRepository,
+        $eccubeConfig
+    ) {
+        $this->em = $entityManager;
+        $this->csvRepository = $csvRepository;
+        $this->csvTypeRepository = $csvTypeRepository;
+        $this->orderRepository = $orderRepository;
+        $this->customerRepository = $customerRepository;
+        $this->config = $eccubeConfig;
+    }
 
     /**
      * @param $config

@@ -70,8 +70,8 @@ EOF
             'create_date' => \Doctrine\DBAL\Types\Type::DATETIME,
         ]);
 
-        $shop_name = env('ECCUBE_SHOP_NAME');
-        $admin_mail = env('ECCUBE_ADMIN_MAIL');
+        $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
+        $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
         $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
             ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")

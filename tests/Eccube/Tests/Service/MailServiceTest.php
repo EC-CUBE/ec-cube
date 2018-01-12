@@ -2,97 +2,101 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Service\MailService;
 
 /**
  * MailService test cases.
- *
- * このテストは MailCatcher を使用します.
- * 事前に MailCatcher をインストールし, 起動させておく必要があります.
- *
- * インストール)
- * $ gem install mailcatcher
- *
- * 起動)
- * $ mailcatcher
- *
- * MailCatcher については下記リンクを参考にしてください
- * @link http://mailcatcher.me/
- * @link http://qiita.com/suzuki86/items/258694fb535071f0110f
- * @link http://kirii.hateblo.jp/entry/2014/07/18/000000
  */
 class MailServiceTest extends AbstractServiceTestCase
 {
-
-    protected $client;
+    /**
+     * @var Customer
+     */
     protected $Customer;
+
+    /**
+     * @var BaseInfo
+     */
     protected $BaseInfo;
+
+    /**
+     * @var MailService
+     */
     protected $mailService;
+
+    /**
+     * @var \Swift_Message
+     */
+    protected $Message;
 
     public function setUp()
     {
         parent::setUp();
-        $this->initializeMailCatcher();
-        $paths = array($this->app['config']['template_default_realdir']);
-        $this->app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
         $this->Customer = $this->createCustomer();
-        $this->BaseInfo = $this->app['eccube.repository.base_info']->get(1);
-        $this->mailService = $this->app[MailService::class];
-    }
-
-    public function tearDown()
-    {
-        $this->cleanUpMailCatcherMessages();
-        parent::tearDown();
+        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->mailService = $this->container->get(MailService::class);
     }
 
     public function testSendCustomerConfirmMail()
     {
         $url = 'http://example.com/confirm';
         $this->mailService->sendCustomerConfirmMail($this->Customer, $url);
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
 
         $this->expected = $url;
         $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認';
-        $this->actual = $Message->subject;
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録のご確認';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
+        $this->verify();
     }
 
     public function testSendCustomerCompleteMail()
     {
         $this->mailService->sendCustomerCompleteMail($this->Customer);
 
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。';
-        $this->actual = $Message->subject;
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録が完了しました。';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
+        $this->verify();
     }
 
     public function testSendCustomerWithdrawMail()
@@ -100,87 +104,28 @@ class MailServiceTest extends AbstractServiceTestCase
         $email = 'draw@example.com';
         $this->mailService->sendCustomerWithdrawMail($this->Customer, $email);
 
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了';
-        $this->actual = $Message->subject;
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 退会手続きのご完了';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$email.'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $email;
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
-
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
-    }
-
-    /**
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1315
-     * @deprecated since 3.0.0, to be removed in 3.1
-     */
-    public function testSendrContactMail()
-    {
-        $faker = $this->getFaker();
-        $name01 = $faker->lastName;
-        $name02 = $faker->firstName;
-        $kana01 = $faker->lastName;
-        $kana02 = $faker->firstName;
-        $email = $faker->email;
-        $zip = $faker->postCode;
-        $zip01 = substr($zip, 0, 3);
-        $zip02 = substr($zip, 3, 7);
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
-        $addr01 = $faker->city;
-        $addr02 = $faker->streetAddress;
-        $tel = explode('-', $faker->phoneNumber);
-        $tel01 = $tel[0];
-        $tel02 = $tel[1];
-        $tel03 = $tel[2];
-
-        $formData = array(
-            'name01' => $name01,
-            'name02' => $name02,
-            'kana01' => $kana01,
-            'kana02' => $kana02,
-            'zip01' => $zip01,
-            'zip02' => $zip02,
-            'pref' => $Pref,
-            'addr01' => $addr01,
-            'addr02' => $addr02,
-            'tel01' => $tel01,
-            'tel02' => $tel02,
-            'tel03' => $tel03,
-            'email' => $email,
-            'contents' => 'お問い合わせ内容'
-        );
-
-        $this->mailService->sendrContactMail($formData);
-
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
-
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
-        $this->actual = $Message->subject;
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
         $this->verify();
 
-        $this->expected = '<'.$email.'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
         $this->verify();
-
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
-
-        $this->expected = 'お問い合わせ内容';
-        $this->verifyRegExp($Message, 'お問い合わせ内容');
-
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
     }
 
     public function testSendContactMail()
@@ -194,7 +139,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $zip = $faker->postCode;
         $zip01 = substr($zip, 0, 3);
         $zip02 = substr($zip, 3, 7);
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, 1);
         $addr01 = $faker->city;
         $addr02 = $faker->streetAddress;
         $tel = explode('-', $faker->phoneNumber);
@@ -221,26 +166,31 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $this->mailService->sendContactMail($formData);
 
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
-        $this->actual = $Message->subject;
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$email.'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $email;
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
 
         $this->expected = 'お問い合わせ内容';
         $this->verifyRegExp($Message, 'お問い合わせ内容');
-
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
     }
 
     public function testSendOrderMail()
@@ -248,50 +198,59 @@ class MailServiceTest extends AbstractServiceTestCase
         $Order = $this->createOrder($this->Customer);
         $this->mailService->sendOrderMail($Order);
 
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] ご注文ありがとうございます';
-        $this->actual = $Message->subject;
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $Order->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
     }
 
     public function testSendAdminCustomerConfirmMail()
     {
-        $this->app['twig']->addGlobal('BaseInfo', $this->BaseInfo);
         $url = 'http://example.com/confirm';
         $this->mailService->sendAdminCustomerConfirmMail($this->Customer, $url);
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
 
         $this->expected = $url;
         $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認';
-        $this->actual = $Message->subject;
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録のご確認';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
+        $this->verify();
     }
 
     public function testSendAdminOrderMail()
@@ -308,90 +267,94 @@ class MailServiceTest extends AbstractServiceTestCase
         );
         $this->mailService->sendAdminOrderMail($Order, $formData);
 
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] '.$subject;
-        $this->actual = $Message->subject;
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] '.$subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
+        $this->verify();
     }
 
     public function testSendPasswordResetNotificationMail()
     {
-        $this->app['twig']->addGlobal('BaseInfo', $this->BaseInfo);
         $url = 'http://example.com/reset';
         $this->mailService->sendPasswordResetNotificationMail($this->Customer, $url);
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
+
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
 
         $this->expected = $url;
         $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認';
-        $this->actual = $Message->subject;
+        $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のご確認';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
+        $this->verify();
     }
 
     public function testSendPasswordResetCompleteMail()
     {
-        $this->app['twig']->addGlobal('BaseInfo', $this->BaseInfo);
         $faker = $this->getFaker();
         $password = $faker->password;
         $this->mailService->sendPasswordResetCompleteMail($this->Customer, $password);
-        $Messages = $this->getMessages();
-        $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ';
-        $this->actual = $Message->subject;
+        $mailCollector = $this->getMailCollector();
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のお知らせ';
+        $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->expected = '<'.$this->Customer->getEmail().'>';
-        $this->actual = $Message->recipients[0];
+        $this->expected = $this->Customer->getEmail();
+        $this->actual = key($Message->getTo());
         $this->verify();
 
-        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
-        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = key($Message->getReplyTo());
+        $this->verify();
 
-        $BccMessage = $this->getMessage($Messages[1]->id);
-        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
-        $this->verifyRegExp($BccMessage, 'BCC');
-    }
-
-    protected function getMessages()
-    {
-        return $this->getMailCatcherMessages();
-    }
-
-    protected function getMessage($id)
-    {
-        return $this->getMailCatcherMessage($id);
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = key($Message->getBcc());
+        $this->verify();
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)
     {
-        $Source = $this->parseMailCatcherSource($Message);
-        $this->assertRegExp('/'.preg_quote($this->expected, '/').'/', $Source, $errorMessage);
+        $this->assertRegExp('/'.preg_quote($this->expected, '/').'/', $Message->getBody(), $errorMessage);
     }
 }

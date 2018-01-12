@@ -2,6 +2,8 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Repository\PluginRepository;
+use Eccube\Service\PluginService;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -24,20 +26,14 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        $this->app = $this->createApplication();
-        // in the case of sqlite in-memory database only.
-        if ($this->isSqliteInMemory()) {
-            $this->initializeDatabase();
-        }
+        $this->client = self::createClient();
+        $this->container = $this->client->getContainer();
+        $this->entityManager = $this->container->get('doctrine')->getManager();
     }
 
     public function tearDown()
     {
-        if (!$this->isSqliteInMemory()) {
-            $this->app['orm.em']->getConnection()->close();
-        }
-        $this->cleanUpProperties();
+        parent::tearDown();
     }
 
     // インストーラが例外を上げた場合ロールバックできるか
@@ -72,7 +68,8 @@ class PluginManager extends AbstractPluginManager
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->app['eccube.service.plugin'];
+        $service = $this->container->get(PluginService::class);
+        $pluginRepository = $this->container->get(PluginRepository::class);
         try{
 
             $this->assertTrue($service->install($tmpfile));
@@ -82,6 +79,6 @@ EOD;
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
         // XXX PHPUnit によってロールバックが遅延してしまうので, 検証できないが, 消えているはず
-        $this->assertFalse((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertFalse((boolean)$plugin=$pluginRepository->findOneBy(array('name'=>$tmpname)));
     }
 }

@@ -33,6 +33,7 @@ class OrderServiceTest extends AbstractServiceTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete('To be removed');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);

@@ -42,7 +42,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testRoutingDetail()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', $this->url('product_detail', array('id' => '1')));
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => '1')));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 

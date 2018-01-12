@@ -181,7 +181,7 @@ class SearchShippingType extends AbstractType
                         )),
                     ),
                 ))
-                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
         )
 
         ->add(
@@ -195,7 +195,7 @@ class SearchShippingType extends AbstractType
                         )),
                     ),
                 ))
-                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
         );
     }
 

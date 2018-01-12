@@ -27,6 +27,12 @@ namespace Eccube\Tests\Web;
 class CartControllerTest extends AbstractWebTestCase
 {
 
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testRoutingCart()
     {
         $this->client->request('GET', '/cart');

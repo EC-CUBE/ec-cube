@@ -29,6 +29,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     protected $ProductListOrderBy;
 
     public function setUp() {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->ProductListMax = new \Eccube\Entity\Master\ProductListMax();
         $this->ProductListOrderBy = new \Eccube\Entity\Master\ProductListOrderBy();

@@ -25,6 +25,12 @@ use PHPUnit\Framework\TestCase;
  */
 class MonologTraitTest extends TestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     public function testLog()
     {
         $this->markTestIncomplete('Eccube\Application に依存しないようにする');

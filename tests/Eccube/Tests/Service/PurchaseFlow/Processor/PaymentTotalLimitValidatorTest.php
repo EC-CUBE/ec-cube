@@ -31,6 +31,11 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
     public function testCartValidate()
     {
         $validator = new PaymentTotalLimitValidator(1000);

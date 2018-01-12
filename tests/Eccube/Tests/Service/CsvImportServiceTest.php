@@ -31,6 +31,11 @@ use Eccube\Service\CsvImportService;
  */
 class CsvImportServiceTest extends AbstractServiceTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
     public function testReadCsvFileWithColumnHeaders()
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_column_headers.csv');

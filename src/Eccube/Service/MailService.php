@@ -44,40 +44,37 @@ class MailService
     protected $mailer;
 
     /**
-     * @Inject(MailTemplateRepository::class)
      * @var MailTemplateRepository
      */
     protected $mailTemplateRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject(Application::class)
-     * @var Application
+     * @var array
      */
-    protected $app;
+    protected $eccubeConfig;
 
     /**
      * @var \Twig_Environment
      */
     protected $twig;
 
-    public function __construct(\Swift_Mailer $mailer, MailTemplateRepository $mailTemplateRepository, BaseInfoRepository $baseInfoRepository, EventDispatcher $eventDispatcher, \Twig_Environment $twig)
+    public function __construct(\Swift_Mailer $mailer, MailTemplateRepository $mailTemplateRepository, BaseInfoRepository $baseInfoRepository, EventDispatcher $eventDispatcher, \Twig_Environment $twig, $eccubeConfig)
     {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->eventDispatcher = $eventDispatcher;
+        $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
     }
 
@@ -321,6 +318,7 @@ class MailService
         log_info('仮会員登録再送メール送信開始');
 
         $body = $this->twig->render('Mail/entry_confirm.twig', array(
+            'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
@@ -406,7 +404,9 @@ class MailService
         log_info('パスワード再発行メール送信開始');
 
         $body = $this->twig->render('Mail/forgot_mail.twig', array(
+            'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
+            'expire' => $this->eccubeConfig['customer_reset_expire'],
             'reset_url' => $reset_url
         ));
 
@@ -447,6 +447,7 @@ class MailService
         log_info('パスワード変更完了メール送信開始');
 
         $body = $this->twig->render('Mail/reset_complete_mail.twig', array(
+            'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
             'password' => $password,
         ));

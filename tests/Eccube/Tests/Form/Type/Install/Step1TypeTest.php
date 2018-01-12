@@ -25,12 +25,10 @@
 namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step1Type;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step1TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -72,7 +70,7 @@ class Step1TypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(Step1Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }

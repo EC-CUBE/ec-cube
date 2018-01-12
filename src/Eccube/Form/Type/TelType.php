@@ -88,7 +88,7 @@ class TelType extends AbstractType
             $options['tel03_name'] = $builder->getName().'03';
         }
         // 全角英数を事前に半角にする
-        $builder->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener());
+        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
         $builder
             ->add($options['tel01_name'], TextType::class, array_merge_recursive($options['options'], $options['tel01_options']))
             ->add($options['tel02_name'], TextType::class, array_merge_recursive($options['options'], $options['tel02_options']))

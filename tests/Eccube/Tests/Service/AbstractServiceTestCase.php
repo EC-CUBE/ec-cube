@@ -26,6 +26,6 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Tests\EccubeTestCase;
 
-class AbstractServiceTestCase extends EccubeTestCase
+abstract class AbstractServiceTestCase extends EccubeTestCase
 {
 }

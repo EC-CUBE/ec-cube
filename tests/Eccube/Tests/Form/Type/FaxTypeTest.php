@@ -135,6 +135,7 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない

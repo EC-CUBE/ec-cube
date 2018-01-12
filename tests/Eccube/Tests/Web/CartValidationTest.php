@@ -37,6 +37,7 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         // FIXME カートの登録チェックが実装されたら有効にする
         $this->markTestIncomplete('CartController is not implemented.');
         parent::setUp();

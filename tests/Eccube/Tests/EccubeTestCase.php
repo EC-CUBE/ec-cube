@@ -2,12 +2,14 @@
 
 namespace Eccube\Tests;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -36,48 +38,27 @@ abstract class EccubeTestCase extends WebTestCase
     protected $container;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
+     * @var array
+     */
+    protected $eccubeConfig;
+
+    /**
      * Applicaiton を生成しトランザクションを開始する.
      */
     public function setUp()
     {
-        if (strpos(get_class($this), 'Eccube\Tests\Application') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Command') !== false
-            || strpos(get_class($this), 'Eccube\Tests\DI') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Doctrine') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Entity') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Event') !== false
-            || strpos(get_class($this), 'Eccube\Tests\EventListener') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Form') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Plugin') !== false
-            || strpos(get_class($this), 'Eccube\Tests\Repository') !== false
-            || (strpos(get_class($this), 'Eccube\Tests\Service') !== false
-                && strpos(get_class($this), 'Eccube\Tests\ServiceProvider') === false)
-            || strpos(get_class($this), 'Eccube\Tests\Transaction') !== false
-        ) {
-            $this->markTestIncomplete(get_class($this).' は未実装です');
-        }
-        $src = __DIR__.'/../../../src/Eccube/Resource/config/log.php';
-        $dist = __DIR__.'/../../../app/config/eccube/log.php';
-
-        $config = require $src;
-        $config['log']['log_level'] = 'ERROR';
-        $config['log']['action_level'] = 'ERROR';
-        $config['log']['passthru_level'] = 'ERROR';
-
-        $channel = $config['log']['channel'];
-        foreach (array('monolog', 'front', 'admin') as $key) {
-            $channel[$key]['log_level'] = 'ERROR';
-            $channel[$key]['action_level'] = 'ERROR';
-            $channel[$key]['passthru_level'] = 'ERROR';
-        }
-        $config['log']['channel'] = $channel;
-
-        file_put_contents($dist, '<?php return '.var_export($config, true).';');
-
         parent::setUp();
 
         $this->client = self::createClient();
         $this->container = $this->client->getContainer();
+        $this->entityManager = $this->container->get('doctrine')->getManager();
+        $this->entityManager->getConnection()->beginTransaction();
+        $this->eccubeConfig = $this->container->getParameter('eccube.constants');
     }
 
     /**
@@ -222,7 +203,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function deleteAllRows(array $tables)
     {
         /** @var Connection $conn */
-        $conn = $this->app['db'];
+        $conn = $this->entityManager->getConnection();
 
         // MySQLの場合は参照制約を無効にする.
         if ('mysql' === $conn->getDatabasePlatform()->getName()) {
@@ -269,31 +250,22 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see \Eccube\Tests\Service\MailServiceTest
      * @link http://mailcatcher.me/
+     * @deprecated
      */
     protected function initializeMailCatcher()
     {
         $this->checkMailCatcherStatus();
-        $config = $this->app['config'];
-        $config['mail']['transport'] = 'smtp';
-        $config['mail']['host'] = '127.0.0.1';
-        $config['mail']['port'] = 1025;
-        $config['mail']['username'] = null;
-        $config['mail']['password'] = null;
-        $config['mail']['encryption'] = null;
-        $config['mail']['auth_mode'] = null;
-        $this->app->offsetUnset('config');
-        $this->app['config'] = $config;
-        $this->app['swiftmailer.use_spool'] = false;
-        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
     }
 
     /**
      * MailCatcher の起動状態をチェックする.
      *
      * MailCatcher が起動していない場合は, テストをスキップする.
+     * @deprecated
      */
     protected function checkMailCatcherStatus()
     {
+        trigger_error('MailCatcher is deprecated. Please implementation to the EccubeTestCase::getMailCollector().', E_USER_ERROR);
         try {
             $httpClient = new HttpClient();
             $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
@@ -305,12 +277,13 @@ abstract class EccubeTestCase extends WebTestCase
         } catch (\Exception $e) {
             $message = 'MailCatcher is not available';
             $this->markTestSkipped($message);
-            $this->app->log($message);
+            log_error($message);
         }
     }
 
     /**
      * MailCatcher のメッセージをすべて削除する.
+     * @deprecated
      */
     protected function cleanUpMailCatcherMessages()
     {
@@ -318,8 +291,7 @@ abstract class EccubeTestCase extends WebTestCase
             $httpClient = new HttpClient();
             $response = $httpClient->delete(self::MAILCATCHER_URL.'messages');
         } catch (\Exception $e) {
-            // FIXME
-            // $this->app->log('['.get_class().'] '.$e->getMessage());
+            log_error('['.get_class().'] '.$e->getMessage());
         }
     }
 
@@ -327,12 +299,12 @@ abstract class EccubeTestCase extends WebTestCase
      * MailCatcher のメッセージをすべて取得する.
      *
      * @return array MailCatcher のメッセージの配列
+     * @deprecated
      */
     protected function getMailCatcherMessages()
     {
         $httpClient = new HttpClient();
         $response = $httpClient->get(self::MAILCATCHER_URL.'messages');
-
         return json_decode($response->getBody(true));
     }
 
@@ -341,12 +313,12 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param integer $id メッセージの ID
      * @return object MailCatcher のメッセージ
+     * @deprecated
      */
     protected function getMailCatcherMessage($id)
     {
         $httpClient = new HttpClient();
         $response = $httpClient->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-
         return json_decode($response->getBody(true));
     }
 
@@ -355,14 +327,38 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param object $Message MailCatcher のメッセージ
      * @return string デコードされた eml 形式のソース
+     * @deprecated
      */
     protected function parseMailCatcherSource($Message)
     {
         return quoted_printable_decode($Message->source);
     }
 
-    // TODO 暫定的に実装する
-    protected function url($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    /**
+     * Get the MailCollector
+     *
+     * @return MessageDataCollector
+     */
+    protected function getMailCollector()
+    {
+        $this->client->enableProfiler();
+        $this->client->request('POST', '/confirm');
+        return $this->client->getProfile()->getCollector('swiftmailer');
+    }
+
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param string $route         The name of the route
+     * @param array  $parameters    An array of parameters
+     * @param int    $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     *
+     * @return string The generated URL
+     *
+     * @see UrlGeneratorInterface
+     * @see \Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait::generateUrl
+     */
+    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->container->get('router')->generate($route, $parameters, $referenceType);
     }

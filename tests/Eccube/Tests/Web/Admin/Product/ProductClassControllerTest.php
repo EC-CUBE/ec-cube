@@ -33,6 +33,12 @@ use Symfony\Component\DomCrawler\Form;
  */
 class ProductClassControllerTest extends AbstractProductCommonTestCase
 {
+    public function setUp()
+    {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
+        parent::setUp();
+    }
+
     /**
      * Render test
      */

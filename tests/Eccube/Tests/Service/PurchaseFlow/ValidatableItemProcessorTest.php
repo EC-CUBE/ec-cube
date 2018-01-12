@@ -33,6 +33,11 @@ use Eccube\Tests\EccubeTestCase;
 
 class ValidatableItemProcessorTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
     /*
      * カートの場合
      *      エラーなら明細丸め処理 ＆ カート画面にエラー表示¨

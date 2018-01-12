@@ -324,7 +324,7 @@ class ShopMasterType extends AbstractType
                         )),
                     ),
                 ))
-                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
         );
 
         $builder->add(
@@ -341,7 +341,7 @@ class ShopMasterType extends AbstractType
                         )),
                     )
                 ))
-                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
         );
     }
 

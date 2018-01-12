@@ -48,7 +48,7 @@ class AddressTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class)
             ->getForm();
@@ -67,7 +67,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $data = array(
             'address' => array(
                 'pref' => '1',
-                'addr01' => str_repeat('ア', $this->app['config']['address1_len']+1),
+                'addr01' => str_repeat('ア', $this->eccubeConfig['address1_len']+1),
                 'addr02' => 'にゅうりょく',
             ));
 
@@ -81,7 +81,7 @@ class AddressTypeTest extends AbstractTypeTestCase
             'address' => array(
                 'pref' => '1',
                 'addr01' => 'にゅうりょく',
-                'addr02' => str_repeat('ア', $this->app['config']['address2_len']+1),
+                'addr02' => str_repeat('ア', $this->eccubeConfig['address2_len']+1),
             ));
 
         $this->form->submit($data);
@@ -106,7 +106,7 @@ class AddressTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Pref()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class, array(
                 'required' => true,
@@ -122,7 +122,7 @@ class AddressTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Addr01()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class, array(
                 'required' => true,
@@ -138,7 +138,7 @@ class AddressTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Addr02()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class, array(
                 'required' => true,
