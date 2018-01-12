@@ -48,7 +48,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $eccubeConfig;
 
     /**
-     * Applicaiton を生成しトランザクションを開始する.
+     * Client を生成しトランザクションを開始する.
      */
     public function setUp()
     {
@@ -222,7 +222,7 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
-     * PHPUnit_* インスタンスのプロパティを初期化する.
+     * PHPUnit インスタンスのプロパティを初期化する.
      *
      * このメソッドは、PHPUnit のメモリリーク解消のため、 tearDown() メソッドでコールされる.
      *
@@ -232,13 +232,11 @@ abstract class EccubeTestCase extends WebTestCase
     {
         $refl = new \ReflectionObject($this);
         foreach ($refl->getProperties() as $prop) {
-            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
+            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit')) {
                 $prop->setAccessible(true);
                 $prop->setValue($this, null);
             }
         }
-        // TODO
-        // \Eccube\Application::clearInstance();
     }
 
     /**
