@@ -344,7 +344,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         if ($sendRequest) {
             $this->client->enableProfiler();
-            $this->client->request('POST', '/confirm');
+            $this->client->request('POST', '/');
         }
         return $this->client->getProfile()->getCollector('swiftmailer');
     }
