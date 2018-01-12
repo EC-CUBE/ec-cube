@@ -11,10 +11,10 @@
 
 namespace Eccube\Tests\Application;
 
-use Silex\Provider\MonologServiceProvider;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Silex\Provider\MonologServiceProvider;
 
 /**
  * MonologTrait test cases.

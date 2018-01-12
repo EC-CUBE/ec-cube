@@ -23,9 +23,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\AddressType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class TelTypeTest extends AbstractTypeTestCase
 {

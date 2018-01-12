@@ -27,7 +27,6 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Monolog\Handler\NullHandler;
 use org\bovigo\vfs\vfsStream;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class SecurityControllerTest

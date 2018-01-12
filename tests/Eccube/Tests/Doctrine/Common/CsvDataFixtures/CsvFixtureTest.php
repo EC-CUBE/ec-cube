@@ -4,7 +4,6 @@ namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 
 class CsvFixtureTest extends EccubeTestCase
 {

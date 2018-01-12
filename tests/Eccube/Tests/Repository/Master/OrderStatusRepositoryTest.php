@@ -3,7 +3,6 @@
 namespace Eccube\Tests\Repository\Master;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 
 
 /**

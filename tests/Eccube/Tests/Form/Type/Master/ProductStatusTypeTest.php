@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Eccube\Form\Type\Master\ProductStatusType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class ProductStatusTypeTest extends AbstractTypeTestCase
 {

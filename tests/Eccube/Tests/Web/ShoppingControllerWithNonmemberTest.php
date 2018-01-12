@@ -24,8 +24,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\DomCrawler\Crawler;
-
 /**
  * Class ShoppingControllerWithNonmemberTest
  * @package Eccube\Tests\Web

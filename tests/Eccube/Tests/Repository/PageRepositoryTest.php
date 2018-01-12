@@ -23,9 +23,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Tests\EccubeTestCase;
 use org\bovigo\vfs\vfsStream;
 
 class PageRepositoryTest extends EccubeTestCase

@@ -2,15 +2,11 @@
 
 namespace Eccube\Tests\Entity\Event;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Annotation\PreUpdate;
 use Eccube\Annotation\TargetEntity;
 use Eccube\Entity\Event\EntityEventDispatcher;
 use Eccube\Entity\Event\EntityEventListener;
-use Eccube\Entity\Product;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\EccubeTestCase;
 
 class UpdatePointEventListenerTest extends EccubeTestCase

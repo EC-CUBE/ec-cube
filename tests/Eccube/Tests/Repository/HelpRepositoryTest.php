@@ -3,8 +3,6 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Entity\Help;
 
 /**
  * HelpRepository test cases.

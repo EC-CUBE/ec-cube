@@ -2,8 +2,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpKernel\Exception as HttpException;
-
 class ForgotControllerTest extends AbstractWebTestCase
 {
     public function setUp()

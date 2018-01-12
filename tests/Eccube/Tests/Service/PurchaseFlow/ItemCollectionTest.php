@@ -4,9 +4,9 @@ namespace Eccube\Tests\Service\PurchaseFlow;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
-use Eccube\Service\PurchaseFlow\ItemCollection;
 
 class ItemCollectionTest extends EccubeTestCase
 {

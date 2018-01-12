@@ -25,7 +25,6 @@ namespace Eccube\Service;
 
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;

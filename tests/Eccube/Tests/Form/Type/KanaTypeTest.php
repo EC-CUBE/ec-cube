@@ -23,8 +23,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\KanaType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class KanaTypeTest extends AbstractTypeTestCase
 {

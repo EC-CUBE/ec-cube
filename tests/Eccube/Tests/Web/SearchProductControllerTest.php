@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Category;
 
 class SearchProductControllerTest extends AbstractWebTestCase

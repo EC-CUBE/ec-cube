@@ -75,6 +75,7 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^4.0",
+        "easycorp/easy-log-handler": "^1.0",
         "friendsofphp/php-cs-fixer": "^2.2",
         "fzaninotto/faker": "^1.7",
         "mikey179/vfsStream": "^1.6",

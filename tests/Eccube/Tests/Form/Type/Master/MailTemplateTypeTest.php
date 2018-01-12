@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Eccube\Form\Type\Master\MailTemplateType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class MailTemplateTypeTest extends AbstractTypeTestCase
 {

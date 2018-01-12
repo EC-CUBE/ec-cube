@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\AddressType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class AddressTypeTest extends AbstractTypeTestCase
 {

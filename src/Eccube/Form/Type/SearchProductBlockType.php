@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Application;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;

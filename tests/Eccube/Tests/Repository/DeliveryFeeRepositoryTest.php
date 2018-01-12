@@ -2,11 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Master\Pref;
+use Eccube\Tests\EccubeTestCase;
 
 
 /**

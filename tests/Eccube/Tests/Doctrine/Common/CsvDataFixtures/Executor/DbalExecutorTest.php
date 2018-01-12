@@ -4,9 +4,6 @@ namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures\Executor;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 
 class DbalExecutorTest extends EccubeTestCase
 {

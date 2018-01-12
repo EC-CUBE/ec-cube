@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Form\Type\Admin\ProductClassType;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {

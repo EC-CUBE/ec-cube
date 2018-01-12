@@ -25,7 +25,6 @@
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class AbstractTypeTestCase extends EccubeTestCase

@@ -23,8 +23,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\RepeatedPasswordType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 {
