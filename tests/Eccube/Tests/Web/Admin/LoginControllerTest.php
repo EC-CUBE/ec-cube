@@ -62,7 +62,6 @@ class LoginControllerTest extends AbstractWebTestCase
 
     public function testRoutingAdminLogin_ログインしていない場合は401エラーがかえる()
     {
-        $this->markTestIncomplete('BaseInfo が取得できず500エラーが返ってくる');
         $this->client->request('GET', $this->generateUrl('admin_homepage'));
 
         // ログイン
