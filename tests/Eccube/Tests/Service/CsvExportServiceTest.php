@@ -2,10 +2,10 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Service\CsvExportService;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Service\CsvExportService;
 use org\bovigo\vfs\vfsStream;
 
 class CsvExportServiceTest extends AbstractServiceTestCase

@@ -4,7 +4,6 @@ namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Member;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;

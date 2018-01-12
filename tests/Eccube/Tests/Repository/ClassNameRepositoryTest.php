@@ -3,10 +3,8 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\ClassCategory;
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
+use Eccube\Tests\EccubeTestCase;
 
 
 /**

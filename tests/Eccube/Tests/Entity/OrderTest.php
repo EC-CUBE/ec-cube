@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Entity;
 
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Tests\EccubeTestCase;
 
 /**

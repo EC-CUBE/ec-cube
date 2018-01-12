@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
-use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;

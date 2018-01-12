@@ -23,8 +23,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-
 class SystemServiceTest extends AbstractServiceTestCase
 {
     public function setUp()

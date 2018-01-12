@@ -2,18 +2,13 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * CustomerRepository test cases.

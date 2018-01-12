@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Entity\TaxRule;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\TaxRule;
 use Eccube\Tests\EccubeTestCase;
 
 /**

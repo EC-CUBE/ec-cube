@@ -2,8 +2,6 @@
 
 namespace Eccube\Tests\Repository;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 /**
  * ProductRepository test cases.
  *

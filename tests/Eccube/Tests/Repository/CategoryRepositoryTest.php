@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\Category;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * CategoryRepository test cases.

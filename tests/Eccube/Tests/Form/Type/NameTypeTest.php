@@ -23,8 +23,8 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\NameType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class NameTypeTest extends AbstractTypeTestCase
 {

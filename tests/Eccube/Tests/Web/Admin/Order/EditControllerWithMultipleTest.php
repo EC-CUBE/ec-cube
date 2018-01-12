@@ -23,9 +23,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Entity\Order;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Product;
 
 /**
  * 複数配送設定用 EditController のテストケース.

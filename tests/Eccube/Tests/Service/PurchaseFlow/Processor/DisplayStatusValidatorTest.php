@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;

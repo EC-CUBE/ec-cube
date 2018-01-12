@@ -24,8 +24,8 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Repository\CsvRepository;

@@ -2,13 +2,9 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
-use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Order;
-use Eccube\Entity\Shipping;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ShippingRepository test cases.

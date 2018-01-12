@@ -23,8 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Eccube\Form\Type\Admin\MasterdataType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class MasterdataTypeTest extends AbstractTypeTestCase
 {

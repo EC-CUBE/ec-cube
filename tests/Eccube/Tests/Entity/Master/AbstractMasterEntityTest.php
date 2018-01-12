@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Entity\Master;
 
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\Master\Sex;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * AbstractMasterEntity test cases.

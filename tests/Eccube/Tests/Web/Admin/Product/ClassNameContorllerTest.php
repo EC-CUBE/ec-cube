@@ -24,8 +24,8 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Entity\ClassName;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ClassNameControllerTest extends AbstractAdminWebTestCase
 {

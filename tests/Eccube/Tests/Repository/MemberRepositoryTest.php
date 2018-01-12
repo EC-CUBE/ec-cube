@@ -3,8 +3,8 @@
 namespace Eccube\Tests\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Entity\Member;
+use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;

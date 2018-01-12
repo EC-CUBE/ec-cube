@@ -23,9 +23,9 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\FaxType;
 use Eccube\Form\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class FaxTypeTest extends AbstractTypeTestCase
 {
