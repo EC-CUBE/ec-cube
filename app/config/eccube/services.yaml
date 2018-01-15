@@ -75,7 +75,7 @@ services:
     Eccube\Twig\Extension\EccubeBlockExtension:
         tags: ['twig.extension']
         bind:
-          $blockTemplates: %eccube.twig.block.templates%
+          $blockTemplates: '%eccube.twig.block.templates%'
 
     Plugin\:
         resource: '../../../app/Plugin/*'
