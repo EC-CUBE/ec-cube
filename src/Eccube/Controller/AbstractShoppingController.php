@@ -25,7 +25,6 @@ namespace Eccube\Controller;
 
 
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -85,19 +84,18 @@ class AbstractShoppingController extends AbstractController
     protected $sessionOrderKey = 'eccube.front.shopping.order.id';
 
     /**
-     * @param Application $app
      * @param ItemHolderInterface $itemHolder
      * @return PurchaseFlowResult
      */
-    protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
+            $this->addRequestError($warning->getMessage());
         }
         foreach ($flowResult->getErrors() as $error) {
-            $app->addRequestError($error->getMessage());
+            $this->addRequestError($error->getMessage());
         }
         return $flowResult;
     }

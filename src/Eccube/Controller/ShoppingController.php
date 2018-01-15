@@ -27,12 +27,11 @@ namespace Eccube\Controller;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\ForwardOnly;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
-use Eccube\Entity\Order;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -43,6 +42,7 @@ use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -163,7 +163,7 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping", name="shopping")
      * @Template("Shopping/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         // カートチェック
         $response = $this->forward("Eccube\Controller\ShoppingController::checkToCart");
@@ -181,7 +181,7 @@ class ShoppingController extends AbstractShoppingController
         $Order = $this->parameterBag->get('Order');
 
         // 単価集計
-        $flowResult = $this->executePurchaseFlow($app, $Order);
+        $flowResult = $this->executePurchaseFlow($Order);
 
         // フォームを生成する
         $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
@@ -207,27 +207,27 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/redirect", name="shopping_redirect_to")
      * @Template("Shopping/index.twig")
      */
-    public function redirectTo(Application $app, Request $request)
+    public function redirectTo(Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping_exists_order"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // フォームの生成
-        $app->forward($app->path("shopping_create_form"));
+        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
 
         // 各種変更ページへリダイレクトする
-        $response = $app->forward($app->path("shopping_redirect_to_change"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::redirectToChange');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -247,31 +247,31 @@ class ShoppingController extends AbstractShoppingController
      * @Method("POST")
      * @Template("Shopping/confirm.twig")
      */
-    public function confirm(Application $app, Request $request)
+    public function confirm(Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping_exists_order"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // フォームの生成
-        $app->forward($app->path("shopping_create_form"));
+        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
 
-        $flowResult = $this->executePurchaseFlow($app, $Order);
+        $flowResult = $this->executePurchaseFlow($Order);
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
-            return $app->redirect($app->url('shopping_error'));
+            return $this->redirectToRoute('shopping_error');
         }
 
         return [
@@ -287,23 +287,23 @@ class ShoppingController extends AbstractShoppingController
      * @Method("POST")
      * @Template("Shopping/index.twig")
      */
-    public function order(Application $app, Request $request)
+    public function order(Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping_exists_order"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // form作成
         // FIXME イベントハンドラを外から渡したい
-        $app->forward($app->path("shopping_create_form"));
+        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
@@ -311,7 +311,7 @@ class ShoppingController extends AbstractShoppingController
         $form->handleRequest($request);
 
         // 受注処理
-        $response = $app->forward($app->path("shopping_complete_order"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::completeOrder');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -331,7 +331,7 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/complete", name="shopping_complete")
      * @Template("Shopping/complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete(Request $request)
     {
         // 受注IDを取得
         $orderId = $this->session->get($this->sessionOrderKey);
@@ -372,10 +372,10 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"})
      * @Template("Shopping/shipping.twig")
      */
-    public function shipping(Application $app, Request $request, $id)
+    public function shipping(Request $request, $id)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -388,7 +388,7 @@ class ShoppingController extends AbstractShoppingController
                 log_info('お届け先入力チェックエラー');
 
                 return [
-                    'Customer' => $app->user(),
+                    'Customer' => $this->getUser(),
                     'shippingId' => $id,
                     'error' => true,
                 ];
@@ -397,7 +397,7 @@ class ShoppingController extends AbstractShoppingController
             // 選択されたお届け先情報を取得
             $CustomerAddress = $this->customerAddressRepository->findOneBy(
                 array(
-                    'Customer' => $app->user(),
+                    'Customer' => $this->getUser(),
                     'id' => $address,
                 )
             );
@@ -409,9 +409,9 @@ class ShoppingController extends AbstractShoppingController
             $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
             if (!$Order) {
                 log_info('購入処理中の受注情報がないため購入エラー');
-                $app->addError('front.shopping.order.error');
+                $this->addError('front.shopping.order.error');
 
-                return $app->redirect($app->url('shopping_error'));
+                return $this->redirectToRoute('shopping_error');
             }
 
             $Shipping = $Order->findShipping($id);
@@ -429,9 +429,9 @@ class ShoppingController extends AbstractShoppingController
 
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($app, $Order);
+            $flowResult = $this->executePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $app->redirect($app->url('shopping_error'));
+                return $this->redirectToRoute('shopping_error');
             }
 
             // 配送先を更新
@@ -448,11 +448,11 @@ class ShoppingController extends AbstractShoppingController
 
             log_info('お届先情報更新完了', array($Shipping->getId()));
 
-            return $app->redirect($app->url('shopping'));
+            return $this->redirectToRoute('shopping');
         }
 
         return [
-            'Customer' => $app->user(),
+            'Customer' => $this->getUser(),
             'shippingId' => $id,
             'error' => false,
         ];
@@ -464,12 +464,12 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"})
      * @Template("Shopping/shipping_edit.twig")
      */
-    public function shippingEdit(Application $app, Request $request, $id)
+    public function shippingEdit(Request $request, $id)
     {
         // 配送先住所最大値判定
-        $Customer = $app->user();
-        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $addressCurrNum = count($app->user()->getCustomerAddresses());
+        $Customer = $this->getUser();
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $addressCurrNum = count($this->getUser()->getCustomerAddresses());
             $addressMax = $this->appConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('配送先住所最大数エラー');
@@ -477,13 +477,13 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $app->forward($app->path("shopping_exists_order"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -495,12 +495,12 @@ class ShoppingController extends AbstractShoppingController
         if (!$Shipping) {
             throw new NotFoundHttpException('設定されている配送先が存在しない');
         }
-        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $Shipping->clearCustomerAddress();
         }
 
         $CustomerAddress = new CustomerAddress();
-        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $CustomerAddress->setCustomer($Customer);
         } else {
             $CustomerAddress->setFromShipping($Shipping);
@@ -546,9 +546,9 @@ class ShoppingController extends AbstractShoppingController
             $this->shoppingService->setShippingDeliveryFee($Shipping);
 
             // 合計金額の再計算
-            $flowResult = $this->executePurchaseFlow($app, $Order);
+            $flowResult = $this->executePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $app->redirect($app->url('shopping_error'));
+                return $this->redirectToRoute('shopping_error');
             }
 
             // 配送先を更新
@@ -566,7 +566,7 @@ class ShoppingController extends AbstractShoppingController
 
             log_info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
 
-            return $app->redirect($app->url('shopping'));
+            return $this->redirectToRoute('shopping');
         }
 
         return [
@@ -622,7 +622,7 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/error", name="shopping_error")
      * @Template("Shopping/shopping_error.twig")
      */
-    public function shoppingError(Application $app, Request $request)
+    public function shoppingError(Request $request)
     {
         $event = new EventArgs(
             array(),
@@ -643,7 +643,7 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/check_to_cart", name="shopping_check_to_cart")
      */
-    public function checkToCart(Application $app, Request $request)
+    public function checkToCart(Request $request)
     {
         // カートチェック
         if (!$this->cartService->isLocked()) {
@@ -658,7 +658,7 @@ class ShoppingController extends AbstractShoppingController
             log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
 
             // カートが存在しない時はエラー
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
 
         return new Response();
@@ -755,7 +755,7 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/redirect_to_change", name="shopping_redirect_to_change")
      */
-    public function redirectToChange(Application $app, Request $request)
+    public function redirectToChange(Request $request)
     {
         $form = $this->parameterBag->get(OrderType::class);
 
@@ -773,19 +773,19 @@ class ShoppingController extends AbstractShoppingController
                     // お届け先設定一覧へリダイレクト
                     $param = $form['param']->getData();
 
-                    return $app->redirect($app->url('shopping_shipping', array('id' => $param)));
+                    return $this->redirectToRoute('shopping_shipping', array('id' => $param));
                 case 'shipping_edit_change':
                     // お届け先設定一覧へリダイレクト
                     $param = $form['param']->getData();
 
-                    return $app->redirect($app->url('shopping_shipping_edit', array('id' => $param)));
+                    return $this->redirectToRoute('shopping_shipping_edit', array('id' => $param));
                 case 'shipping_multiple_change':
                     // 複数配送設定へリダイレクト
-                    return $app->redirect($app->url('shopping_shipping_multiple'));
+                    return $this->redirectToRoute('shopping_shipping_multiple');
                 case 'payment':
                 case 'delivery':
                 default:
-                    return $app->redirect($app->url('shopping'));
+                    return $this->redirectToRoute('shopping');
             }
         }
 
@@ -798,7 +798,7 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/handle_multiple_errors", name="shopping_handle_multiple_errors")
      */
-    public function handleMultipleErrors(Application $app, Request $request)
+    public function handleMultipleErrors(Request $request)
     {
         $Order = $this->parameterBag->get('Order');
 
@@ -807,12 +807,12 @@ class ShoppingController extends AbstractShoppingController
             if (count($Order->getShippings()) > 1) {
                 if (!$this->BaseInfo->isOptionMultipleShipping()) {
                     // 複数配送に設定されていないのに複数配送先ができればエラー
-                    $app->addRequestError('cart.product.type.kind');
+                    $this->addRequestError('cart.product.type.kind');
 
-                    return $app->redirect($app->url('cart'));
+                    return $this->redirectToRoute('cart');
                 }
 
-                $app->addError('shopping.multiple.delivery');
+                $this->addError('shopping.multiple.delivery');
             }
             $this->session->set($this->sessionMultipleKey, 'multiple');
         }
@@ -826,14 +826,14 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/exists_order", name="shopping_exists_order")
      */
-    public function existsOrder(Application $app, Request $request)
+    public function existsOrder(Request $request)
     {
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
             log_info('購入処理中の受注情報がないため購入エラー');
-            $app->addError('front.shopping.order.error');
+            $this->addError('front.shopping.order.error');
 
-            return $app->redirect($app->url('shopping_error'));
+            return $this->redirectToRoute('shopping_error');
         }
         $this->parameterBag->set('Order', $Order);
 
@@ -846,7 +846,7 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/complete_order", name="shopping_complete_order")
      */
-    public function completeOrder(Application $app, Request $request)
+    public function completeOrder(Request $request)
     {
         $form = $this->parameterBag->get(OrderType::class);
 
@@ -865,28 +865,30 @@ class ShoppingController extends AbstractShoppingController
                 // FormTypeで更新されるため不要
                 //$app['eccube.service.shopping']->setFormData($Order, $data);
 
-                $flowResult = $this->executePurchaseFlow($app, $Order);
+                $flowResult = $this->executePurchaseFlow($Order);
                 if ($flowResult->hasWarning() || $flowResult->hasError()) {
                     // TODO エラーメッセージ
                     throw new ShoppingException();
                 }
                 try {
-                    $this->purchaseFlow->purchase($Order, $app['eccube.purchase.context']($Order, $Order->getCustomer())); // TODO 変更前の Order を渡す必要がある？
+                    $this->purchaseFlow->purchase($Order, new PurchaseContext($Order, $Order->getCustomer())); // TODO 変更前の Order を渡す必要がある？
                 } catch (PurchaseException $e) {
-                    $app->addError($e->getMessage(), 'front');
+                    $this->addError($e->getMessage(), 'front');
                 }
 
                 // 購入処理
                 $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
                 // Order も引数で渡すのがベスト??
-                $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
+                // FIXME $app['eccube.service.payment']
+                $paymentService = $this->createPaymentService($Order);
+                $paymentMethod = $this->createPaymentMethod($Order, $form);
 
-                $paymentMethod = $app['payment.method.request'](
-                    $Order->getPayment()->getMethodClass(),
-                    $form,
-                    $request
-                );
+//                $paymentMethod = $app['payment.method.request'](
+//                    $Order->getPayment()->getMethodClass(),
+//                    $form,
+//                    $request
+//                );
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
                 // forward の処理はプラグイン内で書けるようにしておく
                 // dispatch をしたら, パスを返して forwardする
@@ -903,13 +905,13 @@ class ShoppingController extends AbstractShoppingController
                 }
                 $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
                 if (!$PaymentResult->isSuccess()) {
-                    $em->getConnection()->rollback();
+                    $this->entityManager->getConnection()->rollback();
 
-                    return $app->redirect($app->url('shopping_error'));
+                    return $this->redirectToRoute('shopping_error');
                 }
 
-                $em->flush();
-                $em->getConnection()->commit();
+                $this->entityManager->flush();
+                $this->entityManager->getConnection()->commit();
 
                 log_info('購入処理完了', array($Order->getId()));
 
@@ -917,26 +919,24 @@ class ShoppingController extends AbstractShoppingController
 
                 log_error('購入エラー', array($e->getMessage()));
 
-                $em->getConnection()->rollback();
+                $this->entityManager->getConnection()->rollback();
 
-                $app->log($e);
-                $app->addError($e->getMessage());
+                $this->log($e);
+                $this->addError($e->getMessage());
 
-                return $app->redirect($app->url('shopping_error'));
+                return $this->redirectToRoute('shopping_error');
             } catch (\Exception $e) {
 
                 log_error('予期しないエラー', array($e->getMessage()));
 
-                $em->getConnection()->rollback();
+                $this->entityManager->getConnection()->rollback();
 
-                $app->log($e);
+                $this->addError('front.shopping.system.error');
 
-                $app->addError('front.shopping.system.error');
-
-                return $app->redirect($app->url('shopping_error'));
+                return $this->redirectToRoute('shopping_error');
             }
 
-            return $app->forward($app->path('shopping_after_complete'));
+            return $this->forward('Eccube\Controller\ShoppingController::afterComplete');
         }
 
         return new Response();
@@ -948,7 +948,7 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/after_complete", name="shopping_after_complete")
      */
-    public function afterComplete(Application $app, Request $request)
+    public function afterComplete(Request $request)
     {
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
@@ -994,6 +994,23 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // 完了画面表示
-        return $app->redirect($app->url('shopping_complete'));
+        return $this->redirectToRoute('shopping_complete');
+    }
+
+    private function createPaymentService(Order $Order)
+    {
+        $serviceClass = $Order->getPayment()->getServiceClass();
+        $paymentService = new $serviceClass($this->container->get('request_stack'));
+        return $paymentService;
+    }
+
+    private function createPaymentMethod(Order $Order, $form)
+    {
+        $methodClass = $Order->getPayment()->getMethodClass();
+        $PaymentMethod = new $methodClass;
+        $PaymentMethod->setFormType($form);
+        $PaymentMethod->setRequest($this->container->get('request_stack')->getCurrentRequest());
+        return $PaymentMethod;
+
     }
 }

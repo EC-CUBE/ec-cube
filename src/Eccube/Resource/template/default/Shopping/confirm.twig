@@ -276,7 +276,7 @@ $(function() {
                             {% for orderItem in shipping.orderItems %}
                             <li>
                                 <div class="ec-imageGrid">
-                                    <div class="ec-imageGrid__img"><img src="{{ app.config.image_save_urlpath }}/{{ (orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product }}" alt="{{ orderItem.productName }}"></div>
+                                    <div class="ec-imageGrid__img"><img src="{#}{ app.config.image_save_urlpath }#}/{{ (orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product }}" alt="{{ orderItem.productName }}"></div>
                                     <div class="ec-imageGrid__content">
                                         <p>{{ orderItem.productName }}</p>
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
