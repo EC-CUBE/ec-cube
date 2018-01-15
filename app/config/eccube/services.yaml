@@ -77,6 +77,13 @@ services:
         bind:
           $blockTemplates: %eccube.twig.block.templates%
 
+    Eccube\Log\Logger:
+        arguments:
+          - '@Eccube\Request\Context'
+          - '@monolog.logger'
+          - '@monolog.logger.front'
+          - '@monolog.logger.admin'
+
     Plugin\:
         resource: '../../../app/Plugin/*'
         exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
