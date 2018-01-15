@@ -59,6 +59,12 @@ class AbstractController extends Controller
     protected $session;
 
     /**
+     * @var CsrfTokenManagerInterface
+     * @required
+     */
+    protected  $csrfTokenManager;
+
+    /**
      * @param SessionInterface $session
      * @required
      */
@@ -137,7 +143,8 @@ class AbstractController extends Controller
 
     protected function isTokenValid()
     {
-        $csrf = $this->container->get(CsrfTokenManagerInterface::class);
+        /** @var CsrfTokenManagerInterface $csrf */
+        $csrf = $this->container->get('security.csrf.token_manager');
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $name = Constant::TOKEN_NAME;
         if (!$csrf->isTokenValid(new CsrfToken($name, $request->get($name)))) {

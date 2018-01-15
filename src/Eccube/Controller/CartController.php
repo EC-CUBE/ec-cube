@@ -32,6 +32,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -63,10 +64,25 @@ class CartController extends AbstractController
     protected $purchaseFlow;
 
     /**
-     * @Inject(CartService::class)
      * @var CartService
      */
     protected $cartService;
+
+    /**
+     * CartController constructor.
+     * @param EventDispatcher $eventDispatcher
+     * @param ProductClassRepository $productClassRepository
+     * @param PurchaseFlow $purchaseFlow
+     * @param CartService $cartService
+     */
+    public function __construct(EventDispatcher $eventDispatcher, ProductClassRepository $productClassRepository, PurchaseFlow $purchaseFlow, CartService $cartService)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->productClassRepository = $productClassRepository;
+        $this->purchaseFlow = $purchaseFlow;
+        $this->cartService = $cartService;
+    }
+
 
     /**
      * カート画面.
@@ -78,8 +94,7 @@ class CartController extends AbstractController
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
-
-        $this->execPurchaseFlow($app, $Carts);
+        $this->execPurchaseFlow($Carts);
 
         // TODO itemHolderから取得できるように
         $least = 0;
@@ -107,10 +122,12 @@ class CartController extends AbstractController
         ];
     }
 
-    protected function execPurchaseFlow(Application $app, $Carts)
+    protected function execPurchaseFlow( $Carts)
     {
-        $flowResults = array_map(function($Cart) use ($app) {
-            return $this->purchaseFlow->calculate($Cart, $app['eccube.purchase.context']());
+        $flowResults = array_map(function($Cart) {
+            $purchaseContext = new PurchaseContext($Cart, $this->getUser());
+
+            return $this->purchaseFlow->calculate($Cart, $purchaseContext);
         }, $Carts);
 
 
@@ -120,21 +137,21 @@ class CartController extends AbstractController
             if ($result->hasError()) {
                 $hasError = true;
                 foreach ($result->getErrors() as $error) {
-                    $app->addRequestError($error->getMessage());
+                    $this->addRequestError($error->getMessage());
                 }
             }
         }
         if ($hasError) {
             $this->cartService->clear();
             $this->cartService->save();
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
 
         $this->cartService->save();
 
         foreach ($flowResults as $index=>$result) {
             foreach ($result->getWarning() as $warning) {
-                $app->addRequestError($warning->getMessage(), "front.cart.${index}");
+                $this->addRequestError($warning->getMessage(), "front.cart.${index}");
             }
         }
     }
@@ -160,11 +177,11 @@ class CartController extends AbstractController
      *     }
      * )
      */
-    public function handleCartItem(Application $app, Request $request, $operation, $productClassId)
+    public function handleCartItem(Request $request, $operation, $productClassId)
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
-        $this->isTokenValid($app);
+        $this->isTokenValid($this);
 
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find($productClassId);
@@ -172,7 +189,7 @@ class CartController extends AbstractController
         if (is_null($ProductClass)) {
             log_info('商品が存在しないため、カート画面へredirect', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
 
         // 明細の増減・削除
@@ -190,11 +207,11 @@ class CartController extends AbstractController
 
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
-        $this->execPurchaseFlow($app, $Carts);
+        $this->execPurchaseFlow($Carts);
 
         log_info('カート演算処理終了', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
-        return $app->redirect($app->url('cart'));
+        return $this->redirectToRoute('cart');
     }
 
     /**
@@ -226,6 +243,6 @@ class CartController extends AbstractController
             return $event->getResponse();
         }
 
-        return $app->redirect($app->url('shopping'));
+        return $this->redirectToRoute('shopping');
     }
 }

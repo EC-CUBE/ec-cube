@@ -54,6 +54,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route(service=ShoppingController::class)
@@ -61,70 +62,100 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShoppingController extends AbstractShoppingController
 {
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject(OrderHelper::class)
      * @var OrderHelper
      */
     protected $orderHelper;
 
     /**
-     * @Inject(CartService::class)
      * @var CartService
      */
     protected $cartService;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(ShoppingService::class)
      * @var ShoppingService
      */
     protected $shoppingService;
 
     /**
-     * @Inject(CustomerAddressRepository::class)
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("session")
      * @var Session
      */
     protected $session;
 
     /**
-     * @Inject("request_scope")
      * @var ParameterBag
      */
     protected $parameterBag;
+
+    /**
+     * ShoppingController constructor.
+     * @param BaseInfo $BaseInfo
+     * @param OrderHelper $orderHelper
+     * @param CartService $cartService
+     * @param FormFactory $formFactory
+     * @param EntityManager $entityManager
+     * @param ShoppingService $shoppingService
+     * @param CustomerAddressRepository $customerAddressRepository
+     * @param EventDispatcher $eventDispatcher
+     * @param Session $session
+     * @param ParameterBag $parameterBag
+     * @param array $eccubeConfig
+     */
+    public function __construct(
+        BaseInfo $BaseInfo,
+        OrderHelper $orderHelper,
+        CartService $cartService,
+        FormFactory $formFactory,
+        EntityManager $entityManager,
+        ShoppingService $shoppingService,
+        CustomerAddressRepository $customerAddressRepository,
+        EventDispatcher $eventDispatcher,
+        Session $session,
+        ParameterBag $parameterBag,
+        array $eccubeConfig
+    ) {
+        $this->BaseInfo = $BaseInfo;
+        $this->orderHelper = $orderHelper;
+        $this->cartService = $cartService;
+        $this->formFactory = $formFactory;
+        $this->entityManager = $entityManager;
+        $this->shoppingService = $shoppingService;
+        $this->customerAddressRepository = $customerAddressRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->session = $session;
+        $this->parameterBag = $parameterBag;
+        $this->appConfig = $eccubeConfig;
+    }
+
 
     /**
      * 購入画面表示
@@ -135,13 +166,13 @@ class ShoppingController extends AbstractShoppingController
     public function index(Application $app, Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward("Eccube\Controller\ShoppingController::checkToCart");
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注情報を初期化
-        $response = $app->forward($app->path("shopping_initialize_order"));
+        $response = $this->forward('Eccube\Controller\ShoppingController::initializeOrder');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -153,14 +184,14 @@ class ShoppingController extends AbstractShoppingController
         $flowResult = $this->executePurchaseFlow($app, $Order);
 
         // フォームを生成する
-        $app->forward($app->path("shopping_create_form"));
+        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
 
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
-        $app->forward($app->path("shopping_handle_multiple_errors"));
+        $this->forward($this->generateUrl("shopping_handle_multiple_errors"));
         $form = $this->parameterBag->get(OrderType::class);
 
         return [
@@ -550,21 +581,21 @@ class ShoppingController extends AbstractShoppingController
      * @Route("/shopping/login", name="shopping_login")
      * @Template("Shopping/login.twig")
      */
-    public function login(Application $app, Request $request)
+    public function login(Request $request, AuthenticationUtils $authenticationUtils )
     {
         if (!$this->cartService->isLocked()) {
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
 
-        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $app->redirect($app->url('shopping'));
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('shopping');
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $builder = $this->formFactory->createNamedBuilder('', CustomerLoginType::class);
 
-        if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $Customer = $app->user();
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $Customer = $this->getUser();
             if ($Customer) {
                 $builder->get('login_email')->setData($Customer->getEmail());
             }
@@ -579,9 +610,8 @@ class ShoppingController extends AbstractShoppingController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE, $event);
 
         $form = $builder->getForm();
-
         return [
-            'error' => $app['security.last_error']($request),
+            'error' => $authenticationUtils->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
@@ -620,7 +650,7 @@ class ShoppingController extends AbstractShoppingController
             log_info('カートが存在しません');
 
             // カートが存在しない、カートがロックされていない時はエラー
-            return $app->redirect($app->url('cart'));
+            return $this->redirectToRoute('cart');
         }
 
         // カートチェック
@@ -640,7 +670,7 @@ class ShoppingController extends AbstractShoppingController
      * @ForwardOnly
      * @Route("/shopping/initialize_order", name="shopping_initialize_order")
      */
-    public function initializeOrder(Application $app, Request $request)
+    public function initializeOrder(Request $request)
     {
         // 購入処理中の受注情報を取得
         $Order = $this->shoppingService->getOrder(OrderStatus::PROCESSING);
@@ -648,17 +678,17 @@ class ShoppingController extends AbstractShoppingController
         // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
         if (is_null($Order)) {
             // 未ログインの場合, ログイン画面へリダイレクト.
-            if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
                 // 非会員でも一度会員登録されていればショッピング画面へ遷移
                 $Customer = $this->shoppingService->getNonMember($this->sessionKey);
 
                 if (is_null($Customer)) {
                     log_info('未ログインのためログイン画面にリダイレクト');
 
-                    return $app->redirect($app->url('shopping_login'));
+                    return $this->redirectToRoute('shopping_login');
                 }
             } else {
-                $Customer = $app->user();
+                $Customer = $this->getUser();
             }
 
             try {
@@ -673,9 +703,9 @@ class ShoppingController extends AbstractShoppingController
                 $this->cartService->save();
             } catch (CartException $e) {
                 log_error('初回受注情報作成エラー', array($e->getMessage()));
-                $app->addRequestError($e->getMessage());
+                $this->addRequestError($e->getMessage());
 
-                return $app->redirect($app->url('cart'));
+                return $this->redirectToRoute('cart');
             }
 
             // セッション情報を削除
@@ -691,33 +721,33 @@ class ShoppingController extends AbstractShoppingController
         return new Response();
     }
 
-    // /**
-    //  * フォームを作成し, イベントハンドラを設定する
-    //  *
-    //  * @ForwardOnly
-    //  * @Route("/shopping/create_form", name="shopping_create_form")
-    //  */
-    // public function createForm(Application $app, Request $request)
-    // {
-    //     $Order = $this->parameterBag->get('Order');
-    //     // フォームの生成
-    //     $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
+     /**
+      * フォームを作成し, イベントハンドラを設定する
+      *
+      * @ForwardOnly
+      * @Route("/shopping/create_form", name="shopping_create_form")
+      */
+     public function createShoppingForm(Request $request)
+     {
+         $Order = $this->parameterBag->get('Order');
+         // フォームの生成
+         $builder = $this->formFactory->createBuilder(OrderType::class, $Order);
 
-    //     $event = new EventArgs(
-    //         array(
-    //             'builder' => $builder,
-    //             'Order' => $Order,
-    //         ),
-    //         $request
-    //     );
-    //     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+         $event = new EventArgs(
+             array(
+                 'builder' => $builder,
+                 'Order' => $Order,
+             ),
+             $request
+         );
+         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
 
-    //     $form = $builder->getForm();
+         $form = $builder->getForm();
 
-    //     $this->parameterBag->set(OrderType::class, $form);
+         $this->parameterBag->set(OrderType::class, $form);
 
-    //     return new Response();
-    // }
+         return new Response();
+     }
 
     /**
      * mode に応じて各変更ページへリダイレクトする.

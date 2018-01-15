@@ -7,6 +7,7 @@ use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\Repository\DeliveryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -46,9 +47,19 @@ class ShippingType extends AbstractType
      */
     protected $deliveryFeeRepository;
 
-    public function __construct()
+    /**
+     * ShippingType constructor.
+     * @param array $appConfig
+     * @param DeliveryRepository $deliveryRepository
+     * @param DeliveryFeeRepository $deliveryFeeRepository
+     */
+    public function __construct(array $eccubeConfig, DeliveryRepository $deliveryRepository, DeliveryFeeRepository $deliveryFeeRepository)
     {
+        $this->appConfig = $eccubeConfig;
+        $this->deliveryRepository = $deliveryRepository;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
+
 
     /**
      * {@inheritdoc}

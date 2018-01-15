@@ -149,19 +149,16 @@ class ShoppingService
     protected $appConfig;
 
     /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject("session")
      * @var Session
      */
     protected $session;
 
     /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
@@ -173,13 +170,11 @@ class ShoppingService
     protected $BaseInfo;
 
     /**
-     * @Inject(Application::class)
      * @var \Eccube\Application
      */
     public $app;
 
     /**
-     * @Inject(CartService::class)
      * @var \Eccube\Service\CartService
      */
     protected $cartService;
@@ -190,6 +185,24 @@ class ShoppingService
      * @deprecated
      */
     protected $orderService;
+
+    /**
+     * ShoppingService constructor.
+     * @param Session $session
+     * @param OrderRepository $orderRepository
+     * @param BaseInfo $BaseInfo
+     * @param CartService $cartService
+     * @param OrderService $orderService
+     */
+    public function __construct(Session $session, OrderRepository $orderRepository, BaseInfo $BaseInfo, CartService $cartService, OrderService $orderService)
+    {
+        $this->session = $session;
+        $this->orderRepository = $orderRepository;
+        $this->BaseInfo = $BaseInfo;
+        $this->cartService = $cartService;
+        $this->orderService = $orderService;
+    }
+
 
     /**
      * セッションにセットされた受注情報を取得

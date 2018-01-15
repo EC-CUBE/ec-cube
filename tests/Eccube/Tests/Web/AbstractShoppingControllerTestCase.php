@@ -1,6 +1,7 @@
 <?php
 
 namespace Eccube\Tests\Web;
+use Eccube\Service\CartService;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.
@@ -14,12 +15,11 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->initializeMailCatcher();
+        $this->client->enableProfiler();
     }
 
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -63,7 +63,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     {
         $crawler = $client->request(
             'PUT',
-            $this->app->path(
+            $this->generateUrl(
                 'cart_handle_item',
                 [
                     'operation' => 'up',
@@ -71,7 +71,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
                 ]
             )
         );
-        $this->app['eccube.service.cart']->lock();
+        $this->container->get(CartService::class)->lock();
 
         return $crawler;
     }
@@ -89,7 +89,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
     protected function scenarioConfirm($client)
     {
-        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $crawler = $client->request('GET', $this->generateUrl('shopping'));
         return $crawler;
     }
 

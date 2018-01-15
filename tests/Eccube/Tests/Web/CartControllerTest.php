@@ -24,12 +24,13 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
+
 class CartControllerTest extends AbstractWebTestCase
 {
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
@@ -41,19 +42,25 @@ class CartControllerTest extends AbstractWebTestCase
 
     public function testRoutingCartUp()
     {
-        $this->client->request('PUT', '/cart/up/1');
+        $this->client->request('PUT', '/cart/up/1',
+            [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()]
+        );
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingCartDown()
     {
-        $this->client->request('PUT', '/cart/down/1');
+        $this->client->request('PUT', '/cart/down/1',
+            [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()]
+        );
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingCartRemove()
     {
-        $this->client->request('PUT', '/cart/remove/1');
+        $this->client->request('PUT', '/cart/remove/1',
+            [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()]
+        );
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 }

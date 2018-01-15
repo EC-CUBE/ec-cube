@@ -25,7 +25,7 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Application;
+//use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
@@ -41,6 +41,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -118,7 +119,7 @@ class ProductController extends AbstractController
      * @Route("/products/list", name="product_list")
      * @Template("Product/list.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index( Request $request, Paginator $paginator)
     {
         // Doctrine SQLFilter
         // if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -166,7 +167,7 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
         $searchData = $event->getArgument('searchData');
 
-        $pagination = $app['paginator']()->paginate(
+        $pagination = $paginator->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId()

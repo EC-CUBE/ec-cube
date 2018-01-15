@@ -27,8 +27,10 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\Constant;
 use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
+use Psr\Container\ContainerInterface;
 use Silex\Application;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Twig\Extension\AbstractExtension;
@@ -37,15 +39,18 @@ use Twig\TwigFunction;
 
 class EccubeExtension extends AbstractExtension
 {
+    use ContainerAwareTrait;
+
     /**
      * @var \Twig_Environment
      */
     protected $twig;
 
-    public function __construct(TaxRuleService $TaxRuleService, \Twig_Environment $twig)
+    public function __construct(TaxRuleService $TaxRuleService, \Twig_Environment $twig, ContainerInterface $container)
     {
         $this->TaxRuleService = $TaxRuleService;
         $this->twig = $twig;
+        $this->setContainer($container);
     }
 
     protected $TaxRuleService;
@@ -143,7 +148,12 @@ class EccubeExtension extends AbstractExtension
      */
     public function getCsrfTokenForAnchor()
     {
-        $token = $this->app['csrf.token_manager']->getToken(Constant::TOKEN_NAME)->getValue();
+//        $tokenParse = $this->getTokenParsers();
+//        var_dump($tokenParse);
+//        die;
+        $token = $this->container->get('security.csrf.token_manager')
+            ->getToken(Constant::TOKEN_NAME)->getValue();
+//        $token = ;
         return 'token-for-anchor=\'' . $token . '\'';
     }
 

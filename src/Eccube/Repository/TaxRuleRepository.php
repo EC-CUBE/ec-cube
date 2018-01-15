@@ -112,7 +112,7 @@ class TaxRuleRepository extends AbstractRepository
         // Pref Country 設定
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
             /* @var $Customer \Eccube\Entity\Customer */
-            $Customer = $this->app->user();
+            $Customer = $this->tokenStorage->getToken()->getUser();
             $Pref = $Customer->getPref();
             $Country = $Customer->getCountry();
         }

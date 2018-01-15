@@ -25,17 +25,29 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\BaseInfoRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
 
+    /**
+     * @var BaseInfoRepository
+     */
+    private $baseInfoRepository;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+    }
+
+
     public function testRoutingList()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         $client = $this->client;
-        $client->request('GET', $this->app->url('product_list'));
+        $client->request('GET', $this->generateUrl('product_list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -48,16 +60,15 @@ class ProductControllerTest extends AbstractWebTestCase
 
     public function testRoutingProductFavoriteAdd()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         // お気に入り商品機能を有効化
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionFavoriteProduct(true);
 
         $client = $this->client;
         $client->request('POST',
-            $this->app->url('product_add_favorite', array('id' => '1'))
+            $this->generateUrl('product_add_favorite', array('id' => '1'))
         );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_login')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
     }
 
     /**
@@ -65,10 +76,9 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testCategoryNotFound()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         $client = $this->client;
         $message = 'ご指定のカテゴリは存在しません';
-        $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => 'XXX')));
+        $crawler = $client->request('GET', $this->generateUrl('product_list', array('category_id' => 'XXX')));
         $this->assertContains($message, $crawler->html());
     }
 
@@ -77,10 +87,9 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testCategoryFound()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         $client = $this->client;
         $message = '商品が見つかりました';
-        $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => '6')));
+        $crawler = $client->request('GET', $this->generateUrl('product_list', array('category_id' => '6')));
         $this->assertContains($message, $crawler->html());
     }
 
@@ -91,9 +100,8 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductFavoriteAddWhenOutOfStock()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         // お気に入り商品機能を有効化
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionFavoriteProduct(true);
         $Product = $this->createProduct('Product no stock', 1);
         /** @var $ProductClass ProductClass */
@@ -102,7 +110,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $ProductClass->setStock(0);
         $ProductStock = $ProductClass->getProductStock();
         $ProductStock->setStock(0);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
         $id = $Product->getId();
         $user = $this->createCustomer();
         $this->loginTo($user);
@@ -110,7 +118,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => $id)));
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => $id)));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -137,9 +145,8 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductFavoriteAdd()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         // お気に入り商品機能を有効化
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionFavoriteProduct(true);
         $Product = $this->createProduct('Product stock', 1);
         $id = $Product->getId();
@@ -149,7 +156,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => $id)));
+        $crawler = $client->request('GET', $this->generateUrl('product_detail', array('id' => $id)));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
