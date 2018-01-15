@@ -47,6 +47,17 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
         $conn = \Doctrine\DBAL\DriverManager::getConnection($params);
 
+        $sm = $conn->getSchemaManager();
+        $tables = array_filter(
+            $sm->listTables(),
+            function ($table) {
+                return $table->getName() === 'dtb_plugin';
+            }
+        );
+        if (empty($tables)) {
+            return;
+        }
+
         $stmt = $conn->query('select * from dtb_plugin');
         $plugins = $stmt->fetchAll();
 
