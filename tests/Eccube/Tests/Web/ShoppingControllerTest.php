@@ -83,8 +83,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $Customer = $this->logInTo($this->createCustomer());
         $client = $this->client;
         // カート画面
-        $this->scenarioCartIn($client);
-
+        $crwaler = $this->scenarioCartIn($client);
+//var_dump($crwaler->filter('.ec-pageHeader h1'));exit;
         // 手続き画面
         $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文手続き';

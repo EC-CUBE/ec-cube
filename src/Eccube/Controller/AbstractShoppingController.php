@@ -89,15 +89,15 @@ class AbstractShoppingController extends AbstractController
      * @param ItemHolderInterface $itemHolder
      * @return PurchaseFlowResult
      */
-    protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
+            $this->addRequestError($warning->getMessage());
         }
         foreach ($flowResult->getErrors() as $error) {
-            $app->addRequestError($error->getMessage());
+            $this->addRequestError($error->getMessage());
         }
         return $flowResult;
     }

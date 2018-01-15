@@ -129,19 +129,19 @@ class NonMemberShoppingController extends AbstractShoppingController
      * @Route("/shopping/nonmember", name="shopping_nonmember")
      * @Template("Shopping/nonmember.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $cartService = $this->cartService;
 
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forward("Eccube\Controller\ShoppingController::checkToCart");
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // ログイン済みの場合は, 購入画面へリダイレクト.
-        if ($app->isGranted('ROLE_USER')) {
-            return $app->redirect($app->url('shopping'));
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('shopping');
         }
 
         $builder = $this->formFactory->createBuilder(NonMemberType::class);
@@ -219,15 +219,15 @@ class NonMemberShoppingController extends AbstractShoppingController
                     $cartService->setPreOrderId($Order->getPreOrderId());
                     $cartService->save();
                 } catch (CartException $e) {
-                    $app->addRequestError($e->getMessage());
+                    $this->addRequestError($e->getMessage());
 
-                    return $app->redirect($app->url('cart'));
+                    return $this->redirectToRoute('cart');
                 }
             }
 
-            $flowResult = $this->executePurchaseFlow($app, $Order);
+            $flowResult = $this->executePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $app->redirect($app->url('cart'));
+                return $this->redirectToRoute('cart');
             }
 
             // 非会員用セッションを作成
@@ -255,7 +255,7 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             log_info('非会員お客様情報登録完了', array($Order->getId()));
 
-            return $app->redirect($app->url('shopping'));
+            return $this->redirectToRoute('shopping');
         }
 
         return [

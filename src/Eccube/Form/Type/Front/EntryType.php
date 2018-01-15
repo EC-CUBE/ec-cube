@@ -63,9 +63,15 @@ class EntryType extends AbstractType
      */
     protected $app;
 
-    public function __construct()
+    /**
+     * EntryType constructor.
+     * @param array $eccubeConfig
+     */
+    public function __construct(array $eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
+
 
     /**
      * {@inheritdoc}

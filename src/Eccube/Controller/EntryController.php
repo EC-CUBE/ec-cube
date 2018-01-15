@@ -42,10 +42,12 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route(service=EntryController::class)
@@ -53,58 +55,87 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 class EntryController extends AbstractController
 {
     /**
-     * @Inject(CustomerStatusRepository::class)
      * @var CustomerStatusRepository
      */
     protected $customerStatusRepository;
 
     /**
-     * @Inject("validator")
      * @var RecursiveValidator
      */
     protected $recursiveValidator;
 
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
 
     /**
-     * @Inject("security.encoder_factory")
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
+
+    /**
+     * EntryController constructor.
+     * @param CustomerStatusRepository $customerStatusRepository
+     * @param MailService $mailService
+     * @param BaseInfo $BaseInfo
+     * @param EntityManager $entityManager
+     * @param EventDispatcher $eventDispatcher
+     * @param FormFactory $formFactory
+     * @param CustomerRepository $customerRepository
+     * @param EncoderFactoryInterface $encoderFactory
+     * @param ValidatorInterface $validatorInterface
+     * @param TokenStorageInterface $tokenStorage
+     */
+    public function __construct(
+        CustomerStatusRepository $customerStatusRepository,
+        MailService $mailService,
+        BaseInfo $BaseInfo,
+        EntityManager $entityManager,
+        EventDispatcher $eventDispatcher,
+        FormFactory $formFactory,
+        CustomerRepository $customerRepository,
+        EncoderFactoryInterface $encoderFactory,
+        ValidatorInterface $validatorInterface,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->customerStatusRepository = $customerStatusRepository;
+        $this->mailService = $mailService;
+        $this->BaseInfo = $BaseInfo;
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->customerRepository = $customerRepository;
+        $this->encoderFactory = $encoderFactory;
+        $this->recursiveValidator = $validatorInterface;
+        $this->tokenStorage = $tokenStorage;
+    }
+
 
     /**
      * 会員登録画面.
@@ -112,12 +143,12 @@ class EntryController extends AbstractController
      * @Route("/entry", name="entry")
      * @Template("Entry/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
-        if ($app->isGranted('ROLE_USER')) {
+        if ($this->isGranted('ROLE_USER')) {
             log_info('認証済のためログイン処理をスキップ');
 
-            return $app->redirect($app->url('mypage'));
+            return $this->redirectToRoute('mypage');
         }
 
         /** @var $Customer \Eccube\Entity\Customer */
@@ -146,7 +177,7 @@ class EntryController extends AbstractController
                     log_info('会員登録確認開始');
                     log_info('会員登録確認完了');
 
-                    return $app->render(
+                    return $this->render(
                         'Entry/confirm.twig',
                         array(
                             'form' => $form->createView(),
@@ -187,7 +218,7 @@ class EntryController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
 
-                    $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+                    $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
                     $activateFlg = $this->BaseInfo->isOptionCustomerActivate();
 
@@ -202,12 +233,12 @@ class EntryController extends AbstractController
 
                         log_info('仮会員登録完了画面へリダイレクト');
 
-                        return $app->redirect($app->url('entry_complete'));
+                        return $this->redirectToRoute('entry_complete');
                         // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
                     } else {
                         log_info('本会員登録画面へリダイレクト');
 
-                        return $app->redirect($activateUrl);
+                        return $this->redirect($activateUrl);
                     }
             }
         }
@@ -234,7 +265,7 @@ class EntryController extends AbstractController
      * @Route("/entry/activate/{secret_key}", name="entry_activate")
      * @Template("Entry/activate.twig")
      */
-    public function activate(Application $app, Request $request, $secret_key)
+    public function activate(Request $request, $secret_key)
     {
         $errors = $this->recursiveValidator->validate(
             $secret_key,
@@ -275,9 +306,9 @@ class EntryController extends AbstractController
 
             // 本会員登録してログイン状態にする
             $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
-            $this->getSecurity($app)->setToken($token);
+            $this->tokenStorage->setToken($token);
 
-            log_info('ログイン済に変更', array($app->user()->getId()));
+            log_info('ログイン済に変更', array($this->getUser()->getId()));
 
             return [];
         } else {
