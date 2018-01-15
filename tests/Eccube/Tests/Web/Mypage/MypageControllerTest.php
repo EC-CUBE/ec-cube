@@ -31,39 +31,39 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
     public function testRoutingFavorite()
     {
-        $this->logIn();
-        $client = $this->client;
+        self::markTestIncomplete('お気に入り対応後、テストを作成');
+        $this->logInTo($this->createCustomer());
 
-        $client->request('GET', $this->app->url('mypage_favorite'));
+        $this->client->request('GET', $this->generateUrl('mypage_favorite'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testRoutingFavoriteDelete()
     {
+        self::markTestIncomplete('お気に入り対応後、テストを作成');
         $this->logIn();
         $client = $this->client;
 
         // before
         $TestFavorite = $this->newTestFavorite();
-        $this->app['orm.em']->persist($TestFavorite);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($TestFavorite);
+        $this->entityManager->flush();
 
         // main
-        $redirectUrl = $this->app->url('mypage_favorite');
+        $redirectUrl = $this->generateUrl('mypage_favorite');
         $client->request('DELETE',
-            $this->app->url('mypage_favorite_delete', array('id' => $TestFavorite->getId()))
+            $this->url('mypage_favorite_delete', array('id' => $TestFavorite->getId()))
         );
         $this->assertTrue($client->getResponse()->isRedirect($redirectUrl));
 
         // after
-        $this->app['orm.em']->remove($TestFavorite);
-        $this->app['orm.em']->flush();
+        $this->entityManager->remove($TestFavorite);
+        $this->entityManager->flush();
     }
 
 
@@ -85,42 +85,39 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testLogin()
     {
-        $this->logIn();
-        $client = $this->client;
-        $crawler = $client->request(
+        $this->logInTo($this->createCustomer());
+        $crawler = $this->client->request(
             'GET',
-            $this->app->path('mypage_login')
+            $this->generateUrl('mypage_login')
         );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage')));
     }
 
     public function testLoginWithFailure()
     {
-        $client = $this->client;
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'GET',
-            $this->app->path('mypage_login')
+            $this->generateUrl('mypage_login')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndex()
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $this->logIn($Customer);
-        $client = $this->client;
+        $this->logInTo($Customer);
 
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'GET',
-            $this->app->path('mypage')
+            $this->generateUrl('mypage')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testHistory()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Customer = $this->createCustomer();
         $Product = $this->createProduct();
@@ -139,6 +136,7 @@ class MypageControllerTest extends AbstractWebTestCase
     }
     public function testHistory404()
     {
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
         $Customer = $this->createCustomer();
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
@@ -165,6 +163,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
     public function testHistoryWithNotfound()
     {
+        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
         $Customer = $this->createCustomer();
 
         $this->logIn($Customer);
@@ -194,6 +193,7 @@ class MypageControllerTest extends AbstractWebTestCase
      */
     public function testFavoriteWithPaginator()
     {
+        self::markTestIncomplete('お気に入り対応後、テストを作成');
         $Customer = $this->createCustomer();
         $expectedIds = array();
         for ($i = 0; $i < 30; $i++) {
@@ -236,6 +236,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
     private function newTestFavorite()
     {
+        self::markTestIncomplete('お気に入り対応後、テストを作成');
         $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
         $CustomerFavoriteProduct->setCustomer($this->app->user());
         $Product = $this->app['eccube.repository.product']->find(1);

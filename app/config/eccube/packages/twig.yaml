@@ -1,5 +1,6 @@
 twig:
     globals:
+      BaseInfo: null
       eccube:
         config: %eccube.constants%
     paths:

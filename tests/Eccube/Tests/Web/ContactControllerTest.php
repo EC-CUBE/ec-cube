@@ -24,19 +24,18 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\BaseInfo;
+
 class ContactControllerTest extends AbstractWebTestCase
 {
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->initializeMailCatcher();
     }
 
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -73,53 +72,58 @@ class ContactControllerTest extends AbstractWebTestCase
             ),
             'email' => $email,
             'contents' => $faker->realText(),
-            '_token' => 'dummy'
+            '_token' => $this->getCsrfToken('contact')
         );
+
         return $form;
     }
 
     public function testRoutingIndex()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app->path('contact'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client->request('GET', $this->generateUrl('contact'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testConfirm()
     {
-        $client = $this->createClient();
-
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('contact'),
+            $this->generateUrl('contact'),
             array('contact' => $this->createFormData(),
                   'mode' => 'confirm')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = 'お問い合わせ(確認ページ)';
         $this->actual = $crawler->filter('title')->text();
+
         $this->assertRegexp('/'.preg_quote($this->expected).'$/', $this->actual);
     }
 
     public function testComplete()
     {
-        $client = $this->createClient();
+        $this->client->enableProfiler();
 
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('contact'),
+            $this->generateUrl('contact'),
             array('contact' => $this->createFormData(),
                   'mode' => 'complete')
         );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('contact_complete')));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
+
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+
+        $mailCollector = $this->getMailCollector(false);
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
 
         $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
 
     }
@@ -130,8 +134,6 @@ class ContactControllerTest extends AbstractWebTestCase
      */
     public function testCompleteWithRequired()
     {
-        $client = $this->createClient();
-
         $formData = $this->createFormData();
         $formData['kana']['kana01'] = null;
         $formData['kana']['kana02'] = null;
@@ -144,49 +146,65 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData['tel']['tel02'] = null;
         $formData['tel']['tel03'] = null;
 
-        $crawler = $client->request(
+        $this->client->enableProfiler();
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('contact'),
+            $this->generateUrl('contact'),
             array('contact' => $formData,
                   'mode' => 'complete')
         );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('contact_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+
+        $mailCollector = $this->getMailCollector(false);
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
 
         $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
     public function testCompleteWithLogin()
     {
-        $client = $this->createClient();
-        $this->logIn();
-        $crawler = $client->request(
+        // require for retrieving mail
+        $this->client->enableProfiler();
+
+        // Always generate a form before login
+        $formData = $this->createFormData();
+        $this->logInTo($this->createCustomer());
+
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('contact'),
-            array('contact' => $this->createFormData(),
+            $this->generateUrl('contact'),
+            array('contact' => $formData,
                   'mode' => 'complete')
         );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('contact_complete')));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
+
+        $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $mailCollector = $this->getMailCollector(false);
+
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
         $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
 
     }
 
     public function testRoutingComplete()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app->path('contact_complete'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client = $this->createClient();
+        $this->client->request('GET', $this->generateUrl('contact_complete'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }
