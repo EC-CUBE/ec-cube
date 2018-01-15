@@ -116,3 +116,40 @@ services:
 
     # needed for the 'localizeddate' Twig filter
     # Twig\Extensions\IntlExtension: ~
+
+    eccube.log.formatter.line:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] %%channel%%.%%level_name%% [%%extra.session_id%%] [%%extra.uid%%] [%%extra.user_id%%] [%%extra.class%%:%%extra.function%%:%%extra.line%%] - %%message%% %%context%% [%%extra.http_method%%, %%extra.url%%, %%extra.ip%%, %%extra.referrer%%, %%extra.user_agent%%]\n"
+
+    Eccube\Log\Processor\SessionProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    Eccube\Log\Processor\TokenProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    Monolog\Processor\UidProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    Monolog\Processor\IntrospectionProcessor:
+        arguments:
+            - '!php/const:Monolog\Logger::DEBUG'
+            - ['Eccube\\Log', 'Psr\\Log']
+        tags:
+            - { name: monolog.processor }
+
+    Symfony\Bridge\Monolog\Processor\WebProcessor:
+        arguments:
+          - url: REQUEST_URI
+            ip: REMOTE_ADDR
+            http_method: REQUEST_METHOD
+            server: SERVER_NAME
+            referrer: HTTP_REFERER
+            # add user aegnt
+            user_agent: HTTP_USER_AGENT
+        tags:
+            - { name: monolog.processor }
+            - { name: kernel.event_listener, event: kernel.request, priority: 1024 }

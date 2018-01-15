@@ -1,5 +1,4 @@
 monolog:
-monolog:
     handlers:
         main:
             type: fingers_crossed
@@ -9,6 +8,7 @@ monolog:
             type: rotating_file
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/main.log'
+            formatter: eccube.log.formatter.line
             level: debug
         front:
             type: fingers_crossed
@@ -19,6 +19,7 @@ monolog:
             type: rotating_file
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/front.log'
+            formatter: eccube.log.formatter.line
             level: debug
         admin:
             type: fingers_crossed
@@ -29,6 +30,7 @@ monolog:
             type: rotating_file
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
+            formatter: eccube.log.formatter.line
             level: debug
         console:
             type: console
