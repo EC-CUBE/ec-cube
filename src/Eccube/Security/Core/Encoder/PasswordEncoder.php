@@ -24,9 +24,6 @@
 
 namespace Eccube\Security\Core\Encoder;
 
-use Monolog\Logger;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class PasswordEncoder implements PasswordEncoderInterface
@@ -46,47 +43,19 @@ class PasswordEncoder implements PasswordEncoderInterface
      */
     public $password_hash_algos;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct($auth_magic, $auth_type, $password_hash_algos, LoggerInterface $logger = null)
+    public function __construct($auth_magic, $auth_type, $password_hash_algos)
     {
         $this->auth_magic = $auth_magic;
         $this->auth_type = $auth_type;
         $this->password_hash_algos = $password_hash_algos;
-        $this->logger = $logger;
-    }
-
-    /**
-     * Encodes the raw password.
-     *
-     * @param string $raw  The password to encode
-     * @param string $salt The salt
-     *
-     * @return string The encoded password
-     */
-    public function encodePassword($raw, $salt)
-    {
-        if ($salt == '') {
-            $salt = $this->auth_magic;
-        }
-        if ($this->auth_type == 'PLAIN') {
-            $res = $raw;
-        } else {
-            $res = hash_hmac($this->password_hash_algos, $raw.':'.$this->auth_magic, $salt);
-        }
-
-        return $res;
     }
 
     /**
      * Checks a raw password against an encoded password.
      *
      * @param string $encoded An encoded password
-     * @param string $raw     A raw password
-     * @param string $salt    The salt
+     * @param string $raw A raw password
+     * @param string $salt The salt
      *
      * @return bool true if the password is valid, false otherwise
      */
@@ -103,7 +72,7 @@ class PasswordEncoder implements PasswordEncoderInterface
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) {
-                $hash = sha1($raw.':'.$this->auth_magic);
+                $hash = sha1($raw . ':' . $this->auth_magic);
             } else {
                 $hash = $this->encodePassword($raw, $salt);
             }
@@ -114,6 +83,28 @@ class PasswordEncoder implements PasswordEncoderInterface
         }
 
         return false;
+    }
+
+    /**
+     * Encodes the raw password.
+     *
+     * @param string $raw The password to encode
+     * @param string $salt The salt
+     *
+     * @return string The encoded password
+     */
+    public function encodePassword($raw, $salt)
+    {
+        if ($salt == '') {
+            $salt = $this->auth_magic;
+        }
+        if ($this->auth_type == 'PLAIN') {
+            $res = $raw;
+        } else {
+            $res = hash_hmac($this->password_hash_algos, $raw . ':' . $this->auth_magic, $salt);
+        }
+
+        return $res;
     }
 
     /**

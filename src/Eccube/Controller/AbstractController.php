@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Common\Constant;
+use Eccube\Log\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -57,6 +58,20 @@ class AbstractController extends Controller
      * @var Session
      */
     protected $session;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @param Logger $logger
+     * @required
+     */
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * @param SessionInterface $session

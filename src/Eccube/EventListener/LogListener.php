@@ -2,8 +2,7 @@
 
 namespace Eccube\EventListener;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
+use Eccube\Log\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -18,23 +17,40 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @package Eccube\EventListener
  */
-class LogListener implements EventSubscriberInterface, LoggerAwareInterface
+class LogListener implements EventSubscriberInterface
 {
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     protected $logger;
-    protected $em;
 
-    public function __construct(LoggerInterface $logger, \Doctrine\ORM\EntityManager $em)
-    {
-        $this->em = $em;
-        $this->setLogger($logger);
-    }
-
-    public function setLogger(LoggerInterface $logger)
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+
+            KernelEvents::REQUEST => array(
+                // Application::initRenderingで、フロント/管理画面の判定が行われた後に実行
+                array('onKernelRequestEarly', 500),
+                // SecurityServiceProviderで、認証処理が完了した後に実行.
+                array('onKernelRequest', 6),
+            ),
+            KernelEvents::RESPONSE => array('onKernelResponse', 0),
+            KernelEvents::CONTROLLER => array('onKernelController', 0),
+            KernelEvents::TERMINATE => array('onKernelTerminate', 0),
+            /*
+             * Priority -4 is used to come after those from SecurityServiceProvider (0)
+             * but before the error handlers added with Silex\Application::error (defaults to -8)
+             */
+            KernelEvents::EXCEPTION => array('onKernelException', -4),
+        );
     }
 
     /**
@@ -60,6 +76,17 @@ class LogListener implements EventSubscriberInterface, LoggerAwareInterface
 
         $route = $this->getRoute($event->getRequest());
         $this->logger->info('PROCESS START', array($route));
+    }
+
+    /**
+     * ルーティング名を取得する.
+     *
+     * @param $request
+     * @return string
+     */
+    private function getRoute($request)
+    {
+        return $request->attributes->get('_route');
     }
 
     /**
@@ -116,40 +143,5 @@ class LogListener implements EventSubscriberInterface, LoggerAwareInterface
             );
             $this->logger->error($message, array('exception' => $e));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(
-
-            KernelEvents::REQUEST => array(
-                // Application::initRenderingで、フロント/管理画面の判定が行われた後に実行
-                array('onKernelRequestEarly', 500),
-                // SecurityServiceProviderで、認証処理が完了した後に実行.
-                array('onKernelRequest', 6),
-            ),
-            KernelEvents::RESPONSE => array('onKernelResponse', 0),
-            KernelEvents::CONTROLLER => array('onKernelController', 0),
-            KernelEvents::TERMINATE => array('onKernelTerminate', 0),
-            /*
-             * Priority -4 is used to come after those from SecurityServiceProvider (0)
-             * but before the error handlers added with Silex\Application::error (defaults to -8)
-             */
-            KernelEvents::EXCEPTION => array('onKernelException', -4),
-        );
-    }
-
-    /**
-     * ルーティング名を取得する.
-     *
-     * @param $request
-     * @return string
-     */
-    private function getRoute($request)
-    {
-        return $request->attributes->get('_route');
     }
 }
