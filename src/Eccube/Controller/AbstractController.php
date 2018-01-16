@@ -137,10 +137,9 @@ class AbstractController extends Controller
 
     protected function isTokenValid()
     {
-        $csrf = $this->container->get(CsrfTokenManagerInterface::class);
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $name = Constant::TOKEN_NAME;
-        if (!$csrf->isTokenValid(new CsrfToken($name, $request->get($name)))) {
+
+        if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $request->get(Constant::TOKEN_NAME))) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
 
