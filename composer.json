@@ -116,6 +116,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "post-create-project-cmd": [
+            "bin/console doctrine:database:create",
+            "bin/console doctrine:schema:create",
+            "bin/console eccube:fixtures:load",
+            "@auto-scripts"
         ]
     },
     "conflict": {
