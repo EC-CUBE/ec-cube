@@ -426,10 +426,14 @@ class ProductController extends AbstractController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
         $form->handleRequest($request);
-
         if (!$form->isValid()) {
             throw new NotFoundHttpException();
         }
+//        var_dump($form->getData()['quantity']);
+//        foreach ($form->getErrors() as $error) {
+//            echo ($error->getMessage());
+//        }
+//        die();
 
         $addCartData = $form->getData();
 

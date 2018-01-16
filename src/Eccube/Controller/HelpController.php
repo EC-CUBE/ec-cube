@@ -37,10 +37,19 @@ use Symfony\Component\HttpFoundation\Request;
 class HelpController extends AbstractController
 {
     /**
-     * @Inject(HelpRepository::class)
      * @var HelpRepository
      */
     protected $helpRepository;
+
+    /**
+     * HelpController constructor.
+     * @param HelpRepository $helpRepository
+     */
+    public function __construct(HelpRepository $helpRepository)
+    {
+        $this->helpRepository = $helpRepository;
+    }
+
 
     /**
      * 特定商取引法.

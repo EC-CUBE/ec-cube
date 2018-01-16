@@ -51,6 +51,16 @@ class SearchProductType extends AbstractType
     protected $productStatusRepository;
 
     /**
+     * SearchProductType constructor.
+     * @param ProductStatusRepository $productStatusRepository
+     */
+    public function __construct(ProductStatusRepository $productStatusRepository)
+    {
+        $this->productStatusRepository = $productStatusRepository;
+    }
+
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
