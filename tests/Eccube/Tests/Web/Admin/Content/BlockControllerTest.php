@@ -24,32 +24,24 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Common\Constant;
+use Eccube\Tests\Web\AbstractWebTestCase;
 
-class BlockControllerTest extends AbstractAdminWebTestCase
+class BlockControllerTest extends AbstractWebTestCase
 {
 
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
     public function test_routing_AdminContentBlock_index()
     {
-
-        $this->client->request('GET', $this->app->url('admin_content_block'));
+        $this->loginTo($this->createMember());
+        $this->client->request('GET', $this->generateUrl('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routing_AdminContentBlock_edit()
     {
+        $this->loginTo($this->createMember());
         $this->client->request('GET',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_block_edit',
                 array('id' => 1)
             )
@@ -59,43 +51,52 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentBlock_editWithPost()
     {
-        $crawler = $this->client->request(
+        $token = $this->getCsrfToken('block');
+        $this->loginTo($this->createMember());
+        $this->client->request(
             'POST',
-            $this->app->url('admin_content_block_edit', array('id' => 1)),
-            array('block' => array(
-                'name' => 'newblock',
-                'file_name' => 'file_name',
-                'block_html' => '<p>test</p>',
-                'DeviceType' => 1,
-                'id' => 1,
-                '_token' => 'token'
-            ))
+            $this->generateUrl('admin_content_block_edit', array('id' => 1)),
+            array(
+                'block' => array(
+                    'name' => 'newblock',
+                    'file_name' => 'file_name',
+                    'block_html' => '<p>test</p>',
+                    'DeviceType' => 1,
+                    'id' => 1,
+                    '_token' => $token,
+                ),
+            )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->app->url('admin_content_block_edit', array('id' => 1))
+            $this->generateUrl('admin_content_block_edit', array('id' => 1))
         ));
 
+        $dir = sprintf('%s/app/template/%s/Block',
+            $this->container->getParameter('kernel.project_dir'),
+            $this->container->getParameter('eccube.theme'));
+
         $this->expected = '<p>test</p>';
-        $this->actual = file_get_contents($this->app['config']['block_realdir'].'/file_name.twig');
+        $this->actual = file_get_contents($dir.'/file_name.twig');
         $this->verify();
 
         // Filesystem::dumpFile() がエラーになるので bovigo\vfs が使用できない
-        if (file_exists($this->app['config']['block_realdir'].'/file_name.twig')) {
-            unlink($this->app['config']['block_realdir'].'/file_name.twig');
+        if (file_exists($dir.'/file_name.twig')) {
+            unlink($dir.'/file_name.twig');
         }
     }
 
-
     public function test_routing_AdminContentBlock_defaultBlockDelete()
     {
+        $token = $this->getCsrfToken(Constant::TOKEN_NAME);
+        $this->loginTo($this->createMember());
 
-        $redirectUrl = $this->app->url('admin_content_block');
+        $redirectUrl = $this->generateUrl('admin_content_block');
 
         $this->client->request('DELETE',
-            $this->app->url(
-                'admin_content_block_delete',
-                array('id' => 1)
-            )
+            $this->generateUrl('admin_content_block_delete', ['id' => 1,]),
+            [
+                Constant::TOKEN_NAME => $token,
+            ]
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
