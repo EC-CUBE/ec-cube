@@ -41,6 +41,7 @@ use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route(service=ForgotController::class)
@@ -101,13 +102,15 @@ class ForgotController extends AbstractController
         CustomerRepository $customerRepository,
         EntityManager $entityManager,
         MailService $mailService,
-        array $eccubeConfig
+        array $eccubeConfig,
+        ValidatorInterface $validator
     )
     {
         $this->customerRepository = $customerRepository;
         $this->entityManager = $entityManager;
         $this->mailService = $mailService;
         $this->appConfig = $eccubeConfig;
+        $this->recursiveValidator = $validator;
     }
 
     /**
@@ -197,7 +200,7 @@ class ForgotController extends AbstractController
      * @Route("/forgot/reset/{reset_key}", name="forgot_reset")
      * @Template("Forgot/reset.twig")
      */
-    public function reset(Application $app, Request $request, $reset_key)
+    public function reset(Request $request, $reset_key)
     {
         $errors = $this->recursiveValidator->validate(
             $reset_key,
