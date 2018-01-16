@@ -24,10 +24,9 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -38,58 +37,50 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 
-/**
- * @Route(service=BlockController::class)
- */
 class BlockController extends AbstractController
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject(BlockRepository::class)
      * @var BlockRepository
      */
     protected $blockRepository;
 
     /**
-     * @Inject(DeviceTypeRepository::class)
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
 
+    public function __construct(
+        $eccubeConfig,
+        EntityManagerInterface $entityManager,
+        BlockRepository $blockRepository,
+        DeviceTypeRepository $deviceTypeRepository
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+        $this->entityManager = $entityManager;
+        $this->blockRepository = $blockRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
+    }
+
     /**
      * @Route("/%admin_route%/content/block", name="admin_content_block")
-     * @Template("Content/block.twig")
+     * @Template("@admin/Content/block.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -114,9 +105,9 @@ class BlockController extends AbstractController
     /**
      * @Route("/%admin_route%/content/block/new", name="admin_content_block_new")
      * @Route("/%admin_route%/content/block/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_block_edit")
-     * @Template("Content/block_edit.twig")
+     * @Template("@admin/Content/block_edit.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null, Environment $twig, FileSystem $fs)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -132,15 +123,13 @@ class BlockController extends AbstractController
             ->createBuilder(BlockType::class, $Block);
 
         $html = '';
-        $previous_filename = null;
-        $deletable = $Block->isDeletable();
+        $previousFileName = null;
 
         if ($id) {
-            // テンプレートファイルの取得
-            $previous_filename = $Block->getFileName();
-            $file = $this->blockRepository
-                ->getReadTemplateFile($previous_filename, $deletable);
-            $html = $file['tpl_data'];
+            $previousFileName = $Block->getFileName();
+            $html = $twig->getLoader()
+                ->getSourceContext('Block/'.$Block->getFileName().'.twig')
+                ->getCode();
         }
 
         $event = new EventArgs(
@@ -156,91 +145,78 @@ class BlockController extends AbstractController
         $html = $event->getArgument('html');
 
         $form = $builder->getForm();
-
         $form->get('block_html')->setData($html);
 
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) { // FIXME isSubmitted() && isValid() に修正する
-                $Block = $form->getData();
+        $form->handleRequest($request);
 
-                // DB登録
-                $this->entityManager->persist($Block);
-                $this->entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $Block = $form->getData();
+            $this->entityManager->persist($Block);
+            $this->entityManager->flush();
 
-                // ファイル生成・更新
-                $tplDir = $this->appConfig['block_realdir'];
+            $dir = sprintf('%s/app/template/%s/Block',
+                $this->getParameter('kernel.project_dir'),
+                $this->getParameter('eccube.theme'));
 
-                $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
+            $file = $dir.'/'.$Block->getFileName().'.twig';
 
-                $fs = new Filesystem();
-                $blockData = $form->get('block_html')->getData();
-                $blockData = StringUtil::convertLineFeed($blockData);
-                $fs->dumpFile($filePath, $blockData);
-                // 更新でファイル名を変更した場合、以前のファイルを削除
-                if ($Block->getFileName() != $previous_filename && !is_null($previous_filename)) {
-                    $oldFilePath = $tplDir . '/' . $previous_filename . '.twig';
-                    if ($fs->exists($oldFilePath)) {
-                        $fs->remove($oldFilePath);
-                    }
+            $source = $form->get('block_html')->getData();
+            $source = StringUtil::convertLineFeed($source);
+            $fs->dumpFile($file, $source);
+
+            // 更新でファイル名を変更した場合、以前のファイルを削除
+            if (null !== $previousFileName && $Block->getFileName() !== $previousFileName) {
+                $old = $dir.'/'.$previousFileName.'.twig';
+                if ($fs->exists($old)) {
+                    $fs->remove($old);
                 }
-
-                //twigテンプレートのみ削除
-                \Eccube\Util\CacheUtil::clear($app, false, true);
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'Block' => $Block,
-                    ),
-                    $request
-                );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
-
-                $app->addSuccess('admin.register.complete', 'admin');
-
-                return $app->redirect($app->url('admin_content_block_edit', array('id' => $Block->getId())));
             }
+
+            // twigキャッシュの削除
+            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
+            $fs->remove($cacheDir);
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Block' => $Block,
+                ),
+                $request
+            );
+            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE, $event);
+
+            $this->addSuccess('admin.register.complete', 'admin');
+
+            return $this->redirectToRoute('admin_content_block_edit', ['id' => $Block->getId()]);
         }
 
-
-        return $app->render('Content/block_edit.twig', array(
+        return [
             'form' => $form->createView(),
             'block_id' => $id,
-            'deletable' => $deletable,
-        ));
+            'deletable' => $Block->isDeletable(),
+        ];
     }
 
     /**
      * @Method("DELETE")
      * @Route("/%admin_route%/content/block/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_block_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Request $request, Block $Block, Filesystem $fs)
     {
-        $this->isTokenValid($app);
-
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
-
-        $Block = $this->blockRepository->findOneBy(array(
-            'id' => $id,
-            'DeviceType' => $DeviceType
-        ));
-
-        if (!$Block) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_content_block'));
-        }
+        $this->isTokenValid();
 
         // ユーザーが作ったブロックのみ削除する
-        // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
         if ($Block->isDeletable()) {
-            $tplDir = $this->appConfig['block_realdir'];
-            $file = $tplDir . '/' . $Block->getFileName() . '.twig';
-            $fs = new Filesystem();
+            $dir = sprintf('%s/app/template/%s/Block',
+                $this->getParameter('kernel.project_dir'),
+                $this->getParameter('eccube.theme'));
+
+            $file = $dir.'/'.$Block->getFileName().'.twig';
+
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
+
             $this->entityManager->remove($Block);
             $this->entityManager->flush();
 
@@ -252,12 +228,13 @@ class BlockController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.delete.complete', 'admin');
-            //twigテンプレートのみ削除
-            \Eccube\Util\CacheUtil::clear($app, false, true);
+            $this->addSuccess('admin.delete.complete', 'admin');
+
+            // twigキャッシュの削除
+            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
+            $fs->remove($cacheDir);
         }
 
-
-        return $app->redirect($app->url('admin_content_block'));
+        return $this->redirectToRoute('admin_content_block');
     }
 }
