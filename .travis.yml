@@ -18,10 +18,6 @@ php:
   - 7.1
   - 7.0
 
-services:
-  - mysql
-  - postgresql
-
 env:
   global:
     - KERNEL_CLASS=Eccube\Kernel
@@ -32,39 +28,33 @@ env:
     - ECCUBE_AUTH_MAGIC=s$cretVBJmtS0Ls+
 
   matrix:
-    - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev
-    - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev
-    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db
+    - DB=mysql DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+    - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+    - DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db DATABASE_SERVER_VERSION=3
     # カバレッジレポート用
-    - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev COVERAGE=true
+    - DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
 
 matrix:
   fast_finish: true
   exclude:
     # php7.1以外のカバレッジレポート用matrixは除外
     - php: 7.0
-      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev COVERAGE=true
+      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
     - php: 7.2
-      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev COVERAGE=true
+      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
   allow_failures:
     # sqlite
-    - env: DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db
+    - env: DB=sqlite DATABASE_URL=sqlite:///%kernel.project_dir%/app/config/eccube/eccube.db DATABASE_SERVER_VERSION=3
     # カバレッジレポートはphp7.1のmatrixで実行
     - php: 7.1
-      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev COVERAGE=true
+      env: DB=pgsql DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9 COVERAGE=true
     # php7.2
     - php: 7.2
 
-before_install:
-  - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cube4_dev;' ; fi
-  - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cube4_dev;' -U postgres ; fi
-
 install:
   - composer install --dev --no-interaction -o
+  - composer run-script installer-scripts
   - ./vendor/bin/simple-phpunit install
-  # - bin/console doctrine:database:create
-  - bin/console doctrine:schema:create
-  - bin/console eccube:fixtures:load
 
 before_script:
   - phpenv config-rm xdebug.ini || true

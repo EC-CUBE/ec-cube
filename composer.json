@@ -111,6 +111,11 @@
             "cache:warmup": "symfony-cmd",
             "assets:install --symlink --relative html": "symfony-cmd"
         },
+        "installer-scripts": {
+            "doctrine:database:create": "bin/console doctrine:database:create",
+            "doctrine:schema:create": "bin/console doctrine:schema:create",
+            "eccube:fixtures:load": "bin/console eccube:fixtures:load"
+        },
         "post-install-cmd": [
             "@auto-scripts"
         ],
@@ -118,9 +123,7 @@
             "@auto-scripts"
         ],
         "post-create-project-cmd": [
-            "bin/console doctrine:database:create",
-            "bin/console doctrine:schema:create",
-            "bin/console eccube:fixtures:load",
+            "@installer-scripts",
             "@auto-scripts"
         ]
     },
