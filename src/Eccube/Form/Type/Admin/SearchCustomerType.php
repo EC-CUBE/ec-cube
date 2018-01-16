@@ -41,6 +41,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -59,6 +61,12 @@ class SearchCustomerType extends AbstractType
      * @var CustomerStatusRepository
      */
     protected $customerStatusRepository;
+
+    public function __construct($eccubeConfig, CustomerStatusRepository $customerStatusRepository)
+    {
+        $this->appConfig = $eccubeConfig;
+        $this->customerStatusRepository = $customerStatusRepository;
+    }
 
     /**
      * {@inheritdoc}

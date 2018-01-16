@@ -31,6 +31,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Page;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchCustomerType;
@@ -40,12 +41,14 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -114,14 +117,27 @@ class CustomerController extends AbstractController
      */
     protected $customerRepository;
 
+    public function __construct(
+        $eccubeConfig,
+        PageMaxRepository $pageMaxRepository,
+        CustomerRepository $customerRepository,
+        SexRepository $sexRepository,
+        PrefRepository $prefRepository
+    ) {
+        $this->appConfig = $eccubeConfig;
+        $this->pageMaxRepository = $pageMaxRepository;
+        $this->customerRepository = $customerRepository;
+        $this->sexRepository = $sexRepository;
+        $this->prefRepository = $prefRepository;
+    }
+
     /**
      * @Route("/%admin_route%/customer", name="admin_customer")
      * @Route("/%admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
-     * @Template("Customer/index.twig")
+     * @Template("@admin/Customer/index.twig")
      */
-    public function index(Application $app, Request $request, $page_no = null)
+    public function index(Request $request, $page_no = null, Paginator $paginator, SessionInterface $session)
     {
-        $session = $request->getSession();
         $pagination = array();
         $builder = $this->formFactory
             ->createBuilder(SearchCustomerType::class);
@@ -162,7 +178,7 @@ class CustomerController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
-                $pagination = $app['paginator']()->paginate(
+                $pagination = $paginator->paginate(
                     $qb,
                     $page_no,
                     $page_count
@@ -201,7 +217,7 @@ class CustomerController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
-                    $pagination = $app['paginator']()->paginate(
+                    $pagination = $paginator->paginate(
                         $qb,
                         $page_no,
                         $page_count
