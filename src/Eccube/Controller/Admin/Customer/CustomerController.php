@@ -122,13 +122,15 @@ class CustomerController extends AbstractController
         PageMaxRepository $pageMaxRepository,
         CustomerRepository $customerRepository,
         SexRepository $sexRepository,
-        PrefRepository $prefRepository
+        PrefRepository $prefRepository,
+        MailService $mailService
     ) {
         $this->appConfig = $eccubeConfig;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->customerRepository = $customerRepository;
         $this->sexRepository = $sexRepository;
         $this->prefRepository = $prefRepository;
+        $this->mailService = $mailService;
     }
 
     /**
@@ -136,7 +138,7 @@ class CustomerController extends AbstractController
      * @Route("/%admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
      * @Template("@admin/Customer/index.twig")
      */
-    public function index(Request $request, $page_no = null, Paginator $paginator, SessionInterface $session)
+    public function index(Request $request, $page_no = null, Paginator $paginator)
     {
         $pagination = array();
         $builder = $this->formFactory
@@ -185,21 +187,21 @@ class CustomerController extends AbstractController
                 );
 
                 // sessionのデータ保持
-                $session->set('eccube.admin.customer.search', $searchData);
-                $session->set('eccube.admin.customer.search.page_no', $page_no);
+                $this->session->set('eccube.admin.customer.search', $searchData);
+                $this->session->set('eccube.admin.customer.search.page_no', $page_no);
             }
         } else {
             if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
-                $session->remove('eccube.admin.customer.search');
-                $session->remove('eccube.admin.customer.search.page_no');
+                $this->session->remove('eccube.admin.customer.search');
+                $this->session->remove('eccube.admin.customer.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.customer.search');
+                $searchData = $this->session->get('eccube.admin.customer.search');
                 if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+                    $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
                 } else {
-                    $session->set('eccube.admin.customer.search.page_no', $page_no);
+                    $this->session->set('eccube.admin.customer.search.page_no', $page_no);
                 }
                 if (!is_null($searchData)) {
                     // 表示件数
@@ -252,9 +254,9 @@ class CustomerController extends AbstractController
     /**
      * @Route("/%admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
      */
-    public function resend(Application $app, Request $request, $id)
+    public function resend(Request $request, $id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $Customer = $this->customerRepository
             ->find($id);
@@ -263,7 +265,7 @@ class CustomerController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+        $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
         // メール送信
         $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);
@@ -277,9 +279,9 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
 
-        $app->addSuccess('admin.customer.resend.complete', 'admin');
+        $this->addSuccess('admin.customer.resend.complete', 'admin');
 
-        return $app->redirect($app->url('admin_customer'));
+        return $this->redirectToRoute('admin_customer');
     }
 
     /**
