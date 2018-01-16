@@ -72,20 +72,20 @@ class UserDataControllerTest extends AbstractWebTestCase
 
     public function testIndexWithNotFound()
     {
+        // $isDebug = $this->container->getParameter('kernel.debug');
         // debugはONの時に404ページ表示しない例外になります。
-        if($this->app['debug'] == true){
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
-        }
-        $client = $this->createClient();
-        $crawler = $client->request(
+        // if ($isDebug) {
+        //    $this->expectException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        //}
+        $this->client->request(
             'GET',
             '/user_data/aaa'
         );
         // debugはOFFの時に404ページが表示します。
-        if($this->app['debug'] == false){
-            $this->expected = 404;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
+        // if (!$isDebug) {
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+        //}
     }
 }
