@@ -91,10 +91,11 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     {
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_nonmember'),
+            $this->generateUrl('shopping_nonmember'),
             array('nonmember' => $formData)
         );
-        $this->app['eccube.service.cart']->lock();
+        $this->container->get(CartService::class)->lock();
+//        $this->app['eccube.service.cart']->lock();
         return $crawler;
     }
 

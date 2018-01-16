@@ -58,11 +58,14 @@ class NonMemberType extends AbstractType
     protected $app;
 
     /**
-     * {@inheritdoc}
+     * NonMemberType constructor.
+     * @param array $eccubeConfig
      */
-    public function __construct()
+    public function __construct(array $eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
+
 
     /**
      * {@inheritdoc}
