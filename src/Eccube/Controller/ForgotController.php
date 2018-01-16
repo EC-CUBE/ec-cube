@@ -60,25 +60,21 @@ class ForgotController extends AbstractController
     protected $logger;
 
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
@@ -100,6 +96,19 @@ class ForgotController extends AbstractController
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
+
+    public function __construct(
+        CustomerRepository $customerRepository,
+        EntityManager $entityManager,
+        MailService $mailService,
+        array $eccubeConfig
+    )
+    {
+        $this->customerRepository = $customerRepository;
+        $this->entityManager = $entityManager;
+        $this->mailService = $mailService;
+        $this->appConfig = $eccubeConfig;
+    }
 
     /**
      * パスワードリマインダ.
@@ -147,13 +156,13 @@ class ForgotController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE, $event);
 
                 // 完了URLの生成
-                $reset_url = $app->url('forgot_reset', array('reset_key' => $Customer->getResetKey()));
+                $reset_url = $this->generateUrl('forgot_reset', array('reset_key' => $Customer->getResetKey()));
 
                 // メール送信
                 $this->mailService->sendPasswordResetNotificationMail($Customer, $reset_url);
 
                 // ログ出力
-                $this->logger->addInfo(
+                $this->addInfo(
                     'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
                 );
             } else {
@@ -163,7 +172,7 @@ class ForgotController extends AbstractController
                 );
             }
 
-            return $app->redirect($app->url('forgot_complete'));
+            return $this->redirectToRoute('forgot_complete');
         }
 
         return [
