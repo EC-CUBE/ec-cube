@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Tests\Web;
+use Eccube\Common\Constant;
 use Eccube\Service\CartService;
 
 /**
@@ -33,7 +34,6 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 {
     public function setUp()
     {
-//        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
@@ -70,10 +70,12 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     public function testConfirmWithNonmember()
     {
         $client = $this->client;
-        $this->scenarioCartIn($client);
+        $c = $this->scenarioCartIn();
+        $c = $this->client->followRedirect();
 
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($formData);
+        $c = $this->client->followRedirect();
 
         $client->request('GET', $this->generateUrl('shopping'));
         $crawler = $client->followRedirect();

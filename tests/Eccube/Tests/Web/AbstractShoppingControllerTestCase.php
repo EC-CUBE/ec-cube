@@ -62,7 +62,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
-    protected function scenarioCartIn(Customer $Customer, $product_class_id = 1)
+    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
     {
         $token = $this->getCsrfToken(Constant::TOKEN_NAME);
 
@@ -87,15 +87,17 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $crawler;
     }
 
-    protected function scenarioInput($client, $formData)
+    protected function scenarioInput($formData)
     {
-        $crawler = $client->request(
+        $token = $this->getCsrfToken('nonmember');
+        $formData[Constant::TOKEN_NAME] = $token;
+        $crawler = $this->client->request(
             'POST',
             $this->generateUrl('shopping_nonmember'),
-            array('nonmember' => $formData)
+            ['nonmember' => $formData, '_token' => $token]
         );
         $this->container->get(CartService::class)->lock();
-//        $this->app['eccube.service.cart']->lock();
+        $this->container->get(CartService::class)->save();
         return $crawler;
     }
 
