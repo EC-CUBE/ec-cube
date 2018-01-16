@@ -26,12 +26,10 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\Page;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchCustomerType;
@@ -48,71 +46,47 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @Route(service=CustomerController::class)
- */
 class CustomerController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject(SexRepository::class)
      * @var SexRepository
      */
     protected $sexRepository;
 
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject(PageMaxRepository::class)
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
@@ -125,7 +99,7 @@ class CustomerController extends AbstractController
         PrefRepository $prefRepository,
         MailService $mailService
     ) {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->customerRepository = $customerRepository;
         $this->sexRepository = $sexRepository;
@@ -158,7 +132,7 @@ class CustomerController extends AbstractController
         $active = false;
 
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->appConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['default_page_count'];
 
         if ('POST' === $request->getMethod()) {
 
@@ -303,7 +277,8 @@ class CustomerController extends AbstractController
 
         if (!$Customer) {
             $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+            return $app->redirect($app->url('admin_customer_page',
+                    array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
         }
 
         try {
@@ -327,7 +302,8 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
 
-        return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        return $app->redirect($app->url('admin_customer_page',
+                array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
     }
 
     /**
