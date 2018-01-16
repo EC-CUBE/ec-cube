@@ -44,8 +44,6 @@ use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -100,6 +98,7 @@ class CustomerController extends AbstractController
         SexRepository $sexRepository,
         PrefRepository $prefRepository,
         MailService $mailService,
+        CsvExportService $csvExportService,
         EntityManagerInterface $entityManager
     ) {
         $this->eccubeConfig = $eccubeConfig;
@@ -108,6 +107,7 @@ class CustomerController extends AbstractController
         $this->sexRepository = $sexRepository;
         $this->prefRepository = $prefRepository;
         $this->mailService = $mailService;
+        $this->csvExportService = $csvExportService;
         $this->entityManager = $entityManager;
     }
 
@@ -318,7 +318,7 @@ class CustomerController extends AbstractController
      * @param Request $request
      * @return StreamedResponse
      */
-    public function export(Application $app, Request $request)
+    public function export(Request $request)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -328,7 +328,7 @@ class CustomerController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
@@ -342,7 +342,7 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
 
                 $Csvs = $csvService->getCsvs();
 
