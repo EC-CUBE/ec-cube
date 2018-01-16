@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -48,6 +49,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -97,7 +99,8 @@ class CustomerController extends AbstractController
         CustomerRepository $customerRepository,
         SexRepository $sexRepository,
         PrefRepository $prefRepository,
-        MailService $mailService
+        MailService $mailService,
+        EntityManagerInterface $entityManager
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->pageMaxRepository = $pageMaxRepository;
@@ -105,6 +108,7 @@ class CustomerController extends AbstractController
         $this->sexRepository = $sexRepository;
         $this->prefRepository = $prefRepository;
         $this->mailService = $mailService;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -262,34 +266,33 @@ class CustomerController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Request $request, $id, TranslatorInterface $translator)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('会員削除開始', array($id));
 
-        $session = $request->getSession();
-        $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+        $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         $Customer = $this->customerRepository
             ->find($id);
 
         if (!$Customer) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer_page',
+            $this->deleteMessage();
+            return $this->redirect($this->generateUrl('admin_customer_page',
                     array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
         }
 
         try {
             $this->entityManager->remove($Customer);
             $this->entityManager->flush($Customer);
-            $app->addSuccess('admin.customer.delete.complete', 'admin');
+            $this->addSuccess('admin.customer.delete.complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
 
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '会員']);
-            $app->addError($message, 'admin');
+            $message = $translator->trans('admin.delete.failed.foreign_key', ['%name%' => '会員']);
+            $this->addError($message, 'admin');
         }
 
         log_info('会員削除完了', array($id));
@@ -302,7 +305,7 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
 
-        return $app->redirect($app->url('admin_customer_page',
+        return $this->redirect($this->generateUrl('admin_customer_page',
                 array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
     }
 
