@@ -289,6 +289,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
             $extensions[] = new \Eccube\Form\Extension\FreezeTypeExtension();
+            $extensions[] = new \Eccube\Form\Extension\MoneyTypeExtension();
 
             return $extensions;
         }));

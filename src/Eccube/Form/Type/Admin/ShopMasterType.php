@@ -244,20 +244,18 @@ class ShopMasterType extends AbstractType
             ))
 
             // 地図設定
-            ->add('latitude', 'number', array(
+            ->add('latitude', 'text', array(
                 'label' => '緯度',
                 'required' => false,
-                'precision' => 6,
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => '/^-?([0-8]?[0-9]\.?[0-9]{0,6}|90\.?0{0,6})$/',
                         'message' => 'admin.shop.latitude.invalid'))
                 )
             ))
-            ->add('longitude', 'number', array(
+            ->add('longitude', 'text', array(
                 'label' => '経度',
                 'required' => false,
-                'precision' => 6,
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => '/^-?((1?[0-7]?|[0-9]?)[0-9]\.?[0-9]{0,6}|180\.?0{0,6})$/',
