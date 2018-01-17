@@ -29,7 +29,6 @@ class HelpControllerTest extends AbstractWebTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
@@ -38,8 +37,8 @@ class HelpControllerTest extends AbstractWebTestCase
      */
     public function testRoutingHelpTradelaw()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('help_tradelaw'));
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('help_tradelaw'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -48,8 +47,8 @@ class HelpControllerTest extends AbstractWebTestCase
      */
     public function testRoutingHelpAbout()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('help_about'));
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('help_about'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -58,8 +57,8 @@ class HelpControllerTest extends AbstractWebTestCase
      */
     public function testRoutingHelpGuide()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('help_guide'));
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('help_guide'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -68,8 +67,8 @@ class HelpControllerTest extends AbstractWebTestCase
      */
     public function testRoutingHelpPrivacy()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('help_privacy'));
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('help_privacy'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }
