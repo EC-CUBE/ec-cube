@@ -23,7 +23,6 @@
         "doctrine/orm": "^2.5",
         "egulias/email-validator": "^2.1",
         "guzzlehttp/guzzle": "^6.2",
-        "hirak/prestissimo": "^0.3.7",
         "knplabs/knp-paginator-bundle": "^2.7",
         "mobiledetect/mobiledetectlib": "^2.8",
         "nesbot/carbon": "^1.22",
@@ -108,7 +107,7 @@
         ],
         "auto-scripts": {
             "cache:clear --no-warmup": "symfony-cmd",
-            "cache:warmup": "symfony-cmd",
+            "cache:warmup --no-optional-warmers": "symfony-cmd",
             "assets:install --symlink --relative html": "symfony-cmd"
         },
         "post-install-cmd": [
