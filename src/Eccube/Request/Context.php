@@ -31,6 +31,10 @@ class Context
     {
         $request = $this->requestStack->getMasterRequest();
 
+        if (null === $request) {
+            return false;
+        }
+
         $pathInfo = \rawurldecode($request->getPathInfo());
         $adminPath = '/'.\trim($this->adminRoute, '/').'/';
 
@@ -44,6 +48,12 @@ class Context
      */
     public function isFront()
     {
+        $request = $this->requestStack->getMasterRequest();
+
+        if (null === $request) {
+            return false;
+        }
+
         return false === $this->isAdmin();
     }
 }

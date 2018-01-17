@@ -1,0 +1,2 @@
+monolog:
+    channels: ['front', 'admin']

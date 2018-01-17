@@ -8,7 +8,7 @@ parameters:
 doctrine:
     dbal:
         driver: 'pdo_sqlite'
-        # server_version: '5.7'
+        server_version: "%env(DATABASE_SERVER_VERSION)%"
         charset: utf8
 
         # for mysql only

@@ -1,7 +1,7 @@
 parameters:
   eccube.constants:
-    admin_route: %admin_route%
-    nav: %eccube.nav%
+    admin_route: '%admin_route%'
+    nav: '%eccube.nav%'
     admin_allow_hosts: {}
     auth_type: HMAC
     csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？

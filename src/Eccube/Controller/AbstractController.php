@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Common\Constant;
+use Eccube\Log\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -59,10 +60,18 @@ class AbstractController extends Controller
     protected $session;
 
     /**
-     * @var CsrfTokenManagerInterface
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @param Logger $logger
      * @required
      */
-    protected  $csrfTokenManager;
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * @param SessionInterface $session
@@ -143,11 +152,9 @@ class AbstractController extends Controller
 
     protected function isTokenValid()
     {
-        /** @var CsrfTokenManagerInterface $csrf */
-        $csrf = $this->container->get('security.csrf.token_manager');
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $name = Constant::TOKEN_NAME;
-        if (!$csrf->isTokenValid(new CsrfToken($name, $request->get($name)))) {
+
+        if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $request->get(Constant::TOKEN_NAME))) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
 
