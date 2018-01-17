@@ -36,33 +36,14 @@ class AbstractShoppingController extends AbstractController
     /**
      * @Inject("eccube.purchase.flow.shopping")
      * @var PurchaseFlow
-     * @required
      */
     protected $purchaseFlow;
-
-    /**
-     * @return PurchaseFlow
-     */
-    public function getPurchaseFlow(): PurchaseFlow
-    {
-        return $this->purchaseFlow;
-    }
-
-    /**
-     * @param PurchaseFlow $purchaseFlow
-     * @required
-     */
-    public function setPurchaseFlow(PurchaseFlow $purchaseFlow): void
-    {
-        $this->purchaseFlow = $purchaseFlow;
-    }
 
     /**
      * @Inject("eccube.purchase.context")
      * @var PurchaseContext
      */
     protected $purchaseContext;
-
 
     /**
      * @var string 非会員用セッションキー
@@ -89,15 +70,15 @@ class AbstractShoppingController extends AbstractController
      * @param ItemHolderInterface $itemHolder
      * @return PurchaseFlowResult
      */
-    protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
+    protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
+        $flowResult = $this->purchaseFlow->calculate($itemHolder, $app['eccube.purchase.context']($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $this->addRequestError($warning->getMessage());
+            $app->addRequestError($warning->getMessage());
         }
         foreach ($flowResult->getErrors() as $error) {
-            $this->addRequestError($error->getMessage());
+            $app->addRequestError($error->getMessage());
         }
         return $flowResult;
     }
