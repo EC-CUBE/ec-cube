@@ -26,12 +26,6 @@ namespace Eccube\Tests\Web;
 
 class HelpControllerTest extends AbstractWebTestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * 特定商取引法のテスト
      */

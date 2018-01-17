@@ -34,18 +34,17 @@ class UserDataControllerTest extends AbstractWebTestCase
         $this->eccubeConfig['user_data_realdir'] = $this->eccubeConfig['template_default_realdir'].'/user_data';
         mkdir($this->eccubeConfig['user_data_realdir']);
 
-        // $this->app->overwrite('config', $config);
         // add path to user_data alias of twig, make twig can find template file
         $this->twig->getLoader()->addPath($this->eccubeConfig['user_data_realdir'], 'user_data');
 
-        $deviceType = $this->entityManager
+        $DeviceType = $this->entityManager
             ->getRepository(\Eccube\Entity\Master\DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-        if ($deviceType) {
+        if ($DeviceType) {
             $page = new Page();
             $page->setUrl($this->fileName)
                 ->setFileName($this->fileName)
-                ->setDeviceType($deviceType)
+                ->setDeviceType($DeviceType)
                 ->setEditType(Page::EDIT_TYPE_USER);
             $this->entityManager->persist($page);
             $this->entityManager->flush();

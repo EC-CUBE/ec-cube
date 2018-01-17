@@ -34,7 +34,6 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactory;
@@ -56,11 +55,6 @@ class ForgotController extends AbstractController
      * @var ValidatorInterface
      */
     protected $recursiveValidator;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
 
     /**
      * @var MailService
@@ -181,10 +175,8 @@ class ForgotController extends AbstractController
                 // メール送信
                 $this->mailService->sendPasswordResetNotificationMail($Customer, $reset_url);
 
-                // ログ出力 TODO:: waiting for JP
-                // $this->addInfo(
-                //    'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
-                // );
+                // ログ出力
+                log_info('send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}");
             } else {
                 log_warning(
                     'Un active customer try send reset password email: ',
@@ -269,10 +261,8 @@ class ForgotController extends AbstractController
 
             // メール送信
             $this->mailService->sendPasswordResetCompleteMail($Customer, $pass);
-            // ログ出力 TODO:: waiting for JP
-            // $this->logger->addInfo(
-            // 'reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
-            // );
+            // ログ出力
+            log_info('reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}");
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
