@@ -24,16 +24,42 @@
 
 namespace Eccube\Log;
 
-use Eccube\Application;
+use Eccube\Request\Context;
 use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 
 class Logger extends AbstractLogger
 {
-    protected $app;
+    /**
+     * @var Context
+     */
+    protected $context;
 
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $frontLogger;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $adminLogger;
+
+    public function __construct(
+        Context $context,
+        LoggerInterface $logger,
+        LoggerInterface $frontLogger,
+        LoggerInterface $adminLogger
+    ) {
+        $this->context = $context;
+        $this->logger = $logger;
+        $this->frontLogger = $frontLogger;
+        $this->adminLogger = $adminLogger;
     }
 
     /**
@@ -45,22 +71,12 @@ class Logger extends AbstractLogger
      */
     public function log($level, $message, array $context = array())
     {
-        if ($this->app->isFrontRequest()) {
-            // フロント画面用のログ出力
-            $this->app['monolog.logger.front']->log($level, $message, $context);
-        } elseif ($this->app->isAdminRequest()) {
-            // 管理画面用のログ出力
-            $this->app['monolog.logger.admin']->log($level, $message, $context);
+        if ($this->context->isAdmin()) {
+            $this->adminLogger->log($level, $message, $context);
+        } elseif ($this->context->isFront()) {
+            $this->frontLogger->log($level, $message, $context);
         } else {
-            // 両方に当てはまらない場合、monolog用へログ出力
-            $this->app['monolog']->log($level, $message, $context);
+            $this->logger->log($level, $message, $context);
         }
-
-        if ($this->app['debug']) {
-            // debugが有効時はフロント、管理両方のログをmonologにも出力
-            $this->app['monolog']->log($level, $message, $context);
-        }
-
     }
-
 }

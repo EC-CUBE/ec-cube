@@ -3,15 +3,36 @@ monolog:
         main:
             type: fingers_crossed
             action_level: error
-            handler: nested
-            excluded_404s:
-                # regex: exclude all 404 errors from the logs
-                - ^/
-        nested:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            handler: main_rotating_file
+        main_rotating_file:
+            type: rotating_file
+            max_files: 60
+            path: '%kernel.logs_dir%/%kernel.environment%/main.log'
+            formatter: eccube.log.formatter.line
+            level: debug
+        front:
+            type: fingers_crossed
+            action_level: error
+            handler: front_rotating_file
+            channels: ['front']
+        front_rotating_file:
+            type: rotating_file
+            max_files: 60
+            path: '%kernel.logs_dir%/%kernel.environment%/front.log'
+            formatter: eccube.log.formatter.line
+            level: debug
+        admin:
+            type: fingers_crossed
+            action_level: error
+            handler: admin_rotating_file
+            channels: ['admin']
+        admin_rotating_file:
+            type: rotating_file
+            max_files: 60
+            path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
+            formatter: eccube.log.formatter.line
             level: debug
         console:
-            type:   console
+            type: console
             process_psr_3_messages: false
-            channels: ["!event", "!doctrine"]
+            channels: ['!event', '!doctrine']
