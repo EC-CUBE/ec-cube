@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'product_master'] %}
 
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品マスター{% endblock %}
 
-{% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">

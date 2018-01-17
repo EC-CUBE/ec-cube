@@ -36,7 +36,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
@@ -89,16 +88,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductProduct()
     {
-        $this->client->request('GET',
-            $this->app->url('admin_product')
-        );
+        $this->client->request('GET', $this->generateUrl('admin_product'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminProductProductNew()
     {
         $this->client->request('GET',
-            $this->app->url('admin_product_product_new')
+            $this->generateUrl('admin_product_product_new')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }

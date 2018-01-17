@@ -195,7 +195,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%admin_route%/product", name="admin_product")
      * @Route("/%admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
-     * @Template("Product/index.twig")
+     * @Template("@admin/Product/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
     {
