@@ -3,4 +3,4 @@ services:
         class: EasyCorp\EasyLog\EasyLogHandler
         public: false
         arguments:
-            - '%kernel.logs_dir%/%kernel.environment%/main.log'
+            - '%kernel.logs_dir%/%kernel.environment%/site.log'
