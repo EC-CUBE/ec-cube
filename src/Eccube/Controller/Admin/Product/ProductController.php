@@ -66,115 +66,103 @@ use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 class ProductController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject(ProductClassRepository::class)
      * @var ProductClassRepository
      */
     protected $productClassRepository;
 
     /**
-     * @Inject(ProductImageRepository::class)
      * @var ProductImageRepository
      */
     protected $productImageRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(PageMaxRepository::class)
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
 
     /**
-     * @Inject(ProductStatusRepository::class)
      * @var ProductStatusRepository
      */
     protected $productStatusRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
-     * @var FormFactory
+     * @var \Symfony\Component\Form\FormFactoryInterface
      */
     protected $formFactory;
 
     /**
-     * @Inject("session")
-     * @var Session
+     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
      */
     protected $session;
 
     /**
      * ProductController constructor.
+     *
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
-     * @param EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
-     * @param FormFactory $formFactory
-     * @param Session $session
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
+     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
+     * @param array $eccubeConfig
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
         ProductImageRepository $productImageRepository,
-        EntityManager $entityManager,
+        \Doctrine\ORM\EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        FormFactory $formFactory,
-        Session $session,
+        \Symfony\Component\Form\FormFactoryInterface $formFactory,
+        \Symfony\Component\HttpFoundation\Session\SessionInterface $session,
         array $eccubeConfig
     ) {
         $this->productClassRepository = $productClassRepository;
@@ -385,9 +373,9 @@ class ProductController extends AbstractController
     /**
      * @Route("/%admin_route%/product/product/new", name="admin_product_product_new")
      * @Route("/%admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
-     * @Template("Product/product.twig")
+     * @Template("@admin/Product/product.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null)
     {
         $has_class = false;
         if (is_null($id)) {
@@ -629,12 +617,12 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
-                $app->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
+                return $this->redirectToRoute('admin_product_product_edit', array('id' => $Product->getId()));
             } else {
                 log_info('商品登録チェックエラー', array($id));
-                $app->addError('admin.register.failed', 'admin');
+                $this->addError('admin.register.failed', 'admin');
             }
         }
 

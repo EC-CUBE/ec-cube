@@ -26,8 +26,6 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
@@ -49,22 +47,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductType extends AbstractType
 {
     /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    /**
      * ProductType constructor.
+     *
+     * @param CategoryRepository $categoryRepository
      */
-    public function __construct()
-    {
+    public function __construct(
+        CategoryRepository $categoryRepository
+    ) {
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**

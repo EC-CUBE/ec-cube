@@ -26,7 +26,6 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
@@ -49,19 +48,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductClassType extends AbstractType
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * ProductClassType constructor.
+     *
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
-    protected $app;
-
-    public function __construct()
-    {
+    public function __construct(
+        \Doctrine\ORM\EntityManagerInterface $entityManager
+    ) {
+        $this->entityManager = $entityManager;
     }
 
     /**

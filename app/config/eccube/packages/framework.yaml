@@ -1,6 +1,8 @@
 framework:
     secret: '%env(APP_SECRET)%'
     default_locale: '%locale%'
+    translator:
+      fallback: ['%locale%']
     csrf_protection: { enabled: true }
     http_method_override: true
     trusted_hosts: ~
@@ -29,6 +31,8 @@ framework:
           base_path: '/html/template/admin'
         save_image:
           base_path: '/html/upload/save_image'
+        temp_image:
+          base_path: '/html/upload/temp_image'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     cache:
         # this value is used as part of the "namespace" generated for the cache item keys
