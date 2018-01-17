@@ -24,6 +24,7 @@
 namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
@@ -35,9 +36,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -49,13 +53,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ForgotController extends AbstractController
 {
     /**
-     * @Inject("validator")
-     * @var RecursiveValidator
+     * @var ValidatorInterface
      */
     protected $recursiveValidator;
 
     /**
-     * @Inject("monolog")
      * @var Logger
      */
     protected $logger;
@@ -66,7 +68,7 @@ class ForgotController extends AbstractController
     protected $mailService;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -81,37 +83,52 @@ class ForgotController extends AbstractController
     protected $customerRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
-     * @var FormFactory
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
     /**
-     * @Inject("security.encoder_factory")
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
 
+    /**
+     * ForgotController constructor.
+     * @param ValidatorInterface $recursiveValidator
+     * @param MailService $mailService
+     * @param EntityManagerInterface $entityManager
+     * @param CustomerRepository $customerRepository
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param FormFactoryInterface $formFactory
+     * @param EncoderFactoryInterface $encoderFactory
+     * @param array $eccubeConfig
+     */
     public function __construct(
-        CustomerRepository $customerRepository,
-        EntityManager $entityManager,
+        ValidatorInterface $recursiveValidator,
         MailService $mailService,
-        array $eccubeConfig,
-        ValidatorInterface $validator
+        EntityManagerInterface $entityManager,
+        CustomerRepository $customerRepository,
+        EventDispatcherInterface $eventDispatcher,
+        FormFactoryInterface $formFactory,
+        EncoderFactoryInterface $encoderFactory,
+        array $eccubeConfig
     )
     {
-        $this->customerRepository = $customerRepository;
-        $this->entityManager = $entityManager;
+        $this->recursiveValidator = $recursiveValidator;
         $this->mailService = $mailService;
+        $this->entityManager = $entityManager;
         $this->appConfig = $eccubeConfig;
-        $this->recursiveValidator = $validator;
+        $this->customerRepository = $customerRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->encoderFactory = $encoderFactory;
     }
+
 
     /**
      * パスワードリマインダ.
@@ -119,7 +136,7 @@ class ForgotController extends AbstractController
      * @Route("/forgot", name="forgot")
      * @Template("Forgot/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $builder = $this->formFactory
             ->createNamedBuilder('', ForgotType::class);
@@ -159,15 +176,15 @@ class ForgotController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE, $event);
 
                 // 完了URLの生成
-                $reset_url = $this->generateUrl('forgot_reset', array('reset_key' => $Customer->getResetKey()));
+                $reset_url = $this->generateUrl('forgot_reset', array('reset_key' => $Customer->getResetKey()),UrlGeneratorInterface::ABSOLUTE_URL);
 
                 // メール送信
                 $this->mailService->sendPasswordResetNotificationMail($Customer, $reset_url);
 
-                // ログ出力
-                $this->addInfo(
-                    'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
-                );
+                // ログ出力 TODO:: waiting for JP
+                // $this->addInfo(
+                //    'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                // );
             } else {
                 log_warning(
                     'Un active customer try send reset password email: ',
@@ -252,11 +269,10 @@ class ForgotController extends AbstractController
 
             // メール送信
             $this->mailService->sendPasswordResetCompleteMail($Customer, $pass);
-
-            // ログ出力
-            $this->logger->addInfo(
-                'reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
-            );
+            // ログ出力 TODO:: waiting for JP
+            // $this->logger->addInfo(
+            // 'reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+            // );
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }

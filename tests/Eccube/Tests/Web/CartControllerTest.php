@@ -28,12 +28,6 @@ use Eccube\Common\Constant;
 
 class CartControllerTest extends AbstractWebTestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testRoutingCart()
     {
         $this->client->request('GET', '/cart');

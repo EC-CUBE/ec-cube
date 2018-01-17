@@ -28,17 +28,6 @@ use Eccube\Entity\BaseInfo;
 
 class ContactControllerTest extends AbstractWebTestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     protected function createFormData()
     {
         $faker = $this->getFaker();

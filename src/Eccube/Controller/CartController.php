@@ -24,8 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
@@ -37,7 +35,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -46,19 +44,16 @@ use Symfony\Component\HttpFoundation\Request;
 class CartController extends AbstractController
 {
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject(ProductClassRepository::class)
      * @var ProductClassRepository
      */
     protected $productClassRepository;
 
     /**
-     * @Inject("eccube.purchase.flow.cart")
      * @var PurchaseFlow
      */
     protected $purchaseFlow;
@@ -70,12 +65,17 @@ class CartController extends AbstractController
 
     /**
      * CartController constructor.
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ProductClassRepository $productClassRepository
      * @param PurchaseFlow $purchaseFlow
      * @param CartService $cartService
      */
-    public function __construct(EventDispatcher $eventDispatcher, ProductClassRepository $productClassRepository, PurchaseFlow $purchaseFlow, CartService $cartService)
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ProductClassRepository $productClassRepository,
+        PurchaseFlow $purchaseFlow,
+        CartService $cartService
+    )
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->productClassRepository = $productClassRepository;
@@ -90,7 +90,7 @@ class CartController extends AbstractController
      * @Route("/cart", name="cart")
      * @Template("Cart/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index()
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
@@ -122,7 +122,11 @@ class CartController extends AbstractController
         ];
     }
 
-    protected function execPurchaseFlow( $Carts)
+    /**
+     * @param $Carts
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function execPurchaseFlow($Carts)
     {
         $flowResults = array_map(function($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
@@ -149,7 +153,7 @@ class CartController extends AbstractController
 
         $this->cartService->save();
 
-        foreach ($flowResults as $index=>$result) {
+        foreach ($flowResults as $index => $result) {
             foreach ($result->getWarning() as $warning) {
                 $this->addRequestError($warning->getMessage(), "front.cart.${index}");
             }
@@ -177,7 +181,7 @@ class CartController extends AbstractController
      *     }
      * )
      */
-    public function handleCartItem(Request $request, $operation, $productClassId)
+    public function handleCartItem($operation, $productClassId)
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
@@ -219,7 +223,7 @@ class CartController extends AbstractController
      *
      * @Route("/cart/buystep/{index}", name="cart_buystep", requirements={"index" = "\d+"}, defaults={"index" = 0})
      */
-    public function buystep(Application $app, Request $request, $index)
+    public function buystep(Request $request, $index)
     {
         // FRONT_CART_BUYSTEP_INITIALIZE
         $event = new EventArgs(

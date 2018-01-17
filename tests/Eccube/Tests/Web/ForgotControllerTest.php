@@ -2,6 +2,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
+use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 
@@ -25,11 +27,6 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->customerRepository = $this->container->get(CustomerRepository::class);
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     public function testIndex()
     {
         $crawler = $this->client->request('GET', $this->generateUrl('forgot'));
@@ -43,7 +40,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostAndVerify()
     {
-        $this->markTestIncomplete('invalid token value');
+        $this->markTestIncomplete("reset_key can not found");
         $Customer = $this->createCustomer();
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -53,7 +50,7 @@ class ForgotControllerTest extends AbstractWebTestCase
             $this->generateUrl('forgot'),
             array(
                 'login_email' => $Customer->getEmail(),
-                '_token' => $this->getCsrfToken('forgot')
+                Constant::TOKEN_NAME => $this->getCsrfToken(ForgotType::class)
             )
         );
 
@@ -71,12 +68,8 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         $OrigCustomer = $this->customerRepository->find($Customer->getId());
         $key = $OrigCustomer->getResetKey();
-
-
-        dump([$Message->getSender(), $Message->getFrom()]);
-        die('1');
-        $cleanContent = quoted_printable_decode($Message->getSender());
-        $this->assertEquals(1, preg_match('|http://localhost(.*)|', $this->parseMailCatcherSource($Message), $urls));
+        $cleanContent = quoted_printable_decode($Message->getBody());
+        $this->assertEquals(1, preg_match('|http://localhost(.*)|', $cleanContent, $urls));
         $forgot_path = trim($urls[1]);
 
         // メール URL クリック
@@ -84,20 +77,22 @@ class ForgotControllerTest extends AbstractWebTestCase
             'GET',
             $forgot_path
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = 'パスワード変更(完了ページ)';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
         // 再発行メール受信確認
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $Messages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
         $this->expected = '[' . $BaseInfo->getShopName() . '] パスワード変更のお知らせ';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
+        $cleanContent = quoted_printable_decode($Message->getBody());
         $this->verify();
 
-        $this->assertRegexp('/新しいパスワード：[a-zA-Z0-9]/u', $this->parseMailCatcherSource($Message));
+        $this->assertRegexp('/新しいパスワード：[a-zA-Z0-9]/u', $cleanContent);
     }
 
     public function testComplete()
@@ -115,13 +110,12 @@ class ForgotControllerTest extends AbstractWebTestCase
     public function testResetWithDenied()
     {
         // Todo: Fail assert if debug = true
-        $isDebug = $this->container->getParameter('kernel.debug');
-        $isDebug = false;
+        // $isDebug = $this->container->getParameter('kernel.debug');
 
         // debugはONの時に403ページ表示しない例外になり`ます。
-        if($isDebug == true){
-            $this->expectException(\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException::class);
-        }
+        // if($isDebug == true){
+        //    $this->expectException(\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException::class);
+        // }
 
         $client = $this->client;
         $client->request(
@@ -130,24 +124,26 @@ class ForgotControllerTest extends AbstractWebTestCase
         );
 
         // debugはOFFの時に403ページが表示します。
-        if($isDebug == false){
-            $this->expected = 403;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
+        // if($isDebug == false){
+        $this->expected = 403;
+        $this->actual = $client->getResponse()->getStatusCode();
+        $this->verify();
+        // }
     }
 
-    /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testResetWithNotFound()
     {
-        $this->markTestIncomplete('Todo: Fail to catch exception by PHPUNIT');
+        // $this->markTestIncomplete('Todo: Fail to catch exception by PHPUNIT');
+        // $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
         $client = $this->client;
 
         $client->request(
            'GET',
            '/forgot/reset/aaaa'
         );
+
+        $this->expected = 404;
+        $this->actual = $client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }

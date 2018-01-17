@@ -48,10 +48,16 @@ class SearchProductController
     protected $formFactory;
 
     /**
-     * @var
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
+    /**
+     * SearchProductController constructor.
+     * @param RequestStack $requestStack
+     * @param FormFactoryInterface $formFactory
+     * @param EventDispatcherInterface $eventDispatcher
+     */
     public function __construct(
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,

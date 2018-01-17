@@ -24,29 +24,27 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\EntryType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -60,7 +58,7 @@ class EntryController extends AbstractController
     protected $customerStatusRepository;
 
     /**
-     * @var RecursiveValidator
+     * @var ValidatorInterface
      */
     protected $recursiveValidator;
 
@@ -75,17 +73,17 @@ class EntryController extends AbstractController
     protected $BaseInfo;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @var FormFactory
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
@@ -103,10 +101,10 @@ class EntryController extends AbstractController
      * EntryController constructor.
      * @param CustomerStatusRepository $customerStatusRepository
      * @param MailService $mailService
-     * @param BaseInfo $BaseInfo
-     * @param EntityManager $entityManager
-     * @param EventDispatcher $eventDispatcher
-     * @param FormFactory $formFactory
+     * @param BaseInfoRepository $BaseInfo
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param FormFactoryInterface $formFactory
      * @param CustomerRepository $customerRepository
      * @param EncoderFactoryInterface $encoderFactory
      * @param ValidatorInterface $validatorInterface
@@ -115,10 +113,10 @@ class EntryController extends AbstractController
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,
         MailService $mailService,
-        BaseInfo $BaseInfo,
-        EntityManager $entityManager,
-        EventDispatcher $eventDispatcher,
-        FormFactory $formFactory,
+        BaseInfoRepository $BaseInfo,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        FormFactoryInterface $formFactory,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
         ValidatorInterface $validatorInterface,
@@ -126,7 +124,7 @@ class EntryController extends AbstractController
     ) {
         $this->customerStatusRepository = $customerStatusRepository;
         $this->mailService = $mailService;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $BaseInfo->get();
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->formFactory = $formFactory;
@@ -135,7 +133,6 @@ class EntryController extends AbstractController
         $this->recursiveValidator = $validatorInterface;
         $this->tokenStorage = $tokenStorage;
     }
-
 
     /**
      * 会員登録画面.
@@ -254,7 +251,7 @@ class EntryController extends AbstractController
      * @Route("/entry/complete", name="entry_complete")
      * @Template("Entry/complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete()
     {
         return [];
     }

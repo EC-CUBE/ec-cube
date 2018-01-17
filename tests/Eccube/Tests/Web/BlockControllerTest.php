@@ -4,11 +4,6 @@ namespace Eccube\Tests\Web;
 
 class BlockControllerTest extends AbstractWebTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testIndex()
     {
         $this->client->request(

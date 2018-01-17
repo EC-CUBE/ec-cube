@@ -2947,8 +2947,8 @@ class CartValidationTest extends AbstractWebTestCase
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $this->deleteAllRows(array(
-//            'dtb_order_detail',
-//            'dtb_shipment_item',
+            'dtb_order_detail',
+            'dtb_shipment_item',
             'dtb_product_stock',
             'dtb_product_class',
             'dtb_product_image',
