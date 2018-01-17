@@ -157,3 +157,5 @@ services:
         tags:
             - { name: monolog.processor }
             - { name: kernel.event_listener, event: kernel.request, priority: 1024 }
+
+    Symfony\Component\HttpFoundation\ParameterBag:
