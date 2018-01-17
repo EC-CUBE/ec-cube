@@ -29,7 +29,7 @@ class GenerateDummyDataCommand extends Command
      */
     protected $deliveryRepository;
 
-    public function __construct(Generator $generator, EntityManager $entityManager, DeliveryRepository $deliveryRepository)
+    public function __construct(Generator $generator = null, EntityManager $entityManager = null, DeliveryRepository $deliveryRepository = null)
     {
         parent::__construct();
         $this->generator = $generator;
