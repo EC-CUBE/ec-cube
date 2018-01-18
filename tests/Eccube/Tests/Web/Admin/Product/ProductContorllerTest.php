@@ -34,6 +34,7 @@ use Eccube\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
@@ -57,6 +58,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     protected $taxRuleRepository;
 
+    /**
+     * @var ProductStatusRepository
+     */
+    protected $productStatusRepository;
+
     public function setUp()
     {
         parent::setUp();
@@ -66,6 +72,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
         $this->session = $this->container->get('session');
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
@@ -400,19 +407,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterPrivate()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/Product with status 01/');
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
