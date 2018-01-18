@@ -23,31 +23,47 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use \Eccube\Common\Constant;
+use Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
+use Eccube\Repository\ProductRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\TaxRuleRepository;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
     /**
-     * @var \Eccube\Repository\ProductRepository
+     * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     * @var SessionInterface
      */
     protected $session;
+
+    /**
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(\Eccube\Repository\ProductRepository::class);
+        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->session = $this->container->get('session');
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
@@ -356,18 +372,23 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
-        $this->markTestIncomplete(__METHOD__);
         // Give
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionProductTaxRule(true);
         $formData = $this->createFormData();
+
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
 
         $formData['class']['tax_rate'] = $taxRate;
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_new'),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
         );
 
         // Then
@@ -375,10 +396,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp)-2];
-        $Product = $this->app['eccube.repository.product']->find($productId);
+        $Product = $this->productRepository->find($productId);
 
         $this->expected = $expected;
-        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $Taxrule = $this->taxRuleRepository->findOneBy(array('Product' => $Product));
         $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
         $this->actual = $taxRate;
         $this->assertTrue($this->actual === $this->expected);
@@ -513,7 +534,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function dataNewProductProvider()
     {
-        $this->markTestIncomplete(__METHOD__);
         return array(
             array(null, null),
             array("0", "0"),
