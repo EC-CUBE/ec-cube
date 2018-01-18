@@ -146,7 +146,7 @@ class ProductController extends AbstractController
      * @param TranslatorInterface $translator
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
@@ -841,7 +841,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
-    public function display(Application $app, Request $request, $id = null)
+    public function display(Request $request, $id = null)
     {
         $event = new EventArgs(
             array(),
@@ -850,10 +850,10 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
 
         if (!is_null($id)) {
-            return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
+            return $this->redirectToRoute('product_detail', array('id' => $id, 'admin' => '1'));
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**
