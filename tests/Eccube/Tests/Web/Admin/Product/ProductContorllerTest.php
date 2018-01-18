@@ -67,8 +67,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->client->disableReboot();
-
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->baseInfo = $this->container->get(BaseInfo::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
