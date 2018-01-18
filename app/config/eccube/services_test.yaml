@@ -1,0 +1,4 @@
+services:
+    security.csrf.token_manager:
+        class: Eccube\Tests\Mock\CsrfTokenManagerMock
+        public: true
