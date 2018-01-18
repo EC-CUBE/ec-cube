@@ -112,7 +112,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => null,
             'add_images' => null,
             'delete_images' => null,
-            Constant::TOKEN_NAME => $this->getCsrfToken('admin_product')
+            Constant::TOKEN_NAME => 'dummy'
         ];
         return $form;
     }
@@ -149,12 +149,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         ];
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
@@ -181,12 +175,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         ];
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
@@ -199,7 +187,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => $TestProduct->getId(),
                 'category_id' => '',
                 'create_date_start' => '',
@@ -209,12 +197,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ]
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
@@ -228,7 +210,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => 99999999,
                 'category_id' => '',
                 'create_date_start' => '',
@@ -238,12 +220,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ]
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
@@ -257,7 +233,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => 'not Exists product name',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -267,12 +243,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ]
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
@@ -298,12 +268,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
@@ -327,12 +291,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()
         ];
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
 
         $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
@@ -348,14 +306,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $AllProducts = $this->productRepository->findAll();
         $params = [
             'id' => $Product->getId(),
-            Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()
+            Constant::TOKEN_NAME => 'dummy'
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
 
@@ -378,12 +330,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $BaseInfo = $this->baseInfoRepository->get();
         $BaseInfo->setOptionProductTaxRule(true);
         $formData = $this->createFormData();
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $formData['class']['tax_rate'] = $taxRate;
         // When
@@ -424,12 +370,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $searchForm['id'] = 'Product with stock';
 
@@ -678,7 +618,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     private function createSearchForm()
     {
         $post = array(
-            Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+            Constant::TOKEN_NAME => 'dummy',
             'id' => '',
             'category_id' => '',
             'create_date_start' => '',
