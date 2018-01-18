@@ -61,6 +61,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
+        $this->client->disableReboot();
+
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
@@ -410,7 +412,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterNoStock()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/Product with stock 01/');
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
@@ -418,13 +421,25 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $ProductClass = $testProduct->getProductClasses()->first();
         $ProductClass->setStock(0);
         $ProductClass->getProductStock()->setStock(0);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
+
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
+
         $searchForm['id'] = 'Product with stock';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -663,7 +678,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     private function createSearchForm()
     {
         $post = array(
-            '_token' => 'dummy',
+            Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
             'id' => '',
             'category_id' => '',
             'create_date_start' => '',
