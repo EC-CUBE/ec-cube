@@ -159,3 +159,5 @@ services:
             - { name: kernel.event_listener, event: kernel.request, priority: 1024 }
 
     Symfony\Component\HttpFoundation\ParameterBag:
+    Eccube\Entity\BaseInfo:
+        factory: ['@Eccube\Repository\BaseInfoRepository', 'get']
