@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Product;
 
+use \Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
@@ -33,10 +33,23 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var \Eccube\Repository\ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     */
+    protected $session;
 
     public function setUp()
     {
         parent::setUp();
+
+        $this->productRepository = $this->container->get(\Eccube\Repository\ProductRepository::class);
+        $this->session = $this->container->get('session');
+
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
             $this->createProduct();
@@ -100,14 +113,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testProductSearchAll()
     {
-        $AllProducts = $this->app['eccube.repository.product']->findAll();
+        $AllProducts = $this->productRepository->findAll();
         $cnt = count($AllProducts);
-        $TestProduct = $this->createProduct();
+        $this->createProduct();
         $cnt++;
 
         $post = array('admin_search_product' =>
             array(
-                '_token' => 'dummy',
+                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => '',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -116,7 +129,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_end' => '',
                 'link_status' => '',
         ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
