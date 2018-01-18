@@ -445,19 +445,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterPublic()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/[Product with status 01]{1}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
