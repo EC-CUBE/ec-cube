@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Log\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,6 +36,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
 {
@@ -43,6 +45,16 @@ class AbstractController extends Controller
      * @var TokenStorage
      */
     protected $tokenStorage;
+
+    /**
+     * @var array
+     */
+    protected $eccubeConfig;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
 
     /**
      * @var FormFactoryInterface
@@ -60,17 +72,30 @@ class AbstractController extends Controller
     protected $session;
 
     /**
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @param Logger $logger
+     * @param array $eccubeConfig
      * @required
      */
-    public function setLogger(Logger $logger)
+    public function setEccubeConfig(array $eccubeConfig)
     {
-        $this->logger = $logger;
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @required
+     */
+    public function setEntityManager(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @required
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -150,6 +175,14 @@ class AbstractController extends Controller
         }
     }
 
+    /**
+     * Checks the validity of a CSRF token.
+     *
+     * if token is invalid, throws AccessDeniedHttpException.
+     *
+     * @return bool
+     * @throws AccessDeniedHttpException
+     */
     protected function isTokenValid()
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
