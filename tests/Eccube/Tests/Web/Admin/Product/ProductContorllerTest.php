@@ -146,11 +146,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $TestProduct = $this->createProduct();
         $TestProduct->setName(StringUtil::random());
-        $this->app['orm.em']->flush($TestProduct);
+        $this->entityManager->persist($TestProduct);
+        $this->entityManager->flush();
 
         $post = array('admin_search_product' =>
             array(
-                '_token' => 'dummy',
+                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => $TestProduct->getName(),
                 'category_id' => '',
                 'create_date_start' => '',
@@ -158,8 +159,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+            ));
+
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
