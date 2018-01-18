@@ -40,6 +40,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Eccube\Util\MailUtil;
 use Eccube\Util\Str;
 
 
@@ -1265,6 +1266,8 @@ class ShoppingService
 
         // メール送信
         $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
+
+        MailUtil::convertMessage($this->app, $message);
 
         // 送信履歴を保存.
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);

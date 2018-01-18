@@ -249,7 +249,7 @@ class EditController extends AbstractController
 
                         if ($Customer) {
                             // 会員の場合、購入回数、購入金額などを更新
-                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $isNewOrder);
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId(), $isNewOrder);
                         }
 
                         $event = new EventArgs(
