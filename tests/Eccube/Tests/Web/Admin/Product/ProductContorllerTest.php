@@ -231,11 +231,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testProductSearchByNameZero()
     {
-        $TestProduct = $this->createProduct();
+        $this->createProduct();
 
         $post = array('admin_search_product' =>
             array(
-                '_token' => 'dummy',
+                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => 'not Exists product name',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -244,7 +244,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_end' => '',
                 'link_status' => '',
         ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
