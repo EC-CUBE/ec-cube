@@ -111,7 +111,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             array(
                 'admin_class_name' => array(
                 'name' => '規格1',
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_class_name'),
+                Constant::TOKEN_NAME => 'dummy',
             ))
         );
         $this->assertTrue($client->getResponse()->isRedirection());
@@ -155,7 +155,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->client->request('DELETE',
             $this->generateUrl('admin_product_class_name_delete', array('id' => $test_class_name_id)),
             array(
-                Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME),
+                Constant::TOKEN_NAME => 'dummy',
             )
         );
 
