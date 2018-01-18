@@ -312,7 +312,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNoAndShow()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->client->disableReboot();
 
         // Give
         $Category = $this->categoryRepository->findOneBy(array('name' => '親1'));
