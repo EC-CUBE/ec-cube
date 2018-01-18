@@ -9,61 +9,21 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['template_default_realdir'] = sys_get_temp_dir().'/FileController'.sha1(mt_rand());; // vfs が使えないため
-        if (!file_exists($config['template_default_realdir'].'/user_data')){
-            mkdir($config['template_default_realdir'].'/user_data', 0777 , true);
-        }
-        $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';
-        $this->app->overwrite('config', $config);
-    }
-
-    public static function tearDownAfterClass()
-    {
-        $dirs = array();
-        $finder = new Finder();
-        //許可がありませんDIR対応
-        $finder->ignoreUnreadableDirs(true);
-        $iterator = $finder
-            ->in(sys_get_temp_dir())
-            ->name('FileController*')
-            ->directories();
-        foreach ($iterator as $dir) {
-            $dirs[] = $dir->getPathName();
-        }
-
-        foreach ($dirs as $dir) {
-            // プロセスが掴んでいるためか、確実に削除できない場合がある
-            try {
-                $f = new Filesystem();
-                $f->remove($dir);
-            } catch (\Exception $e) {
-                // queit.
-            }
-        }
-    }
-
     public function testIndex()
     {
-        $this->client->request('GET', $this->app->url('admin_content_file'));
+        $this->client->request('GET', $this->generateUrl('admin_content_file'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testView()
     {
-        $filepath = $this->app['config']['user_data_realdir'].'/aaa.html';
+        $filepath = $this->getUserDataDir().'/aaa.html';
         $contents = '<html><body><h1>test</h1></body></html>';
         file_put_contents($filepath, $contents);
 
         $crawler = $this->client->request(
             'GET',
-            $this->app->path('admin_content_file_view').'?file='.$filepath
+            $this->generateUrl('admin_content_file_view').'?file='.$filepath
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -74,13 +34,13 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     public function testDownload()
     {
-        $filepath = $this->app['config']['user_data_realdir'].'/aaa.html';
+        $filepath = $this->getUserDataDir().'/aaa.html';
         $contents = '<html><body><h1>test</h1></body></html>';
         file_put_contents($filepath, $contents);
 
         $crawler = $this->client->request(
             'GET',
-            $this->app->path('admin_content_file_download').'?select_file='.$filepath
+            $this->generateUrl('admin_content_file_download').'?select_file='.$filepath
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -91,15 +51,15 @@ class FileControllerTest extends AbstractAdminWebTestCase
 
     public function testDelete()
     {
-        $filepath = $this->app['config']['user_data_realdir'].'/aaa.html';
+        $filepath = $this->getUserDataDir().'/aaa.html';
         $contents = '<html><body><h1>test</h1></body></html>';
         file_put_contents($filepath, $contents);
 
         $this->client->request(
             'DELETE',
-            $this->app->path('admin_content_file_delete').'?select_file='.$filepath
+            $this->generateUrl('admin_content_file_delete').'?select_file='.$filepath
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_content_file')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file')));
         $this->assertFalse(file_exists($filepath));
     }
 
@@ -108,7 +68,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $folder = 'create_folder';
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_content_file'),
+            $this->generateUrl('admin_content_file'),
             array(
                 'form' => array(
                     '_token' => 'dummy',
@@ -120,12 +80,12 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(is_dir($this->app['config']['user_data_realdir'].'/'.$folder));
+        $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
     }
 
     public function testIndexWithUpload()
     {
-        $filepath = $this->app['config']['user_data_realdir'].'/../aaa.html';
+        $filepath = $this->getUserDataDir().'/../aaa.html';
         $contents = '<html><body><h1>test</h1></body></html>';
         file_put_contents($filepath, $contents);
 
@@ -139,7 +99,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_content_file'),
+            $this->generateUrl('admin_content_file'),
             array(
                 'form' => array(
                     '_token' => 'dummy',
@@ -147,12 +107,27 @@ class FileControllerTest extends AbstractAdminWebTestCase
                     'file' => $file
                 ),
                 'mode' => 'upload',
-                'now_dir' => $this->app['config']['user_data_realdir']
+                'now_dir' => $this->getUserDataDir()
             ),
             array('file' => $file)
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(file_exists($this->app['config']['user_data_realdir'].'/aaa.html'));
+        $this->assertTrue(file_exists($this->getUserDataDir().'/aaa.html'));
+    }
+
+    protected function getUserDataDir()
+    {
+        return $this->container->getParameter('kernel.project_dir').'/html/user_data';
+    }
+
+    public function tearDown()
+    {
+        if (file_exists($this->getUserDataDir().'/aaa.html')) {
+            unlink($this->getUserDataDir().'/aaa.html');
+        }
+        if (file_exists($this->getUserDataDir().'/create_folder')) {
+            unlink($this->getUserDataDir().'/create_folder');
+        }
     }
 }
