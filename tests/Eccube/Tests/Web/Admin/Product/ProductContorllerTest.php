@@ -304,15 +304,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Product = $this->createProduct();
-        $id = $Product->getId();
-        $this->client->request(
-            'DELETE',
-            $this->app->url('admin_product_product_delete', array('id' => $id))
-        );
+        $params = [
+            'id' => $Product->getId(),
+            Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()
+        ];
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_page', array('page_no' => 1)).'?resume=1'));
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
 
-        self::assertNull($this->app['eccube.repository.product']->find($id));
+        $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
+
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+
+        self::assertNull($this->productRepository->find($params['id']));
     }
 
     public function testCopy()

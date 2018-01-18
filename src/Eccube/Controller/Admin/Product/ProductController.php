@@ -136,8 +136,14 @@ class ProductController extends AbstractController
     protected $session;
 
     /**
+     * @var \Symfony\Component\Translation\TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * ProductController constructor.
      *
+     * @param \Symfony\Component\Translation\TranslatorInterface $translator
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
@@ -152,6 +158,7 @@ class ProductController extends AbstractController
      * @param array $eccubeConfig
      */
     public function __construct(
+        \Symfony\Component\Translation\TranslatorInterface $translator,
         ProductClassRepository $productClassRepository,
         ProductImageRepository $productImageRepository,
         \Doctrine\ORM\EntityManagerInterface $entityManager,
@@ -165,6 +172,7 @@ class ProductController extends AbstractController
         \Symfony\Component\HttpFoundation\Session\SessionInterface $session,
         array $eccubeConfig
     ) {
+        $this->translator = $translator;
         $this->productClassRepository = $productClassRepository;
         $this->productImageRepository = $productImageRepository;
         $this->entityManager = $entityManager;
@@ -658,9 +666,9 @@ class ProductController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
      */
-    public function delete(Application $app, Request $request, $id = null)
+    public function delete(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
@@ -669,8 +677,9 @@ class ProductController extends AbstractController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
-                $app->deleteMessage();
-                return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+                $this->deleteMessage();
+                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
+                return $this->redirect($rUrl);
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
@@ -706,23 +715,28 @@ class ProductController extends AbstractController
 
                     log_info('商品削除完了', array($id));
 
-                    $app->addSuccess('admin.delete.complete', 'admin');
+                    $message = $this->translator->trans('admin.delete.complete');
+                    $this->addSuccess($message, 'admin');
 
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', array($id));
-                    $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
-                    $app->addError($message, 'admin');
+                    $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
+                    $this->addError($message, 'admin');
                 }
             } else {
                 log_info('商品削除エラー', array($id));
-                $app->addError('admin.delete.failed', 'admin');
+                $message = $this->translator->trans('admin.delete.failed');
+                $this->addError($message, 'admin');
             }
         } else {
             log_info('商品削除エラー', array($id));
-            $app->addError('admin.delete.failed', 'admin');
+            $message = $this->translator->trans('admin.delete.failed');
+            $this->addError($message, 'admin');
         }
 
-        return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        $rUrl = $this->generateUrl('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED;
+
+        return $this->redirect($rUrl);
     }
 
     /**
