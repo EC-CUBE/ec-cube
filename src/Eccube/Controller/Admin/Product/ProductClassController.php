@@ -29,6 +29,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
@@ -62,72 +63,100 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductClassController
 {
     /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(SaleTypeRepository::class)
      * @var SaleTypeRepository
      */
     protected $saleTypeRepository;
 
     /**
-     * @Inject(ClassCategoryRepository::class)
      * @var ClassCategoryRepository
      */
     protected $classCategoryRepository;
 
     /**
-     * @Inject(ProductClassRepository::class)
      * @var ProductClassRepository
      */
     protected $productClassRepository;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
+     * ProductClassController constructor.
+     * @param TaxRuleRepository $taxRuleRepository
+     * @param array $eccubeConfig
+     * @param SaleTypeRepository $saleTypeRepository
+     * @param ClassCategoryRepository $classCategoryRepository
+     * @param ProductClassRepository $productClassRepository
+     * @param EntityManager $entityManager
+     * @param BaseInfo $BaseInfo
+     * @param EventDispatcher $eventDispatcher
+     * @param FormFactory $formFactory
+     * @param ProductRepository $productRepository
+     */
+    public function __construct(
+        TaxRuleRepository $taxRuleRepository,
+        array $eccubeConfig,
+        SaleTypeRepository $saleTypeRepository,
+        ClassCategoryRepository $classCategoryRepository,
+        ProductClassRepository $productClassRepository,
+        EntityManager $entityManager,
+        BaseInfo $BaseInfo,
+        EventDispatcher $eventDispatcher,
+        FormFactory $formFactory,
+        ProductRepository $productRepository
+    ) {
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->appConfig = $eccubeConfig;
+        $this->saleTypeRepository = $saleTypeRepository;
+        $this->classCategoryRepository = $classCategoryRepository;
+        $this->productClassRepository = $productClassRepository;
+        $this->entityManager = $entityManager;
+        $this->BaseInfo = $BaseInfo;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->productRepository = $productRepository;
+    }
+
+
+    /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
      *
      * @Route("/%admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class")
-     * @Template("Product/product_class.twig")
+     * @Template("@admin/Product/product_class.twig")
      */
-    public function index(Application $app, Request $request, $id)
+    public function index(Request $request, $id)
     {
         /** @var $Product \Eccube\Entity\Product */
         $Product = $this->productRepository->find($id);
@@ -205,11 +234,11 @@ class ProductClassController
                         $sourceProduct = $orgProductClasses[0];
 
                         // 規格分類が組み合わされた商品規格を取得
-                        $ProductClasses = $this->createProductClasses($app, $Product, $ClassName1, $ClassName2);
+                        $ProductClasses = $this->createProductClasses( $Product, $ClassName1, $ClassName2);
 
                         // 組み合わされた商品規格にデフォルト値をセット
                         foreach ($ProductClasses as $productClass) {
-                            $this->setDefaultProductClass($app, $productClass, $sourceProduct);
+                            $this->setDefaultProductClass( $productClass, $sourceProduct);
                         }
 
                         $builder = $this->formFactory->createBuilder();
@@ -264,7 +293,7 @@ class ProductClassController
             }
 
             // 規格分類が組み合わされた空の商品規格を取得
-            $createProductClasses = $this->createProductClasses($app, $Product, $ClassName1, $ClassName2);
+            $createProductClasses = $this->createProductClasses( $Product, $ClassName1, $ClassName2);
 
             $mergeProductClasses = array();
 
@@ -301,7 +330,7 @@ class ProductClassController
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefaultProductClass($app, $mergeProductClass, $ProductClass);
+                $this->setDefaultProductClass($mergeProductClass, $ProductClass);
                 $ProductClasses->add($mergeProductClass);
             }
 
@@ -343,14 +372,13 @@ class ProductClassController
      * 商品規格の登録、更新、削除を行う
      *
      * @Route("/%admin_route%/product/product/class/edit/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class_edit")
-     * @Template("Product/product_class.twig")
+     * @Template("@admin/Product/product_class.twig")
      *
-     * @param Application $app
      * @param Request     $request
      * @param int         $id
      * @return RedirectResponse
      */
-    public function edit(Application $app, Request $request, $id)
+    public function edit(Request $request, $id)
     {
         /** @var $Product \Eccube\Entity\Product */
         $Product = $this->productRepository->find($id);
@@ -390,7 +418,7 @@ class ProductClassController
                     if (count($ProductClasses) > 0) {
                         // 既に登録されていれば最初の画面に戻す
                         log_info('商品規格登録済', array($id));
-                        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+                        return $this->redirectToRoute('admin_product_product_class', array('id' => $id));
                     }
 
                     $addProductClasses = array();
@@ -405,7 +433,7 @@ class ProductClassController
                                 $addProductClasses[] = $ProductClass;
                             } else {
                                 // 対象行のエラー
-                                return $this->render($app, $Product, $ProductClass, true, $form);
+                                return $this->render($Product, $ProductClass, true, $form);
                             }
                         }
                         $tmpProductClass = $ProductClass;
@@ -415,11 +443,11 @@ class ProductClassController
                         // 対象がなければエラー
                         log_info('商品規格が未選択', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
-                        return $this->render($app, $Product, $tmpProductClass, true, $form, $error);
+                        return $this->render($Product, $tmpProductClass, true, $form, $error);
                     }
 
                     // 選択された商品規格を登録
-                    $this->insertProductClass($app, $Product, $addProductClasses);
+                    $this->insertProductClass($Product, $addProductClasses);
 
                     // デフォルトの商品規格を非表示
                     /** @var ProductClass $defaultProductClass */
@@ -441,7 +469,7 @@ class ProductClassController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE, $event);
 
-                    $app->addSuccess('admin.product.product_class.save.complete', 'admin');
+                    $this->addSuccess('admin.product.product_class.save.complete', 'admin');
 
                     break;
                 case 'update':
@@ -451,7 +479,7 @@ class ProductClassController
                     if (count($ProductClasses) == 0) {
                         // 商品規格が0件であれば最初の画面に戻す
                         log_info('商品規格が存在しません', array($id));
-                        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+                        return $this->redirectToRoute('admin_product_product_class', array('id' => $id));
                     }
 
                     $checkProductClasses = array();
@@ -466,7 +494,7 @@ class ProductClassController
                             if ($formData->isValid()) {
                                 $checkProductClasses[] = $ProductClass;
                             } else {
-                                return $this->render($app, $Product, $ProductClass, false, $form);
+                                return $this->render($Product, $ProductClass, false, $form);
                             }
                         } else {
                             // 削除対象の行
@@ -479,7 +507,7 @@ class ProductClassController
                         // 対象がなければエラー
                         log_info('商品規格が存在しません', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
-                        return $this->render($app, $Product, $tempProductClass, false, $form, $error);
+                        return $this->render($Product, $tempProductClass, false, $form, $error);
                     }
 
 
@@ -505,7 +533,7 @@ class ProductClassController
                                 } else {
                                     $productStock->setStock(null);
                                 }
-                                $this->setDefaultProductClass($app, $productClass, $cp);
+                                $this->setDefaultProductClass( $productClass, $cp);
                                 $flag = true;
                                 break;
                             }
@@ -529,7 +557,7 @@ class ProductClassController
                     }
 
                     // 選択された商品規格を登録
-                    $this->insertProductClass($app, $Product, $addProductClasses);
+                    $this->insertProductClass($Product, $addProductClasses);
 
                     $this->entityManager->flush();
 
@@ -546,7 +574,7 @@ class ProductClassController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE, $event);
 
-                    $app->addSuccess('admin.product.product_class.update.complete', 'admin');
+                    $this->addSuccess('admin.product.product_class.update.complete', 'admin');
 
                     break;
 
@@ -557,7 +585,7 @@ class ProductClassController
                     if (count($ProductClasses) == 0) {
                         // 既に商品が削除されていれば元の画面に戻す
                         log_info('商品規格が存在しません', array($id));
-                        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+                        return $this->redirectToRoute('admin_product_product_class', array('id' => $id));
                     }
 
                     foreach ($ProductClasses as $ProductClass) {
@@ -585,7 +613,7 @@ class ProductClassController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE, $event);
 
-                    $app->addSuccess('admin.product.product_class.delete.complete', 'admin');
+                    $this->addSuccess('admin.product.product_class.delete.complete', 'admin');
 
                     break;
                 default:
@@ -594,14 +622,18 @@ class ProductClassController
 
         }
 
-        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+        return $this->redirectToRoute('admin_product_product_class', array('id' => $id));
     }
 
     /**
-     * 登録、更新時のエラー画面表示
-     *
+     * @param string $Product
+     * @param array $ProductClass
+     * @param \Symfony\Component\HttpFoundation\Response $not_product_class
+     * @param $classForm
+     * @param null $error
+     * @return array|\Symfony\Component\HttpFoundation\Response
      */
-    protected function render($app, $Product, $ProductClass, $not_product_class, $classForm, $error = null)
+    protected function render($Product, $ProductClass, $not_product_class, $classForm, $error = null)
     {
 
         $ClassName1 = null;
@@ -618,7 +650,8 @@ class ProductClassController
             }
         }
 
-        $form = $app->form()
+        /* @var FormBuilder $builder */
+        $form = $this->formFactory->createBuilder()
             ->add('class_name1', EntityType::class, array(
                 'class' => 'Eccube\Entity\ClassName',
                 'choice_label' => 'name',
@@ -652,7 +685,7 @@ class ProductClassController
     /**
      * 規格1と規格2を組み合わせた商品規格を作成
      */
-    private function createProductClasses($app, Product $Product, ClassName $ClassName1 = null, ClassName $ClassName2 = null)
+    private function createProductClasses( Product $Product, ClassName $ClassName1 = null, ClassName $ClassName2 = null)
     {
 
         $ClassCategories1 = array();
@@ -669,7 +702,7 @@ class ProductClassController
         foreach ($ClassCategories1 as $ClassCategory1) {
             if ($ClassCategories2) {
                 foreach ($ClassCategories2 as $ClassCategory2) {
-                    $ProductClass = $this->newProductClass($app);
+                    $ProductClass = $this->newProductClass();
                     $ProductClass->setProduct($Product);
                     $ProductClass->setClassCategory1($ClassCategory1);
                     $ProductClass->setClassCategory2($ClassCategory2);
@@ -678,7 +711,7 @@ class ProductClassController
                     $ProductClasses[] = $ProductClass;
                 }
             } else {
-                $ProductClass = $this->newProductClass($app);
+                $ProductClass = $this->newProductClass();
                 $ProductClass->setProduct($Product);
                 $ProductClass->setClassCategory1($ClassCategory1);
                 $ProductClass->setTaxRate(null);
@@ -693,7 +726,7 @@ class ProductClassController
     /**
      * 新しい商品規格を作成
      */
-    private function newProductClass(Application $app)
+    private function newProductClass()
     {
         $SaleType = $this->saleTypeRepository->find($this->appConfig['sale_type_normal']);
 
@@ -739,7 +772,7 @@ class ProductClassController
      * @param $productClassDest ProductClass コピー先となる商品規格
      * @param $productClassOrig ProductClass コピー元となる商品規格
      */
-    private function setDefaultProductClass($app, $productClassDest, $productClassOrig) {
+    private function setDefaultProductClass( $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDuration($productClassOrig->getDeliveryDuration());
         $productClassDest->setProduct($productClassOrig->getProduct());
         $productClassDest->setSaleType($productClassOrig->getSaleType());
@@ -778,11 +811,10 @@ class ProductClassController
     /**
      * 商品規格を登録
      *
-     * @param Application     $app
      * @param Product         $Product
      * @param ProductClass[] $ProductClasses 登録される商品規格
      */
-    private function insertProductClass($app, $Product, $ProductClasses) {
+    private function insertProductClass($Product, $ProductClasses) {
 
 
         // 選択された商品を登録

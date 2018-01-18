@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'product_master'] %}
 
@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}商品登録(商品規格){% endblock %}
 
 {% if not_product_class  %}
-    {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+    {% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% else %}
-    {% form_theme classForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+    {% form_theme classForm '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% endif %}
 
 {% block javascript %}
