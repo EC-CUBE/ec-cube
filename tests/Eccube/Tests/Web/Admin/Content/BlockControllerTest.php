@@ -24,22 +24,19 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Eccube\Common\Constant;
-use Eccube\Tests\Web\AbstractWebTestCase;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
-class BlockControllerTest extends AbstractWebTestCase
+class BlockControllerTest extends AbstractAdminWebTestCase
 {
 
     public function test_routing_AdminContentBlock_index()
     {
-        $this->loginTo($this->createMember());
         $this->client->request('GET', $this->generateUrl('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routing_AdminContentBlock_edit()
     {
-        $this->loginTo($this->createMember());
         $this->client->request('GET',
             $this->generateUrl(
                 'admin_content_block_edit',
@@ -51,8 +48,6 @@ class BlockControllerTest extends AbstractWebTestCase
 
     public function test_routing_AdminContentBlock_editWithPost()
     {
-        $token = $this->getCsrfToken('block');
-        $this->loginTo($this->createMember());
         $this->client->request(
             'POST',
             $this->generateUrl('admin_content_block_edit', array('id' => 1)),
@@ -63,7 +58,7 @@ class BlockControllerTest extends AbstractWebTestCase
                     'block_html' => '<p>test</p>',
                     'DeviceType' => 1,
                     'id' => 1,
-                    '_token' => $token,
+                    '_token' => 'dummy',
                 ),
             )
         );
@@ -87,16 +82,12 @@ class BlockControllerTest extends AbstractWebTestCase
 
     public function test_routing_AdminContentBlock_defaultBlockDelete()
     {
-        $token = $this->getCsrfToken(Constant::TOKEN_NAME);
         $this->loginTo($this->createMember());
 
         $redirectUrl = $this->generateUrl('admin_content_block');
 
         $this->client->request('DELETE',
-            $this->generateUrl('admin_content_block_delete', ['id' => 1,]),
-            [
-                Constant::TOKEN_NAME => $token,
-            ]
+            $this->generateUrl('admin_content_block_delete', ['id' => 1,])
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
