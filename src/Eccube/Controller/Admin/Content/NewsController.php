@@ -24,7 +24,6 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\News;
 use Eccube\Event\EccubeEvents;
@@ -34,46 +33,38 @@ use Eccube\Repository\NewsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * 新着情報のコントローラクラス
- *
- * @Route(service=NewsController::class)
- */
 class NewsController extends AbstractController
 {
     /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject(NewsRepository::class)
      * @var NewsRepository
      */
     protected $newsRepository;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    public function __construct(NewsRepository $newsRepository, TranslatorInterface $translator)
+    {
+        $this->newsRepository = $newsRepository;
+        $this->translator = $translator;
+    }
+
+    /**
      * 新着情報一覧を表示する。
      *
      * @Route("/%admin_route%/content/news", name="admin_content_news")
-     * @Template("Content/news.twig")
+     * @Template("@admin/Content/news.twig")
      *
-     * @param Application $app
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return array
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $NewsList = $this->newsRepository->findBy(array(), array('sort_no' => 'DESC'));
 
@@ -101,14 +92,13 @@ class NewsController extends AbstractController
      *
      * @Route("/%admin_route%/content/news/new", name="admin_content_news_new")
      * @Route("/%admin_route%/content/news/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_news_edit")
-     * @Template("Content/news_edit.twig")
+     * @Template("@admin/Content/news_edit.twig")
      *
-     * @param Application $app
      * @param Request $request
      * @param null $id
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null)
     {
         if ($id) {
             $News = $this->newsRepository->find($id);
@@ -118,8 +108,6 @@ class NewsController extends AbstractController
         } else {
             $News = new \Eccube\Entity\News();
         }
-
-        $News->setLinkMethod($News->isLinkMethod());
 
         $builder = $this->formFactory
             ->createBuilder(NewsType::class, $News);
@@ -151,9 +139,9 @@ class NewsController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
 
-            $app->addSuccess('admin.news.save.complete', 'admin');
+            $this->addSuccess('admin.news.save.complete', 'admin');
 
-            return $app->redirect($app->url('admin_content_news'));
+            return $this->redirectToRoute('admin_content_news');
         }
 
         return [
@@ -168,27 +156,25 @@ class NewsController extends AbstractController
      * @Method("PUT")
      * @Route("/%admin_route%/content/news/{id}/up", requirements={"id" = "\d+"}, name="admin_content_news_up")
      *
-     * @param Application $app
-     * @param Request $request
      * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function up(Application $app, Request $request, News $News)
+    public function up(News $News)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         try {
             $this->newsRepository->up($News);
 
-            $app->addSuccess('admin.news.up.complete', 'admin');
+            $this->addSuccess('admin.news.up.complete', 'admin');
         } catch (\Exception $e) {
 
             log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
 
-            $app->addError('admin.news.up.error', 'admin');
+            $this->addError('admin.news.up.error', 'admin');
         }
 
-        return $app->redirect($app->url('admin_content_news'));
+        return $this->redirectToRoute('admin_content_news');
     }
 
     /**
@@ -197,27 +183,25 @@ class NewsController extends AbstractController
      * @Method("PUT")
      * @Route("/%admin_route%/content/news/{id}/down", requirements={"id" = "\d+"}, name="admin_content_news_down")
      *
-     * @param Application $app
-     * @param Request $request
      * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function down(Application $app, Request $request, News $News)
+    public function down(News $News)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         try {
             $this->newsRepository->down($News);
 
-            $app->addSuccess('admin.news.down.complete', 'admin');
+            $this->addSuccess('admin.news.down.complete', 'admin');
         } catch (\Exception $e) {
 
             log_error('新着情報表示順更新エラー', [$News->getId(), $e]);
 
-            $app->addError('admin.news.down.error', 'admin');
+            $this->addError('admin.news.down.error', 'admin');
         }
 
-        return $app->redirect($app->url('admin_content_news'));
+        return $this->redirectToRoute('admin_content_news');
     }
 
     /**
@@ -226,14 +210,13 @@ class NewsController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/content/news/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_news_delete")
      *
-     * @param Application $app
      * @param Request $request
      * @param News $News
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Application $app, Request $request, News $News)
+    public function delete(Request $request, News $News)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('新着情報削除開始', [$News->getId()]);
 
@@ -243,18 +226,18 @@ class NewsController extends AbstractController
             $event = new EventArgs(['News' => $News], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.news.delete.complete', 'admin');
+            $this->addSuccess('admin.news.delete.complete', 'admin');
 
             log_info('新着情報削除完了', [$News->getId()]);
 
         } catch (\Exception $e) {
 
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '新着情報']);
-            $app->addError($message, 'admin');
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '新着情報']);
+            $this->addError($message, 'admin');
 
             log_error('新着情報削除エラー', [$News->getId(), $e]);
         }
 
-        return $app->redirect($app->url('admin_content_news'));
+        return $this->redirectToRoute('admin_content_news');
     }
 }
