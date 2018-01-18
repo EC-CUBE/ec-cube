@@ -69,8 +69,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $price02 = number_format($price02);
         }
 
-        $form = array(
-            'class' => array(
+        $form = [
+            'class' => [
                 'sale_type' => 1,
                 'price01' => $price01,
                 'price02' => $price02,
@@ -79,9 +79,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'code' => $faker->word,
                 'sale_limit' => null,
                 'delivery_duration' => ''
-            ),
+            ],
             'name' => $faker->word,
-            'product_image' => array(),
+            'product_image' => [],
             'description_detail' => $faker->realText,
             'description_list' => $faker->paragraph,
             'Category' => null,
@@ -94,8 +94,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => null,
             'add_images' => null,
             'delete_images' => null,
-            '_token' => 'dummy',
-        );
+            Constant::TOKEN_NAME => $this->getCsrfToken('admin_product')
+        ];
         return $form;
     }
 
@@ -118,8 +118,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->createProduct();
         $cnt++;
 
-        $post = array('admin_search_product' =>
-            array(
+        $post = [
+            'admin_search_product' => [
                 Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => '',
                 'category_id' => '',
@@ -128,7 +128,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
+            ]
+        ];
 
         /**
          * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
@@ -149,8 +150,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($TestProduct);
         $this->entityManager->flush();
 
-        $post = array('admin_search_product' =>
-            array(
+        $post = [
+            'admin_search_product' => [
                 Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => $TestProduct->getName(),
                 'category_id' => '',
@@ -159,7 +160,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-            ));
+            ]
+        ];
 
         /**
          * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
@@ -177,8 +179,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $TestProduct = $this->createProduct();
 
-        $post = array('admin_search_product' =>
-            array(
+        $post = [
+            'admin_search_product' => [
                 Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => $TestProduct->getId(),
                 'category_id' => '',
@@ -187,7 +189,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
+            ]
+        ];
 
         /**
          * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
@@ -205,8 +208,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $this->createProduct();
 
-        $post = array('admin_search_product' =>
-            array(
+        $post = [
+            'admin_search_product' => [
                 Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => 99999999,
                 'category_id' => '',
@@ -215,7 +218,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
+            ]
+        ];
 
         /**
          * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
@@ -233,8 +237,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $this->createProduct();
 
-        $post = array('admin_search_product' =>
-            array(
+        $post = [
+            'admin_search_product' => [
                 Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => 'not Exists product name',
                 'category_id' => '',
@@ -243,7 +247,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
+            ]
+        ];
 
         /**
          * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
@@ -259,18 +264,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductProductEdit()
     {
-
         $TestProduct = $this->createProduct();
 
-        $test_product_id = $this->app['eccube.repository.product']
-            ->findOneBy(array(
-                'name' => $TestProduct->getName()
-            ))
+        $id = $this->productRepository
+            ->findOneBy(['name' => $TestProduct->getName()])
             ->getId();
 
-        $crawler = $this->client->request('GET',
-            $this->app->url('admin_product_product_edit', array('id' => $test_product_id))
-        );
+        $this->client->request('GET', $this->generateUrl('admin_product_product_edit', ['id' => $id]));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -279,15 +279,23 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
-        $crawler = $this->client->request(
+
+        /**
+         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
+         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
+         */
+        $this->session->save();
+
+        $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+        $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
-        $EditedProduct = $this->app['eccube.repository.product']->find($Product->getId());
+        $EditedProduct = $this->productRepository->find($Product->getId());
         $this->expected = $formData['name'];
         $this->actual = $EditedProduct->getName();
         $this->verify();
