@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
@@ -34,12 +33,9 @@ use Eccube\Repository\ClassNameRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service=ClassNameController::class)
@@ -47,45 +43,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ClassNameController extends AbstractController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var ClassNameRepository
      */
     protected $classNameRepository;
 
     /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * ClassNameController constructor.
-     * @param EntityManagerInterface $entityManager
      * @param ClassNameRepository $classNameRepository
-     * @param FormFactoryInterface $formFactory
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param TranslatorInterface $translator
      */
-    public function __construct(EntityManagerInterface $entityManager, ClassNameRepository $classNameRepository, FormFactoryInterface $formFactory, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator)
+    public function __construct(ClassNameRepository $classNameRepository)
     {
-        $this->entityManager = $entityManager;
         $this->classNameRepository = $classNameRepository;
-        $this->formFactory = $formFactory;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
     }
 
 

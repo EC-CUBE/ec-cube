@@ -5,7 +5,7 @@ parameters:
     admin_allow_hosts: {}
     auth_type: HMAC
     csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
-    csv_temp_realdir: /PATH/TO/WEB_ROOT/data/upload/csv/ # upload_tmp_dir に任せればよい？
+    csv_temp_realdir: %kernel.project_dir%/html/upload/csv/ # upload_tmp_dir に任せればよい？
     default_country_id: 392
     default_password: '**********'
     deliv_addr_max: 20
@@ -60,3 +60,4 @@ parameters:
     product_order_price_lower: 1
     product_order_newer: 2
     product_order_price_higher: 3
+
