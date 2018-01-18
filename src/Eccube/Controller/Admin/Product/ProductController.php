@@ -743,9 +743,9 @@ class ProductController extends AbstractController
      * @Method("POST")
      * @Route("/%admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
      */
-    public function copy(Application $app, Request $request, $id = null)
+    public function copy(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if (!is_null($id)) {
             $Product = $this->productRepository->find($id);
@@ -820,17 +820,20 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
-                $app->addSuccess('admin.product.copy.complete', 'admin');
+                $msg = $this->translator->trans('admin.product.copy.complete');
+                $this->addSuccess($msg, 'admin');
 
-                return $app->redirect($app->url('admin_product_product_edit', array('id' => $CopyProduct->getId())));
+                return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
             } else {
-                $app->addError('admin.product.copy.failed', 'admin');
+                $msg = $this->translator->trans('admin.product.copy.failed');
+                $this->addError($msg, 'admin');
             }
         } else {
-            $app->addError('admin.product.copy.failed', 'admin');
+            $msg = $this->translator->trans('admin.product.copy.failed');
+            $this->addError($msg, 'admin');
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**
