@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
@@ -36,10 +34,12 @@ use Eccube\Repository\ClassNameRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service=ClassNameController::class)
@@ -47,35 +47,54 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ClassNameController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(ClassNameRepository::class)
      * @var ClassNameRepository
      */
     protected $classNameRepository;
 
     /**
+     * @var FormFactoryInterface
+     */
+    protected $formFactory;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * ClassNameController constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param ClassNameRepository $classNameRepository
+     * @param FormFactoryInterface $formFactory
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(EntityManagerInterface $entityManager, ClassNameRepository $classNameRepository, FormFactoryInterface $formFactory, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator)
+    {
+        $this->entityManager = $entityManager;
+        $this->classNameRepository = $classNameRepository;
+        $this->formFactory = $formFactory;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->translator = $translator;
+    }
+
+
+    /**
      * @Route("/%admin_route%/product/class_name", name="admin_product_class_name")
      * @Route("/%admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit")
-     * @Template("Product/class_name.twig")
+     * @Template("@admin/Product/class_name.twig")
      */
-    public function index(Application $app, Request $request, $id = null)
+    public function index(Request $request, $id = null)
     {
         if ($id) {
             $TargetClassName = $this->classNameRepository->find($id);
@@ -118,12 +137,10 @@ class ClassNameController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.class_name.save.complete', 'admin');
-
-                return $app->redirect($app->url('admin_product_class_name'));
+                $this->addSuccess('admin.class_name.save.complete', 'admin');
+                return $this->redirectToRoute('admin_product_class_name');
             }
         }
-
         $ClassNames = $this->classNameRepository->getList();
 
         return [
@@ -137,9 +154,9 @@ class ClassNameController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete")
      */
-    public function delete(Application $app, Request $request, ClassName $ClassName)
+    public function delete(Request $request, ClassName $ClassName)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('商品規格削除開始', array($ClassName->getId()));
 
@@ -149,25 +166,25 @@ class ClassNameController extends AbstractController
             $event = new EventArgs(['ClassName' => $ClassName,], $request);
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.class_name.delete.complete', 'admin');
+            $this->addSuccess('admin.class_name.delete.complete', 'admin');
 
             log_info('商品規格削除完了', array($ClassName->getId()));
 
         } catch (\Exception $e) {
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '商品規格']);
-            $app->addError($message, 'admin');
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '商品規格']);
+            $this->addError($message, 'admin');
 
             log_error('商品企画削除エラー', [$ClassName->getId(), $e]);
         }
 
-        return $app->redirect($app->url('admin_product_class_name'));
+        return $this->redirectToRoute('admin_product_class_name');
     }
 
     /**
      * @Method("POST")
      * @Route("/%admin_route%/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move")
      */
-    public function moveSortNo(Application $app, Request $request)
+    public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             $sortNos = $request->request->all();
@@ -180,6 +197,6 @@ class ClassNameController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return true;
+        return new Response();
     }
 }
