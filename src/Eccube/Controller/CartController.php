@@ -185,7 +185,7 @@ class CartController extends AbstractController
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
-        $this->isTokenValid($this);
+        $this->isTokenValid();
 
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find($productClassId);

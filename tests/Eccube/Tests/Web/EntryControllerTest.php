@@ -219,31 +219,18 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithNotFound()
     {
-        // debugはONの時に404ページ表示しない例外になります。
-//        if($this->container->getParameter('kernel.debug') == true){
-//            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
-//        }
         $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => 'aaaaa')));
-        // debugはOFFの時に404ページが表示します。
-//        if($this->app['debug'] == false){
-            $this->expected = 404;
-            $this->actual = $this->client->getResponse()->getStatusCode();
-            $this->verify();
-//        }
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+
     }
 
     public function testActivateWithAbort()
     {
-        // debugはONの時に403ページ表示しない例外になります。
-//        if($this->container->getParameter('kernel.debug') == true){
-//            $this->expectException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
-//        }
         $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => '+++++++')));
-        // debugはOFFの時に403ページが表示します。
-//        if($this->container->getParameter('kernel.debug') == false){
-            $this->expected = 403;
-            $this->actual = $this->client->getResponse()->getStatusCode();
-            $this->verify();
-//        }
+        $this->expected = 403;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }
