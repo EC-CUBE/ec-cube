@@ -32,7 +32,7 @@ use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
 use Eccube\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Eccube\Repository\BaseInfoRepository;
+use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 
@@ -49,9 +49,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     protected $session;
 
     /**
-     * @var BaseInfoRepository
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $baseInfo;
 
     /**
      * @var TaxRuleRepository
@@ -70,7 +70,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->client->disableReboot();
 
         $this->productRepository = $this->container->get(ProductRepository::class);
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->baseInfo = $this->container->get(BaseInfo::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
         $this->session = $this->container->get('session');
@@ -334,8 +334,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
         // Give
-        $BaseInfo = $this->baseInfoRepository->get();
-        $BaseInfo->setOptionProductTaxRule(true);
+        $this->baseInfo->setOptionProductTaxRule(true);
         $formData = $this->createFormData();
 
         $formData['class']['tax_rate'] = $taxRate;
@@ -531,10 +530,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testEditWithPostTaxRate($before, $after, $expected)
     {
-        $this->markTestIncomplete(__METHOD__);
         // Give
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(true);
+        $this->baseInfo->setOptionProductTaxRule(true);
         $Product = $this->createProduct(null, 0);
         $ProductClasses = $Product->getProductClasses();
         $ProductClass = $ProductClasses[0];
@@ -544,7 +541,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $formData['class']['tax_rate'] = $after;
         }
         if (!is_null($before)) {
-            $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+            $DefaultTaxRule = $this->taxRuleRepository->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
 
             $TaxRule = new TaxRule();
             $TaxRule->setProductClass($ProductClass)
@@ -555,22 +552,22 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ->setTaxAdjust(0)
                 ->setApplyDate(new \DateTime());
             $ProductClass->setTaxRule($TaxRule);
-            $this->app['orm.em']->persist($TaxRule);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($TaxRule);
+            $this->entityManager->flush();
         }
 
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
         );
 
         // Then
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])));
 
         $this->expected = $expected;
-        $TaxRule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product, 'ProductClass' => $ProductClass));
+        $TaxRule = $this->taxRuleRepository->findOneBy(['Product' => $Product, 'ProductClass' => $ProductClass]);
 
         if (is_null($TaxRule)) {
             $this->actual = null;
