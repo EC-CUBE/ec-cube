@@ -49,22 +49,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductType extends AbstractType
 {
     /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
 
     /**
      * ProductType constructor.
+     *
+     * @param CategoryRepository $categoryRepository
      */
-    public function __construct()
+    public function __construct(CategoryRepository $categoryRepository)
     {
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**

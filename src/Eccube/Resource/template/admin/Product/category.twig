@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'class_category'] %}
 
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}カテゴリ編集{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -109,7 +109,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="edit_box__body_inner" class="col-md-9">
                             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    {% if TargetCategory.hierarchy < app.config.category_nest_level %}
+                                    {% if TargetCategory.hierarchy < eccube.config.category_nest_level %}
                                         <div class="col-md-12 form-inline">
                                             {{ form_widget(form._token) }}
                                             {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
@@ -194,6 +194,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div><!-- /.col -->
 
         {% macro tree(Category, TargetId, level) %}
+            {% import _self as selfMacro %}
             {% set level = level + 1 %}
             <li id="tree_item--{{ Category.id }}" class="level{{ level }} {% if Category.id == TargetId %}active{% endif %}">
                 <svg class="cb cb-plus-square"> <use xlink:href="{% if Category.children|length > 0 %}#cb-plus-square{% else %}#cb-minus-square{% endif %}" /></svg>
@@ -203,7 +204,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% if Category.children|length > 0 %}
                     {% for ChildCategory in Category.children %}
                         <ul id="tree_item_child--{{ ChildCategory.id }}">
-                            {{ _self.tree(ChildCategory, TargetId, level) }}
+                            {{ selfMacro.tree(ChildCategory, TargetId, level) }}
                         </ul>
                     {% endfor %}
                 {% endif %}
@@ -218,8 +219,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="tree_box__tree" class="tree">
                             <p id="tree_box__header" class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
                             <ul id="category_tree">
+                                {% import _self as renderMacro %}
                                 {% for TopCategory in TopCategories %}
-                                    {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null), 0)}}
+                                    {{ renderMacro.tree(TopCategory, null, 0)}}
                                 {% endfor %}
                             </ul>
                         </div>

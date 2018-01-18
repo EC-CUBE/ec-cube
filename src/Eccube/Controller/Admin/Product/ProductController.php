@@ -25,8 +25,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -59,6 +58,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service=ProductController::class)
@@ -66,94 +66,85 @@ use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 class ProductController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject(ProductClassRepository::class)
      * @var ProductClassRepository
      */
     protected $productClassRepository;
 
     /**
-     * @Inject(ProductImageRepository::class)
      * @var ProductImageRepository
      */
     protected $productImageRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(PageMaxRepository::class)
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
 
     /**
-     * @Inject(ProductStatusRepository::class)
      * @var ProductStatusRepository
      */
     protected $productStatusRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject("session")
      * @var Session
      */
     protected $session;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * ProductController constructor.
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
@@ -162,11 +153,13 @@ class ProductController extends AbstractController
      * @param ProductStatusRepository $productStatusRepository
      * @param FormFactory $formFactory
      * @param Session $session
+     * @param TranslatorInterface $translator
+     * @param array $eccubeConfig
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
         ProductImageRepository $productImageRepository,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
@@ -175,6 +168,7 @@ class ProductController extends AbstractController
         ProductStatusRepository $productStatusRepository,
         FormFactory $formFactory,
         Session $session,
+        TranslatorInterface $translator,
         array $eccubeConfig
     ) {
         $this->productClassRepository = $productClassRepository;
@@ -188,6 +182,7 @@ class ProductController extends AbstractController
         $this->productStatusRepository = $productStatusRepository;
         $this->formFactory = $formFactory;
         $this->session = $session;
+        $this->translator = $translator;
         $this->appConfig = $eccubeConfig;
     }
 
@@ -385,7 +380,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%admin_route%/product/product/new", name="admin_product_product_new")
      * @Route("/%admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
-     * @Template("Product/product.twig")
+     * @Template("@admin/Product/product.twig")
      */
     public function edit(Application $app, Request $request, $id = null)
     {
@@ -670,9 +665,9 @@ class ProductController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
      */
-    public function delete(Application $app, Request $request, $id = null)
+    public function delete(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
@@ -681,8 +676,8 @@ class ProductController extends AbstractController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
-                $app->deleteMessage();
-                return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+                $this->deleteMessage();
+                return $this->redirect($this->generateUrl('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
@@ -718,32 +713,32 @@ class ProductController extends AbstractController
 
                     log_info('商品削除完了', array($id));
 
-                    $app->addSuccess('admin.delete.complete', 'admin');
+                    $this->addSuccess('admin.delete.complete', 'admin');
 
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', array($id));
-                    $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
-                    $app->addError($message, 'admin');
+                    $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
+                    $this->addError($message, 'admin');
                 }
             } else {
                 log_info('商品削除エラー', array($id));
-                $app->addError('admin.delete.failed', 'admin');
+                $this->addError('admin.delete.failed', 'admin');
             }
         } else {
             log_info('商品削除エラー', array($id));
-            $app->addError('admin.delete.failed', 'admin');
+            $this->addError('admin.delete.failed', 'admin');
         }
 
-        return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        return $this->redirect($this->generateUrl('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
     /**
      * @Method("POST")
      * @Route("/%admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
      */
-    public function copy(Application $app, Request $request, $id = null)
+    public function copy(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if (!is_null($id)) {
             $Product = $this->productRepository->find($id);
@@ -818,23 +813,23 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
-                $app->addSuccess('admin.product.copy.complete', 'admin');
+                $this->addSuccess('admin.product.copy.complete', 'admin');
 
-                return $app->redirect($app->url('admin_product_product_edit', array('id' => $CopyProduct->getId())));
+                return $this->generateUrl('admin_product_product_edit', array('id' => $CopyProduct->getId()));
             } else {
-                $app->addError('admin.product.copy.failed', 'admin');
+                $this->addError('admin.product.copy.failed', 'admin');
             }
         } else {
-            $app->addError('admin.product.copy.failed', 'admin');
+            $this->addError('admin.product.copy.failed', 'admin');
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**
      * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
-    public function display(Application $app, Request $request, $id = null)
+    public function display(Request $request, $id = null)
     {
         $event = new EventArgs(
             array(),
@@ -843,10 +838,10 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
 
         if (!is_null($id)) {
-            return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
+            return $this->redirectToRoute('product_detail', array('id' => $id, 'admin' => '1'));
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**
