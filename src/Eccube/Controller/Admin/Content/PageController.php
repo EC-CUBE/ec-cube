@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -40,58 +38,58 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
 
-/**
- * @Route(service=PageController::class)
- */
 class PageController extends AbstractController
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject(PageRepository::class)
      * @var PageRepository
      */
     protected $pageRepository;
 
     /**
-     * @Inject(DeviceTypeRepository::class)
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
 
     /**
-     * @Route("/%admin_route%/content/page", name="admin_content_page")
-     * @Template("Content/page.twig")
+     * PageController constructor.
+     *
+     * @param $eccubeConfig
+     * @param EntityManagerInterface $entityManager
+     * @param PageRepository $pageRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function index(Application $app, Request $request)
+    public function __construct(
+        $eccubeConfig,
+        EntityManagerInterface $entityManager,
+        PageRepository $pageRepository,
+        DeviceTypeRepository $deviceTypeRepository
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+        $this->entityManager = $entityManager;
+        $this->pageRepository = $pageRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
+    }
+
+    /**
+     * @Route("/%admin_route%/content/page", name="admin_content_page")
+     * @Template("@admin/Content/page.twig")
+     */
+    public function index(Request $request)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -107,17 +105,17 @@ class PageController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
 
-        return $app->render('Content/page.twig', array(
+        return [
             'Pages' => $Pages,
-        ));
+        ];
     }
 
     /**
      * @Route("/%admin_route%/content/page/new", name="admin_content_page_new")
      * @Route("/%admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit")
-     * @Template("Content/page_edit.twig")
+     * @Template("@admin/Content/page_edit.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null, Environment $twig, Router $router)
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -125,7 +123,7 @@ class PageController extends AbstractController
         $Page = $this->pageRepository
             ->findOrCreate($id, $DeviceType);
 
-        $editable = true;
+        $isUserDataPage = true;
 
         $builder = $this->formFactory
             ->createBuilder(MainEditType::class, $Page);
@@ -144,17 +142,20 @@ class PageController extends AbstractController
 
         // 更新時
         $fileName = null;
+        $namespace = '@user_data/';
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
             if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT) {
-                $editable = false;
+                $isUserDataPage = false;
+                $namespace = '';
                 $PrevPage = clone $Page;
             }
             // テンプレートファイルの取得
-            $file = $this->pageRepository
-                ->getReadTemplateFile($Page->getFileName(), $editable);
+            $source = $twig->getLoader()
+                ->getSourceContext($namespace.$Page->getFileName().'.twig')
+                ->getCode();
 
-            $form->get('tpl_data')->setData($file['tpl_data']);
+            $form->get('tpl_data')->setData($source);
 
             $fileName = $Page->getFileName();
         }
@@ -165,7 +166,7 @@ class PageController extends AbstractController
 
             $Page = $form->getData();
 
-            if (!$editable) {
+            if (!$isUserDataPage) {
                 $Page
                     ->setUrl($PrevPage->getUrl())
                     ->setFileName($PrevPage->getFileName())
@@ -176,7 +177,11 @@ class PageController extends AbstractController
             $this->entityManager->flush();
 
             // ファイル生成・更新
-            $templatePath = $this->pageRepository->getWriteTemplatePath($editable);
+            if ($isUserDataPage) {
+                $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+            } else {
+                $templatePath = $this->getParameter('eccube.theme.front_dir');
+            }
             $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
 
             $fs = new Filesystem();
@@ -233,22 +238,30 @@ class PageController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
 
-            $app->addSuccess('admin.register.complete', 'admin');
+            $this->addSuccess('admin.register.complete', 'admin');
 
             // twig キャッシュの削除.
-            $finder = Finder::create()->in($this->appConfig['root_dir'].'/app/cache/twig');
-            $fs->remove($finder);
+            $cacheDir = $this->getParameter('kernel.cache_dir').'/twig';
+            $fs->remove($cacheDir);
 
-            return $app->redirect($app->url('admin_content_page_edit', array('id' => $Page->getId())));
+            return $this->redirectToRoute('admin_content_page_edit', array('id' => $Page->getId()));
         }
 
-        $templatePath = $this->pageRepository->getWriteTemplatePath($editable);
+        if ($isUserDataPage) {
+            $templatePath = $this->getParameter('eccube.theme.user_data_dir');
+            $url = '';
+        } else {
+            $templatePath = $this->getParameter('eccube.theme.front_dir');
+            $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
+        }
 
         return [
             'form' => $form->createView(),
             'page_id' => $Page->getId(),
-            'editable' => $editable,
+            'is_user_data_page' => $isUserDataPage,
             'template_path' => $templatePath,
+            'user_data_route' => $this->getParameter('user_data_route'),
+            'url' => $url,
         ];
     }
 
@@ -256,9 +269,9 @@ class PageController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete")
      */
-    public function delete(Application $app, Request $request, $id = null)
+    public function delete(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -266,18 +279,18 @@ class PageController extends AbstractController
         $Page = $this->pageRepository
             ->findOneBy(array(
                 'id' => $id,
-                'DeviceType' => $DeviceType
+                'DeviceType' => $DeviceType,
             ));
 
         if (!$Page) {
-            $app->deleteMessage();
+            $this->deleteMessage();
 
-            return $app->redirect($app->url('admin_content_page'));
+            return $this->redirectToRoute('admin_content_page');
         }
 
         // ユーザーが作ったページのみ削除する
         if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
-            $templatePath = $this->pageRepository->getWriteTemplatePath(true);
+            $templatePath = $this->getParameter('eccube.theme.user_data_dir');
             $file = $templatePath.'/'.$Page->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
@@ -295,9 +308,9 @@ class PageController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.delete.complete', 'admin');
+            $this->addSuccess('admin.delete.complete', 'admin');
         }
 
-        return $app->redirect($app->url('admin_content_page'));
+        return $this->redirectToRoute('admin_content_page');
     }
 }
