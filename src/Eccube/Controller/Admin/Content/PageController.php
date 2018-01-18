@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -46,16 +45,6 @@ use Twig\Environment;
 class PageController extends AbstractController
 {
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var PageRepository
      */
     protected $pageRepository;
@@ -68,19 +57,13 @@ class PageController extends AbstractController
     /**
      * PageController constructor.
      *
-     * @param $eccubeConfig
-     * @param EntityManagerInterface $entityManager
      * @param PageRepository $pageRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      */
     public function __construct(
-        $eccubeConfig,
-        EntityManagerInterface $entityManager,
         PageRepository $pageRepository,
         DeviceTypeRepository $deviceTypeRepository
     ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
         $this->pageRepository = $pageRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
     }

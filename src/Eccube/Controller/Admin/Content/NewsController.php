@@ -23,7 +23,6 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\News;
 use Eccube\Event\EccubeEvents;
@@ -35,7 +34,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class NewsController extends AbstractController
 {
@@ -44,15 +42,9 @@ class NewsController extends AbstractController
      */
     protected $newsRepository;
 
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct(NewsRepository $newsRepository, TranslatorInterface $translator)
+    public function __construct(NewsRepository $newsRepository)
     {
         $this->newsRepository = $newsRepository;
-        $this->translator = $translator;
     }
 
     /**

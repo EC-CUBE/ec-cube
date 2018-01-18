@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
@@ -45,16 +44,6 @@ use Twig\Environment;
 class BlockController extends AbstractController
 {
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var BlockRepository
      */
     protected $blockRepository;
@@ -65,13 +54,9 @@ class BlockController extends AbstractController
     protected $deviceTypeRepository;
 
     public function __construct(
-        $eccubeConfig,
-        EntityManagerInterface $entityManager,
         BlockRepository $blockRepository,
         DeviceTypeRepository $deviceTypeRepository
     ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
         $this->blockRepository = $blockRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
