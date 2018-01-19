@@ -27,8 +27,6 @@ framework:
     assets:
       base_path: '/html/template/default'
       packages:
-        temp_image:
-          base_path: '/html/upload/temp_image'
         admin:
           base_path: '/html/template/admin'
         save_image:
