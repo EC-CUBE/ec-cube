@@ -4,6 +4,12 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\CsvTypeRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Repository\Master\SexRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -12,38 +18,38 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $Sex = $this->app['eccube.repository.master.sex']->find(1);
-        $Payment = $this->app['eccube.repository.payment']->find(1);
-        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
+
+        $Sex = $this->container->get(SexRepository::class)->find(1);
+        $Payment = $this->container->get(PaymentRepository::class)->find(1);
+        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
         for ($i = 0; $i < 10; $i++) {
             $Customer = $this->createCustomer('user-'.$i.'@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderStatus);
             $Order->setPayment($Payment);
-            $this->app['orm.em']->flush();
+            $this->entityManager->flush();
         }
 
         // sqlite では CsvType が生成されないので、ここで作る
-        $OrderCsvType = $this->app['eccube.repository.master.csv_type']->find(3);
+        $OrderCsvType = $this->container->get(CsvTypeRepository::class)->find(3);
         if (!is_object($OrderCsvType)) {
             $OrderCsvType = new CsvType();
             $OrderCsvType->setId(3);
             $OrderCsvType->setName('受注CSV');
             $OrderCsvType->setSortNo(4);
-            $this->app['orm.em']->persist($OrderCsvType);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($OrderCsvType);
+            $this->entityManager->flush();
         }
-        $ShipCsvType = $this->app['eccube.repository.master.csv_type']->find(4);
+        $ShipCsvType = $this->container->get(CsvTypeRepository::class)->find(4);
         if (!is_object($ShipCsvType)) {
             $ShipCsvType = new CsvType();
             $ShipCsvType->setId(4);
             $ShipCsvType->setName('配送CSV');
             $ShipCsvType->setSortNo(5);
-            $this->app['orm.em']->persist($ShipCsvType);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($ShipCsvType);
+            $this->entityManager->flush();
         }
     }
 
@@ -51,17 +57,17 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_order')
+            $this->generateUrl('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testSearchOrderById()
     {
-        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+        $Order = $this->container->get(OrderRepository::class)->findOneBy(array());
 
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order'), array(
+            'POST', $this->generateUrl('admin_order'), array(
             'admin_search_order' => array(
                 '_token' => 'dummy',
                 'multi' => $Order->getId(),
@@ -77,13 +83,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderByName()
     {
-        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+        $Order = $this->container->get(OrderRepository::class)->findOneBy(array());
         $companyName = $Order->getCompanyName();
-        $OrderList = $this->app['eccube.repository.order']->findBy(array('company_name' => $companyName));
+        $OrderList = $this->container->get(OrderRepository::class)->findBy(array('company_name' => $companyName));
         $cnt = count($OrderList);
 
         $crawler = $this->client->request(
-            'POST', $this->app->url('admin_order'), array(
+            'POST', $this->generateUrl('admin_order'), array(
             'admin_search_order' => array(
                 '_token' => 'dummy',
                 'multi' => $companyName,
@@ -101,7 +107,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order'),
+            $this->generateUrl('admin_order'),
             array(
                 'admin_search_order' => array(
                     '_token' => 'dummy'
@@ -119,7 +125,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order').'?page_count=3',
+            $this->generateUrl('admin_order').'?page_count=3',
             array(
                 'admin_search_order' => array(
                     '_token' => 'dummy',
@@ -133,7 +139,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         // 次のページへ遷移
         $crawler = $this->client->request(
             'GET',
-            $this->app->url('admin_order_page', array('page_no' => 2))
+            $this->generateUrl('admin_order_page', array('page_no' => 2))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -153,19 +159,19 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         foreach ($Items as $Item) {
             $Item->setShipping(null);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $crawler = $this->client->request(
             'DELETE',
-            $this->app->path('admin_order_delete', array('id' => $Order->getId()))
+            $this->generateUrl('admin_order_delete', array('id' => $Order->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->app->url(
+            $this->generateUrl(
                 'admin_order_page', array('page_no' => 1)
             ).'?resume=1'
         ));
 
-        $DeletedOrder = $this->app['eccube.repository.order']->find($id);
+        $DeletedOrder = $this->container->get(OrderRepository::class)->find($id);
 
         $this->assertNull($DeletedOrder);
     }
@@ -174,14 +180,14 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
-        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
+        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
         $Order->setOrderStatus($OrderStatus);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 10件ヒットするはずの検索条件
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order'),
+            $this->generateUrl('admin_order'),
             array(
                 'admin_search_order' => array(
                     '_token' => 'dummy',
@@ -198,7 +204,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'GET',
-            $this->app->path('admin_order_export_order')
+            $this->generateUrl('admin_order_export_order')
         );
     }
 
@@ -206,14 +212,14 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
-        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
+        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
         $Order->setOrderStatus($OrderStatus);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 10件ヒットするはずの検索条件
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order'),
+            $this->generateUrl('admin_order'),
             array(
                 'admin_search_order' => array(
                     '_token' => 'dummy',
@@ -230,7 +236,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'GET',
-            $this->app->path('admin_order_export_shipping')
+            $this->generateUrl('admin_order_export_shipping')
         );
     }
 
@@ -247,7 +253,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         /* @var $crawler Crawler */
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order'),
+            $this->generateUrl('admin_order'),
             array(
                 'admin_search_order' => $form,
             )
@@ -259,7 +265,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         /* @var $customer \Eccube\Entity\Customer */
-        $customer = $this->app['eccube.repository.customer']->findOneBy(array('email' => 'user-1@example.com'));
+        $customer = $this->container->get(CustomerRepository::class)->findOneBy(array('email' => 'user-1@example.com'));
 
         $this->assertContains($customer->getName01(), $crawler->filter('div#result_list_main__body')->html());
     }
