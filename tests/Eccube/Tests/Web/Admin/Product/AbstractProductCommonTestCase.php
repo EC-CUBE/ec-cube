@@ -178,9 +178,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $DeliveryDurations = $this->container->get(DeliveryDurationRepository::class)->findAll();
         $ProductClass = new ProductClass();
-        $SaleType = $this->entityManager
-            ->getRepository('\Eccube\Entity\Master\SaleType')
-            ->find(1);
+        $SaleType = $this->saleTypeRepository->find(1);
 
         $ProductClass->setProduct($TestProduct)
             ->setClassCategory1($TestClassCategory1)
