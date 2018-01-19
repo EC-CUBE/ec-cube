@@ -79,9 +79,10 @@ class CustomerRepository extends AbstractRepository
      */
     protected $encoderFactory;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, Queries $queries)
     {
         parent::__construct($registry, Customer::class);
+        $this->queries = $queries;
     }
 
 

@@ -26,7 +26,7 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -40,88 +40,84 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * @Route(service=CustomerController::class)
- */
 class CustomerController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject(SexRepository::class)
      * @var SexRepository
      */
     protected $sexRepository;
 
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject(PageMaxRepository::class)
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
 
+    public function __construct(
+        $eccubeConfig,
+        PageMaxRepository $pageMaxRepository,
+        CustomerRepository $customerRepository,
+        SexRepository $sexRepository,
+        PrefRepository $prefRepository,
+        MailService $mailService,
+        CsvExportService $csvExportService,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+        $this->pageMaxRepository = $pageMaxRepository;
+        $this->customerRepository = $customerRepository;
+        $this->sexRepository = $sexRepository;
+        $this->prefRepository = $prefRepository;
+        $this->mailService = $mailService;
+        $this->csvExportService = $csvExportService;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("/%admin_route%/customer", name="admin_customer")
      * @Route("/%admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
-     * @Template("Customer/index.twig")
+     * @Template("@admin/Customer/index.twig")
      */
-    public function index(Application $app, Request $request, $page_no = null)
+    public function index(Request $request, $page_no = null, Paginator $paginator)
     {
-        $session = $request->getSession();
         $pagination = array();
         $builder = $this->formFactory
             ->createBuilder(SearchCustomerType::class);
@@ -140,7 +136,7 @@ class CustomerController extends AbstractController
         $active = false;
 
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->appConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['default_page_count'];
 
         if ('POST' === $request->getMethod()) {
 
@@ -162,28 +158,28 @@ class CustomerController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
-                $pagination = $app['paginator']()->paginate(
+                $pagination = $paginator->paginate(
                     $qb,
                     $page_no,
                     $page_count
                 );
 
                 // sessionのデータ保持
-                $session->set('eccube.admin.customer.search', $searchData);
-                $session->set('eccube.admin.customer.search.page_no', $page_no);
+                $this->session->set('eccube.admin.customer.search', $searchData);
+                $this->session->set('eccube.admin.customer.search.page_no', $page_no);
             }
         } else {
             if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
-                $session->remove('eccube.admin.customer.search');
-                $session->remove('eccube.admin.customer.search.page_no');
+                $this->session->remove('eccube.admin.customer.search');
+                $this->session->remove('eccube.admin.customer.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.customer.search');
+                $searchData = $this->session->get('eccube.admin.customer.search');
                 if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+                    $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
                 } else {
-                    $session->set('eccube.admin.customer.search.page_no', $page_no);
+                    $this->session->set('eccube.admin.customer.search.page_no', $page_no);
                 }
                 if (!is_null($searchData)) {
                     // 表示件数
@@ -201,7 +197,7 @@ class CustomerController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
-                    $pagination = $app['paginator']()->paginate(
+                    $pagination = $paginator->paginate(
                         $qb,
                         $page_no,
                         $page_count
@@ -236,9 +232,9 @@ class CustomerController extends AbstractController
     /**
      * @Route("/%admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
      */
-    public function resend(Application $app, Request $request, $id)
+    public function resend(Request $request, $id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $Customer = $this->customerRepository
             ->find($id);
@@ -247,7 +243,7 @@ class CustomerController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+        $activateUrl = $this->generateUrl('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
         // メール送信
         $this->mailService->sendAdminCustomerConfirmMail($Customer, $activateUrl);
@@ -261,42 +257,42 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
 
-        $app->addSuccess('admin.customer.resend.complete', 'admin');
+        $this->addSuccess('admin.customer.resend.complete', 'admin');
 
-        return $app->redirect($app->url('admin_customer'));
+        return $this->redirectToRoute('admin_customer');
     }
 
     /**
      * @Method("DELETE")
      * @Route("/%admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Request $request, $id, TranslatorInterface $translator)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('会員削除開始', array($id));
 
-        $session = $request->getSession();
-        $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+        $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         $Customer = $this->customerRepository
             ->find($id);
 
         if (!$Customer) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+            $this->deleteMessage();
+            return $this->redirect($this->generateUrl('admin_customer_page',
+                    array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
         }
 
         try {
             $this->entityManager->remove($Customer);
             $this->entityManager->flush($Customer);
-            $app->addSuccess('admin.customer.delete.complete', 'admin');
+            $this->addSuccess('admin.customer.delete.complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('会員削除失敗', [$e], 'admin');
 
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '会員']);
-            $app->addError($message, 'admin');
+            $message = $translator->trans('admin.delete.failed.foreign_key', ['%name%' => '会員']);
+            $this->addError($message, 'admin');
         }
 
         log_info('会員削除完了', array($id));
@@ -309,7 +305,8 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
 
-        return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        return $this->redirect($this->generateUrl('admin_customer_page',
+                array('page_no' => $page_no)) . '?resume=' . Constant::ENABLED);
     }
 
     /**
@@ -321,7 +318,7 @@ class CustomerController extends AbstractController
      * @param Request $request
      * @return StreamedResponse
      */
-    public function export(Application $app, Request $request)
+    public function export(Request $request)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -331,7 +328,7 @@ class CustomerController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
@@ -345,7 +342,7 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
 
                 $Csvs = $csvService->getCsvs();
 
