@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
@@ -35,14 +34,11 @@ use Eccube\Service\CsvExportService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service=CategoryController::class)
@@ -55,62 +51,22 @@ class CategoryController extends AbstractController
     protected $csvExportService;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * CategoryController constructor.
      *
      * @param CsvExportService $csvExportService
-     * @param EntityManagerInterface $entityManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param FormFactory $formFactory
      * @param CategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
-     * @param array $eccubeConfig
      */
     public function __construct(
         CsvExportService $csvExportService,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher,
-        FormFactory $formFactory,
-        CategoryRepository $categoryRepository,
-        TranslatorInterface $translator,
-        array $eccubeConfig
+        CategoryRepository $categoryRepository
     ) {
         $this->csvExportService = $csvExportService;
-        $this->entityManager = $entityManager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
         $this->categoryRepository = $categoryRepository;
-        $this->translator = $translator;
-        $this->appConfig = $eccubeConfig;
     }
 
 
@@ -166,7 +122,7 @@ class CategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->appConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
+                if ($this->eccubeConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));

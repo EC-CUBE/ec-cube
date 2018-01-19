@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Common\Constant;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -44,6 +43,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
+
         $this->classNameRepository = $this->container->get(ClassNameRepository::class);
         $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
     }
@@ -96,14 +96,11 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             ))
             ->getId();
 
-        $param = [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()];
-        $this->container->get('session')->save();
-
         // main
         $this->client->request('GET',
             $this->generateUrl('admin_product_class_category_edit',
                 array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id)),
-            $param
+            array('_token' => 'dummy')
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -136,16 +133,13 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             ))
             ->getId();
 
-        $param = [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()];
-        $this->container->get('session')->save();
-
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_category', array('class_name_id' => $test_class_name_id));
         $this->client->request('DELETE',
             $this->generateUrl('admin_product_class_category_delete',
                 array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id, )
                 ),
-            $param
+            array('_token' => 'dummy')
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -178,15 +172,12 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             ))
             ->getId();
 
-        $param = [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()];
-        $this->container->get('session')->save();
-
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_category', array('class_name_id' => $test_class_name_id));
         $this->client->request('PUT',
             $this->generateUrl('admin_product_class_category_visibility',
                 array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id)),
-            $param
+            array('_token' => 'dummy')
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 

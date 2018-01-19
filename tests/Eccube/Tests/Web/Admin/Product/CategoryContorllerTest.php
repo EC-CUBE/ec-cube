@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -39,6 +38,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
+
         $this->remove();
         $this->createCategories();
         $this->categoryRepository = $this->container->get(CategoryRepository::class);
@@ -140,10 +140,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPost()
     {
         $params = array(
-            Constant::TOKEN_NAME => $this->getCsrfToken('admin_category'),
+            '_token' => 'dummy',
             'name' => 'テストカテゴリ'
         );
-        $this->container->get('session')->save();
 
         $this->client->request(
             'POST',
@@ -157,10 +156,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostParent()
     {
         $params = array(
-            Constant::TOKEN_NAME => $this->getCsrfToken('admin_category'),
+            '_token' => 'dummy',
             'name' => 'テストカテゴリ'
         );
-        $this->container->get('session')->save();
         $Parent = $this->categoryRepository->findOneBy(array('name' => '子1'));
         $this->client->request(
             'POST',
@@ -240,15 +238,12 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             ))
             ->getId();
 
-        $param = [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()];
-        $this->container->get('session')->save();
-
         // main
         $redirectUrl = $this->generateUrl('admin_product_category');
         $this->client->request('DELETE',
             $this->generateUrl('admin_product_category_delete',
                 array('id' => $test_category_id)),
-            $param
+            array('_token' => 'dummy')
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
