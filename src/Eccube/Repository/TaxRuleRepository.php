@@ -28,6 +28,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Application;
+use Eccube\Entity\Customer;
 use Eccube\Entity\TaxRule;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
@@ -113,8 +114,11 @@ class TaxRuleRepository extends AbstractRepository
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
             /* @var $Customer \Eccube\Entity\Customer */
             $Customer = $this->tokenStorage->getToken()->getUser();
-            $Pref = $Customer->getPref();
-            $Country = $Customer->getCountry();
+            // FIXME なぜか管理画面でも実行されている.
+            if ($Customer instanceof Customer) {
+                $Pref = $Customer->getPref();
+                $Country = $Customer->getCountry();
+            }
         }
 
         // 商品単位税率設定がOFFの場合
