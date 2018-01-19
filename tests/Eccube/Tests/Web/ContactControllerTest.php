@@ -61,7 +61,7 @@ class ContactControllerTest extends AbstractWebTestCase
             ),
             'email' => $email,
             'contents' => $faker->realText(),
-            '_token' => $this->getCsrfToken('contact')
+            '_token' => 'dummy',
         );
 
         return $form;

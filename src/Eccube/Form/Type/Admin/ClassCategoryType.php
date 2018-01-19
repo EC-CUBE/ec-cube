@@ -39,20 +39,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ClassCategoryType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
 
-    public function __construct()
+    /**
+     * ClassCategoryType constructor.
+     *
+     * @param $eccubeConfig
+     */
+    public function __construct($eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
+
 
     /**
      * {@inheritdoc}

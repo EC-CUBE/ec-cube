@@ -23,31 +23,54 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use \Eccube\Common\Constant;
+use Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
+use Eccube\Repository\ProductRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Eccube\Entity\BaseInfo;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
     /**
-     * @var \Eccube\Repository\ProductRepository
+     * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     * @var SessionInterface
      */
     protected $session;
+
+    /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @var ProductStatusRepository
+     */
+    protected $productStatusRepository;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->productRepository = $this->container->get(\Eccube\Repository\ProductRepository::class);
+        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->baseInfo = $this->container->get(BaseInfo::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
         $this->session = $this->container->get('session');
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
@@ -94,7 +117,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => null,
             'add_images' => null,
             'delete_images' => null,
-            Constant::TOKEN_NAME => $this->getCsrfToken('admin_product')
+            Constant::TOKEN_NAME => 'dummy'
         ];
         return $form;
     }
@@ -131,12 +154,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         ];
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
@@ -163,12 +180,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         ];
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
@@ -181,7 +192,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => $TestProduct->getId(),
                 'category_id' => '',
                 'create_date_start' => '',
@@ -191,12 +202,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ]
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
@@ -210,7 +215,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => 99999999,
                 'category_id' => '',
                 'create_date_start' => '',
@@ -220,12 +225,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ]
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
@@ -239,7 +238,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => 'not Exists product name',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -249,12 +248,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ]
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
@@ -280,12 +273,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
@@ -309,12 +296,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()
         ];
 
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
-
         $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
 
         $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
@@ -330,14 +311,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $AllProducts = $this->productRepository->findAll();
         $params = [
             'id' => $Product->getId(),
-            Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()
+            Constant::TOKEN_NAME => 'dummy'
         ];
-
-        /**
-         * TODO: FIXME this is trick to by pass exception \LogicException at \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage::setId
-         * @see \Symfony\Component\HttpKernel\EventListener\AbstractTestSessionListener::onKernelRequest
-         */
-        $this->session->save();
 
         $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
 
@@ -356,18 +331,16 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
-        $this->markTestIncomplete(__METHOD__);
         // Give
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(true);
+        $this->baseInfo->setOptionProductTaxRule(true);
         $formData = $this->createFormData();
 
         $formData['class']['tax_rate'] = $taxRate;
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_new'),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
         );
 
         // Then
@@ -375,10 +348,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp)-2];
-        $Product = $this->app['eccube.repository.product']->find($productId);
+        $Product = $this->productRepository->find($productId);
 
         $this->expected = $expected;
-        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $Taxrule = $this->taxRuleRepository->findOneBy(array('Product' => $Product));
         $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
         $this->actual = $taxRate;
         $this->assertTrue($this->actual === $this->expected);
@@ -389,7 +362,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterNoStock()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/Product with stock 01/');
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
@@ -397,13 +371,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $ProductClass = $testProduct->getProductClasses()->first();
         $ProductClass->setStock(0);
         $ProductClass->getProductStock()->setStock(0);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
+
         $searchForm['id'] = 'Product with stock';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -424,19 +404,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterPrivate()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/Product with status 01/');
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -457,19 +442,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithFilterPublic()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/[Product with status 01]{1}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -490,19 +480,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithAll()
     {
-        $this->markTestIncomplete(__METHOD__);
+        $this->markTestIncomplete('Failed assert regex, can not get csv from /export url');
+
         $this->expectOutputRegex('/[Product with status 01]{1}[Product with status 02]{2}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -513,7 +508,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function dataNewProductProvider()
     {
-        $this->markTestIncomplete(__METHOD__);
         return array(
             array(null, null),
             array("0", "0"),
@@ -534,10 +528,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testEditWithPostTaxRate($before, $after, $expected)
     {
-        $this->markTestIncomplete(__METHOD__);
         // Give
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(true);
+        $this->baseInfo->setOptionProductTaxRule(true);
         $Product = $this->createProduct(null, 0);
         $ProductClasses = $Product->getProductClasses();
         $ProductClass = $ProductClasses[0];
@@ -547,7 +539,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $formData['class']['tax_rate'] = $after;
         }
         if (!is_null($before)) {
-            $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+            $DefaultTaxRule = $this->taxRuleRepository->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
 
             $TaxRule = new TaxRule();
             $TaxRule->setProductClass($ProductClass)
@@ -558,22 +550,22 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ->setTaxAdjust(0)
                 ->setApplyDate(new \DateTime());
             $ProductClass->setTaxRule($TaxRule);
-            $this->app['orm.em']->persist($TaxRule);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($TaxRule);
+            $this->entityManager->flush();
         }
 
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
         );
 
         // Then
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])));
 
         $this->expected = $expected;
-        $TaxRule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product, 'ProductClass' => $ProductClass));
+        $TaxRule = $this->taxRuleRepository->findOneBy(['Product' => $Product, 'ProductClass' => $ProductClass]);
 
         if (is_null($TaxRule)) {
             $this->actual = null;
@@ -643,7 +635,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     private function createSearchForm()
     {
         $post = array(
-            '_token' => 'dummy',
+            Constant::TOKEN_NAME => 'dummy',
             'id' => '',
             'category_id' => '',
             'create_date_start' => '',

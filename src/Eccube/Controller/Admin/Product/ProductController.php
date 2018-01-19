@@ -25,8 +25,6 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -49,16 +47,17 @@ use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route(service=ProductController::class)
@@ -81,7 +80,7 @@ class ProductController extends AbstractController
     protected $productImageRepository;
 
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -121,57 +120,60 @@ class ProductController extends AbstractController
     protected $productStatusRepository;
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @var EntityManagerInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     * @var SessionInterface
      */
     protected $session;
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface
      */
     protected $translator;
 
     /**
      * ProductController constructor.
      *
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param CsvExportService $csvExportService
+     * @param TranslatorInterface $translator
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
-     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
-     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
+     * @param FormFactoryInterface $formFactory
+     * @param SessionInterface $session
      * @param array $eccubeConfig
      */
     public function __construct(
-        \Symfony\Component\Translation\TranslatorInterface $translator,
+        CsvExportService $csvExportService,
+        TranslatorInterface $translator,
         ProductClassRepository $productClassRepository,
         ProductImageRepository $productImageRepository,
-        \Doctrine\ORM\EntityManagerInterface $entityManager,
+        EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        \Symfony\Component\Form\FormFactoryInterface $formFactory,
-        \Symfony\Component\HttpFoundation\Session\SessionInterface $session,
+        FormFactoryInterface $formFactory,
+        SessionInterface $session,
         array $eccubeConfig
     ) {
+        $this->csvExportService = $csvExportService;
         $this->translator = $translator;
         $this->productClassRepository = $productClassRepository;
         $this->productImageRepository = $productImageRepository;
@@ -839,7 +841,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
-    public function display(Application $app, Request $request, $id = null)
+    public function display(Request $request, $id = null)
     {
         $event = new EventArgs(
             array(),
@@ -848,10 +850,10 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
 
         if (!is_null($id)) {
-            return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
+            return $this->redirectToRoute('product_detail', array('id' => $id, 'admin' => '1'));
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**

@@ -24,17 +24,24 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\Category;
+use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CategoryControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->remove();
         $this->createCategories();
+        $this->categoryRepository = $this->container->get(CategoryRepository::class);
     }
 
     public function createCategories()
@@ -76,8 +83,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $Category->setPropertiesFromArray($category_array);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
-            $this->app['orm.em']->persist($Category);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($Category);
+            $this->entityManager->flush();
 
             if (!array_key_exists('child', $category_array)) {
                 continue;
@@ -88,8 +95,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 $Child->setParent($Category);
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
-                $this->app['orm.em']->persist($Child);
-                $this->app['orm.em']->flush();
+                $this->entityManager->persist($Child);
+                $this->entityManager->flush();
                 // add child category
                 $Category->addChild($Child);
 
@@ -102,8 +109,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                     $Grandson->setParent($Child);
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
-                    $this->app['orm.em']->persist($Grandson);
-                    $this->app['orm.em']->flush();
+                    $this->entityManager->persist($Grandson);
+                    $this->entityManager->flush();
                     // add child category
                     $Child->addChild($Grandson);
                 }
@@ -124,38 +131,44 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminProductCategory()
     {
         $this->client->request('GET',
-            $this->app->url('admin_product_category')
+            $this->generateUrl('admin_product_category')
         );
+
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndexWithPost()
     {
-        $crawler = $this->client->request(
+        $params = array(
+            Constant::TOKEN_NAME => $this->getCsrfToken('admin_category'),
+            'name' => 'テストカテゴリ'
+        );
+        $this->container->get('session')->save();
+
+        $this->client->request(
             'POST',
-            $this->app->url('admin_product_category'),
-            array('admin_category' => array(
-                '_token' => 'dummy',
-                'name' => 'テストカテゴリ'
-            ))
+            $this->generateUrl('admin_product_category'),
+            array('admin_category' => $params)
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_category')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category')));
     }
 
     public function testIndexWithPostParent()
     {
-        $Parent = $this->app['eccube.repository.category']->findOneBy(array('name' => '子1'));
-        $crawler = $this->client->request(
+        $params = array(
+            Constant::TOKEN_NAME => $this->getCsrfToken('admin_category'),
+            'name' => 'テストカテゴリ'
+        );
+        $this->container->get('session')->save();
+        $Parent = $this->categoryRepository->findOneBy(array('name' => '子1'));
+        $this->client->request(
             'POST',
-            $this->app->url('admin_product_category_show', array('parent_id' => $Parent->getId())),
-            array('admin_category' => array(
-                '_token' => 'dummy',
-                'name' => 'テストカテゴリ'
-            ))
+            $this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId())),
+            array('admin_category' => $params)
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_category_show', array('parent_id' => $Parent->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId()))));
     }
 
     public function testRoutingAdminProductCategoryShow()
@@ -163,13 +176,13 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestParentCategory = $this->newTestCategory($TestCreator);
-        $this->app['orm.em']->persist($TestParentCategory);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($TestParentCategory);
+        $this->entityManager->flush();
         $TestCategory = $this->newTestCategory($TestCreator, $TestParentCategory);
-        $this->app['orm.em']->persist($TestCategory);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($TestCategory);
+        $this->entityManager->flush();
 
-        $test_parent_category_id = $this->app['eccube.repository.category']
+        $test_parent_category_id = $this->categoryRepository
             ->findOneBy(array(
                 'name' => $TestParentCategory->getName()
             ))
@@ -177,16 +190,16 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_category_show',
+            $this->generateUrl('admin_product_category_show',
                 array('parent_id' => $test_parent_category_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // after
-        $this->app['orm.em']->remove($TestCategory);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestParentCategory);
-        $this->app['orm.em']->flush();
+        $this->entityManager->remove($TestCategory);
+        $this->entityManager->flush();
+        $this->entityManager->remove($TestParentCategory);
+        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductCategoryEdit()
@@ -194,9 +207,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestCategory = $this->newTestCategory($TestCreator);
-        $this->app['orm.em']->persist($TestCategory);
-        $this->app['orm.em']->flush();
-        $test_category_id = $this->app['eccube.repository.category']
+        $this->entityManager->persist($TestCategory);
+        $this->entityManager->flush();
+        $test_category_id = $this->categoryRepository
             ->findOneBy(array(
                 'name' => $TestCategory->getName()
             ))
@@ -204,14 +217,14 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_category_edit',
+            $this->generateUrl('admin_product_category_edit',
                 array('id' => $test_category_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // after
-        $this->app['orm.em']->remove($TestCategory);
-        $this->app['orm.em']->flush();
+        $this->entityManager->remove($TestCategory);
+        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductCategoryDelete()
@@ -219,34 +232,39 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // before
         $TestCreator = $this->createMember();
         $TestCategory = $this->newTestCategory($TestCreator);
-        $this->app['orm.em']->persist($TestCategory);
-        $this->app['orm.em']->flush();
-        $test_category_id = $this->app['eccube.repository.category']
+        $this->entityManager->persist($TestCategory);
+        $this->entityManager->flush();
+        $test_category_id = $this->categoryRepository
             ->findOneBy(array(
                 'name' => $TestCategory->getName()
             ))
             ->getId();
 
+        $param = [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()];
+        $this->container->get('session')->save();
+
         // main
-        $redirectUrl = $this->app->url('admin_product_category');
+        $redirectUrl = $this->generateUrl('admin_product_category');
         $this->client->request('DELETE',
-            $this->app->url('admin_product_category_delete',
-                array('id' => $test_category_id))
+            $this->generateUrl('admin_product_category_delete',
+                array('id' => $test_category_id)),
+            $param
         );
+
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         // after
-        $this->app['orm.em']->remove($TestCategory);
-        $this->app['orm.em']->flush();
+        $this->entityManager->remove($TestCategory);
+        $this->entityManager->flush();
     }
 
     public function testMoveSortNo()
     {
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子1'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '子1'));
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
-            $this->app->url('admin_product_category_sort_no_move'),
+            $this->generateUrl('admin_product_category_sort_no_move'),
             array($Category->getId() => 10),
             array(),
             array(
@@ -256,7 +274,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $MovedCategory = $this->app['eccube.repository.category']->find($Category->getId());
+        $MovedCategory = $this->categoryRepository->find($Category->getId());
         $this->expected = 10;
         $this->actual = $MovedCategory->getSortNo();
         $this->verify();
@@ -267,7 +285,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/2-0/', '2-0 という文字列が含まれる CSV が出力されるか');
 
         $this->client->request('GET',
-            $this->app->url('admin_product_category_export')
+            $this->generateUrl('admin_product_category_export')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -294,9 +312,11 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNoAndShow()
     {
+        $this->client->disableReboot();
+
         // Give
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
-        $Category2 = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '親1'));
+        $Category2 = $this->categoryRepository->findOneBy(array('name' => '親2'));
         $newSortNos = array(
             $Category->getId() => $Category2->getSortNo(),
             $Category2->getId() => $Category->getSortNo()
@@ -305,7 +325,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_category_sort_no_move'),
+            $this->generateUrl('admin_product_category_sort_no_move'),
             $newSortNos,
             array(),
             array(
@@ -322,10 +342,10 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $crawler = $this->client->request('GET',
-            $this->app->url('admin_product_product_new')
+            $this->generateUrl('admin_product_product_new')
         );
 
-        $CategoryLast = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-2'));
+        $CategoryLast = $this->categoryRepository->findOneBy(array('name' => '子2-2'));
         $categoryNameLastElement = $crawler->filter('#detail_wrap select#admin_product_Category option')->last()->text();
 
         $this->expected = $CategoryLast->getNameWithLevel();
