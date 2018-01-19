@@ -67,10 +67,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->entityManager->remove($TestClassName);
-        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductClassCategoryEdit()
@@ -104,12 +100,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->entityManager->remove($TestClassCategory);
-        $this->entityManager->flush();
-        $this->entityManager->remove($TestClassName);
-        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductClassCategoryDelete()
@@ -143,12 +133,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->entityManager->remove($TestClassCategory);
-        $this->entityManager->flush();
-        $this->entityManager->remove($TestClassName);
-        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductClassCategoryToggle()
@@ -180,12 +164,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             array('_token' => 'dummy')
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->entityManager->remove($TestClassCategory);
-        $this->entityManager->flush();
-        $this->entityManager->remove($TestClassName);
-        $this->entityManager->flush();
     }
 
     private function newTestClassName($TestCreator)
@@ -210,3 +188,4 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         return $TestClassCategory;
     }
 }
+

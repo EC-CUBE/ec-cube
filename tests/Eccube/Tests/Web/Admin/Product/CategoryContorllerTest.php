@@ -41,6 +41,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         $this->remove();
         $this->createCategories();
+        $this->client->disableReboot();
         $this->categoryRepository = $this->container->get(CategoryRepository::class);
     }
 
@@ -165,8 +166,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId())),
             array('admin_category' => $params)
         );
-
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId()))));
+        $url = $this->generateUrl('admin_product_category_show', array('parent_id' => $Parent->getId()));
+        $this->assertTrue($this->client->getResponse()->isRedirect($url));
     }
 
     public function testRoutingAdminProductCategoryShow()
@@ -192,12 +193,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 array('parent_id' => $test_parent_category_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->entityManager->remove($TestCategory);
-        $this->entityManager->flush();
-        $this->entityManager->remove($TestParentCategory);
-        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductCategoryEdit()
@@ -219,10 +214,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 array('id' => $test_category_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->entityManager->remove($TestCategory);
-        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductCategoryDelete()
@@ -247,10 +238,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->entityManager->remove($TestCategory);
-        $this->entityManager->flush();
     }
 
     public function testMoveSortNo()
@@ -277,7 +264,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testExport()
     {
-        $this->expectOutputRegex('/2-0/', '2-0 という文字列が含まれる CSV が出力されるか');
+        // 2-0 という文字列が含まれる CSV が出力されるか
+        $this->expectOutputRegex('/2-0/');
 
         $this->client->request('GET',
             $this->generateUrl('admin_product_category_export')
@@ -307,8 +295,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNoAndShow()
     {
-        $this->client->disableReboot();
-
         // Give
         $Category = $this->categoryRepository->findOneBy(array('name' => '親1'));
         $Category2 = $this->categoryRepository->findOneBy(array('name' => '親2'));

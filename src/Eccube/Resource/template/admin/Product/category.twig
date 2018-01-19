@@ -221,7 +221,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <ul id="category_tree">
                                 {% import _self as renderMacro %}
                                 {% for TopCategory in TopCategories %}
-                                    {{ renderMacro.tree(TopCategory, null, 0)}}
+                                    {{ renderMacro.tree(TopCategory, TargetCategory.Parent.id | default(null), 0)}}
                                 {% endfor %}
                             </ul>
                         </div>
