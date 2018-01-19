@@ -160,3 +160,5 @@ services:
 
     Eccube\Entity\BaseInfo:
         factory: ['@Eccube\Repository\BaseInfoRepository', 'get']
+
+    Symfony\Component\HttpFoundation\ParameterBag:
