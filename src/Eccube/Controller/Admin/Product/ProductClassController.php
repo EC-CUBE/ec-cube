@@ -60,7 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @Route(service=ProductClassController::class)
  */
-class ProductClassController
+class ProductClassController extends AbstractController
 {
     /**
      * @var TaxRuleRepository
@@ -433,7 +433,7 @@ class ProductClassController
                                 $addProductClasses[] = $ProductClass;
                             } else {
                                 // 対象行のエラー
-                                return $this->render($Product, $ProductClass, true, $form);
+                                return $this->renderProClass($Product, $ProductClass, true, $form);
                             }
                         }
                         $tmpProductClass = $ProductClass;
@@ -443,7 +443,7 @@ class ProductClassController
                         // 対象がなければエラー
                         log_info('商品規格が未選択', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
-                        return $this->render($Product, $tmpProductClass, true, $form, $error);
+                        return $this->renderProClass($Product, $tmpProductClass, true, $form, $error);
                     }
 
                     // 選択された商品規格を登録
@@ -494,7 +494,7 @@ class ProductClassController
                             if ($formData->isValid()) {
                                 $checkProductClasses[] = $ProductClass;
                             } else {
-                                return $this->render($Product, $ProductClass, false, $form);
+                                return $this->renderProClass($Product, $ProductClass, false, $form);
                             }
                         } else {
                             // 削除対象の行
@@ -507,7 +507,7 @@ class ProductClassController
                         // 対象がなければエラー
                         log_info('商品規格が存在しません', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
-                        return $this->render($Product, $tempProductClass, false, $form, $error);
+                        return $this->renderProClass($Product, $tempProductClass, false, $form, $error);
                     }
 
 
@@ -631,9 +631,9 @@ class ProductClassController
      * @param \Symfony\Component\HttpFoundation\Response $not_product_class
      * @param $classForm
      * @param null $error
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return array
      */
-    protected function render($Product, $ProductClass, $not_product_class, $classForm, $error = null)
+    protected function renderProClass($Product, $ProductClass, $not_product_class, $classForm, $error = null)
     {
 
         $ClassName1 = null;
