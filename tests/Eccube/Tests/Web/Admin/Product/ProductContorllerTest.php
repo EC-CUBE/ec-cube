@@ -31,7 +31,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
 use Eccube\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -58,6 +57,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     protected $productStatusRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -66,6 +68,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->baseInfo = $this->container->get(BaseInfo::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
+
+        $this->client->disableReboot();
 
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
@@ -137,7 +141,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => '',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -163,7 +167,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $post = [
             'admin_search_product' => [
-                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => $TestProduct->getName(),
                 'category_id' => '',
                 'create_date_start' => '',
@@ -296,7 +300,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
-        self::assertNull($this->productRepository->find($params['id']));
+        $this->assertNull($this->productRepository->find($params['id']));
     }
 
     public function testCopy()
@@ -382,14 +386,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // No stock click button
         $noStockUrl = $crawler->selectLink('在庫なし')->link()->getUri();
-        $this->client->disableReboot();
         $crawler = $this->client->request('GET', $noStockUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -420,14 +422,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // private click button
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
-        $this->client->disableReboot();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -458,14 +458,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // public click button
         $privateUrl = $crawler->selectLink('公開')->link()->getUri();
-        $this->client->disableReboot();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -495,7 +493,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -590,7 +587,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'link_status' => '',
             ));
         $this->client->request('POST', $this->generateUrl('admin_product'), $post);
-        $this->client->disableReboot();
         $this->client->request('GET', $this->generateUrl('admin_product_export'));
 
         $this->expected = 'application/octet-stream';

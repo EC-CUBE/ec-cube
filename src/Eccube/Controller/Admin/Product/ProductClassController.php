@@ -26,9 +26,6 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassName;
@@ -47,11 +44,9 @@ use Eccube\Repository\TaxRuleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -203,11 +198,11 @@ class ProductClassController extends AbstractController
                         $sourceProduct = $orgProductClasses[0];
 
                         // 規格分類が組み合わされた商品規格を取得
-                        $ProductClasses = $this->createProductClasses( $Product, $ClassName1, $ClassName2);
+                        $ProductClasses = $this->createProductClasses($Product, $ClassName1, $ClassName2);
 
                         // 組み合わされた商品規格にデフォルト値をセット
                         foreach ($ProductClasses as $productClass) {
-                            $this->setDefaultProductClass( $productClass, $sourceProduct);
+                            $this->setDefaultProductClass($productClass, $sourceProduct);
                         }
 
                         $builder = $this->formFactory->createBuilder();
@@ -262,7 +257,7 @@ class ProductClassController extends AbstractController
             }
 
             // 規格分類が組み合わされた空の商品規格を取得
-            $createProductClasses = $this->createProductClasses( $Product, $ClassName1, $ClassName2);
+            $createProductClasses = $this->createProductClasses($Product, $ClassName1, $ClassName2);
 
             $mergeProductClasses = [];
 
@@ -502,7 +497,7 @@ class ProductClassController extends AbstractController
                                 } else {
                                     $productStock->setStock(null);
                                 }
-                                $this->setDefaultProductClass( $productClass, $cp);
+                                $this->setDefaultProductClass($productClass, $cp);
                                 $flag = true;
                                 break;
                             }
@@ -595,6 +590,8 @@ class ProductClassController extends AbstractController
     }
 
     /**
+     * 登録、更新時のエラー画面表示
+     *
      * @param string $Product
      * @param array $ProductClass
      * @param \Symfony\Component\HttpFoundation\Response $not_product_class
@@ -741,7 +738,8 @@ class ProductClassController extends AbstractController
      * @param $productClassDest ProductClass コピー先となる商品規格
      * @param $productClassOrig ProductClass コピー元となる商品規格
      */
-    private function setDefaultProductClass( $productClassDest, $productClassOrig) {
+    private function setDefaultProductClass($productClassDest, $productClassOrig)
+    {
         $productClassDest->setDeliveryDuration($productClassOrig->getDeliveryDuration());
         $productClassDest->setProduct($productClassOrig->getProduct());
         $productClassDest->setSaleType($productClassOrig->getSaleType());

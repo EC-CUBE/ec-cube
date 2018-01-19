@@ -269,7 +269,7 @@ class CartService
     public function unlock()
     {
         $this->getCart()
-//            ->setLock(false)
+            ->setLock(false)
             ->setPreOrderId(null);
     }
 
@@ -278,7 +278,6 @@ class CartService
         $this->getCart()
             ->setLock(true)
             ->setPreOrderId(null);
-        dump(spl_object_hash($this->getCart()),$this->getCart()->getLock() );
     }
 
     /**
@@ -286,9 +285,7 @@ class CartService
      */
     public function isLocked()
     {
-        dump(spl_object_hash($this->getCart()) ,$this->getCart()->getLock() );
         return $this->getCart()->getLock();
-
     }
 
     /**

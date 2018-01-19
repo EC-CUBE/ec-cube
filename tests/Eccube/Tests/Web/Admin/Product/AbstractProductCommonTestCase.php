@@ -55,6 +55,11 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     protected $saleTypeRepository;
 
     /**
+     * @var DeliveryDurationRepository
+     */
+    protected $deliveryDurationRepository;
+
+    /**
      * Set up function
      */
     public function setUp()
@@ -63,6 +68,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $this->faker = $this->getFaker();
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
         $this->saleTypeRepository = $this->container->get(SaleTypeRepository::class);
+        $this->deliveryDurationRepository = $this->container->get(DeliveryDurationRepository::class);
     }
 
     /**
@@ -171,12 +177,16 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
      * @param ClassCategory $TestClassCategory2
      * @return ProductClass
      */
-    protected function createProductClass(Member $Creator, Product &$TestProduct, ClassCategory $TestClassCategory1, ClassCategory $TestClassCategory2)
-    {
+    protected function createProductClass(
+        Member $Creator,
+        Product &$TestProduct,
+        ClassCategory $TestClassCategory1,
+        ClassCategory $TestClassCategory2
+    ) {
         if (!$Creator) {
             $Creator = $this->createMember();
         }
-        $DeliveryDurations = $this->container->get(DeliveryDurationRepository::class)->findAll();
+        $DeliveryDurations = $this->deliveryDurationRepository->findAll();
         $ProductClass = new ProductClass();
         $SaleType = $this->saleTypeRepository->find(1);
 
