@@ -59,20 +59,25 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $globals = $this->twig->getGlobals();
-        if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
-            $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+        try {
+            $globals = $this->twig->getGlobals();
+            if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
+                $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+            }
+
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+
+            if ($this->requestContext->isAdmin()) {
+                $this->setAdminGlobals($event);
+            } else {
+                $this->setFrontVaribales($event);
+            }
+        } catch (\LogicException $e) {
+            // TODO: FIXME should handle exception on \Twig_Environment::addGlobal
         }
 
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-
-        if ($this->requestContext->isAdmin()) {
-            $this->setAdminGlobals($event);
-        } else {
-            $this->setFrontVaribales($event);
-        }
     }
 
     /**
@@ -103,8 +108,13 @@ class TwigInitializeListener implements EventSubscriberInterface
             $Page = $this->pageRepository->newPage($DeviceType);
         }
 
-        $this->twig->addGlobal('Page', $Page);
-        $this->twig->addGlobal('title', $Page->getName());
+        try {
+            $this->twig->addGlobal('Page', $Page);
+            $this->twig->addGlobal('title', $Page->getName());
+        } catch (\Exception $e) {
+
+        }
+
     }
 
     /**

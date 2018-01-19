@@ -861,11 +861,11 @@ class ProductController extends AbstractController
      *
      * @Route("export", name="admin_product_export")
      *
-     * @param Application $app
      * @param Request $request
+     *
      * @return StreamedResponse
      */
-    public function export(Application $app, Request $request)
+    public function export(Request $request)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -875,7 +875,7 @@ class ProductController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
@@ -915,7 +915,7 @@ class ProductController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
 
-            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
