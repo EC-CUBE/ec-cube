@@ -6,12 +6,17 @@ use Eccube\Entity\Category;
 
 class SearchProductControllerTest extends AbstractWebTestCase
 {
+    /**
+     * @var \Eccube\Repository\CategoryRepository
+     */
+    protected $categoryRepository;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->remove();
         $this->createCategories();
+        $this->categoryRepository = $this->container->get(\Eccube\Repository\CategoryRepository::class);
     }
 
     public function createCategories()
@@ -53,8 +58,8 @@ class SearchProductControllerTest extends AbstractWebTestCase
             $Category->setPropertiesFromArray($category_array);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
-            $this->app['orm.em']->persist($Category);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($Category);
+            $this->entityManager->flush();
 
             if (!array_key_exists('child', $category_array)) {
                 continue;
@@ -65,8 +70,8 @@ class SearchProductControllerTest extends AbstractWebTestCase
                 $Child->setParent($Category);
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
-                $this->app['orm.em']->persist($Child);
-                $this->app['orm.em']->flush();
+                $this->entityManager->persist($Child);
+                $this->entityManager->flush();
 
                 $Category->addChild($Child);
 
@@ -79,8 +84,8 @@ class SearchProductControllerTest extends AbstractWebTestCase
                     $Grandson->setParent($Child);
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
-                    $this->app['orm.em']->persist($Grandson);
-                    $this->app['orm.em']->flush();
+                    $this->entityManager->persist($Grandson);
+                    $this->entityManager->flush();
                     $Child->addChild($Grandson);
                 }
             }
@@ -99,21 +104,17 @@ class SearchProductControllerTest extends AbstractWebTestCase
 
     public function testRoutingSearchProduct()
     {
-        $this->client->request('GET',
-            $this->app->url('block_search_product')
-        );
+        $this->client->request('GET', $this->generateUrl('block_search_product'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testCategory()
     {
         // Give
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫1'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '孫1'));
 
         // When
-        $crawler = $this->client->request('GET',
-            $this->app->url('block_search_product')
-        );
+        $crawler = $this->client->request('GET', $this->generateUrl('block_search_product'));
 
         // Then
         $this->assertTrue($this->client->getResponse()->isSuccessful());

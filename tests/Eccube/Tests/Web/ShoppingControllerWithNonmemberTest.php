@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Tests\Web;
+use Eccube\Service\CartService;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
@@ -38,29 +39,29 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testRoutingShoppingLogin()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping/login');
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+        $client = $this->client;
+        $client->request('GET', '/shopping/login');
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testIndexWithCartUnlock()
     {
-        $this->app['eccube.service.cart']->unlock();
+        $this->container->get(CartService::class)->unlock();
 
-        $client = $this->createClient();
+        $client = $this->client;
         $crawler = $client->request('GET', '/shopping');
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testIndexWithCartNotFound()
     {
-        $this->app['eccube.service.cart']->lock();
+        $this->container->get(CartService::class)->lock();
 
         $client = $this->createClient();
         $crawler = $client->request('GET', '/shopping');
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     /**
@@ -68,15 +69,16 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     public function testConfirmWithNonmember()
     {
-        $client = $this->createClient();
+        $client = $this->client;
         $this->scenarioCartIn($client);
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
 
-        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $client->request('GET', $this->generateUrl('shopping'));
+        $crawler = $client->followRedirect();
         $this->expected = 'ご注文手続き';
-        $this->actual = $crawler->filter('h1')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());

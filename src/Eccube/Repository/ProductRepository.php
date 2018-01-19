@@ -60,9 +60,10 @@ class ProductRepository extends AbstractRepository
      */
     protected $appConfig;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, Queries $queries )
     {
         parent::__construct($registry, Product::class);
+        $this->queries = $queries;
     }
 
    /**

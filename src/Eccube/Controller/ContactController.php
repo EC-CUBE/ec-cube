@@ -24,54 +24,60 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ContactType;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route(service=ContactController::class)
  */
 class ContactController extends AbstractController
 {
-    public function __construct(MailService $mailService, EventDispatcher $eventDispatcher, FormFactory $formFactory, AuthorizationChecker $authorizationChecker)
+    /**
+     * @var MailService
+     */
+    protected $mailService;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    protected $formFactory;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
+     * ContactController constructor.
+     * @param MailService $mailService
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param FormFactoryInterface $formFactory
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(
+        MailService $mailService,
+        EventDispatcherInterface $eventDispatcher,
+        FormFactoryInterface $formFactory,
+        AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->mailService = $mailService;
         $this->eventDispatcher = $eventDispatcher;
         $this->formFactory = $formFactory;
         $this->authorizationChecker = $authorizationChecker;
     }
-
-    /**
-     * @Inject(MailService::class)
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @var AuthorizationChecker
-     */
-    protected $authorizationChecker;
 
     /**
      * お問い合わせ画面.
@@ -165,7 +171,7 @@ class ContactController extends AbstractController
      * @Route("/contact/complete", name="contact_complete")
      * @Template("Contact/complete.twig")
      */
-    public function complete(Request $request)
+    public function complete()
     {
         return [];
     }

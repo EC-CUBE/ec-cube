@@ -24,8 +24,7 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
@@ -36,11 +35,13 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -75,7 +76,7 @@ class ProductController extends AbstractController
     protected $productRepository;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -97,18 +98,25 @@ class ProductController extends AbstractController
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
      * @param ProductRepository $productRepository
-     * @param EntityManager $entityManager
-     * @param BaseInfo $BaseInfo
+     * @param EntityManagerInterface $entityManager
+     * @param BaseInfoRepository $BaseInfo
      * @param AuthenticationUtils $helper
      */
-    public function __construct(PurchaseFlow $purchaseFlow, CustomerFavoriteProductRepository $customerFavoriteProductRepository, CartService $cartService, ProductRepository $productRepository, EntityManager $entityManager, BaseInfo $BaseInfo, AuthenticationUtils $helper)
-    {
+    public function __construct(
+        PurchaseFlow $purchaseFlow,
+        CustomerFavoriteProductRepository $customerFavoriteProductRepository,
+        CartService $cartService,
+        ProductRepository $productRepository,
+        EntityManagerInterface $entityManager,
+        BaseInfoRepository $BaseInfo,
+        AuthenticationUtils $helper
+    ) {
         $this->purchaseFlow = $purchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
         $this->entityManager = $entityManager;
-        $this->BaseInfo = $BaseInfo;
+        $this->BaseInfo = $BaseInfo->get();
         $this->helper = $helper;
     }
 
@@ -118,7 +126,7 @@ class ProductController extends AbstractController
      * @Route("/products/list", name="product_list")
      * @Template("Product/list.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index( Request $request, Paginator $paginator)
     {
         // Doctrine SQLFilter
         // if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -166,7 +174,7 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
         $searchData = $event->getArgument('searchData');
 
-        $pagination = $app['paginator']()->paginate(
+        $pagination = $paginator->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId()

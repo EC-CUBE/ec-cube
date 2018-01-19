@@ -97,6 +97,34 @@ class OrderHelper
     protected $appConfig;
 
     /**
+     * OrderHelper constructor.
+     * @param OrderItemTypeRepository $orderItemTypeRepository
+     * @param OrderStatusRepository $orderStatusRepository
+     * @param TaxRuleRepository $taxRuleRepository
+     * @param DeliveryFeeRepository $deliveryFeeRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param PaymentRepository $paymentRepository
+     * @param OrderRepository $orderRepository
+     * @param ShippingStatusRepository $shippingStatusRepository
+     * @param EntityManager $entityManager
+     * @param array $eccubeConfig
+     */
+    public function __construct(OrderItemTypeRepository $orderItemTypeRepository, OrderStatusRepository $orderStatusRepository, TaxRuleRepository $taxRuleRepository, DeliveryFeeRepository $deliveryFeeRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository, OrderRepository $orderRepository, ShippingStatusRepository $shippingStatusRepository, EntityManager $entityManager, array $eccubeConfig)
+    {
+        $this->orderItemTypeRepository = $orderItemTypeRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->deliveryRepository = $deliveryRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->orderRepository = $orderRepository;
+        $this->shippingStatusRepository = $shippingStatusRepository;
+        $this->entityManager = $entityManager;
+        $this->appConfig = $eccubeConfig;
+    }
+
+
+    /**
      * 購入処理中の受注データを生成する.
      *
      * @param Customer $Customer

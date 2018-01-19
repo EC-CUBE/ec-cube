@@ -25,50 +25,54 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Repository\OrderRepository;
+use Eccube\Service\CartService;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
+    /**
+     * @var BaseInfoRepository
+     */
+    private $baseInfoRepository;
 
     public function setUp()
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
     }
 
     public function testRoutingShoppingLogin()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', '/shopping/login');
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+        $client->request('GET', '/shopping/login');
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testShoppingIndexWithCartUnlock()
     {
-        $this->app['eccube.service.cart']->unlock();
+        $this->container->get(CartService::class)->unlock();
+        $this->client->request('GET', $this->generateUrl('shopping'));
 
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app->path('shopping'));
-
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testComplete()
     {
-        $this->app['session']->set('eccube.front.shopping.order.id', 111);
+        $this->container->get('session')->set('eccube.front.shopping.order.id', 111);
+        $this->client->request('GET', $this->generateUrl('shopping_complete'));
 
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app->path('shopping_complete'));
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertNull($this->app['session']->get('eccube.front.shopping.order.id'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertNull($this->container->get('session')->get('eccube.front.shopping.order.id'));
     }
 
     public function testShoppingError()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app->path('shopping_error'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client->request('GET', $this->generateUrl('shopping_error'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
@@ -77,28 +81,29 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     public function testCompleteWithLogin()
     {
         $faker = $this->getFaker();
-        $Customer = $this->logIn();
+        $Customer = $this->logInTo($this->createCustomer());
         $client = $this->client;
         // カート画面
-        $this->scenarioCartIn($client);
-
+        $crwaler = $this->scenarioCartIn($client);
         // 手続き画面
         $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文手続き';
-        $this->actual = $crawler->filter('h1')->text();
+        $crawler = $client->followRedirect();
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
         // 確認画面
-        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $crawler = $this->scenarioComplete($client, $this->generateUrl('shopping_confirm'));
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1')->text();
         $this->verify();
 
         // 完了画面
-        $this->scenarioComplete($client, $this->app->path('shopping_order'));
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
+        $this->scenarioComplete($client, $this->generateUrl('shopping_order'));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->baseInfoRepository->get();
+        $mailCollector = $this->getMailCollector(false);
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
@@ -107,13 +112,13 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->verify();
 
         // 生成された受注のチェック
-        $Order = $this->app['eccube.repository.order']->findOneBy(
+        $Order = $this->container->get(OrderRepository::class)->findOneBy(
             array(
                 'Customer' => $Customer
             )
         );
 
-        $OrderNew = $this->app['eccube.repository.order_status']->find(OrderStatus::NEW);
+        $OrderNew = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
         $this->actual = $Order->getOrderStatus();
         $this->verify();
