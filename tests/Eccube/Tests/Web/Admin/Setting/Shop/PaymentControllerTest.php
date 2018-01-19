@@ -25,26 +25,20 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\Payment;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testRouting()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_payment'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_payment_new'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -61,7 +55,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         }
 
         $this->client->request('POST',
-            $this->app->url('admin_setting_shop_payment_new'),
+            $this->generateUrl('admin_setting_shop_payment_new'),
             array(
                 'payment_register' => $formData
             )
@@ -73,8 +67,8 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingEdit()
     {
-        $Payment = $this->app['eccube.repository.payment']->find(1);
-        $this->client->request('GET', $this->app->url('admin_setting_shop_payment_edit', array('id' => $Payment->getId())));
+        $Payment = $this->container->get(PaymentRepository::class)->find(1);
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_edit', array('id' => $Payment->getId())));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -90,10 +84,10 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $Payment = $this->app['eccube.repository.payment']->find(1);
+        $Payment = $this->container->get(PaymentRepository::class)->find(1);
 
         $this->client->request('POST',
-            $this->app->url('admin_setting_shop_payment_edit', array('id' => $Payment->getId())),
+            $this->generateUrl('admin_setting_shop_payment_edit', array('id' => $Payment->getId())),
             array(
                 'payment_register' => $formData
             )
@@ -106,7 +100,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testDeleteSuccess()
     {
 
-        $Member = $this->app['eccube.repository.member']->find(2);
+        $Member = $this->createMember();
         $Payment = new Payment();
         $Payment->setMethod('testDeleteSuccess')
             ->setCharge(0)
@@ -115,41 +109,38 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             ->setCreator($Member)
             ->setVisible(true);
 
-        $this->app['orm.em']->persist($Payment);
-        $this->app['orm.em']->flush($Payment);
+        $this->entityManager->persist($Payment);
+        $this->entityManager->flush();
 
         $pid = $Payment->getId();
         $this->client->request('DELETE',
-            $this->app->url('admin_setting_shop_payment_delete', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_delete', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $Payment = $this->app['eccube.repository.payment']->find($pid);
+        $Payment = $this->container->get(PaymentRepository::class)->find($pid);
         $this->assertNull($Payment);
     }
 
     public function testDeleteFail_NotFound()
     {
-        $pid = 9999;
-        try {
-            $this->client->request(
-                'DELETE',
-                $this->app->url('admin_setting_shop_payment_delete', array('id' => $pid))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
+        $pid = 99999999999;
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('admin_setting_shop_payment_delete', array('id' => $pid))
+        );
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
 
-        }
     }
 
     public function testUp()
     {
         $pid = 4;
-        $Payment = $this->app['eccube.repository.payment']->find($pid);
+        $Payment = $this->container->get(PaymentRepository::class)->find($pid);
         $before = $Payment->getSortNo();
         $this->client->request('PUT',
-            $this->app->url('admin_setting_shop_payment_up', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_up', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -163,10 +154,10 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testDown()
     {
         $pid = 1;
-        $Payment = $this->app['eccube.repository.payment']->find($pid);
+        $Payment = $this->container->get(PaymentRepository::class)->find($pid);
         $before = $Payment->getSortNo();
         $this->client->request('PUT',
-            $this->app->url('admin_setting_shop_payment_down', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_payment_down', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -182,7 +173,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
 
         $this->client->request('POST',
-            $this->app->url('admin_payment_image_add'),
+            $this->generateUrl('admin_payment_image_add'),
             array(
                 'payment_register' => $formData
             ),
@@ -191,43 +182,42 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             )
         );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\BadRequestHttpException
-     */
     public function testAddImage_NotAjax()
     {
         $formData = $this->createFormData();
 
         $this->client->request('POST',
-            $this->app->url('admin_payment_image_add'),
+            $this->generateUrl('admin_payment_image_add'),
             array(
                 'payment_register' => $formData
             ),
             array()
         );
+        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
 
-//    public function testAddImage_MineNotSupported()
-//    {
-//        $formData = $this->createFormData();
-//
-//        $formData['payment_image'] = 'abc.avi';
-//        $formData['payment_image_file'] = 'abc.avi';
-//
-//        $this->client->request('POST',
-//            $this->app->url('admin_payment_image_add'),
-//            array(
-//                'payment_register' => $formData
-//            ),
-//            array(),
-//            array(
-//                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-//            )
-//        );
-//    }
+    //    public function testAddImage_MineNotSupported()
+    //    {
+    //        $formData = $this->createFormData();
+    //
+    //        $formData['payment_image'] = 'abc.avi';
+    //        $formData['payment_image_file'] = 'abc.avi';
+    //
+    //        $this->client->request('POST',
+    //            $this->app->url('admin_payment_image_add'),
+    //            array(
+    //                'payment_register' => $formData
+    //            ),
+    //            array(),
+    //            array(
+    //                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+    //            )
+    //        );
+    //    }
 
     public function createFormData()
     {
@@ -251,6 +241,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             'payment_image_file' => 'abc.png',
             'fixed' => true,
         );
+
         return $form;
     }
 

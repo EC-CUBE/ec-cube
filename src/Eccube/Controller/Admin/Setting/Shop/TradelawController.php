@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -34,44 +32,36 @@ use Eccube\Form\Type\Admin\TradelawType;
 use Eccube\Repository\HelpRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route(service=TradelawController::class)
+ * Class TradelawController
+ *
+ * @package Eccube\Controller\Admin\Setting\Shop
  */
 class TradelawController extends AbstractController
 {
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(HelpRepository::class)
      * @var HelpRepository
      */
     protected $helpRepository;
 
     /**
-     * @Route("/%admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw")
-     * @Template("Setting/Shop/tradelaw.twig")
+     * TradelawController constructor.
+     *
+     * @param HelpRepository $helpRepository
      */
-    public function index(Application $app, Request $request)
+    public function __construct(HelpRepository $helpRepository)
+    {
+        $this->helpRepository = $helpRepository;
+    }
+
+    /**
+     * @Route("/%admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw")
+     * @Template("@admin/Setting/Shop/tradelaw.twig")
+     */
+    public function index(Request $request)
     {
         $Help = $this->helpRepository->get();
 
@@ -106,11 +96,11 @@ class TradelawController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop_tradelaw'));
+                return $this->redirectToRoute('admin_setting_shop_tradelaw');
             } else {
-                $app->addError('admin.register.failed', 'admin');
+                $this->addError('admin.register.failed', 'admin');
             }
         }
 

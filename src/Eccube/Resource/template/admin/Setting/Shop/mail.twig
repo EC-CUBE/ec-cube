@@ -19,29 +19,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_mail'] %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}メール管理{% endblock %}
+{% block title %}基本情報設定{% endblock %}
+{% block sub_title %}メール設定{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script>
-        $(function(){
-            $("#mail_template").on("change", function(){
+        $(function() {
+            $("#mail_template").on("change", function() {
                 var id = $(this).val()
                 if (id) {
-                    location.href= '{{ url('admin_setting_shop_mail') }}/' + id;
+                    location.href = '{{ url('admin_setting_shop_mail') }}/' + id;
                 } else {
-                    location.href= '{{ url('admin_setting_shop_mail') }}';
+                    location.href = '{{ url('admin_setting_shop_mail') }}';
                 }
             });
         });
     </script>
-{% endblock javascript%}
+{% endblock javascript %}
 
 {% block main %}
 
@@ -89,6 +89,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         </form>
     </div>
-
 
 {% endblock %}

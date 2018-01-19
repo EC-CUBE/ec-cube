@@ -14,6 +14,8 @@ parameters:
     eccube.theme: 'default'
     eccube.twig.block.templates:
       - render_block.twig
+    eccube.save_image_dir: '%kernel.project_dir%/html/upload/save_image'
+    eccube.temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
 
 services:
     # default configuration for services in *this* file

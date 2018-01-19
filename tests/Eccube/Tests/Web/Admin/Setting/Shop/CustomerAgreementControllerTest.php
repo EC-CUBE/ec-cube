@@ -28,36 +28,32 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class CustomerAgreementControllerTest
+ *
  * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     /**
      * Test routing admin customer agreement
      */
     public function testRoutingAdminSettingCustomerAgreement()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_customer_agreement'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_customer_agreement'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * Change customer agreement
+     *
      * @param mixed $content
-     * @param bool  $expected
+     * @param bool $expected
      * @dataProvider dataSubmitProvider
      */
     public function testSubmit($content, $expected)
     {
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_customer_agreement'),
+            $this->generateUrl('admin_setting_shop_customer_agreement'),
             array('customer_agreement' => $this->createFormData($content))
         );
         $this->expected = $expected;
