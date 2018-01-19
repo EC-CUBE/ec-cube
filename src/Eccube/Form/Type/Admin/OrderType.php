@@ -24,12 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
-use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
@@ -42,50 +38,45 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class OrderType extends AbstractType
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
-
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * OrderType constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param array $eccubeConfig
+     * @param BaseInfo $BaseInfo
      */
-    protected $app;
-
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager, array $eccubeConfig, BaseInfo $BaseInfo)
     {
+        $this->entityManager = $entityManager;
+        $this->eccubeConfig = $eccubeConfig;
+        $this->BaseInfo = $BaseInfo;
     }
+
 
     /**
      * {@inheritdoc}
@@ -114,8 +105,8 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    ))
+                        'max' => $this->eccubeConfig['stext_len'],
+                    )),
                 ),
             ))
             ->add('zip', ZipType::class, array(
@@ -124,7 +115,7 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
-                    'attr' => array('class' => 'p-postal-code')
+                    'attr' => array('class' => 'p-postal-code'),
                 ),
             ))
             ->add('address', AddressType::class, array(
@@ -133,26 +124,26 @@ class OrderType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
-                    'attr' => array('class' => 'p-region-id')
+                    'attr' => array('class' => 'p-region-id'),
                 ),
                 'addr01_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->appConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-locality')
+                    'attr' => array('class' => 'p-locality'),
                 ),
                 'addr02_options' => array(
                     'required' => false,
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $this->appConfig['mtext_len'],
+                            'max' => $this->eccubeConfig['mtext_len'],
                         )),
                     ),
-                    'attr' => array('class' => 'p-street-address')
+                    'attr' => array('class' => 'p-street-address'),
                 ),
             ))
             ->add('email', EmailType::class, array(
@@ -180,8 +171,8 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    ))
+                        'max' => $this->eccubeConfig['stext_len'],
+                    )),
                 ),
             ))
             ->add('message', TextareaType::class, array(
@@ -189,7 +180,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['ltext_len'],
                     )),
                 ),
             ))
@@ -211,10 +202,10 @@ class OrderType extends AbstractType
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     )),
                 ),
-                'attr' => array('readonly' => true)
+                'attr' => array('readonly' => true),
             ))
             ->add('use_point', NumberType::class, array(
                 'required' => false,
@@ -222,7 +213,7 @@ class OrderType extends AbstractType
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     )),
                 ),
             ))
@@ -231,7 +222,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['ltext_len'],
                     )),
                 ),
             ))
@@ -261,7 +252,7 @@ class OrderType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'data' => $options['SortedItems']
+                'data' => $options['SortedItems'],
             ))
             ->add('OrderItemsErrors', TextType::class, [
                 'mapped' => false,
@@ -302,7 +293,7 @@ class OrderType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Order',
             'orign_order' => null,
-            'SortedItems' => null
+            'SortedItems' => null,
         ));
     }
 
