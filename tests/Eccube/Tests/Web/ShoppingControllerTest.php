@@ -40,6 +40,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
     }
@@ -84,7 +85,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $client = $this->client;
         // カート画面
         $crwaler = $this->scenarioCartIn($client);
-//var_dump($crwaler->filter('.ec-pageHeader h1'));exit;
         // 手続き画面
         $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文手続き';
