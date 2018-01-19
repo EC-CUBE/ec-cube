@@ -6,16 +6,9 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testIndex()
     {
-        $this->client->request('GET', $this->app->url('admin_content_layout'));
+        $this->client->request('GET', $this->generateUrl('admin_content_layout'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -23,7 +16,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_layout_edit',
                 array('id' => 1)
             ),
@@ -44,7 +37,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->app->url('admin_content_layout_edit', array('id' => 1))
+            $this->generateUrl('admin_content_layout_edit', array('id' => 1))
         ));
     }
 
