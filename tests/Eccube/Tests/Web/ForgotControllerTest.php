@@ -25,6 +25,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->client->enableProfiler();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
         $this->customerRepository = $this->container->get(CustomerRepository::class);
+        $this->client->disableReboot();
     }
 
     public function testIndex()
@@ -40,7 +41,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostAndVerify()
     {
-        $this->markTestIncomplete("reset_key can not found");
+        $this->markTestIncomplete("expected and actual is diff");
         $Customer = $this->createCustomer();
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -66,8 +67,6 @@ class ForgotControllerTest extends AbstractWebTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $OrigCustomer = $this->customerRepository->find($Customer->getId());
-        $key = $OrigCustomer->getResetKey();
         $cleanContent = quoted_printable_decode($Message->getBody());
         $this->assertEquals(1, preg_match('|http://localhost(.*)|', $cleanContent, $urls));
         $forgot_path = trim($urls[1]);
@@ -109,13 +108,6 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testResetWithDenied()
     {
-        // Todo: Fail assert if debug = true
-        // $isDebug = $this->container->getParameter('kernel.debug');
-
-        // debugはONの時に403ページ表示しない例外になり`ます。
-        // if($isDebug == true){
-        //    $this->expectException(\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException::class);
-        // }
 
         $client = $this->client;
         $client->request(
@@ -123,25 +115,18 @@ class ForgotControllerTest extends AbstractWebTestCase
             '/forgot/reset/a___aaa'
         );
 
-        // debugはOFFの時に403ページが表示します。
-        // if($isDebug == false){
         $this->expected = 403;
         $this->actual = $client->getResponse()->getStatusCode();
         $this->verify();
-        // }
     }
 
     public function testResetWithNotFound()
     {
-        // $this->markTestIncomplete('Todo: Fail to catch exception by PHPUNIT');
-        // $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
         $client = $this->client;
-
         $client->request(
            'GET',
            '/forgot/reset/aaaa'
         );
-
         $this->expected = 404;
         $this->actual = $client->getResponse()->getStatusCode();
         $this->verify();
