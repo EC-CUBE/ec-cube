@@ -31,7 +31,6 @@ use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route(service=ContactController::class)
@@ -43,22 +42,15 @@ class ContactController extends AbstractController
      */
     protected $mailService;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
 
     /**
      * ContactController constructor.
      * @param MailService $mailService
-     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        MailService $mailService,
-        AuthorizationCheckerInterface $authorizationChecker)
+        MailService $mailService)
     {
         $this->mailService = $mailService;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -71,7 +63,7 @@ class ContactController extends AbstractController
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
-        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+        if ($this->isGranted('ROLE_USER')) {
             $user = $this->getUser();
             $builder->setData(
                 array(

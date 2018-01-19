@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\CustomerStatus;

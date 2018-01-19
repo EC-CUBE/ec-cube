@@ -23,8 +23,6 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
@@ -159,7 +157,7 @@ class ForgotController extends AbstractController
      * @Route("/forgot/complete", name="forgot_complete")
      * @Template("Forgot/complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete(Request $request)
     {
         return [];
     }
