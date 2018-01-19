@@ -53,7 +53,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         parent::setUp();
 
-        $this->baseInfoRepository = $this->container->get(BaseInfo::class);
+        $this->BaseInfo = $this->container->get(BaseInfo::class);
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
 
@@ -299,7 +299,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE
-        $this->baseInfoRepository->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
@@ -337,7 +337,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsEmpty()
     {
         // GIVE
-        $this->baseInfoRepository->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
@@ -375,7 +375,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsNotEmpty()
     {
         // GIVE
-        $this->baseInfoRepository->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
 
         /* @var Crawler $crawler */
@@ -413,7 +413,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /**
          * @var BaseInfo $baseInfo
          */
-        $this->baseInfoRepository->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createProduct();
         // class 1
@@ -465,7 +465,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndRemoveClass()
     {
         // GIVE
-        $this->baseInfoRepository->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
 
         // WHEN
