@@ -43,8 +43,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SearchProductType extends AbstractType
 {
     /**
-     * @var CategoryRepository
-     * @Inject(CategoryRepository::class)
+     * @var CategoryRepositoryPr
      */
     protected $categoryRepository;
 
@@ -53,8 +52,10 @@ class SearchProductType extends AbstractType
      *
      * @param Application $app
      */
-    public function __construct()
+
+    public function __construct( CategoryRepository $categoryRepository)
     {
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**

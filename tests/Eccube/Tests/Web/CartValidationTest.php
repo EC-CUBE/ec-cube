@@ -37,11 +37,9 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        // FIXME カートの登録チェックが実装されたら有効にする
-        $this->markTestIncomplete('CartController is not implemented.');
+        $this->markTestIncomplete('Cart validate function is not complete');
         parent::setUp();
-        $this->initializeMailCatcher();
+        $this->client->enableProfiler();
     }
 
     /**
@@ -49,7 +47,6 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -60,6 +57,8 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testValidationStock()
     {
+        $this->markTestIncomplete("Incomplete cart");
+
         /** @var Product $Product */
         $Product = $this->createProduct('test1');
 
@@ -67,36 +66,27 @@ class CartValidationTest extends AbstractWebTestCase
 
         // 在庫数を設定
         $ProductClass->setStock(1);
-        $this->app['orm.em']->persist($ProductClass);
-
-        $arr = array(
-            'product_id' => $Product->getId(),
-            'mode' => 'add_cart',
-            'product_class_id' => $ProductClass->getId(),
-            'quantity' => 9999,
-            '_token' => 'dummy',
-        );
-        if ($ProductClass->hasClassCategory1()) {
-            $arr['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
-        }
-        if ($ProductClass->hasClassCategory2()) {
-            $arr['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
-        }
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush();
 
         /** @var Client $client */
         $client = $this->client;
 
         $crawler = $client->request(
-            'POST',
-            $this->app->url('product_detail', array('id' => $Product->getId())),
-            $arr
+            'GET',
+            $this->generateUrl('product_detail', array('id' => $Product->getId()))
         );
+
+        $form = $crawler->selectButton('カートに入れる')->form();
+
+        $form['quantity'] = 999999;
+        $client->submit($form);
 
         $crawler = $client->followRedirect();
 
         // エラーメッセージは改行されているため2回に分けてチェック
 
-        $message = $crawler->filter('.errormsg')->text();
+        $message = $crawler->filter('.ec-cartRole__error')->text();
 
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
 
@@ -109,7 +99,7 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartDeleted()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
@@ -131,7 +121,7 @@ class CartValidationTest extends AbstractWebTestCase
         // render
         $client->request(
             'GET',
-            $this->app->url('product_detail', array('id' => $productId))
+            $this->generateUrl('product_detail', array('id' => $productId))
         );
 
         // delete
@@ -140,7 +130,7 @@ class CartValidationTest extends AbstractWebTestCase
         // submit
         $client->request(
             'POST',
-            $this->app->url('product_detail', array('id' => $productId)),
+            $this->generateUrl('product_detail', array('id' => $productId)),
             $arrForm
         );
 
@@ -210,14 +200,14 @@ class CartValidationTest extends AbstractWebTestCase
         // Stock out
         $ProductClass->setStock(0);
 
-        $this->app['orm.em']->persist($ProductClass);
-        $this->app['orm.em']->persist($Product);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->persist($Product);
+        $this->entityManager->flush();
 
         // render
         $client->request(
             'GET',
-            $this->app->url('product_detail', array('id' => $productId))
+            $this->generateUrl('product_detail', array('id' => $productId))
         );
 
         // submit
@@ -231,12 +221,11 @@ class CartValidationTest extends AbstractWebTestCase
 
         $crawler = $client->request(
             'POST',
-            $this->app->url('product_detail', array('id' => $productId)),
+            $this->generateUrl('product_detail', array('id' => $productId)),
             $arrForm
         );
 
-        $html = $crawler->filter('#detail_cart_box__button_area')->html();
-
+        $html = $crawler->html();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->assertContains('ただいま品切れ中です', $html);
@@ -2941,8 +2930,8 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $ProductClass->setStock($stock);
 
-        $this->app['orm.em']->persist($ProductClass);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush();
 
         return $ProductClass;
     }
@@ -2953,7 +2942,7 @@ class CartValidationTest extends AbstractWebTestCase
     protected function deleteAllProduct()
     {
         // remove product exist
-        $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
+        $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = 'DELETE FROM dtb_tax_rule WHERE dtb_tax_rule.id <> 1';
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

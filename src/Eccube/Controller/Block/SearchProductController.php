@@ -30,7 +30,6 @@ use Eccube\Form\Type\SearchProductBlockType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -43,15 +42,21 @@ class SearchProductController
     protected $requestStack;
 
     /**
-     * @var FormFactory
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
     /**
-     * @var
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
+    /**
+     * SearchProductController constructor.
+     * @param RequestStack $requestStack
+     * @param FormFactoryInterface $formFactory
+     * @param EventDispatcherInterface $eventDispatcher
+     */
     public function __construct(
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,

@@ -24,21 +24,16 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Repository\BaseInfoRepository;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->initializeMailCatcher();
-    }
-
-    public function tearDown()
-    {
-        $this->cleanUpMailCatcherMessages();
-        parent::tearDown();
+        $this->client->enableProfiler();
     }
 
     protected function createFormData()
@@ -95,15 +90,15 @@ class EntryControllerTest extends AbstractWebTestCase
             'sex' => 1,
             'job' => 1,
             'point' => 1,
-            '_token' => 'dummy'
+            Constant::TOKEN_NAME => $this->getCsrfToken('entry')
         );
         return $form;
     }
 
     public function testRoutingIndex()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry'));
+        $client = $this->client;
+        $crawler = $client->request('GET', $this->generateUrl('entry'));
 
         $this->expected = '新規会員登録';
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
@@ -114,10 +109,8 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testConfirm()
     {
-        $client = $this->createClient();
-
-        $crawler = $client->request('POST',
-            $this->app['url_generator']->generate('entry'),
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
             array(
                 'entry' => $this->createFormData(),
                 'mode' => 'confirm',
@@ -128,17 +121,17 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testConfirmWithError()
     {
-        $client = $this->createClient();
-
-        $crawler = $client->request('POST',
-            $this->app['url_generator']->generate('entry'),
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('entry'),
             array(
-                'entry' => array(),
+                'entry' => array(
+                    Constant::TOKEN_NAME => $this->getCsrfToken('entry')
+                ),
                 'mode' => 'confirm'
             )
         );
@@ -147,15 +140,15 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testConfirmWithModeNotFound()
     {
-        $client = $this->createClient();
+        $client = $this->client;
 
         $crawler = $client->request('POST',
-            $this->app['url_generator']->generate('entry'),
+            $this->generateUrl('entry'),
             array(
                 'entry' => $this->createFormData(),
                 'mode' => 'aaaaa'
@@ -171,86 +164,73 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivate()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
         $BaseInfo->setOptionCustomerActivate(1);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $client = $this->createClient();
+        $client = $this->client;
         $crawler = $client->request('POST',
-            $this->app['url_generator']->generate('entry'),
+            $this->generateUrl('entry'),
             array(
                 'entry' => $this->createFormData(),
                 'mode' => 'complete'
             )
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('entry_complete')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
 
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $collectedMessages = $this->getMailCollector(false)->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
         $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録のご確認';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
     public function testRoutingComplete()
     {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('entry_complete'));
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('entry_complete'));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testActivate()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
         $Customer->setStatus($Status);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => $secret_key)));
+        $client = $this->client;
+        $client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => $secret_key)));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $collectedMessages = $this->getMailCollector(false)->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
         $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録が完了しました。';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
     public function testActivateWithNotFound()
     {
-        // debugはONの時に404ページ表示しない例外になります。
-        if($this->app['debug'] == true){
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
-        }
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => 'aaaaa')));
-        // debugはOFFの時に404ページが表示します。
-        if($this->app['debug'] == false){
-            $this->expected = 404;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
+        $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => 'aaaaa')));
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+
     }
 
     public function testActivateWithAbort()
     {
-        // debugはONの時に403ページ表示しない例外になります。
-        if($this->app['debug'] == true){
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
-        }
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => '+++++++')));
-        // debugはOFFの時に403ページが表示します。
-        if($this->app['debug'] == false){
-            $this->expected = 403;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
+        $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => '+++++++')));
+        $this->expected = 403;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }

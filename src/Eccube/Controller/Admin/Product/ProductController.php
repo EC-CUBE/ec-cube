@@ -45,6 +45,7 @@ use Eccube\Repository\ProductImageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -149,11 +150,54 @@ class ProductController extends AbstractController
     protected $session;
 
     /**
+     * ProductController constructor.
+     * @param ProductClassRepository $productClassRepository
+     * @param ProductImageRepository $productImageRepository
+     * @param EntityManager $entityManager
+     * @param TaxRuleRepository $taxRuleRepository
+     * @param CategoryRepository $categoryRepository
+     * @param ProductRepository $productRepository
+     * @param BaseInfo $BaseInfo
+     * @param PageMaxRepository $pageMaxRepository
+     * @param ProductStatusRepository $productStatusRepository
+     * @param FormFactory $formFactory
+     * @param Session $session
+     */
+    public function __construct(
+        ProductClassRepository $productClassRepository,
+        ProductImageRepository $productImageRepository,
+        EntityManager $entityManager,
+        TaxRuleRepository $taxRuleRepository,
+        CategoryRepository $categoryRepository,
+        ProductRepository $productRepository,
+        BaseInfo $BaseInfo,
+        PageMaxRepository $pageMaxRepository,
+        ProductStatusRepository $productStatusRepository,
+        FormFactory $formFactory,
+        Session $session,
+        array $eccubeConfig
+    ) {
+        $this->productClassRepository = $productClassRepository;
+        $this->productImageRepository = $productImageRepository;
+        $this->entityManager = $entityManager;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->productRepository = $productRepository;
+        $this->BaseInfo = $BaseInfo;
+        $this->pageMaxRepository = $pageMaxRepository;
+        $this->productStatusRepository = $productStatusRepository;
+        $this->formFactory = $formFactory;
+        $this->session = $session;
+        $this->appConfig = $eccubeConfig;
+    }
+
+
+    /**
      * @Route("/%admin_route%/product", name="admin_product")
      * @Route("/%admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
      * @Template("Product/index.twig")
      */
-    public function index(Application $app, Request $request, $page_no = null)
+    public function index(Request $request, $page_no = null, Paginator $paginator)
     {
 
         $session = $this->session;
@@ -200,7 +244,7 @@ class ProductController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
                 $searchData = $event->getArgument('searchData');
 
-                $pagination = $app['paginator']()->paginate(
+                $pagination = $paginator->paginate(
                     $qb,
                     $page_no,
                     $page_count,
@@ -258,7 +302,7 @@ class ProductController extends AbstractController
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
                     $searchData = $event->getArgument('searchData');
 
-                    $pagination = $app['paginator']()->paginate(
+                    $pagination = $paginator->paginate(
                         $qb,
                         $page_no,
                         $page_count,

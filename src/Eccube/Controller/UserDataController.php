@@ -31,7 +31,6 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -39,7 +38,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserDataController extends AbstractController
 {
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -58,11 +57,19 @@ class UserDataController extends AbstractController
      */
     protected $deviceTypeRepository;
 
+    /**
+     * UserDataController constructor.
+     *
+     * @param EventDispatcherInterface $dispatcher
+     * @param PageRepository $pageRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
+     * @param array $eccubeConfig
+     */
     public function __construct(
-        array $eccubeConfig,
         EventDispatcherInterface $dispatcher,
         PageRepository $pageRepository,
-        DeviceTypeRepository $deviceTypeRepository
+        DeviceTypeRepository $deviceTypeRepository,
+        array $eccubeConfig
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->eventDispatcher = $dispatcher;
