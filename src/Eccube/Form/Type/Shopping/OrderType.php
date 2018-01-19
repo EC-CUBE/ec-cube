@@ -53,19 +53,8 @@ class OrderType extends AbstractType
      */
     protected $paymentRepository;
 
-    /**
-     * OrderType constructor.
-     * @param OrderRepository $orderRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param PaymentRepository $paymentRepository
-     */
-    public function __construct(OrderRepository $orderRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository)
-    {
-        $this->orderRepository = $orderRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->paymentRepository = $paymentRepository;
+    public function __construct() {
     }
-
 
     /**
      * {@inheritdoc}
