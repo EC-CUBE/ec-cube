@@ -49,6 +49,9 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      */
     protected $taxRuleRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

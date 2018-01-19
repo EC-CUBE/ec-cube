@@ -583,14 +583,12 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
-                $msg = $this->translator->trans('admin.register.complete');
-                $this->addSuccess($msg, 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             } else {
                 log_info('商品登録チェックエラー', [$id]);
-                $msg = $this->translator->trans('admin.register.failed');
-                $this->addError($msg, 'admin');
+                $this->addError('admin.register.failed', 'admin');
             }
         }
 
@@ -675,8 +673,7 @@ class ProductController extends AbstractController
 
                     log_info('商品削除完了', [$id]);
 
-                    $message = $this->translator->trans('admin.delete.complete');
-                    $this->addSuccess($message, 'admin');
+                    $this->addSuccess('admin.delete.complete', 'admin');
 
                 } catch (ForeignKeyConstraintViolationException $e) {
                     log_info('商品削除エラー', [$id]);
@@ -685,13 +682,11 @@ class ProductController extends AbstractController
                 }
             } else {
                 log_info('商品削除エラー', [$id]);
-                $message = $this->translator->trans('admin.delete.failed');
-                $this->addError($message, 'admin');
+                $this->addError('admin.delete.failed', 'admin');
             }
         } else {
             log_info('商品削除エラー', [$id]);
-            $message = $this->translator->trans('admin.delete.failed');
-            $this->addError($message, 'admin');
+            $this->addError('admin.delete.failed', 'admin');
         }
 
         $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
@@ -780,13 +775,11 @@ class ProductController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
-                $msg = $this->translator->trans('admin.product.copy.complete');
-                $this->addSuccess($msg, 'admin');
+                $this->addSuccess('admin.product.copy.complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
             } else {
-                $msg = $this->translator->trans('admin.product.copy.failed');
-                $this->addError($msg, 'admin');
+                $this->addError('admin.product.copy.failed', 'admin');
             }
         } else {
             $msg = $this->translator->trans('admin.product.copy.failed');
