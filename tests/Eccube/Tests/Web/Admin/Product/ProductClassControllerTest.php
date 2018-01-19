@@ -22,7 +22,6 @@
  */
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
