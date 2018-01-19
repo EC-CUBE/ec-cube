@@ -82,14 +82,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      */
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsInvalid()
     {
-        // GIVE
-        /* @var Application $app */
-        $app = $this->app;
-        /**
-         * @var BaseInfo $baseInfo
-         */
-        $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createTestProduct($member);
         $className = $this->createClassName($member);
@@ -101,12 +94,12 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $app->url('admin_product_product_class', array('id' => $product->getId()))
+            $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
         $form['form[class_name1]'] = $className->getId();
+        $this->client->disableReboot();
         $crawler = $this->client->submit($form);
-
         // select class category without tax
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();

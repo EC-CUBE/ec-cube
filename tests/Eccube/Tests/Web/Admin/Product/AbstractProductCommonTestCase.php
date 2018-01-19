@@ -30,6 +30,8 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\Master\SaleTypeRepository;
 
 /**
  * Class ProductCommon
@@ -42,12 +44,24 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
     protected $faker;
 
     /**
+     * @var ProductStatusRepository
+     */
+    protected $productStatusRepository;
+
+    /**
+     * @var SaleTypeRepository
+     */
+    protected $saleTypeRepository;
+
+    /**
      * Set up function
      */
     public function setUp()
     {
         parent::setUp();
         $this->faker = $this->getFaker();
+        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
+        $this->saleTypeRepository = $this->container->get(SaleTypeRepository::class);
     }
 
     /**
@@ -61,7 +75,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
 
         $TestProduct = new Product();
-        $ProductStatus = $this->app['orm.em']->getRepository('Eccube\Entity\Master\ProductStatus')->find(1);
+        $ProductStatus = $this->productStatusRepository->find(1);
 
         $TestProduct->setName($this->faker->word)
             ->setStatus($ProductStatus)
@@ -71,13 +85,11 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setFreeArea($this->faker->realText(200))
             ->setCreator($TestCreator);
 
-        $this->app['orm.em']->persist($TestProduct);
-        $this->app['orm.em']->flush($TestProduct);
+        $this->entityManager->persist($TestProduct);
+        $this->entityManager->flush();
 
         $ProductClass = new ProductClass();
-        $SaleType = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\SaleType')
-            ->find(1);
+        $SaleType = $this->saleTypeRepository->find(1);
         $ProductClass->setProduct($TestProduct)
             ->setSaleType($SaleType)
             ->setCode('test code')
@@ -90,8 +102,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setCreator($TestCreator)
             ->setVisible(true);
 
-        $this->app['orm.em']->persist($ProductClass);
-        $this->app['orm.em']->flush($ProductClass);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush();
 
         $this->createProductStock($TestCreator, $ProductClass);
 
@@ -116,8 +128,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setSortNo($this->faker->randomNumber(3))
             ->setCreator($Creator);
 
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush($TestClassName);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
 
         return $TestClassName;
     }
@@ -141,8 +153,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setVisible(true)
             ->setCreator($Creator);
 
-        $this->app['orm.em']->persist($TestClassCategory);
-        $this->app['orm.em']->flush($TestClassCategory);
+        $this->entityManager->persist($TestClassCategory);
+        $this->entityManager->flush();
 
         $TestClassName->addClassCategory($TestClassCategory);
 
@@ -217,8 +229,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $TestProductStock->setStock($TestProductClass->getStock());
         $TestProductStock->setCreator($Creator);
 
-        $this->app['orm.em']->persist($TestProductStock);
-        $this->app['orm.em']->flush($TestProductStock);
+        $this->entityManager->persist($TestProductStock);
+        $this->entityManager->flush($TestProductStock);
 
         $TestProductClass->setProductStock($TestProductStock);
 
