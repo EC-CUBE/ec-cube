@@ -28,18 +28,11 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CacheControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testRoutingAdminContentCache()
     {
         $client = $this->client;
         $client->request('GET',
-            $this->app->url('admin_content_cache')
+            $this->generateUrl('admin_content_cache')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
@@ -48,18 +41,16 @@ class CacheControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
 
-        $url = $this->app->url('admin_content_cache');
+        $url = $this->generateUrl('admin_content_cache');
 
-        $cacheDir = $this->app['config']['root_dir'].'/app/cache';
+        $cacheDir = $this->container->getParameter('kernel.cache_dir');
         file_put_contents($cacheDir.'/twig/sample', 'test');
 
-        // makes the POST request
-        $crawler = $client->request('POST', $url, array(
-                'admin_cache' => array(
-                    '_token' => 'dummy',
-                    'cache' => array('twig'),
-            ),
-        ));
+        $client->request('POST', $url, [
+            'form' => [
+                '_token' => 'dummy',
+            ],
+        ]);
 
         $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');
     }
