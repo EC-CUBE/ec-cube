@@ -30,8 +30,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,19 +40,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ChangePasswordType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * ChangePasswordType constructor.
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    public function __construct()
+    public function __construct(array $eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
 
     /**
@@ -62,7 +58,6 @@ class ChangePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
         $builder
             ->add('current_password', PasswordType::class, array(
                 'label' => '現在のパスワード',
@@ -90,7 +85,8 @@ class ChangePasswordType extends AbstractType
                     )),
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            // TODO:: Fix me
+            // ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

@@ -28,11 +28,6 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 class LoginControllerTest extends AbstractWebTestCase
 {
 
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testRoutingAdminLogin()
     {
         $this->client->request('GET', $this->generateUrl('admin_login'));
@@ -48,12 +43,12 @@ class LoginControllerTest extends AbstractWebTestCase
     public function testRoutingAdminLoginCheck()
     {
         // see https://stackoverflow.com/a/38661340/4956633
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST', $this->generateUrl('admin_login'),
             array(
                 'login_id' => 'admin',
                 'password' => 'password',
-                '_csrf_token' => $this->getCsrfToken('authenticate')
+                '_csrf_token' => 'dummy'
             )
         );
 
@@ -70,5 +65,4 @@ class LoginControllerTest extends AbstractWebTestCase
             $this->client->getResponse()->getStatusCode()
         );
     }
-
 }

@@ -24,12 +24,10 @@
 
 namespace Eccube\Controller\Admin;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
@@ -43,11 +41,9 @@ use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\MemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -56,15 +52,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class AdminController extends AbstractController
 {
-    public function __construct(EventDispatcher $eventDispatcher, AuthenticationUtils $helper, AuthorizationChecker $authorizationChecker)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->helper = $helper;
-        $this->authorizationChecker = $authorizationChecker;
-    }
-
     /**
-     * @var AuthorizationChecker
+     * @var AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
@@ -74,53 +63,48 @@ class AdminController extends AbstractController
     protected $helper;
 
     /**
-     * @Inject(MemberRepository::class)
      * @var MemberRepository
      */
     protected $memberRepository;
 
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("security.encoder_factory")
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
+
+
+    /**
+     * AdminController constructor.
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param AuthenticationUtils $helper
+     * @param MemberRepository $memberRepository
+     * @param EncoderFactoryInterface $encoderFactory
+     */
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        AuthenticationUtils $helper,
+        MemberRepository $memberRepository,
+        EncoderFactoryInterface $encoderFactory
+    ) {
+        $this->authorizationChecker = $authorizationChecker;
+        $this->helper = $helper;
+        $this->memberRepository = $memberRepository;
+        $this->encoderFactory = $encoderFactory;
+    }
 
     /**
      * @Route("/%admin_route%/login", name="admin_login")
      * @Template("@admin/login.twig")
      */
-    public function login(Application $app, Request $request)
+    public function login(Request $request)
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            return $this->redirect($this->generateUrl('admin_homepage'));
+            return $this->redirectToRoute('admin_homepage');
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $this->container->get('form.factory')->createNamedBuilder('', LoginType::class);
+        $builder = $this->formFactory->createNamedBuilder('', LoginType::class);
 
         $event = new EventArgs(
             array(
@@ -142,19 +126,19 @@ class AdminController extends AbstractController
      * @Route("/%admin_route%/", name="admin_homepage")
      * @Template("@admin/index.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         // install.phpのチェック.
-        if (isset($this->appConfig['eccube_install']) && $this->appConfig['eccube_install'] == 1) {
-            $file = $this->appConfig['root_dir'] . '/html/install.php';
+        if (isset($this->eccubeConfig['eccube_install']) && $this->eccubeConfig['eccube_install'] == 1) {
+            $file = $this->eccubeConfig['root_dir'] . '/html/install.php';
             if (file_exists($file)) {
-                $message = $app->trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
-                $app->addWarning($message, 'admin');
+                $message = $this->translator->trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
+                $this->addWarning($message, 'admin');
             }
-            $fileOnRoot = $this->appConfig['root_dir'] . '/install.php';
+            $fileOnRoot = $this->eccubeConfig['root_dir'] . '/install.php';
             if (file_exists($fileOnRoot)) {
-                $message = $app->trans('admin.install.warning', array('installphpPath' => 'install.php'));
-                $app->addWarning($message, 'admin');
+                $message = $this->translator->trans('admin.install.warning', array('installphpPath' => 'install.php'));
+                $this->addWarning($message, 'admin');
             }
         }
 
@@ -203,9 +187,9 @@ class AdminController extends AbstractController
         $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
-        $Orders = $this->getOrderEachStatus($this->getDoctrine()->getManager(), $excludes);
+        $Orders = $this->getOrderEachStatus($this->entityManager, $excludes);
         // 受注ステータスの一覧.
-        $OrderStatuses = $this->findOrderStatus($this->getDoctrine()->getManager(), $excludes);
+        $OrderStatuses = $this->findOrderStatus($this->entityManager, $excludes);
 
         /**
          * 売り上げ状況
@@ -225,19 +209,19 @@ class AdminController extends AbstractController
         $excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
-        $salesToday = $this->getSalesByDay($this->getDoctrine()->getManager(), new \DateTime(), $excludes);
+        $salesToday = $this->getSalesByDay($this->entityManager, new \DateTime(), $excludes);
         // 昨日の売上/件数
-        $salesYesterday = $this->getSalesByDay($this->getDoctrine()->getManager(), new \DateTime('-1 day'), $excludes);
+        $salesYesterday = $this->getSalesByDay($this->entityManager, new \DateTime('-1 day'), $excludes);
         // 今月の売上/件数
-        $salesThisMonth = $this->getSalesByMonth($this->getDoctrine()->getManager(), new \DateTime(), $excludes);
+        $salesThisMonth = $this->getSalesByMonth($this->entityManager, new \DateTime(), $excludes);
 
         /**
          * ショップ状況
          */
         // 在庫切れ商品数
-        $countNonStockProducts = $this->countNonStockProducts($this->getDoctrine()->getManager());
+        $countNonStockProducts = $this->countNonStockProducts($this->entityManager);
         // 本会員数
-        $countCustomers = $this->countCustomers($this->getDoctrine()->getManager());
+        $countCustomers = $this->countCustomers($this->entityManager);
 
         $event = new EventArgs(
             array(
@@ -271,13 +255,12 @@ class AdminController extends AbstractController
      * パスワード変更画面
      *
      * @Route("/%admin_route%/change_password", name="admin_change_password")
-     * @Template("change_password.twig")
+     * @Template("@admin/change_password.twig")
      *
-     * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
-    public function changePassword(Application $app, Request $request)
+    public function changePassword(Request $request)
     {
         $builder = $this->formFactory
             ->createBuilder(ChangePasswordType::class);
@@ -294,7 +277,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $Member = $app->user();
+            $Member = $this->getUser();
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
 
@@ -322,9 +305,9 @@ class AdminController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE, $event);
 
-            $app->addSuccess('admin.change_password.save.complete', 'admin');
+            $this->addSuccess('admin.change_password.save.complete', 'admin');
 
-            return $app->redirect($app->url('admin_change_password'));
+            return $this->redirectToRoute('admin_change_password');
         }
 
         return [
@@ -337,11 +320,10 @@ class AdminController extends AbstractController
      *
      * @Route("/%admin_route%/nonstock", name="admin_homepage_nonstock")
      *
-     * @param Application $app
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchNonStockProducts(Application $app, Request $request)
+    public function searchNonStockProducts(Request $request)
     {
         // 商品マスター検索用フォーム
         /* @var Form $form */
@@ -357,14 +339,18 @@ class AdminController extends AbstractController
             $session = $request->getSession();
             $session->set('eccube.admin.product.search', $searchData);
 
-            return $app->redirect($app->url('admin_product_page', array(
+            return $this->redirectToRoute('admin_product_page', array(
                 'page_no' => 1,
-                'status' => $this->appConfig['admin_product_stock_status'])));
+                'status' => $this->eccubeConfig['admin_product_stock_status']));
         }
-
-        return $app->redirect($app->url('admin_homepage'));
+        return $this->redirectToRoute('admin_homepage');
     }
 
+    /**
+     * @param $em
+     * @param array $excludes
+     * @return array
+     */
     protected function findOrderStatus($em, array $excludes)
     {
         /* @var $qb QueryBuilder */
@@ -379,6 +365,11 @@ class AdminController extends AbstractController
             ->getResult();
     }
 
+    /**
+     * @param $em
+     * @param array $excludes
+     * @return array
+     */
     protected function getOrderEachStatus($em, array $excludes)
     {
         $sql = 'SELECT
@@ -406,6 +397,12 @@ class AdminController extends AbstractController
         return $orderArray;
     }
 
+    /**
+     * @param $em
+     * @param $dateTime
+     * @param array $excludes
+     * @return array
+     */
     protected function getSalesByMonth($em, $dateTime, array $excludes)
     {
         // concat... for pgsql
@@ -436,6 +433,12 @@ class AdminController extends AbstractController
         return $result;
     }
 
+    /**
+     * @param $em
+     * @param $dateTime
+     * @param array $excludes
+     * @return array
+     */
     protected function getSalesByDay($em, $dateTime, array $excludes)
     {
         // concat... for pgsql
@@ -466,6 +469,12 @@ class AdminController extends AbstractController
         return $result;
     }
 
+    /**
+     * @param $em
+     * @return mixed
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     protected function countNonStockProducts($em)
     {
         /** @var $qb \Doctrine\ORM\QueryBuilder */
@@ -481,6 +490,12 @@ class AdminController extends AbstractController
             ->getSingleScalarResult();
     }
 
+    /**
+     * @param $em
+     * @return mixed
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     protected function countCustomers($em)
     {
         $Status = $em
