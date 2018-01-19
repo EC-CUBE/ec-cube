@@ -24,7 +24,9 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\TaxRule;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 
@@ -33,10 +35,28 @@ use Symfony\Component\DomCrawler\Form;
  */
 class ProductClassControllerTest extends AbstractProductCommonTestCase
 {
+    /**
+     * @var BaseInfoRepository
+     */
+    protected $baseInfoRepository;
+
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRule;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->taxRule = $this->container->get(TaxRuleRepository::class);
     }
 
     /**
@@ -494,11 +514,11 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         // GIVE
         /* @var Application $app */
-        $app = $this->app;
+//        $app = $this->app;
         /**
          * @var BaseInfo $baseInfo
          */
-        $baseInfo = $app['eccube.repository.base_info']->get();
+        $baseInfo = $this->baseInfoRepository->get();
         $baseInfo->setOptionProductTaxRule(true);
         $id = 1;
 
@@ -507,7 +527,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $app->url('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', array('id' => $id))
         );
 
         // edit class category with tax
@@ -519,14 +539,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // THEN
         // check submit
+        dump($this->client->getResponse()->getStatusCode());
+        die;
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .container-fluid')->html();
         $this->assertContains('商品規格を削除しました。', $htmlMessage);
 
         // check database
-        $product = $app['eccube.repository.product']->find($id);
+        $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
-        $taxRule = $app['eccube.repository.tax_rule']->findBy(array('Product' => $product));
+        $taxRule = $this->taxRule->findBy(array('Product' => $product));
         $this->assertCount(0, $taxRule);
     }
 }
