@@ -127,7 +127,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             unlink($this->getUserDataDir().'/aaa.html');
         }
         if (file_exists($this->getUserDataDir().'/create_folder')) {
-            unlink($this->getUserDataDir().'/create_folder');
+            rmdir($this->getUserDataDir().'/create_folder');
         }
     }
 }
