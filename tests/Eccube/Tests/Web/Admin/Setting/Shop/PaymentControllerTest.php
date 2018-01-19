@@ -125,7 +125,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testDeleteFail_NotFound()
     {
-        $pid = 99999999999;
+        $pid = 9999;
         $this->client->request(
             'DELETE',
             $this->generateUrl('admin_setting_shop_payment_delete', array('id' => $pid))
