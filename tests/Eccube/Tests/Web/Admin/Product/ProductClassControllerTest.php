@@ -215,13 +215,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsNotEmpty()
     {
         // GIVE
-        /* @var Application $app */
-        $app = $this->app;
-        /**
-         * @var BaseInfo $baseInfo
-         */
-        $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $member = $this->createMember();
         $product = $this->createTestProduct($member);
         $className = $this->createClassName($member);
@@ -233,7 +227,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $app->url('admin_product_product_class', array('id' => $product->getId()))
+            $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
         $form['form[class_name1]'] = $className->getId();
@@ -254,7 +248,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // check database
         /* @var TaxRule $taxRule */
-        $taxRule = $app['eccube.repository.tax_rule']->findOneBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
 
         $this->assertEquals($form['form[product_classes][0][tax_rate]']->getValue(), $taxRule->getTaxRate());
     }
