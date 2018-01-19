@@ -198,16 +198,16 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setVisible(true);
 
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush($ProductClass);
+        $this->entityManager->flush();
 
         $this->createProductStock($Creator, $ProductClass);
 
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush($ProductClass);
+        $this->entityManager->flush();
 
         $TestProduct->addProductClass($ProductClass);
         $this->entityManager->persist($TestProduct);
-        $this->entityManager->flush($TestProduct);
+        $this->entityManager->flush();
 
         return $ProductClass;
     }
@@ -231,7 +231,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $TestProductStock->setCreator($Creator);
 
         $this->entityManager->persist($TestProductStock);
-        $this->entityManager->flush($TestProductStock);
+        $this->entityManager->flush();
 
         $TestProductClass->setProductStock($TestProductStock);
 
