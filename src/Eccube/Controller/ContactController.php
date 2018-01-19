@@ -30,8 +30,6 @@ use Eccube\Form\Type\Front\ContactType;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -46,16 +44,6 @@ class ContactController extends AbstractController
     protected $mailService;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
      * @var AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
@@ -63,19 +51,13 @@ class ContactController extends AbstractController
     /**
      * ContactController constructor.
      * @param MailService $mailService
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param FormFactoryInterface $formFactory
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         MailService $mailService,
-        EventDispatcherInterface $eventDispatcher,
-        FormFactoryInterface $formFactory,
         AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->mailService = $mailService;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
         $this->authorizationChecker = $authorizationChecker;
     }
 

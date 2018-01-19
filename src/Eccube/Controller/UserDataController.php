@@ -38,16 +38,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserDataController extends AbstractController
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var PageRepository
      */
     protected $pageRepository;
@@ -60,19 +50,13 @@ class UserDataController extends AbstractController
     /**
      * UserDataController constructor.
      *
-     * @param EventDispatcherInterface $dispatcher
      * @param PageRepository $pageRepository
      * @param DeviceTypeRepository $deviceTypeRepository
-     * @param array $eccubeConfig
      */
     public function __construct(
-        EventDispatcherInterface $dispatcher,
         PageRepository $pageRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-        array $eccubeConfig
+        DeviceTypeRepository $deviceTypeRepository
     ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->eventDispatcher = $dispatcher;
         $this->pageRepository = $pageRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
     }
