@@ -113,8 +113,13 @@ class TaxRuleRepository extends AbstractRepository
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
             /* @var $Customer \Eccube\Entity\Customer */
             $Customer = $this->tokenStorage->getToken()->getUser();
-            $Pref = $Customer->getPref();
-            $Country = $Customer->getCountry();
+            // TODO: FIXME:
+            // here $customer should be \Eccube\Entity\Customer but on \Eccube\Controller\Admin\Product\ProductController::index
+            // $customer return \Eccube\Entity\Member
+            if ($Customer instanceof \Eccube\Entity\Customer) {
+                $Pref = $Customer->getPref();
+                $Country = $Customer->getCountry();
+            }
         }
 
         // 商品単位税率設定がOFFの場合

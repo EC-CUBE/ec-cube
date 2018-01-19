@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
@@ -37,9 +34,8 @@ use Eccube\Service\CsvExportService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,48 +46,37 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CategoryController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
+     * CategoryController constructor.
+     *
+     * @param CsvExportService $csvExportService
+     * @param CategoryRepository $categoryRepository
+     */
+    public function __construct(
+        CsvExportService $csvExportService,
+        CategoryRepository $categoryRepository
+    ) {
+        $this->csvExportService = $csvExportService;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+
+    /**
      * @Route("/%admin_route%/product/category", name="admin_product_category")
      * @Route("/%admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show")
      * @Route("/%admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit")
-     * @Template("Product/category.twig")
+     * @Template("@admin/Product/category.twig")
      */
-    public function index(Application $app, Request $request, $parent_id = null, $id = null)
+    public function index(Request $request, $parent_id = null, $id = null)
     {
         if ($parent_id) {
             $Parent = $this->categoryRepository->find($parent_id);
@@ -137,7 +122,7 @@ class CategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->appConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
+                if ($this->eccubeConfig['category_nest_level'] < $TargetCategory->getHierarchy()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
                 log_info('カテゴリ登録開始', array($id));
@@ -156,12 +141,11 @@ class CategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.category.save.complete', 'admin');
-
+                $this->addSuccess('admin.category.save.complete', 'admin');
                 if ($Parent) {
-                    return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
+                    return $this->redirectToRoute('admin_product_category_show', array('parent_id' => $Parent->getId()));
                 } else {
-                    return $app->redirect($app->url('admin_product_category'));
+                    return $this->redirectToRoute('admin_product_category');
                 }
             }
         }
@@ -184,14 +168,14 @@ class CategoryController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Request $request, $id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $TargetCategory = $this->categoryRepository->find($id);
         if (!$TargetCategory) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_product_category'));
+            $this->deleteMessage();
+            return $this->redirectToRoute('admin_product_category');
         }
         $Parent = $TargetCategory->getParent();
 
@@ -208,21 +192,21 @@ class CategoryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.category.delete.complete', 'admin');
+            $this->addSuccess('admin.category.delete.complete', 'admin');
 
             log_info('カテゴリ削除完了', array($id));
 
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => 'カテゴリ']);
-            $app->addError($message, 'admin');
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => 'カテゴリ']);
+            $this->addError($message, 'admin');
         }
 
         if ($Parent) {
-            return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
+            return $this->redirectToRoute('admin_product_category_show', array('parent_id' => $Parent->getId()));
         } else {
-            return $app->redirect($app->url('admin_product_category'));
+            return $this->redirectToRoute('admin_product_category');
         }
     }
 
@@ -230,7 +214,7 @@ class CategoryController extends AbstractController
      * @Method("POST")
      * @Route("/%admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move")
      */
-    public function moveSortNo(Application $app, Request $request)
+    public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             $sortNos = $request->request->all();
@@ -243,7 +227,7 @@ class CategoryController extends AbstractController
             }
             $this->entityManager->flush();
         }
-        return true;
+        return new Response('Successful');
     }
 
 
@@ -252,11 +236,10 @@ class CategoryController extends AbstractController
      *
      * @Route("/%admin_route%/product/category/export", name="admin_product_category_export")
      *
-     * @param Application $app
      * @param Request $request
      * @return StreamedResponse
      */
-    public function export(Application $app, Request $request)
+    public function export(Request $request)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -266,7 +249,7 @@ class CategoryController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CATEGORY);
@@ -280,7 +263,7 @@ class CategoryController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
 
                 $Csvs = $csvService->getCsvs();
 

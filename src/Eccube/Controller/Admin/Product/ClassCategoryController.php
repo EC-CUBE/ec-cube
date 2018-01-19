@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -37,8 +34,6 @@ use Eccube\Repository\ProductClassRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -48,47 +43,44 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ClassCategoryController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(ProductClassRepository::class)
      * @var ProductClassRepository
      */
     protected $productClassRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(ClassCategoryRepository::class)
      * @var ClassCategoryRepository
      */
     protected $classCategoryRepository;
 
     /**
-     * @Inject(ClassNameRepository::class)
      * @var ClassNameRepository
      */
     protected $classNameRepository;
 
     /**
+     * ClassCategoryController constructor.
+     *
+     * @param ProductClassRepository $productClassRepository
+     * @param ClassCategoryRepository $classCategoryRepository
+     * @param ClassNameRepository $classNameRepository
+     */
+    public function __construct(
+        ProductClassRepository $productClassRepository,
+        ClassCategoryRepository $classCategoryRepository,
+        ClassNameRepository $classNameRepository
+    ) {
+        $this->productClassRepository = $productClassRepository;
+        $this->classCategoryRepository = $classCategoryRepository;
+        $this->classNameRepository = $classNameRepository;
+    }
+
+
+    /**
      * @Route("/%admin_route%/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category")
      * @Route("/%admin_route%/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit")
-     * @Template("Product/class_category.twig")
+     * @Template("@admin/Product/class_category.twig")
      */
-    public function index(Application $app, Request $request, $class_name_id, $id = null)
+    public function index(Request $request, $class_name_id, $id = null)
     {
         //
         $ClassName = $this->classNameRepository->find($class_name_id);
@@ -140,9 +132,9 @@ class ClassCategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.class_category.save.complete', 'admin');
+                $this->addSuccess('admin.class_category.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+                return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
             }
         }
 
@@ -160,9 +152,9 @@ class ClassCategoryController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/product/class_category/{class_name_id}/{id}/delete", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_delete")
      */
-    public function delete(Application $app, Request $request, $class_name_id, $id)
+    public function delete(Request $request, $class_name_id, $id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
@@ -173,8 +165,8 @@ class ClassCategoryController extends AbstractController
 
         $TargetClassCategory = $this->classCategoryRepository->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+            $this->deleteMessage();
+            return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
         }
 
         $num = $this->productClassRepository->createQueryBuilder('pc')
@@ -184,7 +176,7 @@ class ClassCategoryController extends AbstractController
             ->getQuery()
             ->getSingleScalarResult();
         if ($num > 0) {
-            $app->addError('admin.class_category.delete.hasproduct', 'admin');
+            $this->addError('admin.class_category.delete.hasproduct', 'admin');
         } else {
             try {
                 $this->classCategoryRepository->delete($TargetClassCategory);
@@ -198,27 +190,27 @@ class ClassCategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
-                $app->addSuccess('admin.class_category.delete.complete', 'admin');
+                $this->addSuccess('admin.class_category.delete.complete', 'admin');
 
                 log_info('規格分類削除完了', array($id));
 
             } catch (\Exception $e) {
                 log_error('規格分類削除エラー', array($id, $e));
 
-                $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
-                $app->addError($message, 'admin');            }
+                $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '規格分類']);
+                $this->addError($message, 'admin');            }
         }
 
-        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
     }
 
     /**
      * @Method("PUT")
      * @Route("/%admin_route%/product/class_category/{class_name_id}/{id}/visibility", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_visibility")
      */
-    public function visibility(Application $app, Request $request, $class_name_id, $id)
+    public function visibility(Request $request, $class_name_id, $id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $ClassName = $this->classNameRepository->find($class_name_id);
         if (!$ClassName) {
@@ -229,8 +221,8 @@ class ClassCategoryController extends AbstractController
 
         $TargetClassCategory = $this->classCategoryRepository->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+            $this->deleteMessage();
+            return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
         }
 
         $this->classCategoryRepository->toggleVisibility($TargetClassCategory);
@@ -246,16 +238,16 @@ class ClassCategoryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
 
-        $app->addSuccess('admin.class_category.delete.complete', 'admin');
+        $this->addSuccess('admin.class_category.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $this->redirectToRoute('admin_product_class_category', array('class_name_id' => $ClassName->getId()));
     }
 
     /**
      * @Method("POST")
      * @Route("/product/class_category/sort_no/move", name="admin_product_class_category_sort_no_move")
      */
-    public function moveSortNo(Application $app, Request $request)
+    public function moveSortNo(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             $sortNos = $request->request->all();

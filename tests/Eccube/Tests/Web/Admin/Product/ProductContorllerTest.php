@@ -21,23 +21,52 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\DomCrawler\Crawler;
+use Eccube\Repository\ProductRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Eccube\Entity\BaseInfo;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var BaseInfo
+     */
+    protected $baseInfo;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @var ProductStatusRepository
+     */
+    protected $productStatusRepository;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->baseInfo = $this->container->get(BaseInfo::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
+
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
             $this->createProduct();
@@ -57,8 +86,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $price02 = number_format($price02);
         }
 
-        $form = array(
-            'class' => array(
+        $form = [
+            'class' => [
                 'sale_type' => 1,
                 'price01' => $price01,
                 'price02' => $price02,
@@ -67,9 +96,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'code' => $faker->word,
                 'sale_limit' => null,
                 'delivery_duration' => ''
-            ),
+            ],
             'name' => $faker->word,
-            'product_image' => array(),
+            'product_image' => [],
             'description_detail' => $faker->realText,
             'description_list' => $faker->paragraph,
             'Category' => null,
@@ -82,37 +111,33 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => null,
             'add_images' => null,
             'delete_images' => null,
-            '_token' => 'dummy',
-        );
+            Constant::TOKEN_NAME => 'dummy'
+        ];
         return $form;
     }
 
     public function testRoutingAdminProductProduct()
     {
-        $this->client->request('GET',
-            $this->app->url('admin_product')
-        );
+        $this->client->request('GET', $this->generateUrl('admin_product'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminProductProductNew()
     {
-        $this->client->request('GET',
-            $this->app->url('admin_product_product_new')
-        );
+        $this->client->request('GET', $this->generateUrl('admin_product_product_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testProductSearchAll()
     {
-        $AllProducts = $this->app['eccube.repository.product']->findAll();
+        $AllProducts = $this->productRepository->findAll();
         $cnt = count($AllProducts);
-        $TestProduct = $this->createProduct();
+        $this->createProduct();
         $cnt++;
 
-        $post = array('admin_search_product' =>
-            array(
-                '_token' => 'dummy',
+        $post = [
+            'admin_search_product' => [
+                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => '',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -120,8 +145,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+            ]
+        ];
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -131,11 +158,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $TestProduct = $this->createProduct();
         $TestProduct->setName(StringUtil::random());
-        $this->app['orm.em']->flush($TestProduct);
+        $this->entityManager->persist($TestProduct);
+        $this->entityManager->flush();
 
-        $post = array('admin_search_product' =>
-            array(
-                '_token' => 'dummy',
+        $post = [
+            'admin_search_product' => [
+                Constant::TOKEN_NAME => $this->getCsrfToken('admin_search_product'),
                 'id' => $TestProduct->getName(),
                 'category_id' => '',
                 'create_date_start' => '',
@@ -143,8 +171,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+            ]
+        ];
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -154,9 +184,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $TestProduct = $this->createProduct();
 
-        $post = array('admin_search_product' =>
-            array(
-                '_token' => 'dummy',
+        $post = [
+            'admin_search_product' => [
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => $TestProduct->getId(),
                 'category_id' => '',
                 'create_date_start' => '',
@@ -164,8 +194,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+            ]
+        ];
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -173,11 +205,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testProductSearchByIdZero()
     {
-        $TestProduct = $this->createProduct();
+        $this->createProduct();
 
-        $post = array('admin_search_product' =>
-            array(
-                '_token' => 'dummy',
+        $post = [
+            'admin_search_product' => [
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => 99999999,
                 'category_id' => '',
                 'create_date_start' => '',
@@ -185,8 +217,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+            ]
+        ];
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -194,11 +228,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testProductSearchByNameZero()
     {
-        $TestProduct = $this->createProduct();
+        $this->createProduct();
 
-        $post = array('admin_search_product' =>
-            array(
-                '_token' => 'dummy',
+        $post = [
+            'admin_search_product' => [
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => 'not Exists product name',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -206,8 +240,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_start' => '',
                 'update_date_end' => '',
                 'link_status' => '',
-        ));
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+            ]
+        ];
+
+        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に該当するデータがありませんでした。';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
@@ -215,18 +251,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductProductEdit()
     {
-
         $TestProduct = $this->createProduct();
 
-        $test_product_id = $this->app['eccube.repository.product']
-            ->findOneBy(array(
-                'name' => $TestProduct->getName()
-            ))
+        $id = $this->productRepository
+            ->findOneBy(['name' => $TestProduct->getName()])
             ->getId();
 
-        $crawler = $this->client->request('GET',
-            $this->app->url('admin_product_product_edit', array('id' => $test_product_id))
-        );
+        $this->client->request('GET', $this->generateUrl('admin_product_product_edit', ['id' => $id]));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -235,15 +266,17 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
-        $crawler = $this->client->request(
+
+        $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+        $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
-        $EditedProduct = $this->app['eccube.repository.product']->find($Product->getId());
+        $EditedProduct = $this->productRepository->find($Product->getId());
         $this->expected = $formData['name'];
         $this->actual = $EditedProduct->getName();
         $this->verify();
@@ -252,29 +285,34 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Product = $this->createProduct();
-        $id = $Product->getId();
-        $this->client->request(
-            'DELETE',
-            $this->app->url('admin_product_product_delete', array('id' => $id))
-        );
+        $params = [
+            'id' => $Product->getId(),
+            Constant::TOKEN_NAME => 'dummy'
+        ];
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_page', array('page_no' => 1)).'?resume=1'));
+        $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
 
-        self::assertNull($this->app['eccube.repository.product']->find($id));
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
+
+        self::assertNull($this->productRepository->find($params['id']));
     }
 
     public function testCopy()
     {
         $Product = $this->createProduct();
-        $AllProducts = $this->app['eccube.repository.product']->findAll();
-        $crawler = $this->client->request(
-            'POST',
-            $this->app->url('admin_product_product_copy', array('id' => $Product->getId()))
-        );
+        $AllProducts = $this->productRepository->findAll();
+        $params = [
+            'id' => $Product->getId(),
+            Constant::TOKEN_NAME => 'dummy'
+        ];
+
+        $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
 
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
-        $AllProducts2 = $this->app['eccube.repository.product']->findAll();
+        $AllProducts2 = $this->productRepository->findAll();
         $this->expected = count($AllProducts) + 1;
         $this->actual = count($AllProducts2);
         $this->verify();
@@ -288,16 +326,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testNewWithPostTaxRate($taxRate, $expected)
     {
         // Give
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(true);
+        $this->baseInfo->setOptionProductTaxRule(true);
         $formData = $this->createFormData();
 
         $formData['class']['tax_rate'] = $taxRate;
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_new'),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
         );
 
         // Then
@@ -305,10 +342,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
         $productId = $arrTmp[count($arrTmp)-2];
-        $Product = $this->app['eccube.repository.product']->find($productId);
+        $Product = $this->productRepository->find($productId);
 
         $this->expected = $expected;
-        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $Taxrule = $this->taxRuleRepository->findOneBy(array('Product' => $Product));
         $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
         $this->actual = $taxRate;
         $this->assertTrue($this->actual === $this->expected);
@@ -326,25 +363,33 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $ProductClass = $testProduct->getProductClasses()->first();
         $ProductClass->setStock(0);
         $ProductClass->getProductStock()->setStock(0);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
+
         $searchForm['id'] = 'Product with stock';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         // No stock click button
         $noStockUrl = $crawler->selectLink('在庫なし')->link()->getUri();
+        $this->client->disableReboot();
         $crawler = $this->client->request('GET', $noStockUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -356,27 +401,33 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/Product with status 01/');
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         // private click button
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
+        $this->client->disableReboot();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -388,27 +439,33 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/[Product with status 01]{1}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         // public click button
         $privateUrl = $crawler->selectLink('公開')->link()->getUri();
+        $this->client->disableReboot();
         $crawler = $this->client->request('GET', $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
@@ -420,30 +477,35 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex('/[Product with status 01]{1}[Product with status 02]{2}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
-        $display = $this->app['eccube.repository.master.product_status']->find(ProductStatus::DISPLAY_HIDE);
+        $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $testProduct02->setStatus($display);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
         /* @var $crawler Crawler*/
-        $crawler = $this->client->request('POST', $this->app->url('admin_product'), array('admin_search_product' => $searchForm));
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
         $this->expected = '検索結果 2 件 が該当しました';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
+        $this->client->disableReboot();
         $this->client->request('GET', $csvExportUrl);
     }
 
     public function dataNewProductProvider()
     {
-        return array(
-            array(null, null),
-            array("0", "0"),
-            array("1", "1"),
-        );
+        return [
+            [null, null],
+            ["0", "0"],
+            ["1", "1"],
+        ];
     }
 
     /**
@@ -460,8 +522,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testEditWithPostTaxRate($before, $after, $expected)
     {
         // Give
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(true);
+        $this->baseInfo->setOptionProductTaxRule(true);
         $Product = $this->createProduct(null, 0);
         $ProductClasses = $Product->getProductClasses();
         $ProductClass = $ProductClasses[0];
@@ -471,7 +532,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $formData['class']['tax_rate'] = $after;
         }
         if (!is_null($before)) {
-            $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+            $DefaultTaxRule = $this->taxRuleRepository->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
 
             $TaxRule = new TaxRule();
             $TaxRule->setProductClass($ProductClass)
@@ -482,22 +543,22 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ->setTaxAdjust(0)
                 ->setApplyDate(new \DateTime());
             $ProductClass->setTaxRule($TaxRule);
-            $this->app['orm.em']->persist($TaxRule);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($TaxRule);
+            $this->entityManager->flush();
         }
 
         // When
         $this->client->request(
             'POST',
-            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
-            array('admin_product' => $formData)
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
         );
 
         // Then
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])));
 
         $this->expected = $expected;
-        $TaxRule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product, 'ProductClass' => $ProductClass));
+        $TaxRule = $this->taxRuleRepository->findOneBy(['Product' => $Product, 'ProductClass' => $ProductClass]);
 
         if (is_null($TaxRule)) {
             $this->actual = null;
@@ -515,11 +576,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $productName = 'test01';
         $this->expectOutputRegex("/$productName/");
-        $Product = $this->createProduct($productName);
+        $this->createProduct($productName);
 
         $post = array('admin_search_product' =>
             array(
-                '_token' => 'dummy',
+                Constant::TOKEN_NAME => 'dummy',
                 'id' => '',
                 'category_id' => '',
                 'create_date_start' => '',
@@ -528,11 +589,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 'update_date_end' => '',
                 'link_status' => '',
             ));
-        $this->client->request('POST', $this->app->url('admin_product'), $post);
-        $this->client->request(
-            'GET',
-            $this->app->url('admin_product_export')
-        );
+        $this->client->request('POST', $this->generateUrl('admin_product'), $post);
+        $this->client->disableReboot();
+        $this->client->request('GET', $this->generateUrl('admin_product_export'));
 
         $this->expected = 'application/octet-stream';
         $this->actual = $this->client->getResponse()->headers->get('Content-Type');
@@ -547,17 +606,17 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function dataEditProductProvider()
     {
-        return array(
-            array('0', '0', '0'),
-            array('0', '1', '1'),
-            array('0', null, null),
-            array('1', '0', '0'),
-            array('1', '1', '1'),
-            array('1', null, null),
-            array(null, '0', '0'),
-            array(null, '1', '1'),
-            array(null, null, null),
-        );
+        return [
+            ['0', '0', '0'],
+            ['0', '1', '1'],
+            ['0', null, null],
+            ['1', '0', '0'],
+            ['1', '1', '1'],
+            ['1', null, null],
+            [null, '0', '0'],
+            [null, '1', '1'],
+            [null, null, null],
+        ];
     }
 
     /**
@@ -565,8 +624,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     private function createSearchForm()
     {
-        $post = array(
-            '_token' => 'dummy',
+        $post = [
+            Constant::TOKEN_NAME => 'dummy',
             'id' => '',
             'category_id' => '',
             'create_date_start' => '',
@@ -574,7 +633,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'update_date_start' => '',
             'update_date_end' => '',
             'link_status' => '',
-        );
+        ];
 
         return $post;
     }

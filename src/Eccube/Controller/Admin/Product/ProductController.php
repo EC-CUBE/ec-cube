@@ -25,9 +25,6 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
@@ -49,16 +46,20 @@ use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\ProductStock;
+use Eccube\Entity\ProductImage;
+use Eccube\Entity\ProductCategory;
+use Eccube\Entity\ExportCsvRow;
 
 /**
  * @Route(service=ProductController::class)
@@ -66,136 +67,89 @@ use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 class ProductController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject(ProductClassRepository::class)
      * @var ProductClassRepository
      */
     protected $productClassRepository;
 
     /**
-     * @Inject(ProductImageRepository::class)
      * @var ProductImageRepository
      */
     protected $productImageRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject(PageMaxRepository::class)
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
 
     /**
-     * @Inject(ProductStatusRepository::class)
      * @var ProductStatusRepository
      */
     protected $productStatusRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("session")
-     * @var Session
-     */
-    protected $session;
-
-    /**
      * ProductController constructor.
+     *
+     * @param CsvExportService $csvExportService
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
-     * @param EntityManager $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
-     * @param FormFactory $formFactory
-     * @param Session $session
      */
     public function __construct(
+        CsvExportService $csvExportService,
         ProductClassRepository $productClassRepository,
         ProductImageRepository $productImageRepository,
-        EntityManager $entityManager,
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository,
-        FormFactory $formFactory,
-        Session $session,
-        array $eccubeConfig
+        ProductStatusRepository $productStatusRepository
     ) {
+        $this->csvExportService = $csvExportService;
         $this->productClassRepository = $productClassRepository;
         $this->productImageRepository = $productImageRepository;
-        $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
         $this->BaseInfo = $BaseInfo;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
-        $this->formFactory = $formFactory;
-        $this->session = $session;
-        $this->appConfig = $eccubeConfig;
     }
-
 
     /**
      * @Route("/%admin_route%/product", name="admin_product")
      * @Route("/%admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page")
-     * @Template("Product/index.twig")
+     * @Template("@admin/Product/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
     {
@@ -206,20 +160,20 @@ class ProductController extends AbstractController
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
 
         $searchForm = $builder->getForm();
 
-        $pagination = array();
+        $pagination = [];
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->appConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -235,10 +189,10 @@ class ProductController extends AbstractController
                 $page_no = 1;
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'qb' => $qb,
                         'searchData' => $searchData,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
@@ -248,7 +202,7 @@ class ProductController extends AbstractController
                     $qb,
                     $page_no,
                     $page_count,
-                    array('wrap-queries' => true)
+                    ['wrap-queries' => true]
                 );
 
                 // sessionのデータ保持
@@ -278,7 +232,7 @@ class ProductController extends AbstractController
                     } else {
                         $searchData['link_status'] = $this->productStatusRepository->find($status);
                         $searchData['stock_status'] = null;
-                        if ($status == $this->appConfig['admin_product_stock_status']) {
+                        if ($status == $this->eccubeConfig['admin_product_stock_status']) {
                             // 在庫なし
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
@@ -293,10 +247,10 @@ class ProductController extends AbstractController
                     $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'qb' => $qb,
                             'searchData' => $searchData,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
@@ -306,7 +260,7 @@ class ProductController extends AbstractController
                         $qb,
                         $page_no,
                         $page_count,
-                        array('wrap-queries' => true)
+                        ['wrap-queries' => true]
                     );
 
                     // セッションから検索条件を復元(カテゴリ)
@@ -316,11 +270,11 @@ class ProductController extends AbstractController
 
                     // セッションから検索条件を復元(スーテタス)
                     if (isset($searchData['status']) && count($searchData['status']) > 0) {
-                        $status_ids = array();
+                        $status_ids = [];
                         foreach ($searchData['status'] as $Status) {
                             $status_ids[] = $Status->getId();
                         }
-                        $searchData['status'] = $this->productStatusRepository->findBy(array('id' => $status_ids));
+                        $searchData['status'] = $this->productStatusRepository->findBy(['id' => $status_ids]);
                     }
                     $searchForm->setData($searchData);
                 }
@@ -343,7 +297,7 @@ class ProductController extends AbstractController
      * @Method("POST")
      * @Route("/%admin_route%/product/product/image/add", name="admin_product_image_add")
      */
-    public function addImage(Application $app, Request $request)
+    public function addImage(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('リクエストが不正です');
@@ -351,7 +305,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
-        $files = array();
+        $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
@@ -363,37 +317,37 @@ class ProductController extends AbstractController
 
                     $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
-                    $image->move($this->appConfig['image_temp_realdir'], $filename);
+                    $image->move($this->eccubeConfig['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
             }
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'images' => $images,
                 'files' => $files,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
         $files = $event->getArgument('files');
 
-        return $app->json(array('files' => $files), 200);
+        return $this->json(['files' => $files], 200);
     }
 
     /**
      * @Route("/%admin_route%/product/product/new", name="admin_product_product_new")
      * @Route("/%admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit")
-     * @Template("Product/product.twig")
+     * @Template("@admin/Product/product.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null)
     {
         $has_class = false;
         if (is_null($id)) {
-            $Product = new \Eccube\Entity\Product();
-            $ProductClass = new \Eccube\Entity\ProductClass();
-            $ProductStatus = $this->productStatusRepository->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+            $Product = new Product();
+            $ProductClass = new ProductClass();
+            $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
             $Product
                 ->addProductClass($ProductClass)
                 ->setStatus($ProductStatus);
@@ -401,7 +355,7 @@ class ProductController extends AbstractController
                 ->setVisible(true)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
-            $ProductStock = new \Eccube\Entity\ProductStock();
+            $ProductStock = new ProductStock();
             $ProductClass->setProductStock($ProductStock);
             $ProductStock->setProductClass($ProductClass);
         } else {
@@ -430,10 +384,10 @@ class ProductController extends AbstractController
         }
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Product' => $Product,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
@@ -446,14 +400,14 @@ class ProductController extends AbstractController
         }
 
         // ファイルの登録
-        $images = array();
+        $images = [];
         $ProductImages = $Product->getProductImage();
         foreach ($ProductImages as $ProductImage) {
             $images[] = $ProductImage->getFileName();
         }
         $form['images']->setData($images);
 
-        $categories = array();
+        $categories = [];
         $ProductCategories = $Product->getProductCategories();
         foreach ($ProductCategories as $ProductCategory) {
             /* @var $ProductCategory \Eccube\Entity\ProductCategory */
@@ -461,7 +415,7 @@ class ProductController extends AbstractController
         }
         $form['Category']->setData($categories);
 
-        $Tags = array();
+        $Tags = [];
         $ProductTags = $Product->getProductTag();
         foreach ($ProductTags as $ProductTag) {
             $Tags[] = $ProductTag->getTag();
@@ -471,7 +425,7 @@ class ProductController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                log_info('商品登録開始', array($id));
+                log_info('商品登録開始', [$id]);
                 $Product = $form->getData();
 
                 if (!$has_class) {
@@ -521,7 +475,7 @@ class ProductController extends AbstractController
 
                 $count = 1;
                 $Categories = $form->get('Category')->getData();
-                $categoriesIdList = array();
+                $categoriesIdList = [];
                 foreach ($Categories as $Category) {
                     foreach($Category->getPath() as $ParentCategory){
                         if (!isset($categoriesIdList[$ParentCategory->getId()])){
@@ -555,18 +509,18 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductImage);
 
                     // 移動
-                    $file = new File($this->appConfig['image_temp_realdir'] . '/' . $add_image);
-                    $file->move($this->appConfig['image_save_realdir']);
+                    $file = new File($this->eccubeConfig['image_temp_realdir'] . '/' . $add_image);
+                    $file->move($this->eccubeConfig['image_save_realdir']);
                 }
 
                 // 画像の削除
                 $delete_images = $form->get('delete_images')->getData();
                 foreach ($delete_images as $delete_image) {
                     $ProductImage = $this->productImageRepository
-                        ->findOneBy(array('file_name' => $delete_image));
+                        ->findOneBy(['file_name' => $delete_image]);
 
                     // 追加してすぐに削除した画像は、Entityに追加されない
-                    if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
+                    if ($ProductImage instanceof ProductImage) {
                         $Product->removeProductImage($ProductImage);
                         $this->entityManager->remove($ProductImage);
 
@@ -575,7 +529,7 @@ class ProductController extends AbstractController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($this->appConfig['image_save_realdir'] . '/' . $delete_image);
+                    $fs->remove($this->eccubeConfig['image_save_realdir'] . '/' . $delete_image);
                 }
                 $this->entityManager->persist($Product);
                 $this->entityManager->flush();
@@ -586,10 +540,10 @@ class ProductController extends AbstractController
                     foreach ($sortNos as $sortNo) {
                         list($filename, $sortNo_val) = explode('//', $sortNo);
                         $ProductImage = $this->productImageRepository
-                            ->findOneBy(array(
+                            ->findOneBy([
                                 'file_name' => $filename,
                                 'Product' => $Product,
-                            ));
+                            ]);
                         $ProductImage->setSortNo($sortNo_val);
                         $this->entityManager->persist($ProductImage);
                     }
@@ -618,23 +572,25 @@ class ProductController extends AbstractController
                 $Product->setUpdateDate(new \DateTime());
                 $this->entityManager->flush();
 
-                log_info('商品登録完了', array($id));
+                log_info('商品登録完了', [$id]);
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'form' => $form,
                         'Product' => $Product,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
-                $app->addSuccess('admin.register.complete', 'admin');
+                $msg = $this->translator->trans('admin.register.complete');
+                $this->addSuccess($msg, 'admin');
 
-                return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
+                return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             } else {
-                log_info('商品登録チェックエラー', array($id));
-                $app->addError('admin.register.failed', 'admin');
+                log_info('商品登録チェックエラー', [$id]);
+                $msg = $this->translator->trans('admin.register.failed');
+                $this->addError($msg, 'admin');
             }
         }
 
@@ -643,10 +599,10 @@ class ProductController extends AbstractController
             ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
-            array(
+            [
                 'builder' => $builder,
                 'Product' => $Product,
-            ),
+            ],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH, $event);
@@ -670,9 +626,9 @@ class ProductController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/product/product/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_product_delete")
      */
-    public function delete(Application $app, Request $request, $id = null)
+    public function delete(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.product.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
@@ -681,12 +637,13 @@ class ProductController extends AbstractController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
-                $app->deleteMessage();
-                return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+                $this->deleteMessage();
+                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]) . '?resume=' . Constant::ENABLED;
+                return $this->redirect($rUrl);
             }
 
-            if ($Product instanceof \Eccube\Entity\Product) {
-                log_info('商品削除開始', array($id));
+            if ($Product instanceof Product) {
+                log_info('商品削除開始', [$id]);
 
                 $deleteImages = $Product->getProductImage();
                 $ProductClasses = $Product->getProductClasses();
@@ -696,11 +653,11 @@ class ProductController extends AbstractController
                     $this->entityManager->flush();
 
                     $event = new EventArgs(
-                        array(
+                        [
                             'Product' => $Product,
                             'ProductClass' => $ProductClasses,
                             'deleteImages' => $deleteImages,
-                        ),
+                        ],
                         $request
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
@@ -710,47 +667,52 @@ class ProductController extends AbstractController
                     foreach ($deleteImages as $deleteImage) {
                         try {
                             $fs = new Filesystem();
-                            $fs->remove($this->appConfig['image_save_realdir'] . '/' . $deleteImage);
+                            $fs->remove($this->eccubeConfig['image_save_realdir'] . '/' . $deleteImage);
                         } catch (\Exception $e) {
                             // エラーが発生しても無視する
                         }
                     }
 
-                    log_info('商品削除完了', array($id));
+                    log_info('商品削除完了', [$id]);
 
-                    $app->addSuccess('admin.delete.complete', 'admin');
+                    $message = $this->translator->trans('admin.delete.complete');
+                    $this->addSuccess($message, 'admin');
 
                 } catch (ForeignKeyConstraintViolationException $e) {
-                    log_info('商品削除エラー', array($id));
-                    $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
-                    $app->addError($message, 'admin');
+                    log_info('商品削除エラー', [$id]);
+                    $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '商品']);
+                    $this->addError($message, 'admin');
                 }
             } else {
-                log_info('商品削除エラー', array($id));
-                $app->addError('admin.delete.failed', 'admin');
+                log_info('商品削除エラー', [$id]);
+                $message = $this->translator->trans('admin.delete.failed');
+                $this->addError($message, 'admin');
             }
         } else {
-            log_info('商品削除エラー', array($id));
-            $app->addError('admin.delete.failed', 'admin');
+            log_info('商品削除エラー', [$id]);
+            $message = $this->translator->trans('admin.delete.failed');
+            $this->addError($message, 'admin');
         }
 
-        return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+        return $this->redirect($rUrl);
     }
 
     /**
      * @Method("POST")
      * @Route("/%admin_route%/product/product/{id}/copy", requirements={"id" = "\d+"}, name="admin_product_product_copy")
      */
-    public function copy(Application $app, Request $request, $id = null)
+    public function copy(Request $request, $id = null)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         if (!is_null($id)) {
             $Product = $this->productRepository->find($id);
-            if ($Product instanceof \Eccube\Entity\Product) {
+            if ($Product instanceof Product) {
                 $CopyProduct = clone $Product;
                 $CopyProduct->copy();
-                $ProductStatus = $this->productStatusRepository->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+                $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
                 $CopyProduct->setStatus($ProductStatus);
 
                 $CopyProductCategories = $CopyProduct->getProductCategories();
@@ -760,12 +722,12 @@ class ProductController extends AbstractController
 
                 // 規格あり商品の場合は, デフォルトの商品規格を取得し登録する.
                 if ($CopyProduct->hasProductClass()) {
-                    $dummyClass = $this->productClassRepository->findOneBy(array(
+                    $dummyClass = $this->productClassRepository->findOneBy([
                         'visible' => false,
                         'ClassCategory1' => null,
                         'ClassCategory2' => null,
                         'Product' => $Product,
-                    ));
+                    ]);
                     $dummyClass = clone $dummyClass;
                     $dummyClass->setProduct($CopyProduct);
                     $CopyProduct->addProductClass($dummyClass);
@@ -788,7 +750,7 @@ class ProductController extends AbstractController
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($this->appConfig['image_save_realdir'] . '/' . $Image->getFileName(), $this->appConfig['image_save_realdir'] . '/' . $filename);
+                        $fs->copy($this->eccubeConfig['image_save_realdir'] . '/' . $Image->getFileName(), $this->eccubeConfig['image_save_realdir'] . '/' . $filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
@@ -806,47 +768,50 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
 
                 $event = new EventArgs(
-                    array(
+                    [
                         'Product' => $Product,
                         'CopyProduct' => $CopyProduct,
                         'CopyProductCategories' => $CopyProductCategories,
                         'CopyProductClasses' => $CopyProductClasses,
                         'images' => $Images,
                         'Tags' => $Tags,
-                    ),
+                    ],
                     $request
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
-                $app->addSuccess('admin.product.copy.complete', 'admin');
+                $msg = $this->translator->trans('admin.product.copy.complete');
+                $this->addSuccess($msg, 'admin');
 
-                return $app->redirect($app->url('admin_product_product_edit', array('id' => $CopyProduct->getId())));
+                return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
             } else {
-                $app->addError('admin.product.copy.failed', 'admin');
+                $msg = $this->translator->trans('admin.product.copy.failed');
+                $this->addError($msg, 'admin');
             }
         } else {
-            $app->addError('admin.product.copy.failed', 'admin');
+            $msg = $this->translator->trans('admin.product.copy.failed');
+            $this->addError($msg, 'admin');
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**
      * @Route("/%admin_route%/product/product/{id}/display", requirements={"id" = "\d+"}, name="admin_product_product_display")
      */
-    public function display(Application $app, Request $request, $id = null)
+    public function display(Request $request, $id = null)
     {
         $event = new EventArgs(
-            array(),
+            [],
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
 
         if (!is_null($id)) {
-            return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
+            return $this->redirectToRoute('product_detail', ['id' => $id, 'admin' => '1']);
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $this->redirectToRoute('admin_product');
     }
 
     /**
@@ -854,11 +819,11 @@ class ProductController extends AbstractController
      *
      * @Route("export", name="admin_product_export")
      *
-     * @param Application $app
      * @param Request $request
+     *
      * @return StreamedResponse
      */
-    public function export(Application $app, Request $request)
+    public function export(Request $request)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -868,7 +833,7 @@ class ProductController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
@@ -884,7 +849,7 @@ class ProductController extends AbstractController
             $isOutOfStock = 0;
             $session = $request->getSession();
             if ($session->has('eccube.admin.product.search')) {
-                $searchData = $session->get('eccube.admin.product.search', array());
+                $searchData = $session->get('eccube.admin.product.search', []);
                 if (isset($searchData['stock_status']) && $searchData['stock_status'] === 0) {
                     $isOutOfStock = 1;
                 }
@@ -908,7 +873,7 @@ class ProductController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
 
-            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var $Product \Eccube\Entity\Product */
@@ -918,7 +883,7 @@ class ProductController extends AbstractController
                 $ProductClassess = $Product->getProductClasses();
 
                 foreach ($ProductClassess as $ProductClass) {
-                    $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                    $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
                     foreach ($Csvs as $Csv) {
@@ -930,12 +895,12 @@ class ProductController extends AbstractController
                         }
 
                         $event = new EventArgs(
-                            array(
+                            [
                                 'csvService' => $csvService,
                                 'Csv' => $Csv,
                                 'ProductClass' => $ProductClass,
                                 'ExportCsvRow' => $ExportCsvRow,
-                            ),
+                            ],
                             $request
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT, $event);
@@ -956,7 +921,7 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
 
-        log_info('商品CSV出力ファイル名', array($filename));
+        log_info('商品CSV出力ファイル名', [$filename]);
 
         return $response;
     }
@@ -969,7 +934,7 @@ class ProductController extends AbstractController
      */
     private function createProductCategory($Product, $Category, $count)
     {
-        $ProductCategory = new \Eccube\Entity\ProductCategory();
+        $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);
         $ProductCategory->setProductId($Product->getId());
         $ProductCategory->setCategory($Category);
