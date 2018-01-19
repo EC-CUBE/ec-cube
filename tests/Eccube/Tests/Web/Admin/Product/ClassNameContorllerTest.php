@@ -24,17 +24,45 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Member;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ClassNameRepository;
+use Eccube\Repository\MemberRepository;
+use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ClassNameControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var Member
+     */
+    private $Member;
+
+    /**
+     * @var ProductClassRepository
+     */
+    private $productClassRepo;
+
+    /**
+     * @var ClassCategoryRepository
+     */
+    private $classCategoryRepo;
+
+    /**
+     * @var ClassNameRepository
+     */
+    private $classNameRepo;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->productClassRepo = $this->container->get(ProductClassRepository::class);
+        $this->classCategoryRepo = $this->container->get(ClassCategoryRepository::class);
+        $this->classNameRepo = $this->container->get(ClassNameRepository::class);
+        $this->Member = $this->container->get(MemberRepository::class)->find(1);
         $this->removeClass();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
 
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
@@ -43,62 +71,60 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
                 ->setCreator($this->Member)
                 ->setSortNo($i)
                 ;
-            $this->app['orm.em']->persist($ClassName);
+            $this->entityManager->persist($ClassName);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function removeClass()
     {
-        $ProductClasses = $this->app['eccube.repository.product_class']->findAll();
+        $ProductClasses = $this->productClassRepo->findAll();
         foreach ($ProductClasses as $ProductClass) {
-            $this->app['orm.em']->remove($ProductClass);
+            $this->entityManager->remove($ProductClass);
         }
-        $ClassCategories = $this->app['eccube.repository.class_category']->findAll();
+        $ClassCategories = $this->classCategoryRepo->findAll();
         foreach ($ClassCategories as $ClassCategory) {
-            $this->app['orm.em']->remove($ClassCategory);
+            $this->entityManager->remove($ClassCategory);
         }
-        $this->app['orm.em']->flush();
-        $All = $this->app['eccube.repository.class_name']->findAll();
+        $this->entityManager->flush();
+        $All = $this->classNameRepo->findAll();
         foreach ($All as $ClassName) {
-            $this->app['orm.em']->remove($ClassName);
+            $this->entityManager->remove($ClassName);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testRoutingAdminProductClassName()
     {
-        $crawler = $this->client->request('GET',
-            $this->app->url('admin_product_class_name')
+        $this->client->request('GET',
+            $this->generateUrl('admin_product_class_name')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndexWithPost()
     {
-        $crawler = $this->client->request(
+        $client = $this->client;
+        $client->request(
             'POST',
-            $this->app->url('admin_product_class_name'),
-            array('admin_class_name' => array(
-                '_token' => 'dummy',
-                'name' => '規格1'
+            $this->generateUrl('admin_product_class_name'),
+            array(
+                'admin_class_name' => array(
+                'name' => '規格1',
+                Constant::TOKEN_NAME => 'dummy',
             ))
         );
-
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_class_name')));
-
+        $this->assertTrue($client->getResponse()->isRedirection());
     }
 
     public function testRoutingAdminProductClassNameEdit()
     {
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $TestCreator = $this->Member;
         $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
             ))
@@ -106,49 +132,43 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_class_name_edit', array('id' => $test_class_name_id))
+            $this->generateUrl('admin_product_class_name_edit', array('id' => $test_class_name_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminProductClassNameDelete()
     {
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $TestCreator = $this->Member;
         $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
             ->findOneBy(array(
                 'name' => $TestClassName->getName()
             ))
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_product_class_name');
+        $redirectUrl = $this->generateUrl('admin_product_class_name');
         $this->client->request('DELETE',
-            $this->app->url('admin_product_class_name_delete', array('id' => $test_class_name_id))
+            $this->generateUrl('admin_product_class_name_delete', array('id' => $test_class_name_id)),
+            array(
+                Constant::TOKEN_NAME => 'dummy',
+            )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        // after
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
     public function testMoveSortNo()
     {
-        $ClassName = $this->app['eccube.repository.class_name']->findOneBy(array('name' => 'class-1'));
+        $ClassName = $this->classNameRepo->findOneBy(array('name' => 'class-1'));
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
-            $this->app->url('admin_product_class_name_sort_no_move'),
+            $this->generateUrl('admin_product_class_name_sort_no_move'),
             array($ClassName->getId() => 10),
             array(),
             array(
@@ -156,9 +176,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             )
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $MovedClassName = $this->app['eccube.repository.class_name']->find($ClassName->getId());
+        $MovedClassName = $this->classNameRepo->find($ClassName->getId());
         $this->expected = 10;
         $this->actual = $MovedClassName->getSortNo();
         $this->verify();

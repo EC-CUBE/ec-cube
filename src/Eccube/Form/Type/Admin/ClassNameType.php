@@ -25,6 +25,8 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
+use Eccube\Annotation\Inject;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,11 +47,10 @@ class ClassNameType extends AbstractType
      * ClassNameType constructor.
      * @param $eccubeConfig
      */
-    public function __construct($eccubeConfig)
+    public function __construct(array $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}

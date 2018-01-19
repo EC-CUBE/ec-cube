@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
@@ -34,11 +33,9 @@ use Eccube\Repository\ClassNameRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service=ClassNameController::class)
@@ -46,49 +43,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ClassNameController extends AbstractController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
      * @var ClassNameRepository
      */
     protected $classNameRepository;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * ClassNameController constructor.
-     * @param EntityManagerInterface $entityManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param FormFactoryInterface $formFactory
      * @param ClassNameRepository $classNameRepository
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher,
-        FormFactoryInterface $formFactory,
-        ClassNameRepository $classNameRepository,
-        TranslatorInterface $translator
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
+    public function __construct(ClassNameRepository $classNameRepository)
+    {
         $this->classNameRepository = $classNameRepository;
-        $this->translator = $translator;
     }
 
 
@@ -141,11 +106,9 @@ class ClassNameController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE, $event);
 
                 $this->addSuccess('admin.class_name.save.complete', 'admin');
-
                 return $this->redirectToRoute('admin_product_class_name');
             }
         }
-
         $ClassNames = $this->classNameRepository->getList();
 
         return [
@@ -202,6 +165,6 @@ class ClassNameController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return true;
+        return new Response();
     }
 }
