@@ -28,6 +28,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Eccube\Entity\TaxRule;
 
 /**
  * Class ProductClassControllerTest
@@ -261,20 +262,14 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleInvalid()
     {
         // GIVE
-        /* @var Application $app */
-        $app = $this->app;
-        /**
-         * @var BaseInfo $baseInfo
-         */
-        $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $app->url('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
         // edit class category with tax rate invalid
@@ -299,20 +294,14 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE
-        /* @var Application $app */
-        $app = $this->app;
-        /**
-         * @var BaseInfo $baseInfo
-         */
-        $baseInfo = $app['eccube.repository.base_info']->get();
-        $baseInfo->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
         // WHEN
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
             'GET',
-            $app->url('admin_product_product_class', array('id' => $id))
+            $this->generateUrl('admin_product_product_class', array('id' => $id))
         );
 
         // edit class category with tax = 0
@@ -329,9 +318,9 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->assertContains('商品規格を更新しました。', $htmlMessage);
 
         // check database
-        $product = $app['eccube.repository.product']->find($id);
+        $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
-        $taxRule = $app['eccube.repository.tax_rule']->findOneBy(array('Product' => $product));
+        $taxRule = $this->taxRuleRepository->findOneBy(array('Product' => $product));
         $this->assertEquals(0, $taxRule->getTaxRate());
     }
 
