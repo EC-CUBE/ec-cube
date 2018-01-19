@@ -24,7 +24,6 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Entity\BaseInfo;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\DomCrawler\Crawler;
@@ -36,9 +35,9 @@ use Symfony\Component\DomCrawler\Form;
 class ProductClassControllerTest extends AbstractProductCommonTestCase
 {
     /**
-     * @var BaseInfoRepository
+     * @var BaseInfo
      */
-    protected $baseInfoRepository;
+    protected $BaseInfo;
 
     /**
      * @var ProductRepository
@@ -48,15 +47,15 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     /**
      * @var TaxRuleRepository
      */
-    protected $taxRule;
+    protected $taxRuleRepository;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
+        $this->BaseInfo = $this->container->get(BaseInfo::class);
         $this->productRepository = $this->container->get(ProductRepository::class);
-        $this->taxRule = $this->container->get(TaxRuleRepository::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
     }
 
     /**
@@ -64,17 +63,12 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      */
     public function testRoutingAdminProductProductClassEdit()
     {
-        // Before
-        /* @var Application $app */
-        $app = $this->app;
         $Product = $this->createProduct();
-
-
         // Main
-        $redirectUrl = $app->url('admin_product_product_class', array('id' => $Product->getId()));
+        $redirectUrl = $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()]);
         $this->client->request(
             'POST',
-            $app->url('admin_product_product_class_edit', array('id' => $Product->getId()))
+            $this->generateUrl('admin_product_product_class_edit', ['id' => $Product->getId()])
         );
 
         // Then
@@ -518,8 +512,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         /**
          * @var BaseInfo $baseInfo
          */
-        $baseInfo = $this->baseInfoRepository->get();
-        $baseInfo->setOptionProductTaxRule(true);
+        $this->BaseInfo->setOptionProductTaxRule(true);
         $id = 1;
 
         // WHEN

@@ -68,11 +68,6 @@ class ProductClassController extends AbstractController
     protected $taxRuleRepository;
 
     /**
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
      * @var SaleTypeRepository
      */
     protected $saleTypeRepository;
@@ -88,24 +83,9 @@ class ProductClassController extends AbstractController
     protected $productClassRepository;
 
     /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
 
     /**
      * @var ProductRepository
@@ -114,38 +94,27 @@ class ProductClassController extends AbstractController
 
     /**
      * ProductClassController constructor.
+     *
      * @param TaxRuleRepository $taxRuleRepository
-     * @param array $eccubeConfig
      * @param SaleTypeRepository $saleTypeRepository
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ProductClassRepository $productClassRepository
-     * @param EntityManager $entityManager
      * @param BaseInfo $BaseInfo
-     * @param EventDispatcher $eventDispatcher
-     * @param FormFactory $formFactory
      * @param ProductRepository $productRepository
      */
     public function __construct(
         TaxRuleRepository $taxRuleRepository,
-        array $eccubeConfig,
         SaleTypeRepository $saleTypeRepository,
         ClassCategoryRepository $classCategoryRepository,
         ProductClassRepository $productClassRepository,
-        EntityManager $entityManager,
         BaseInfo $BaseInfo,
-        EventDispatcher $eventDispatcher,
-        FormFactory $formFactory,
         ProductRepository $productRepository
     ) {
         $this->taxRuleRepository = $taxRuleRepository;
-        $this->appConfig = $eccubeConfig;
         $this->saleTypeRepository = $saleTypeRepository;
         $this->classCategoryRepository = $classCategoryRepository;
         $this->productClassRepository = $productClassRepository;
-        $this->entityManager = $entityManager;
         $this->BaseInfo = $BaseInfo;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
         $this->productRepository = $productRepository;
     }
 
@@ -170,19 +139,19 @@ class ProductClassController extends AbstractController
         if (!$Product->hasProductClass()) {
             // 登録画面を表示
 
-            log_info('商品規格新規登録表示', array($id));
+            log_info('商品規格新規登録表示', [$id]);
 
             $builder = $this->formFactory->createBuilder();
 
             $builder
-                ->add('class_name1', EntityType::class, array(
+                ->add('class_name1', EntityType::class, [
                     'class' => 'Eccube\Entity\ClassName',
                     'choice_label' => 'name',
                     'placeholder' => '規格1を選択',
-                    'constraints' => array(
+                    'constraints' => [
                         new Assert\NotBlank(),
-                    ),
-                ))
+                    ],
+                ])
                 ->add('class_name2', EntityType::class, array(
                     'class' => 'Eccube\Entity\ClassName',
                     'choice_label' => 'name',
@@ -191,10 +160,10 @@ class ProductClassController extends AbstractController
                 ));
 
             $event = new EventArgs(
-                array(
+                [
                     'builder' => $builder,
                     'Product' => $Product,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE, $event);
@@ -214,7 +183,7 @@ class ProductClassController extends AbstractController
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
 
-                    log_info('選択された商品規格', array($ClassName1, $ClassName2));
+                    log_info('選択された商品規格', [$ClassName1, $ClassName2]);
 
                     // 各規格が選択されている際に、分類を保有しているか確認
                     $class1Valied = $this->isValiedCategory($ClassName1);
@@ -244,19 +213,19 @@ class ProductClassController extends AbstractController
                         $builder = $this->formFactory->createBuilder();
 
                         $builder
-                            ->add('product_classes', CollectionType::class, array(
+                            ->add('product_classes', CollectionType::class, [
                                 'entry_type' => ProductClassType::class,
                                 'allow_add' => true,
                                 'allow_delete' => true,
                                 'data' => $ProductClasses,
-                             ));
+                             ]);
 
                         $event = new EventArgs(
-                            array(
+                            [
                                 'builder' => $builder,
                                 'Product' => $Product,
                                 'ProductClasses' => $ProductClasses,
-                            ),
+                            ],
                             $request
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
@@ -279,7 +248,7 @@ class ProductClassController extends AbstractController
         } else {
             // 既に商品規格が登録されている場合、商品規格画面を表示する
 
-            log_info('商品規格登録済表示', array($id));
+            log_info('商品規格登録済表示', [$id]);
 
             // 既に登録されている商品規格を取得
             $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
@@ -295,7 +264,7 @@ class ProductClassController extends AbstractController
             // 規格分類が組み合わされた空の商品規格を取得
             $createProductClasses = $this->createProductClasses( $Product, $ClassName1, $ClassName2);
 
-            $mergeProductClasses = array();
+            $mergeProductClasses = [];
 
             // 商品税率が設定されている場合、商品税率を項目に設定
             if ($this->BaseInfo->isOptionProductTaxRule())  {
@@ -337,19 +306,19 @@ class ProductClassController extends AbstractController
             $builder = $this->formFactory->createBuilder();
 
             $builder
-                ->add('product_classes', CollectionType::class, array(
+                ->add('product_classes', CollectionType::class, [
                     'entry_type' => ProductClassType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'data' => $ProductClasses,
-                ));
+                ]);
 
             $event = new EventArgs(
-                array(
+                [
                     'builder' => $builder,
                     'Product' => $Product,
                     'ProductClasses' => $ProductClasses,
-                ),
+                ],
                 $request
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
@@ -728,7 +697,7 @@ class ProductClassController extends AbstractController
      */
     private function newProductClass()
     {
-        $SaleType = $this->saleTypeRepository->find($this->appConfig['sale_type_normal']);
+        $SaleType = $this->saleTypeRepository->find($this->eccubeConfig['sale_type_normal']);
 
         $ProductClass = new ProductClass();
         $ProductClass->setSaleType($SaleType);
