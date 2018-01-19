@@ -120,7 +120,7 @@ class ProductController extends AbstractController
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
-     * @param BaseInfo $baseInfo
+     * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
      */
@@ -131,7 +131,7 @@ class ProductController extends AbstractController
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
-        BaseInfo $baseInfo,
+        BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository
     ) {
@@ -141,7 +141,7 @@ class ProductController extends AbstractController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
-        $this->BaseInfo = $baseInfo;
+        $this->BaseInfo = $BaseInfo;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
     }

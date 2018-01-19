@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -35,11 +34,8 @@ use Eccube\Repository\ProductClassRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route(service=ClassCategoryController::class)
@@ -47,24 +43,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ClassCategoryController extends AbstractController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var ProductClassRepository
      */
     protected $productClassRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
 
     /**
      * @var ClassCategoryRepository
@@ -77,36 +58,20 @@ class ClassCategoryController extends AbstractController
     protected $classNameRepository;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * ClassCategoryController constructor.
-     * @param EntityManagerInterface $entityManager
+     *
      * @param ProductClassRepository $productClassRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param FormFactoryInterface $formFactory
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ClassNameRepository $classNameRepository
-     * @param TranslatorInterface $translator
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         ProductClassRepository $productClassRepository,
-        EventDispatcherInterface $eventDispatcher,
-        FormFactoryInterface $formFactory,
         ClassCategoryRepository $classCategoryRepository,
-        ClassNameRepository $classNameRepository,
-        TranslatorInterface $translator
+        ClassNameRepository $classNameRepository
     ) {
-        $this->entityManager = $entityManager;
         $this->productClassRepository = $productClassRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
         $this->classCategoryRepository = $classCategoryRepository;
         $this->classNameRepository = $classNameRepository;
-        $this->translator = $translator;
     }
 
 
