@@ -80,6 +80,11 @@ class EntryController extends AbstractController
     protected $encoderFactory;
 
     /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
      * EntryController constructor.
      * @param CustomerStatusRepository $customerStatusRepository
      * @param MailService $mailService
