@@ -127,7 +127,8 @@
         ]
     },
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "*",
+        "easycorp/easy-log-handler": "1.0.4"
     },
     "extra": {
         "symfony": {
