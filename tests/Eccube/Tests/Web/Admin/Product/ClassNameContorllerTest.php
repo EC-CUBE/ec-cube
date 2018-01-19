@@ -114,7 +114,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
                 Constant::TOKEN_NAME => 'dummy',
             ))
         );
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
     }
 
     public function testRoutingAdminProductClassNameEdit()
