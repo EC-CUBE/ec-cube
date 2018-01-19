@@ -28,6 +28,7 @@ use Eccube\Entity\Member;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
+use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -175,9 +176,9 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         if (!$Creator) {
             $Creator = $this->createMember();
         }
-        $DeliveryDurations = $this->app['eccube.repository.delivery_duration']->findAll();
+        $DeliveryDurations = $this->container->get(DeliveryDurationRepository::class)->findAll();
         $ProductClass = new ProductClass();
-        $SaleType = $this->app['orm.em']
+        $SaleType = $this->entityManager
             ->getRepository('\Eccube\Entity\Master\SaleType')
             ->find(1);
 
@@ -196,17 +197,17 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setCreator($Creator)
             ->setVisible(true);
 
-        $this->app['orm.em']->persist($ProductClass);
-        $this->app['orm.em']->flush($ProductClass);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush($ProductClass);
 
         $this->createProductStock($Creator, $ProductClass);
 
-        $this->app['orm.em']->persist($ProductClass);
-        $this->app['orm.em']->flush($ProductClass);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush($ProductClass);
 
         $TestProduct->addProductClass($ProductClass);
-        $this->app['orm.em']->persist($TestProduct);
-        $this->app['orm.em']->flush($TestProduct);
+        $this->entityManager->persist($TestProduct);
+        $this->entityManager->flush($TestProduct);
 
         return $ProductClass;
     }
