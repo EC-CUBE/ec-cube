@@ -54,10 +54,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route(service=ProductController::class)
@@ -80,11 +76,6 @@ class ProductController extends AbstractController
     protected $productImageRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
@@ -105,11 +96,6 @@ class ProductController extends AbstractController
     protected $BaseInfo;
 
     /**
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
@@ -120,73 +106,38 @@ class ProductController extends AbstractController
     protected $productStatusRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * ProductController constructor.
      *
      * @param CsvExportService $csvExportService
-     * @param TranslatorInterface $translator
      * @param ProductClassRepository $productClassRepository
      * @param ProductImageRepository $productImageRepository
-     * @param EntityManagerInterface $entityManager
      * @param TaxRuleRepository $taxRuleRepository
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
      * @param BaseInfo $BaseInfo
      * @param PageMaxRepository $pageMaxRepository
      * @param ProductStatusRepository $productStatusRepository
-     * @param FormFactoryInterface $formFactory
-     * @param SessionInterface $session
-     * @param array $eccubeConfig
      */
     public function __construct(
         CsvExportService $csvExportService,
-        TranslatorInterface $translator,
         ProductClassRepository $productClassRepository,
         ProductImageRepository $productImageRepository,
-        EntityManagerInterface $entityManager,
         TaxRuleRepository $taxRuleRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository,
-        FormFactoryInterface $formFactory,
-        SessionInterface $session,
-        array $eccubeConfig
+        ProductStatusRepository $productStatusRepository
     ) {
         $this->csvExportService = $csvExportService;
-        $this->translator = $translator;
         $this->productClassRepository = $productClassRepository;
         $this->productImageRepository = $productImageRepository;
-        $this->entityManager = $entityManager;
         $this->taxRuleRepository = $taxRuleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
         $this->BaseInfo = $BaseInfo;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->productStatusRepository = $productStatusRepository;
-        $this->formFactory = $formFactory;
-        $this->session = $session;
-        $this->appConfig = $eccubeConfig;
     }
 
 
@@ -217,7 +168,7 @@ class ProductController extends AbstractController
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->appConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -276,7 +227,7 @@ class ProductController extends AbstractController
                     } else {
                         $searchData['link_status'] = $this->productStatusRepository->find($status);
                         $searchData['stock_status'] = null;
-                        if ($status == $this->appConfig['admin_product_stock_status']) {
+                        if ($status == $this->eccubeConfig['admin_product_stock_status']) {
                             // 在庫なし
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
@@ -361,7 +312,7 @@ class ProductController extends AbstractController
 
                     $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
-                    $image->move($this->appConfig['image_temp_realdir'], $filename);
+                    $image->move($this->eccubeConfig['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
             }
@@ -553,8 +504,8 @@ class ProductController extends AbstractController
                     $this->entityManager->persist($ProductImage);
 
                     // 移動
-                    $file = new File($this->appConfig['image_temp_realdir'] . '/' . $add_image);
-                    $file->move($this->appConfig['image_save_realdir']);
+                    $file = new File($this->eccubeConfig['image_temp_realdir'] . '/' . $add_image);
+                    $file->move($this->eccubeConfig['image_save_realdir']);
                 }
 
                 // 画像の削除
@@ -573,7 +524,7 @@ class ProductController extends AbstractController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($this->appConfig['image_save_realdir'] . '/' . $delete_image);
+                    $fs->remove($this->eccubeConfig['image_save_realdir'] . '/' . $delete_image);
                 }
                 $this->entityManager->persist($Product);
                 $this->entityManager->flush();
@@ -709,7 +660,7 @@ class ProductController extends AbstractController
                     foreach ($deleteImages as $deleteImage) {
                         try {
                             $fs = new Filesystem();
-                            $fs->remove($this->appConfig['image_save_realdir'] . '/' . $deleteImage);
+                            $fs->remove($this->eccubeConfig['image_save_realdir'] . '/' . $deleteImage);
                         } catch (\Exception $e) {
                             // エラーが発生しても無視する
                         }
@@ -792,7 +743,7 @@ class ProductController extends AbstractController
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($this->appConfig['image_save_realdir'] . '/' . $Image->getFileName(), $this->appConfig['image_save_realdir'] . '/' . $filename);
+                        $fs->copy($this->eccubeConfig['image_save_realdir'] . '/' . $Image->getFileName(), $this->eccubeConfig['image_save_realdir'] . '/' . $filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
