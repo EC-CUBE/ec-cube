@@ -40,6 +40,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @Route(service=MemberController::class)
@@ -47,8 +48,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class MemberController extends AbstractController
 {
     /**
-     * @Inject("security.token_storage")
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     protected $tokenStorage;
 
@@ -88,9 +88,11 @@ class MemberController extends AbstractController
     protected $encoderFactory;
 
     public function __construct(
-        MemberRepository $memberRepository
+        MemberRepository $memberRepository,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->memberRepository = $memberRepository;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -122,11 +124,11 @@ class MemberController extends AbstractController
 
     /**
      * @Route("/%admin_route%/setting/system/member/new", name="admin_setting_system_member_new")
-     * @Template("Setting/System/member_edit.twig")
+     * @Template("@admin/Setting/System/member_edit.twig")
      */
-    public function create(Application $app, Request $request)
+    public function create(Request $request)
     {
-        $LoginMember = clone $app->user();
+        $LoginMember = clone $this->tokenStorage->getToken()->getUser();
         $this->entityManager->detach($LoginMember);
 
         $Member = new Member();
@@ -136,9 +138,7 @@ class MemberController extends AbstractController
         $event = new EventArgs([
             'builder' => $builder,
             'Member' => $Member,
-        ],
-            $request
-        );
+        ], $request);
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
@@ -164,9 +164,9 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
-            $app->addSuccess('admin.member.save.complete', 'admin');
+            $this->addSuccess('admin.member.save.complete', 'admin');
 
-            return $app->redirect($app->url('admin_setting_system_member'));
+            return $this->redirectToRoute('admin_setting_system_member');
         }
 
         $this->tokenStorage->getToken()->setUser($LoginMember);
