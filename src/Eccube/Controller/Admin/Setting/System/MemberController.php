@@ -257,21 +257,21 @@ class MemberController extends AbstractController
      * @Method("PUT")
      * @Route("/%admin_route%/setting/system/member/{id}/down", requirements={"id" = "\d+"}, name="admin_setting_system_member_down")
      */
-    public function down(Application $app, Request $request, Member $Member)
+    public function down(Request $request, Member $Member)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         try {
             $this->memberRepository->down($Member);
 
-            $app->addSuccess('admin.member.down.complete', 'admin');
+            $this->addSuccess('admin.member.down.complete', 'admin');
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
-            $app->addError('admin.member.down.error', 'admin');
+            $this->addError('admin.member.down.error', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_system_member'));
+        return $this->redirectToRoute('admin_setting_system_member');
     }
 
     /**
