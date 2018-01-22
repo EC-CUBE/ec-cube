@@ -56,9 +56,9 @@ abstract class EccubeTestCase extends WebTestCase
         $this->client = self::createClient();
         $this->container = $this->client->getContainer();
         $this->entityManager = $this->container->get('doctrine')->getManager();
+        $this->eccubeConfig = $this->container->getParameter('eccube.constants');
         $this->entityManager->getConnection()->beginTransaction();
         $this->entityManager->getConnection()->setAutoCommit(false);
-        $this->eccubeConfig = $this->container->getParameter('eccube.constants');
     }
 
     /**
