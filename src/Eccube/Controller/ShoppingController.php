@@ -121,13 +121,13 @@ class ShoppingController extends AbstractShoppingController
     public function index(Request $request)
     {
         // カートチェック
-        $response = $this->forward("Eccube\Controller\ShoppingController::checkToCart");
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注情報を初期化
-        $response = $this->forward('Eccube\Controller\ShoppingController::initializeOrder');
+        $response = $this->forwardToRoute('shopping_initialize_order');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -139,14 +139,14 @@ class ShoppingController extends AbstractShoppingController
         $flowResult = $this->executePurchaseFlow($Order);
 
         // フォームを生成する
-        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
+        $this->forwardToRoute('shopping_create_form');
 
         if ($flowResult->hasWarning() || $flowResult->hasError()) {
             return $this->redirectToRoute('cart');
         }
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
-        $this->forward($this->generateUrl("shopping_handle_multiple_errors"));
+        $this->forwardToRoute('shopping_handle_multiple_errors');
         $form = $this->parameterBag->get(OrderType::class);
 
         return [
@@ -165,24 +165,24 @@ class ShoppingController extends AbstractShoppingController
     public function redirectTo(Request $request)
     {
         // カートチェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
+        $response = $this->forwardToRoute('shopping_exists_order');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // フォームの生成
-        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
+        $this->forwardToRoute('shopping_create_form');
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
 
         // 各種変更ページへリダイレクトする
-        $response = $this->forward('Eccube\Controller\ShoppingController::redirectToChange');
+        $response = $this->forwardToRoute('shopping_redirect_to_change');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -205,19 +205,19 @@ class ShoppingController extends AbstractShoppingController
     public function confirm(Request $request)
     {
         // カートチェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
+        $response = $this->forwardToRoute('shopping_exists_order');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // フォームの生成
-        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
+        $this->forwardToRoute('shopping_create_form');
         $form = $this->parameterBag->get(OrderType::class);
         $form->handleRequest($request);
 
@@ -245,20 +245,20 @@ class ShoppingController extends AbstractShoppingController
     public function order(Request $request)
     {
         // カートチェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
+        $response = $this->forwardToRoute('shopping_exists_order');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // form作成
         // FIXME イベントハンドラを外から渡したい
-        $this->forward('Eccube\Controller\ShoppingController::createShoppingForm');
+        $this->forwardToRoute('shopping_create_form');
 
         $form = $this->parameterBag->get(OrderType::class);
         $Order = $this->parameterBag->get('Order');
@@ -266,7 +266,7 @@ class ShoppingController extends AbstractShoppingController
         $form->handleRequest($request);
 
         // 受注処理
-        $response = $this->forward('Eccube\Controller\ShoppingController::completeOrder');
+        $response = $this->forwardToRoute('shopping_complete_order');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -330,7 +330,7 @@ class ShoppingController extends AbstractShoppingController
     public function shipping(Request $request, $id)
     {
         // カートチェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -432,13 +432,13 @@ class ShoppingController extends AbstractShoppingController
         }
 
         // カートチェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::checkToCart');
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // 受注の存在チェック
-        $response = $this->forward('Eccube\Controller\ShoppingController::existsOrder');
+        $response = $this->forwardToRoute('shopping_exists_order');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -885,7 +885,7 @@ class ShoppingController extends AbstractShoppingController
                 return $this->redirectToRoute('shopping_error');
             }
 
-            return $this->forward('Eccube\Controller\ShoppingController::afterComplete');
+            return $this->forwardToRoute('shopping_after_complete');
         }
 
         return new Response();

@@ -106,7 +106,7 @@ class NonMemberShoppingController extends AbstractShoppingController
         $cartService = $this->cartService;
 
         // カートチェック
-        $response = $this->forward("Eccube\Controller\ShoppingController::checkToCart");
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -242,7 +242,7 @@ class NonMemberShoppingController extends AbstractShoppingController
     public function shippingMultipleEdit(Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_art"));
+        $response = $this->forwardToRoute('shopping_check_to_art');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
