@@ -288,15 +288,15 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testMemberDownFail()
     {
         // before
-        $Member = $this->app['eccube.repository.member']->findOneBy(array('sort_no' => 1));
+        $Member = $this->memberRepository->findOneBy(['sort_no' => 1]);
         $mid = $Member->getId();
         $oldSortNo = $Member->getSortNo();
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $Member->getSortNo();
