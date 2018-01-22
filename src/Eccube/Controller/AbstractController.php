@@ -31,6 +31,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
@@ -167,6 +168,24 @@ class AbstractController extends Controller
         } else {
             $this->session->getFlashBag()->set('eccube.'.$namespace.'.login.target.path', $targetPath);
         }
+    }
+
+    /**
+     * Forwards the request to another controller.
+     *
+     * @param string $route The name of the route
+     * @param array  $path An array of path parameters
+     * @param array  $query An array of query parameters
+     *
+     * @return Response A Response instance
+     */
+    public function forwardToRoute($route, array $path = [], array $query = [])
+    {
+        $Route = $this->get('router')->getRouteCollection()->get($route);
+        if (!$Route) {
+            throw new RouteNotFoundException(sprintf('The named route "%s" as such route does not exist.', $route));
+        }
+        return $this->forward($Route->getDefault('_controller'), $path, $query);
     }
 
     /**
