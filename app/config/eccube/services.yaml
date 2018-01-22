@@ -121,6 +121,7 @@ services:
           - '@monolog.logger'
           - '@monolog.logger.front'
           - '@monolog.logger.admin'
+        lazy: true
 
     eccube.log.formatter.line:
         class: Monolog\Formatter\LineFormatter
