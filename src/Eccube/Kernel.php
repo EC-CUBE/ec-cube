@@ -113,6 +113,8 @@ class Kernel extends BaseKernel
         }
         $builder = $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
         $builder->setSchemes($scheme);
+        $builder = $routes->import($confDir.'/routes_'.$this->environment.self::CONFIG_EXTS, '/', 'glob');
+        $builder->setSchemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
         if ($container->hasParameter('eccube.plugins.enabled')) {

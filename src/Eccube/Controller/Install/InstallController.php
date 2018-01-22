@@ -33,20 +33,26 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
-use Eccube\InstallApplication;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Util\StringUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class InstallController
+/**
+ * @Route(service=InstallController::class)
+ */
+class InstallController extends AbstractController
 {
     protected $requiredModules = [
         'pdo',
@@ -88,39 +94,51 @@ class InstallController
     protected $configDistDir;
     protected $cacheDir;
 
-    public function __construct()
-    {
+    /**
+     * @var FormFactoryInterface
+     */
+    protected $formFactory;
+
+    public function __construct(
+        FormFactoryInterface $formFactory
+    ) {
         $this->rootDir = realpath(__DIR__.'/../../../..');
         $this->configDir = realpath($this->rootDir.'/app/config/eccube');
         $this->configDistDir = realpath($this->rootDir.'/src/Eccube/Resource/config');
         $this->cacheDir = realpath($this->rootDir.'/app/cache');
+        $this->formFactory = $formFactory;
     }
 
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
+     *
+     * @Route("/", name="homepage")
+     * @Template("index.twig")
      *
      * @param InstallApplication $app
      * @param Request $request
      * @param Session $session
      * @return Response
      */
-    public function index(InstallApplication $app, Request $request, Session $session)
+    public function index(Request $request, Session $session)
     {
         $this->removeSessionData($session);
 
-        return $app->redirect($app->path('install_step1'));
+        return $this->redirectToRoute('install_step1');
     }
 
     /**
      * ようこそ.
      *
-     * @param InstallApplication $app
+     * @Route("/install/step1", name="install_step1")
+     * @Template("step1.twig")
+     *
      * @param Request $request
      * @return Response
      */
-    public function step1(InstallApplication $app, Request $request, Session $session)
+    public function step1(Request $request, Session $session)
     {
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step1Type::class)
             ->getForm();
 
@@ -130,26 +148,29 @@ class InstallController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setSessionData($session, $form->getData());
 
-            return $app->redirect($app->path('install_step2'));
+            return $this->redirectToRoute('install_step2');
         }
 
-        $this->checkModules($app);
+        // $this->checkModules($app);
 
-        return $app['twig']->render('step1.twig', [
+        return [
             'form' => $form->createView(),
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
-        ]);
+            'publicPath' => '../../html/',
+        ];
     }
 
     /**
      * ディレクトリの書き込み権限をチェック.
+     *
+     * @Route("/install/step2", name="install_step2")
+     * @Template("step2.twig")
      *
      * @param InstallApplication $app
      * @param Request $request
      * @param Session $session
      * @return Response
      */
-    public function step2(InstallApplication $app, Request $request, Session $session)
+    public function step2(Request $request, Session $session)
     {
         $protectedDirs = [];
         foreach ($this->writableDirs as $dir) {
@@ -168,21 +189,24 @@ class InstallController
             $fs->remove($finder);
         }
 
-        return $app['twig']->render('step2.twig', [
+        return [
             'protectedDirs' => $protectedDirs,
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
-        ]);
+            'publicPath' => '../../html/',
+        ];
     }
 
     /**
      * サイトの設定.
+     *
+     * @Route("/install/step3", name="install_step3")
+     * @Template("step3.twig")
      *
      * @param InstallApplication $app
      * @param Request $request
      * @param Session $session
      * @return Response
      */
-    public function step3(InstallApplication $app, Request $request, Session $session)
+    public function step3(Request $request, Session $session)
     {
         $sessionData = $this->getSessionData($session);
 
@@ -245,21 +269,24 @@ class InstallController
             return $app->redirect($app->path('install_step4'));
         }
 
-        return $app['twig']->render('step3.twig', [
+        return [
             'form' => $form->createView(),
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
-        ]);
+            'publicPath' => '../../html/',
+        ];
     }
 
     /**
      * データベースの設定.
+     *
+     * @Route("/install/step4", name="install_step4")
+     * @Template("step4.twig")
      *
      * @param InstallApplication $app
      * @param Request $request
      * @param Session $session
      * @return Response
      */
-    public function step4(InstallApplication $app, Request $request, Session $session)
+    public function step4(Request $request, Session $session)
     {
         $sessionData = $this->getSessionData($session);
 
@@ -300,21 +327,24 @@ class InstallController
             return $app->redirect($app->path('install_step5'));
         }
 
-        return $app['twig']->render('step4.twig', [
+        return [
             'form' => $form->createView(),
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
-        ]);
+            'publicPath' => '../../html/',
+        ];
     }
 
     /**
      * データベースの初期化.
+     *
+     * @Route("/install/step5", name="install_step5")
+     * @Template("step5.twig")
      *
      * @param InstallApplication $app
      * @param Request $request
      * @param Session $session
      * @return Response
      */
-    public function step5(InstallApplication $app, Request $request, Session $session)
+    public function step5(Request $request, Session $session)
     {
         $form = $app['form.factory']
             ->createBuilder(Step5Type::class)
@@ -374,14 +404,18 @@ class InstallController
             return $app->redirect($app->path('install_complete'));
         }
 
-        return $app['twig']->render('step5.twig', [
+        return [
             'form' => $form->createView(),
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
-        ]);
+            'publicPath' => '../../html/',
+        ];
     }
 
-    //    インストール完了
-    public function complete(InstallApplication $app, Request $request)
+    /**
+     * インストール完了
+     * @Route("/install/complete", name="install_complete")
+     * @Template("complete.twig")
+     */
+    public function complete(Request $request)
     {
         $config = require $this->configDir.'/config.php';
         if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
@@ -396,10 +430,10 @@ class InstallController
         $basePath = $request->getBasePath();
         $adminUrl = $host.$basePath.'/'.$pathConfig['admin_route'];
 
-        return $app['twig']->render('complete.twig', [
+        return [
             'admin_url' => $adminUrl,
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
-        ]);
+            'publicPath' => '../../html/',
+        ];
     }
 
     private function getSessionData(Session $session)
@@ -811,10 +845,10 @@ class InstallController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function migration(InstallApplication $app, Request $request)
+    public function migration(Request $request)
     {
         return $app['twig']->render('migration.twig', array(
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
+            'publicPath' => '../../html/',
         ));
     }
 
@@ -827,7 +861,7 @@ class InstallController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function migration_plugin(InstallApplication $app, Request $request)
+    public function migration_plugin(Request $request)
     {
         $eccube = \Eccube\Application::getInstance();
         $eccube->initialize();
@@ -841,7 +875,7 @@ class InstallController
             return $app['twig']->render('migration_plugin.twig', array(
                 'Plugins' => $Plugins,
                 'version' => Constant::VERSION,
-                'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
+                'publicPath' => '../../html/',
             ));
         }
     }
@@ -854,7 +888,7 @@ class InstallController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function migration_end(InstallApplication $app, Request $request)
+    public function migration_end(Request $request)
     {
         $this->doMigrate();
         $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
@@ -863,7 +897,7 @@ class InstallController
         \Eccube\Util\CacheUtil::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig', array(
-            'publicPath' => '..'.RELATIVE_PUBLIC_DIR_PATH.'/',
+            'publicPath' => '../../html/',
         ));
     }
 }
