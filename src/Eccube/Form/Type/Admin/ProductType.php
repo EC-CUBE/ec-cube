@@ -25,7 +25,6 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Annotation\FormType;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
@@ -42,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ProductType.
- * @FormType
  */
 class ProductType extends AbstractType
 {

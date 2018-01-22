@@ -25,7 +25,6 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\FormType;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
@@ -41,9 +40,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class ProductClassType extends AbstractType
 {
     /**
