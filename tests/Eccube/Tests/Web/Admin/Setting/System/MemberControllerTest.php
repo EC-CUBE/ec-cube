@@ -128,19 +128,19 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testMemberEditFail()
     {
         // before
-        $test_member_id = 99999;
+        $memberId = 99999;
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $memberId])
         );
-        $this->fail();
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     public function testMemberNewSubmit()
