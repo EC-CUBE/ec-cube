@@ -90,7 +90,7 @@ class EntryControllerTest extends AbstractWebTestCase
             'sex' => 1,
             'job' => 1,
             'point' => 1,
-            Constant::TOKEN_NAME => $this->getCsrfToken('entry')
+            Constant::TOKEN_NAME => 'dummy'
         );
         return $form;
     }
@@ -130,7 +130,7 @@ class EntryControllerTest extends AbstractWebTestCase
             $this->generateUrl('entry'),
             array(
                 'entry' => array(
-                    Constant::TOKEN_NAME => $this->getCsrfToken('entry')
+                    Constant::TOKEN_NAME => 'dummy'
                 ),
                 'mode' => 'confirm'
             )
