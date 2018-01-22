@@ -50,9 +50,9 @@ class LogControllerTest extends AbstractAdminWebTestCase
         );
 
         /** @var Kernel $rootDir */
-        $rootDir = $this->container->get('kernel');
+        $kernel= $this->container->get('kernel');
 
-        $this->logTest = $rootDir->getLogDir().$this->formData['files'];
+        $this->logTest = $kernel->getLogDir().'/'.$this->formData['files'];
 
         if (!file_exists($this->logTest)) {
             file_put_contents($this->logTest, 'test');

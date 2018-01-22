@@ -91,7 +91,7 @@ class LogController extends  AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
         }
-        $logFile = $this->kernel->getLogDir().$formData['files'];
+        $logFile = $this->kernel->getLogDir().'/'.$formData['files'];
 
         return [
             'form' => $form->createView(),
