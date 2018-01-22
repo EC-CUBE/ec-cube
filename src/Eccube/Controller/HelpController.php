@@ -24,12 +24,10 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Repository\HelpRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * @Route(service=HelpController::class)
@@ -37,10 +35,19 @@ use Symfony\Component\HttpFoundation\Request;
 class HelpController extends AbstractController
 {
     /**
-     * @Inject(HelpRepository::class)
      * @var HelpRepository
      */
     protected $helpRepository;
+
+    /**
+     * HelpController constructor.
+     * @param HelpRepository $helpRepository
+     */
+    public function __construct(HelpRepository $helpRepository)
+    {
+        $this->helpRepository = $helpRepository;
+    }
+
 
     /**
      * 特定商取引法.
@@ -48,7 +55,7 @@ class HelpController extends AbstractController
      * @Route("/help/tradelaw", name="help_tradelaw")
      * @Template("Help/tradelaw.twig")
      */
-    public function tradelaw(Application $app, Request $request)
+    public function tradelaw()
     {
         $Help = $this->helpRepository->get();
 
@@ -63,7 +70,7 @@ class HelpController extends AbstractController
      * @Route("/guide", name="help_guide")
      * @Template("Help/guide.twig")
      */
-    public function guide(Application $app, Request $request)
+    public function guide()
     {
         return [];
     }
@@ -74,7 +81,7 @@ class HelpController extends AbstractController
      * @Route("/help/about", name="help_about")
      * @Template("Help/about.twig")
      */
-    public function about(Application $app, Request $request)
+    public function about()
     {
         return [];
     }
@@ -85,7 +92,7 @@ class HelpController extends AbstractController
      * @Route("/help/privacy", name="help_privacy")
      * @Template("Help/privacy.twig")
      */
-    public function privacy(Application $app, Request $request)
+    public function privacy()
     {
         return [];
     }
@@ -96,7 +103,7 @@ class HelpController extends AbstractController
      * @Route("/help/agreement", name="help_agreement")
      * @Template("Help/agreement.twig")
      */
-    public function agreement(Application $app, Request $request)
+    public function agreement()
     {
         $Help = $this->helpRepository->get();
 

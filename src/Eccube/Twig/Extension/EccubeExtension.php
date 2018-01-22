@@ -70,7 +70,6 @@ class EccubeExtension extends AbstractExtension
             new TwigFunction('is_object', array($this, 'isObject')),
             new TwigFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new TwigFunction('active_menus', array($this, 'getActiveMenus')),
-            new TwigFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
 
             // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::url
             // new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
@@ -139,22 +138,6 @@ class EccubeExtension extends AbstractExtension
         }
 
         return $menus;
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getCsrfTokenForAnchor()
-    {
-//        $tokenParse = $this->getTokenParsers();
-//        var_dump($tokenParse);
-//        die;
-        $token = $this->container->get('security.csrf.token_manager')
-            ->getToken(Constant::TOKEN_NAME)->getValue();
-//        $token = ;
-        return 'token-for-anchor=\'' . $token . '\'';
     }
 
     /**

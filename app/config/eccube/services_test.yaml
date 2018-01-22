@@ -1,0 +1,11 @@
+services:
+    # テスト時はCsrfTokenManagerはMockを利用する
+    security.csrf.token_manager:
+        class: Eccube\Tests\Mock\CsrfTokenManagerMock
+        public: true
+    # テスト時はTransactionListenerを無効にする
+    Eccube\EventListener\TransactionListener:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@Eccube\Log\Logger'
+            - false

@@ -24,24 +24,31 @@
 
 namespace Eccube\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
 {
     /**
-     * @deprecated
-     * @var TokenStorage
+     * @var array
      */
-    protected $tokenStorage;
+    protected $eccubeConfig;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
     /**
      * @var FormFactoryInterface
@@ -54,15 +61,36 @@ class AbstractController extends Controller
     protected $eventDispatcher;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     protected $session;
 
     /**
-     * @var CsrfTokenManagerInterface
+     * @param array $eccubeConfig
      * @required
      */
-    protected  $csrfTokenManager;
+    public function setEccubeConfig(array $eccubeConfig)
+    {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @required
+     */
+    public function setEntityManager(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @required
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 
     /**
      * @param SessionInterface $session
@@ -93,32 +121,32 @@ class AbstractController extends Controller
 
     public function addSuccess($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
+        $this->session->getFlashBag()->add('eccube.'.$namespace.'.success', $message);
     }
 
     public function addError($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
+        $this->session->getFlashBag()->add('eccube.'.$namespace.'.error', $message);
     }
 
     public function addDanger($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
+        $this->session->getFlashBag()->add('eccube.'.$namespace.'.danger', $message);
     }
 
     public function addWarning($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
+        $this->session->getFlashBag()->add('eccube.'.$namespace.'.warning', $message);
     }
 
     public function addInfo($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
+        $this->session->getFlashBag()->add('eccube.'.$namespace.'.info', $message);
     }
 
     public function addRequestError($message, $namespace = 'front')
     {
-        $this->session->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
+        $this->session->getFlashBag()->set('eccube.'.$namespace.'.request.error', $message);
     }
 
     public function clearMessage()
@@ -137,17 +165,23 @@ class AbstractController extends Controller
         if (is_null($namespace)) {
             $this->session->getFlashBag()->set('eccube.login.target.path', $targetPath);
         } else {
-            $this->session->getFlashBag()->set('eccube.' . $namespace . '.login.target.path', $targetPath);
+            $this->session->getFlashBag()->set('eccube.'.$namespace.'.login.target.path', $targetPath);
         }
     }
 
+    /**
+     * Checks the validity of a CSRF token.
+     *
+     * if token is invalid, throws AccessDeniedHttpException.
+     *
+     * @return bool
+     * @throws AccessDeniedHttpException
+     */
     protected function isTokenValid()
     {
-        /** @var CsrfTokenManagerInterface $csrf */
-        $csrf = $this->container->get('security.csrf.token_manager');
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $name = Constant::TOKEN_NAME;
-        if (!$csrf->isTokenValid(new CsrfToken($name, $request->get($name)))) {
+
+        if (!$this->isCsrfTokenValid(Constant::TOKEN_NAME, $request->get(Constant::TOKEN_NAME))) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
 

@@ -23,7 +23,6 @@
         "doctrine/orm": "^2.5",
         "egulias/email-validator": "^2.1",
         "guzzlehttp/guzzle": "^6.2",
-        "hirak/prestissimo": "^0.3.7",
         "knplabs/knp-paginator-bundle": "^2.7",
         "mobiledetect/mobiledetectlib": "^2.8",
         "nesbot/carbon": "^1.22",
@@ -108,13 +107,22 @@
         ],
         "auto-scripts": {
             "cache:clear --no-warmup": "symfony-cmd",
-            "cache:warmup": "symfony-cmd",
+            "cache:warmup --no-optional-warmers": "symfony-cmd",
             "assets:install --symlink --relative html": "symfony-cmd"
+        },
+        "installer-scripts": {
+            "doctrine:database:create": "bin/console doctrine:database:create",
+            "doctrine:schema:create": "bin/console doctrine:schema:create",
+            "eccube:fixtures:load": "bin/console eccube:fixtures:load"
         },
         "post-install-cmd": [
             "@auto-scripts"
         ],
         "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "post-create-project-cmd": [
+            "@installer-scripts",
             "@auto-scripts"
         ]
     },

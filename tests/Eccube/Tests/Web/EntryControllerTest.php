@@ -24,6 +24,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\BaseInfoRepository;
 
@@ -33,11 +34,6 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->client->enableProfiler();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 
     protected function createFormData()
@@ -94,7 +90,7 @@ class EntryControllerTest extends AbstractWebTestCase
             'sex' => 1,
             'job' => 1,
             'point' => 1,
-            '_token' => $this->getCsrfToken('entry')
+            Constant::TOKEN_NAME => $this->getCsrfToken('entry')
         );
         return $form;
     }
@@ -113,9 +109,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testConfirm()
     {
-        $client = $this->client;
-
-        $crawler = $client->request('POST',
+        $crawler = $this->client->request('POST',
             $this->generateUrl('entry'),
             array(
                 'entry' => $this->createFormData(),
@@ -127,18 +121,16 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testConfirmWithError()
     {
-        $client = $this->client;
-
-        $crawler = $client->request('POST',
+        $crawler = $this->client->request('POST',
             $this->generateUrl('entry'),
             array(
                 'entry' => array(
-                    '_token' => $this->getCsrfToken('entry')
+                    Constant::TOKEN_NAME => $this->getCsrfToken('entry')
                 ),
                 'mode' => 'confirm'
             )
@@ -148,7 +140,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
         $this->verify();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testConfirmWithModeNotFound()
@@ -227,35 +219,18 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithNotFound()
     {
-        self::markTestIncomplete("TODO: Need get debug mode");
-        // debugはONの時に404ページ表示しない例外になります。
-        if($this->app['debug'] == true) {
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
-        }
-        $client = $this->createClient();
-        $client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => 'aaaaa')));
-        // debugはOFFの時に404ページが表示します。
-        if($this->app['debug'] == false){
-            $this->expected = 404;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
+        $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => 'aaaaa')));
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+
     }
 
     public function testActivateWithAbort()
     {
-        self::markTestIncomplete("TODO: Need get debug mode");
-        // debugはONの時に403ページ表示しない例外になります。
-        if($this->app['debug'] == true){
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
-        }
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => '+++++++')));
-        // debugはOFFの時に403ページが表示します。
-        if($this->app['debug'] == false){
-            $this->expected = 403;
-            $this->actual = $client->getResponse()->getStatusCode();
-            $this->verify();
-        }
+        $this->client->request('GET', $this->generateUrl('entry_activate', array('secret_key' => '+++++++')));
+        $this->expected = 403;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }
