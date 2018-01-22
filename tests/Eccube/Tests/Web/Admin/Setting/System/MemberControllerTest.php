@@ -25,7 +25,6 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Eccube\Repository\MemberRepository;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
@@ -334,16 +333,15 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $mid = 99999;
-        try {
-            // main
-            $this->client->request(
-                'DELETE',
-                $this->app->url('admin_setting_system_member_delete', array('id' => $mid))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
 
-        }
+        // main
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_setting_system_member_delete', ['id' => $mid])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     protected function createFormData()
