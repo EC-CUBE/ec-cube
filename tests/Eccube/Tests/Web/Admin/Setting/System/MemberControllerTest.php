@@ -26,9 +26,25 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Eccube\Repository\MemberRepository;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->memberRepository = $this->container->get(MemberRepository::class);
+    }
+
     public function testRoutingAdminSettingSystemMember()
     {
         $this->client->request('GET', $this->generateUrl('admin_setting_system_member'));
@@ -45,17 +61,15 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $TestMember = $this->createMember();
-        $this->app['orm.em']->persist($TestMember);
-        $this->app['orm.em']->flush();
-        $test_member_id = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => $TestMember->getLoginId()
-            ))
+        $this->entityManager->persist($TestMember);
+        $this->entityManager->flush();
+        $memberId = $this->memberRepository
+            ->findOneBy(['login_id' => $TestMember->getLoginId()])
             ->getId();
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $memberId])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
