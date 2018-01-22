@@ -96,18 +96,16 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $TestMember = $this->createMember();
-        $this->app['orm.em']->persist($TestMember);
-        $this->app['orm.em']->flush();
-        $test_member_id = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => $TestMember->getLoginId()
-            ))
+        $this->entityManager->persist($TestMember);
+        $this->entityManager->flush();
+        $memberId = $this->memberRepository
+            ->findOneBy(['login_id' => $TestMember->getLoginId()])
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_up', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_up', ['id' => $memberId])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }

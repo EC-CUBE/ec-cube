@@ -235,22 +235,22 @@ class MemberController extends AbstractController
      * @Method("PUT")
      * @Route("/%admin_route%/setting/system/member/{id}/up", requirements={"id" = "\d+"}, name="admin_setting_system_member_up")
      */
-    public function up(Application $app, Request $request, Member $Member)
+    public function up(Request $request, Member $Member)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         try {
             $this->memberRepository->up($Member);
 
-            $app->addSuccess('admin.member.up.complete', 'admin');
+            $this->addSuccess('admin.member.up.complete', 'admin');
 
         } catch (\Exception $e) {
             log_error('メンバー表示順更新エラー', [$Member->getId(), $e]);
 
-            $app->addError('admin.member.up.error', 'admin');
+            $this->addError('admin.member.up.error', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_system_member'));
+        return $this->redirectToRoute('admin_setting_system_member');
     }
 
     /**
