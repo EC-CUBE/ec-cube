@@ -25,8 +25,6 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
@@ -60,19 +58,16 @@ class CartService
 
     /**
      * @var ProductClassRepository
-     * @Inject(ProductClassRepository::class)
      */
     protected $productClassRepository;
 
     /**
      * @var CartItemComparator
-     * @Inject(CartItemComparator::class)
      */
     protected $cartItemComparator;
 
     /**
      * @var CartItemAllocator
-     * @Inject(CartItemAllocator::class)
      */
     protected $cartItemAllocator;
 
@@ -269,7 +264,7 @@ class CartService
     public function unlock()
     {
         $this->getCart()
-//            ->setLock(false)
+            ->setLock(false)
             ->setPreOrderId(null);
     }
 
@@ -278,7 +273,6 @@ class CartService
         $this->getCart()
             ->setLock(true)
             ->setPreOrderId(null);
-        dump(spl_object_hash($this->getCart()),$this->getCart()->getLock() );
     }
 
     /**
@@ -286,9 +280,7 @@ class CartService
      */
     public function isLocked()
     {
-        dump(spl_object_hash($this->getCart()) ,$this->getCart()->getLock() );
         return $this->getCart()->getLock();
-
     }
 
     /**

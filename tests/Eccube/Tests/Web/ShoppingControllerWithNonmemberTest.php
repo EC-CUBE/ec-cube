@@ -23,7 +23,7 @@
 
 
 namespace Eccube\Tests\Web;
-use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Service\CartService;
 
 /**
@@ -32,10 +32,17 @@ use Eccube\Service\CartService;
  */
 class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
+    /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
     public function setUp()
     {
         parent::setUp();
+        $this->BaseInfo = $this->container->get(BaseInfo::class);
     }
+
 
     public function testRoutingShoppingLogin()
     {
@@ -49,7 +56,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->container->get(CartService::class)->unlock();
 
         $client = $this->client;
-        $crawler = $client->request('GET', '/shopping');
+        $client->request('GET', '/shopping');
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
@@ -59,7 +66,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->container->get(CartService::class)->lock();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping');
+        $client->request('GET', '/shopping');
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
@@ -69,21 +76,18 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     public function testConfirmWithNonmember()
     {
-        $client = $this->client;
-        $c = $this->scenarioCartIn();
-        $c = $this->client->followRedirect();
+        $this->scenarioCartIn();
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
-        $c = $this->client->followRedirect();
+        $this->client->followRedirect();
 
-        $client->request('GET', $this->generateUrl('shopping'));
-        $crawler = $client->followRedirect();
+        $crawler = $this->scenarioConfirm();
         $this->expected = 'ご注文手続き';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
@@ -91,81 +95,78 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
      */
     public function testCompleteWithNonmember()
     {
-        $faker = $this->getFaker();
-        $client = $this->createClient();
-        $this->scenarioCartIn($client);
+        $this->scenarioCartIn();
 
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
 
-        $crawler = $this->scenarioConfirm($client);
+        $crawler = $this->scenarioConfirm();
         $this->expected = 'ご注文手続き';
-        $this->actual = $crawler->filter('h1')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $crawler = $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'));
         $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1')->text();
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $this->scenarioComplete($client, $this->app->path('shopping_order'));
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
+        $this->client->enableProfiler();
+        $this->scenarioComplete(null, $this->generateUrl('shopping_order'));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector(false);
+        $Messages = $mailCollector->getMessages();
+        $Message = $Messages[0];
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
-        $this->actual = $Message->subject;
+        $this->expected = '[' . $this->BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
     public function testNonmemberWithCartUnlock()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
+        $crawler = $client->request('GET', $this->generateUrl('shopping_nonmember'));
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testNonmemberWithCustomerLogin()
     {
-        $client = $this->client;
-
         // ユーザーが会員ログイン済みの場合
-        $this->logIn();
-        $this->scenarioCartIn($client);
+        $Customer = $this->createCustomer();
+        $this->scenarioCartIn($Customer);
 
-        $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+        $this->loginTo($Customer);
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
     }
 
     public function testNonmemberInput()
     {
-        $client = $this->createClient();
-        $this->scenarioCartIn($client);
+        $this->scenarioCartIn();
 
-        $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testNonmemberInputWithPost()
     {
-        $client = $this->createClient();
-        $this->scenarioCartIn($client);
+        $this->scenarioCartIn();
 
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
+        $this->scenarioInput($formData);
 
-        $Nonmember = $this->app['session']->get('eccube.front.shopping.nonmember');
+        $Nonmember = $this->container->get('session')->get('eccube.front.shopping.nonmember');
         $this->assertNotNull($Nonmember);
-        $this->assertNotNull($this->app['session']->get('eccube.front.shopping.nonmember.customeraddress'));
+        $this->assertNotNull($this->container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
 
         $this->expected = $formData['name']['name01'];
         $this->actual = $Nonmember['customer']->getName01();
         $this->verify();
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
     }
 
     /**

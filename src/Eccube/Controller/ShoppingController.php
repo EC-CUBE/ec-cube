@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\ForwardOnly;
-use Eccube\Annotation\Inject;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -47,12 +45,9 @@ use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -77,21 +72,6 @@ class ShoppingController extends AbstractShoppingController
     protected $cartService;
 
     /**
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
      * @var ShoppingService
      */
     protected $shoppingService;
@@ -100,16 +80,6 @@ class ShoppingController extends AbstractShoppingController
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var Session
-     */
-    protected $session;
 
     /**
      * @var ParameterBag
@@ -121,39 +91,24 @@ class ShoppingController extends AbstractShoppingController
      * @param BaseInfo $BaseInfo
      * @param OrderHelper $orderHelper
      * @param CartService $cartService
-     * @param FormFactory $formFactory
-     * @param EntityManager $entityManager
      * @param ShoppingService $shoppingService
      * @param CustomerAddressRepository $customerAddressRepository
-     * @param EventDispatcher $eventDispatcher
-     * @param Session $session
      * @param ParameterBag $parameterBag
-     * @param array $eccubeConfig
      */
     public function __construct(
         BaseInfo $BaseInfo,
         OrderHelper $orderHelper,
         CartService $cartService,
-        FormFactory $formFactory,
-        EntityManager $entityManager,
         ShoppingService $shoppingService,
         CustomerAddressRepository $customerAddressRepository,
-        EventDispatcher $eventDispatcher,
-        Session $session,
-        ParameterBag $parameterBag,
-        array $eccubeConfig
+        ParameterBag $parameterBag
     ) {
         $this->BaseInfo = $BaseInfo;
         $this->orderHelper = $orderHelper;
         $this->cartService = $cartService;
-        $this->formFactory = $formFactory;
-        $this->entityManager = $entityManager;
         $this->shoppingService = $shoppingService;
         $this->customerAddressRepository = $customerAddressRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->session = $session;
         $this->parameterBag = $parameterBag;
-        $this->appConfig = $eccubeConfig;
     }
 
 
@@ -470,7 +425,7 @@ class ShoppingController extends AbstractShoppingController
         $Customer = $this->getUser();
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $addressCurrNum = count($this->getUser()->getCustomerAddresses());
-            $addressMax = $this->appConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('配送先住所最大数エラー');
             }
@@ -880,15 +835,9 @@ class ShoppingController extends AbstractShoppingController
                 $this->shoppingService->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
                 // Order も引数で渡すのがベスト??
-                // FIXME $app['eccube.service.payment']
                 $paymentService = $this->createPaymentService($Order);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
-//                $paymentMethod = $app['payment.method.request'](
-//                    $Order->getPayment()->getMethodClass(),
-//                    $form,
-//                    $request
-//                );
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
                 // forward の処理はプラグイン内で書けるようにしておく
                 // dispatch をしたら, パスを返して forwardする

@@ -27,10 +27,8 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\Constant;
 use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
-use Psr\Container\ContainerInterface;
 use Silex\Application;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Twig\Extension\AbstractExtension;
@@ -39,18 +37,15 @@ use Twig\TwigFunction;
 
 class EccubeExtension extends AbstractExtension
 {
-    use ContainerAwareTrait;
-
     /**
      * @var \Twig_Environment
      */
     protected $twig;
 
-    public function __construct(TaxRuleService $TaxRuleService, \Twig_Environment $twig, ContainerInterface $container)
+    public function __construct(TaxRuleService $TaxRuleService, \Twig_Environment $twig)
     {
         $this->TaxRuleService = $TaxRuleService;
         $this->twig = $twig;
-        $this->setContainer($container);
     }
 
     protected $TaxRuleService;

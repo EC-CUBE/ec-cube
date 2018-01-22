@@ -3,7 +3,6 @@
 namespace Eccube\Tests\Web;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
-use Eccube\Service\CartService;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.
@@ -14,8 +13,6 @@ use Eccube\Service\CartService;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
-    protected $token;
-
     public function setUp()
     {
         parent::setUp();
@@ -30,8 +27,6 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
-
-        $email = $faker->safeEmail;
 
         $form = array(
             'name' => array(
@@ -64,13 +59,11 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 
     protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
     {
-        $token = $this->getCsrfToken(Constant::TOKEN_NAME);
-
         if ($Customer) {
             $this->loginTo($Customer);
         }
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'PUT',
             $this->generateUrl(
                 'cart_handle_item',
@@ -79,29 +72,31 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
                     'productClassId' => $product_class_id,
                 ]
             ),
-            [Constant::TOKEN_NAME => $token]
+            [Constant::TOKEN_NAME => '_dummy']
         );
-        $this->container->get(CartService::class)->lock();
-        $this->container->get(CartService::class)->save();
 
-        return $crawler;
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+
+        return $this->client->request(
+            'GET',
+            $this->generateUrl('cart_buystep')
+        );
     }
 
     protected function scenarioInput($formData)
     {
-        $token = $this->getCsrfToken('nonmember');
-        $formData[Constant::TOKEN_NAME] = $token;
+        $formData[Constant::TOKEN_NAME] = '_dummy';
         $crawler = $this->client->request(
             'POST',
             $this->generateUrl('shopping_nonmember'),
-            ['nonmember' => $formData, '_token' => $token]
+            ['nonmember' => $formData]
         );
-        $this->container->get(CartService::class)->lock();
-        $this->container->get(CartService::class)->save();
         return $crawler;
     }
 
-    protected function scenarioConfirm(Customer $Customer)
+    protected function scenarioConfirm(Customer $Customer = null)
     {
         if ($Customer) {
             $this->loginTo($Customer);
@@ -122,10 +117,8 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         );
     }
 
-    protected function scenarioComplete(Customer $Customer, $confirm_url, array $shippings = array())
+    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = array())
     {
-        $token = $this->getCsrfToken('_shopping_order');
-
         if ($Customer) {
             $this->loginTo($Customer);
         }
@@ -150,7 +143,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
                       'Shippings' => $shippings,
                       'Payment' => 3,
                       'message' => $faker->realText(),
-                      '_token' => $token
+                      '_token' => 'dummy'
                   )
             )
         );

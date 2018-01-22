@@ -59,6 +59,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Service
@@ -168,6 +169,11 @@ class ShoppingService
     protected $orderService;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
      * ShoppingService constructor.
      * @param MailTemplateRepository $mailTemplateRepository
      * @param MailService $mailService
@@ -188,9 +194,32 @@ class ShoppingService
      * @param OrderRepository $orderRepository
      * @param CartService $cartService
      * @param OrderService $orderService
+     * @param BaseInfo $BaseInfo
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(MailTemplateRepository $mailTemplateRepository, MailService $mailService, EventDispatcher $eventDispatcher, FormFactory $formFactory, DeliveryFeeRepository $deliveryFeeRepository, TaxRuleRepository $taxRuleRepository, CustomerAddressRepository $customerAddressRepository, DeliveryRepository $deliveryRepository, DeliveryTimeRepository $deliveryTimeRepository, OrderStatusRepository $orderStatusRepository, PaymentRepository $paymentRepository, DeviceTypeRepository $deviceTypeRepository, EntityManager $entityManager, array $eccubeConfig, PrefRepository $prefRepository, Session $session, OrderRepository $orderRepository, CartService $cartService, OrderService $orderService, BaseInfoRepository $baseInfoRepository)
-    {
+    public function __construct(
+        MailTemplateRepository $mailTemplateRepository,
+        MailService $mailService,
+        EventDispatcher $eventDispatcher,
+        FormFactory $formFactory,
+        DeliveryFeeRepository $deliveryFeeRepository,
+        TaxRuleRepository $taxRuleRepository,
+        CustomerAddressRepository $customerAddressRepository,
+        DeliveryRepository $deliveryRepository,
+        DeliveryTimeRepository $deliveryTimeRepository,
+        OrderStatusRepository $orderStatusRepository,
+        PaymentRepository $paymentRepository,
+        DeviceTypeRepository $deviceTypeRepository,
+        EntityManager $entityManager,
+        array $eccubeConfig,
+        PrefRepository $prefRepository,
+        Session $session,
+        OrderRepository $orderRepository,
+        CartService $cartService,
+        OrderService $orderService,
+        BaseInfo $BaseInfo,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
         $this->eventDispatcher = $eventDispatcher;
@@ -210,7 +239,8 @@ class ShoppingService
         $this->orderRepository = $orderRepository;
         $this->cartService = $cartService;
         $this->orderService = $orderService;
-        $this->BaseInfo = $baseInfoRepository->get();
+        $this->BaseInfo = $BaseInfo;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
 
@@ -323,8 +353,8 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        // TODO isMobile ? DEVICE_TYPE_SP : DEVICE_TYPE_PC
-        $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+        $mobileDetect = new \Mobile_Detect();
+        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -1151,23 +1181,17 @@ class ShoppingService
      * 購入処理を行う
      *
      * @param Order $Order
-     * @throws ShoppingException
      * @deprecated PurchaseFlow::purchase() を使用してください
      */
     public function processPurchase(Order $Order)
     {
-
-        $em = $this->entityManager;
-
         // 受注情報、配送情報を更新
         $Order = $this->calculateDeliveryFee($Order);
         $this->setOrderUpdateData($Order);
 
-        // FIXME isGranted('ROLE_USER') / getUser()
-//        if ($this->app->isGranted('ROLE_USER')) {
-//            // 会員の場合、購入金額を更新
-//            $this->setCustomerUpdate($Order, $this->app->user());
-//        }
+        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $this->setCustomerUpdate($Order, $Order->getCustomer());
+        }
     }
 
 

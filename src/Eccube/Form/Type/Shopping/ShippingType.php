@@ -2,9 +2,6 @@
 
 namespace Eccube\Form\Type\Shopping;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -24,38 +21,29 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ShippingType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
-
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
+    protected $eccubeConfig;
 
     /**
      * @var DeliveryRepository
-     * @Inject("eccube.repository.delivery")
      */
     protected $deliveryRepository;
 
     /**
      * @var DeliveryFeeRepository
-     * @Inject("eccube.repository.delivery_fee")
      */
     protected $deliveryFeeRepository;
 
     /**
      * ShippingType constructor.
-     * @param array $appConfig
+     * @param array $eccubeConfig
      * @param DeliveryRepository $deliveryRepository
      * @param DeliveryFeeRepository $deliveryFeeRepository
      */
     public function __construct(array $eccubeConfig, DeliveryRepository $deliveryRepository, DeliveryFeeRepository $deliveryFeeRepository)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->deliveryRepository = $deliveryRepository;
         $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
@@ -161,7 +149,7 @@ class ShippingType extends AbstractType
                     $period = new \DatePeriod (
                         new \DateTime($minDate.' day'),
                         new \DateInterval('P1D'),
-                        new \DateTime($minDate + $this->appConfig['deliv_date_end_max'].' day')
+                        new \DateTime($minDate + $this->eccubeConfig['deliv_date_end_max'].' day')
                     );
 
                     foreach ($period as $day) {

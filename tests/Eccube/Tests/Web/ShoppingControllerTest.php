@@ -24,8 +24,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -48,9 +46,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testRoutingShoppingLogin()
     {
-        $client = $this->client;
-        $client->request('GET', '/shopping/login');
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->client->request('GET', '/shopping/login');
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
     public function testShoppingIndexWithCartUnlock()
@@ -227,7 +224,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     {
         $Customer = $this->createCustomer();
 
-        // カート画面mer);
+        // カート画面
         $this->scenarioCartIn($Customer);
 
         // 確認画面

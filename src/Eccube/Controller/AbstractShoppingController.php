@@ -24,7 +24,6 @@
 namespace Eccube\Controller;
 
 
-use Eccube\Annotation\Inject;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -33,16 +32,14 @@ use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 class AbstractShoppingController extends AbstractController
 {
     /**
-     * @Inject("eccube.purchase.flow.shopping")
      * @var PurchaseFlow
-     * @required
      */
     protected $purchaseFlow;
 
     /**
      * @return PurchaseFlow
      */
-    public function getPurchaseFlow(): PurchaseFlow
+    public function getPurchaseFlow()
     {
         return $this->purchaseFlow;
     }
@@ -51,17 +48,15 @@ class AbstractShoppingController extends AbstractController
      * @param PurchaseFlow $purchaseFlow
      * @required
      */
-    public function setPurchaseFlow(PurchaseFlow $purchaseFlow): void
+    public function setPurchaseFlow(PurchaseFlow $purchaseFlow)
     {
         $this->purchaseFlow = $purchaseFlow;
     }
 
     /**
-     * @Inject("eccube.purchase.context")
      * @var PurchaseContext
      */
     protected $purchaseContext;
-
 
     /**
      * @var string 非会員用セッションキー
