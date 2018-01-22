@@ -270,9 +270,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testMemberDownNotFoundMember()
     {
         // before
@@ -280,9 +277,12 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
-        $this->fail();
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     public function testMemberDownFail()
