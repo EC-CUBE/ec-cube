@@ -7,5 +7,4 @@ services:
     Eccube\EventListener\TransactionListener:
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@Eccube\Log\Logger'
             - false
