@@ -29,17 +29,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testRoutingAdminSettingSystemMember()
     {
-        $crawler = $this->client->request('GET',
-            $this->app->url('admin_setting_system_member')
-        );
+        $this->client->request('GET', $this->generateUrl('admin_setting_system_member'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 

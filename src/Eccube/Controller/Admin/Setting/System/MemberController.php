@@ -77,7 +77,6 @@ class MemberController extends AbstractController
     protected $formFactory;
 
     /**
-     * @Inject(MemberRepository::class)
      * @var MemberRepository
      */
     protected $memberRepository;
@@ -88,11 +87,17 @@ class MemberController extends AbstractController
      */
     protected $encoderFactory;
 
+    public function __construct(
+        MemberRepository $memberRepository
+    ) {
+        $this->memberRepository = $memberRepository;
+    }
+
     /**
      * @Route("/%admin_route%/setting/system/member", name="admin_setting_system_member")
-     * @Template("Setting/System/member.twig")
+     * @Template("@admin/Setting/System/member.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $Members = $this->memberRepository->findBy([], ['sort_no' => 'DESC']);
 
