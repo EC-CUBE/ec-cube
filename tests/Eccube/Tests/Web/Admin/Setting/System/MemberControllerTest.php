@@ -248,21 +248,21 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $MemberOne = $this->createMember('test1');
-        $this->app['orm.em']->persist($MemberOne);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MemberOne);
+        $this->entityManager->flush();
         $MemberTwo = $this->createMember('test2');
-        $this->app['orm.em']->persist($MemberTwo);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MemberTwo);
+        $this->entityManager->flush();
 
         $oldSortNo = $MemberOne->getSortNo();
         $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberOne->getId();
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_up', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_up', ['id' => $mid])
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
