@@ -278,9 +278,9 @@ class MemberController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/setting/system/member/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_system_member_delete")
      */
-    public function delete(Application $app, Request $request, Member $Member)
+    public function delete(Request $request, Member $Member)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('メンバー削除開始', [$Member->getId()]);
 
@@ -295,17 +295,17 @@ class MemberController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
 
-            $app->addSuccess('admin.member.delete.complete', 'admin');
+            $this->addSuccess('admin.member.delete.complete', 'admin');
 
             log_info('メンバー削除完了', [$Member->getId()]);
 
         } catch (\Exception $e) {
             log_info('メンバー削除エラー', [$Member->getId(), $e]);
 
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => 'メンバー']);
-            $app->addError($message, 'admin');
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => 'メンバー']);
+            $this->addError($message, 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_system_member'));
+        return $this->redirectToRoute('admin_setting_system_member');
     }
 }
