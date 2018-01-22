@@ -216,16 +216,14 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $formData['login_id'] = '';
         $Member = $this->createMember();
         $Member->setPassword('**********');
-        $this->app['orm.em']->persist($Member);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
         $mid = $Member->getId();
 
         // main
         $this->client->request('POST',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $mid)),
-            array(
-                'admin_member' => $formData
-            )
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
+            ['admin_member' => $formData]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
