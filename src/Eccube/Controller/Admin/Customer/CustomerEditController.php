@@ -26,10 +26,7 @@ namespace Eccube\Controller\Admin\Customer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -37,12 +34,10 @@ use Eccube\Form\Type\Admin\CustomerType;
 use Eccube\Repository\CustomerRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -51,25 +46,21 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class CustomerEditController extends AbstractController
 {
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
@@ -86,12 +77,16 @@ class CustomerEditController extends AbstractController
      */
     protected $encoderFactory;
 
-    public function __construct(CustomerRepository $customerRepository, EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, $eccubeConfig)
-    {
+    public function __construct(
+        $eccubeConfig,
+        CustomerRepository $customerRepository,
+        EncoderFactoryInterface $encoderFactory,
+        EntityManagerInterface $em
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
         $this->entityManager = $em;
-        $this->appConfig = $eccubeConfig;
     }
 
     /**
@@ -99,7 +94,7 @@ class CustomerEditController extends AbstractController
      * @Route("/%admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit")
      * @Template("@admin/Customer/edit.twig")
      */
-    public function index(Application $app, Request $request, $id = null)
+    public function index(Request $request, $id = null)
     {
         //$this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
@@ -112,7 +107,7 @@ class CustomerEditController extends AbstractController
             }
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
-            $Customer->setPassword($this->appConfig['default_password']);
+            $Customer->setPassword($this->eccubeConfig['default_password']);
             // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
@@ -169,7 +164,7 @@ class CustomerEditController extends AbstractController
                     $this->entityManager->persist($CustomerAddress);
                 }
 
-                if ($Customer->getPassword() === $this->appConfig['default_password']) {
+                if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {
                     if ($Customer->getSalt() === null) {
