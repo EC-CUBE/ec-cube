@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
