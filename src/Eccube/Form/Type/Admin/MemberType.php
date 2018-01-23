@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Application;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
