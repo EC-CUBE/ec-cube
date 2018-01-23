@@ -175,7 +175,7 @@ class CustomerDeliveryEditController extends AbstractController
      */
     public function delete(Request $request, Customer $Customer, $did)
     {
-//        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('お届け先削除開始', array($did));
 
