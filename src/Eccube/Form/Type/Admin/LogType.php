@@ -24,14 +24,12 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,20 +38,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LogType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
 
-    public function __construct()
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * LogType constructor.
+     * @param $eccubeConfig
+     * @param KernelInterface $kernel
+     */
+    public function __construct($eccubeConfig, KernelInterface $kernel)
     {
+        $this->appConfig = $eccubeConfig;
+        $this->kernel = $kernel;
     }
+
 
     /**
      * {@inheritdoc}
@@ -63,8 +68,7 @@ class LogType extends AbstractType
         $files = array();
         $finder = new Finder();
         $finder->name('*.log')->depth('== 0');
-
-        foreach ($finder->in($this->appConfig['root_dir'].'/app/log/') as $file) {
+        foreach ($finder->in($this->kernel->getLogDir()) as $file) {
             $files[$file->getFilename()] = $file->getFilename();
         }
 
