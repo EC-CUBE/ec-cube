@@ -81,12 +81,12 @@ class CustomerEditController extends AbstractController
         $eccubeConfig,
         CustomerRepository $customerRepository,
         EncoderFactoryInterface $encoderFactory,
-        EntityManagerInterface $em
+        EntityManagerInterface $entityManager
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
-        $this->entityManager = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**

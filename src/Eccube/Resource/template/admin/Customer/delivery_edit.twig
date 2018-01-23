@@ -22,14 +22,14 @@
 */
 #}
 
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['customer', 'customer_edit'] %}
 
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}お届け先登録・編集{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>

@@ -25,8 +25,8 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
@@ -48,55 +48,60 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CustomerDeliveryEditController extends AbstractController
 {
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
-    
+
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
-    
+
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
-    
+    protected $eccubeConfig;
+
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
-    
+
     /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
-    
+
     /**
-     * @Inject(CustomerAddressRepository::class)
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
-    
+
+    public function __construct(
+        $eccubeConfig,
+        CustomerAddressRepository $customerAddressRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+        $this->customerAddressRepository = $customerAddressRepository;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * お届け先編集画面.
      *
      * @Route("/%admin_route%/customer/{id}/delivery/new", name="admin_customer_delivery_new", requirements={"id" = "\d+"})
      * @Route("/%admin_route%/customer/{id}/delivery/{did}/edit", name="admin_customer_delivery_edit", requirements={"id" = "\d+", "did" = "\d+"})
-     * @Template("Customer/delivery_edit.twig")
+     * @Template("@admin/Customer/delivery_edit.twig")
      */
-    public function edit(Application $app, Request $request, Customer $Customer, $did = null)
-    {   
+    public function edit(Request $request, Customer $Customer, $did = null)
+    {
         // 配送先住所最大値判定
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
+        $addressMax = $this->eccubeConfig['deliv_addr_max'];
         if (is_null($did)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
-            $addressMax = $this->appConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }
@@ -106,12 +111,12 @@ class CustomerDeliveryEditController extends AbstractController
                 throw new NotFoundHttpException();
             }
         }
-        
+
         $CustomerAddress = $this->customerAddressRepository->findOrCreateByCustomerAndId($Customer, $did);
 
         $builder = $this->formFactory
             ->createBuilder(CustomerAddressType::class, $CustomerAddress);
-        
+
         $event = new EventArgs(
             array(
                 'builder' => $builder,
@@ -120,21 +125,21 @@ class CustomerDeliveryEditController extends AbstractController
             ),
             $request
         );
-        
+
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_INITIALIZE, $event);
-        
+
         $form = $builder->getForm();
-        
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 log_info('お届け先登録開始', array($did));
-                
+
                 $this->entityManager->persist($CustomerAddress);
                 $this->entityManager->flush();
-                
+
                 log_info('お届け先登録完了', array($did));
-                
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
@@ -142,58 +147,60 @@ class CustomerDeliveryEditController extends AbstractController
                         'CustomerAddress' => $CustomerAddress,
                     ),
                     $request
-                    );
+                );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_EDIT_INDEX_COMPLETE, $event);
-                
-                $app->addSuccess('admin.customer.delivery.save.complete', 'admin');
-                
-                return $app->redirect($app->url('admin_customer_delivery_edit', array(
+
+                $this->addSuccess('admin.customer.delivery.save.complete', 'admin');
+
+                return $this->redirect($this->generateUrl('admin_customer_delivery_edit', array(
                     'id' => $Customer->getId(),
                     'did' => $CustomerAddress->getId(),
                 )));
             } else {
-                $app->addError('admin.customer.delivery.save.failed', 'admin');
+                $this->addError('admin.customer.delivery.save.failed', 'admin');
             }
         }
-        
+
         return [
             'form' => $form->createView(),
             'Customer' => $Customer,
             'CustomerAddress' => $CustomerAddress,
         ];
-                    
+
     }
-    
+
     /**
      * @Method("DELETE")
      * @Route("/%admin_route%/customer/{id}/delivery/{did}/delete", requirements={"id" = "\d+", "did" = "\d+"}, name="admin_customer_delivery_delete")
      */
-    public function delete(Application $app, Request $request, Customer $Customer, $did)
+    public function delete(Request $request, Customer $Customer, $did)
     {
-        $this->isTokenValid($app);
-    
+//        $this->isTokenValid($app);
+
         log_info('お届け先削除開始', array($did));
-        
+
         $CustomerAddress = $this->customerAddressRepository->find($did);
         if (is_null($CustomerAddress)) {
             throw new NotFoundHttpException();
-        } else if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer_edit', array('id' => $Customer->getId())));
+        } else {
+            if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
+                $this->deleteMessage();
+                return $this->redirect($this->generateUrl('admin_customer_edit', array('id' => $Customer->getId())));
+            }
         }
-    
+
         try {
             $this->customerAddressRepository->delete($CustomerAddress);
-            $app->addSuccess('admin.customer.delivery.delete.complete', 'admin');
+            $this->addSuccess('admin.customer.delivery.delete.complete', 'admin');
         } catch (ForeignKeyConstraintViolationException $e) {
             log_error('お届け先削除失敗', [$e], 'admin');
-    
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => 'お届け先']);
-            $app->addError($message, 'admin');
+
+            $message = $this->trans('admin.delete.failed.foreign_key', ['%name%' => 'お届け先']);
+            $this->addError($message, 'admin');
         }
-    
+
         log_info('お届け先削除完了', array($did));
-    
+
         $event = new EventArgs(
             array(
                 'Customer' => $Customer,
@@ -202,8 +209,8 @@ class CustomerDeliveryEditController extends AbstractController
             $request
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE, $event);
-    
-        return $app->redirect($app->url('admin_customer_edit', array('id' => $Customer->getId())));
+
+        return $this->redirect($this->generateUrl('admin_customer_edit', array('id' => $Customer->getId())));
     }
-    
+
 }
