@@ -195,14 +195,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_mail_complete')));
 
         $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $this->assertEquals(5, $mailCollector->getMessageCount());
 
         $Messages = $mailCollector->getMessages();
-
-        $this->expected = 10;
-        $this->actual = count($Messages);
-        $this->verify();
-
         $Message = $Messages[0];
 
         $BaseInfo = $this->container->get(BaseInfo::class);
