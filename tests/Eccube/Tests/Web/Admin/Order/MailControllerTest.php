@@ -2,22 +2,30 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class MailControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var Customer
+     */
     protected $Customer;
+
+    /**
+     * @var Order
+     */
     protected $Order;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->initializeMailCatcher();
         $faker = $this->getFaker();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
+        $this->Member = $this->createMember();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
 
@@ -28,8 +36,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
             ->setMailFooter($faker->word)
             ->setMailSubject($faker->word)
             ->setCreator($this->Member);
-        $this->app['orm.em']->persist($MailTemplate);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MailTemplate);
+        $this->entityManager->flush();
         for ($i = 0; $i < 3; $i++) {
             $this->MailHistories[$i] = new MailHistory();
             $this->MailHistories[$i]
@@ -39,15 +47,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
                 ->setCreator($this->Member)
                 ->setMailSubject('mail_subject-'.$i);
 
-            $this->app['orm.em']->persist($this->MailHistories[$i]);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($this->MailHistories[$i]);
+            $this->entityManager->flush();
         }
-    }
-
-    public function tearDown()
-    {
-        $this->cleanUpMailCatcherMessages();
-        parent::tearDown();
     }
 
     public function createFormData()
@@ -58,8 +60,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'mail_subject' => $faker->word,
             'mail_header' => $faker->paragraph,
             'mail_footer' => $faker->paragraph,
-            '_token' => 'dummy'
+            '_token' => 'dummy',
         );
+
         return $form;
     }
 
@@ -67,7 +70,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_order_mail', array('id' => $this->Order->getId()))
+            $this->generateUrl('admin_order_mail', array('id' => $this->Order->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -77,38 +80,43 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_mail', array('id' => $this->Order->getId())),
+            $this->generateUrl('admin_order_mail', array('id' => $this->Order->getId())),
             array(
                 'mail' => $form,
-                'mode' => 'confirm'
+                'mode' => 'confirm',
             )
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = $form['mail_footer'];
-        $this->actual = $crawler->filter('#mail_mail_footer')->getNode(0)->getAttribute('value');
+        $this->actual = $crawler->filter('#mail_mail_footer')->text();
         $this->verify();
     }
 
     public function testIndexWithComplete()
     {
+        $this->client->enableProfiler();
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_mail', array('id' => $this->Order->getId())),
+            $this->generateUrl('admin_order_mail', array('id' => $this->Order->getId())),
             array(
                 'mail' => $form,
-                'mode' => 'complete'
+                'mode' => 'complete',
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_mail_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_mail_complete')));
 
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $mailCollector = $this->getMailCollector(false);
+        $this->assertEquals(1, $mailCollector->getMessageCount());
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['mail_subject'];
-        $this->actual = $Message->subject;
+        $collectedMessages = $mailCollector->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $collectedMessages[0];
+
+        $BaseInfo = $this->container->get(BaseInfo::class);
+        $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
@@ -116,9 +124,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_mail_view'),
+            $this->generateUrl('admin_order_mail_view'),
             array(
-                'id' => $this->MailHistories[0]->getId()
+                'id' => $this->MailHistories[0]->getId(),
             ),
             array(),
             array(
@@ -134,7 +142,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'GET',
-            $this->app->url('admin_order_mail_all')
+            $this->generateUrl('admin_order_mail_all')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -150,22 +158,24 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_mail_all'),
+            $this->generateUrl('admin_order_mail_all'),
             array(
                 'mail' => $form,
                 'mode' => 'confirm',
-                'ids' => implode(',', $ids)
+                'ids' => implode(',', $ids),
             )
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = $form['mail_footer'];
-        $this->actual = $crawler->filter('#mail_mail_footer')->getNode(0)->getAttribute('value');
+        $this->actual = $crawler->filter('#mail_mail_footer')->text();
         $this->verify();
     }
 
     public function testMailAllWithComplete()
     {
+        $this->client->enableProfiler();
+
         $ids = array();
         for ($i = 0; $i < 5; $i++) {
             $Order = $this->createOrder($this->Customer);
@@ -175,26 +185,29 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_mail_all'),
+            $this->generateUrl('admin_order_mail_all'),
             array(
                 'mail' => $form,
                 'mode' => 'complete',
-                'ids' => implode(',', $ids)
+                'ids' => implode(',', $ids),
             )
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_mail_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_mail_complete')));
 
-        $Messages = $this->getMailCatcherMessages();
+        $mailCollector = $this->getMailCollector(false);
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+
+        $Messages = $mailCollector->getMessages();
 
         $this->expected = 10;
         $this->actual = count($Messages);
         $this->verify();
 
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $Message = $Messages[0];
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['mail_subject'];
-        $this->actual = $Message->subject;
+        $BaseInfo = $this->container->get(BaseInfo::class);
+        $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
@@ -202,7 +215,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_order_mail_complete')
+            $this->generateUrl('admin_order_mail_complete')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
