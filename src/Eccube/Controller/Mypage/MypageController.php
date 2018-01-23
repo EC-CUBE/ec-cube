@@ -76,42 +76,18 @@ class MypageController extends AbstractController
     protected $cartService;
 
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var OrderRepository
      */
     protected $orderRepository;
 
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
-        BaseInfo $baseInfo,
-        $eccubeConfig
+        BaseInfo $baseInfo
     ) {
-        $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->BaseInfo = $baseInfo;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
