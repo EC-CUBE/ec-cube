@@ -23,7 +23,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,9 +31,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class LogType extends AbstractType
 {
     /**
