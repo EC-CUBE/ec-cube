@@ -28,7 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="form-group{% if not valid %} has-error{% endif %}">
         <label>{{ label }}
             {% if required %}<span class="required">*</span>{% endif %}
-            {% if help %}<br><span class="small">{{ help }}</span>{% endif %}
         </label>
         {{ form_widget(form) }}
         {{ form_errors(form) }}
@@ -61,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <h2>セキュリティの設定</h2>
                                 {{ form_row(form.admin_dir , {attr : {placeholder: 'セキュリティのため推測されにくいディレクトリ名を入力して下さい'}}) }}
-                                {% if app.request_stack.currentrequest.secure %}
+                                {% if request.secure %}
                                     {{ form_row(form.admin_force_ssl) }}
                                 {% else %}
                                     <span class="text-danger">httpsからの接続でなければSSL制限を設定できません。</span>

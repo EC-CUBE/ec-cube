@@ -24,56 +24,86 @@
 
 namespace Eccube\Tests\Web\Install;
 
-use Eccube\Tests\Web\Install\AbstractInstallWebTestCase;
+use Eccube\Tests\Web\AbstractWebTestCase;
+use Eccube\Controller\Install\InstallController;
+use Eccube\Security\Core\Encoder\PasswordEncoder;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-class InstallControllerTest extends AbstractInstallWebTestCase
+class InstallControllerTest extends AbstractWebTestCase
 {
+
+    /**
+     * @var InstallController
+     */
+    protected $controller;
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var Session
+     */
+    protected $session;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $formFactory = $this->container->get('form.factory');
+        $encoder = $this->container->get(PasswordEncoder::class);
+        $this->session = new Session(new MockArraySessionStorage());
+        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install');
+        $reflectionClass = new \ReflectionClass($this->controller);
+        $propContainer = $reflectionClass->getProperty('container');
+        $propContainer->setAccessible(true);
+        $propContainer->setValue($this->controller, $this->container);
+
+        $this->request = $this->createMock(Request::class);
     }
 
-    public function testRoutingIndex()
+    public function testIndex()
     {
-        $this->client->request('GET', $this->app->url('install'));
-        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertInstanceOf(RedirectResponse::class, $this->controller->index($this->request));
     }
 
-    public function testRoutingStep1()
+    public function testStep1()
     {
-        $this->client->request('GET', $this->app->url('install_step1'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->actual = $this->controller->step1($this->request);
+        $this->assertTrue(is_array($this->actual));
+        $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
 
-    public function testRoutingStep2()
+    public function testStep2()
     {
-        $this->client->request('GET', $this->app->url('install_step2'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->actual = $this->controller->step2($this->request);
+        $this->assertArrayHasKey('protectedDirs', $this->actual);
     }
 
-    public function testRoutingStep3()
+    public function testStep3()
     {
-        $this->client->request('GET', $this->app->url('install_step3'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->actual = $this->controller->step3($this->request);
+        $this->assertTrue(is_array($this->actual));
+        $this->assertInstanceOf(FormView::class, $this->actual['form']);
+        $this->assertInstanceOf(Request::class, $this->actual['request']);
     }
 
-    public function testRoutingStep4()
+    public function testStep4()
     {
-        $this->client->request('GET', $this->app->url('install_step4'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->actual = $this->controller->step4($this->request);
+        $this->assertTrue(is_array($this->actual));
+        $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
 
-    public function testRoutingStep5()
+    public function testComplete()
     {
-        $this->client->request('GET', $this->app->url('install_step5'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    public function testRoutingComplete()
-    {
-        $this->client->request('GET', $this->app->url('install_complete'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->session->set('eccube.session.install', ['ECCUBE_AUTH_MAGIC' => 'secret']);
+        $this->actual = $this->controller->complete($this->request);
+        $this->assertArrayHasKey('admin_url', $this->actual);
     }
 }

@@ -47,7 +47,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route(service=InstallController::class)
@@ -95,18 +95,29 @@ class InstallController extends AbstractController
     protected $cacheDir;
 
     /**
-     * @var FormFactoryInterface
+     * @var string
      */
-    protected $formFactory;
+    protected $environment;
+
+    /**
+     * @var PasswordEncoder
+     */
+    protected $encoder;
 
     public function __construct(
-        FormFactoryInterface $formFactory
+        SessionInterface $session,
+        FormFactoryInterface $formFactory,
+        PasswordEncoder $encoder,
+        $environment
     ) {
         $this->rootDir = realpath(__DIR__.'/../../../..');
         $this->configDir = realpath($this->rootDir.'/app/config/eccube');
         $this->configDistDir = realpath($this->rootDir.'/src/Eccube/Resource/config');
         $this->cacheDir = realpath($this->rootDir.'/app/cache');
+        $this->session = $session;
         $this->formFactory = $formFactory;
+        $this->encoder = $encoder;
+        $this->environment = $environment;
     }
 
     /**
@@ -117,12 +128,11 @@ class InstallController extends AbstractController
      *
      * @param InstallApplication $app
      * @param Request $request
-     * @param Session $session
      * @return Response
      */
-    public function index(Request $request, Session $session)
+    public function index(Request $request)
     {
-        $this->removeSessionData($session);
+        // $this->removeSessionData($session);
 
         return $this->redirectToRoute('install_step1');
     }
@@ -136,26 +146,30 @@ class InstallController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function step1(Request $request, Session $session)
+    public function step1(Request $request)
     {
         $form = $this->formFactory
             ->createBuilder(Step1Type::class)
             ->getForm();
 
-        $form->setData($this->getSessionData($session));
+        $form->setData($this->getSessionData($this->session));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->setSessionData($session, $form->getData());
+            $this->setSessionData($this->session, $form->getData());
 
             return $this->redirectToRoute('install_step2');
         }
 
-        // $this->checkModules($app);
+        $this->checkModules();
+        $authmagic = env('ECCUBE_AUTH_MAGIC', 'secret');
+        if ($authmagic == 'secret') {
+            $authmagic =  StringUtil::random(32);
+        }
+        $this->setSessionData($this->session, ['ECCUBE_AUTH_MAGIC' => $authmagic]);
 
         return [
             'form' => $form->createView(),
-            'publicPath' => '../../html/',
         ];
     }
 
@@ -167,10 +181,9 @@ class InstallController extends AbstractController
      *
      * @param InstallApplication $app
      * @param Request $request
-     * @param Session $session
      * @return Response
      */
-    public function step2(Request $request, Session $session)
+    public function step2(Request $request)
     {
         $protectedDirs = [];
         foreach ($this->writableDirs as $dir) {
@@ -191,7 +204,6 @@ class InstallController extends AbstractController
 
         return [
             'protectedDirs' => $protectedDirs,
-            'publicPath' => '../../html/',
         ];
     }
 
@@ -203,12 +215,11 @@ class InstallController extends AbstractController
      *
      * @param InstallApplication $app
      * @param Request $request
-     * @param Session $session
      * @return Response
      */
-    public function step3(Request $request, Session $session)
+    public function step3(Request $request)
     {
-        $sessionData = $this->getSessionData($session);
+        $sessionData = $this->getSessionData($this->session);
 
         if (empty($sessionData['shop_name'])) {
             // 再インストールの場合は設定ファイルから復旧
@@ -256,7 +267,7 @@ class InstallController extends AbstractController
             }
         }
 
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step3Type::class)
             ->getForm();
 
@@ -264,14 +275,14 @@ class InstallController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->setSessionData($session, $form->getData());
+            $this->setSessionData($this->session, $form->getData());
 
-            return $app->redirect($app->path('install_step4'));
+            return $this->redirectToRoute('install_step4');
         }
 
         return [
             'form' => $form->createView(),
-            'publicPath' => '../../html/',
+            'request' => $request
         ];
     }
 
@@ -283,12 +294,11 @@ class InstallController extends AbstractController
      *
      * @param InstallApplication $app
      * @param Request $request
-     * @param Session $session
      * @return Response
      */
-    public function step4(Request $request, Session $session)
+    public function step4(Request $request)
     {
-        $sessionData = $this->getSessionData($session);
+        $sessionData = $this->getSessionData($this->session);
 
         if (empty($sessionData['database'])) {
             // 再インストールの場合は設定ファイルから復旧.
@@ -310,7 +320,7 @@ class InstallController extends AbstractController
             }
         }
 
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step4Type::class)
             ->getForm();
 
@@ -322,14 +332,14 @@ class InstallController extends AbstractController
             if ($data['database'] === 'pdo_sqlite') {
                 $data['database_name'] = $this->configDir.'/eccube.db';
             }
-            $this->setSessionData($session, $data);
 
-            return $app->redirect($app->path('install_step5'));
+            $this->setSessionData($this->session, $data);
+
+            return $this->redirectToRoute('install_step5');
         }
 
         return [
             'form' => $form->createView(),
-            'publicPath' => '../../html/',
         ];
     }
 
@@ -341,16 +351,15 @@ class InstallController extends AbstractController
      *
      * @param InstallApplication $app
      * @param Request $request
-     * @param Session $session
      * @return Response
      */
-    public function step5(Request $request, Session $session)
+    public function step5(Request $request)
     {
-        $form = $app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(Step5Type::class)
             ->getForm();
 
-        $sessionData = $this->getSessionData($session);
+        $sessionData = $this->getSessionData($this->session);
         $form->setData($sessionData);
         $form->handleRequest($request);
 
@@ -396,17 +405,16 @@ class InstallController extends AbstractController
                     'http_url' => $host.$basePath,
                     'shop_name' => $sessionData['shop_name'],
                 );
-                $this->sendAppData($params);
+                // $this->sendAppData($params);
             }
 
-            $this->removeSessionData($session);
+            // $this->removeSessionData($session);
 
-            return $app->redirect($app->path('install_complete'));
+            return $this->redirectToRoute('install_complete');
         }
 
         return [
             'form' => $form->createView(),
-            'publicPath' => '../../html/',
         ];
     }
 
@@ -432,35 +440,34 @@ class InstallController extends AbstractController
 
         return [
             'admin_url' => $adminUrl,
-            'publicPath' => '../../html/',
         ];
     }
 
-    private function getSessionData(Session $session)
+    private function getSessionData(SessionInterface $session)
     {
         return $session->get('eccube.session.install', []);
     }
 
-    private function removeSessionData(Session $session)
+    private function removeSessionData(SessionInterface $session)
     {
         $session->remove('eccube.session.install');
     }
 
-    private function setSessionData(Session $session, $data = [])
+    private function setSessionData(SessionInterface $session, $data = [])
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
     }
 
-    private function checkModules($app)
+    private function checkModules()
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
-                $app->addDanger('[必須] '.$module.' 拡張モジュールが有効になっていません。', 'install');
+                $this->addDanger('[必須] '.$module.' 拡張モジュールが有効になっていません。', 'install');
             }
         }
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
-            $app->addDanger('[必須] '.'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+            $this->addDanger('[必須] '.'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
         }
         foreach ($this->recommendedModules as $module) {
             if (!extension_loaded($module)) {
@@ -474,18 +481,18 @@ class InstallController extends AbstractController
         }
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $app->addInfo('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+                $this->addInfo('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $app->addInfo('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
+                $this->addInfo('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
             }
         }
         if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
             if (!function_exists('apache_get_modules')) {
-                $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+                $this->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
-                $app->addDanger('[必須] '.'mod_rewriteを有効にしてください。', 'install');
+                $this->addDanger('[必須] '.'mod_rewriteを有効にしてください。', 'install');
             }
         } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS',
                 $_SERVER['SERVER_SOFTWARE']) !== false
@@ -498,6 +505,7 @@ class InstallController extends AbstractController
 
     private function createConnection(array $params)
     {
+        $params['driverClass'] = 'Doctrine\DBAL\Driver\PDOSqlite\Driver';
         $conn = DriverManager::getConnection($params);
         $conn->ping();
 
@@ -558,14 +566,8 @@ class InstallController extends AbstractController
     {
         $conn->beginTransaction();
         try {
-            $config = array(
-                'auth_type' => '',
-                'auth_magic' => $data['auth_magic'],
-                'password_hash_algos' => 'sha256',
-            );
-            $encoder = new PasswordEncoder($config);
             $salt = StringUtil::random(32);
-            $password = $encoder->encodePassword($data['login_pass'], $salt);
+            $password = $this->encoder->encodePassword($data['login_pass'], $salt);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
                 ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
@@ -848,7 +850,6 @@ class InstallController extends AbstractController
     public function migration(Request $request)
     {
         return $app['twig']->render('migration.twig', array(
-            'publicPath' => '../../html/',
         ));
     }
 
@@ -875,7 +876,6 @@ class InstallController extends AbstractController
             return $app['twig']->render('migration_plugin.twig', array(
                 'Plugins' => $Plugins,
                 'version' => Constant::VERSION,
-                'publicPath' => '../../html/',
             ));
         }
     }
@@ -897,7 +897,6 @@ class InstallController extends AbstractController
         \Eccube\Util\CacheUtil::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig', array(
-            'publicPath' => '../../html/',
         ));
     }
 }

@@ -76,23 +76,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery-1.11.3.min.js', 'install') }}"><\/script>')</script>
 <script src="{{ asset('dist/js/bootstrap.min.js', 'install') }}"></script>
 <script src="{{ asset('assets/js/function.js', 'install') }}"></script>
-<script>
-$(function() {
-    /*
-     * for svg icon
-     */
-    $.ajax({
-        type: 'GET',
-        url: '{{ asset('assets/img/svg.html', 'install') }},
-        dataType: 'html',
-        success: function(data){
-            $('body').prepend(data);
-        },
-        error: function() {
-            console.log('error');
-        }
-    });
-});
-</script>
+
 </body>
 </html>

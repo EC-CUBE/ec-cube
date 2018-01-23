@@ -149,8 +149,10 @@ class Kernel extends BaseKernel
             $container->addCompilerPass(new LazyComponentPass());
         }
 
-        // テンプレートフックポイントを動作させるように.
-        $container->addCompilerPass(new TemplateListenerPass());
+        if ($this->environment !== 'install') {
+            // テンプレートフックポイントを動作させるように.
+            $container->addCompilerPass(new TemplateListenerPass());
+        }
 
         $container->register('app', Application::class)
             ->setSynthetic(true)
