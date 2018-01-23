@@ -43,10 +43,14 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 class Step4Type extends AbstractType
 {
     /**
-     * @Inject("request_stack")
      * @var RequestStack
      */
     protected $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
 
     /**
      * {@inheritdoc}
