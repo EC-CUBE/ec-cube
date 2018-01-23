@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -47,11 +46,6 @@ class SecurityType extends AbstractType
      * @var RecursiveValidator
      */
     protected $recursiveValidator;
-
-    /**
-     * @Inject(Application::class)
-     */
-    protected $app;
 
     /**
      * SecurityType constructor.

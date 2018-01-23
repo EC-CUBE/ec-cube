@@ -24,13 +24,9 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Service;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-/**
- * @Service
- */
 class SystemService
 {
     /**
