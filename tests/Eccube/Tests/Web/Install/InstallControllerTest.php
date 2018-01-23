@@ -106,4 +106,57 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
+
+    public function testCreateDatabaseUrl()
+    {
+        $params = [
+            'database' => 'pdo_sqlite',
+            'database_name' => '/foo/bar/eccube.db'
+        ];
+        $this->expected = 'sqlite:///foo/bar/eccube.db';
+        $this->actual = $this->controller->createDatabaseUrl($params);
+        $this->verify();
+
+        $params = [
+            'database' => 'pdo_mysql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost'
+        ];
+        $this->expected = 'mysql://localhost/cube4_dev';
+        $this->actual = $this->controller->createDatabaseUrl($params);
+        $this->verify();
+
+        $params = [
+            'database' => 'pdo_pgsql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => '5432'
+        ];
+        $this->expected = 'pgsql://localhost:5432/cube4_dev';
+        $this->actual = $this->controller->createDatabaseUrl($params);
+        $this->verify();
+
+        $params = [
+            'database' => 'pdo_pgsql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => '5432',
+            'database_user' => 'postgres'
+        ];
+        $this->expected = 'pgsql://postgres@localhost:5432/cube4_dev';
+        $this->actual = $this->controller->createDatabaseUrl($params);
+        $this->verify();
+
+        $params = [
+            'database' => 'pdo_mysql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => '3306',
+            'database_user' => 'root',
+            'database_password' => 'password'
+        ];
+        $this->expected = 'mysql://root:password@localhost:3306/cube4_dev';
+        $this->actual = $this->controller->createDatabaseUrl($params);
+        $this->verify();
+    }
 }

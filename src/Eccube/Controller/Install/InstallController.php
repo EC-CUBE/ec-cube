@@ -525,6 +525,38 @@ class InstallController extends AbstractController
     }
 
     private function createMigration(Connection $conn)
+    public function createDatabaseUrl(array $params)
+    {
+        $url = '';
+        switch ($params['database']) {
+            case 'pdo_sqlite':
+                $url = 'sqlite://'.$params['database_name'];
+                break;
+
+            case 'pdo_mysql':
+            case 'pdo_pgsql':
+                $url = str_replace('pdo_', '', $params['database']);
+                $url .= '://';
+                if (isset($params['database_user'])) {
+                    $url .= $params['database_user'];
+                    if (isset($params['database_password'])) {
+                        $url .= ':'.$params['database_password'];
+                    }
+                    $url .= '@';
+                }
+                if (isset($params['database_host'])) {
+                    $url .= $params['database_host'];
+                    if (isset($params['database_port'])) {
+                        $url .= ':'.$params['database_port'];
+                    }
+                    $url .= '/';
+                }
+                $url .= $params['database_name'];
+                break;
+        }
+        return $url;
+    }
+
     {
         $config = new Configuration($conn);
         $config->setMigrationsNamespace('DoctrineMigrations');
