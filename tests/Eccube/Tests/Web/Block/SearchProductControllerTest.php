@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web\Block;
 
+use Eccube\Tests\Web\AbstractWebTestCase;
+
 class SearchProductControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()
