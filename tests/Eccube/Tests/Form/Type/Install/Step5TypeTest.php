@@ -29,10 +29,10 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step5TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
 
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
     /**
@@ -45,37 +45,36 @@ class Step5TypeTest extends AbstractTypeTestCase
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => array(
+        return [
+            [
+                'data' => [
                     'no_update' => true,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'no_update' => false,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'no_update' => null,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'no_update' => '',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(Step5Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
