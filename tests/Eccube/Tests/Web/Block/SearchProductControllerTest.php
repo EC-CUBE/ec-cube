@@ -22,40 +22,15 @@
  */
 
 
-namespace Eccube\Controller\Block;
+namespace Eccube\Tests\Web\Block;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
-use Eccube\Repository\NewsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
+use Eccube\Tests\Web\AbstractWebTestCase;
 
-/**
- * @Route(service=NewsController::class)
- */
-class NewsController
+class SearchProductControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @Inject(NewsRepository::class)
-     * @var NewsRepository
-     */
-    protected $newsRepository;
-
-    /**
-     * @Route("/block/news", name="block_news")
-     * @Template("Block/news.twig'")
-     */
-    public function index(Application $app, Request $request)
+    public function testRoutingCart()
     {
-        $NewsList = $this->newsRepository
-            ->findBy(
-                array(),
-                array('sort_no' => 'DESC')
-            );
-
-        return [
-            'NewsList' => $NewsList,
-        ];
+        $this->client->request('GET', '/block/search_product');
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }
