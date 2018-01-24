@@ -24,11 +24,11 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\PaymentOption;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\DeliveryType;
@@ -39,63 +39,58 @@ use Eccube\Repository\PaymentOptionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @Route(service=DeliveryController::class)
+ * Class DeliveryController
+ *
+ * @package Eccube\Controller\Admin\Setting\Shop
  */
 class DeliveryController extends AbstractController
 {
     /**
-     * @Inject(PaymentOptionRepository::class)
      * @var PaymentOptionRepository
      */
     protected $paymentOptionRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(DeliveryFeeRepository::class)
      * @var DeliveryFeeRepository
      */
     protected $deliveryFeeRepository;
 
     /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject(DeliveryRepository::class)
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
-     * @Route("/%admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
-     * @Template("Setting/Shop/delivery.twig")
+     * DeliveryController constructor.
+     *
+     * @param PaymentOptionRepository $paymentOptionRepository
+     * @param DeliveryFeeRepository $deliveryFeeRepository
+     * @param PrefRepository $prefRepository
+     * @param DeliveryRepository $deliveryRepository
      */
-    public function index(Application $app, Request $request)
+    public function __construct(PaymentOptionRepository $paymentOptionRepository, DeliveryFeeRepository $deliveryFeeRepository, PrefRepository $prefRepository, DeliveryRepository $deliveryRepository)
+    {
+        $this->paymentOptionRepository = $paymentOptionRepository;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->prefRepository = $prefRepository;
+        $this->deliveryRepository = $deliveryRepository;
+    }
+
+
+    /**
+     * @Route("/%admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery")
+     * @Template("@admin/Setting/Shop/delivery.twig")
+     */
+    public function index(Request $request)
     {
         $Deliveries = $this->deliveryRepository
             ->findBy([], ['sort_no' => 'DESC']);
@@ -116,9 +111,9 @@ class DeliveryController extends AbstractController
     /**
      * @Route("/%admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new")
      * @Route("/%admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit")
-     * @Template("Setting/Shop/delivery_edit.twig")
+     * @Template("@admin/Setting/Shop/delivery_edit.twig")
      */
-    public function edit(Application $app, Request $request, Delivery $Delivery = null)
+    public function edit(Request $request, Delivery $Delivery = null)
     {
         if (is_null($Delivery)) {
             // FIXME
@@ -158,7 +153,7 @@ class DeliveryController extends AbstractController
         $DeliveryTimes = $Delivery->getDeliveryTimes();
         $loop = 16 - count($DeliveryTimes);
         for ($i = 1; $i <= $loop; $i++) {
-            $DeliveryTime = new \Eccube\Entity\DeliveryTime();
+            $DeliveryTime = new DeliveryTime();
             $DeliveryTime->setDelivery($Delivery);
             $Delivery->addDeliveryTime($DeliveryTime);
         }
@@ -218,7 +213,7 @@ class DeliveryController extends AbstractController
                 // いれる
                 $PaymentsData = $form->get('payments')->getData();
                 foreach ($PaymentsData as $PaymentData) {
-                    $PaymentOption = new \Eccube\Entity\PaymentOption();
+                    $PaymentOption = new PaymentOption();
                     $PaymentOption
                         ->setPaymentId($PaymentData->getId())
                         ->setPayment($PaymentData)
@@ -243,9 +238,9 @@ class DeliveryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
 
-                $app->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop_delivery'));
+                return $this->redirectToRoute('admin_setting_shop_delivery');
             }
         }
 
@@ -259,12 +254,12 @@ class DeliveryController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete")
      */
-    public function delete(Application $app, Request $request, Delivery $Delivery)
+    public function delete(Request $request, Delivery $Delivery)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $this->entityManager->remove($Delivery);
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         $sortNo = 1;
         $Delivs = $this->deliveryRepository
@@ -288,18 +283,18 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
-        $app->addSuccess('admin.delete.complete', 'admin');
+        $this->addSuccess('admin.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_setting_shop_delivery'));
+        return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
     /**
      * @Method("PUT")
      * @Route("/%admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility")
      */
-    public function visibility(Application $app, Request $request, Delivery $Delivery)
+    public function visibility(Request $request, Delivery $Delivery)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         // 表示・非表示を切り替える
         if ($Delivery->isVisible()) {
@@ -311,7 +306,7 @@ class DeliveryController extends AbstractController
         }
         $this->entityManager->persist($Delivery);
 
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         $event = new EventArgs(
             array(
@@ -321,16 +316,16 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_VISIBILITY_COMPLETE, $event);
 
-        $app->addSuccess($message, 'admin');
+        $this->addSuccess($message, 'admin');
 
-        return $app->redirect($app->url('admin_setting_shop_delivery'));
+        return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
     /**
      * @Method("POST")
      * @Route("/%admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move")
      */
-    public function moveSortNo(Application $app, Request $request)
+    public function moveSortNo(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -344,6 +339,6 @@ class DeliveryController extends AbstractController
         }
         $this->entityManager->flush();
 
-        return true;
+        return $this->json('OK', 200);
     }
 }

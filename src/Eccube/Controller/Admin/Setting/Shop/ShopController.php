@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
@@ -34,51 +31,47 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 
 /**
- * @Route(service=ShopController::class)
+ * Class ShopController
+ *
+ * @package Eccube\Controller\Admin\Setting\Shop
  */
 class ShopController extends AbstractController
 {
+
     /**
-     * @Inject("twig")
      * @var Twig_Environment
      */
-    protected $twigEnvironment;
+    protected $twig;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Route("/%admin_route%/setting/shop", name="admin_setting_shop")
-     * @Template("Setting/Shop/shop_master.twig")
+     * ShopController constructor.
+     *
+     * @param BaseInfo $BaseInfo
      */
-    public function index(Application $app, Request $request)
+    public function __construct(Twig_Environment $twig, BaseInfo $BaseInfo)
+    {
+        $this->BaseInfo = $BaseInfo;
+        $this->twig = $twig;
+    }
+
+
+    /**
+     * @Route("/%admin_route%/setting/shop", name="admin_setting_shop")
+     * @Template("@admin/Setting/Shop/shop_master.twig")
+     *
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function index(Request $request)
     {
         $builder = $this->formFactory
             ->createBuilder(ShopMasterType::class, $this->BaseInfo);
@@ -112,14 +105,14 @@ class ShopController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.shop.save.complete', 'admin');
+                $this->addSuccess('admin.shop.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop'));
+                return $this->redirectToRoute('admin_setting_shop');
             }
-            $app->addError('admin.shop.save.error', 'admin');
+            $this->addError('admin.shop.save.error', 'admin');
         }
 
-        $this->twigEnvironment->addGlobal('BaseInfo', $CloneInfo);
+        $this->twig->addGlobal('BaseInfo', $CloneInfo);
 
         return [
             'form' => $form->createView(),

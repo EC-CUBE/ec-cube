@@ -19,30 +19,30 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}配送先管理{% endblock %}
+{% block title %}基本情報設定{% endblock %}
+{% block sub_title %}配送方法設定{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script>
-$(function(){
-    $("#set_fee_all").on("click", function() {
-        var fee = $("#{{ form.free_all.vars.id }}").val();
-        $("input[name$='[fee]']").val(fee);
-    });
-});
-</script>
+    <script>
+        $(function() {
+            $("#set_fee_all").on("click", function() {
+                var fee = $("#{{ form.free_all.vars.id }}").val();
+                $("input[name$='[fee]']").val(fee);
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
-<div class="row" id="aside_wrap">
-    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
-        {{ form_widget(form._token) }}
+    <div class="row" id="aside_wrap">
+        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
+            {{ form_widget(form._token) }}
             <div id="detail_wrap" class="col-md-9">
                 <div id="delivery_info_box" class="box">
                     <div id="delivery_info_box__header" class="box-header">
@@ -78,7 +78,11 @@ $(function(){
 
                 <div id="delivery_times_box" class="box accordion clearfix">
                     <div id="delivery_times_box__toggle" class="box-header toggle">
-                        <h3 class="box-title">お届け時間設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                        <h3 class="box-title">お届け時間設定
+                            <svg class="cb cb-angle-down icon_down">
+                                <use xlink:href="#cb-angle-down"/>
+                            </svg>
+                        </h3>
                     </div><!-- /.box-header -->
                     <div id="delivery_times_box__body" class="box-body accpanel">
                         {% for child in form.delivery_times %}
@@ -111,7 +115,11 @@ $(function(){
                         </div>
                     </div><!-- /.box-header -->
                     <div id="delivery_pref_box__body_toggle" class="box-body toggle active" style="position:relative;">
-                        <h3 class="box-title">都道府県ごとに設定する<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                        <h3 class="box-title">都道府県ごとに設定する
+                            <svg class="cb cb-angle-down icon_down">
+                                <use xlink:href="#cb-angle-down"/>
+                            </svg>
+                        </h3>
                     </div>
                     <div id="delivery_pref_box__body_inner" class="box-body accpanel" style="display: block;">
                         {% for child in form.delivery_fees %}
@@ -119,12 +127,12 @@ $(function(){
                                 <div id="delivery_pref_box__item" class="form-group">
                             {% endif %}
 
-                                <label id="delivery_pref_box__header_delivery_fee--{{ child.vars.name }}" class="col-sm-2 control-label">
-                                    {{ child.vars.data.pref|default('') }}
-                                </label>
-                                <div id="delivery_pref_box__delivery_fee--{{ child.vars.name }}" class="col-sm-4 fees_area">
-                                    {{ form_widget(child) }}
-                                </div>
+                            <label id="delivery_pref_box__header_delivery_fee--{{ child.vars.name }}" class="col-sm-2 control-label">
+                                {{ child.vars.data.pref|default('') }}
+                            </label>
+                            <div id="delivery_pref_box__delivery_fee--{{ child.vars.name }}" class="col-sm-4 fees_area">
+                                {{ form_widget(child) }}
+                            </div>
 
                             {% if loop.last == true %}
                                 </div>
@@ -161,7 +169,7 @@ $(function(){
                     </div>
                 </div>
             </div><!-- /.col -->
-    </form>
-</div>
+        </form>
+    </div>
 
 {% endblock %}

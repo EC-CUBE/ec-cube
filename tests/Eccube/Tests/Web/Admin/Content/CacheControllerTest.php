@@ -28,39 +28,34 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CacheControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testRoutingAdminContentCache()
     {
         $client = $this->client;
         $client->request('GET',
-            $this->app->url('admin_content_cache')
+            $this->generateUrl('admin_content_cache')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentCachePost()
     {
+        // FIXME
+        $this->markTestIncomplete('テスト時のセッションがvar/cache/test/sessionsに生成されるため,処理を継続できない');
+
         $client = $this->client;
 
-        $url = $this->app->url('admin_content_cache');
+        $url = $this->generateUrl('admin_content_cache');
 
-        $cacheDir = $this->app['config']['root_dir'].'/app/cache';
+        $cacheDir = $this->container->getParameter('kernel.cache_dir');
         file_put_contents($cacheDir.'/twig/sample', 'test');
 
-        // makes the POST request
-        $crawler = $client->request('POST', $url, array(
-                'admin_cache' => array(
-                    '_token' => 'dummy',
-                    'cache' => array('twig'),
-            ),
-        ));
+        $crawler = $client->request('POST', $url, [
+            'form' => [
+                '_token' => 'dummy',
+            ],
+        ]);
 
+        $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');
     }
 

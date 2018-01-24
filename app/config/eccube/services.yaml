@@ -12,8 +12,17 @@ parameters:
     user_data_route: 'user_data'
     eccube.scheme: 'http'
     eccube.theme: 'default'
+    eccube.theme.app_dir: '%kernel.project_dir%/app/template'
+    eccube.theme.src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
+    eccube.theme.user_data_dir: '%eccube.theme.app_dir%/user_data'
+    eccube.theme.front_dir: '%eccube.theme.app_dir%/%eccube.theme%'
+    eccube.theme.front_default_dir: '%eccube.theme.src_dir%/default'
+    eccube.theme.admin_dir: '%eccube.theme.app_dir%/admin'
+    eccube.theme.admin_default_dir: '%eccube.theme.src_dir%/admin'
     eccube.twig.block.templates:
       - render_block.twig
+    eccube.save_image_dir: '%kernel.project_dir%/html/upload/save_image'
+    eccube.temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
 
 services:
     # default configuration for services in *this* file

@@ -24,119 +24,107 @@
 
 namespace Eccube\Controller\Admin\Order;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Repository\CustomerRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\CsvExportService;
+use Knp\Component\Pager\Paginator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-/**
- * @Route(service=OrderController::class)
- */
 class OrderController extends AbstractController
 {
     /**
-     * @Inject(CsvExportService::class)
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(PaymentRepository::class)
      * @var PaymentRepository
      */
     protected $paymentRepository;
 
     /**
-     * @Inject(SexRepository::class)
      * @var SexRepository
      */
     protected $sexRepository;
 
     /**
-     * @Inject(OrderStatusRepository::class)
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
 
     /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject(PageMaxRepository::class)
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
 
     /**
-     * @Inject(ProductStatusRepository::class)
      * @var ProductStatusRepository
      */
     protected $productStatusRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
+     * OrderController constructor.
+     * @param CsvExportService $csvExportService
+     * @param CustomerRepository $customerRepository
+     * @param PaymentRepository $paymentRepository
+     * @param SexRepository $sexRepository
+     * @param OrderStatusRepository $orderStatusRepository
+     * @param PageMaxRepository $pageMaxRepository
+     * @param ProductStatusRepository $productStatusRepository
+     * @param OrderRepository $orderRepository
+     */
+    public function __construct(
+        CsvExportService $csvExportService,
+        CustomerRepository $customerRepository,
+        PaymentRepository $paymentRepository,
+        SexRepository $sexRepository,
+        OrderStatusRepository $orderStatusRepository,
+        PageMaxRepository $pageMaxRepository,
+        ProductStatusRepository $productStatusRepository,
+        OrderRepository $orderRepository
+    ) {
+        $this->csvExportService = $csvExportService;
+        $this->customerRepository = $customerRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->sexRepository = $sexRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->pageMaxRepository = $pageMaxRepository;
+        $this->productStatusRepository = $productStatusRepository;
+        $this->orderRepository = $orderRepository;
+    }
+
+    /**
      * @Route("/%admin_route%/order", name="admin_order")
      * @Route("/%admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
-     * @Template("Order/index.twig")
+     * @Template("@admin/Order/index.twig")
      */
-    public function index(Application $app, Request $request, $page_no = null)
+    public function index(Request $request, $page_no = null, Paginator $paginator)
     {
-
-        $session = $request->getSession();
-
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
 
@@ -154,7 +142,7 @@ class OrderController extends AbstractController
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->appConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['default_page_count'];
         $page_status = null;
         $active = false;
 
@@ -178,28 +166,28 @@ class OrderController extends AbstractController
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
 
                 $page_no = 1;
-                $pagination = $app['paginator']()->paginate(
+                $pagination = $paginator->paginate(
                     $qb,
                     $page_no,
                     $page_count
                 );
 
                 // sessionのデータ保持
-                $session->set('eccube.admin.order.search', $searchData);
-                $session->set('eccube.admin.order.search.page_no', $page_no);
+                $this->session->set('eccube.admin.order.search', $searchData);
+                $this->session->set('eccube.admin.order.search.page_no', $page_no);
             }
         } else {
             if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
-                $session->remove('eccube.admin.order.search');
-                $session->remove('eccube.admin.order.search.page_no');
+                $this->session->remove('eccube.admin.order.search');
+                $this->session->remove('eccube.admin.order.search.page_no');
             } else {
                 // pagingなどの処理
-                $searchData = $session->get('eccube.admin.order.search');
+                $searchData = $this->session->get('eccube.admin.order.search');
                 if (is_null($page_no)) {
-                    $page_no = intval($session->get('eccube.admin.order.search.page_no'));
+                    $page_no = intval($this->session->get('eccube.admin.order.search.page_no'));
                 } else {
-                    $session->set('eccube.admin.order.search.page_no', $page_no);
+                    $this->session->set('eccube.admin.order.search.page_no', $page_no);
                 }
 
                 if (!is_null($searchData)) {
@@ -207,11 +195,11 @@ class OrderController extends AbstractController
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
-                        if ($status != $this->appConfig['admin_product_stock_status']) {
+                        if ($status != $this->eccubeConfig['admin_product_stock_status']) {
                             $searchData['status']->clear();
                             $searchData['status']->add($status);
                         } else {
-                            $searchData['stock_status'] = $this->appConfig['disabled'];
+                            $searchData['stock_status'] = $this->eccubeConfig['disabled'];
                         }
                         $page_status = $status;
                     }
@@ -231,7 +219,7 @@ class OrderController extends AbstractController
                     );
                     $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
 
-                    $pagination = $app['paginator']()->paginate(
+                    $pagination = $paginator->paginate(
                         $qb,
                         $page_no,
                         $page_count
@@ -283,19 +271,20 @@ class OrderController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete(Request $request, $id)
     {
-        $this->isTokenValid($app);
-        $session = $request->getSession();
-        $page_no = intval($session->get('eccube.admin.order.search.page_no'));
+        $this->isTokenValid();
+        $page_no = intval($this->session->get('eccube.admin.order.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         $Order = $this->orderRepository
             ->find($id);
 
         if (!$Order) {
-            $app->deleteMessage();
-            return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+            $this->deleteMessage();
+
+            return $this->redirect($this->generateUrl('admin_order_page',
+                    array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
         log_info('受注削除開始', array($Order->getId()));
@@ -306,10 +295,11 @@ class OrderController extends AbstractController
         });
         if ($hasShipping) {
             log_info('受注削除失敗', [$Order->getId()]);
-            $message = $app->trans('admin.delete.failed.foreign_key', ['%name%' => '受注']);
-            $app->addError($message, 'admin');
+            $message = $this->translator->trans('admin.delete.failed.foreign_key', ['%name%' => '受注']);
+            $this->addError($message, 'admin');
 
-            return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+            return $this->redirect($this->generateUrl('admin_order_page',
+                    array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
         $Customer = $Order->getCustomer();
@@ -319,8 +309,8 @@ class OrderController extends AbstractController
         $this->entityManager->flush();
 
         if ($Customer) {
-            // 会員の場合、購入回数、購入金額などを更新
-            $this->customerRepository->updateBuyData($app, $Customer, $OrderStatusId);
+            // FIXME 会員の場合、購入回数、購入金額などを更新
+            //$this->customerRepository->updateBuyData($app, $Customer, $OrderStatusId);
         }
 
         $event = new EventArgs(
@@ -332,24 +322,24 @@ class OrderController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
 
-        $app->addSuccess('admin.order.delete.complete', 'admin');
+        $this->addSuccess('admin.order.delete.complete', 'admin');
 
         log_info('受注削除完了', array($Order->getId()));
 
-        return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
+        return $this->redirect($this->generateUrl('admin_order_page',
+                array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
 
     /**
      * 受注CSVの出力.
      *
-     * @Route("/order/export/order", name="admin_order_export_order")
+     * @Route("/%admin_route%/order/export/order", name="admin_order_export_order")
      *
-     * @param Application $app
      * @param Request $request
      * @return StreamedResponse
      */
-    public function exportOrder(Application $app, Request $request)
+    public function exportOrder(Request $request)
     {
 
         // タイムアウトを無効にする.
@@ -360,7 +350,7 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
@@ -374,7 +364,7 @@ class OrderController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -415,9 +405,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'order_' . $now->format('YmdHis') . '.csv';
+        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('受注CSV出力ファイル名', array($filename));
@@ -428,13 +418,12 @@ class OrderController extends AbstractController
     /**
      * 配送CSVの出力.
      *
-     * @Route("/order/export/shipping", name="admin_order_export_shipping")
+     * @Route("/%admin_route%/order/export/shipping", name="admin_order_export_shipping")
      *
-     * @param Application $app
      * @param Request $request
      * @return StreamedResponse
      */
-    public function exportShipping(Application $app, Request $request)
+    public function exportShipping(Request $request)
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
@@ -444,7 +433,7 @@ class OrderController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($request) {
 
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_SHIPPING);
@@ -458,7 +447,7 @@ class OrderController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($app, $request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -508,9 +497,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'shipping_' . $now->format('YmdHis') . '.csv';
+        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         log_info('配送CSV出力ファイル名', array($filename));

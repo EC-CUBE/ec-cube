@@ -24,20 +24,16 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Eccube\Repository\MailTemplateRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class MailControllerTest
+ *
  * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     /**
      * @return mixed
      */
@@ -45,14 +41,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
         // create new mail
-        $Mail = $this->app['orm.em']->getRepository('Eccube\Entity\MailTemplate')->findOrCreate(0);
+        $Mail = $this->container->get(MailTemplateRepository::class)->findOrCreate(0);
         $Mail->setName($faker->word);
         $Mail->setFileName('Mail/order.twig');
         $Mail->setMailSubject($faker->word);
         $Mail->setMailHeader($faker->word);
         $Mail->setMailFooter($faker->word);
-        $this->app['orm.em']->persist($Mail);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Mail);
+        $this->entityManager->flush();
 
         return $Mail;
     }
@@ -62,7 +58,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_mail'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_mail'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -73,7 +69,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $MailTemplate = $this->createMail();
         $this->client->request('GET',
-            $this->app->url('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()))
+            $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()))
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -94,11 +90,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId())),
+            $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId())),
             array('mail' => $form)
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()));
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $form['mail_subject'];
@@ -118,14 +114,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_mail_edit', array('id' => $mid)),
+            $this->generateUrl('admin_setting_shop_mail_edit', array('id' => $mid)),
             array('mail' => $form)
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_mail');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.error');
+        $outPut = $this->container->get('session')->getFlashBag()->get('eccube.admin.error');
         $this->actual = array_shift($outPut);
         $this->expected = 'admin.shop.mail.save.error';
         $this->verify();
@@ -145,11 +141,11 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_mail'),
+            $this->generateUrl('admin_setting_shop_mail'),
             array('mail' => $form)
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_mail');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 }

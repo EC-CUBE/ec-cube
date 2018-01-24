@@ -24,47 +24,25 @@
 
 namespace Eccube\Controller\Block;
 
+use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\SearchProductBlockType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class SearchProductController
+class SearchProductController extends AbstractController
 {
     /**
      * @var RequestStack
      */
     protected $requestStack;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * SearchProductController constructor.
-     * @param RequestStack $requestStack
-     * @param FormFactoryInterface $formFactory
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(
-        RequestStack $requestStack,
-        FormFactoryInterface $formFactory,
-        EventDispatcherInterface $eventDispatcher
+    public function __construct(RequestStack $requestStack
     ) {
         $this->requestStack = $requestStack;
-        $this->formFactory = $formFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

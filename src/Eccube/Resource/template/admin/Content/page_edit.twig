@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'page'] %}
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ページ管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
@@ -77,10 +77,10 @@
                         <div id="detail_box__url" class="form-group word-break">
                             {{ form_label(form.url) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
-                                {% if editable %}
-                                    {{ url('homepage') }}{{ app.config.user_data_route }}/{{ form_widget(form.url) }}
+                                {% if is_user_data_page %}
+                                    {{ url('homepage') }}{{ user_data_route }}/{{ form_widget(form.url) }}
                                 {% else %}
-                                    {{ app.request_stack.currentrequest.schemeAndHttpHost }}{{ app.request_stack.currentrequest.basePath }}{{ app.routes.get(form.url.vars.value).path }}
+                                    {{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ url }}
                                     {{ form_widget(form.url, { type : 'hidden' } ) }}
                                 {% endif %}
                                 {{ form_errors(form.url) }}
@@ -89,7 +89,7 @@
                         <div id="detail_box__file_name" class="form-group word-break">
                             {{ form_label(form.file_name) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
-                                {% if editable %}
+                                {% if is_user_data_page %}
                                     {{ template_path }}/{{ form_widget(form.file_name) }}.twig
                                 {% else %}
                                     {{ template_path }}/{{ form.file_name.vars.value }}.twig
