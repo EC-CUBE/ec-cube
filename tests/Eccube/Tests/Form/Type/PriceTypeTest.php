@@ -28,13 +28,15 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class PriceTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    public $config = array('price_len' => 8);
+    /**
+     * @var array
+     */
+    public $config = ['price_len' => 8];
 
     /**
      * getValidTestData
@@ -46,27 +48,18 @@ class PriceTypeTest extends AbstractTypeTestCase
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => 0,
-            ),
-            array(
-                'data' => 1,
-            ),
-            array(
-                'data' => '0',
-            ),
-            array(
-                'data' => '1',
-            ),
-        );
+        return [
+            ['data' => 0],
+            ['data' => 1],
+            ['data' => '0'],
+            ['data' => '1'],
+        ];
     }
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(PriceType::class, null, ['csrf_protection' => false])
             ->getForm();
     }
@@ -100,13 +93,13 @@ class PriceTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit($this->app['config']['price_max'] + 1);
+        $this->form->submit($this->eccubeConfig['price_max'] + 1);
         $this->assertFalse($this->form->isValid());
     }
 
     public function testNotRequiredOption()
     {
-        $form = $this->app['form.factory']
+        $form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('price', PriceType::class, array(
                 'required' => false,
