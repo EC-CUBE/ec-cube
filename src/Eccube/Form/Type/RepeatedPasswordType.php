@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,26 +31,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @FormType
+ * Class RepeatedPasswordType
+ * @package Eccube\Form\Type
  */
 class RepeatedPasswordType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * RepeatedPasswordType constructor.
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($eccubeConfig)
+    public function __construct(array $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;
     }
@@ -71,10 +63,10 @@ class RepeatedPasswordType extends AbstractType
             'options' => array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-//                    new Assert\Length(array(
-//                        'min' => $this->appConfig['password_min_len'],
-//                        'max' => $this->appConfig['password_max_len'],
-//                    )),
+                    new Assert\Length(array(
+                        'min' => $this->appConfig['password_min_len'],
+                        'max' => $this->appConfig['password_max_len'],
+                    )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
@@ -83,7 +75,7 @@ class RepeatedPasswordType extends AbstractType
             ),
             'first_options' => array(
                 'attr' => array(
-//                    'placeholder' => '半角英数字記号'.$this->appConfig['password_min_len'].'～'.$this->appConfig['password_max_len'].'文字',
+                    'placeholder' => '半角英数字記号'.$this->appConfig['password_min_len'].'～'.$this->appConfig['password_max_len'].'文字',
                 ),
             ),
             'second_options' => array(
