@@ -23,9 +23,7 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -33,46 +31,36 @@ use Eccube\Form\Type\Admin\CustomerAgreementType;
 use Eccube\Repository\HelpRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route(service=CustomerAgreementController::class)
+ * Class CustomerAgreementController
+ *
+ * @package Eccube\Controller\Admin\Setting\Shop
  */
 class CustomerAgreementController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(HelpRepository::class)
      * @var HelpRepository
      */
     protected $helpRepository;
 
-    public $form;
+    /**
+     * CustomerAgreementController constructor.
+     *
+     * @param HelpRepository $helpRepository
+     */
+    public function __construct(HelpRepository $helpRepository)
+    {
+        $this->helpRepository = $helpRepository;
+    }
+
 
     /**
      * @Route("/%admin_route%/setting/shop/customer_agreement", name="admin_setting_shop_customer_agreement")
-     * @Template("Setting/Shop/customer_agreement.twig")
+     * @Template("@admin/Setting/Shop/customer_agreement.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $Help = $this->helpRepository->get();
 
@@ -110,12 +98,12 @@ class CustomerAgreementController extends AbstractController
                     $event
                 );
 
-                $app->addSuccess('admin.register.complete', 'admin');
+                $this->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
+                return $this->redirectToRoute('admin_setting_shop_customer_agreement');
 
             } else {
-                $app->addError('admin.register.failed', 'admin');
+                $this->addError('admin.register.failed', 'admin');
             }
         }
 

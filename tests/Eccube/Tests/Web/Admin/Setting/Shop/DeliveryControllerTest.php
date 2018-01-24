@@ -26,21 +26,19 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\Delivery;
 use Eccube\Entity\PaymentOption;
+use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class DeliveryControllerTest
+ *
  * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class DeliveryControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     /**
      * @return mixed
      */
@@ -48,42 +46,42 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
         // create new delivery
-        $Delivery = $this->app['eccube.repository.delivery']->findOrCreate(0);
+        $Delivery = $this->container->get(DeliveryRepository::class)->findOrCreate(0);
         $Delivery->setConfirmUrl($faker->url);
         $Delivery->setVisible(true);
-        $this->app['orm.em']->persist($Delivery);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Delivery);
+        $this->entityManager->flush();
 
-        $Prefs = $this->app['eccube.repository.master.pref']->findAll();
+        $Prefs = $this->container->get(PrefRepository::class)->findAll();
 
         foreach ($Prefs as $Pref) {
-            $DeliveryFee = $this->app['eccube.repository.delivery_fee']
+            $DeliveryFee = $this->container->get(DeliveryFeeRepository::class)
                 ->findOrCreate(array(
                     'Delivery' => $Delivery,
                     'Pref' => $Pref,
                 ));
             $DeliveryFee->setFee($faker->randomNumber(3));
 
-            $this->app['orm.em']->persist($DeliveryFee);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($DeliveryFee);
+            $this->entityManager->flush();
 
             $Delivery->addDeliveryFee($DeliveryFee);
         }
 
-        $Payment = $this->app['eccube.repository.payment']->findOrCreate(0);
-        $this->app['orm.em']->persist($Payment);
-        $this->app['orm.em']->flush();
+        $Payment = $this->container->get(PaymentRepository::class)->findOrCreate(0);
+        $this->entityManager->persist($Payment);
+        $this->entityManager->flush();
         $PaymentOption = new PaymentOption();
         $PaymentOption->setDelivery($Delivery);
         $PaymentOption->setPayment($Payment);
         $PaymentOption->setDeliveryId($Delivery->getId());
         $PaymentOption->setPaymentId($Payment->getId());
-        $this->app['orm.em']->persist($PaymentOption);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($PaymentOption);
+        $this->entityManager->flush();
 
         $Delivery->addPaymentOption($PaymentOption);
-        $this->app['orm.em']->persist($Delivery);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Delivery);
+        $this->entityManager->flush();
 
         return $Delivery;
     }
@@ -93,7 +91,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_delivery'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -102,12 +100,13 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_delivery_new'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * Delivery new test
+     *
      * @param bool $isSuccess
      * @param bool $expected
      * @dataProvider dataSubmitProvider
@@ -121,7 +120,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_delivery_new'),
+            $this->generateUrl('admin_setting_shop_delivery_new'),
             array(
                 'delivery' => $formData,
             )
@@ -138,12 +137,13 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Delivery = $this->createDelivery();
-        $this->client->request('GET', $this->app->url('admin_setting_shop_delivery_edit', array('id' => $Delivery->getId())));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_edit', array('id' => $Delivery->getId())));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * Delivery edit test
+     *
      * @param bool $isSuccess
      * @param bool $expected
      * @dataProvider dataSubmitProvider
@@ -158,7 +158,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $Delivery = $this->createDelivery();
 
         $this->client->request('POST',
-            $this->app->url('admin_setting_shop_delivery_edit', array('id' => $Delivery->getId())),
+            $this->generateUrl('admin_setting_shop_delivery_edit', array('id' => $Delivery->getId())),
             array(
                 'delivery' => $formData
             )
@@ -178,12 +178,12 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $pid = $Delivery->getId();
         $this->client->request(
             'DELETE',
-            $this->app->url('admin_setting_shop_delivery_delete', array('id' => $pid))
+            $this->generateUrl('admin_setting_shop_delivery_delete', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $this->actual = $this->app['orm.em']->find(Delivery::class, $pid);
+        $this->actual = $this->entityManager->find(Delivery::class, $pid);
     }
 
     /**
@@ -192,14 +192,11 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     public function testDeleteFail()
     {
         $pid = 9999;
-        try {
-            $this->client->request(
-                'DELETE',
-                $this->app->url('admin_setting_shop_delivery_delete', array('id' => $pid))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
-        }
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('admin_setting_shop_delivery_delete', array('id' => $pid))
+        );
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testMoveSortNo()
@@ -216,7 +213,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_delivery_sort_no_move'),
+            $this->generateUrl('admin_setting_shop_delivery_sort_no_move'),
             $request,
             array(),
             array(

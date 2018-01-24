@@ -27,60 +27,50 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Repository\CsvRepository;
+use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CsvControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-        $Csv = $this->app['eccube.repository.csv']->find(1);
-        $Csv->setSortNo(1);
-        $Csv->setEnabled(false);
-        $this->app['orm.em']->flush();
-    }
-
     public function testRoutingCsv()
     {
 
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_csv', array('id' => 1)));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', array('id' => 1)));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testGetCsv()
     {
-        $CsvType = $this->app['eccube.repository.master.csv_type']->find(1);
+        $CsvType = $this->container->get(CsvTypeRepository::class)->find(1);
         $this->assertNotEmpty($CsvType);
 
-        $Csv = $this->app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enabled' => true), array('sort_no' => 'ASC'));
+        $Csv = $this->container->get(CsvRepository::class)->findBy(array('CsvType' => $CsvType, 'enabled' => true), array('sort_no' => 'ASC'));
         $this->assertNotEmpty($Csv);
     }
 
 
     public function testSetCsv()
     {
-        $this->app['orm.em']->getConnection()->beginTransaction();
+        $this->entityManager->getConnection()->beginTransaction();
 
-        $Csv = $this->app['eccube.repository.csv']->find(1);
+        $Csv = $this->container->get(CsvRepository::class)->find(1);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
 
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $Csv2 = $this->app['eccube.repository.csv']->find(1);
+        $Csv2 = $this->container->get(CsvRepository::class)->find(1);
         $this->assertEquals(false, $Csv2->isEnabled());
 
-        $this->app['orm.em']->getConnection()->rollback();
+        $this->entityManager->getConnection()->rollback();
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testRoutingCsvFail()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_csv', array('id' => 9999)));
-        $this->fail();
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', array('id' => 9999)));
+
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testSubmit()
@@ -102,11 +92,11 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_csv', array('id' => $csvType)),
+            $this->generateUrl('admin_setting_shop_csv', array('id' => $csvType)),
             array('form' => $form)
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_csv', array('id' => $csvType));
+        $redirectUrl = $this->generateUrl('admin_setting_shop_csv', array('id' => $csvType));
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = array($CsvNotOut->isEnabled(), $CsvOut->isEnabled());
@@ -116,10 +106,10 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = 'Eccube\Entity\Product', $ref = null)
     {
-        $CsvType = $this->app['eccube.repository.master.csv_type']->find($csvType);
-        $Creator = $this->app['eccube.repository.member']->find(2);
+        $CsvType = $this->container->get(CsvTypeRepository::class)->find($csvType);
+        $Creator = $this->createMember();
 
-        $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('sort_no' => 'DESC'));
+        $csv = $this->container->get(CsvRepository::class)->findOneBy(array('CsvType' => $CsvType), array('sort_no' => 'DESC'));
         $sortNo = 1;
         if ($csv) {
             $sortNo = $csv->getSortNo() + 1;
@@ -135,8 +125,8 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $Csv->setEnabled(false);
         $Csv->setSortNo($sortNo);
 
-        $this->app['orm.em']->persist($Csv);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Csv);
+        $this->entityManager->flush();
 
         return $Csv;
     }
