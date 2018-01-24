@@ -24,8 +24,6 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
@@ -33,12 +31,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\CustomerAddressRepository;
-use Eccube\Repository\CustomerRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -48,43 +43,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CustomerDeliveryEditController extends AbstractController
 {
     /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
 
     public function __construct(
-        $eccubeConfig,
-        CustomerAddressRepository $customerAddressRepository,
-        EntityManagerInterface $entityManager
+        CustomerAddressRepository $customerAddressRepository
     ) {
-        $this->eccubeConfig = $eccubeConfig;
         $this->customerAddressRepository = $customerAddressRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**

@@ -46,47 +46,21 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class CustomerEditController extends AbstractController
 {
     /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
 
     /**
-     * @Inject("security.encoder_factory")
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
 
     public function __construct(
-        $eccubeConfig,
         CustomerRepository $customerRepository,
-        EncoderFactoryInterface $encoderFactory,
-        EntityManagerInterface $entityManager
+        EncoderFactoryInterface $encoderFactory
     ) {
-        $this->eccubeConfig = $eccubeConfig;
         $this->customerRepository = $customerRepository;
         $this->encoderFactory = $encoderFactory;
-        $this->entityManager = $entityManager;
     }
 
     /**
