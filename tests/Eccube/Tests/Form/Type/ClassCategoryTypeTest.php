@@ -28,10 +28,6 @@ use Eccube\Form\Type\Admin\ClassNameType;
 
 class ClassNameTypeTest extends AbstractTypeTestCase
 {
-
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 

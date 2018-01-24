@@ -23,9 +23,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Form\Type\Master\PrefType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -47,6 +44,9 @@ class AddressType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * AddressType constructor.
+     * @param array $eccubeConfig
      */
     public function __construct(array $eccubeConfig)
     {
@@ -114,13 +114,13 @@ class AddressType extends AbstractType
             'pref_options' => array('constraints' => array(), 'attr' => array('class' => ' p-region-id')),
             'addr01_options' => array(
                 'constraints' => array(
-                     new Assert\Length(array('max' => $this->config['address1_len'])),
+                    new Assert\Length(array('max' => $this->config['address1_len'])),
                 ),
                 'attr' => array('class' => 'p-locality')
             ),
             'addr02_options' => array(
                 'constraints' => array(
-                     new Assert\Length(array('max' => $this->config['address2_len'])),
+                    new Assert\Length(array('max' => $this->config['address2_len'])),
                 ),
                 'attr' => array('class' => 'p-street-address')
             ),

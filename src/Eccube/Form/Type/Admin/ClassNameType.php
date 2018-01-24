@@ -37,6 +37,12 @@ class ClassNameType extends AbstractType
      */
     protected $appConfig;
 
+    /**
+     * {@inheritdoc}
+     *
+     * ClassNameType constructor.
+     * @param array $eccubeConfig
+     */
     public function __construct(array $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;

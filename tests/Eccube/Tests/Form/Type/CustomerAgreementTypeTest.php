@@ -28,10 +28,6 @@ use Eccube\Form\Type\Admin\CustomerAgreementType;
 
 class CustomerAgreementTypeTest extends AbstractTypeTestCase
 {
-
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'customer_agreement' => '第1条 (会員) 1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
@@ -41,11 +37,10 @@ class CustomerAgreementTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(CustomerAgreementType::class, null, array(
                 'csrf_protection' => false,
             ))
