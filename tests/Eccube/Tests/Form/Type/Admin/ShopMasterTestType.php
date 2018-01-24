@@ -23,16 +23,19 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Form\Type\Admin\ShopMasterType;
+
 class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    /**
+     * @var array デフォルト値（正常系）を設定
+     */
+    protected $formData = [
         /*
         'company_name' => '会社名',
         'company_kana' => 'カナ',
@@ -51,16 +54,16 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'addr02' => '梅田',
         ),
          */
-        'tel' => array(
+        'tel' => [
             'tel01' => '03',
             'tel02' => '1111',
             'tel03' => '1111',
-        ),
-        'fax' => array(
+        ],
+        'fax' => [
             'fax01' => '03',
             'fax02' => '1111',
             'fax03' => '4444',
-        ),
+        ],
         /*
         'business_hour' => '店舗営業時間',
          */
@@ -82,18 +85,15 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'option_remember_me' => '0',
         'option_nostock_hidden' => '0',
          */
-    );
+    ];
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder('shop_master', null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $this->formFactory
+            ->createBuilder(ShopMasterType::class , null, ['csrf_protection' => false])
             ->getForm();
     }
 
