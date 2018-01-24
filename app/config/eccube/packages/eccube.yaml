@@ -60,4 +60,4 @@ parameters:
     product_order_price_lower: 1
     product_order_newer: 2
     product_order_price_higher: 3
-    template_code: '%env(ECCUBE_TEMPLATE_CODE)%'
+    template_code: 'default'
