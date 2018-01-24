@@ -24,89 +24,66 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Eccube\Form\Type\Admin\CacheType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-/**
- * @Route(service=CacheController::class)
- */
 class CacheController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
      * @Route("/%admin_route%/content/cache", name="admin_content_cache")
-     * @Template("Content/cache.twig")
+     * @Template("@admin/Content/cache.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request, KernelInterface $kernel)
     {
+        $result = '';
 
-        $builder = $this->formFactory->createBuilder(CacheType::class);
-
+        $builder = $this->formFactory->createBuilder(FormType::class);
         $form = $builder->getForm();
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $data = $form->get('cache')->getData();
+            $result = $this->processCacheClearCommand($kernel);
 
-            $cacheDir = $this->appConfig['root_dir'].'/app/cache';
-
-            $filesystem = new Filesystem();
-
-            foreach ($data as $dir) {
-                if (is_dir($cacheDir.'/'.$dir)) {
-                    // 指定されたキャッシュディレクトリを削除
-                    $finder = Finder::create()->in($cacheDir.'/'.$dir);
-                    $filesystem->remove($finder);
-                }
-                if ($dir == 'doctrine') {
-                    // doctrineが指定された場合は, cache driver経由で削除.
-                    $config =  $this->entityManager->getConfiguration();
-                    $this->deleteDoctrineCache($config->getMetadataCacheImpl());
-                    $this->deleteDoctrineCache($config->getQueryCacheImpl());
-                    $this->deleteDoctrineCache($config->getResultCacheImpl());
-                    $this->deleteDoctrineCache($config->getHydrationCacheImpl());
-                }
-            }
-
-            $app->addSuccess('admin.content.cache.save.complete', 'admin');
+            $this->addSuccess('admin.content.cache.save.complete', 'admin');
         }
 
         return [
             'form' => $form->createView(),
+            'result' => $result,
         ];
     }
 
-    protected function deleteDoctrineCache(\Doctrine\Common\Cache\Cache $cacheDriver)
+    /**
+     * @param KernelInterface $kernel
+     * @return mixed|string
+     */
+    protected function processCacheClearCommand(KernelInterface $kernel)
     {
-        $cacheDriver->deleteAll();
-        $cacheDriver->flushAll();
+        $console = new Application($kernel);
+        $console->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'cache:clear',
+            '--no-warmup' => null,
+            '--no-ansi' => null,
+        ));
+
+        $output = new BufferedOutput(
+            OutputInterface::VERBOSITY_DEBUG,
+            true
+        );
+
+        $console->run($input, $output);
+
+        return $output->fetch();
     }
 }

@@ -27,151 +27,87 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testRoutingAdminContentNews()
     {
-        $this->client->request('GET', $this->app->url('admin_content_news'));
+        $this->client->request('GET', $this->generateUrl('admin_content_news'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentNewsNew()
     {
-        $this->client->request('GET', $this->app->url('admin_content_news_new'));
+        $this->client->request('GET', $this->generateUrl('admin_content_news_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentNewsEdit()
     {
-        // before
-        $TestCreator = $this->findMember(2);
-        $TestNews = $this->newTestNews($TestCreator);
-        $this->insertTestNews($TestNews);
+        $Member = $this->createMember();
+        $News = $this->createNews($Member);
 
-        $test_news_id = $this->getTestNewsId($TestNews);
-
-        // main
         $this->client->request('GET',
-            $this->app->url( 'admin_content_news_edit', array('id' => $test_news_id))
+            $this->generateUrl('admin_content_news_edit', array('id' => $News->getId()))
         );
+
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        // after
-        $this->deleteTestNews($TestNews);
     }
-
 
     public function testRoutingAdminContentNewsDelete()
     {
-        // before
-        $TestCreator = $this->findMember(2);
-        $TestNews = $this->newTestNews($TestCreator);
-        $this->insertTestNews($TestNews);
+        $Member = $this->createMember();
+        $News = $this->createNews($Member);
 
-        $test_news_id = $this->getTestNewsId($TestNews);
+        $this->loginTo($Member);
 
-        // main
-        $redirectUrl = $this->app->url('admin_content_news');
+        $redirectUrl = $this->generateUrl('admin_content_news');
+
         $this->client->request('DELETE',
-            $this->app->url('admin_content_news_delete', array('id' => $test_news_id))
+            $this->generateUrl('admin_content_news_delete', array('id' => $News->getId()))
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        // after
-        $this->deleteTestNews($TestNews);
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
     public function testRoutingAdminContentNewsUp()
     {
-        // before
-        $TestCreator = $this->findMember(2);
-        $TestNews1 = $this->newTestNews($TestCreator, 1);
-        $TestNews2 = $this->newTestNews($TestCreator, 2);
-        $this->insertTestNews($TestNews1);
-        $this->insertTestNews($TestNews2);
+        $Member = $this->createMember();
+        $News1 = $this->createNews($Member, 1);
+        $News2 = $this->createNews($Member, 2);
 
-        $test_news_id = $this->getTestNewsId($TestNews1);
-
-        // main
-        $redirectUrl = $this->app->url('admin_content_news');
+        $redirectUrl = $this->generateUrl('admin_content_news');
         $this->client->request('PUT',
-            $this->app->url('admin_content_news_up', array('id' => $test_news_id))
+            $this->generateUrl('admin_content_news_up', array('id' => $News1->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->deleteTestNews($TestNews1);
-        $this->deleteTestNews($TestNews2);
     }
 
     public function testRoutingAdminContentNewsDown()
     {
-        // before
-        $TestCreator = $this->findMember(2);
-        $TestNews1 = $this->newTestNews($TestCreator, 1);
-        $TestNews2 = $this->newTestNews($TestCreator, 2);
-        $this->insertTestNews($TestNews1);
-        $this->insertTestNews($TestNews2);
+        $Member = $this->createMember();
+        $News1 = $this->createNews($Member, 1);
+        $News2 = $this->createNews($Member, 2);
 
-        $test_news_id = $this->getTestNewsId($TestNews2);
-
-        // main
-        $redirectUrl = $this->app->url('admin_content_news');
+        $redirectUrl = $this->generateUrl('admin_content_news');
         $this->client->request('PUT',
-            $this->app->url('admin_content_news_down', array('id' => $test_news_id))
+            $this->generateUrl('admin_content_news_down', array('id' => $News2->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->deleteTestNews($TestNews1);
-        $this->deleteTestNews($TestNews2);
     }
 
-    private function newTestNews($TestCreator, $sortNo = 1)
+    private function createNews($TestCreator, $sortNo = 1)
     {
         $TestNews = new \Eccube\Entity\News();
         $TestNews
             ->setPublishDate(new \DateTime())
-            ->setTitle('テストタイトル' . $sortNo)
-            ->setDescription('テスト内容' . $sortNo)
+            ->setTitle('テストタイトル'.$sortNo)
+            ->setDescription('テスト内容'.$sortNo)
             ->setUrl('http://example.com/')
             ->setSortNo(100 + $sortNo)
             ->setLinkMethod(false)
             ->setCreator($TestCreator);
 
+        $this->entityManager->persist($TestNews);
+        $this->entityManager->flush($TestNews);
+
         return $TestNews;
-    }
-
-    private function findMember($id)
-    {
-        return $this->createMember();
-    }
-
-    private function insertTestNews($TestNews)
-    {
-        $this->app['orm.em']->persist($TestNews);
-        $this->app['orm.em']->flush();
-    }
-
-    private function deleteTestNews($TestNews)
-    {
-        $this->app['orm.em']->remove($TestNews);
-        $this->app['orm.em']->flush();
-    }
-
-    private function getTestNewsId($TestNews)
-    {
-        $test_news_id = $this->app['eccube.repository.news']
-            ->findOneBy(array(
-                'title' => $TestNews->getTitle()
-            ))
-            ->getId();
-
-        return $test_news_id;
     }
 }

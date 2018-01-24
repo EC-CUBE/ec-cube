@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
 use Eccube\Application;
+use Eccube\Entity\News;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -35,25 +36,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class NewsType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    public function __construct()
+    public function __construct($eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -78,7 +70,7 @@ class NewsType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->appConfig['mtext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['mtext_len'])),
                 ),
             ))
             ->add('url', TextType::class, array(
@@ -86,7 +78,7 @@ class NewsType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
-                    new Assert\Length(array('max' => $this->appConfig['mtext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['mtext_len'])),
                 ),
             ))
             ->add('link_method', CheckboxType::class, array(
@@ -98,7 +90,7 @@ class NewsType extends AbstractType
                 'label' => '本文',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->appConfig['ltext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['ltext_len'])),
                 ),
             ));
     }
@@ -109,7 +101,7 @@ class NewsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\News',
+            'data_class' => News::class
         ));
     }
 
