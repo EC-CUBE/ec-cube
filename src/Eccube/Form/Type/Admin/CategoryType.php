@@ -42,6 +42,10 @@ class CategoryType extends AbstractType
      */
     protected $eccubeConfig;
 
+    /**
+     * CategoryType constructor.
+     * @param $eccubeConfig
+     */
     public function __construct($eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;

@@ -28,9 +28,6 @@ use Eccube\Form\Type\Admin\CustomerType;
 
 class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 

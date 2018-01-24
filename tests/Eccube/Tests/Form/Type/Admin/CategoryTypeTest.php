@@ -29,9 +29,6 @@ use Eccube\Form\Type\Admin\CategoryType;
 class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
 
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 

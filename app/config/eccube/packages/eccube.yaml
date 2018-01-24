@@ -62,3 +62,4 @@ parameters:
     product_order_price_higher: 3
     password_min_len: 8
     password_max_len: 32
+    ltext_len: 3000
