@@ -42,11 +42,10 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(ClassCategoryType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -78,7 +77,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $name = str_repeat('S', $this->eccubeConfig['stext_len']) . 'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -88,7 +87,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthValid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']);
+        $name = str_repeat('S', $this->eccubeConfig['stext_len']);
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
