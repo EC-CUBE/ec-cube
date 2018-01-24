@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Eccube\Entity\BaseInfo;
+
 class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
@@ -31,14 +33,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->container->get(BaseInfo::class);
         // 複数配送を無効に
         $BaseInfo->setOptionMultipleShipping(0);
-        $this->app['orm.em']->flush($BaseInfo);
+        $this->entityManager->flush($BaseInfo);
     }
 
     public function testRoutingAdminOrderNew()
@@ -103,7 +104,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_search_customer'),
+            $this->generateUrl('admin_order_search_customer'),
             array(
                 'search_word' => $this->Customer->getId()
             ),
@@ -124,7 +125,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_search_customer'),
+            $this->generateUrl('admin_order_search_customer'),
             array(
                 'search_word' => $this->Customer->getId()
             ),
@@ -142,7 +143,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_search_customer_by_id'),
+            $this->generateUrl('admin_order_search_customer_by_id'),
             array(
                 'id' => $this->Customer->getId()
             ),
@@ -163,7 +164,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $crawler = $this->client->request(
             'POST',
-            $this->app->url('admin_order_search_product'),
+            $this->generateUrl('admin_order_search_product'),
             array(
                 'id' => $this->Product->getId()
             ),
