@@ -27,39 +27,57 @@ use Eccube\Form\Type\Admin\LogType;
 
 class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'files' => 'site.log',
-        'line_max' => '50',
-    );
+    protected $formData;
+
+    protected $fileName;
+
+    protected $logTest;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
+        $this->fileName = '_test_site_'.date('YmdHis').'.log';
+        $this->logTest = $this->eccubeConfig['root_dir'].'/app/log/'.$this->fileName;
+
+        // Check and create the file to test if it does not exist
+        if (!file_exists($this->logTest)) {
+            file_put_contents($this->logTest, 'Lorem Ipsum is simply dummy text ...');
+        }
+
+        $this->formData = array(
+            'files' => $this->fileName,
+            'line_max' => '50',
+        );
+
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(LogType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
     }
 
-    /*
-     * テスト時にはsite.logは存在しないのでテストできない
-     *
+    public function tearDown()
+    {
+        // Delete the previously created file
+        @unlink($this->logTest);
+
+        parent::tearDown();
+    }
+
     public function testValidData()
     {
+        if(!file_exists($this->logTest)){
+            $this->markTestSkipped('テスト時には'.$this->fileName.'は存在しないのでテストできない');
+        }
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
-    }*/
+    }
 
     public function testInvalid_NonexistentFile()
     {

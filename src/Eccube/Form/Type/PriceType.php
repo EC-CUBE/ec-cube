@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Intl\Intl;
@@ -35,16 +32,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-/**
- * @FormType
- */
 class PriceType extends AbstractType
 {
     /**
      * @var array
-     * @Inject("config")
      */
     protected $appConfig;
+
+    /**
+     * PriceType constructor.
+     * @param array $eccubeConfig
+     */
+    public function __construct(array $eccubeConfig)
+    {
+        $this->appConfig = $eccubeConfig;
+    }
+
 
     /**
      * {@inheritdoc}
