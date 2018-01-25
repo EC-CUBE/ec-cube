@@ -25,23 +25,24 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\ProductStatusType;
+use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class ProductStatusTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    /** @var  ProductStatusRepository */
+    protected $productStatusRepo;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->productStatusRepo = $this->container->get(ProductStatusRepository::class);
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(ProductStatusType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -52,7 +53,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.product_status']->find(1));
+        $this->assertEquals($this->form->getData(), $this->productStatusRepo->find(1));
     }
 
     public function testViewData()
@@ -64,7 +65,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-        $query = $this->app['eccube.repository.master.product_status']->createQueryBuilder('m')
+        $query = $this->productStatusRepo->createQueryBuilder('m')
             ->orderBy('m.sort_no', 'ASC')
             ->getQuery();
         $pref = $query->getResult();

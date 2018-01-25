@@ -25,23 +25,24 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\PrefType;
+use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class PrefTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    /** @var PrefRepository */
+    protected $prefRepo;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->prefRepo = $this->container->get(PrefRepository::class);
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(PrefType::class, null)
             ->getForm();
     }
@@ -51,7 +52,7 @@ class PrefTypeTest extends AbstractTypeTestCase
         $this->form->submit(47);
         $this->assertTrue($this->form->isValid());
 
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.pref']->find(47));
+        $this->assertEquals($this->form->getData(), $this->prefRepo->find(47));
     }
 
     public function testViewData()
@@ -59,9 +60,8 @@ class PrefTypeTest extends AbstractTypeTestCase
         $view = $this->form->createView();
         $choices = $view->vars['choices'];
 
-        // empty_value
-        // FIXME
-        // $this->assertEquals($view->vars['empty_value'], 'form.pref.empty_value');
+        // placeholder
+         $this->assertEquals($view->vars['placeholder'], 'form.pref.empty_value');
 
         $data = array();
         // attrなど含まれているので
@@ -69,7 +69,7 @@ class PrefTypeTest extends AbstractTypeTestCase
             $data[] = $choice->data;
         }
 
-        $query = $this->app['eccube.repository.master.pref']->createQueryBuilder('p')
+        $query = $this->prefRepo->createQueryBuilder('p')
             ->orderBy('p.sort_no', 'ASC')
             ->getQuery();
 
@@ -78,7 +78,6 @@ class PrefTypeTest extends AbstractTypeTestCase
         // order by されているか
         $this->assertEquals($data, $pref);
     }
-
 
     /**
      * 範囲外の値のテスト
