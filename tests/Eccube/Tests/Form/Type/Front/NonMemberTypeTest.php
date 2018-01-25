@@ -27,9 +27,6 @@ use Eccube\Form\Type\Front\NonMemberType;
 
 class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
