@@ -31,8 +31,6 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public $config = array('password_min_len' => 8, 'password_max_len' => 32);
-
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'password' => array(
@@ -44,7 +42,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-
+        $this->config = $this->eccubeConfig;
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('password', RepeatedPasswordType::class, array())
@@ -82,7 +80,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LengthMin()
     {
-        $password = str_repeat('1', $this->config['password_min_len']-1);
+        $password = str_repeat('1', $this->eccubeConfig['password_min_len']-1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -93,7 +91,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LengthMax()
     {
-        $password = str_repeat('1', $this->config['password_max_len']+1);
+        $password = str_repeat('1', $this->eccubeConfig['password_max_len']+1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -104,7 +102,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_Hiragana()
     {
-        $password = str_repeat('あ', $this->config['password_max_len']);
+        $password = str_repeat('あ', $this->eccubeConfig['password_max_len']);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -117,7 +115,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     public function testValid_ZenkakuAlpha()
     {
         // これ通っていいのかな?
-        $password = str_repeat('Ａ', $this->config['password_max_len']);
+        $password = str_repeat('Ａ', $this->eccubeConfig['password_max_len']);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -129,7 +127,7 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalid_SpaceOnly()
     {
-        $password = str_repeat(' ', $this->config['password_max_len']);
+        $password = str_repeat(' ', $this->eccubeConfig['password_max_len']);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;

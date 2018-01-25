@@ -24,16 +24,16 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Eccube\Form\Type\Admin\ClassNameType;
+use Eccube\Form\Type\Admin\ClassCategoryType;
 
-class ClassNameTypeTest extends AbstractTypeTestCase
+class ClassCategoryTypeTest extends AbstractTypeTestCase
 {
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'name' => '形状'
+        'name' => '立方体'
     );
 
     public function setUp()
@@ -42,7 +42,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
-            ->createBuilder(ClassNameType::class, null, array(
+            ->createBuilder(ClassCategoryType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

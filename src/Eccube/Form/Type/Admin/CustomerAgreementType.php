@@ -32,10 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerAgreementType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

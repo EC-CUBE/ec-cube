@@ -28,6 +28,9 @@ use Eccube\Form\Type\Admin\CustomerAgreementType;
 
 class CustomerAgreementTypeTest extends AbstractTypeTestCase
 {
+    /** @var \Symfony\Component\Form\FormInterface */
+    protected $form;
+
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'customer_agreement' => '第1条 (会員) 1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。

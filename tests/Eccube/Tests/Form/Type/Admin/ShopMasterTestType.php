@@ -128,8 +128,7 @@ class ShopMasterTypeTest extends AbstractTypeTestCase
 
     public function testInValidDeliveryFreeAmount_OverMaxLength()
     {
-        $this->markTestIncomplete('delivery_free_amount does not implement assert length constraints yet');
-        $this->formData['delivery_free_amount'] = '123456789'; //Max 8
+        $this->formData['delivery_free_amount'] = '12345678900';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

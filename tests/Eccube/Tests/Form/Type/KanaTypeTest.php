@@ -28,9 +28,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class KanaTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
