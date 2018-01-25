@@ -5,6 +5,7 @@ namespace Eccube\DependencyInjection\Compiler;
 use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Form\AbstractTypeExtension;
 
 /**
@@ -21,41 +22,39 @@ class AutoConfigurationTagPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $this->configureDoctrineEventSubscriberTag($container);
-        $this->configureFormTypeExtensionTag($container);
-    }
-
-    protected function configureDoctrineEventSubscriberTag(ContainerBuilder $container)
-    {
         foreach ($container->getDefinitions() as $definition) {
-            $class = $definition->getClass();
-            if (!is_subclass_of($class, EventSubscriber::class)) {
-                continue;
-            }
-            if ($definition->hasTag('doctrine.event_subscriber')) {
-                continue;
-            }
-
-            $definition->addTag('doctrine.event_subscriber');
+            $this->configureDoctrineEventSubscriberTag($definition);
+            $this->configureFormTypeExtensionTag($definition);
         }
     }
 
-    protected function configureFormTypeExtensionTag(ContainerBuilder $container)
+    protected function configureDoctrineEventSubscriberTag(Definition $definition)
     {
-        foreach ($container->getDefinitions() as $definition) {
-            $class = $definition->getClass();
-            if (!is_subclass_of($class, AbstractTypeExtension::class)) {
-                continue;
-            }
-            if ($definition->hasTag('form.type_extension')) {
-                continue;
-            }
-
-            $ref = new \ReflectionClass($class);
-            $instance = $ref->newInstanceWithoutConstructor();
-            $type = $instance->getExtendedType();
-
-            $definition->addTag('form.type_extension', ['extended_type' => $type]);
+        $class = $definition->getClass();
+        if (!is_subclass_of($class, EventSubscriber::class)) {
+            return;
         }
+        if ($definition->hasTag('doctrine.event_subscriber')) {
+            return;
+        }
+
+        $definition->addTag('doctrine.event_subscriber');
+    }
+
+    protected function configureFormTypeExtensionTag(Definition $definition)
+    {
+        $class = $definition->getClass();
+        if (!is_subclass_of($class, AbstractTypeExtension::class)) {
+            return;
+        }
+        if ($definition->hasTag('form.type_extension')) {
+            return;
+        }
+
+        $ref = new \ReflectionClass($class);
+        $instance = $ref->newInstanceWithoutConstructor();
+        $type = $instance->getExtendedType();
+
+        $definition->addTag('form.type_extension', ['extended_type' => $type]);
     }
 }
