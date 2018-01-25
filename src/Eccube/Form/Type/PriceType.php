@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Intl\Intl;
@@ -33,40 +32,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-/**
- * Class PriceType
- * @package Eccube\Form\Type
- */
 class PriceType extends AbstractType
 {
     /**
      * @var array
      */
-    protected $appConfig;
-
-    /** @var  ContainerInterface */
-    protected $container;
+    protected $eccubeConfig;
 
     /**
      * PriceType constructor.
+     *
      * @param array $eccubeConfig
-     * @param ContainerInterface $container
      */
-    public function __construct(array $eccubeConfig, ContainerInterface $container)
+    public function __construct(array $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
-        $this->container = $container;
+        $this->eccubeConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $currency = $this->container->getParameter('currency_code');
+        $currency = $this->eccubeConfig['currency_code'];
         $scale = Intl::getCurrencyBundle()->getFractionDigits($currency);
-        $max = $this->appConfig['price_max'];
+        $max = $this->eccubeConfig['price_max'];
         $min = -$max;
 
         $constraints = function (Options $options) use ($max, $min) {

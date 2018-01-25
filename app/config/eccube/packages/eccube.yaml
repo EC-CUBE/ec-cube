@@ -29,7 +29,6 @@ parameters:
     plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     price_len: 8                                                    # 最大値で制御したい
-    price_max: 2147483647
     search_pmax: 10
     stext_len: 255
     sltext_len: 500
@@ -61,7 +60,14 @@ parameters:
     product_order_price_lower: 1
     product_order_newer: 2
     product_order_price_higher: 3
-    root_dir: '%kernel.project_dir%'
+    price_max: 2147483647
+    currency_code: '%currency_code%'
     password_min_len: 8
     password_max_len: 32
+    tel_len: 5
+    tel_len_min: 1
+    zip01_len: 3
+    zip02_len: 4
+    max_length: 320
+    root_dir: '%kernel.project_dir%'
     ltext_len: 3000

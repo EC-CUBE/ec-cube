@@ -28,7 +28,9 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class NameTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
     protected $maxLength = 50;
@@ -41,6 +43,9 @@ class NameTypeTest extends AbstractTypeTestCase
         ),
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
