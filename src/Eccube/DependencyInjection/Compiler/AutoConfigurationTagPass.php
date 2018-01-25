@@ -27,8 +27,17 @@ class AutoConfigurationTagPass implements CompilerPassInterface
 
     protected function configureDoctrineEventSubscriberTag(ContainerBuilder $container)
     {
-        $container->registerForAutoconfiguration(EventSubscriber::class)
-            ->addTag('doctrine.event_subscriber');
+        foreach ($container->getDefinitions() as $definition) {
+            $class = $definition->getClass();
+            if (!is_subclass_of($class, EventSubscriber::class)) {
+                continue;
+            }
+            if ($definition->hasTag('doctrine.event_subscriber')) {
+                continue;
+            }
+
+            $definition->addTag('doctrine.event_subscriber');
+        }
     }
 
     protected function configureFormTypeExtensionTag(ContainerBuilder $container)
