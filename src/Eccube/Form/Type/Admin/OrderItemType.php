@@ -72,7 +72,7 @@ class OrderItemType extends AbstractType
     /**
      * OrderItemType constructor.
      * @param EntityManagerInterface $entityManager
-     * @param array $appConfig
+     * @param array $eccubeConfig
      * @param ProductClassRepository $productClassRepository
      * @param OrderItemRepository $orderItemRepository
      * @param RequestStack $requestStack

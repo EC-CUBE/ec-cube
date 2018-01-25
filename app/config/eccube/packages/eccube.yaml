@@ -69,3 +69,5 @@ parameters:
     zip01_len: 3
     zip02_len: 4
     max_length: 320
+    root_dir: '%kernel.project_dir%'
+    ltext_len: 3000
