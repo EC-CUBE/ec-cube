@@ -31,8 +31,6 @@ class TelTypeTest extends AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public $config = array('tel_len' => 5, 'tel_len_min' => 1);
-
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'tel' => array(

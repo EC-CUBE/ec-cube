@@ -31,8 +31,6 @@ class ZipTypeTest extends AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public $config = array('zip01_len' => 3, 'zip02_len' => 4);
-
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'zip' => array(
@@ -59,7 +57,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip01_LengthMin()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']-1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['zip01_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -67,7 +65,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip01_LengthMax()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']+1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['zip01_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -75,7 +73,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip02_LengthMin()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']-1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['zip02_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -83,7 +81,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip02_LengthMax()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']+1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['zip02_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());

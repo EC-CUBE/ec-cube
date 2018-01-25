@@ -34,11 +34,6 @@ class PriceTypeTest extends AbstractTypeTestCase
     protected $form;
 
     /**
-     * @var array
-     */
-    public $config = ['price_len' => 8];
-
-    /**
      * getValidTestData
      *
      * 正常系のデータパターンを返す
@@ -75,7 +70,7 @@ class PriceTypeTest extends AbstractTypeTestCase
 
     public function testValidData_PriceLen()
     {
-        $this->form->submit(str_repeat('1', $this->config['price_len']));
+        $this->form->submit(str_repeat('1', $this->eccubeConfig['price_len']));
         $this->assertTrue($this->form->isValid());
     }
 

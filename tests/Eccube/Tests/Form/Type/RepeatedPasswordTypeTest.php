@@ -42,7 +42,6 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->config = $this->eccubeConfig;
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('password', RepeatedPasswordType::class, array())
