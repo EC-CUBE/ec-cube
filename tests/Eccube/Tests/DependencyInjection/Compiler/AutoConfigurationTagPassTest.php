@@ -7,7 +7,6 @@ use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class AutoConfigurationTagPassTest extends TestCase
