@@ -36,19 +36,19 @@ class Kernel extends BaseKernel
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
     protected $app;
 
-    public function getCacheDir(): string
+    public function getCacheDir()
     {
-        return dirname(__DIR__).'/../var/cache/'.$this->environment;
+        return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
-    public function getLogDir(): string
+    public function getLogDir()
     {
-        return dirname(__DIR__).'/../var/log';
+        return $this->getProjectDir().'/var/log';
     }
 
     public function registerBundles()
     {
-        $contents = require dirname(__DIR__).'/../app/config/eccube/bundles.php';
+        $contents = require $this->getProjectDir().'/app/config/eccube/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
@@ -82,7 +82,7 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
-        $confDir = dirname(__DIR__).'/../app/config/eccube';
+        $confDir = $this->getProjectDir().'/app/config/eccube';
         $loader->load($confDir.'/packages/*'.self::CONFIG_EXTS, 'glob');
         if (is_dir($confDir.'/packages/'.$this->environment)) {
             $loader->load($confDir.'/packages/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
@@ -102,7 +102,7 @@ class Kernel extends BaseKernel
         $scheme = $container->getParameter('eccube.scheme');
         $routes->setSchemes($scheme);
 
-        $confDir = dirname(__DIR__).'/../app/config/eccube';
+        $confDir = $this->getProjectDir().'/app/config/eccube';
         if (is_dir($confDir.'/routes/')) {
             $builder = $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
             $builder->setSchemes($scheme);
@@ -117,7 +117,7 @@ class Kernel extends BaseKernel
         // 有効なプラグインのルーティングをインポートする.
         if ($container->hasParameter('eccube.plugins.enabled')) {
             $plugins = $container->getParameter('eccube.plugins.enabled');
-            $pluginDir = dirname(__DIR__).'/../app/Plugin';
+            $pluginDir = $this->getProjectDir().'/app/Plugin';
             foreach ($plugins as $plugin) {
                 $dir = $pluginDir.'/'.$plugin['code'].'/Controller';
                 if (file_exists($dir)) {

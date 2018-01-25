@@ -1,38 +1,58 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Eccube\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__.'/vendor/autoload.php';
+// システム要件チェック
+if (version_compare(PHP_VERSION, '7.0.8') < 0) {
+    die('Your PHP installation is too old. EC-CUBE requires at least PHP 7.0.8. See the <a href="http://www.ec-cube.net/product/system.php" target="_blank">system requirements</a> page for more information.');
+}
+
+$autoload = __DIR__.'/vendor/autoload.php';
+
+if (!file_exists($autoload) && !is_readable($autoload)) {
+    die('Composer is not installed.');
+}
+require $autoload;
+
+ini_set('display_errors', 'Off');
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
 // The check is to ensure we don't use .env in production
 if (!isset($_SERVER['APP_ENV'])) {
-    (new Dotenv())->load(__DIR__.'/.env');
+    if (!class_exists(Dotenv::class)) {
+        throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
+    }
+
+    $envFile = __DIR__.'/.env';
+    if (!file_exists($envFile) && !is_readable($envFile)) {
+        die('.env file does not exist.');
+    }
+    (new Dotenv())->load($envFile);
 }
 
-if ($_SERVER['APP_DEBUG'] ?? false) {
-    // WARNING: You should setup permissions the proper way!
-    // REMOVE the following PHP line and read
-    // https://symfony.com/doc/current/book/installation.html#checking-symfony-application-configuration-and-setup
+$env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
+$debug = isset($_SERVER['APP_DEBUG']) ? $_SERVER['APP_DEBUG'] : ('prod' !== $env);
+
+if ($debug) {
     umask(0000);
 
     Debug::enable();
 }
 
-// Request::setTrustedProxies(['0.0.0.0/0'], Request::HEADER_FORWARDED);
+$trustedProxies = isset($_SERVER['TRUSTED_PROXIES']) ? $_SERVER['TRUSTED_PROXIES'] : false;
+if ($trustedProxies) {
+    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+}
 
-$kernel = new Kernel($_SERVER['APP_ENV'] ?? 'dev', $_SERVER['APP_DEBUG'] ?? false);
+$trustedHosts = isset($_SERVER['TRUSTED_HOSTS']) ? $_SERVER['TRUSTED_HOSTS'] : false;
+if ($trustedHosts) {
+    Request::setTrustedHosts(explode(',', $trustedHosts));
+}
+
+$kernel = new Kernel($env, $debug);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
