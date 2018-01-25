@@ -24,16 +24,10 @@
 
 namespace Eccube\Form\Type\Install;
 
-use Eccube\Annotation\FormType;
 use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-/**
- * @FormType()
- */
 class Step5Type extends AbstractType
 {
     /**
@@ -42,10 +36,10 @@ class Step5Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('no_update', CheckboxType::class, array(
+            ->add('no_update', CheckboxType::class, [
                 'label' => 'データベースの初期化を行わない',
                 'required' => false,
-            ))
+            ])
         ;
 
     }
