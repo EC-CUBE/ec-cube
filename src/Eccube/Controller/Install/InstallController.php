@@ -514,6 +514,10 @@ class InstallController extends AbstractController
      */
     public function createDatabaseUrl(array $params)
     {
+        if (!isset($params['database'])) {
+            return null;
+        }
+
         $url = '';
         switch ($params['database']) {
             case 'pdo_sqlite':
