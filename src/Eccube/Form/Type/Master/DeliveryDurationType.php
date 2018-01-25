@@ -24,13 +24,13 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @FormType
+ * Class DeliveryDurationType
+ * @package Eccube\Form\Type\Master
  */
 class DeliveryDurationType extends AbstractType
 {
