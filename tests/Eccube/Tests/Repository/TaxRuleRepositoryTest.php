@@ -5,6 +5,11 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\BaseInfo;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Repository\MemberRepository;
+use Eccube\Repository\Master\PrefRepository;
+use Eccube\Repository\Master\CountryRepository;
 
 /**
  * TaxRuleRepository test cases.
@@ -13,54 +18,115 @@ use Eccube\Tests\EccubeTestCase;
  */
 class TaxRuleRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var \DateTime
+     */
+    protected $DateTimeNow;
 
-    protected $BaseInfo;
+    /**
+     * @var \Eccube\Entity\Product
+     */
     protected $Product;
-    protected $TaxRule2;
-    protected $TaxRule3;
-    
-    private $DateTimeNow = null;
 
+    /**
+     * @var TaxRule
+     */
+    protected $TaxRule1;
+
+    /**
+     * @var TaxRule
+     */
+    protected $TaxRule2;
+
+    /**
+     * @var TaxRule
+     */
+    protected $TaxRule3;
+
+    /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @var PrefRepository
+     */
+    protected $prefRepository;
+
+    /**
+     * @var CountryRepository
+     */
+    protected $countryRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         $this->DateTimeNow = new \DateTime('+1 minutes');
+
         parent::setUp();
-        $this->BaseInfo = $this->app['eccube.repository.base_info']->get();
+
+        $this->BaseInfo = $this->container->get(BaseInfo::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->memberRepository = $this->container->get(MemberRepository::class);
+        $this->prefRepository = $this->container->get(PrefRepository::class);
+        $this->countryRepository = $this->container->get(CountryRepository::class);
+
         $this->BaseInfo->setOptionProductTaxRule(0);
         $this->Product = $this->createProduct('生活必需品');
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する
         $ApplyDate = new \DateTime('+1 years');
-        $this->TaxRule1 = $this->app['eccube.repository.tax_rule']->find(1);
+        $this->TaxRule1 = $this->taxRuleRepository->find(1);
         $this->TaxRule1->setApplyDate($this->DateTimeNow);
         $this->TaxRule2 = $this->createTaxRule(10, $ApplyDate);
         $this->TaxRule3 = $this->createTaxRule(8, $ApplyDate);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
-    
 
+    /**
+     * Create TaxRule entity
+     *
+     * @param int $tax_rate
+     * @param null $apply_date
+     *
+     * @return TaxRule
+     */
     public function createTaxRule($tax_rate = 8, $apply_date = null)
     {
         $TaxRule = new TaxRule();
-        $RoundingType = $this->app['orm.em']->find(RoundingType::class, 1);
-        $Member = $this->app['eccube.repository.member']->find(2);
+        $RoundingType = $this->entityManager->find(RoundingType::class, 1);
+        $Member = $this->memberRepository->find(2);
         if (is_null($apply_date)) {
             $apply_date = $this->DateTimeNow;
         }
-        $TaxRule
-            ->setTaxRate($tax_rate)
+        $TaxRule->setTaxRate($tax_rate)
             ->setApplyDate($apply_date)
             ->setRoundingType($RoundingType)
             ->setTaxAdjust(0)
             ->setCreator($Member);
-        $this->app['orm.em']->persist($TaxRule);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($TaxRule);
+        $this->entityManager->flush();
+
         return $TaxRule;
     }
 
+    /**
+     * @deprecated
+     */
     public function testGetById()
     {
-        $Result = $this->app['eccube.repository.tax_rule']->getById(1);
+        $Result = $this->taxRuleRepository->getById(1);
 
         $this->expected = 1;
         $this->actual = $Result->getId();
@@ -71,10 +137,10 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $this->TaxRule2
             ->setProduct($this->Product);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 商品別税率以外を取得
-        $TaxRules = $this->app['eccube.repository.tax_rule']->getList();
+        $TaxRules = $this->taxRuleRepository->getList();
 
         $this->expected = 2;
         $this->actual = count($TaxRules);
@@ -83,8 +149,8 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testDelete()
     {
-        $this->app['eccube.repository.tax_rule']->delete($this->TaxRule2);
-        $Results = $this->app['eccube.repository.tax_rule']->findAll();
+        $this->taxRuleRepository->delete($this->TaxRule2);
+        $Results = $this->taxRuleRepository->findAll();
 
         $this->expected = 2;
         $this->actual = count($Results);
@@ -93,9 +159,9 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testDeleteWithId()
     {
-        $this->app['eccube.repository.tax_rule']->delete($this->TaxRule2->getId());
+        $this->taxRuleRepository->delete($this->TaxRule2->getId());
 
-        $Results = $this->app['eccube.repository.tax_rule']->findAll();
+        $Results = $this->taxRuleRepository->findAll();
 
         $this->expected = 2;
         $this->actual = count($Results);
@@ -105,7 +171,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testGetByRule()
     {
         // デフォルトルールを取得(キャッシュから取得)
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
+        $TaxRule = $this->taxRuleRepository->getByRule();
 
         $this->expected = 1;
         $this->actual = $TaxRule->getId();
@@ -117,10 +183,10 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $this->TaxRule1->setApplyDate(new \DateTime('+5 days'));
         $this->TaxRule2->setApplyDate(new \DateTime('-1 days'));
         $this->TaxRule3->setApplyDate(new \DateTime('-2 days'));
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
+        $this->taxRuleRepository->clearCache();
+        $TaxRule = $this->taxRuleRepository->getByRule();
 
         // TaxRule1 は無視され, TaxRule2 が適用される
         $this->expected = $this->TaxRule2->getId();
@@ -130,22 +196,17 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithPref()
     {
-        $Pref = $this->app['eccube.repository.master.pref']->find(26);
+        $Pref = $this->prefRepository->find(26);
         $oneDayBefore = new \DateTime('-1 days');
         
         $this->TaxRule2->setApplyDate($oneDayBefore);
         $this->TaxRule3
             ->setApplyDate($oneDayBefore)
             ->setPref($Pref);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(
-            null,               // Product
-            null,               // ProductClass
-            $Pref,              // Pref
-            null                // Country
-        );
+        $this->taxRuleRepository->clearCache();
+        $TaxRule = $this->taxRuleRepository->getByRule(null, null, $Pref, null);
 
         $this->expected = $this->TaxRule3->getId();
         $this->actual = $TaxRule->getId();
@@ -154,24 +215,16 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithCountry()
     {
-        $Country = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\Country')->find(300);
+        $Country = $this->countryRepository->find(300);
         $oneDayBefore = new \DateTime('-1 days');
         
-        $this->TaxRule2
-            ->setApplyDate($oneDayBefore)
-            ->setCountry($Country);
-        $this->TaxRule3
-            ->setApplyDate($oneDayBefore);
+        $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);
+        $this->TaxRule3->setApplyDate($oneDayBefore);
 
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(
-            null,               // Product
-            null,               // ProductClass
-            null,               // Pref
-            $Country            // Country
-        );
+        $this->taxRuleRepository->clearCache();
+        $TaxRule = $this->taxRuleRepository->getByRule(null, null, null, $Country);
 
         $this->expected = $this->TaxRule2->getId();
         $this->actual = $TaxRule->getId();
@@ -181,24 +234,16 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testGetByRuleWithProduct()
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
-        $this->TaxRule2
-            ->setApplyDate($oneDayBefore)
-            ->setProduct($this->Product);
-        $this->TaxRule3
-            ->setApplyDate($oneDayBefore);
+        $this->TaxRule2->setApplyDate($oneDayBefore)->setProduct($this->Product);
+        $this->TaxRule3->setApplyDate($oneDayBefore);
 
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(
-            $this->Product,     // Product
-            null,               // ProductClass
-            null,               // Pref
-            null                // Country
-        );
+        $this->taxRuleRepository->clearCache();
+        $TaxRule = $this->taxRuleRepository->getByRule($this->Product, null, null, null);
 
         $this->expected = $this->TaxRule2->getId();
         $this->actual = $TaxRule->getId();
@@ -208,26 +253,18 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testGetByRuleWithProductClass()
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
         $ProductClasses = $this->Product->getProductClasses();
         $ProductClass = $ProductClasses[1];
-        $this->TaxRule2
-            ->setApplyDate($oneDayBefore)
-            ->setProductClass($ProductClass);
-        $this->TaxRule3
-            ->setApplyDate($oneDayBefore);
+        $this->TaxRule2->setApplyDate($oneDayBefore)->setProductClass($ProductClass);
+        $this->TaxRule3->setApplyDate($oneDayBefore);
 
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(
-            null,               // Product
-            $ProductClass,      // ProductClass
-            null,               // Pref
-            null                // Country
-        );
+        $this->taxRuleRepository->clearCache();
+        $TaxRule = $this->taxRuleRepository->getByRule(null, $ProductClass, null, null);
 
         $this->expected = $this->TaxRule2->getId();
         $this->actual = $TaxRule->getId();
@@ -237,29 +274,20 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testGetByRuleWithMulti()
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
-        $Country = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\Country')->find(300);
+        $Country = $this->countryRepository->find(300);
 
         // 国別設定
-        $this->TaxRule2
-            ->setApplyDate($oneDayBefore)
-            ->setCountry($Country);
+        $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);
         // 商品別設定
-        $this->TaxRule3
-            ->setApplyDate($oneDayBefore)
-            ->setProduct($this->Product);
+        $this->TaxRule3->setApplyDate($oneDayBefore)->setProduct($this->Product);
 
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(
-            $this->Product,     // Product
-            null,               // ProductClass
-            null,               // Pref
-            $Country            // Country
-        );
+        $this->taxRuleRepository->clearCache();
+        $TaxRule = $this->taxRuleRepository->getByRule($this->Product, null, null, $Country);
 
         // 国別設定の方が優先される
         $this->expected = $this->TaxRule2->getId();
@@ -275,18 +303,18 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testOrderItem()
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
         $fiveDaysBefore = new \DateTime('-5 days');
 
         $this->TaxRule1->setApplyDate($fiveDaysBefore);
         $this->TaxRule2->setApplyDate($fiveDaysBefore);
         $this->TaxRule3->setApplyDate(new \DateTime('-2 days'));
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $this->app['eccube.repository.tax_rule']->clearCache();
+        $this->taxRuleRepository->clearCache();
         $Shippings = $Order->getShippings();
 
         foreach ($Shippings as $Shipping) {
