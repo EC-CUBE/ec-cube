@@ -9,12 +9,6 @@ use Symfony\Component\HttpKernel\Client;
  */
 class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     /**
      * @var string
      */
@@ -25,7 +19,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
      */
     public function testAdminNonStockRedirect()
     {
-        $this->client->request('POST', $this->app->url('admin_homepage_nonstock'));
+        $this->client->request('POST', $this->generateUrl('admin_homepage_nonstock'));
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
 
@@ -36,7 +30,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
     {
         /* @var Client $client */
         $client = $this->client;
-        $crawler = $client->request('GET', $this->app->url('admin_homepage'));
+        $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->assertContains('在庫切れ商品', $crawler->filter($this->target)->html());
@@ -49,9 +43,11 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
      */
     public function testAdminNonStockWithSearch()
     {
+        $this->markTestIncomplete('Function not implement');
+
         /* @var Client $client */
         $client = $this->client;
-        $crawler = $client->request('GET', $this->app->url('admin_homepage'));
+        $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->assertContains('在庫切れ商品', $crawler->filter($this->target)->html());
@@ -59,7 +55,8 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $section = trim($crawler->filter($this->target.' .shop-stock-detail .item_number')->text());
         $this->expected = $showNumber = preg_replace('/\D/', '', $section);
 
-        $client->request('POST', $this->app->url('admin_homepage_nonstock'), array('admin_search_product' => array('_token' => 'dummy')));
+        $client->request('POST', $this->generateUrl('admin_homepage_nonstock'),
+                array('admin_search_product' => array('_token' =>  'dummy')));
 
         $crawler = $client->followRedirect();
         $this->actual = $crawler->filter('.tableish .item_box')->count();
