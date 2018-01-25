@@ -55,7 +55,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
             $instance = $ref->newInstanceWithoutConstructor();
             $type = $instance->getExtendedType();
 
-            $definition->addTag('fform.type_extension', ['extended_type' => $type]);
+            $definition->addTag('form.type_extension', ['extended_type' => $type]);
         }
     }
 }
