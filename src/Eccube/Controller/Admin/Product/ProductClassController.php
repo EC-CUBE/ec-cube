@@ -29,6 +29,7 @@ use Doctrine\Common\Collections\Collection;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
@@ -47,6 +48,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -397,7 +399,7 @@ class ProductClassController extends AbstractController
                                 $addProductClasses[] = $ProductClass;
                             } else {
                                 // 対象行のエラー
-                                return $this->renderProClass($Product, $ProductClass, true, $form);
+                                return $this->renderError($Product, $ProductClass, true, $form);
                             }
                         }
                         $tmpProductClass = $ProductClass;
@@ -407,7 +409,7 @@ class ProductClassController extends AbstractController
                         // 対象がなければエラー
                         log_info('商品規格が未選択', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
-                        return $this->renderProClass($Product, $tmpProductClass, true, $form, $error);
+                        return $this->renderError($Product, $tmpProductClass, true, $form, $error);
                     }
 
                     // 選択された商品規格を登録
@@ -458,7 +460,7 @@ class ProductClassController extends AbstractController
                             if ($formData->isValid()) {
                                 $checkProductClasses[] = $ProductClass;
                             } else {
-                                return $this->renderProClass($Product, $ProductClass, false, $form);
+                                return $this->renderError($Product, $ProductClass, false, $form);
                             }
                         } else {
                             // 削除対象の行
@@ -471,7 +473,7 @@ class ProductClassController extends AbstractController
                         // 対象がなければエラー
                         log_info('商品規格が存在しません', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
-                        return $this->renderProClass($Product, $tempProductClass, false, $form, $error);
+                        return $this->renderError($Product, $tempProductClass, false, $form, $error);
                     }
 
 
@@ -592,14 +594,14 @@ class ProductClassController extends AbstractController
     /**
      * 登録、更新時のエラー画面表示
      *
-     * @param string $Product
-     * @param array $ProductClass
+     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\ProductClass $ProductClass
      * @param \Symfony\Component\HttpFoundation\Response $not_product_class
-     * @param $classForm
-     * @param null $error
+     * @param FormInterface $classForm
+     * @param array $error
      * @return array
      */
-    protected function renderProClass($Product, $ProductClass, $not_product_class, $classForm, $error = null)
+    protected function renderError($Product, $ProductClass, $not_product_class, $classForm, $error = null)
     {
 
         $ClassName1 = null;
@@ -694,7 +696,7 @@ class ProductClassController extends AbstractController
      */
     private function newProductClass()
     {
-        $SaleType = $this->saleTypeRepository->find($this->eccubeConfig['sale_type_normal']);
+        $SaleType = $this->saleTypeRepository->find(SaleType::SALE_TYPE_NORMAL);
 
         $ProductClass = new ProductClass();
         $ProductClass->setSaleType($SaleType);

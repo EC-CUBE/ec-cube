@@ -59,25 +59,20 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        try {
-            $globals = $this->twig->getGlobals();
-            if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
-                $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
-            }
-
-            if (!$event->isMasterRequest()) {
-                return;
-            }
-
-            if ($this->requestContext->isAdmin()) {
-                $this->setAdminGlobals($event);
-            } else {
-                $this->setFrontVaribales($event);
-            }
-        } catch (\LogicException $e) {
-            // TODO: FIXME should handle exception on \Twig_Environment::addGlobal
+        $globals = $this->twig->getGlobals();
+        if (array_key_exists('BaseInfo', $globals) && $globals['BaseInfo'] === null) {
+            $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
         }
 
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        if ($this->requestContext->isAdmin()) {
+            $this->setAdminGlobals($event);
+        } else {
+            $this->setFrontVaribales($event);
+        }
     }
 
     /**
