@@ -24,15 +24,13 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityRepository;
-use Eccube\Annotation\FormType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @FormType
+ * Class PrefType
+ * @package Eccube\Form\Type\Master
  */
 class PrefType extends AbstractType
 {

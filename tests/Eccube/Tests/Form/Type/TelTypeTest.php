@@ -28,9 +28,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class TelTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -145,10 +142,9 @@ class TelTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, ['csrf_protection' => false])
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('tel', TelType::class, array(
                 'required' => false,
             ))
@@ -243,7 +239,7 @@ class TelTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel()
     {
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+        $this->form = $this->formFactory->createBuilder(FormType::class)
             ->add('tel', TelType::class, array(
                 'required' => true,
             ))
@@ -256,24 +252,4 @@ class TelTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-
-    // public function createApplication()
-    // {
-    //     $app = new \Silex\Application();
-    //     $app->register(new \Silex\Provider\FormServiceProvider());
-    //     // $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-    //     $app['eccube.service.plugin'] = function () use ($app) {
-    //         return new \Eccube\Service\PluginService($app);
-    //     };
-
-    //     // fix php5.3
-    //     $self = $this;
-    //     $app->extend('form.types', function ($types) use ($app, $self) {
-    //         $types[] = new \Eccube\Form\Type\TelType($self->config);
-
-    //         return $types;
-    //     });
-
-    //     return $app;
-    // }
 }
