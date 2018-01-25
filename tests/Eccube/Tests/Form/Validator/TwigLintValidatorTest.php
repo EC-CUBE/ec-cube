@@ -2,33 +2,25 @@
 
 namespace Eccube\Tests\Form\Validator;
 
-use Eccube\Application;
 use Eccube\Form\Validator\TwigLint;
-use Eccube\ServiceProvider\TwigLintServiceProvider;
-use PHPUnit\Framework\TestCase;
-use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\ValidatorServiceProvider;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class TwigLintValidatorTest extends TestCase
+class TwigLintValidatorTest extends AbstractTypeTestCase
 {
-    /** @var Application */
-    protected $app;
+    /** @var ValidatorInterface */
+    protected $validator;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        $app = new \Silex\Application();
-        $app->register(new TwigServiceProvider());
-        $app->register(new ValidatorServiceProvider());
-        $app->register(new TwigLintServiceProvider());
-
-        $this->app = $app;
+        parent::setUp();
+        $this->validator = $this->container->get('validator');
     }
 
     public function testValidTemplate()
     {
         $constraint = new TwigLint();
-        $validator = $this->app['validator'];
+        $validator = $this->validator;
 
         $value = '';
         $errors = $validator->validate($value, $constraint);
@@ -58,7 +50,7 @@ class TwigLintValidatorTest extends TestCase
     public function testInValidTemplate()
     {
         $constraint = new TwigLint();
-        $validator = $this->app['validator'];
+        $validator = $this->validator;
 
         $value = '{{ var }';
         $errors = $validator->validate($value, $constraint);
