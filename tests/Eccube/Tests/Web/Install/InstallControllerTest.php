@@ -102,7 +102,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testComplete()
     {
-        $this->session->set('eccube.session.install', ['ECCUBE_AUTH_MAGIC' => 'secret']);
+        $this->session->set('eccube.session.install', ['authmagic' => 'secret']);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
@@ -157,6 +157,217 @@ class InstallControllerTest extends AbstractWebTestCase
         ];
         $this->expected = 'mysql://root:password@localhost:3306/cube4_dev';
         $this->actual = $this->controller->createDatabaseUrl($params);
+        $this->verify();
+    }
+
+    public function testExtractDatabaseUrl()
+    {
+        $url = 'sqlite:///foo/bar/eccube.db';
+        $this->expected = [
+            'database' => 'pdo_sqlite',
+            'database_name' => '/foo/bar/eccube.db'
+        ];
+        $this->actual = $this->controller->extractDatabaseUrl($url);
+        $this->verify();
+
+        $url = 'mysql://root:password@localhost:3306/cube4_dev';
+        $this->actual = $this->controller->extractDatabaseUrl($url);
+        $this->expected = [
+            'database' => 'pdo_mysql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => '3306',
+            'database_user' => 'root',
+            'database_password' => 'password'
+        ];
+        $this->verify();
+
+        $url = 'mysql://root:password@localhost/cube4_dev';
+        $this->actual = $this->controller->extractDatabaseUrl($url);
+        $this->expected = [
+            'database' => 'pdo_mysql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => null,
+            'database_user' => 'root',
+            'database_password' => 'password'
+        ];
+        $this->verify();
+
+        $url = 'mysql://root@localhost/cube4_dev';
+        $this->actual = $this->controller->extractDatabaseUrl($url);
+        $this->expected = [
+            'database' => 'pdo_mysql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => null,
+            'database_user' => 'root',
+            'database_password' => null
+        ];
+        $this->verify();
+
+        $url = 'pgsql://localhost/cube4_dev';
+        $this->actual = $this->controller->extractDatabaseUrl($url);
+        $this->expected = [
+            'database' => 'pdo_pgsql',
+            'database_name' => 'cube4_dev',
+            'database_host' => 'localhost',
+            'database_port' => null,
+            'database_user' => null,
+            'database_password' => null
+        ];
+        $this->verify();
+    }
+
+    public function testCreateMailerUrl()
+    {
+        $params = [
+            'smtp_host' => 'localhost'
+        ];
+        $this->expected = 'smtp://localhost';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587
+        ];
+        $this->expected = 'smtp://localhost:587';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'smtp_user' => 'username',
+            'smtp_password' => 'password'
+        ];
+        $this->expected = 'smtp://username:password@localhost:587?auth_mode=plain';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'smtp_user' => 'username',
+            'smtp_password' => 'password',
+            'auth_mode' => 'login'
+        ];
+        $this->expected = 'smtp://username:password@localhost:587?auth_mode=login';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'smtp_port' => 465,
+            'smtp_user' => 'username',
+            'smtp_password' => 'password',
+            'auth_mode' => 'login',
+            'encryption' => 'ssl'
+        ];
+        $this->expected = 'smtp://username:password@localhost:465?auth_mode=login&encryption=ssl';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+
+        $params = [
+            'smtp_host' => 'localhost',
+            'encryption' => 'ssl'
+        ];
+        $this->expected = 'smtp://localhost:465?encryption=ssl';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+
+        $params = [
+            'transport' => 'gmail',
+            'smtp_host' => 'smtp.gmail.com',
+            'encryption' => 'ssl',
+            'auth_mode' => 'login',
+            'smtp_user' => 'username@gmail.com',
+            'smtp_password' => 'password'
+        ];
+        $this->expected = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
+        $this->actual = $this->controller->createMailerUrl($params);
+        $this->verify();
+    }
+
+    public function testExtractMailerUrl()
+    {
+        $url = 'smtp://localhost';
+        $this->actual = $this->controller->extractMailerUrl($url);
+        $this->expected = [
+            'transport' => 'smtp',
+            'smtp_user' => null,
+            'smtp_password' => null,
+            'smtp_host' => 'localhost',
+            'smtp_port' => 25,
+            'encryption' => null,
+            'auth_mode' => null
+        ];
+        $this->verify();
+
+        $url = 'smtp://localhost:587';
+        $this->actual = $this->controller->extractMailerUrl($url);
+        $this->expected = [
+            'transport' => 'smtp',
+            'smtp_user' => null,
+            'smtp_password' => null,
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'encryption' => null,
+            'auth_mode' => null
+        ];
+        $this->verify();
+
+        $url = 'smtp://username:password@localhost:587';
+        $this->actual = $this->controller->extractMailerUrl($url);
+        $this->expected = [
+            'transport' => 'smtp',
+            'smtp_user' => 'username',
+            'smtp_password' => 'password',
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'encryption' => null,
+            'auth_mode' => 'plain'
+        ];
+        $this->verify();
+
+        $url = 'smtp://username:password@localhost:587?auth_mode=login';
+        $this->actual = $this->controller->extractMailerUrl($url);
+        $this->expected = [
+            'transport' => 'smtp',
+            'smtp_user' => 'username',
+            'smtp_password' => 'password',
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'encryption' => null,
+            'auth_mode' => 'login'
+        ];
+        $this->verify();
+
+        $url = 'smtp://username:password@localhost:587?auth_mode=plain&encryption=tls';
+        $this->actual = $this->controller->extractMailerUrl($url);
+        $this->expected = [
+            'transport' => 'smtp',
+            'smtp_user' => 'username',
+            'smtp_password' => 'password',
+            'smtp_host' => 'localhost',
+            'smtp_port' => 587,
+            'encryption' => 'tls',
+            'auth_mode' => 'plain'
+        ];
+        $this->verify();
+
+        $url = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
+        $this->actual = $this->controller->extractMailerUrl($url);
+        $this->expected = [
+            'transport' => 'smtp',
+            'smtp_user' => 'username@gmail.com',
+            'smtp_password' => 'password',
+            'smtp_host' => 'smtp.gmail.com',
+            'smtp_port' => 465,
+            'encryption' => 'ssl',
+            'auth_mode' => 'login'
+        ];
         $this->verify();
     }
 }

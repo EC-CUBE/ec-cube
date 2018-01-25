@@ -162,11 +162,11 @@ class InstallController extends AbstractController
         }
 
         $this->checkModules();
-        $authmagic = env('ECCUBE_AUTH_MAGIC', 'secret');
+        $authmagic = env('ECCUBE_AUTH_MAGIC', 'secret'); // 'secret' is defaut value of .env.dist file.
         if ($authmagic == 'secret') {
             $authmagic =  StringUtil::random(32);
         }
-        $this->setSessionData($this->session, ['ECCUBE_AUTH_MAGIC' => $authmagic]);
+        $this->setSessionData($this->session, ['authmagic' => $authmagic]);
 
         return [
             'form' => $form->createView(),
@@ -221,49 +221,29 @@ class InstallController extends AbstractController
     {
         $sessionData = $this->getSessionData($this->session);
 
-        if (empty($sessionData['shop_name'])) {
-            // 再インストールの場合は設定ファイルから復旧
-            if (file_exists($this->configDir.'/config.php')) {
+        if (empty($sessionData['database_name'])) {
+            // 再インストールの場合は環境変数から復旧
+            if (env('DATABASE_URL')) {
                 // ショップ名/メールアドレス
-                $config = require $this->configDir.'/database.php';
-                $conn = $this->createConnection($config['database'][$config['database']['default']]);
+                $conn = $this->container->get('database_connection');
                 $stmt = $conn->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
                 $row = $stmt->fetch();
                 $sessionData['shop_name'] = $row['shop_name'];
                 $sessionData['email'] = $row['email01'];
 
+                $sessionData = array_merge($sessionData, $this->extractDatabaseUrl(env('DATABASE_URL')));
+
                 // 管理画面ルーティング
-                $config = require $this->configDir.'/path.php';
-                $sessionData['admin_dir'] = $config['admin_route'];
+                $sessionData['admin_dir'] = env('ECCUBE_ADMIN_ROUTE');
 
                 // 管理画面許可IP
-                $config = require $this->configDir.'/config.php';
-                if (!empty($config['admin_allow_hosts'])) {
-                    $sessionData['admin_allow_hosts']
-                        = StringUtil::convertLineFeed(implode("\n", $config['admin_allow_hosts']));
-                }
-                // 強制SSL
-                $sessionData['admin_force_ssl'] = $config['force_ssl'];
+                $sessionData['admin_allow_hosts'] = implode(PHP_EOL, env('ECCUBE_ADMIN_ALLOW_HOSTS', ['127.0.0.1']));
 
-                // ロードバランサ, プロキシサーバ
-                if (!empty($config['trusted_proxies_connection_only'])) {
-                    $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
-                }
-                if (!empty($config['trusted_proxies'])) {
-                    $sessionData['trusted_proxies'] = StringUtil::convertLineFeed(implode("\n",
-                        $sessionData['trusted_proxies']));
-                }
+                // 強制SSL
+                $sessionData['admin_force_ssl'] = env('ECCUBE_FORCE_SSL', false);
+
                 // メール
-                $file = $this->configDir.'/mail.php';
-                $config = require $file;
-                $sessionData['mail_backend'] = $config['mail']['transport'];
-                $sessionData['smtp_host'] = $config['mail']['host'];
-                $sessionData['smtp_port'] = $config['mail']['port'];
-                $sessionData['smtp_username'] = $config['mail']['username'];
-                $sessionData['smtp_password'] = $config['mail']['password'];
-            } else {
-                // 初期値にmailを設定.
-                $sessionData['mail_backend'] = 'mail';
+                $sessionData = array_merge($sessionData, $this->extractMailerUrl(env('MAILER_URL')));
             }
         }
 
@@ -301,22 +281,9 @@ class InstallController extends AbstractController
         $sessionData = $this->getSessionData($this->session);
 
         if (empty($sessionData['database'])) {
-            // 再インストールの場合は設定ファイルから復旧.
-            $file = $this->configDir.'/database.php';
-            if (file_exists($file)) {
-                // データベース設定
-                $config = require $file;
-                $database = $config['database'][$config['database']['default']];
-                $sessionData['database'] = $database['driver'];
-                if ($database['driver'] === 'pdo_sqlite') {
-                    $sessionData['database_name'] = $this->configDir.'/eccube.db';
-                } else {
-                    $sessionData['database_host'] = $database['host'];
-                    $sessionData['database_port'] = $database['port'];
-                    $sessionData['database_name'] = $database['dbname'];
-                    $sessionData['database_user'] = $database['user'];
-                    $sessionData['database_password'] = $database['password'];
-                }
+            // 再インストールの場合は環境変数から復旧.
+            if (env('DATABASE_URL')) {
+                $sessionData = array_merge($sessionData, $this->extractDatabaseUrl(env('DATABASE_URL')));
             }
         }
 
@@ -330,7 +297,7 @@ class InstallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data['database'] === 'pdo_sqlite') {
-                $data['database_name'] = $this->configDir.'/eccube.db';
+                $data['database_name'] = '/'.$this->configDir.'/eccube.db';
             }
 
             $this->setSessionData($this->session, $data);
@@ -366,19 +333,15 @@ class InstallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $noUpdate = $form['no_update']->getData();
 
-            $this->copyConfigFiles();
-            $data = array_merge(['root_urlpath' => $request->getBasePath()], $sessionData);
-            $this->replaceConfigFiles($data, !$noUpdate);
+            $url = $this->createDatabaseUrl($sessionData);
 
-            $params = require $this->configDir.'/database.php';
-            $conn = $this->createConnection($params['database'][$params['database']['default']]);
+            $conn = $this->createConnection(['url' => $url]);
             $em = $this->createEntityManager($conn);
             $migration = $this->createMigration($conn);
 
-            $config = require $this->configDir.'/config.php';
             if ($noUpdate) {
                 $this->update($conn, [
-                    'auth_magic' => $config['auth_magic'],
+                    'auth_magic' => $sessionData['authmagic'],
                     'login_id' => $sessionData['login_id'],
                     'login_pass' => $sessionData['login_pass'],
                     'shop_name' => $sessionData['shop_name'],
@@ -390,7 +353,7 @@ class InstallController extends AbstractController
                 $this->importCsv($em);
                 $this->migrate($migration);
                 $this->insert($conn, [
-                    'auth_magic' => $config['auth_magic'],
+                    'auth_magic' => $sessionData['authmagic'],
                     'login_id' => $sessionData['login_id'],
                     'login_pass' => $sessionData['login_pass'],
                     'shop_name' => $sessionData['shop_name'],
@@ -408,8 +371,6 @@ class InstallController extends AbstractController
                 // $this->sendAppData($params);
             }
 
-            // $this->removeSessionData($session);
-
             return $this->redirectToRoute('install_complete');
         }
 
@@ -425,41 +386,65 @@ class InstallController extends AbstractController
      */
     public function complete(Request $request)
     {
-        $config = require $this->configDir.'/config.php';
-        if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
-            Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')),
-                $config['trusted_proxies']));
-        } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
-            Request::setTrustedProxies($config['trusted_proxies']);
-        }
+        $sessionData = $this->getSessionData($this->session);
+        $databaseUrl = $this->createDatabaseUrl($sessionData);
+        $mailerUrl = $this->createMailerUrl($sessionData);
 
-        $pathConfig = require $this->configDir.'/path.php';
+        $env = file_get_contents(__DIR__.'/../../../../.env.dist');
+        $replacement = [
+            'APP_ENV' => 'prod',
+            'APP_DEBUG' => '0',
+            'APP_SECRET' => StringUtil::random(32),
+            'DATABASE_URL' => $databaseUrl,
+            'MAILER_URL' => $mailerUrl,
+            'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
+            'DATABASE_SERVER_VERSION' => '3', // TODO
+            'ECCUBE_ADMIN_ALLOW_HOSTS' => $sessionData['admin_allow_hosts'],
+            'ECCUBE_FORCE_SSL' => $sessionData['admin_force_ssl'],
+            'ECCUBE_COOKIE_LIFETIME' => '0',
+            'eccube_COOKIE_NAME' => 'eccube',
+            'ECCUBE_LOCALE' => 'ja',
+            'ECCUBE_TIMEZONE' => 'Asia/Tokyo',
+            'ECCUBE_CURRENCY' => 'JPY',
+            'ECCUBE_ADMIN_ROUTE' => $sessionData['admin_dir']
+        ];
+        // TODO
+        // $version = $this->em
+        //     ->createNativeQuery('select '.$func.' as v', $rsm)
+        //     ->getSingleScalarResult();
+
+        $env = $this->replaceEnv($env, $replacement);
+
+        if ($this->environment === 'install') {
+            file_put_contents(__DIR__.'/../../../../.env', $env);
+        }
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
-        $adminUrl = $host.$basePath.'/'.$pathConfig['admin_route'];
+        $adminUrl = $host.$basePath.'/'.$sessionData['admin_dir'];
 
+        $this->removeSessionData($this->session);
         return [
             'admin_url' => $adminUrl,
         ];
     }
 
-    private function getSessionData(SessionInterface $session)
+    public function getSessionData(SessionInterface $session)
     {
         return $session->get('eccube.session.install', []);
     }
 
-    private function removeSessionData(SessionInterface $session)
+    public function removeSessionData(SessionInterface $session)
     {
         $session->remove('eccube.session.install');
     }
 
-    private function setSessionData(SessionInterface $session, $data = [])
+    public function setSessionData(SessionInterface $session, $data = [])
     {
         $data = array_replace_recursive($this->getSessionData($session), $data);
         $session->set('eccube.session.install', $data);
     }
 
-    private function checkModules()
+    public function checkModules()
     {
         foreach ($this->requiredModules as $module) {
             if (!extension_loaded($module)) {
@@ -503,16 +488,15 @@ class InstallController extends AbstractController
         }
     }
 
-    private function createConnection(array $params)
+    public function createConnection(array $params)
     {
-        $params['driverClass'] = 'Doctrine\DBAL\Driver\PDOSqlite\Driver';
         $conn = DriverManager::getConnection($params);
         $conn->ping();
 
         return $conn;
     }
 
-    private function createEntityManager(Connection $conn)
+    public function createEntityManager(Connection $conn)
     {
         $paths = [
             $this->rootDir.'/src/Eccube/Entity',
@@ -524,7 +508,10 @@ class InstallController extends AbstractController
         return $em;
     }
 
-    private function createMigration(Connection $conn)
+    /**
+     * @param array $params
+     * @return string
+     */
     public function createDatabaseUrl(array $params)
     {
         $url = '';
@@ -557,6 +544,153 @@ class InstallController extends AbstractController
         return $url;
     }
 
+    /**
+     * @param string $url
+     * @return array
+     */
+    public function extractDatabaseUrl($url)
+    {
+        if (preg_match('|^sqlite://(.*)$|', $url, $matches)) {
+            return [
+                'database' => 'pdo_sqlite',
+                'database_name' => $matches[1]
+            ];
+        }
+
+        $parsed = parse_url($url);
+
+        if ($parsed === false) {
+            throw new \Exception('Malformed parameter "url".');
+        }
+        return [
+            'database' => 'pdo_'.$parsed['scheme'],
+            'database_name' => ltrim($parsed['path'], '/'),
+            'database_host' => $parsed['host'],
+            'database_port' => isset($parsed['port']) ? $parsed['port'] : null,
+            'database_user' => isset($parsed['user']) ? $parsed['user'] : null,
+            'database_password' => isset($parsed['pass']) ? $parsed['pass'] : null
+        ];
+    }
+
+    /**
+     * @param array $options
+     * @return string
+     * @see https://github.com/symfony/swiftmailer-bundle/blob/9728097df87e76e2db71fc41fd7d211c06daea3e/DependencyInjection/SwiftmailerTransportFactory.php#L80-L142
+     */
+    public function createMailerUrl(array $params)
+    {
+        $url = '';
+        if (isset($params['transport'])) {
+            $url = $params['transport'].'://';
+        } else {
+            $url = 'smtp://';
+        }
+        if (isset($params['smtp_user'])) {
+            $url .= $params['smtp_user'];
+            if (isset($params['smtp_password'])) {
+                $url .= ':'.$params['smtp_password'];
+            }
+            $url .= '@';
+        }
+
+        $queryStrings = [];
+        if (isset($params['encryption'])) {
+            $queryStrings['encryption'] = $params['encryption'];
+            if ($params['encryption'] === 'ssl' && !isset($params['smtp_port'])) {
+                $params['smtp_port'] = 465;
+            }
+        }
+        if (isset($params['auth_mode'])) {
+            $queryStrings['auth_mode'] = $params['auth_mode'];
+        } else {
+            if (isset($params['smtp_user'])) {
+                $queryStrings['auth_mode'] = 'plain';
+            }
+        }
+        ksort($queryStrings, SORT_STRING);
+
+        if (isset($params['smtp_host'])) {
+            $url .= $params['smtp_host'];
+            if (isset($params['smtp_port'])) {
+                $url .= ':'.$params['smtp_port'];
+            }
+        }
+
+        if (isset($params['username']) || array_values($queryStrings)) {
+            $url .= '?';
+            $i = count($queryStrings);
+            foreach ($queryStrings as $key => $value) {
+                $url .= $key.'='.$value;
+                if ($i > 1) {
+                    $url .= '&';
+                }
+                $i--;
+            }
+        }
+        return $url;
+    }
+
+    /**
+     * @param string $url
+     * @return array
+     */
+    public function extractMailerUrl($url)
+    {
+        $options = [
+            'transport' => null,
+            'smtp_user' => null,
+            'smtp_password' => null,
+            'smtp_host' => null,
+            'smtp_port' => null,
+            'encryption' => null,
+            'auth_mode' => null
+        ];
+
+        if ($url) {
+            $parts = parse_url($url);
+            if (isset($parts['scheme'])) {
+                $options['transport'] = $parts['scheme'];
+            }
+            if (isset($parts['user'])) {
+                $options['smtp_user'] = $parts['user'];
+            }
+            if (isset($parts['pass'])) {
+                $options['smtp_password'] = $parts['pass'];
+            }
+            if (isset($parts['host'])) {
+                $options['smtp_host'] = $parts['host'];
+            }
+            if (isset($parts['port'])) {
+                $options['smtp_port'] = $parts['port'];
+            }
+            if (isset($parts['query'])) {
+                parse_str($parts['query'], $query);
+                foreach (array_keys($options) as $key) {
+                    if (isset($query[$key]) && $query[$key] != "") {
+                        $options[$key] = $query[$key];
+                    }
+                }
+            }
+        }
+        if (!isset($options['transport'])) {
+            $options['transport'] = 'smtp';
+        } elseif ('gmail' === $options['transport']) {
+            $options['encryption'] = 'ssl';
+            $options['auth_mode'] = 'login';
+            $options['smtp_host'] = 'smtp.gmail.com';
+            $options['transport'] = 'smtp';
+        }
+        if (!isset($options['smtp_port'])) {
+            $options['smtp_port'] = 'ssl' === $options['encryption'] ? 465 : 25;
+        }
+        if (isset($options['smtp_user']) && !isset($options['auth_mode'])) {
+            $options['auth_mode'] = 'plain';
+        }
+        ksort($options, SORT_STRING);
+        return $options;
+    }
+
+    public function createMigration(Connection $conn)
     {
         $config = new Configuration($conn);
         $config->setMigrationsNamespace('DoctrineMigrations');
@@ -570,7 +704,7 @@ class InstallController extends AbstractController
         return $migration;
     }
 
-    private function dropTables(EntityManager $em)
+    public function dropTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($em);
@@ -578,14 +712,14 @@ class InstallController extends AbstractController
         $em->getConnection()->executeQuery('DROP TABLE IF EXISTS doctrine_migration_versions');
     }
 
-    private function createTables(EntityManager $em)
+    public function createTables(EntityManager $em)
     {
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($em);
         $schemaTool->createSchema($metadatas);
     }
 
-    private function importCsv(EntityManager $em)
+    public function importCsv(EntityManager $em)
     {
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
         $loader->loadFromDirectory($this->rootDir.'/src/Eccube/Resource/doctrine/import_csv');
@@ -594,7 +728,7 @@ class InstallController extends AbstractController
         $executer->execute($fixtures);
     }
 
-    private function insert(Connection $conn, array $data)
+    public function insert(Connection $conn, array $data)
     {
         $conn->beginTransaction();
         try {
@@ -647,7 +781,7 @@ class InstallController extends AbstractController
         }
     }
 
-    private function update(Connection $conn, array $data)
+    public function update(Connection $conn, array $data)
     {
         $conn->beginTransaction();
         try {
@@ -698,7 +832,7 @@ class InstallController extends AbstractController
         }
     }
 
-    private function migrate(Migration $migration)
+    public function migrate(Migration $migration)
     {
         try {
             // nullを渡すと最新バージョンまでマイグレートする
@@ -708,7 +842,7 @@ class InstallController extends AbstractController
         }
     }
 
-    private function copyConfigFiles()
+    public function copyConfigFiles()
     {
         $from = $this->configDistDir;
         $to = $this->configDir;
@@ -716,7 +850,7 @@ class InstallController extends AbstractController
         $fs->mirror($from, $to, null, ['override' => true]);
     }
 
-    private function replaceConfigFiles($data, $updateAuthMagic = true)
+    public function replaceConfigFiles($data, $updateAuthMagic = true)
     {
         $values['ECCUBE_INSTALL'] = 1;
         $values['ECCUBE_ROOT_URLPATH'] = $data['root_urlpath'];
@@ -826,7 +960,7 @@ class InstallController extends AbstractController
         }
     }
 
-    private function sendAppData($params)
+    public function sendAppData($params)
     {
         $config = require $this->configDir.'/database.php';
         $conn = $this->createConnection($config['database']);
@@ -872,63 +1006,15 @@ class InstallController extends AbstractController
     }
 
     /**
-     * マイグレーション画面を表示する.
-     *
-     * @param InstallApplication $app
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param string $env
+     * @param array $replacement
+     * @return string
      */
-    public function migration(Request $request)
+    public function replaceEnv($env, array $replacement)
     {
-        return $app['twig']->render('migration.twig', array(
-        ));
-    }
-
-    /**
-     * インストール済プラグインの一覧を表示する.
-     * プラグインがインストールされていない場合は, マイグレーション実行画面へリダイレクトする.
-     *
-     * @param InstallApplication $app
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function migration_plugin(Request $request)
-    {
-        $eccube = \Eccube\Application::getInstance();
-        $eccube->initialize();
-        $eccube->boot();
-        $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
-        $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));
-        if (empty($Plugins)) {
-            // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
-            return $app->redirect($app->path('migration_end'));
-        } else {
-            return $app['twig']->render('migration_plugin.twig', array(
-                'Plugins' => $Plugins,
-                'version' => Constant::VERSION,
-            ));
+        foreach ($replacement as $key => $value) {
+            $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
         }
-    }
-
-    /**
-     * マイグレーションを実行し, 完了画面を表示させる
-     *
-     * @param InstallApplication $app
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function migration_end(Request $request)
-    {
-        $this->doMigrate();
-        $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
-        $config_app->initialize();
-        $config_app->boot();
-        \Eccube\Util\CacheUtil::clear($config_app, true);
-
-        return $app['twig']->render('migration_end.twig', array(
-        ));
+        return $env;
     }
 }
