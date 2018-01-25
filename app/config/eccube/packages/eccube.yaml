@@ -65,4 +65,3 @@ parameters:
     password_min_len: 8
     password_max_len: 32
     ltext_len: 3000
-    currency: JPY
