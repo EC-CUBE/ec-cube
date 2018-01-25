@@ -68,3 +68,4 @@ parameters:
     tel_len_min: 1
     zip01_len: 3
     zip02_len: 4
+    max_length: 320

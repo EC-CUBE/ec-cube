@@ -27,10 +27,7 @@ use Eccube\Form\Type\Front\ForgotType;
 
 class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+   /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /**
@@ -72,11 +69,10 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(ForgotType::class, null, array(
                 'csrf_protection' => false,
             ))
