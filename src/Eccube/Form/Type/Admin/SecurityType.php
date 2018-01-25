@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,33 +32,32 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @FormType
- */
 class SecurityType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject("validator")
-     * @var RecursiveValidator
+     * @var ValidatorInterface
      */
-    protected $recursiveValidator;
+    protected $validator;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * SecurityType constructor.
+     *
+     * @param ValidatorInterface $validator
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    public function __construct()
-    {
+    public function __construct(
+        ValidatorInterface $validator,
+        array $eccubeConfig
+    ) {
+        $this->validator = $validator;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -69,37 +65,36 @@ class SecurityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
         $builder
-            ->add('admin_route_dir', TextType::class, array(
+            ->add('admin_route_dir', TextType::class, [
                 'label' => 'ディレクトリ名',
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
-                    new Assert\Regex(array(
+                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                    new Assert\Regex([
                        'pattern' => "/^[0-9a-zA-Z]+$/",
-                   )),
-                ),
-            ))
+                   ]),
+                ],
+            ])
             ->add('admin_allow_hosts', TextareaType::class, array(
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $this->recursiveValidator->validate($ip, array(
+                    $errors = $this->validator->validate($ip, array(
                             new Assert\Ip(),
                         )
                     );

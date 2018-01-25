@@ -29,9 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -45,28 +42,26 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(PaymentRegisterType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
+        $this->container->get('request_stack')->push(new Request());
     }
 
     public function testValidData()
     {
-        $this->app['request'] = new Request();
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidCharge_Blank()
     {
-        $this->app['request'] = new Request();
         $this->formData['charge'] = '';
 
         $this->form->submit($this->formData);
@@ -75,7 +70,6 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidCharge_NotNumeric()
     {
-        $this->app['request'] = new Request();
         $this->formData['charge'] = 'abc';
 
         $this->form->submit($this->formData);
@@ -84,7 +78,6 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidCharge_HasMinus()
     {
-        $this->app['request'] = new Request();
         $this->formData['charge'] = '-123456';
 
         $this->form->submit($this->formData);
@@ -93,8 +86,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidCharge_TooLarge()
     {
-        $this->app['request'] = new Request();
-        $this->formData['charge'] = $this->app['config']['price_max'] + 1;
+        $this->formData['charge'] = $this->eccubeConfig['price_max'] + 1;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -102,7 +94,6 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidRuleMin_NotNumeric()
     {
-        $this->app['request'] = new Request();
         $this->formData['rule_min'] = 'abc';
 
         $this->form->submit($this->formData);
@@ -111,7 +102,6 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidRuleMin_HasMinus()
     {
-        $this->app['request'] = new Request();
         $this->formData['rule_min'] = '-123456';
 
         $this->form->submit($this->formData);
@@ -120,8 +110,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidRuleMin_TooLarge()
     {
-        $this->app['request'] = new Request();
-        $this->formData['rule_min'] = $this->app['config']['price_max'] + 1;
+        $this->formData['rule_min'] = $this->eccubeConfig['price_max'] + 1;
         $this->formData['rule_max'] = '100';
 
         $this->form->submit($this->formData);
@@ -130,7 +119,6 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidRuleMax_NotNumeric()
     {
-        $this->app['request'] = new Request();
         $this->formData['rule_max'] = 'abc';
 
         $this->form->submit($this->formData);
@@ -139,7 +127,6 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidRuleMax_HasMinus()
     {
-        $this->app['request'] = new Request();
         $this->formData['rule_max'] = '-123456';
 
         $this->form->submit($this->formData);
@@ -148,8 +135,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function testInvalidRuleMax_TooLarge()
     {
-        $this->app['request'] = new Request();
-        $this->formData['rule_max'] = $this->app['config']['price_max'] + 1;
+        $this->formData['rule_max'] = $this->eccubeConfig['price_max'] + 1;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

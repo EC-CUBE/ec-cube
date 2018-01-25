@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Intl\Intl;
@@ -32,6 +33,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
+/**
+ * Class PriceType
+ * @package Eccube\Form\Type
+ */
 class PriceType extends AbstractType
 {
     /**
@@ -39,13 +44,18 @@ class PriceType extends AbstractType
      */
     protected $appConfig;
 
+    /** @var  ContainerInterface */
+    protected $container;
+
     /**
      * PriceType constructor.
      * @param array $eccubeConfig
+     * @param ContainerInterface $container
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(array $eccubeConfig, ContainerInterface $container)
     {
         $this->appConfig = $eccubeConfig;
+        $this->container = $container;
     }
 
 
@@ -54,14 +64,13 @@ class PriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $currency = $this->appConfig['currency'];
+        $currency = $this->container->getParameter('currency_code');
         $scale = Intl::getCurrencyBundle()->getFractionDigits($currency);
         $max = $this->appConfig['price_max'];
         $min = -$max;
 
-        $constraints = function (Options $options) use ($max, $min){
+        $constraints = function (Options $options) use ($max, $min) {
             $constraints = [];
-
             // requiredがtrueに指定されている場合, NotBlankを追加
             if (isset($options['required']) && true === $options['required']) {
                 $constraints[] = new NotBlank();
