@@ -28,9 +28,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class ZipTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -46,9 +43,8 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class)
             ->getForm();
@@ -96,7 +92,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip01()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class, array(
                 'required' => true,
@@ -111,7 +107,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip02()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class, array(
                 'required' => true,

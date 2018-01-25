@@ -62,3 +62,9 @@ parameters:
     product_order_price_higher: 3
     price_max: 2147483647
     currency_code: '%currency_code%'
+    password_min_len: 8
+    password_max_len: 32
+    tel_len: 5
+    tel_len_min: 1
+    zip01_len: 3
+    zip02_len: 4

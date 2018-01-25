@@ -25,22 +25,19 @@ namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\RoundingTypeType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class RoundingTypeTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array();
+    /** @var FormInterface */
+    protected $form;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(RoundingTypeType::class, null, array(
                 'csrf_protection' => false,
             ))
