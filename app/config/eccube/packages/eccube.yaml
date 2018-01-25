@@ -60,7 +60,7 @@ parameters:
     product_order_price_lower: 1
     product_order_newer: 2
     product_order_price_higher: 3
-    password_min_len: 4
-    password_max_len: 8
-    auth_magic: 'secret'
+    password_min_len: 8
+    password_max_len: 32
+    auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
     password_hash_algos: SHA256

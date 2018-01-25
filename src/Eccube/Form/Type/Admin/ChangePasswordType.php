@@ -23,9 +23,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -34,9 +31,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
+
 class ChangePasswordType extends AbstractType
 {
     /**
@@ -85,8 +80,6 @@ class ChangePasswordType extends AbstractType
                     )),
                 ),
             ))
-            // TODO:: Fix me
-            // ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 
