@@ -23,45 +23,35 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
+
 class MasterdataType extends AbstractType
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * MasterdataType constructor.
+     * @param EntityManagerInterface $entityManager
      */
-    protected $app;
-
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var $app \Eccube\Application */
-        $app = $this->app;
-
         $masterdata = array();
 
         $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();

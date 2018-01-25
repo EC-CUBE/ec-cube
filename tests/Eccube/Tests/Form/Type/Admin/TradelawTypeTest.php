@@ -24,38 +24,40 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\TradelawType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class TradelawTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    /**
+     * @var array デフォルト値（正常系）を設定
+     */
+    protected $formData = [
         'company' => '販売業者名',
         'manager' => '運営責任者名',
-        'zip' => array(
+        'zip' => [
             'zip01' => '530',
             'zip02' => '0001',
-        ),
-        'address' => array(
+        ],
+        'address' => [
             'pref' => '5',
             'addr01' => '北区',
             'addr02' => '梅田',
-        ),
-        'tel' => array(
+        ],
+        'tel' => [
             'tel01' => '03',
             'tel02' => '1111',
             'tel03' => '1111',
-        ),
-        'fax' => array(
+        ],
+        'fax' => [
             'fax01' => '03',
             'fax02' => '1111',
             'fax03' => '4444',
-        ),
+        ],
         'email' => 'eccube@example.com',
         'url' => 'http://www.eccube.net',
         'term01' => 'term01',
@@ -64,18 +66,15 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'term04' => 'term01',
         'term05' => 'term01',
         'term06' => 'term01',
-    );
+    ];
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder(TradelawType::class, null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $this->formFactory
+            ->createBuilder(TradelawType::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 

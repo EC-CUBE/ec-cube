@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\TelType;
 use Eccube\Form\Type\ZipType;
@@ -36,112 +35,105 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-/**
- * @FormType
- */
 class TradelawType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('company', TextType::class, array(
+            ->add('company', TextType::class, [
                 'label' => '販売業者',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('manager', TextType::class, array(
+                ],
+            ])
+            ->add('manager', TextType::class, [
                 'label' => '運営責任者',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('zip', ZipType::class, array(
+                ],
+            ])
+            ->add('zip', ZipType::class, [
                 'required' => true,
-            ))
-            ->add('address', AddressType::class, array(
+            ])
+            ->add('address', AddressType::class, [
                 'label' => '所在地',
                 'required' => true,
                 'pref_name' => 'pref',
                 'addr01_name' => 'addr01',
                 'addr02_name' => 'addr02',
-            ))
-            ->add('tel', TelType::class, array(
+            ])
+            ->add('tel', TelType::class, [
                 'label' => 'TEL',
                 'required' => true,
-            ))
-            ->add('fax', TelType::class, array(
+            ])
+            ->add('fax', TelType::class, [
                 'label' => 'FAX',
                 'required' => false,
-            ))
-            ->add('email', EmailType::class, array(
+            ])
+            ->add('email', EmailType::class, [
                 'label' => 'メールアドレス',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                    new Assert\Regex(array(
+                    new Assert\Email(['strict' => true]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
                         'message' => 'form.type.graph.invalid',
-                    )),
-                ),
-            ))
-            ->add('url', TextType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('url', TextType::class, [
                 'label' => 'URL',
                 'required' => true,
-                'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Url(),
-                ),
-            ))
-            ->add('term01', TextareaType::class, array(
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Url(),
+                ],
+            ])
+            ->add('term01', TextareaType::class, [
                 'label' => '商品代金以外の必要料金',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('term02', TextareaType::class, array(
+                ],
+            ])
+            ->add('term02', TextareaType::class, [
                 'label' => '注文方法',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('term03', TextareaType::class, array(
+                ],
+            ])
+            ->add('term03', TextareaType::class, [
                 'label' => '支払方法',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('term04', TextareaType::class, array(
+                ],
+            ])
+            ->add('term04', TextareaType::class, [
                 'label' => '支払期限',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('term05', TextareaType::class, array(
+                ],
+            ])
+            ->add('term05', TextareaType::class, [
                 'label' => '引き渡し時期',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('term06', TextareaType::class, array(
+                ],
+            ])
+            ->add('term06', TextareaType::class, [
                 'label' => '返品・交換について',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ));
+                ],
+            ]);
     }
 
     public function getBlockPrefix()

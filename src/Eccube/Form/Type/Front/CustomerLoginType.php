@@ -34,11 +34,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerLoginType extends AbstractType
 {
+
+    /**
+     * @var array
+     */
+    protected $appConfig;
+
     protected $authenticationUtils;
 
-    public function __construct(AuthenticationUtils $authenticationUtils)
+    public function __construct(AuthenticationUtils $authenticationUtils, array $eccubeConfig)
     {
         $this->authenticationUtils = $authenticationUtils;
+        $this->appConfig = $eccubeConfig;
     }
 
     /**
@@ -48,7 +55,7 @@ class CustomerLoginType extends AbstractType
     {
         $builder->add('login_email', EmailType::class, array(
             'attr' => array(
-                'max_length' => 320, // todo
+                'max_length' => $this->appConfig['max_length'],
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
@@ -61,7 +68,7 @@ class CustomerLoginType extends AbstractType
         ));
         $builder->add('login_pass', PasswordType::class, array(
             'attr' => array(
-                'max_length' => 320, // todo
+                'max_length' => $this->appConfig['max_length'],
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
