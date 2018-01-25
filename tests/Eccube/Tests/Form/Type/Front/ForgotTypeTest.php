@@ -30,6 +30,8 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
    /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    protected $formData;
+
     /**
      * 異常系のデータパターンを返す
      *
