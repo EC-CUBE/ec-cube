@@ -8,7 +8,7 @@ parameters:
     base_currency_code: 'JPY'
     currency_code: '%base_currency_code%'
     app.notifications.email_sender: anonymous@example.com
-    admin_route: 'admin'
+    admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     user_data_route: 'user_data'
     eccube.scheme: 'http'
     eccube.theme: 'default'
