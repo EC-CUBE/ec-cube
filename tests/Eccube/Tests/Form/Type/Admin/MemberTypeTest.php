@@ -25,13 +25,11 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\MemberType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 
-class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class MemberTypeTest extends AbstractTypeTestCase
 {
-
-    /** @var \Eccube\Application */
-    protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
@@ -51,11 +49,10 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(MemberType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -79,7 +76,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $name = str_repeat('S', $this->eccubeConfig['stext_len']) . 'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -89,7 +86,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthValid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']);
+        $name = str_repeat('S', $this->eccubeConfig['stext_len']);
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -99,7 +96,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDepartment_MaxLengthInvalid()
     {
-        $department = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $department = str_repeat('S', $this->eccubeConfig['stext_len']) . 'S';
 
         $this->formData['department'] = $department;
         $this->form->submit($this->formData);
@@ -109,7 +106,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDepartment_MaxLengthValid()
     {
-        $department = str_repeat('S', $this->app['config']['stext_len']);
+        $department = str_repeat('S', $this->eccubeConfig['stext_len']);
 
         $this->formData['department'] = $department;
         $this->form->submit($this->formData);
@@ -170,7 +167,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidAuthority_Invalid()
     {
-        $Authority = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Authority')
+        $Authority = $this->entityManager->getRepository('Eccube\Entity\Master\Authority')
             ->findOneBy(array(), array('id' => 'DESC'));
         $id = $Authority->getId() + 1;
 
@@ -190,7 +187,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidWork_Invalid()
     {
-        $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')
+        $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
             ->findOneBy(array(), array('id' => 'DESC'));
         $id = $Work->getId() + 1;
 

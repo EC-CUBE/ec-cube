@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -35,27 +32,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
+
 class MemberType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * MemberType constructor.
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    public function __construct()
+    public function __construct(array $eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
+
 
     /**
      * {@inheritdoc}
