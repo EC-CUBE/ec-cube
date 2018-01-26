@@ -17,16 +17,24 @@ use org\bovigo\vfs\vfsStream;
  */
 class BlockRepositoryTest extends EccubeTestCase
 {
-    /** @var  DeviceType */
+    /**
+     * @var  DeviceType
+     */
     protected $DeviceType;
 
-    /** @var  string */
+    /**
+     * @var  string
+     */
     private $block_id;
 
-    /** @var  BlockRepository */
+    /**
+     * @var  BlockRepository
+     */
     protected $blockRepository;
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

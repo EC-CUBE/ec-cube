@@ -19,6 +19,9 @@ class OrderStatusRepositoryTest extends EccubeTestCase
      */
     protected $orderStatusRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

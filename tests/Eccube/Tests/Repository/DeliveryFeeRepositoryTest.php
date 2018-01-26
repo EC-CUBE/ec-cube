@@ -31,6 +31,9 @@ class DeliveryFeeRepositoryTest extends EccubeTestCase
      */
     protected $deliveryFeeRepo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

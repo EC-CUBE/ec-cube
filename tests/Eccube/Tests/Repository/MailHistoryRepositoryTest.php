@@ -7,6 +7,9 @@ use Eccube\Entity\MailTemplate;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Member;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
 
 /**
  * MailHistoryRepository test cases.
@@ -15,9 +18,24 @@ use Eccube\Tests\EccubeTestCase;
  */
 class MailHistoryRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var Member
+     */
     protected $Member;
+
+    /**
+     * @var Customer
+     */
     protected $Customer;
+
+    /**
+     * @var Order
+     */
     protected $Order;
+
+    /**
+     * @var MailHistory[]
+     */
     protected $MailHistories;
 
     /**
@@ -25,6 +43,9 @@ class MailHistoryRepositoryTest extends EccubeTestCase
      */
     protected $mailHistoryRepo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -60,8 +81,7 @@ class MailHistoryRepositoryTest extends EccubeTestCase
     public function testGetByCustomerAndId()
     {
         try {
-            $MailHistory = $this->mailHistoryRepo->getByCustomerAndId($this->Customer,
-                $this->MailHistories[0]->getId());
+            $MailHistory = $this->mailHistoryRepo->getByCustomerAndId($this->Customer, $this->MailHistories[0]->getId());
 
             $this->expected = 'mail_subject-0';
             $this->actual = $MailHistory->getMailSubject();

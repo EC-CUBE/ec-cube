@@ -29,7 +29,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
     public function testGetFavoriteProductQueryBuilderByCustomer()
     {
-        $this->markTestIncomplete(get_class($this).' getFavoriteProductQueryBuilderByCustomer is deprecated since 3.1');
+        $this->markTestSkipped(get_class($this).' getFavoriteProductQueryBuilderByCustomer is deprecated since 3.1');
         $Customer = $this->createCustomer();
         $this->entityManager->persist($Customer);
 

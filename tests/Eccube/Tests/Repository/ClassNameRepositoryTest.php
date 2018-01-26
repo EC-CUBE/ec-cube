@@ -19,19 +19,29 @@ use Eccube\Tests\EccubeTestCase;
  */
 class ClassNameRepositoryTest extends EccubeTestCase
 {
-    /** @var  Member */
+    /**
+     * @var  Member
+     */
     protected $Member;
 
-    /** @var  ProductClassRepository */
+    /**
+     * @var  ProductClassRepository
+     */
     protected  $productClassRepository;
 
-    /** @var  ClassCategoryRepository */
+    /**
+     * @var  ClassCategoryRepository
+     */
     protected  $classCategoryRepository;
 
-    /** @var  ClassNameRepository */
+    /**
+     * @var  ClassNameRepository
+     */
     protected  $classNameRepository;
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -149,7 +159,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
             $this->classNameRepository->delete($ClassName);
             $this->fail();
         } catch (\Exception $e) {
-            
+            $this->addToAssertionCount(1);
         }
     }
 }

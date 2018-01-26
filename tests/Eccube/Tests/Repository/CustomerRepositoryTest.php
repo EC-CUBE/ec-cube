@@ -8,6 +8,7 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Eccube\Entity\Customer;
 
 /**
  * CustomerRepository test cases.
@@ -16,8 +17,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CustomerRepositoryTest extends EccubeTestCase
 {
-
+    /**
+     * @var string
+     */
     protected $email;
+
+    /**
+     * @var Customer
+     */
     protected $Customer;
 
     /**
@@ -30,6 +37,9 @@ class CustomerRepositoryTest extends EccubeTestCase
      */
     protected $masterOrderStatusRepo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

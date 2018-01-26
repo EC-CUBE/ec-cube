@@ -45,11 +45,14 @@ class CategoryRepository extends AbstractRepository
 
     /**
      * CategoryRepository constructor.
+     *
      * @param RegistryInterface $registry
      * @param array $eccubeConfig
      */
-    public function __construct(RegistryInterface $registry, array $eccubeConfig)
-    {
+    public function __construct(
+        RegistryInterface $registry,
+        array $eccubeConfig
+    ) {
         parent::__construct($registry, Category::class);
         $this->appConfig = $eccubeConfig;
     }

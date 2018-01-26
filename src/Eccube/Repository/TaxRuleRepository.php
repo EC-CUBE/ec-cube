@@ -210,8 +210,7 @@ class TaxRuleRepository extends AbstractRepository
 
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
         // 後に書いてあるほど優先される
-        $priorityKeys = explode(',', $this->appConfig['tax_rule_priority']);
-        $priorityKeys = array();
+        $priorityKeys = [];
         foreach (explode(',', $this->appConfig['tax_rule_priority']) as $key) {
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }

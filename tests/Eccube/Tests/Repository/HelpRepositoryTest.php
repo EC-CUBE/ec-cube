@@ -17,6 +17,9 @@ class HelpRepositoryTest extends EccubeTestCase
      */
     protected $helpRepo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

@@ -8,6 +8,7 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Customer;
 
 /**
  * CustomerRepository test cases.
@@ -16,6 +17,36 @@ use Eccube\Tests\EccubeTestCase;
  */
 class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 {
+    /**
+     * @var array
+     */
+    protected $Results;
+
+    /**
+     * @var array
+     */
+    protected $searchData;
+
+    /**
+     * @var Customer
+     */
+    protected $Customer;
+
+    /**
+     * @var Customer
+     */
+    protected $Customer1;
+
+    /**
+     * @var Customer
+     */
+    protected $Customer2;
+
+    /**
+     * @var Customer
+     */
+    protected $Customer3;
+
     /**
      * @var CustomerRepository
      */
@@ -36,14 +67,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * @var SexRepository
      */
     protected $masterSexRepo;
-    
-    protected $Results;
-    protected $searchData;
-    protected $Customer;
-    protected $Customer1;
-    protected $Customer2;
-    protected $Customer3;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

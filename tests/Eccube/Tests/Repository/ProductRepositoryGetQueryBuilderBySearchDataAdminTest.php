@@ -15,6 +15,9 @@ use Eccube\Repository\CategoryRepository;
  */
 class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
 {
+    /**
+     * @var array
+     */
     protected $Results;
 
     /**

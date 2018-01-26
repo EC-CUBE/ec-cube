@@ -20,12 +20,19 @@ use Eccube\Tests\EccubeTestCase;
  */
 class BaseInfoRepositoryTest extends EccubeTestCase
 {
-    /** @var  string */
+    /**
+     * @var  string
+     */
     private $id;
 
-    /** @var  BaseInfoRepository */
+    /**
+     * @var  BaseInfoRepository
+     */
     protected $baseInfoRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

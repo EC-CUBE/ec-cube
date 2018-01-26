@@ -13,9 +13,14 @@ use Eccube\Tests\EccubeTestCase;
  */
 class CategoryRepositoryTest extends EccubeTestCase
 {
-    /** @var  CategoryRepository */
+    /**
+     * @var  CategoryRepository
+     */
     protected $categoryRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -222,7 +227,7 @@ class CategoryRepositoryTest extends EccubeTestCase
             $this->categoryRepository->delete($Category);
             $this->fail();
         } catch (\Exception $e) {
-
+            $this->addToAssertionCount(1);
         }
     }
 }

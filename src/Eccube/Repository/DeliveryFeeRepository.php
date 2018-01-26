@@ -36,6 +36,11 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class DeliveryFeeRepository extends AbstractRepository
 {
+    /**
+     * DeliveryFeeRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, DeliveryFee::class);

@@ -40,7 +40,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class OrderStatusRepository extends AbstractRepository
 {
     /**
-     * {@inheritdoc}
+     * OrderStatusRepository constructor.
+     *
+     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
