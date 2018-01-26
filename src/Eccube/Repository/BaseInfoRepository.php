@@ -25,10 +25,9 @@
 namespace Eccube\Repository;
 
 use Eccube\Annotation\Repository;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * BaseInfoRepository
@@ -40,24 +39,32 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class BaseInfoRepository extends AbstractRepository
 {
-    /**
-     * @var Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
+    /** @var  KernelInterface */
+    protected $kernel;
 
-    public function __construct(RegistryInterface $registry)
+    /**
+     * BaseInfoRepository constructor.
+     * @param RegistryInterface $registry
+     * @param KernelInterface $kernel
+     */
+    public function __construct(RegistryInterface $registry, KernelInterface $kernel)
     {
         parent::__construct($registry, BaseInfo::class);
+        $this->kernel = $kernel;
     }
 
+    /**
+     *
+     * @param int $id
+     * @return mixed
+     */
     public function get($id = 1)
     {
         $qb = $this->createQueryBuilder('e')
             ->where('e.id = :id')
             ->setParameter('id', $id);
 
-        if (!$this->app['debug']) {
+        if (!$this->kernel->isDebug()) {
             $qb->setCacheable(true);
         }
 

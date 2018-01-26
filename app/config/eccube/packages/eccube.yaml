@@ -64,3 +64,5 @@ parameters:
     password_max_len: 32
     auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
     password_hash_algos: SHA256
+    block_default_realdir: '%kernel.project_dir%/src/Eccube/Resource/template/default/Block'
+    block_realdir: '%kernel.project_dir%/app/template/default/Block'

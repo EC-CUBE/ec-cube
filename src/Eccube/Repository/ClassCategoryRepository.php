@@ -40,6 +40,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ClassCategoryRepository extends AbstractRepository
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, ClassCategory::class);
