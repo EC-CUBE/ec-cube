@@ -25,8 +25,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Repository;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
@@ -34,11 +32,6 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * CustomerRepository
@@ -51,34 +44,29 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class CustomerRepository extends AbstractRepository
 {
     /**
-     * @Inject("eccube.queries")
      * @var Queries
      */
     protected $queries;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("security.encoder_factory")
      * @var EncoderFactory
      */
     protected $encoderFactory;
+
+    /**
+     * @var array
+     */
+    protected $appConfig;
 
     /**
      * CustomerRepository constructor.
@@ -86,24 +74,24 @@ class CustomerRepository extends AbstractRepository
      * @param Queries $queries
      * @param EntityManager $entityManager
      * @param OrderRepository $orderRepository
-     * @param array $eccubeConfig
      * @param EncoderFactory $encoderFactory
+     * @param array $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         Queries $queries,
         EntityManager $entityManager,
         OrderRepository $orderRepository,
-        array $eccubeConfig,
-        EncoderFactory $encoderFactory
+        EncoderFactory $encoderFactory,
+        array $eccubeConfig
     ) {
         parent::__construct($registry, Customer::class);
 
         $this->queries = $queries;
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
-        $this->appConfig = $eccubeConfig;
         $this->encoderFactory = $encoderFactory;
+        $this->appConfig = $eccubeConfig;
     }
 
 

@@ -20,6 +20,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 {
 
     protected $email;
+    protected $Customer;
 
     /**
      * @var CustomerRepository
@@ -31,17 +32,15 @@ class CustomerRepositoryTest extends EccubeTestCase
      */
     protected $masterOrderStatusRepo;
 
-    protected $Customer;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->customerRepo = $this->container->get(CustomerRepository::class);
-        $this->masterOrderStatusRepo = $this->container->get(OrderStatusRepository::class);
-
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
+
+        $this->customerRepo = $this->container->get(CustomerRepository::class);
+        $this->masterOrderStatusRepo = $this->container->get(OrderStatusRepository::class);
     }
 
     public function testNewCustomer()
@@ -115,7 +114,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
     public function testSupportedClass()
     {
-        $this->assertTrue($this->count()->supportsClass(get_class($this->Customer)));
+        $this->assertTrue($this->customerRepo->supportsClass(get_class($this->Customer)));
     }
 
     public function testGetProvisionalCustomerBySecretKey()

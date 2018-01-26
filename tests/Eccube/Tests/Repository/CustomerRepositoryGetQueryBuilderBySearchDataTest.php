@@ -25,7 +25,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     /**
      * @var CustomerAddressRepository
      */
-    protected $customerAddress;
+    protected $customerAddressRepo;
 
     /**
      * @var PrefRepository
@@ -39,14 +39,16 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     
     protected $Results;
     protected $searchData;
-
-    protected $Customer, $Customer1, $Customer2, $Customer3;
+    protected $Customer;
+    protected $Customer1;
+    protected $Customer2;
+    protected $Customer3;
 
     public function setUp()
     {
         parent::setUp();
         $this->customerRepo = $this->container->get(CustomerRepository::class);
-        $this->customerAddress = $this->container->get(CustomerAddressRepository::class);
+        $this->customerAddressRepo = $this->container->get(CustomerAddressRepository::class);
         $this->masterPrefRepo = $this->container->get(PrefRepository::class);
         $this->masterSex = $this->container->get(SexRepository::class);
 
@@ -55,17 +57,16 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer1 = $this->createCustomer('customer1@example.com');
         $this->Customer2 = $this->createCustomer('customer2@example.com');
         $this->Customer3 = $this->createCustomer('customer3@example.com');
-
     }
 
     public function removeCustomer()
     {
-        $CustomerAddresses = $this->customerAddress->findAll();
+        $CustomerAddresses = $this->customerAddressRepo->findAll();
         foreach ($CustomerAddresses as $CustomerAddress) {
             $this->entityManager->remove($CustomerAddress);
         }
         $this->entityManager->flush();
-        $Customers = $this->customerAddress->findAll();
+        $Customers = $this->customerAddressRepo->findAll();
         foreach ($Customers as $Customer) {
             $this->entityManager->remove($Customer);
         }
