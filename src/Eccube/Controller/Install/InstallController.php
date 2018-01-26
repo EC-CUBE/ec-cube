@@ -245,6 +245,14 @@ class InstallController extends AbstractController
 
             // メール
             $sessionData = array_merge($sessionData, $this->extractMailerUrl(env('MAILER_URL')));
+        } else {
+            // 初期値設定
+            if (!isset($sessionData['admin_allow_hosts'])) {
+                $sessionData['admin_allow_hosts'] = implode(PHP_EOL, env('ECCUBE_ADMIN_ALLOW_HOSTS', ["127.0.0.1"]));
+            }
+            if (!isset($sessionData['smtp_host'])) {
+                $sessionData = array_merge($sessionData, $this->extractMailerUrl('smtp://localhost:25'));
+            }
         }
 
         $form = $this->formFactory
@@ -399,8 +407,8 @@ class InstallController extends AbstractController
         }
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
         $replacement = [
-            'APP_ENV' => 'prod',
-            'APP_DEBUG' => '0',
+            'APP_ENV' => 'dev', // TODO 本番環境では prod にするが cache:warmup しないと Not found になってしまう
+            'APP_DEBUG' => '1',
             'APP_SECRET' => StringUtil::random(32),
             'DATABASE_URL' => $databaseUrl,
             'MAILER_URL' => $mailerUrl,
@@ -587,8 +595,8 @@ class InstallController extends AbstractController
         } else {
             $url = 'smtp://';
         }
-        if (isset($params['smtp_user'])) {
-            $url .= $params['smtp_user'];
+        if (isset($params['smtp_username'])) {
+            $url .= $params['smtp_username'];
             if (isset($params['smtp_password'])) {
                 $url .= ':'.$params['smtp_password'];
             }
@@ -605,7 +613,7 @@ class InstallController extends AbstractController
         if (isset($params['auth_mode'])) {
             $queryStrings['auth_mode'] = $params['auth_mode'];
         } else {
-            if (isset($params['smtp_user'])) {
+            if (isset($params['smtp_username'])) {
                 $queryStrings['auth_mode'] = 'plain';
             }
         }
@@ -618,7 +626,7 @@ class InstallController extends AbstractController
             }
         }
 
-        if (isset($params['username']) || array_values($queryStrings)) {
+        if (isset($params['smtp_username']) || array_values($queryStrings)) {
             $url .= '?';
             $i = count($queryStrings);
             foreach ($queryStrings as $key => $value) {
@@ -640,7 +648,7 @@ class InstallController extends AbstractController
     {
         $options = [
             'transport' => null,
-            'smtp_user' => null,
+            'smtp_username' => null,
             'smtp_password' => null,
             'smtp_host' => null,
             'smtp_port' => null,
@@ -654,7 +662,7 @@ class InstallController extends AbstractController
                 $options['transport'] = $parts['scheme'];
             }
             if (isset($parts['user'])) {
-                $options['smtp_user'] = $parts['user'];
+                $options['smtp_username'] = $parts['user'];
             }
             if (isset($parts['pass'])) {
                 $options['smtp_password'] = $parts['pass'];
@@ -685,7 +693,7 @@ class InstallController extends AbstractController
         if (!isset($options['smtp_port'])) {
             $options['smtp_port'] = 'ssl' === $options['encryption'] ? 465 : 25;
         }
-        if (isset($options['smtp_user']) && !isset($options['auth_mode'])) {
+        if (isset($options['smtp_username']) && !isset($options['auth_mode'])) {
             $options['auth_mode'] = 'plain';
         }
         ksort($options, SORT_STRING);
