@@ -72,11 +72,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->actual = count($payments);
         $this->verify('存在しない販売種別を指定しているため取得できない');
 
-        if (count($saleTypes) > 1) {
-            // TODO: FIXME this test may be incomplete ?
-            $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
-        }
-        $deliveries = $this->deliveryRepo->findAllowedDeliveries($saleTypes, $payments);
+        $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
         $this->assertEmpty($deliveries);
     }
 
