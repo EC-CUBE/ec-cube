@@ -35,7 +35,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     /**
      * @var SexRepository
      */
-    protected $masterSex;
+    protected $masterSexRepo;
     
     protected $Results;
     protected $searchData;
@@ -50,7 +50,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->customerRepo = $this->container->get(CustomerRepository::class);
         $this->customerAddressRepo = $this->container->get(CustomerAddressRepository::class);
         $this->masterPrefRepo = $this->container->get(PrefRepository::class);
-        $this->masterSex = $this->container->get(SexRepository::class);
+        $this->masterSexRepo = $this->container->get(SexRepository::class);
 
         $this->removeCustomer();
         $this->Customer = $this->createCustomer('customer@example.com');
@@ -66,7 +66,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             $this->entityManager->remove($CustomerAddress);
         }
         $this->entityManager->flush();
-        $Customers = $this->customerAddressRepo->findAll();
+        $Customers = $this->customerRepo->findAll();
         foreach ($Customers as $Customer) {
             $this->entityManager->remove($Customer);
         }
@@ -268,28 +268,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    /* https://github.com/EC-CUBE/ec-cube/issues/945
-     * kana01, kana02 のいずれかが NULL だと検索にヒットしない
-    public function testMultiWithKana01()
-    {
-        $this->Customer->setKana01('セイ')
-            ->setKana02(null);
-        $this->entityManager->flush();
-
-        $this->searchData = array(
-            'multi' => 'セイ'
-        );
-
-        $this->scenario();
-
-        $this->assertEquals(1, count($this->Results));
-
-        $this->expected = 'セイ';
-        $this->actual = $this->Results[0]->getKana02();
-        $this->verify();
-    }
-    */
-
     public function testPref()
     {
         $pref_id = 26;
@@ -316,8 +294,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testSex()
     {
-        $Male = $this->masterSex->find(1);
-        $Female = $this->masterSex->find(2);
+        $Male = $this->masterSexRepo->find(1);
+        $Female = $this->masterSexRepo->find(2);
         $this->Customer->setSex($Male);
         $this->Customer1->setSex($Female);
         $this->Customer2->setSex(null);
@@ -332,6 +310,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->expected = 2;
         $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBirthMonth()
