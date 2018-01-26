@@ -12,7 +12,6 @@ use Eccube\Tests\EccubeTestCase;
  */
 class HelpRepositoryTest extends EccubeTestCase
 {
-
     /**
      * @var HelpRepository
      */
