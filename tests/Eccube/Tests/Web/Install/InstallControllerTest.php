@@ -104,7 +104,11 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testComplete()
     {
-        $this->session->set('eccube.session.install', ['authmagic' => 'secret']);
+        $this->session->set('eccube.session.install',
+                            [
+                                'authmagic' => 'secret',
+                                'admin_allow_hosts' => "'[\"127.0.0.1\",\"192.168.0.1\"]'"
+                            ]);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
@@ -393,5 +397,13 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->assertEquals(phpversion(), $appData['php_ver']);
         $this->assertEquals(php_uname(), $appData['os_type']);
         $this->assertRegExp('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
+    }
+
+    public function testConvertAdminAllowHosts()
+    {
+        $adminAllowHosts = "127.0.0.1\r\n192.168.0.1";
+        $this->expected = '\'["127.0.0.1","192.168.0.1"]\'';
+        $this->actual = $this->controller->convertAdminAllowHosts($adminAllowHosts);
+        $this->verify();
     }
 }

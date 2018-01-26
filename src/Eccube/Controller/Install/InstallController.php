@@ -223,30 +223,28 @@ class InstallController extends AbstractController
     {
         $sessionData = $this->getSessionData($this->session);
 
-        if (empty($sessionData['database_name'])) {
-            // 再インストールの場合は環境変数から復旧
-            if (env('DATABASE_URL')) {
-                // ショップ名/メールアドレス
-                $conn = $this->container->get('database_connection');
-                $stmt = $conn->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
-                $row = $stmt->fetch();
-                $sessionData['shop_name'] = $row['shop_name'];
-                $sessionData['email'] = $row['email01'];
+        // 再インストールの場合は環境変数から復旧
+        if (env('DATABASE_URL')) {
+            // ショップ名/メールアドレス
+            $conn = $this->container->get('database_connection');
+            $stmt = $conn->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
+            $row = $stmt->fetch();
+            $sessionData['shop_name'] = $row['shop_name'];
+            $sessionData['email'] = $row['email01'];
 
-                $sessionData = array_merge($sessionData, $this->extractDatabaseUrl(env('DATABASE_URL')));
+            $sessionData = array_merge($sessionData, $this->extractDatabaseUrl(env('DATABASE_URL')));
 
-                // 管理画面ルーティング
-                $sessionData['admin_dir'] = env('ECCUBE_ADMIN_ROUTE');
+            // 管理画面ルーティング
+            $sessionData['admin_dir'] = env('ECCUBE_ADMIN_ROUTE');
 
-                // 管理画面許可IP
-                $sessionData['admin_allow_hosts'] = implode(PHP_EOL, env('ECCUBE_ADMIN_ALLOW_HOSTS', ['127.0.0.1']));
+            // 管理画面許可IP
+            $sessionData['admin_allow_hosts'] = implode(PHP_EOL, env('ECCUBE_ADMIN_ALLOW_HOSTS', ["127.0.0.1"]));
 
-                // 強制SSL
-                $sessionData['admin_force_ssl'] = env('ECCUBE_FORCE_SSL', false);
+            // 強制SSL
+            $sessionData['admin_force_ssl'] = env('ECCUBE_FORCE_SSL', false);
 
-                // メール
-                $sessionData = array_merge($sessionData, $this->extractMailerUrl(env('MAILER_URL')));
-            }
+            // メール
+            $sessionData = array_merge($sessionData, $this->extractMailerUrl(env('MAILER_URL')));
         }
 
         $form = $this->formFactory
@@ -393,15 +391,12 @@ class InstallController extends AbstractController
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
         $mailerUrl = $this->createMailerUrl($sessionData);
-        if (isset($sessionData['admin_allow_hosts'])) {
-            $adminAllowHosts = explode("\n", $sessionData['admin_allow_hosts']);
-        } else {
-            $adminAllowHosts = ['127.0.0.1'];
+        $forceSSL = isset($sessionData['admin_force_ssl']) ? (boolean)$sessionData['admin_force_ssl'] : false;
+        if ($forceSSL === false) {
+            $forceSSL = 'false';
+        } elseif ($forceSSL === true) {
+            $forceSSL = 'true';
         }
-        $adminAllowHosts = array_walk($adminAllowHosts, function ($allowHost) {
-            return trim($allowHost);
-        });
-
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
         $replacement = [
             'APP_ENV' => 'prod',
@@ -411,8 +406,8 @@ class InstallController extends AbstractController
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
             'DATABASE_SERVER_VERSION' => isset($sessionData['database_version']) ? $sessionData['database_version'] : '3',
-            'ECCUBE_ADMIN_ALLOW_HOSTS' => $adminAllowHosts,
-            'ECCUBE_FORCE_SSL' => isset($sessionData['admin_force_ssl']) ? $sessionData['admin_force_ssl'] : 'false',
+            'ECCUBE_ADMIN_ALLOW_HOSTS' => $this->convertAdminAllowHosts($sessionData['admin_allow_hosts']),
+            'ECCUBE_FORCE_SSL' => $forceSSL,
             'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin'
         ];
 
@@ -934,5 +929,22 @@ class InstallController extends AbstractController
         $version = $em->createNativeQuery($sql, $rsm)
             ->getSingleScalarResult();
         return $version;
+    }
+
+    /**
+     * @param string
+     * @return string
+     */
+    public function convertAdminAllowHosts($adminAllowHosts)
+    {
+        if ($adminAllowHosts) {
+            $adminAllowHosts = explode("\n", $adminAllowHosts);
+        } else {
+            $adminAllowHosts = ['127.0.0.1'];
+        }
+        foreach ($adminAllowHosts as &$allowHost) {
+            $allowHost = '"'.trim($allowHost).'"';
+        }
+        return "'[".implode(',', $adminAllowHosts)."]'";
     }
 }

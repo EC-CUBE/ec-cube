@@ -125,24 +125,6 @@ class Step3Type extends AbstractType
                 'label' => '管理画面へのアクセスを、以下のIPに制限します',
                 'required' => false,
             ))
-            ->add('trusted_proxies_connection_only', CheckboxType::class, array(
-                'label' => 'サイトが信頼されたロードバランサー、プロキシサーバからのみアクセスされる',
-                'required' => false,
-            ))
-            ->add('trusted_proxies', TextareaType::class, array(
-                'label' => 'ロードバランサー、プロキシサーバのIP',
-                'required' => false,
-            ))
-            ->add('mail_backend', ChoiceType::class, array(
-                'label' => 'メーラーバックエンド',
-                'choices' => array(
-                    'mail（PHPの組み込み関数 mail() を使用してメールを送信）' => 'mail',
-                    'SMTP（SMTPサーバに直接接続してメールを送信）' => 'smtp',
-                    'sendmail（sendmailプログラムによりメールを送信）' => 'sendmail',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
             ->add('smtp_host', TextType::class, array(
                 'label' => 'SMTPホスト',
                 'required' => false,
