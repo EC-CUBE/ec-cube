@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -38,12 +39,18 @@ class LogType extends AbstractType
     protected $appConfig;
 
     /**
+     * @var string
+     */
+    protected $logDir;
+
+    /**
      * LogType constructor.
      * @param $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(array $eccubeConfig, ContainerInterface $container)
     {
         $this->appConfig = $eccubeConfig;
+        $this->logDir = $container->getParameter('kernel.logs_dir');
     }
 
     /**
@@ -55,7 +62,7 @@ class LogType extends AbstractType
         $finder = new Finder();
         $finder->name('*.log')->depth('== 0');
 
-        foreach ($finder->in($this->appConfig['root_dir'].'/app/log/') as $file) {
+        foreach ($finder->in($this->logDir) as $file) {
             $files[$file->getFilename()] = $file->getFilename();
         }
 

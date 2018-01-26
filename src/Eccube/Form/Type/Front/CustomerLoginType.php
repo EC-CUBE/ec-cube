@@ -40,6 +40,9 @@ class CustomerLoginType extends AbstractType
      */
     protected $appConfig;
 
+    /**
+     * @var AuthenticationUtils
+     */
     protected $authenticationUtils;
 
     public function __construct(AuthenticationUtils $authenticationUtils, array $eccubeConfig)
@@ -55,7 +58,7 @@ class CustomerLoginType extends AbstractType
     {
         $builder->add('login_email', EmailType::class, array(
             'attr' => array(
-                'max_length' => $this->appConfig['max_length'],
+                'max_length' => $this->appConfig['stext_len'],
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
@@ -68,7 +71,7 @@ class CustomerLoginType extends AbstractType
         ));
         $builder->add('login_pass', PasswordType::class, array(
             'attr' => array(
-                'max_length' => $this->appConfig['max_length'],
+                'max_length' => $this->appConfig['stext_len'],
             ),
             'constraints' => array(
                 new Assert\NotBlank(),

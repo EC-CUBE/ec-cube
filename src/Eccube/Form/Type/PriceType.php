@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Intl\Intl;
@@ -40,13 +41,19 @@ class PriceType extends AbstractType
     protected $eccubeConfig;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * PriceType constructor.
      *
      * @param array $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(array $eccubeConfig, ContainerInterface $container)
     {
         $this->eccubeConfig = $eccubeConfig;
+        $this->container = $container;
     }
 
     /**
@@ -54,7 +61,7 @@ class PriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $currency = $this->eccubeConfig['currency_code'];
+        $currency = $this->container->getParameter('currency_code');
         $scale = Intl::getCurrencyBundle()->getFractionDigits($currency);
         $max = $this->eccubeConfig['price_max'];
         $min = -$max;

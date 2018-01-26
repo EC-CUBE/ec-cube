@@ -42,7 +42,7 @@ class LogTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         parent::setUp();
 
         $this->fileName = '_test_site_'.date('YmdHis').'.log';
-        $this->logTest = $this->eccubeConfig['root_dir'].'/app/log/'.$this->fileName;
+        $this->logTest = $this->container->getParameter('kernel.logs_dir').'/'.$this->fileName;
 
         // Check and create the file to test if it does not exist
         if (!file_exists($this->logTest)) {
