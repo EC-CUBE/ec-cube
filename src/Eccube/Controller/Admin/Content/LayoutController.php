@@ -24,10 +24,7 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
@@ -37,41 +34,43 @@ use Eccube\Repository\LayoutRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 // todo プレビュー実装
-/**
- * @Route(service=LayoutController::class)
- */
 class LayoutController extends AbstractController
 {
     /**
-     * @Inject(BlockRepository::class)
      * @var BlockRepository
      */
     protected $blockRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(LayoutRepository::class)
      * @var LayoutRepository
      */
     protected $layoutRepository;
 
     /**
-     * @Route("/%admin_route%/content/layout", name="admin_content_layout")
-     * @Template("Content/layout_list.twig")
+     * LayoutController constructor.
+     * @param BlockRepository $blockRepository
+     * @param LayoutRepository $layoutRepository
      */
-    public function index(Application $app, Request $request)
+    public function __construct(BlockRepository $blockRepository, LayoutRepository $layoutRepository)
+    {
+        $this->blockRepository = $blockRepository;
+        $this->layoutRepository = $layoutRepository;
+    }
+
+    /**
+     * @Route("/%admin_route%/content/layout", name="admin_content_layout")
+     * @Template("@admin/Content/layout_list.twig")
+     */
+    public function index()
     {
         $Layouts = $this->layoutRepository->findBy([], ['id' => 'DESC']);
 
@@ -84,32 +83,31 @@ class LayoutController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete")
      */
-    public function delete(Application $app, Request $request, $id)
+    public function delete($id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         $Layout = $this->layoutRepository->find($id);
         if (!$Layout) {
-            $app->deleteMessage();
+            $this->deleteMessage();
 
-            return $app->redirect($app->url('admin_content_layout'));
+            return $this->redirectToRoute('admin_content_layout');
         }
 
         $this->entityManager->remove($Layout);
         $this->entityManager->flush($Layout);
 
+        $this->addSuccess('admin.delete.complete', 'admin');
 
-        $app->addSuccess('admin.delete.complete', 'admin');
-
-        return $app->redirect($app->url('admin_content_layout'));
+        return $this->redirectToRoute('admin_content_layout');
     }
 
     /**
      * @Route("/%admin_route%/content/layout/new", name="admin_content_layout_new")
      * @Route("/%admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit")
-     * @Template("Content/layout.twig")
+     * @Template("@admin/Content/layout.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null)
     {
         if (is_null($id)) {
             $Layout = new Layout();
@@ -145,7 +143,7 @@ class LayoutController extends AbstractController
                 ->getResult();
         }
 
-        $builder = $app->form($Layout);
+        $builder = $this->formFactory->createBuilder(FormType::class, $Layout);
         $builder
             ->add(
                 'name',
@@ -212,9 +210,9 @@ class LayoutController extends AbstractController
                 $this->entityManager->flush($BlockPosition);
             }
 
-            $app->addSuccess('admin.register.complete', 'admin');
+            $this->addSuccess('admin.register.complete', 'admin');
 
-            return $app->redirect($app->url('admin_content_layout_edit', array('id' => $Layout->getId())));
+            return $this->redirectToRoute('admin_content_layout_edit', array('id' => $Layout->getId()));
         }
 
         return [
@@ -228,7 +226,7 @@ class LayoutController extends AbstractController
      * @Method("POST")
      * @Route("/%admin_route%/content/layout/view_block", name="admin_content_layout_view_block")
      */
-    public function viewBlock(Application $app, Request $request)
+    public function viewBlock(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -242,15 +240,15 @@ class LayoutController extends AbstractController
 
         $Block = $this->blockRepository->find($id);
 
-        if (is_null($Block)) {
-            return $app->json('みつかりませんでした');
+        if (null === $Block) {
+            return new JsonResponse('みつかりませんでした');
         }
 
         // ブロックのソースコードの取得.
         $file = $this->blockRepository->getReadTemplateFile($Block->getFileName());
         $source = $file['tpl_data'];
 
-        return $app->json([
+        return new JsonResponse([
             'id' => $Block->getId(),
             'source' => $source,
         ]);

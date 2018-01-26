@@ -34,7 +34,7 @@ parameters:
     sltext_len: 500
     smtext_len: 100
     tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
-    template_temp_realdir: %kernel.project_dir%/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
+    template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
     url_len: 1024
     default_page_count: 10
     admin_product_stock_status: 3
