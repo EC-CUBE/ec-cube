@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Category;
+use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -12,10 +13,13 @@ use Eccube\Tests\EccubeTestCase;
  */
 class CategoryRepositoryTest extends EccubeTestCase
 {
+    /** @var  CategoryRepository */
+    protected $categoryRepository;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->categoryRepository = $this->container->get(CategoryRepository::class);
         $this->remove();
         $this->createCategories();
     }
@@ -59,8 +63,8 @@ class CategoryRepositoryTest extends EccubeTestCase
             $Category->setPropertiesFromArray($category_array);
             $Category->setCreateDate(new \DateTime());
             $Category->setUpdateDate(new \DateTime());
-            $this->app['orm.em']->persist($Category);
-            $this->app['orm.em']->flush();
+            $this->entityManager->persist($Category);
+            $this->entityManager->flush();
             if (!array_key_exists('child', $category_array)) {
                 continue;
             }
@@ -71,8 +75,8 @@ class CategoryRepositoryTest extends EccubeTestCase
                 $Child->setCreateDate(new \DateTime());
                 $Child->setUpdateDate(new \DateTime());
                 $Category->addChild($Child);
-                $this->app['orm.em']->persist($Child);
-                $this->app['orm.em']->flush();
+                $this->entityManager->persist($Child);
+                $this->entityManager->flush();
                 if (!array_key_exists('child', $child_array)) {
                     continue;
                 }
@@ -83,14 +87,14 @@ class CategoryRepositoryTest extends EccubeTestCase
                     $Grandson->setCreateDate(new \DateTime());
                     $Grandson->setUpdateDate(new \DateTime());
                     $Child->addChild($Grandson);
-                    $this->app['orm.em']->persist($Grandson);
-                    $this->app['orm.em']->flush();
+                    $this->entityManager->persist($Grandson);
+                    $this->entityManager->flush();
                 }
             }
         }
         // 登録したEntityをEntityManagerからクリアする
         // ソート順が上記の登録順でキャッシュされているため、クリアして、DBから再取得させる
-        $this->app['orm.em']->clear();
+        $this->entityManager->clear();
     }
 
     /**
@@ -106,14 +110,14 @@ class CategoryRepositoryTest extends EccubeTestCase
     public function testGetTotalCount()
     {
         $this->expected = 11;
-        $this->actual = $this->app['eccube.repository.category']->getTotalCount();
+        $this->actual = $this->categoryRepository->getTotalCount();
 
         $this->verify('カテゴリの合計数は'.$this->expected.'ではありません');
     }
 
     public function testGetList()
     {
-        $Categories = $this->app['eccube.repository.category']->getList();
+        $Categories = $this->categoryRepository->getList();
 
         $this->expected = 3;
         $this->actual = count($Categories);
@@ -130,8 +134,8 @@ class CategoryRepositoryTest extends EccubeTestCase
 
     public function testGetListWithParent()
     {
-        $Parent1 = $this->app['eccube.repository.category']->findOneBy(array('name' => '子1'));
-        $Categories = $this->app['eccube.repository.category']->getList($Parent1);
+        $Parent1 = $this->categoryRepository->findOneBy(array('name' => '子1'));
+        $Categories = $this->categoryRepository->getList($Parent1);
 
         $this->expected = 1;
         $this->actual = count($Categories);
@@ -148,7 +152,7 @@ class CategoryRepositoryTest extends EccubeTestCase
 
     public function testGetListWithFlat()
     {
-        $Categories = $this->app['eccube.repository.category']->getList(null, true);
+        $Categories = $this->categoryRepository->getList(null, true);
 
         $this->expected = 11;
         $this->actual = count($Categories);
@@ -170,7 +174,7 @@ class CategoryRepositoryTest extends EccubeTestCase
         $Category = new Category();
         $Category->setName($name)
             ->setHierarchy(1);
-        $this->app['eccube.repository.category']->save($Category);
+        $this->categoryRepository->save($Category);
 
         $this->expected = 12;
         $this->actual = $Category->getSortNo();
@@ -181,11 +185,11 @@ class CategoryRepositoryTest extends EccubeTestCase
     {
         $faker = $this->getFaker();
         $name = $faker->name;
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-1'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '子2-1'));
         $Category->setName($name);
         $updateDate = $Category->getUpdateDate();
         sleep(1);
-        $this->app['eccube.repository.category']->save($Category);
+        $this->categoryRepository->save($Category);
 
         $this->expected = $updateDate;
         $this->actual = $Category->getUpdateDate();
@@ -193,17 +197,17 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->assertNotEquals($this->expected, $this->actual);
 
         // 名前を変更したので null になっているはず
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-1'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '子2-1'));
         $this->assertNull($Category);
     }
 
     public function testDelete()
     {
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '孫2'));
 
-        $this->app['eccube.repository.category']->delete($Category);
+        $this->categoryRepository->delete($Category);
 
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '孫2'));
         $this->assertNull($Category);
     }
 
@@ -211,11 +215,11 @@ class CategoryRepositoryTest extends EccubeTestCase
     {
         // 商品をカテゴリに紐付けて作成.
         $this->createProduct();
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫2'));
+        $Category = $this->categoryRepository->findOneBy(array('name' => '孫2'));
 
         try {
             // 紐付いた商品が存在している場合は削除できない.
-            $this->app['eccube.repository.category']->delete($Category);
+            $this->categoryRepository->delete($Category);
             $this->fail();
         } catch (\Exception $e) {
 
