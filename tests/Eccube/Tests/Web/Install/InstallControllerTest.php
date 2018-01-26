@@ -392,6 +392,6 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
         $this->assertEquals(phpversion(), $appData['php_ver']);
         $this->assertEquals(php_uname(), $appData['os_type']);
-        $this->assertRegExp('/(sqlite|mysql|pgsql).[0-9.]+/', $appData['db_ver']);
+        $this->assertRegExp('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
     }
 }
