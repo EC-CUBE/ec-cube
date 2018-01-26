@@ -24,16 +24,19 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Eccube\Entity\Customer;
+use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class DeliveryControllerTest extends AbstractWebTestCase
 {
-
+    /**
+     * @var Customer
+     */
     protected $Customer;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
     }
@@ -52,7 +55,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
                 'name02' => $faker->firstName,
             ),
             'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
             ),
             'company_name' => $faker->company,
@@ -82,55 +85,55 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
     public function testIndex()
     {
-        $this->logIn($this->Customer);
+        $this->logInTo($this->Customer);
         $client = $this->client;
 
         $client->request(
             'GET',
-            $this->app->path('mypage_delivery')
+            $this->generateUrl('mypage_delivery')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testNew()
     {
-        $this->logIn($this->Customer);
+        $this->logInTo($this->Customer);
         $client = $this->client;
 
         $client->request(
             'GET',
-            $this->app->path('mypage_delivery_new')
+            $this->generateUrl('mypage_delivery_new')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testNewWithPost()
     {
-        $this->logIn($this->Customer);
+        $this->logInTo($this->Customer);
         $client = $this->client;
 
         $form = $this->createFormData();
         $crawler = $client->request(
             'POST',
-            $this->app->path('mypage_delivery_new'),
+            $this->generateUrl('mypage_delivery_new'),
             array('customer_address' => $form)
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
     }
 
     public function testEdit()
     {
-        $this->logIn($this->Customer);
+        $this->logInTo($this->Customer);
         $client = $this->client;
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
+        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
             array('Customer' => $this->Customer)
         );
 
         $crawler = $client->request(
             'GET',
-            $this->app->path('mypage_delivery_edit', array('id' => $CustomerAddress->getId()))
+            $this->generateUrl('mypage_delivery_edit', array('id' => $CustomerAddress->getId()))
         );
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -138,21 +141,20 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
     public function testEditWithPost()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
+        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
             array('Customer' => $this->Customer)
         );
 
         $form = $this->createFormData();
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('mypage_delivery_edit', array('id' => $CustomerAddress->getId())),
+            $this->generateUrl('mypage_delivery_edit', array('id' => $CustomerAddress->getId())),
             array('customer_address' => $form)
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
         $this->expected = $form['name']['name01'];
         $this->actual = $CustomerAddress->getName01();
@@ -161,41 +163,40 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
     public function testDelete()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
+        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->findOneBy(
             array('Customer' => $this->Customer)
         );
         $id = $CustomerAddress->getId();
 
         $form = $this->createFormData();
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'DELETE',
-            $this->app->path('mypage_delivery_delete', array('id' => $id))
+            $this->generateUrl('mypage_delivery_delete', array('id' => $id))
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->find($id);
+        $CustomerAddress = $this->container->get(CustomerAddressRepository::class)->find($id);
         $this->assertNull($CustomerAddress);
 
         $this->expected = array('mypage.address.delete.complete');
-        $this->actual = $this->app['session']->getFlashBag()->get('eccube.front.success');
+        $this->actual = $this->container->get('session')->getFlashBag()->get('eccube.front.success');
         $this->verify();
     }
 
-    /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testDeleteWithFailure()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->logInTo($this->Customer);
 
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'DELETE',
-            $this->app->path('mypage_delivery_delete', array('id' => 999999999))
+            $this->generateUrl('mypage_delivery_delete', array('id' => 999999999))
         );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 }

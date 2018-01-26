@@ -35,7 +35,7 @@ class MypageControllerTest extends AbstractWebTestCase
     /**
      * @var Customer
      */
-    private $Customer;
+    protected $Customer;
 
     public function setUp()
     {
@@ -147,15 +147,14 @@ class MypageControllerTest extends AbstractWebTestCase
         $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]), null,
             0, 0, 'order_processing');
         $this->loginTo($this->Customer);
-        $client = $this->client;
 
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'GET',
             $this->generateUrl('mypage_history', array('id' => $Order->getId()))
         );
 
         $this->expected = 404;
-        $this->actual = $client->getResponse()->getStatusCode();
+        $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
     }
 
