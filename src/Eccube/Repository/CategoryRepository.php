@@ -42,14 +42,19 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-    public function __construct(RegistryInterface $registry)
+    /**
+     * CategoryRepository constructor.
+     * @param RegistryInterface $registry
+     * @param array $eccubeConfig
+     */
+    public function __construct(RegistryInterface $registry, array $eccubeConfig)
     {
         parent::__construct($registry, Category::class);
+        $this->appConfig = $eccubeConfig;
     }
 
     /**
@@ -78,8 +83,9 @@ class CategoryRepository extends AbstractRepository
      */
     public function getList(Category $Parent = null, $flat = false)
     {
-        $options = $this->appConfig['doctrine_cache'];
-        $lifetime = $options['result_cache']['lifetime'];
+        // TODO::doctrine_cache is not implement
+        // $options = $this->appConfig['doctrine_cache'];
+        // $lifetime = $options['result_cache']['lifetime'];
 
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')
@@ -99,7 +105,7 @@ class CategoryRepository extends AbstractRepository
             $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
-            ->useResultCache(true, $lifetime)
+            // ->useResultCache(true, $lifetime) TODO::doctrine_cache is not implement
             ->getResult();
 
         if ($flat) {
