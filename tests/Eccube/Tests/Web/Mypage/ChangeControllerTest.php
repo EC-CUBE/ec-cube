@@ -24,16 +24,18 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class ChangeControllerTest extends AbstractWebTestCase
 {
-
+    /**
+     * @var Customer
+     */
     protected $Customer;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
     }
@@ -53,7 +55,7 @@ class ChangeControllerTest extends AbstractWebTestCase
                 'name02' => $faker->firstName,
             ),
             'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
             ),
             'company_name' => $faker->company,
@@ -99,29 +101,27 @@ class ChangeControllerTest extends AbstractWebTestCase
 
     public function testIndex()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->loginTo($this->Customer);
 
-        $client->request(
+        $this->client->request(
             'GET',
-            $this->app->path('mypage_change')
+            $this->generateUrl('mypage_change')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndexWithPost()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('mypage_change'),
+            $this->generateUrl('mypage_change'),
             array('entry' => $form)
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_change_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_change_complete')));
 
         $this->expected = $form['email']['first'];
         $this->actual = $this->Customer->getEmail();
@@ -130,45 +130,42 @@ class ChangeControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostDefaultPassword()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
         $form['password'] = array(
-            'first' => $this->app['config']['default_password'],
-            'second' => $this->app['config']['default_password']
+            'first' => $this->eccubeConfig['default_password'],
+            'second' => $this->eccubeConfig['default_password']
         );
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('mypage_change'),
+            $this->generateUrl('mypage_change'),
             array('entry' => $form)
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_change_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_change_complete')));
     }
 
     public function testIndexWithPostInvalid()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->loginTo($this->Customer);
 
-        $client->request(
+        $this->client->request(
             'POST',
-            $this->app->path('mypage_change'),
+            $this->generateUrl('mypage_change'),
             array()
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testComplete()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->loginTo($this->Customer);
 
-        $client->request(
+        $this->client->request(
             'GET',
-            $this->app->path('mypage_change_complete')
+            $this->generateUrl('mypage_change_complete')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

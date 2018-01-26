@@ -127,7 +127,8 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]),null,0,0, 'order_new');
+        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]), null,
+            0, 0, 'order_new');
         $this->loginTo($this->Customer);
         $client = $this->client;
 
@@ -142,8 +143,9 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
-         // 後方互換のため最初の1つのみ渡す
-        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]),null,0,0,'order_processing');
+        // 後方互換のため最初の1つのみ渡す
+        $Order = $this->container->get(Generator::class)->createOrder($this->Customer, array($ProductClasses[0]), null,
+            0, 0, 'order_processing');
         $this->loginTo($this->Customer);
         $client = $this->client;
 
@@ -192,7 +194,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
             // id とは 逆順に create_date を設定する.
             // 画面表示は create_date 降順なので, id 昇順にソートされるはず
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-' . $i . ' days'));
             $this->entityManager->flush();
         }
 
