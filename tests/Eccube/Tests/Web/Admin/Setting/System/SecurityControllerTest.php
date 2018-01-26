@@ -60,9 +60,9 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         // virtual directory
         vfsStream::setup('rootDir');
 
-
-        $this->configFileReal = $config['root_dir'].'/app/config/eccube/packages/eccube.yaml';
-        $this->pathFileReal = $config['root_dir'].'/app/config/eccube/services.yaml';
+        $rootDir = $this->container->getParameter('kernel.project_dir');
+        $this->configFileReal = $rootDir.'/app/config/eccube/packages/eccube.yaml';
+        $this->pathFileReal = $rootDir.'/app/config/eccube/services.yaml';
 
         if (!file_exists($this->configFileReal) || !file_exists($this->pathFileReal)) {
             $this->markTestSkipped('Skip if not have config file');
@@ -91,8 +91,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
 
         // dump file
-        $this->configFile = $config['root_dir'].'/app/config/eccube/packages/eccube.yaml';
-        $this->pathFile = $config['root_dir'].'/app/config/eccube/services.yaml';
+        $this->configFile = $rootDir.'/app/config/eccube/packages/eccube.yaml';
+        $this->pathFile = $rootDir.'/app/config/eccube/services.yaml';
 
         vfsStream::create($structure);
     }
@@ -149,7 +149,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData['admin_allow_hosts'] = null;
         $formData['force_ssl'] = null;
 
-        $pathFile = $this->eccubeConfig['root_dir'].'/app/config/eccube/services.yaml';
+        $pathFile = $this->container->getParameter('kernel.project_dir').'/app/config/eccube/services.yaml';
         $config = Yaml::parseFile($pathFile);
 
         $formData['admin_route_dir'] = $config['parameters']['admin_route'];

@@ -24,7 +24,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Eccube\Kernel;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -49,10 +48,9 @@ class LogControllerTest extends AbstractAdminWebTestCase
             'line_max' => '50',
         );
 
-        /** @var Kernel $rootDir */
-        $kernel= $this->container->get('kernel');
+        $logDir = $this->container->getParameter('kernel.logs_dir');
 
-        $this->logTest = $kernel->getLogDir().'/'.$this->formData['files'];
+        $this->logTest = $logDir.'/'.$this->formData['files'];
 
         if (!file_exists($this->logTest)) {
             file_put_contents($this->logTest, 'test');

@@ -76,7 +76,7 @@ class SecurityController extends AbstractController
                 // 現在のセキュリティ情報を更新
                 $adminRoot = $this->eccubeConfig['admin_route'];
 
-                $configFile = $this->eccubeConfig['root_dir'].'/app/config/eccube/packages/eccube.yaml';
+                $configFile = $this->getParameter('kernel.project_dir').'/app/config/eccube/packages/eccube.yaml';
                 $config = Yaml::parseFile($configFile);
 
                 // trim処理
@@ -106,7 +106,7 @@ class SecurityController extends AbstractController
                 file_put_contents($configFile, Yaml::dump($config, 10, 2));
 
                 // ルーティングのキャッシュを削除
-                $cacheDir = $this->eccubeConfig['root_dir'].'/app/cache/routing';
+                $cacheDir = $this->getParameter('kernel.project_dir').'/app/cache/routing';
                 if (file_exists($cacheDir)) {
                     $finder = Finder::create()->in($cacheDir);
                     $filesystem = new Filesystem();
@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
 
                 if ($adminRoot != $data['admin_route_dir']) {
                     // admin_routeが変更されればpath.phpを更新
-                    $pathFile = $this->eccubeConfig['root_dir'].'/app/config/eccube/services.yaml';
+                    $pathFile = $this->getParameter('kernel.project_dir').'/app/config/eccube/services.yaml';
                     $config = Yaml::parseFile($pathFile);
                     $config['parameters']['admin_route'] = $data['admin_route_dir'];
 

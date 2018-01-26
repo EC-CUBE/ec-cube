@@ -31,25 +31,12 @@ use Eccube\Form\Type\Admin\LogType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @Route(service=LogController::class)
  */
 class LogController extends  AbstractController
 {
-    /** @var  KernelInterface */
-    protected $kernel;
-
-    /**
-     * LogController constructor.
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
 
     /**
      * @Route("/%admin_route%/setting/system/log", name="admin_setting_system_log")
@@ -91,7 +78,8 @@ class LogController extends  AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
         }
-        $logFile = $this->kernel->getLogDir().'/'.$formData['files'];
+        $logDir = $this->getParameter('kernel.logs_dir');
+        $logFile = $logDir.'/'.$formData['files'];
 
         return [
             'form' => $form->createView(),
