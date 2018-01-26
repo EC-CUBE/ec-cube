@@ -57,9 +57,9 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->paymentOptionRepository = $this->container->get(PaymentOptionRepository::class);
     }
 
-    public function test_findAllowedPayment()
+    public function test_findAllowedPaymentEmpty()
     {
-        $saleTypes = [7, 6];
+        $saleTypes = array(7, 6);
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
@@ -76,6 +76,8 @@ class PaymentRepositoryTest extends EccubeTestCase
             // TODO: FIXME this test may be incomplete ?
             $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
         }
+        $deliveries = $this->deliveryRepo->findAllowedDeliveries($saleTypes, $payments);
+        $this->assertEmpty($deliveries);
     }
 
     public function testFindAllowedPaymentWithDefault()

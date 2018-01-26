@@ -75,6 +75,9 @@ class PaymentRepository extends AbstractRepository
         return $Payment;
     }
 
+    /**
+     * @return array
+     */
     public function findAllArray()
     {
 
