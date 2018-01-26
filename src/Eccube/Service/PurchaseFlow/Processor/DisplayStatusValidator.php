@@ -10,6 +10,12 @@ use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 class DisplayStatusValidator extends ValidatableItemProcessor
 {
+    /**
+     * validate
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     * @throws InvalidItemException
+     */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
@@ -21,6 +27,11 @@ class DisplayStatusValidator extends ValidatableItemProcessor
         }
     }
 
+    /**
+     * handle
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         if ($item instanceof CartItem) {

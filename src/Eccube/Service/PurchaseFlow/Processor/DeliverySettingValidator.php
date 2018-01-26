@@ -18,11 +18,21 @@ class DeliverySettingValidator extends ValidatableItemProcessor
      */
     protected $deliveryRepository;
 
+    /**
+     * DeliverySettingValidator constructor.
+     * @param DeliveryRepository $deliveryRepository
+     */
     public function __construct(DeliveryRepository $deliveryRepository)
     {
         $this->deliveryRepository = $deliveryRepository;
     }
 
+    /**
+     * validate
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     * @throws InvalidItemException
+     */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
@@ -37,6 +47,11 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         }
     }
 
+    /**
+     * handle
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
         $item->setQuantity(0);
