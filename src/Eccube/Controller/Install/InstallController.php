@@ -108,7 +108,8 @@ class InstallController extends AbstractController
         SessionInterface $session,
         FormFactoryInterface $formFactory,
         PasswordEncoder $encoder,
-        $environment
+        $environment,
+        $eccubeConfig
     ) {
         $this->rootDir = realpath(__DIR__.'/../../../..');
         $this->configDir = realpath($this->rootDir.'/app/config/eccube');
@@ -118,6 +119,7 @@ class InstallController extends AbstractController
         $this->formFactory = $formFactory;
         $this->encoder = $encoder;
         $this->environment = $environment;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -368,8 +370,10 @@ class InstallController extends AbstractController
                     'http_url' => $host.$basePath,
                     'shop_name' => $sessionData['shop_name'],
                 );
-                // $this->sendAppData($params);
+                $this->sendAppData($params, $em);
             }
+            $version = $this->getDatabaseVersion($em);
+            $this->setSessionData($this->session, ['database_version' => $version]);
 
             return $this->redirectToRoute('install_complete');
         }
@@ -389,6 +393,14 @@ class InstallController extends AbstractController
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
         $mailerUrl = $this->createMailerUrl($sessionData);
+        if (isset($sessionData['admin_allow_hosts'])) {
+            $adminAllowHosts = explode("\n", $sessionData['admin_allow_hosts']);
+        } else {
+            $adminAllowHosts = ['127.0.0.1'];
+        }
+        $adminAllowHosts = array_walk($adminAllowHosts, function ($allowHost) {
+            return trim($allowHost);
+        });
 
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
         $replacement = [
@@ -398,20 +410,11 @@ class InstallController extends AbstractController
             'DATABASE_URL' => $databaseUrl,
             'MAILER_URL' => $mailerUrl,
             'ECCUBE_AUTH_MAGIC' => $sessionData['authmagic'],
-            'DATABASE_SERVER_VERSION' => '3', // TODO
-            'ECCUBE_ADMIN_ALLOW_HOSTS' => $sessionData['admin_allow_hosts'],
-            'ECCUBE_FORCE_SSL' => $sessionData['admin_force_ssl'],
-            'ECCUBE_COOKIE_LIFETIME' => '0',
-            'eccube_COOKIE_NAME' => 'eccube',
-            'ECCUBE_LOCALE' => 'ja',
-            'ECCUBE_TIMEZONE' => 'Asia/Tokyo',
-            'ECCUBE_CURRENCY' => 'JPY',
-            'ECCUBE_ADMIN_ROUTE' => $sessionData['admin_dir']
+            'DATABASE_SERVER_VERSION' => isset($sessionData['database_version']) ? $sessionData['database_version'] : '3',
+            'ECCUBE_ADMIN_ALLOW_HOSTS' => $adminAllowHosts,
+            'ECCUBE_FORCE_SSL' => isset($sessionData['admin_force_ssl']) ? $sessionData['admin_force_ssl'] : 'false',
+            'ECCUBE_ADMIN_ROUTE' => isset($sessionData['admin_dir']) ? $sessionData['admin_dir'] : 'admin'
         ];
-        // TODO
-        // $version = $this->em
-        //     ->createNativeQuery('select '.$func.' as v', $rsm)
-        //     ->getSingleScalarResult();
 
         $env = $this->replaceEnv($env, $replacement);
 
@@ -420,7 +423,7 @@ class InstallController extends AbstractController
         }
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
-        $adminUrl = $host.$basePath.'/'.$sessionData['admin_dir'];
+        $adminUrl = $host.$basePath.'/'.$replacement['ECCUBE_ADMIN_ROUTE'];
 
         $this->removeSessionData($this->session);
         return [
@@ -846,161 +849,43 @@ class InstallController extends AbstractController
         }
     }
 
-    public function copyConfigFiles()
+    /**
+     * @param array $params
+     * @param EntityManager $em
+     * @return array
+     */
+    public function createAppData($params, EntityManager $em)
     {
-        $from = $this->configDistDir;
-        $to = $this->configDir;
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->mirror($from, $to, null, ['override' => true]);
-    }
-
-    public function replaceConfigFiles($data, $updateAuthMagic = true)
-    {
-        $values['ECCUBE_INSTALL'] = 1;
-        $values['ECCUBE_ROOT_URLPATH'] = $data['root_urlpath'];
-
-        if ($updateAuthMagic) {
-            $values['ECCUBE_AUTH_MAGIC'] = StringUtil::random(32);
-        } else {
-            if (empty($values['ECCUBE_AUTH_MAGIC'])) {
-                $values['ECCUBE_AUTH_MAGIC'] = StringUtil::random(32);
-            }
-        }
-        if (isset($data['force_ssl'])) {
-            $values['ECCUBE_FORCE_SSL'] = $data['force_ssl'];
-        }
-        if (isset($data['admin_dir'])) {
-            $values['ECCUBE_ADMIN_ROUTE'] = $data['admin_dir'];
-        }
-        if (isset($data['database'])) {
-            $values['ECCUBE_DB_DEFAULT'] = str_replace('pdo_', '', $data['database']);
-        }
-        if (isset($data['database_host'])) {
-            $values['ECCUBE_DB_HOST'] = $data['database_host'];
-        }
-        if (isset($data['database_port'])) {
-            $values['ECCUBE_DB_PORT'] = $data['database_port'];
-        }
-        if (isset($data['database_name'])) {
-            $values['ECCUBE_DB_DATABASE'] = $data['database_name'];
-        }
-        if (isset($data['database_user'])) {
-            $values['ECCUBE_DB_USERNAME'] = $data['database_user'];
-        }
-        if (isset($data['database_password'])) {
-            $values['ECCUBE_DB_PASSWORD'] = $data['database_password'];
-        }
-        if (isset($data['mail_backend'])) {
-            $values['ECCUBE_MAIL_TRANSPORT'] = $data['mail_backend'];
-        }
-        if (isset($data['smtp_host'])) {
-            $values['ECCUBE_MAIL_HOST'] = $data['smtp_host'];
-        }
-        if (isset($data['smtp_port'])) {
-            $values['ECCUBE_MAIL_PORT'] = $data['smtp_port'];
-        }
-        if (isset($data['smtp_username'])) {
-            $values['ECCUBE_MAIL_USERNAME'] = $data['smtp_username'];
-        }
-        if (isset($data['smtp_password'])) {
-            $values['ECCUBE_MAIL_PASSWORD'] = $data['smtp_password'];
-        }
-        if (isset($data['admin_allow_hosts'])) {
-            $values['ECCUBE_ADMIN_ALLOW_HOSTS'] = $data['admin_allow_hosts'];
-        }
-        if (isset($data['admin_allow_hosts'])) {
-            $hosts = StringUtil::convertLineFeed($data['admin_allow_hosts']);
-            if ($hosts) {
-                $values['ECCUBE_ADMIN_ALLOW_HOSTS'] = explode("\n", $hosts);
-            }
-        }
-        if (isset($data['trusted_proxies'])) {
-            $proxies = StringUtil::convertLineFeed($data['trusted_proxies']);
-            if ($proxies) {
-                $proxies = explode("\n", $proxies);
-                // ループバックアドレスを含める
-                $values['ECCUBE_TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
-            }
-        }
-        if (isset($data['ECCUBE_trusted_proxies_connection_only']) && $data['trusted_proxies_connection_only']) {
-            // ループバックアドレスを含める
-            $values['ECCUBE_TRUSTED_PROXIES'] = array_merge($proxies, ['127.0.0.1/8', '::1']);
-        }
-
-        foreach ($values as &$value) {
-            if (is_bool($value)
-                || is_null($value)
-                || is_array($value)
-                || is_numeric($value)
-            ) {
-                $value = var_export($value, true);
-            } else {
-                $value = "'".$value."'";
-            }
-        }
-
-        $dir = $this->configDir;
-        $files = [
-            $dir.'/config.php',
-            $dir.'/database.php',
-            $dir.'/mail.php',
-            $dir.'/path.php',
+        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        $version = $this->getDatabaseVersion($em);
+        $data = [
+            'site_url' => $params['http_url'],
+            'shop_name' => $params['shop_name'],
+            'cube_ver' => Constant::VERSION,
+            'php_ver' => phpversion(),
+            'db_ver' => $platform.' '.$version,
+            'os_type' => php_uname(),
         ];
-
-        $patternFormat = "/(env\('%s'.*?\),)/s";
-        $replacementFormat = "env('%s', %s),";
-
-        foreach ($files as $file) {
-            $content = file_get_contents($file);
-            foreach ($values as $k => $v) {
-                $pattern = sprintf($patternFormat, $k);
-                $replace = sprintf($replacementFormat, $k, $v);
-                $content = preg_replace($pattern, $replace, $content);
-                if (is_null($content)) {
-                    throw new \Exception();
-                }
-            }
-            file_put_contents($file, $content);
-        }
+        return $data;
     }
 
-    public function sendAppData($params)
+    /**
+     * @param array $params
+     * @param EntityManager $em
+     */
+    public function sendAppData($params, EntityManager $em)
     {
-        $config = require $this->configDir.'/database.php';
-        $conn = $this->createConnection($config['database']);
-        $stmt = $conn->query('select version() as v');
-        $version = '';
-
-        foreach ($stmt as $row) {
-            $version = $row['v'];
-        }
-
-        if ($config['database']['driver'] === 'pdo_mysql') {
-            $db_ver = 'MySQL:'.$version;
-        } else {
-            $db_ver = $version;
-        }
-
-        $data = http_build_query(
-            array(
-                'site_url' => $params['http_url'],
-                'shop_name' => $params['shop_name'],
-                'cube_ver' => Constant::VERSION,
-                'php_ver' => phpversion(),
-                'db_ver' => $db_ver,
-                'os_type' => php_uname(),
-            )
-        );
+        $query = http_build_query($this->createAppData($params, $em));
         $header = array(
             'Content-Type: application/x-www-form-urlencoded',
-            'Content-Length: '.strlen($data),
+            'Content-Length: '.strlen($query),
         );
         $context = stream_context_create(
             array(
                 'http' => array(
                     'method' => 'POST',
                     'header' => $header,
-                    'content' => $data,
+                    'content' => $query,
                 ),
             )
         );
@@ -1020,5 +905,34 @@ class InstallController extends AbstractController
             $env = preg_replace('/('.$key.')=(.*)/', '$1='.$value, $env);
         }
         return $env;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @return string
+     */
+    public function getDatabaseVersion(EntityManager $em)
+    {
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm->addScalarResult('server_version', 'server_version');
+
+        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        switch ($platform) {
+            case 'sqlite':
+                $sql = 'SELECT sqlite_version() AS server_version';
+                break;
+
+            case 'mysql':
+                $sql = 'SELECT version() AS server_version';
+                break;
+
+            case 'pgsql':
+            default:
+                $sql = 'SHOW server_version';
+        }
+
+        $version = $em->createNativeQuery($sql, $rsm)
+            ->getSingleScalarResult();
+        return $version;
     }
 }

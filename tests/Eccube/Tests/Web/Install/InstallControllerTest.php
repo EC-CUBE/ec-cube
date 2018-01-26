@@ -24,6 +24,7 @@
 
 namespace Eccube\Tests\Web\Install;
 
+use Eccube\Common\Constant;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
@@ -57,8 +58,9 @@ class InstallControllerTest extends AbstractWebTestCase
         parent::setUp();
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
+        $config = $this->container->getParameter('eccube.constants');
         $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install');
+        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install', $config);
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
@@ -369,5 +371,27 @@ class InstallControllerTest extends AbstractWebTestCase
             'auth_mode' => 'login'
         ];
         $this->verify();
+    }
+
+    public function testDatabaseVersion()
+    {
+        $version = $this->controller->getDatabaseVersion($this->entityManager);
+        $this->assertRegExp('/[0-9.]+/', $version);
+    }
+
+    public function testCreateAppData()
+    {
+        $params = [
+            'http_url' => 'http://example.com',
+            'shop_name' => 'example shop'
+        ];
+        $appData = $this->controller->createAppData($params, $this->entityManager);
+
+        $this->assertEquals('http://example.com', $appData['site_url']);
+        $this->assertEquals('example shop', $appData['shop_name']);
+        $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
+        $this->assertEquals(phpversion(), $appData['php_ver']);
+        $this->assertEquals(php_uname(), $appData['os_type']);
+        $this->assertRegExp('/(sqlite|mysql|pgsql).[0-9.]+/', $appData['db_ver']);
     }
 }
