@@ -24,9 +24,6 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
@@ -34,23 +31,25 @@ use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\Cart\CartItemAllocator;
 use Eccube\Service\Cart\CartItemComparator;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @Service
- */
 class CartService
 {
     /**
-     * @var Session
+     * @var Cart[]
+     */
+    protected $carts;
+
+    /**
+     * @var SessionInterface
      */
     protected $session;
 
     /**
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
-    protected $em;
+    protected $entityManager;
 
     /**
      * @var ItemHolderInterface
@@ -60,36 +59,37 @@ class CartService
 
     /**
      * @var ProductClassRepository
-     * @Inject(ProductClassRepository::class)
      */
     protected $productClassRepository;
 
     /**
      * @var CartItemComparator
-     * @Inject(CartItemComparator::class)
      */
     protected $cartItemComparator;
 
     /**
      * @var CartItemAllocator
-     * @Inject(CartItemAllocator::class)
      */
     protected $cartItemAllocator;
 
     /**
-     * @var Cart[]
+     * CartService constructor.
+     *
+     * @param SessionInterface $session
+     * @param EntityManagerInterface $entityManager
+     * @param ProductClassRepository $productClassRepository
+     * @param CartItemComparator $cartItemComparator
+     * @param CartItemAllocator $cartItemAllocator
      */
-    protected $carts;
-
     public function __construct(
         SessionInterface $session,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         ProductClassRepository $productClassRepository,
         CartItemComparator $cartItemComparator,
         CartItemAllocator $cartItemAllocator
     ) {
         $this->session = $session;
-        $this->em = $entityManager;
+        $this->entityManager = $entityManager;
         $this->productClassRepository = $productClassRepository;
         $this->cartItemComparator = $cartItemComparator;
         $this->cartItemAllocator = $cartItemAllocator;
@@ -202,7 +202,7 @@ class CartService
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
+            $ProductClass = $this->entityManager
                 ->getRepository(ProductClass::class)
                 ->find($ProductClassId);
             if (is_null($ProductClass)) {
@@ -235,7 +235,7 @@ class CartService
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
-            $ProductClass = $this->em
+            $ProductClass = $this->entityManager
                 ->getRepository(ProductClass::class)
                 ->find($ProductClassId);
             if (is_null($ProductClass)) {

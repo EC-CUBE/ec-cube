@@ -21,35 +21,60 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
 use Eccube\Util\StringUtil;
+use Eccube\Entity\Product;
+use Eccube\Entity\Master\SaleType;
+use Eccube\Repository\Master\SaleTypeRepository;
 
 class CartServiceTest extends AbstractServiceTestCase
 {
+    /**
+     * @var Product
+     */
+    protected $Product;
+
+    /**
+     * @var Product
+     */
+    protected $Product2;
+
+    /**
+     * @var SaleType
+     */
+    protected $SaleType1;
+
+    /**
+     * @var SaleType
+     */
+    protected $SaleType2;
 
     /**
      * @var CartService
      */
     protected $cartService;
 
-    protected $Product;
+    /**
+     * @var SaleTypeRepository
+     */
+    protected $saleTypeRepository;
 
-    protected $Product2;
-
-    protected $SaleType1;
-
-    protected $SaleType2;
-
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
-        $this->SaleType1 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
-        $this->SaleType2 = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 2);
+
+        $this->cartService = $this->container->get(CartService::class);
+        $this->saleTypeRepository = $this->container->get(SaleTypeRepository::class);
+
+        $this->SaleType1 = $this->saleTypeRepository->find(1);
+        $this->SaleType2 = $this->saleTypeRepository->find(2);
         $this->Product = $this->createProduct();
 
         // SaleType 2 の商品を作成
@@ -58,8 +83,6 @@ class CartServiceTest extends AbstractServiceTestCase
             $ProductClass->setSaleType($this->SaleType2);
         }
         $this->entityManager->flush();
-
-        $this->cartService = $this->container->get(CartService::class);
     }
 
     public function testUnlock()
