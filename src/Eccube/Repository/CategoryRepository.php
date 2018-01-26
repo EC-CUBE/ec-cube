@@ -26,7 +26,6 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\Category;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -42,14 +41,14 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, array $eccubeConfig)
     {
         parent::__construct($registry, Category::class);
+        $this->appConfig = $eccubeConfig;
     }
 
     /**
