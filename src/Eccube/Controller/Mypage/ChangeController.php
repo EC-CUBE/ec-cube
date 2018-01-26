@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Mypage;
 
-use Eccube\Annotation\Inject;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -128,7 +127,7 @@ class ChangeController extends AbstractController
 
             return $this->redirect($this->generateUrl('mypage_change_complete'));
         }
-        dump($this->tokenStorage);
+
         $this->tokenStorage->getToken()->setUser($LoginCustomer);
 
         return [
