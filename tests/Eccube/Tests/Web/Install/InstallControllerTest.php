@@ -245,8 +245,8 @@ class InstallControllerTest extends AbstractWebTestCase
         $params = [
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
-            'smtp_user' => 'username',
-            'smtp_password' => 'password'
+            'smtp_password' => 'password',
+            'smtp_username' => 'username'
         ];
         $this->expected = 'smtp://username:password@localhost:587?auth_mode=plain';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -255,9 +255,9 @@ class InstallControllerTest extends AbstractWebTestCase
         $params = [
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
-            'smtp_user' => 'username',
             'smtp_password' => 'password',
-            'auth_mode' => 'login'
+            'auth_mode' => 'login',
+            'smtp_username' => 'username'
         ];
         $this->expected = 'smtp://username:password@localhost:587?auth_mode=login';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -266,10 +266,10 @@ class InstallControllerTest extends AbstractWebTestCase
         $params = [
             'smtp_host' => 'localhost',
             'smtp_port' => 465,
-            'smtp_user' => 'username',
             'smtp_password' => 'password',
             'auth_mode' => 'login',
-            'encryption' => 'ssl'
+            'encryption' => 'ssl',
+            'smtp_username' => 'username'
         ];
         $this->expected = 'smtp://username:password@localhost:465?auth_mode=login&encryption=ssl';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -288,8 +288,8 @@ class InstallControllerTest extends AbstractWebTestCase
             'smtp_host' => 'smtp.gmail.com',
             'encryption' => 'ssl',
             'auth_mode' => 'login',
-            'smtp_user' => 'username@gmail.com',
-            'smtp_password' => 'password'
+            'smtp_password' => 'password',
+            'smtp_username' => 'username@gmail.com'
         ];
         $this->expected = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
         $this->actual = $this->controller->createMailerUrl($params);
@@ -302,12 +302,12 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->extractMailerUrl($url);
         $this->expected = [
             'transport' => 'smtp',
-            'smtp_user' => null,
             'smtp_password' => null,
             'smtp_host' => 'localhost',
             'smtp_port' => 25,
             'encryption' => null,
-            'auth_mode' => null
+            'auth_mode' => null,
+            'smtp_username' => null
         ];
         $this->verify();
 
@@ -315,12 +315,12 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->extractMailerUrl($url);
         $this->expected = [
             'transport' => 'smtp',
-            'smtp_user' => null,
             'smtp_password' => null,
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
             'encryption' => null,
-            'auth_mode' => null
+            'auth_mode' => null,
+            'smtp_username' => null,
         ];
         $this->verify();
 
@@ -328,7 +328,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->extractMailerUrl($url);
         $this->expected = [
             'transport' => 'smtp',
-            'smtp_user' => 'username',
+            'smtp_username' => 'username',
             'smtp_password' => 'password',
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
@@ -341,7 +341,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->extractMailerUrl($url);
         $this->expected = [
             'transport' => 'smtp',
-            'smtp_user' => 'username',
+            'smtp_username' => 'username',
             'smtp_password' => 'password',
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
@@ -354,7 +354,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->extractMailerUrl($url);
         $this->expected = [
             'transport' => 'smtp',
-            'smtp_user' => 'username',
+            'smtp_username' => 'username',
             'smtp_password' => 'password',
             'smtp_host' => 'localhost',
             'smtp_port' => 587,
@@ -367,7 +367,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->actual = $this->controller->extractMailerUrl($url);
         $this->expected = [
             'transport' => 'smtp',
-            'smtp_user' => 'username@gmail.com',
+            'smtp_username' => 'username@gmail.com',
             'smtp_password' => 'password',
             'smtp_host' => 'smtp.gmail.com',
             'smtp_port' => 465,

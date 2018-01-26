@@ -44,7 +44,6 @@ class Step3TypeTest extends AbstractTypeTestCase
         'admin_dir' => 'administrator',
         'admin_force_ssl' => true,
         'admin_allow_hosts' => '1.1.1.1',
-        'mail_backend' => 'mail',
         'smtp_host' => '',
         'smtp_port' => '',
         'smtp_username' => '',
@@ -263,13 +262,5 @@ class Step3TypeTest extends AbstractTypeTestCase
         $this->formData['admin_allow_hosts'] = "255.255.255,256";
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-    }
-
-    public function testValid_MailBackend_Blank()
-    {
-        $this->formData['mail_backend'] = '';
-
-        $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
     }
 }
