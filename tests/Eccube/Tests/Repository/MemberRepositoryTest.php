@@ -2,9 +2,10 @@
 
 namespace Eccube\Tests\Repository;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Member;
+use Eccube\Repository\MemberRepository;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,79 +18,42 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MemberRepositoryTest extends EccubeTestCase
 {
 
+    /** @var  Member */
     protected $Member;
+    /** @var  MemberRepository */
+    protected $memberRepo;
+
+    /** @var  EncoderFactoryInterface */
+    protected $encoderFactory;
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->Member = $this->app['eccube.repository.member']->find(1);
-        $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')
+        $this->encoderFactory = $this->container->get('security.encoder_factory');
+        $this->memberRepo = $this->container->get(MemberRepository::class);
+        $this->Member = $this->memberRepo->find(1);
+        $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
             ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
 
         for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
             $salt = bin2hex(openssl_random_pseudo_bytes(5));
             $password = 'password';
-            $encoder = $this->app['security.encoder_factory']->getEncoder($Member);
+            $encoder = $this->encoderFactory->getEncoder($Member);
             $Member
                 ->setLoginId('member-1')
                 ->setPassword($encoder->encodePassword($password, $salt))
                 ->setSalt($salt)
                 ->setSortNo($i)
                 ->setWork($Work);
-            $this->app['orm.em']->persist($Member);
-            $this->app['eccube.repository.member']->save($Member);
+            $this->entityManager->persist($Member);
+            $this->memberRepo->save($Member);
         }
-    }
-
-    public function testLoadUserByUsername()
-    {
-        $this->actual = $this->Member;
-        $this->expected = $this->app['eccube.repository.member']->loadUserByUsername('admin');
-        $this->verify();
-    }
-
-    public function testLoadUserByUsernameWithException()
-    {
-        $username = 'aaaaa';
-        try {
-            $Member = $this->app['eccube.repository.member']->loadUserByUsername($username);
-            $this->fail();
-        } catch (UsernameNotFoundException $e) {
-            $this->expected = sprintf('Username "%s" does not exist.', $username);
-            $this->actual = $e->getMessage();
-        }
-        $this->verify();
-    }
-
-    public function testRefreshUser()
-    {
-        $this->expected = $this->Member;
-        $this->actual = $this->app['eccube.repository.member']->refreshUser($this->Member);
-        $this->verify();
-    }
-
-    public function testRefreshUserWithException()
-    {
-        try {
-            $Member = $this->app['eccube.repository.member']->refreshUser(new DummyMember());
-            $this->fail();
-        } catch (UnsupportedUserException $e) {
-            $this->expected = 'Instances of "Eccube\Tests\Repository\DummyMember" are not supported.';
-            $this->actual = $e->getMessage();
-        }
-        $this->verify();
-    }
-
-    public function testSupportedClass()
-    {
-        $this->assertTrue($this->app['eccube.repository.member']->supportsClass(get_class($this->Member)));
     }
 
     public function testUp()
     {
         $sortNo = $this->Member->getSortNo();
-        $this->app['eccube.repository.member']->up($this->Member);
+        $this->memberRepo->up($this->Member);
 
         $this->expected = $sortNo + 1;
         $this->actual = $this->Member->getSortNo();
@@ -98,32 +62,26 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testUpWithException()
     {
+        $this->expectException(\Exception::class);
         $this->Member->setSortNo(999);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        try {
-            $this->app['eccube.repository.member']->up($this->Member);
-            $this->fail();
-        } catch (\Exception $e) {
-
-        }
+        $this->memberRepo->up($this->Member);
     }
 
     public function testDown()
     {
-        /** @var EntityManager $em */
-        $em = $this->app['orm.em'];
-        $qb = $em->createQueryBuilder();
+        $qb = $this->entityManager->createQueryBuilder();
         $max = $qb->select('MAX(m.sort_no)')
             ->from(Member::class, 'm')
             ->getQuery()
             ->getSingleScalarResult();
 
         $this->Member->setSortNo($max + 1);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $sortNo = $this->Member->getSortNo();
-        $this->app['eccube.repository.member']->down($this->Member);
+        $this->memberRepo->down($this->Member);
 
         $this->expected = $sortNo - 1;
         $this->actual = $this->Member->getSortNo();
@@ -132,15 +90,12 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testDownWithException()
     {
+        $this->expectException(\Exception::class);
         $this->Member->setSortNo(0);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        try {
-            $this->app['eccube.repository.member']->down($this->Member);
-            $this->fail();
-        } catch (\Exception $e) {
-
-        }
+        $this->memberRepo->down($this->Member);
+        $this->fail();
     }
 
     public function testSave()
@@ -152,14 +107,18 @@ class MemberRepositoryTest extends EccubeTestCase
             ->setSalt('salt')
             ->setSortNo(100);
 
-        $this->app['eccube.repository.member']->save($Member);
+        $this->memberRepo->save($Member);
+
+        // verify
+        $member = $this->memberRepo->findOneBy(array('login_id' => 'member-100'));
+        $this->actual = $member->getPassword();
+        $this->expected = $Member->getPassword();
+        $this->verify();
     }
 
     public function testSaveWithSortNoNull()
     {
-        /** @var EntityManager $em */
-        $em = $this->app['orm.em'];
-        $qb = $em->createQueryBuilder();
+        $qb = $this->entityManager->createQueryBuilder();
         $sortNo = $qb->select('MAX(m.sort_no)')
             ->from(Member::class, 'm')
             ->getQuery()
@@ -171,7 +130,7 @@ class MemberRepositoryTest extends EccubeTestCase
             ->setPassword('password')
             ->setSalt('salt')
             ->setSortNo(100);
-        $this->app['eccube.repository.member']->save($Member);
+        $this->memberRepo->save($Member);
 
         $this->expected = $sortNo + 1;
         $this->actual = $Member->getSortNo();
@@ -183,50 +142,22 @@ class MemberRepositoryTest extends EccubeTestCase
     {
         $Member = $this->createMember();
         $id = $Member->getId();
-        $this->app['eccube.repository.member']->delete($Member);
+        $this->memberRepo->delete($Member);
 
-        $Member = $this->app['eccube.repository.member']->find($id);
+        $Member = $this->memberRepo->find($id);
         $this->assertNull($Member);
     }
 
     public function testDeleteWithException()
     {
+        $this->expectException(\Exception::class);
         $Member1 = $this->createMember();
         $Member2 = $this->createMember();
         $Member2->setCreator($Member1);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 参照制約で例外となる
-        try {
-            $this->app['eccube.repository.member']->delete($Member1);
-            $this->fail();
-        } catch (\Exception $e) {
-
-        }
-    }
-}
-
-class DummyMember implements UserInterface
-{
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
-
-    public function getPassword()
-    {
-        return 'password';
-    }
-    public function getSalt()
-    {
-        return 'salt';
-    }
-    public function getUsername()
-    {
-        return 'user';
-    }
-    public function eraseCredentials()
-    {
-        return;
+        $this->memberRepo->delete($Member1);
+        $this->fail();
     }
 }

@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\News;
+use Eccube\Repository\NewsRepository;
 use Eccube\Tests\EccubeTestCase;
 
 
@@ -14,11 +15,13 @@ use Eccube\Tests\EccubeTestCase;
 class NewsRepositoryTest extends EccubeTestCase
 {
     protected $Member;
+    /** @var  NewsRepository */
+    protected $newsRepo;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->newsRepo = $this->container->get(NewsRepository::class);
         $this->removeNews();
 
         $faker = $this->getFaker();
@@ -31,30 +34,31 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setLinkMethod(1)
                 ->setSortNo($i)
                 ;
-            $this->app['orm.em']->persist($News);
+            $this->entityManager->persist($News);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
-    public function removeNews()
+    protected function removeNews()
     {
-        $All = $this->app['eccube.repository.news']->findAll();
+        $All = $this->newsRepo->findAll();
         foreach ($All as $News) {
-            $this->app['orm.em']->remove($News);
+            $this->entityManager->remove($News);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testUp()
     {
-        $News = $this->app['eccube.repository.news']->findOneBy(
+        /** @var News $News */
+        $News = $this->newsRepo->findOneBy(
             array('title' => 'news-1')
         );
         $this->assertNotNull($News);
         $this->assertEquals(1, $News->getSortNo());
 
         // sortNo up 1 => 2
-        $this->app['eccube.repository.news']->up($News);
+        $this->newsRepo->up($News);
 
         $this->expected = 2;
         $this->actual = $News->getSortNo();
@@ -63,28 +67,27 @@ class NewsRepositoryTest extends EccubeTestCase
 
     public function testUpWithException()
     {
-        $News = $this->app['eccube.repository.news']->findOneBy(
+        $this->expectException(\Exception::class);
+        /** @var News $News */
+        $News = $this->newsRepo->findOneBy(
             array('title' => 'news-2')
         );
 
-        try {
-            $this->app['eccube.repository.news']->up($News);
-            $this->fail();
-        } catch (\Exception $e) {
-
-        }
+        $this->newsRepo->up($News);
+        $this->fail();
     }
 
     public function testDown()
     {
-        $News = $this->app['eccube.repository.news']->findOneBy(
+        /** @var News $News */
+        $News = $this->newsRepo->findOneBy(
             array('title' => 'news-1')
         );
         $this->assertNotNull($News);
         $this->assertEquals(1, $News->getSortNo());
 
         // sortNo down 1 => 0
-        $this->app['eccube.repository.news']->down($News);
+        $this->newsRepo->down($News);
 
         $this->expected = 0;
         $this->actual = $News->getSortNo();
@@ -93,15 +96,12 @@ class NewsRepositoryTest extends EccubeTestCase
 
     public function testDownWithException()
     {
-        $News = $this->app['eccube.repository.news']->findOneBy(
+        $this->expectException(\Exception::class);
+        $News = $this->newsRepo->findOneBy(
             array('title' => 'news-0')
         );
 
-        try {
-            $this->app['eccube.repository.news']->down($News);
-        } catch (\Exception $e) {
-
-        }
+        $this->newsRepo->down($News);
     }
 
     public function testSave()
@@ -114,7 +114,7 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setUrl($faker->url)
             ->setLinkMethod(1);
 
-        $this->app['eccube.repository.news']->save($News);
+        $this->newsRepo->save($News);
 
         $this->expected = 3;
         $this->actual = $News->getSortNo();
@@ -132,7 +132,7 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setUrl($faker->url)
             ->setLinkMethod(1);
 
-        $this->app['eccube.repository.news']->save($News);
+        $this->newsRepo->save($News);
 
         $this->expected = 1;
         $this->actual = $News->getSortNo();
@@ -141,13 +141,13 @@ class NewsRepositoryTest extends EccubeTestCase
 
     public function testDelete()
     {
-        $News = $this->app['eccube.repository.news']->findOneBy(
+        $News = $this->newsRepo->findOneBy(
             array('title' => 'news-0')
         );
 
         $newsId = $News->getId();
-        $this->app['eccube.repository.news']->delete($News);
+        $this->newsRepo->delete($News);
 
-        self::assertNull($this->app['eccube.repository.news']->find($newsId));
+        self::assertNull($this->newsRepo->find($newsId));
     }
 }

@@ -24,26 +24,37 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Tests\EccubeTestCase;
 use org\bovigo\vfs\vfsStream;
 
 class PageRepositoryTest extends EccubeTestCase
 {
+    /** @var  DeviceType */
     protected $DeviceType;
+
+    /** @var  PageRepository */
+    protected $pageRepo;
+
+    protected $userDataRealDir;
+    protected $templateRealDir;
+    protected $templateDefaultRealDir;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->DeviceType = $this->app['eccube.repository.master.device_type']
-            ->find(DeviceType::DEVICE_TYPE_PC);
+        $this->pageRepo = $this->container->get(PageRepository::class);
+        $this->DeviceType = $this->container->get(DeviceTypeRepository::class)->find(DeviceType::DEVICE_TYPE_PC);
+        $this->userDataRealDir = $this->container->getParameter('eccube.theme.user_data_dir');
+        $this->templateRealDir = $this->container->getParameter('eccube.theme.app_dir');
+        $this->templateDefaultRealDir = $this->container->getParameter('eccube.theme.src_dir');
     }
 
     public function test_findOrCreate_pageIdNullisCreate()
     {
         $this->expected = null;
-        $Page = $this->app['eccube.repository.page']
-            ->findOrCreate(null, $this->DeviceType);
+        $Page = $this->pageRepo->findOrCreate(null, $this->DeviceType);
         $this->actual = $Page->getUrl();
 
         $this->verify();
@@ -56,8 +67,7 @@ class PageRepositoryTest extends EccubeTestCase
             'DeviceType' => DeviceType::DEVICE_TYPE_PC,
         );
 
-        $Page = $this->app['eccube.repository.page']
-            ->findOrCreate(1, $this->DeviceType);
+        $Page = $this->pageRepo->findOrCreate(1, $this->DeviceType);
         $this->actual = array(
             'url' => $Page->getUrl(),
             'DeviceType' => $Page->getDeviceType()->getId(),
@@ -68,20 +78,17 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function testFindUnusedBlocks()
     {
-        // FIXME 同等の処理をレイアウトコントローラに仮実装している。本実装時に見直し。
-        $this->markTestIncomplete('findUnusedBlocks is not implemented.');
+        $Blocks = $this->pageRepo->findUnusedBlocks($this->DeviceType, 1);
 
-        $Blocks = $this->app['eccube.repository.page']
-            ->findUnusedBlocks($this->DeviceType, 1);
-
-        $this->expected = 0;
+        // Current: total 13, used: 7 (1,6,7,8,10,11,12,13)
+        $this->expected = 5;
         $this->actual = count($Blocks);
         $this->verify();
     }
 
     public function testGet()
     {
-        $Page = $this->app['eccube.repository.page']
+        $Page = $this->pageRepo
             ->getByDeviceTypeAndId($this->DeviceType, 1);
 
         $this->expected = 1;
@@ -95,8 +102,7 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function testGetByUrl()
     {
-        $Page = $this->app['eccube.repository.page']
-            ->getByUrl($this->DeviceType, 'homepage');
+        $Page = $this->pageRepo->getByUrl($this->DeviceType, 'homepage');
 
         $this->expected = 1;
         $this->actual = $Page->getId();
@@ -109,9 +115,8 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function testGetPageList()
     {
-        $Pages = $this->app['eccube.repository.page']
-            ->getPageList($this->DeviceType);
-        $All = $this->app['eccube.repository.page']->findAll();
+        $Pages = $this->pageRepo->getPageList($this->DeviceType);
+        $All = $this->pageRepo->findAll();
 
         $this->expected = count($All) - 1;
         $this->actual = count($Pages);
@@ -120,75 +125,58 @@ class PageRepositoryTest extends EccubeTestCase
 
     public function testGetWriteTemplatePath()
     {
-        $this->expected = $this->app['config']['template_realdir'];
-        $this->actual = $this->app['eccube.repository.page']->getWriteTemplatePath();
+        $this->expected = $this->templateRealDir;
+        $this->actual = $this->pageRepo->getWriteTemplatePath();
         $this->verify();
     }
     public function testGetWriteTemplatePathWithUser()
     {
-        $this->expected = $this->app['config']['user_data_realdir'];
-        $this->actual = $this->app['eccube.repository.page']->getWriteTemplatePath(true);
+        $this->expected = $this->userDataRealDir;
+        $this->actual = $this->pageRepo->getWriteTemplatePath(true);
         $this->verify();
     }
 
     public function testGetReadTemplateFile()
     {
         $fileName = 'example_page';
-        $root = vfsStream::setup('rootDir');
-        vfsStream::newDirectory('default');
+        $tesTemplate = $this->templateRealDir . '/' . $fileName . '.twig';
+        file_put_contents($tesTemplate, 'test');
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['template_realdir'] = vfsStream::url('rootDir');
-        $config['template_default_realdir'] = vfsStream::url('rootDir/default');
-        $this->app->overwrite('config', $config);
-
-        file_put_contents($this->app['config']['template_realdir'].'/'.$fileName.'.twig', 'test');
-
-        $data = $this->app['eccube.repository.page']->getReadTemplateFile($fileName);
+        $data = $this->pageRepo->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
         $this->verify();
+        unlink($tesTemplate);
     }
 
     public function testGetReadTemplateFileWithDefault()
     {
         $fileName = 'example_page';
-        $root = vfsStream::setup('rootDir');
-        mkdir(vfsStream::url('rootDir').'/default', 0777, true);
+        $testTemplate = $this->templateDefaultRealDir . '/' . $fileName . '.twig';
+        file_put_contents($testTemplate, 'test');
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['template_realdir'] = vfsStream::url('rootDir');
-        $config['template_default_realdir'] = vfsStream::url('rootDir/default');
-        $this->app->overwrite('config', $config);
 
-        file_put_contents($this->app['config']['template_default_realdir'].'/'.$fileName.'.twig', 'test');
-
-        $data = $this->app['eccube.repository.page']->getReadTemplateFile($fileName);
+        $data = $this->pageRepo->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
         $this->verify();
+        unlink($testTemplate);
     }
 
     public function testGetReadTemplateFileWithUser()
     {
         $fileName = 'example_page';
-        $root = vfsStream::setup('rootDir');
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        $config['user_data_realdir'] = vfsStream::url('rootDir');
-        $this->app->overwrite('config', $config);
+        $testTemplate = $this->userDataRealDir . '/' . $fileName . '.twig';
+        file_put_contents($testTemplate, 'test');
 
-        file_put_contents($this->app['config']['user_data_realdir'].'/'.$fileName.'.twig', 'test');
-
-        $data = $this->app['eccube.repository.page']->getReadTemplateFile($fileName, true);
+        $data = $this->pageRepo->getReadTemplateFile($fileName, true);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
         $this->verify();
+        unlink($testTemplate);
     }
 }
