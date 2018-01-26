@@ -25,16 +25,12 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\TaxRule;
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
 
     /**
      * @return TaxRule
@@ -42,12 +38,12 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function createTaxRule()
     {
         $faker = $this->getFaker();
-        $TargetTaxRule = $this->app['eccube.repository.tax_rule']->newTaxRule();
+        $TargetTaxRule = $this->container->get(TaxRuleRepository::class)->newTaxRule();
         $TargetTaxRule->setTaxRate($faker->randomNumber(2));
         $now = new \DateTime();
         $TargetTaxRule->setApplyDate($now);
-        $this->app['orm.em']->persist($TargetTaxRule);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($TargetTaxRule);
+        $this->entityManager->flush();
 
         return $TargetTaxRule;
     }
@@ -56,7 +52,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_setting_shop_tax')
+            $this->generateUrl('admin_setting_shop_tax')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -65,18 +61,18 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_setting_shop_tax_edit', array('id' => 1))
+            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => 1))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminBasisTaxDelete()
     {
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
             'DELETE',
-            $this->app->url('admin_setting_shop_tax_delete', array('id' => 1))
+            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => 1))
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
@@ -88,21 +84,21 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_tax_edit_param', array('id' => 1))
+            $this->generateUrl('admin_setting_shop_tax_edit_param', array('id' => 1))
         );
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
     public function testEditParam()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
         $taxRule = $BaseInfo->isOptionProductTaxRule();
         $newTaxRule = ($taxRule) ? 0 : 1;
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_tax_edit_param', array('id' => 1)),
+            $this->generateUrl('admin_setting_shop_tax_edit_param', array('id' => 1)),
             array(
                 'tax_rule' => array(
                     '_token' => 'dummy',
@@ -111,7 +107,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             )
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->expected = $newTaxRule;
@@ -121,12 +117,12 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
     public function testEditParamFail()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
         $taxRule = $BaseInfo->isOptionProductTaxRule();
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_tax_edit_param', array('id' => 1)),
+            $this->generateUrl('admin_setting_shop_tax_edit_param', array('id' => 1)),
             array(
                 'tax_rule' => array(
                     '_token' => 'dummy',
@@ -135,7 +131,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
             )
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->expected = $taxRule;
@@ -151,19 +147,19 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $form = array(
             '_token' => 'dummy',
             'tax_rate' => 10,
-            'calc_rule' => rand(1,3),
+            'calc_rule' => rand(1, 3),
             'apply_date' => $now->format('Y-m-d H:i')
         );
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_tax_edit', array('id' => $tid)),
+            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => $tid)),
             array(
                 'tax_rule' => $form
             )
         );
 
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->expected = $form['tax_rate'];
@@ -171,33 +167,23 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testEditException()
     {
         $tid = 99999;
         $form = array(
             '_token' => 'dummy',
             'tax_rate' => 10,
-            'calc_rule' => rand(1,3)
+            'calc_rule' => rand(1, 3)
         );
 
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_tax_edit', array('id' => $tid)),
+            $this->generateUrl('admin_setting_shop_tax_edit', array('id' => $tid)),
             array(
                 'tax_rule' => $form
             )
         );
-
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $this->expected = $form['tax_rate'];
-        $TargetTaxRule = $this->app['eccube.repository.tax_rule']->find($tid);
-        $this->actual = $TargetTaxRule->getTaxRate();
-        $this->verify();
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testTaxDeleteSuccess()
@@ -205,29 +191,25 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $TaxRule = $this->createTaxRule();
 
         $taxRuleId = $TaxRule->getId();
-        $redirectUrl = $this->app->url('admin_setting_shop_tax');
+        $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
             'DELETE',
-            $this->app->url('admin_setting_shop_tax_delete', array('id' => $TaxRule->getId()))
+            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => $TaxRule->getId()))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-        $this->assertNull($this->app['eccube.repository.tax_rule']->find($taxRuleId));
+        $this->assertNull($this->container->get(TaxRuleRepository::class)->find($taxRuleId));
     }
 
     public function testTaxDeleteFail()
     {
         $tid = 99999;
 
-        try {
-            $this->client->request(
-                'DELETE',
-                $this->app->url('admin_setting_shop_tax_delete', array('id' => $tid))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
-
-        }
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('admin_setting_shop_tax_delete', array('id' => $tid))
+        );
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 }

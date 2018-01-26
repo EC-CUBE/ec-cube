@@ -22,32 +22,15 @@
  */
 
 
-namespace Eccube\Tests\Plugin\Web\Admin\Setting\Shop;
+namespace Eccube\Tests\Web\Block;
 
-use Eccube\Event\EccubeEvents;
-use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Tests\Web\AbstractWebTestCase;
 
-/**
- * @group plugin
- */
-class ShopControllerTest extends AbstractAdminWebTestCase
+class SearchProductControllerTest extends AbstractWebTestCase
 {
-    public function setUp()
+    public function testRoutingCart()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
-    public function testRoutingAdminSettingSystemShop()
-    {
-        $this->client->request('GET',
-            $this->app->url('admin_setting_shop')
-        );
+        $this->client->request('GET', '/block/search_product');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-        $hookpoins = array(
-            EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE,
-        );
-        $this->verifyOutputString($hookpoins);
     }
 }

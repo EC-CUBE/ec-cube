@@ -21,17 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_index'] %}
 
 {% block title %}基本情報設定{% endblock %}
-{% block sub_title %}SHOPマスター{% endblock %}
+{% block sub_title %}ショップマスター{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock javascript %}
 
 
@@ -39,8 +39,8 @@
 
     <div class="row" id="aside_wrap">
         <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
-        <span class="p-country-name" style="display:none;">Japan</span>
-        {{ form_widget(form._token) }}
+            <span class="p-country-name" style="display:none;">Japan</span>
+            {{ form_widget(form._token) }}
 
             <div id="detail_wrap" class="col-md-9">
                 <div id="detail_box" class="box">
@@ -72,14 +72,14 @@
                             </div>
                         </div>
                         {# 住所：住所1 #}
-                        <div id="detail_box__addr01" class="form-group {% if form.address.addr02.vars.errors is not empty  %}has-error{% endif %}">
+                        <div id="detail_box__addr01" class="form-group {% if form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                             <div class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
-                        <div id="detail_box__addr02" class="form-group {% if form.address.addr02.vars.errors is not empty  %}has-error{% endif %}">
+                        <div id="detail_box__addr02" class="form-group {% if form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                             <div class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                                 {{ form_errors(form.address.addr02) }}

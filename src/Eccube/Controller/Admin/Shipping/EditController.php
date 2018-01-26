@@ -3,9 +3,7 @@
 namespace Eccube\Controller\Admin\Shipping;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -20,110 +18,79 @@ use Eccube\Repository\Master\ShippingStatusRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\TaxRuleService;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
-/**
- * @Route(service=EditController::class)
- */
-class EditController
+class EditController extends AbstractController
 {
     /**
-     * @Inject(OrderItemRepository::class)
      * @var OrderItemRepository
      */
     protected $orderItemRepository;
 
     /**
-     * @Inject(CategoryRepository::class)
      * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @Inject("session")
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("monolog")
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @Inject("serializer")
-     * @var Serializer
-     */
-    protected $serializer;
-
-    /**
-     * @Inject(DeliveryRepository::class)
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
-     * @Inject(TaxRuleService::class)
      * @var TaxRuleService
      */
     protected $taxRuleService;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(ShippingRepository::class)
      * @var ShippingRepository
      */
     protected $shippingRepository;
 
     /**
-     * @Inject(ShippingStatusRepository::class)
      * @var ShippingStatusRepository
      */
     protected $shippingStatusReposisotry;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var SerializerInterface
      */
-    protected $entityManager;
+    protected $serializer;
+
+    public function __construct(
+        OrderItemRepository $orderItemRepository,
+        CategoryRepository $categoryRepository,
+        DeliveryRepository $deliveryRepository,
+        TaxRuleService $taxRuleService,
+        ShippingRepository $shippingRepository,
+        ShippingStatusRepository $shippingStatusReposisotry,
+        SerializerInterface $serializer
+    ) {
+        $this->orderItemRepository = $orderItemRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->deliveryRepository = $deliveryRepository;
+        $this->taxRuleService = $taxRuleService;
+        $this->shippingRepository = $shippingRepository;
+        $this->shippingStatusReposisotry = $shippingStatusReposisotry;
+        $this->serializer = $serializer;
+    }
+
 
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/%admin_route%/shipping/edit", name="admin/shipping/new")
-     * @Route("/%admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin/shipping/edit")
-     * @Template("Shipping/edit.twig")
+     * @Route("/%admin_route%/shipping/new", name="admin_shipping_new")
+     * @Route("/%admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
+     * @Template("@admin/Shipping/edit.twig")
      *
      * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null)
     {
         $TargetShipping = null;
         $OriginShipping = null;
@@ -196,7 +163,7 @@ class EditController
                         $TargetShipping->setShippingStatus($ShippingStatus);
                         $TargetShipping->setShippingDate(new \DateTime());
                     }
-                    // no break
+                // no break
                 case 'register':
 
                     log_info('出荷登録開始', array($TargetShipping->getId()));
@@ -229,11 +196,11 @@ class EditController
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
-                        $app->addSuccess('admin.order.save.complete', 'admin');
+                        $this->addSuccess('admin.order.save.complete', 'admin');
 
                         log_info('出荷登録完了', array($TargetShipping->getId()));
 
-                        return $app->redirect($app->url('admin/shipping/edit', array('id' => $TargetShipping->getId())));
+                        return $this->redirectToRoute('admin_shipping_edit', array('id' => $TargetShipping->getId()));
                     }
 
                     break;
@@ -300,17 +267,13 @@ class EditController
 
     /**
      * @Route("/%admin_route%/shipping/search/product", name="admin_shipping_search_product")
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Template("shipping/search_product.twig")
-     *
-     * @param Application $app
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Template("@admin/shipping/search_product.twig")
      */
-    public function searchProduct(Application $app, Request $request, $page_no = null)
+    public function searchProduct(Request $request, $page_no = null, Paginator $paginator)
     {
         if ($request->isXmlHttpRequest()) {
-            $this->logger->addDebug('search product start.');
-            $page_count = $this->appConfig['default_page_count'];
+            log_debug('search product start.');
+            $page_count = $this->eccubeConfig['default_page_count'];
             $session = $this->session;
 
             if ('POST' === $request->getMethod()) {
@@ -351,7 +314,7 @@ class EditController
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
 
             /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
-            $pagination = $app['paginator']()->paginate(
+            $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,
@@ -361,7 +324,7 @@ class EditController
             $OrderItems = $pagination->getItems();
 
             if (empty($OrderItems)) {
-                $this->logger->addDebug('search product not found.');
+                log_debug('search product not found.');
             }
 
             $forms = array();

@@ -24,48 +24,49 @@
 
 namespace Eccube\Controller\Block;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route(service=CartController::class)
- */
-class CartController
+class CartController extends AbstractController
 {
     /**
-     * @Inject(CartService::class)
      * @var CartService
      */
     protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
 
     /**
      * @Route("/block/cart", name="block_cart")
      * @Template("Block/cart.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index()
     {
-        // $Carts = $this->cartService->getCarts();
+        $Carts = $this->cartService->getCarts();
 
-        // $totalQuantity = array_reduce($Carts, function($total, $Cart) {
-        //     /** @var Cart $Cart */
-        //     $total += $Cart->getTotalQuantity();
-        //     return $total;
-        // }, 0);
-        // $totalPrice = array_reduce($Carts, function($total, $Cart) {
-        //     /** @var Cart $Cart */
-        //     $total += $Cart->getTotalPrice();
-        //     return $total;
-        // }, 0);
+        $totalQuantity = array_reduce($Carts, function ($total, $Cart) {
+            /** @var Cart $Cart */
+            $total += $Cart->getTotalQuantity();
+
+            return $total;
+        }, 0);
+        $totalPrice = array_reduce($Carts, function ($total, $Cart) {
+            /** @var Cart $Cart */
+            $total += $Cart->getTotalPrice();
+
+            return $total;
+        }, 0);
 
         return [
-            'totalQuantity' => 0,
-            'totalPrice' => 0,
-            'Carts' => new \Eccube\Entity\Cart(),
+            'totalQuantity' => $totalQuantity,
+            'totalPrice' => $totalPrice,
+            'Carts' => $Carts,
         ];
     }
 }

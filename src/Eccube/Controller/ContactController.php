@@ -30,10 +30,7 @@ use Eccube\Form\Type\Front\ContactType;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route(service=ContactController::class)
@@ -45,38 +42,15 @@ class ContactController extends AbstractController
      */
     protected $mailService;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
 
     /**
      * ContactController constructor.
      * @param MailService $mailService
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param FormFactoryInterface $formFactory
-     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        MailService $mailService,
-        EventDispatcherInterface $eventDispatcher,
-        FormFactoryInterface $formFactory,
-        AuthorizationCheckerInterface $authorizationChecker)
+        MailService $mailService)
     {
         $this->mailService = $mailService;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -89,7 +63,7 @@ class ContactController extends AbstractController
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
-        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+        if ($this->isGranted('ROLE_USER')) {
             $user = $this->getUser();
             $builder->setData(
                 array(

@@ -23,10 +23,6 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ForgotType;
@@ -34,16 +30,11 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -62,29 +53,9 @@ class ForgotController extends AbstractController
     protected $mailService;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
      * @var CustomerRepository
      */
     protected $customerRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
 
     /**
      * @var EncoderFactoryInterface
@@ -95,31 +66,19 @@ class ForgotController extends AbstractController
      * ForgotController constructor.
      * @param ValidatorInterface $recursiveValidator
      * @param MailService $mailService
-     * @param EntityManagerInterface $entityManager
      * @param CustomerRepository $customerRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param FormFactoryInterface $formFactory
      * @param EncoderFactoryInterface $encoderFactory
-     * @param array $eccubeConfig
      */
     public function __construct(
         ValidatorInterface $recursiveValidator,
         MailService $mailService,
-        EntityManagerInterface $entityManager,
         CustomerRepository $customerRepository,
-        EventDispatcherInterface $eventDispatcher,
-        FormFactoryInterface $formFactory,
-        EncoderFactoryInterface $encoderFactory,
-        array $eccubeConfig
+        EncoderFactoryInterface $encoderFactory
     )
     {
         $this->recursiveValidator = $recursiveValidator;
         $this->mailService = $mailService;
-        $this->entityManager = $entityManager;
-        $this->appConfig = $eccubeConfig;
         $this->customerRepository = $customerRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->formFactory = $formFactory;
         $this->encoderFactory = $encoderFactory;
     }
 
@@ -154,7 +113,7 @@ class ForgotController extends AbstractController
                 // リセットキーの発行・有効期限の設定
                 $Customer
                     ->setResetKey($this->customerRepository->getUniqueResetKey())
-                    ->setResetExpire(new \DateTime('+'.$this->appConfig['customer_reset_expire'].' min'));
+                    ->setResetExpire(new \DateTime('+'.$this->eccubeConfig['customer_reset_expire'].' min'));
 
                 // リセットキーを更新
                 $this->entityManager->persist($Customer);
@@ -198,7 +157,7 @@ class ForgotController extends AbstractController
      * @Route("/forgot/complete", name="forgot_complete")
      * @Template("Forgot/complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete(Request $request)
     {
         return [];
     }

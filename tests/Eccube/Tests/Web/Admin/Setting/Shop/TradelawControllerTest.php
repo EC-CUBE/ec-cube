@@ -28,22 +28,17 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class TradelawControllerTest
+ *
  * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class TradelawControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     /**
      * Roting
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop_tradelaw'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -60,7 +55,7 @@ class TradelawControllerTest extends AbstractAdminWebTestCase
         }
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop_tradelaw'),
+            $this->generateUrl('admin_setting_shop_tradelaw'),
             array('tradelaw' => $formData)
         );
 
