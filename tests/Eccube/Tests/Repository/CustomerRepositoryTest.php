@@ -4,11 +4,12 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 
 /**
  * CustomerRepository test cases.
@@ -20,10 +21,25 @@ class CustomerRepositoryTest extends EccubeTestCase
 
     protected $email;
 
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepo;
+
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $masterOrderStatusRepo;
+
+    protected $Customer;
+
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->customerRepo = $this->container->get(CustomerRepository::class);
+        $this->masterOrderStatusRepo = $this->container->get(OrderStatusRepository::class);
+
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
     }
@@ -31,7 +47,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     public function testNewCustomer()
     {
         // TODO https://github.com/EC-CUBE/ec-cube/issues/870
-        $Customer = $this->app['eccube.repository.customer']->newCustomer();
+        $Customer = $this->customerRepo->newCustomer();
 
         $this->expected = 1;
         $this->actual = $Customer->getStatus()->getId();
@@ -41,7 +57,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     public function testLoadUserByUsername()
     {
         $this->actual = $this->Customer;
-        $this->expected = $this->app['eccube.repository.customer']->loadUserByUsername($this->email);
+        $this->expected = $this->customerRepo->loadUserByUsername($this->email);
         $this->verify();
     }
 
@@ -49,7 +65,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     {
         $username = 'aaaaa';
         try {
-            $Customer = $this->app['eccube.repository.customer']->loadUserByUsername($username);
+            $this->customerRepo->loadUserByUsername($username);
             $this->fail();
         } catch (UsernameNotFoundException $e) {
             $this->expected = sprintf('Username "%s" does not exist.', $username);
@@ -72,7 +88,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $email2 = 'same@example.com';
         $Customer1 = $this->createCustomer($email1);
         $Customer2 = $this->createCustomer($email2);
-        $GetCustomer1 = $this->app['eccube.repository.customer']->loadUserByUsername($email1);
+        $GetCustomer1 = $this->customerRepo->loadUserByUsername($email1);
         $this->expected = $GetCustomer1->getEmail();
         $this->actual = $Customer1->getEmail();
         $this->verify();
@@ -81,14 +97,14 @@ class CustomerRepositoryTest extends EccubeTestCase
     public function testRefreshUser()
     {
         $this->expected = $this->Customer;
-        $this->actual = $this->app['eccube.repository.customer']->refreshUser($this->Customer);
+        $this->actual = $this->customerRepo->refreshUser($this->Customer);
         $this->verify();
     }
 
     public function testRefreshUserWithException()
     {
         try {
-            $Customer = $this->app['eccube.repository.customer']->refreshUser(new DummyCustomer());
+            $this->customerRepo->refreshUser(new DummyCustomer());
             $this->fail();
         } catch (UnsupportedUserException $e) {
             $this->expected = 'Instances of "Eccube\Tests\Repository\DummyCustomer" are not supported.';
@@ -99,17 +115,17 @@ class CustomerRepositoryTest extends EccubeTestCase
 
     public function testSupportedClass()
     {
-        $this->assertTrue($this->app['eccube.repository.customer']->supportsClass(get_class($this->Customer)));
+        $this->assertTrue($this->count()->supportsClass(get_class($this->Customer)));
     }
 
     public function testGetProvisionalCustomerBySecretKey()
     {
         $this->expected = $this->Customer->getSecretKey();
-        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($Status);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $Customer = $this->app['eccube.repository.customer']->getProvisionalCustomerBySecretKey($this->expected);
+        $Customer = $this->customerRepo->getProvisionalCustomerBySecretKey($this->expected);
         $this->actual = $Customer->getSecretKey();
         $this->verify('secretは'.$this->expected.'ではありません');
     }
@@ -119,7 +135,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $secret = $this->Customer->getSecretKey();
 
         // CustomerStatus::REGULARなので取得できないはず
-        $Customer = $this->app['eccube.repository.customer']->getProvisionalCustomerBySecretKey($secret);
+        $Customer = $this->customerRepo->getProvisionalCustomerBySecretKey($secret);
         $this->assertNull($Customer);
     }
 
@@ -127,34 +143,34 @@ class CustomerRepositoryTest extends EccubeTestCase
     {
         // XXX loadUserByUsername() と同じ役割？
         $this->actual = $this->Customer;
-        $this->expected = $this->app['eccube.repository.customer']->getRegularCustomerByEmail($this->email);
+        $this->expected = $this->customerRepo->getRegularCustomerByEmail($this->email);
         $this->verify();
     }
 
     public function testGetRegularCustomerByResetKey()
     {
-        $expire = '+'.$this->app['config']['customer_reset_expire'].' min';
-        $reset_key = $this->app['eccube.repository.customer']->getResetPassword();
+        $expire = '+'.$this->eccubeConfig['customer_reset_expire'].' min';
+        $reset_key = $this->customerRepo->getResetPassword();
         $this->Customer
             ->setResetKey($reset_key)
             ->setResetExpire(new \DateTime($expire));
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $Customer = $this->app['eccube.repository.customer']->getRegularCustomerByResetKey($reset_key);
+        $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
 
         $this->assertNotNull($Customer);
     }
 
     public function testGetRegularCustomerByResetKeyWithException()
     {
-        $expire = '-'.$this->app['config']['customer_reset_expire'].' min';
-        $reset_key = $this->app['eccube.repository.customer']->getResetPassword();
+        $expire = '-'.$this->eccubeConfig['customer_reset_expire'].' min';
+        $reset_key = $this->customerRepo->getResetPassword();
         $this->Customer
             ->setResetKey($reset_key)
             ->setResetExpire(new \DateTime($expire));
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $Customer = $this->app['eccube.repository.customer']->getRegularCustomerByResetKey($reset_key);
+        $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
         $this->assertNull($Customer);
     }
 
@@ -162,26 +178,26 @@ class CustomerRepositoryTest extends EccubeTestCase
     {
         $Order = $this->createOrder($this->Customer);
 
-        $OrderStatus = $this->app['eccube.repository.master.order_status']->find(OrderStatus::NEW);
+        $OrderStatus = $this->masterOrderStatusRepo->find(OrderStatus::NEW);
 
         $Order->setOrderStatus($OrderStatus);
-        $this->app['orm.em']->persist($Order);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
 
         $this->actual = 1;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, OrderStatus::NEW);
+        $this->customerRepo->updateBuyData($this->Customer, OrderStatus::NEW);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 
 
-        $OrderStatus = $this->app['eccube.repository.master.order_status']->find(OrderStatus::CANCEL);
+        $OrderStatus = $this->masterOrderStatusRepo->find(OrderStatus::CANCEL);
 
         $Order->setOrderStatus($OrderStatus);
-        $this->app['orm.em']->persist($Order);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
 
         $this->actual = 0;
-        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, OrderStatus::CANCEL);
+        $this->customerRepo->updateBuyData($this->Customer, OrderStatus::CANCEL);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
 

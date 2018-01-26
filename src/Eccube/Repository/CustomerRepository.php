@@ -34,6 +34,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -79,10 +80,30 @@ class CustomerRepository extends AbstractRepository
      */
     protected $encoderFactory;
 
-    public function __construct(RegistryInterface $registry, Queries $queries)
-    {
+    /**
+     * CustomerRepository constructor.
+     * @param RegistryInterface $registry
+     * @param Queries $queries
+     * @param EntityManager $entityManager
+     * @param OrderRepository $orderRepository
+     * @param array $eccubeConfig
+     * @param EncoderFactory $encoderFactory
+     */
+    public function __construct(
+        RegistryInterface $registry,
+        Queries $queries,
+        EntityManager $entityManager,
+        OrderRepository $orderRepository,
+        array $eccubeConfig,
+        EncoderFactory $encoderFactory
+    ) {
         parent::__construct($registry, Customer::class);
+
         $this->queries = $queries;
+        $this->entityManager = $entityManager;
+        $this->orderRepository = $orderRepository;
+        $this->appConfig = $eccubeConfig;
+        $this->encoderFactory = $encoderFactory;
     }
 
 
@@ -343,7 +364,7 @@ class CustomerRepository extends AbstractRepository
      * @param  Customer $Customer
      * @param  $orderStatusId
      */
-    public function updateBuyData($app, Customer $Customer, $orderStatusId)
+    public function updateBuyData(Customer $Customer, $orderStatusId)
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
