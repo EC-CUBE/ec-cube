@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
@@ -36,38 +34,37 @@ use Eccube\Repository\Master\CsvTypeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Route(service=CsvController::class)
+ * Class CsvController
+ *
+ * @package Eccube\Controller\Admin\Setting\Shop
  */
 class CsvController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject(CsvRepository::class)
      * @var CsvRepository
      */
     protected $csvRepository;
 
     /**
-     * @Inject(CsvTypeRepository::class)
      * @var CsvTypeRepository
      */
     protected $csvTypeRepository;
+
+    /**
+     * CsvController constructor.
+     *
+     * @param CsvRepository $csvRepository
+     * @param CsvTypeRepository $csvTypeRepository
+     */
+    public function __construct(CsvRepository $csvRepository, CsvTypeRepository $csvTypeRepository)
+    {
+        $this->csvRepository = $csvRepository;
+        $this->csvTypeRepository = $csvTypeRepository;
+    }
 
     /**
      * @Route("/%admin_route%/setting/shop/csv/{id}",
@@ -75,11 +72,11 @@ class CsvController extends AbstractController
      *     defaults={"id" = CsvType::CSV_TYPE_ORDER},
      *     name="admin_setting_shop_csv"
      * )
-     * @Template("Setting/Shop/csv.twig")
+     * @Template("@admin/Setting/Shop/csv.twig")
      */
-    public function index(Application $app, Request $request, CsvType $CsvType)
+    public function index(Request $request, CsvType $CsvType)
     {
-        $builder = $app->form();
+        $builder = $this->createFormBuilder();
 
         $builder->add(
             'csv_type',
@@ -179,9 +176,9 @@ class CsvController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
 
-            $app->addSuccess('admin.shop.csv.save.complete', 'admin');
+            $this->addSuccess('admin.shop.csv.save.complete', 'admin');
 
-            return $app->redirect($app->url('admin_setting_shop_csv', array('id' => $CsvType->getId())));
+            return $this->redirectToRoute('admin_setting_shop_csv', array('id' => $CsvType->getId()));
         }
 
         return [

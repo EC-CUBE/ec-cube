@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'news'] %}
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}新着情報管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
     <div id="news_wrap" class="row">

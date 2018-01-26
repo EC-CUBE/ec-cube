@@ -24,9 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
@@ -43,24 +41,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @FormType
+ * Class ShopMasterType
+ *
+ * @package Eccube\Form\Type\Admin
  */
 class ShopMasterType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    public function __construct()
+    public function __construct($eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -74,7 +68,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     )),
                 )
             ))
@@ -84,7 +78,7 @@ class ShopMasterType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     )),
                 )
             ))
@@ -93,7 +87,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['mtext_len'],
+                        'max' => $this->eccubeConfig['mtext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i'
@@ -117,7 +111,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     ))
                 )
             ))
@@ -158,7 +152,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['lltext_len'],
+                        'max' => $this->eccubeConfig['lltext_len'],
                     )),
                 ),
             ))
@@ -167,7 +161,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['lltext_len'],
+                        'max' => $this->eccubeConfig['lltext_len'],
                     )),
                 ),
             ))
@@ -320,7 +314,7 @@ class ShopMasterType extends AbstractType
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
                         new Assert\Length(array(
-                            'max' => $this->appConfig['stext_len'],
+                            'max' => $this->eccubeConfig['stext_len'],
                         )),
                     ),
                 ))
@@ -334,14 +328,14 @@ class ShopMasterType extends AbstractType
                     'required' => false,
                     'constraints' => array(
                         new Assert\Length(array(
-                            'max' => $this->appConfig['stext_len'],
+                            'max' => $this->eccubeConfig['stext_len'],
                         )),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
                     )
                 ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
+                ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
     }
 

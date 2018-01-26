@@ -3,16 +3,18 @@ monolog:
         main:
             type: fingers_crossed
             action_level: error
+            passthru_level: info
             handler: main_rotating_file
         main_rotating_file:
             type: rotating_file
             max_files: 60
-            path: '%kernel.logs_dir%/%kernel.environment%/main.log'
+            path: '%kernel.logs_dir%/%kernel.environment%/site.log'
             formatter: eccube.log.formatter.line
             level: debug
         front:
             type: fingers_crossed
             action_level: error
+            passthru_level: info
             handler: front_rotating_file
             channels: ['front']
         front_rotating_file:
@@ -24,6 +26,7 @@ monolog:
         admin:
             type: fingers_crossed
             action_level: error
+            passthru_level: info
             handler: admin_rotating_file
             channels: ['admin']
         admin_rotating_file:

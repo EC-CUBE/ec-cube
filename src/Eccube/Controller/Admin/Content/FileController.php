@@ -24,8 +24,6 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -35,28 +33,13 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @Route(service=FileController::class)
- */
 class FileController extends AbstractController
 {
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
     const SJIS = 'sjis-win';
     const UTF = 'UTF-8';
     private $error = null;
@@ -71,9 +54,9 @@ class FileController extends AbstractController
 
     /**
      * @Route("/%admin_route%/content/file_manager", name="admin_content_file")
-     * @Template("Content/file.twig")
+     * @Template("@admin/Content/file.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
@@ -81,7 +64,8 @@ class FileController extends AbstractController
             ->getForm();
 
         // user_data_dir
-        $topDir = $this->normalizePath($this->appConfig['user_data_realdir']);
+        $userDataDir = $this->getUserDataDir();
+        $topDir = $this->normalizePath($userDataDir);
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($topDir.'/../');
         // カレントディレクトリ
@@ -97,10 +81,10 @@ class FileController extends AbstractController
         if ('POST' === $request->getMethod()) {
             switch ($request->get('mode')) {
                 case 'create':
-                    $this->create($app, $request);
+                    $this->create($request);
                     break;
                 case 'upload':
-                    $this->upload($app, $request);
+                    $this->upload($request);
                     break;
                 default:
                     break;
@@ -108,7 +92,7 @@ class FileController extends AbstractController
         }
 
         $tree = $this->getTree($topDir, $request);
-        $arrFileList = $this->getFileList($app, $nowDir);
+        $arrFileList = $this->getFileList($nowDir);
 
         $javascript = $this->getJsArrayList($tree);
         $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
@@ -131,20 +115,20 @@ class FileController extends AbstractController
     /**
      * @Route("/%admin_route%/content/file_view", name="admin_content_file_view")
      */
-    public function view(Application $app, Request $request)
+    public function view(Request $request)
     {
-        $topDir = $this->appConfig['user_data_realdir'];
+        $topDir = $this->getUserDataDir();
         if ($this->checkDir($this->convertStrToServer($request->get('file')), $topDir)) {
             $file = $this->convertStrToServer($request->get('file'));
             setlocale(LC_ALL, "ja_JP.UTF-8");
-            return $app->sendFile($file);
+            return new BinaryFileResponse($file);
         }
 
         throw new NotFoundHttpException();
     }
 
     
-    public function create(Application $app, Request $request)
+    public function create(Request $request)
     {
 
         $form = $this->formFactory->createBuilder(FormType::class)
@@ -168,7 +152,7 @@ class FileController extends AbstractController
             } elseif (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
                 $this->error = array('message' => '.から始まるフォルダ名は作成できません。');
             } else {
-                $topDir = $this->appConfig['user_data_realdir'];
+                $topDir = $this->getUserDataDir();
                 $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
                     ? $this->normalizePath($request->get('now_dir'))
                     : $topDir;
@@ -181,12 +165,12 @@ class FileController extends AbstractController
      * @Method("DELETE")
      * @Route("/%admin_route%/content/file_delete", name="admin_content_file_delete")
      */
-    public function delete(Application $app, Request $request)
+    public function delete(Request $request)
     {
 
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
-        $topDir = $this->appConfig['user_data_realdir'];
+        $topDir = $this->getUserDataDir();
         if ($this->checkDir($this->convertStrToServer($request->get('select_file')), $topDir)) {
             $fs = new Filesystem();
             if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
@@ -194,15 +178,15 @@ class FileController extends AbstractController
             }
         }
 
-        return $app->redirect($app->url('admin_content_file'));
+        return $this->redirectToRoute('admin_content_file');
     }
 
     /**
      * @Route("/%admin_route%/content/file_download", name="admin_content_file_download")
      */
-    public function download(Application $app, Request $request)
+    public function download(Request $request)
     {
-        $topDir = $this->appConfig['user_data_realdir'];
+        $topDir = $this->getUserDataDir();
         $file = $this->convertStrToServer($request->get('select_file'));
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
@@ -218,9 +202,9 @@ class FileController extends AbstractController
 
                 $str = preg_replace($patterns, '', $pathParts['basename']);
                 if (strlen($str) === 0) {
-                    return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+                    return (new BinaryFileResponse($file))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
                 } else {
-                    return $app->sendFile($file, 200, array(
+                    return new BinaryFileResponse($file, 200, array(
                         "Content-Type" => "aplication/octet-stream;",
                         "Content-Disposition" => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename']))
                     ));
@@ -230,7 +214,7 @@ class FileController extends AbstractController
         throw new NotFoundHttpException();
     }
 
-    public function upload(Application $app, Request $request)
+    public function upload(Request $request)
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class)
@@ -244,7 +228,7 @@ class FileController extends AbstractController
             if (empty($data['file'])) {
                 $this->error = array('message' => 'ファイルが選択されていません。');
             } else {
-                $topDir = $this->appConfig['user_data_realdir'];
+                $topDir = $this->getUserDataDir();
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {
                     $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
                     $data['file']->move($request->get('now_dir'), $filename);
@@ -305,9 +289,9 @@ class FileController extends AbstractController
         return $tree;
     }
 
-    private function getFileList($app, $nowDir)
+    private function getFileList($nowDir)
     {
-        $topDir = $this->appConfig['user_data_realdir'];
+        $topDir = $this->getUserDataDir();
         $filter = function (\SplFileInfo $file) use ($topDir) {
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
@@ -378,5 +362,10 @@ class FileController extends AbstractController
             return mb_convert_encoding($target, self::SJIS, self::UTF);
         }
         return $target;
+    }
+
+    private function getUserDataDir()
+    {
+        return $this->getParameter('kernel.project_dir').'/html/user_data';
     }
 }

@@ -19,12 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_payment'] %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}支払方法管理{% endblock %}
+{% block title %}基本情報設定{% endblock %}
+{% block sub_title %}支払方法設定{% endblock %}
 
 {% block main %}
     <div id="payment_wrap" class="row">
@@ -48,9 +48,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <form name="delete_form" id="delete_form" action="" method="post">
-                                    </form>
-                                    {% for Payment in Payments %}
+                                <form name="delete_form" id="delete_form" action="" method="post">
+                                </form>
+                                {% for Payment in Payments %}
                                     <tr id="payment_list__item--{{ Payment.id }}">
 
                                         <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.methodForAdmin }}</td>
@@ -59,9 +59,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </td>
                                         <td id="payment_list__rule--{{ Payment.id }}" class="member_name">
                                             {% if Payment.rule_min > 0 %}
-                                                {{ Payment.rule_min }}
-                                            {% else %}
-                                                0
+                                            {{ Payment.rule_min }}
+                                        {% else %}
+                                            0
                                             {% endif %}円
 
                                             {% if Payment.rule_max > 0 %}
@@ -72,7 +72,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </td>
                                         <td id="payment_list__menu_box--{{ Payment.id }}" class="icon_edit">
                                             <div id="payment_list__menu_toggle--{{ Payment.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                                    <svg class="cb cb-ellipsis-h">
+                                                        <use xlink:href="#cb-ellipsis-h"/>
+                                                    </svg>
+                                                </a>
                                                 <ul id="payment_list__menu--{{ Payment.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
                                                         <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
@@ -89,17 +93,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </li>
                                                     <li>
                                                         {% if loop.first == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a></li>
-                                                        {% endif %}
-                                                        {% if loop.last == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
-                                                        {% endif %}
+                                                    <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a></li>
+                                                    {% endif %}
+                                                    {% if loop.last == false %}
+                                                        <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
+                                                    {% endif %}
                                                     </li>
                                                 </ul>
                                             </div>
                                         </td>
                                     </tr>
-                                    {% endfor %}
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>

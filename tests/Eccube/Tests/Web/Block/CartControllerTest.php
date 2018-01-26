@@ -22,36 +22,15 @@
  */
 
 
-namespace Eccube\Controller\Block;
+namespace Eccube\Tests\Web\Block;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
-use Eccube\Repository\CategoryRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
+use Eccube\Tests\Web\AbstractWebTestCase;
 
-/**
- * @Route(service=CategoryController::class);
- */
-class CategoryController
+class CartControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @Inject(CategoryRepository::class)
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @Route("/block/category", name="block_category")
-     * @Template("Block/category.twig")
-     */
-    public function index(Application $app, Request $request)
+    public function testRoutingCart()
     {
-        $Categories = $this->categoryRepository->getList();
-
-        return [
-            'Categories' => $Categories,
-        ];
+        $this->client->request('GET', '/block/cart');
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

@@ -19,16 +19,16 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['order', 'order_edit'] %}
 
 {% block title %}受注管理{% endblock %}
 {% block sub_title %}受注登録・編集{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme searchCustomerModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme searchCustomerModalForm '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme searchProductModalForm '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
 <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
@@ -376,7 +376,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              id="order_item_list"
                              data-prototype="
                                 {% filter escape %}
-                                     {{ include('Order/order_item_prototype.twig', { 'orderItemForm': form.OrderItems.vars.prototype }) }}
+                                     {{ include('@admin/Order/order_item_prototype.twig', { 'orderItemForm': form.OrderItems.vars.prototype }) }}
                                 {% endfilter %}">
 
                             {% for orderItemForm in form.OrderItems %}

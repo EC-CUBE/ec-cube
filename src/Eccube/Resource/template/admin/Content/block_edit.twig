@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'block'] %}
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ブロック管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
