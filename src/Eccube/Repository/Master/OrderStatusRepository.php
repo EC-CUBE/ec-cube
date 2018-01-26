@@ -41,6 +41,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class OrderStatusRepository extends AbstractRepository
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, OrderStatus::class);
@@ -87,6 +90,10 @@ class OrderStatusRepository extends AbstractRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * find All Array
+     * @return array
+     */
     public function findAllArray()
     {
 
