@@ -26,7 +26,6 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\Category;
 use Symfony\Bridge\Doctrine\RegistryInterface;

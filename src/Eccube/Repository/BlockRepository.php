@@ -24,7 +24,6 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Inject;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\Block;
 use Symfony\Component\Filesystem\Filesystem;
