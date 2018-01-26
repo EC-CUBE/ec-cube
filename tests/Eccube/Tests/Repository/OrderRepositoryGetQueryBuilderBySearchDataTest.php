@@ -39,12 +39,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     /** @var  SexRepository */
     protected $sexRepo;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->orderStatusRepo = $this->container->get(OrderStatusRepository::class);
         $this->orderRepo = $this->container->get(OrderRepository::class);
         $this->sexRepo = $this->container->get(SexRepository::class);
-        
+
         $this->createProduct();
         $this->Customer = $this->createCustomer();
         $this->Customer->setName01('立方体長');

@@ -6,9 +6,6 @@ use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * MemberRepository test cases.
@@ -17,7 +14,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class MemberRepositoryTest extends EccubeTestCase
 {
-
     /** @var  Member */
     protected $Member;
     /** @var  MemberRepository */

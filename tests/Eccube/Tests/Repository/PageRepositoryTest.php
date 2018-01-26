@@ -27,7 +27,6 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\EccubeTestCase;
-use org\bovigo\vfs\vfsStream;
 
 class PageRepositoryTest extends EccubeTestCase
 {

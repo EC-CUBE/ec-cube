@@ -15,6 +15,7 @@ use Eccube\Tests\EccubeTestCase;
 class NewsRepositoryTest extends EccubeTestCase
 {
     protected $Member;
+
     /** @var  NewsRepository */
     protected $newsRepo;
 
