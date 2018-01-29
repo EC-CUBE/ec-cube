@@ -24,7 +24,6 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
-use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
 
@@ -41,18 +40,23 @@ class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
     /**
      * PaymentTotalLimitValidator constructor.
      *
-     * @param $maxTotalFee
+     * @param array $eccubeConfig
      */
-    public function __construct($maxTotalFee)
+    public function __construct(array $eccubeConfig)
     {
-        $this->maxTotalFee = $maxTotalFee;
+        $this->maxTotalFee = $eccubeConfig['max_total_fee'];
     }
 
+    /**
+     * @param ItemHolderInterface $item
+     * @param PurchaseContext $context
+     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     */
     protected function validate(ItemHolderInterface $item, PurchaseContext $context)
     {
         $totalPrice = $item->getTotal();
         if ($totalPrice > $this->maxTotalFee) {
-            throw new InvalidItemException('cart.over.price_limit');
+            $this->throwInvalidItemException('cart.over.price_limit');
         }
     }
 }

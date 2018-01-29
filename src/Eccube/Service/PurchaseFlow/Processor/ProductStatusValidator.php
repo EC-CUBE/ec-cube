@@ -21,39 +21,39 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Service\PurchaseFlow;
+namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Eccube\Entity\CartItem;
+
 use Eccube\Entity\ItemInterface;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
-abstract class ValidatableItemProcessor implements ItemProcessor
+/**
+ * 商品が公開されているかどうか。
+ */
+class ProductStatusValidator extends ValidatableItemProcessor
 {
-    use ValidatorTrait;
-
     /**
-     * @param ItemInterface   $item
+     * @param ItemInterface $item
      * @param PurchaseContext $context
-     *
-     * @return ProcessResult
+     * @throws InvalidItemException
      */
-    public function process(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context)
     {
-        try {
-            $this->validate($item, $context);
-
-            return ProcessResult::success();
-        } catch (InvalidItemException $e) {
-            if ($item instanceof CartItem) {
-                $this->handle($item, $context);
-            }
-
-            return ProcessResult::warn($e->getMessage());
+        $Product = $item->getProductClass()->getProduct();
+        if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
+            $this->throwInvalidItemException('cart.product.not.status');
         }
     }
 
-    abstract protected function validate(ItemInterface $item, PurchaseContext $context);
-
+    /**
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     */
     protected function handle(ItemInterface $item, PurchaseContext $context)
     {
+        $item->setQuantity(0);
     }
 }
