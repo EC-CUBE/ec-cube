@@ -24,6 +24,7 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Common\Constant;
+use Eccube\Exception\PluginException;
 use Eccube\Plugin\ConfigManager;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
@@ -35,8 +36,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginServiceTest extends AbstractServiceTestCase
 {
-    protected $app;
-
     /**
      * @var PluginService
      */
@@ -97,7 +96,7 @@ class PluginServiceTest extends AbstractServiceTestCase
      */
 
     // テスト用のダミープラグインを配置する
-    private function createTempDir(){
+    private function createTempDir() {
         $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
         if(!mkdir($t)){
             throw new \Exception("$t ".$php_errormsg);
@@ -237,16 +236,14 @@ class PluginServiceTest extends AbstractServiceTestCase
             $this->fail("testConfigYmlFormat dont throw exception.");
         }catch(\Eccube\Exception\PluginException $e){ }
 
+        $this->expectException(PluginException::class);
         $config=array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $config['event'] = "&".$tmpname;
-        try{
-            file_put_contents($tmpfile,Yaml::dump($config));
-            $this->service->checkPluginArchiveContent($tmpfile);
-            $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        file_put_contents($tmpfile,Yaml::dump($config));
+        $this->service->checkPluginArchiveContent($tmpfile);
     }
 
     /**

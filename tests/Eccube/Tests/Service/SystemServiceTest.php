@@ -23,20 +23,13 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Service\SystemService;
+
 class SystemServiceTest extends AbstractServiceTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testgetDbversion()
     {
-        $app = $this->app;
-
-        $version = $app['eccube.service.system']
-            ->getDbversion();
+        $version = $this->container->get(SystemService::class)->getDbversion();
 
         $this->assertNotNull($version);
         $this->assertRegExp('/mysql|postgresql|sqlite/', strtolower($version));
