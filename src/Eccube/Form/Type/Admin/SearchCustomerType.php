@@ -51,8 +51,16 @@ class SearchCustomerType extends AbstractType
      */
     protected $customerStatusRepository;
 
-    public function __construct($eccubeConfig, CustomerStatusRepository $customerStatusRepository)
-    {
+    /**
+     * SearchCustomerType constructor.
+     *
+     * @param $eccubeConfig
+     * @param CustomerStatusRepository $customerStatusRepository
+     */
+    public function __construct(
+        CustomerStatusRepository $customerStatusRepository,
+        array $eccubeConfig
+    ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->customerStatusRepository = $customerStatusRepository;
     }
@@ -65,155 +73,155 @@ class SearchCustomerType extends AbstractType
         $months = range(1, 12);
         $builder
             // 会員ID・メールアドレス・名前・名前(フリガナ)
-            ->add('multi', TextType::class, array(
+            ->add('multi', TextType::class, [
                 'label' => '会員ID・メールアドレス・名前・名前(フリガナ)',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
-                ),
-            ))
-            ->add('company_name', TextType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                ],
+            ])
+            ->add('company_name', TextType::class, [
                 'label' => '会社名',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
-                ),
-            ))
-            ->add('pref', PrefType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                ],
+            ])
+            ->add('pref', PrefType::class, [
                 'label' => '都道府県',
                 'required' => false,
-            ))
-            ->add('sex', SexType::class, array(
+            ])
+            ->add('sex', SexType::class, [
                 'label' => '性別',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
-            ))
-            ->add('birth_month', ChoiceType::class, array(
+            ])
+            ->add('birth_month', ChoiceType::class, [
                 'label' => '誕生月',
                 'required' => false,
                 'choices' => array_combine($months, $months),
-            ))
-            ->add('birth_start', BirthdayType::class, array(
+            ])
+            ->add('birth_start', BirthdayType::class, [
                 'label' => '誕生日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('birth_end', BirthdayType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('birth_end', BirthdayType::class, [
                 'label' => '誕生日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('tel', TextType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('tel', TextType::class, [
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Regex([
                         'pattern' => "/^[\d-]+$/u",
                         'message' => 'form.type.admin.nottelstyle',
-                    )),
-                ),
-            ))
-            ->add('buy_total_start', IntegerType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('buy_total_start', IntegerType::class, [
                 'label' => '購入金額',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['price_len'])),
-                ),
-            ))
-            ->add('buy_total_end', IntegerType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                ],
+            ])
+            ->add('buy_total_end', IntegerType::class, [
                 'label' => '購入金額',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['price_len'])),
-                ),
-            ))
-            ->add('buy_times_start', IntegerType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                ],
+            ])
+            ->add('buy_times_start', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['int_len'])),
-                ),
-            ))
-            ->add('buy_times_end', IntegerType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                ],
+            ])
+            ->add('buy_times_end', IntegerType::class, [
                 'label' => '購入回数',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['int_len'])),
-                ),
-            ))
-            ->add('create_date_start', DateType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['int_len']]),
+                ],
+            ])
+            ->add('create_date_start', DateType::class, [
                 'label' => '登録日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('create_date_end', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('create_date_end', DateType::class, [
                 'label' => '登録日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('update_date_start', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('update_date_start', DateType::class, [
                 'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('update_date_end', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('update_date_end', DateType::class, [
                 'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('last_buy_start', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('last_buy_start', DateType::class, [
                 'label' => '最終購入日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('last_buy_end', DateType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('last_buy_end', DateType::class, [
                 'label' => '最終購入日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('buy_product_name', TextType::class, array(
+                'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+            ])
+            ->add('buy_product_name', TextType::class, [
                 'label' => '購入商品名',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
-                ),
-            ))
-            ->add('buy_product_code', TextType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                ],
+            ])
+            ->add('buy_product_code', TextType::class, [
                 'label' => '購入商品コード',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
-                ),
-            ))
-            ->add('buy_category', MasterCategoryType::class, array(
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['stext_len']]),
+                ],
+            ])
+            ->add('buy_category', MasterCategoryType::class, [
                 'label' => '商品カテゴリ',
                 'required' => false,
-            ))
-            ->add('customer_status', CustomerStatusType::class, array(
+            ])
+            ->add('customer_status', CustomerStatusType::class, [
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
@@ -224,7 +232,7 @@ class SearchCustomerType extends AbstractType
                         CustomerStatus::REGULAR,
                     ]
                 ])
-            ));
+            ]);
     }
 
     /**

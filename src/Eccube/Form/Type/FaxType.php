@@ -24,13 +24,10 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
 use Symfony\Component\Form\AbstractType;
 
 // deprecated 3.1で削除予定
-/**
- * @FormType
- */
+
 class FaxType extends AbstractType
 {
     /**

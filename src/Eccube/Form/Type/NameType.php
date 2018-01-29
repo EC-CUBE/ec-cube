@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,25 +32,22 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class NameType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * NameType constructor.
+     *
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    public function __construct()
-    {
+    public function __construct(
+        array $eccubeConfig
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -66,13 +60,13 @@ class NameType extends AbstractType
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['lastname_options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['lastname_options']['constraints']);
+            $options['lastname_options']['constraints'] = array_merge([
+                new Assert\NotBlank(),
+            ], $options['lastname_options']['constraints']);
 
-            $options['firstname_options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['firstname_options']['constraints']);
+            $options['firstname_options']['constraints'] = array_merge([
+                new Assert\NotBlank(),
+            ], $options['firstname_options']['constraints']);
         }
 
         if (!isset($options['options']['error_bubbling'])) {
@@ -118,8 +112,7 @@ class NameType extends AbstractType
                 ),
                 'constraints' => array(
                     new Assert\Length(array(
-                        // 'max' => $this->appConfig['name_len'],
-                        'max' => 15 // FIXME
+                         'max' => $this->eccubeConfig['name_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',
@@ -133,8 +126,7 @@ class NameType extends AbstractType
                 ),
                 'constraints' => array(
                     new Assert\Length(array(
-                        // 'max' => $this->appConfig['name_len'],
-                        'max' => 15 // FIXME
+                         'max' => $this->eccubeConfig['name_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[^\s ]+$/u',

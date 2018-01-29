@@ -24,30 +24,25 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Eccube\Form\Type\Admin\ClassNameType;
+use Eccube\Form\Type\Admin\ClassCategoryType;
 
-class ClassNameTypeTest extends AbstractTypeTestCase
+class ClassCategoryTypeTest extends AbstractTypeTestCase
 {
-
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'name' => '形状'
+        'name' => '立方体'
     );
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder(ClassNameType::class, null, array(
+        $this->form = $this->formFactory
+            ->createBuilder(ClassCategoryType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
@@ -78,7 +73,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $name = str_repeat('S', $this->eccubeConfig['stext_len']) . 'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -88,7 +83,7 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthValid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']);
+        $name = str_repeat('S', $this->eccubeConfig['stext_len']);
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);

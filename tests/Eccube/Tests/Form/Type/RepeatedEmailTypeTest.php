@@ -28,13 +28,14 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class RepeatedEmailTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    /** @var array デフォルト値（正常系）を設定 */
+    /**
+     * @var array デフォルト値（正常系）を設定
+     */
     protected $formData = array(
         'email' => array(
             'first' =>'eccube@example.com',
@@ -42,12 +43,14 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         ),
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('email', RepeatedEmailType::class, array(
             ))

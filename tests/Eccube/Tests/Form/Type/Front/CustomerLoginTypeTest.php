@@ -24,12 +24,10 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\CustomerLoginType;
+use Symfony\Component\HttpFoundation\Request;
 
 class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -41,12 +39,15 @@ class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
+        $request = Request::createFromGlobals();
+        $this->container->get('request_stack')->push($request);
+
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(CustomerLoginType::class, null, array(
+                'csrf_protection' => false
             ))
             ->getForm();
     }
