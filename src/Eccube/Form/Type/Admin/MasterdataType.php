@@ -23,13 +23,19 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
+/**
+ * Class MasterdataType
+ * @package Eccube\Form\Type\Admin
+ */
 class MasterdataType extends AbstractType
 {
     /**
@@ -46,7 +52,6 @@ class MasterdataType extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -54,13 +59,16 @@ class MasterdataType extends AbstractType
     {
         $masterdata = array();
 
+        /** @var MappingDriverChain $driverChain */
         $driverChain = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+        /** @var MappingDriver[] $drivers */
         $drivers = $driverChain->getDrivers();
 
         foreach ($drivers as $namespace => $driver) {
             if ($namespace == 'Eccube\Entity') {
                 $classNames = $driver->getAllClassNames();
                 foreach ($classNames as $className) {
+                    /** @var ClassMetadata $meta */
                     $meta = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
                     if (strpos($meta->rootEntityName, 'Master') !== false
                         && $meta->hasField('id')

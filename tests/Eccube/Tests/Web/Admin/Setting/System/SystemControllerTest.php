@@ -32,11 +32,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class SystemControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
 
     /**
      * testRoutingAdminSettingSystemSystemIndex
@@ -45,7 +40,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_setting_system_system')
+            $this->generateUrl('admin_setting_system_system')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -57,7 +52,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->url('admin_setting_system_system', array('mode' => 'info'))
+            $this->generateUrl('admin_setting_system_system', array('mode' => 'info'))
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());

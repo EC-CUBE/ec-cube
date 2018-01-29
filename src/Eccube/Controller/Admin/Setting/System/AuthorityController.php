@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -34,9 +31,7 @@ use Eccube\Form\Type\Admin\AuthorityRoleType;
 use Eccube\Repository\AuthorityRoleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,34 +40,25 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthorityController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(AuthorityRoleRepository::class)
      * @var AuthorityRoleRepository
      */
     protected $authorityRoleRepository;
 
     /**
-     * @Route("/%admin_route%/setting/system/authority", name="admin_setting_system_authority")
-     * @Template("Setting/System/authority.twig")
+     * AuthorityController constructor.
+     * @param AuthorityRoleRepository $authorityRoleRepository
      */
-    public function index(Application $app, Request $request)
+    public function __construct(AuthorityRoleRepository $authorityRoleRepository)
+    {
+        $this->authorityRoleRepository = $authorityRoleRepository;
+    }
+
+
+    /**
+     * @Route("/%admin_route%/setting/system/authority", name="admin_setting_system_authority")
+     * @Template("@admin/Setting/System/authority.twig")
+     */
+    public function index(Request $request)
     {
         $AuthorityRoles = $this->authorityRoleRepository->findAllSort();
 
@@ -145,9 +131,9 @@ class AuthorityController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.system.authority.save.complete', 'admin');
+                $this->addSuccess('admin.system.authority.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_system_authority'));
+                return $this->redirectToRoute('admin_setting_system_authority');
 
             }
         }

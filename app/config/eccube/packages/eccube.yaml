@@ -69,3 +69,4 @@ parameters:
     password_max_len: 32
     auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
     password_hash_algos: SHA256
+    force_ssl: 0

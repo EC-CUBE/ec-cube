@@ -32,23 +32,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 class MemberType extends AbstractType
 {
     /**
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * MemberType constructor.
+     *
      * @param array $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
-    {
-        $this->appConfig = $eccubeConfig;
+    public function __construct(
+        array $eccubeConfig
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}
@@ -60,7 +60,7 @@ class MemberType extends AbstractType
                 'label' => '名前',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                 ),
             ))
             ->add('department', TextType::class, array(
@@ -68,7 +68,7 @@ class MemberType extends AbstractType
                 'label' => '所属',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                 ),
             ))
             ->add('login_id', TextType::class, array(
@@ -76,8 +76,8 @@ class MemberType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->appConfig['id_min_len'],
-                        'max' => $this->appConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['id_min_len'],
+                        'max' => $this->eccubeConfig['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
@@ -93,8 +93,8 @@ class MemberType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->appConfig['id_min_len'],
-                        'max' => $this->appConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['id_min_len'],
+                        'max' => $this->eccubeConfig['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
