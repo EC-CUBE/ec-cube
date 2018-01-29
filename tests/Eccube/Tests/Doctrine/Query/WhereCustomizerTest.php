@@ -9,6 +9,7 @@ use Eccube\Tests\EccubeTestCase;
 
 class WhereCustomizerTest extends EccubeTestCase
 {
+
     public function testCustomizeNOP()
     {
         $builder = $this->createQueryBuilder();
