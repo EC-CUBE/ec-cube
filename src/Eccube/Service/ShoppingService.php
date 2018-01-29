@@ -165,7 +165,9 @@ class ShoppingService
      */
     protected $orderService;
 
-    /** @var  MobileDetector */
+    /**
+     * @var  MobileDetector
+     */
     protected $mobileDetect;
 
     /**
@@ -192,28 +194,29 @@ class ShoppingService
      * @param OrderService $orderService
      * @param MobileDetector $mobileDetector
      */
-    public function __construct(MailTemplateRepository $mailTemplateRepository,
-                                MailService $mailService,
-                                EventDispatcher $eventDispatcher,
-                                FormFactory $formFactory,
-                                DeliveryFeeRepository $deliveryFeeRepository,
-                                TaxRuleRepository $taxRuleRepository,
-                                CustomerAddressRepository $customerAddressRepository,
-                                DeliveryRepository $deliveryRepository,
-                                DeliveryTimeRepository $deliveryTimeRepository,
-                                OrderStatusRepository $orderStatusRepository,
-                                PaymentRepository $paymentRepository,
-                                DeviceTypeRepository $deviceTypeRepository,
-                                EntityManagerInterface $entityManager,
-                                array $eccubeConfig,
-                                PrefRepository $prefRepository,
-                                Session $session,
-                                OrderRepository $orderRepository,
-                                BaseInfo $BaseInfo,
-                                CartService $cartService,
-                                OrderService $orderService,
-                                MobileDetector $mobileDetector)
-    {
+    public function __construct(
+        MailTemplateRepository $mailTemplateRepository,
+        MailService $mailService,
+        EventDispatcher $eventDispatcher,
+        FormFactory $formFactory,
+        DeliveryFeeRepository $deliveryFeeRepository,
+        TaxRuleRepository $taxRuleRepository,
+        CustomerAddressRepository $customerAddressRepository,
+        DeliveryRepository $deliveryRepository,
+        DeliveryTimeRepository $deliveryTimeRepository,
+        OrderStatusRepository $orderStatusRepository,
+        PaymentRepository $paymentRepository,
+        DeviceTypeRepository $deviceTypeRepository,
+        EntityManagerInterface $entityManager,
+        array $eccubeConfig,
+        PrefRepository $prefRepository,
+        Session $session,
+        OrderRepository $orderRepository,
+        BaseInfo $BaseInfo,
+        CartService $cartService,
+        OrderService $orderService,
+        MobileDetector $mobileDetector
+    ) {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->mailService = $mailService;
         $this->eventDispatcher = $eventDispatcher;

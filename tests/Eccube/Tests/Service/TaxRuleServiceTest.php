@@ -9,15 +9,24 @@ use Eccube\Service\TaxRuleService;
 
 class TaxRuleServiceTest extends AbstractServiceTestCase
 {
-    /** @var TaxRuleService */
+    /**
+     * @var TaxRuleService
+     */
     private $taxRuleService;
 
-    /** @var  TaxRuleRepository */
+    /**
+     * @var  TaxRuleRepository
+     */
     protected $TaxRule1;
 
-    /** @var  BaseInfo */
+    /**
+     * @var  BaseInfo
+     */
     protected $BaseInfo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

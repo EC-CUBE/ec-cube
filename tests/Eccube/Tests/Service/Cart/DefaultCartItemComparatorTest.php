@@ -36,6 +36,9 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
      */
     private $comparator;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

@@ -17,30 +17,63 @@ use Eccube\Service\ShoppingService;
 use Eccube\Service\TaxRuleService;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
 {
-    /** @var  Customer */
+    /**
+     * @var  Customer
+     */
     protected $Customer;
-    /** @var  CartService */
+
+    /**
+     * @var  CartService
+     */
     protected $CartService;
-    /** @var  SaleType */
+
+    /**
+     * @var  SaleType
+     */
     protected $SaleType1;
-    /** @var  SaleType */
+
+    /**
+     * @var  SaleType
+     */
     protected $SaleType2;
-    /** @var  ShoppingService */
+
+    /**
+     * @var  ShoppingService
+     */
     protected $shoppingService;
-    /** @var  BaseInfo */
+
+    /**
+     * @var  BaseInfo
+     */
     protected $BaseInfo;
-    /** @var  \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface */
+
+    /**
+     * @var  TokenStorageInterface
+     */
     protected $tokenStorage;
-    /** @var  OrderStatusRepository */
+
+    /**
+     * @var  OrderStatusRepository
+     */
     protected $orderStatusRepo;
-    /** @var  DeliveryDurationRepository */
+
+    /**
+     * @var  DeliveryDurationRepository
+     */
     protected $deliveryDurationRepo;
-    /** @var  Generator */
+
+    /**
+     * @var  Generator
+     */
     protected $generator;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

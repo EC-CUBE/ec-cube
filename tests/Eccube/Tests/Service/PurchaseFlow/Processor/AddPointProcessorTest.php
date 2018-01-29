@@ -13,18 +13,29 @@ use Eccube\Tests\EccubeTestCase;
 class AddPointProcessorTest extends EccubeTestCase
 {
 
-    /** @var  Cart */
+    /**
+     * @var  Cart
+     */
     private $Cart;
 
-    /** @var  BaseInfo */
+    /**
+     * @var  BaseInfo
+     */
     private $BaseInfo;
 
-    /** @var  Product */
+    /**
+     * @var  Product
+     */
     private $Product;
 
-    /** @var  int */
+    /**
+     * @var  int
+     */
     private $total;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

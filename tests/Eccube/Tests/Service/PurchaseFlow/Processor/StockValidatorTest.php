@@ -7,6 +7,8 @@ use Eccube\Service\PurchaseFlow\Processor\StockValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 
 class StockValidatorTest extends EccubeTestCase
 {
@@ -19,9 +21,20 @@ class StockValidatorTest extends EccubeTestCase
      * @var CartItem
      */
     protected $cartItem;
+
+    /**
+     * @var Product
+     */
     protected $Product;
+
+    /**
+     * @var ProductClass
+     */
     protected $ProductClass;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

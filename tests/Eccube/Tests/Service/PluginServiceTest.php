@@ -46,6 +46,11 @@ class PluginServiceTest extends AbstractServiceTestCase
      */
     private $pluginRepository;
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \ReflectionException
+     */
     public function setUp()
     {
         parent::setUp();

@@ -29,9 +29,14 @@ use Eccube\Tests\EccubeTestCase;
 
 class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
-    /** @var SaleTypeCartAllocator */
+    /**
+     * @var SaleTypeCartAllocator
+     */
     private $allocator;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

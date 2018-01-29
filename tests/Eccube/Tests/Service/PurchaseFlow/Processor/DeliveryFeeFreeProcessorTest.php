@@ -47,6 +47,9 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
      */
     protected $BaseInfo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

@@ -50,6 +50,11 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     private $pluginRepository;
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \ReflectionException
+     */
     public function setUp()
     {
         parent::setUp();
@@ -274,7 +279,8 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     }
 
     // テスト用のダミープラグインを配置する
-    private function createTempDir(){
+    private function createTempDir()
+    {
         $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
         if(!mkdir($t)){
             throw new \Exception("$t ".$php_errormsg);

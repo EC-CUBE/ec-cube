@@ -47,6 +47,7 @@ class AddPointProcessor implements ItemHolderProcessor
 
     /**
      * AddPointProcessor constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param BaseInfo $BaseInfo
      */
