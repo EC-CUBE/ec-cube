@@ -25,29 +25,34 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Eccube\Repository\MemberRepository;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @{@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->memberRepository = $this->container->get(MemberRepository::class);
     }
 
     public function testRoutingAdminSettingSystemMember()
     {
-        $crawler = $this->client->request('GET',
-            $this->app->url('admin_setting_system_member')
-        );
+        $this->client->request('GET', $this->generateUrl('admin_setting_system_member'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminSettingSystemMemberNew()
     {
-        $this->client->request('GET',
-            $this->app->url('admin_setting_system_member_new')
-        );
+        $this->client->request('GET', $this->generateUrl('admin_setting_system_member_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -55,17 +60,15 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $TestMember = $this->createMember();
-        $this->app['orm.em']->persist($TestMember);
-        $this->app['orm.em']->flush();
-        $test_member_id = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => $TestMember->getLoginId()
-            ))
+        $this->entityManager->persist($TestMember);
+        $this->entityManager->flush();
+        $memberId = $this->memberRepository
+            ->findOneBy(['login_id' => $TestMember->getLoginId()])
             ->getId();
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $memberId])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -74,18 +77,16 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $TestMember = $this->createMember();
-        $this->app['orm.em']->persist($TestMember);
-        $this->app['orm.em']->flush();
-        $test_member_id = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => $TestMember->getLoginId()
-            ))
+        $this->entityManager->persist($TestMember);
+        $this->entityManager->flush();
+        $test_member_id = $this->memberRepository
+            ->findOneBy(['login_id' => $TestMember->getLoginId()])
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->client->request('DELETE',
-            $this->app->url('admin_setting_system_member_delete', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_delete', ['id' => $test_member_id])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
@@ -94,18 +95,16 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $TestMember = $this->createMember();
-        $this->app['orm.em']->persist($TestMember);
-        $this->app['orm.em']->flush();
-        $test_member_id = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => $TestMember->getLoginId()
-            ))
+        $this->entityManager->persist($TestMember);
+        $this->entityManager->flush();
+        $memberId = $this->memberRepository
+            ->findOneBy(['login_id' => $TestMember->getLoginId()])
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_up', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_up', ['id' => $memberId])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
@@ -114,35 +113,33 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $TestMember = $this->createMember();
-        $this->app['orm.em']->persist($TestMember);
-        $this->app['orm.em']->flush();
-        $test_member_id = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => $TestMember->getLoginId()
-            ))
+        $this->entityManager->persist($TestMember);
+        $this->entityManager->flush();
+        $test_member_id = $this->memberRepository
+            ->findOneBy(['login_id' => $TestMember->getLoginId()])
             ->getId();
 
         // main
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_down', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_down', ['id' => $test_member_id])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testMemberEditFail()
     {
         // before
-        $test_member_id = 99999;
+        $memberId = 99999;
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $test_member_id))
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $memberId])
         );
-        $this->fail();
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     public function testMemberNewSubmit()
@@ -152,16 +149,16 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('POST',
-            $this->app->url('admin_setting_system_member_new'),
-            array(
+            $this->generateUrl('admin_setting_system_member_new'),
+            [
                 'admin_member' => $formData
-            )
+            ]
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $Member = $this->app['eccube.repository.member']->findOneBy(array('login_id' => $formData['login_id']));
+        $Member = $this->memberRepository->findOneBy(['login_id' => $formData['login_id']]);
         $this->actual = $Member->getLoginId();
         $this->expected = $formData['login_id'];
         $this->verify();
@@ -174,10 +171,10 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $formData['login_id'] = '';
         // main
         $this->client->request('POST',
-            $this->app->url('admin_setting_system_member_new'),
-            array(
+            $this->generateUrl('admin_setting_system_member_new'),
+            [
                 'admin_member' => $formData
-            )
+            ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -193,19 +190,17 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         );
         $Member = $this->createMember();
         $Member->setPassword('**********');
-        $this->app['orm.em']->persist($Member);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
         $mid = $Member->getId();
 
         // main
         $this->client->request('POST',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $mid)),
-            array(
-                'admin_member' => $formData
-            )
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
+            ['admin_member' => $formData]
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $Member->getLoginId();
@@ -220,24 +215,19 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $formData['login_id'] = '';
         $Member = $this->createMember();
         $Member->setPassword('**********');
-        $this->app['orm.em']->persist($Member);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
         $mid = $Member->getId();
 
         // main
         $this->client->request('POST',
-            $this->app->url('admin_setting_system_member_edit', array('id' => $mid)),
-            array(
-                'admin_member' => $formData
-            )
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
+            ['admin_member' => $formData]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testMemberUpNotFoundMember()
     {
         // before
@@ -245,30 +235,33 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_up', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_up', ['id' => $mid])
         );
-        $this->fail();
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     public function testMemberUpSuccess()
     {
         // before
         $MemberOne = $this->createMember('test1');
-        $this->app['orm.em']->persist($MemberOne);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MemberOne);
+        $this->entityManager->flush();
         $MemberTwo = $this->createMember('test2');
-        $this->app['orm.em']->persist($MemberTwo);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MemberTwo);
+        $this->entityManager->flush();
 
         $oldSortNo = $MemberOne->getSortNo();
         $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberOne->getId();
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_up', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_up', ['id' => $mid])
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
@@ -276,9 +269,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testMemberDownNotFoundMember()
     {
         // before
@@ -286,23 +276,26 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
-        $this->fail();
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     public function testMemberDownFail()
     {
         // before
-        $Member = $this->app['eccube.repository.member']->findOneBy(array('sort_no' => 1));
+        $Member = $this->memberRepository->findOneBy(['sort_no' => 1]);
         $mid = $Member->getId();
         $oldSortNo = $Member->getSortNo();
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = $Member->getSortNo();
@@ -314,21 +307,21 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $MemberOne = $this->createMember('test1');
-        $this->app['orm.em']->persist($MemberOne);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MemberOne);
+        $this->entityManager->flush();
         $MemberTwo = $this->createMember('test2');
-        $this->app['orm.em']->persist($MemberTwo);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($MemberTwo);
+        $this->entityManager->flush();
 
         $oldSortNo = $MemberOne->getSortNo();
         $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberTwo->getId();
         // main
         $this->client->request('PUT',
-            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+            $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
 
-        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $redirectUrl = $this->generateUrl('admin_setting_system_member');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $this->actual = array($MemberOne->getSortNo(), $MemberTwo->getSortNo());
@@ -340,16 +333,15 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $mid = 99999;
-        try {
-            // main
-            $this->client->request(
-                'DELETE',
-                $this->app->url('admin_setting_system_member_delete', array('id' => $mid))
-            );
-            $this->fail();
-        } catch (NotFoundHttpException $e) {
 
-        }
+        // main
+        $this->client->request('DELETE',
+            $this->generateUrl('admin_setting_system_member_delete', ['id' => $mid])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
     }
 
     protected function createFormData()

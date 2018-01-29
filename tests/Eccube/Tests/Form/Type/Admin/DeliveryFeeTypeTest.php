@@ -28,9 +28,6 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class DeliveryFeeTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -70,11 +67,10 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(DeliveryFeeType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -92,7 +88,7 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function testValidData_PriceLen()
     {
-        $this->form->submit(array('fee' => str_repeat('1', $this->app['config']['price_len'])));
+        $this->form->submit(array('fee' => str_repeat('1', $this->eccubeConfig['price_len'])));
         $this->assertTrue($this->form->isValid());
     }
 
@@ -110,7 +106,7 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit(array('fee' => $this->app['config']['price_max'] + 1));
+        $this->form->submit(array('fee' => $this->eccubeConfig['price_max'] + 1));
         $this->assertFalse($this->form->isValid());
     }
 }

@@ -24,8 +24,6 @@
 
 namespace Eccube\Form\Type\Install;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -37,16 +35,23 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
 
-/**
- * @FormType
- */
 class Step4Type extends AbstractType
 {
     /**
-     * @Inject("request_stack")
      * @var RequestStack
      */
     protected $requestStack;
+
+    /**
+     * Step4Type constructor.
+     *
+     * @param RequestStack $requestStack
+     */
+    public function __construct(
+        RequestStack $requestStack
+    ) {
+        $this->requestStack = $requestStack;
+    }
 
     /**
      * {@inheritdoc}
@@ -54,7 +59,7 @@ class Step4Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $database = array();
+        $database = [];
         if (extension_loaded('pdo_pgsql')) {
             $database['pdo_pgsql'] = 'PostgreSQL';
         }
@@ -66,35 +71,35 @@ class Step4Type extends AbstractType
         }
 
         $builder
-            ->add('database', ChoiceType::class, array(
+            ->add('database', ChoiceType::class, [
                 'label' => 'データベースの種類',
                 'choices' => array_flip($database),
                 'expanded' => false,
                 'multiple' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('database_host', TextType::class, array(
+                ],
+            ])
+            ->add('database_host', TextType::class, [
                 'label' => 'データベースのホスト名',
                 'required' => false,
-            ))
-            ->add('database_port', TextType::class, array(
+            ])
+            ->add('database_port', TextType::class, [
                 'label' => 'ポート番号',
                 'required' => false,
-            ))
-            ->add('database_name', TextType::class, array(
+            ])
+            ->add('database_name', TextType::class, [
                 'label' => 'データベース名',
-                'constraints' => array(
-                    new Assert\Callback(array($this, 'validate')),
-                ),
-            ))
-            ->add('database_user', TextType::class, array(
+                'constraints' => [
+                    new Assert\Callback([$this, 'validate']),
+                ],
+            ])
+            ->add('database_user', TextType::class, [
                 'label' => 'ユーザ名',
-                'constraints' => array(
-                    new Assert\Callback(array($this, 'validate')),
-                ),
-            ))
+                'constraints' => [
+                    new Assert\Callback([$this, 'validate']),
+                ],
+            ])
             ->add('database_password', PasswordType::class, array(
                 'label' => 'パスワード',
                 'required' => false,
@@ -141,9 +146,9 @@ class Step4Type extends AbstractType
     {
         $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
         if ($parameters['database'] != 'pdo_sqlite'){
-            $context->getValidator()->validate($data, array(
+            $context->getValidator()->validate($data, [
                 new Assert\NotBlank()
-            ));
+            ]);
         }
     }
 }

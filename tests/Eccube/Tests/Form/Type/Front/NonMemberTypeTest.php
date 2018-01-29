@@ -27,9 +27,6 @@ use Eccube\Form\Type\Front\NonMemberType;
 
 class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -66,11 +63,10 @@ class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(NonMemberType::class, null, array(
                 'csrf_protection' => false,
             ))

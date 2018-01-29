@@ -30,9 +30,6 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
  */
 class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -70,11 +67,10 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(ShoppingShippingType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -95,8 +91,5 @@ class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestC
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-
-        // エラーメッセージデバッグ用
-        //var_dump($this->form->getErrorsAsString());die;
     }
 }
