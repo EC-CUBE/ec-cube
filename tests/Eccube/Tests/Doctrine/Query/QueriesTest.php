@@ -10,11 +10,6 @@ use Eccube\Tests\EccubeTestCase;
 class QueriesTest extends EccubeTestCase
 {
 
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCustomizerShouldBeCalled()
     {
         $customizer = new QueriesTest_Customizer();
