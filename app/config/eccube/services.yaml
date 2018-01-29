@@ -149,3 +149,8 @@ services:
     Symfony\Component\HttpFoundation\ParameterBag:
     Eccube\Entity\BaseInfo:
         factory: ['@Eccube\Repository\BaseInfoRepository', 'get']
+
+    Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension:
+        # Symfony\Bridge\Twig\Extension\RoutingExtensionの後に登録するため,
+        # autoconfigureはfalseにし, CompilerPassで追加する.
+        autoconfigure: false
