@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "af98124cf4b7cec648749ee9458755e0",
+    "content-hash": "1521d13d394252d880141feb52a50f78",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1007,7 +1007,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -3603,20 +3603,20 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.33.2",
+            "version": "v1.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927"
+                "reference": "b38636760c4c96b75c8d6c7ee2690485317ab4fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dd6ca96227917e1e85b41c7c3cc6507b411e0927",
-                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b38636760c4c96b75c8d6c7ee2690485317ab4fa",
+                "reference": "b38636760c4c96b75c8d6c7ee2690485317ab4fa",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.7"
+                "php": ">=5.3.3"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -3626,12 +3626,15 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.33-dev"
+                    "dev-master": "1.34-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
                     "Twig_": "lib/"
+                },
+                "psr-4": {
+                    "Twig\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3661,7 +3664,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-04-20T17:39:48+00:00"
+            "time": "2017-06-05T17:16:52+00:00"
         }
     ],
     "packages-dev": [
@@ -3724,12 +3727,12 @@
             "version": "2.10.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/djoos/Symfony2-coding-standard.git",
+                "url": "https://github.com/djoos/Symfony-coding-standard.git",
                 "reference": "fdf8de2c4de016abb5ea6b6015f80c47f1f6301b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/djoos/Symfony2-coding-standard/zipball/fdf8de2c4de016abb5ea6b6015f80c47f1f6301b",
+                "url": "https://api.github.com/repos/djoos/Symfony-coding-standard/zipball/fdf8de2c4de016abb5ea6b6015f80c47f1f6301b",
                 "reference": "fdf8de2c4de016abb5ea6b6015f80c47f1f6301b",
                 "shasum": ""
             },
