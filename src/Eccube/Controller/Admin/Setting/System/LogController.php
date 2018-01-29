@@ -24,45 +24,26 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route(service=LogController::class)
  */
-class LogController
+class LogController extends  AbstractController
 {
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
 
     /**
      * @Route("/%admin_route%/setting/system/log", name="admin_setting_system_log")
-     * @Template("Setting/System/log.twig")
+     * @Template("@admin/Setting/System/log.twig")
+     * @return array
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $formData = array();
         // default
@@ -97,8 +78,8 @@ class LogController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
         }
-
-        $logFile = $this->appConfig['root_dir'].'/app/log/'.$formData['files'];
+        $logDir = $this->getParameter('kernel.logs_dir');
+        $logFile = $logDir.'/'.$formData['files'];
 
         return [
             'form' => $form->createView(),
@@ -106,6 +87,12 @@ class LogController
         ];
     }
 
+    /**
+     * parse log file
+     * @param $logFile
+     * @param $formData
+     * @return array
+     */
     private function parseLogFile($logFile, $formData)
     {
         $log = array();
