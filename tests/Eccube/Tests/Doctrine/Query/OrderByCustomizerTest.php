@@ -3,7 +3,6 @@
 
 namespace Eccube\Tests\Doctrine\Query;
 
-
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\OrderByCustomizer;
@@ -11,12 +10,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class OrderByCustomizerTest extends EccubeTestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();
@@ -80,6 +73,11 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
      */
     private $closure;
 
+    /**
+     * OrderByCustomizerTest_Customizer constructor.
+     *
+     * @param $closure
+     */
     function __construct($closure)
     {
         $this->closure = $closure;
