@@ -29,21 +29,22 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step4TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    /** @var array デフォルト値を設定 */
-    protected $formData = array(
+    /**
+     * @var array デフォルト値を設定
+     */
+    protected $formData = [
         'database' => '',
         'database_host' => '',
         'database_port' => '',
         'database_name' => '',
         'database_user' => '',
         'database_password' => '',
-    );
+    ];
 
     public function setUp()
     {

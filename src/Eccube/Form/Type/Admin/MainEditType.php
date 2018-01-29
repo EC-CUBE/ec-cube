@@ -59,10 +59,16 @@ class MainEditType extends AbstractType
      */
     protected $eccubeConfig;
 
+    /**
+     * MainEditType constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param DeviceTypeRepository $deviceTypeRepository
+     * @param array $eccubeConfig
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         DeviceTypeRepository $deviceTypeRepository,
-        $eccubeConfig
+        array $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->deviceTypeRepository = $deviceTypeRepository;

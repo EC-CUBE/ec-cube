@@ -8,21 +8,23 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Service\MailService;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class UpdatePointEventSubscriber implements EventSubscriber, ServiceSubscriberInterface
+class UpdatePointEventSubscriber implements EventSubscriber
 {
-    use ContainerAwareTrait;
-
     /**
-     * @var array
+     * @var ContainerInterface
      */
-    protected $eccubeConfig;
+    protected $container;
 
-    public function __construct($eccubeConfig)
+    public function __construct(ContainerInterface $container)
     {
-        $this->eccubeConfig = $eccubeConfig;
+        $this->container = $container;
+    }
+
+    public function getMailService()
+    {
+        return $this->container->get(MailService::class);
     }
 
     public function preUpdate(LifecycleEventArgs $eventArgs)
@@ -84,7 +86,7 @@ class UpdatePointEventSubscriber implements EventSubscriber, ServiceSubscriberIn
                 $newPoint = $Customer->getPoint() + $addCustomerPoint;
                 if ($newPoint < 0) {
                     // ポイントがマイナスになるためメールを送信する
-                    $mailService = $this->container->get(MailService::class);
+                    $mailService = $this->getMailService();
                     $mailService->sendPointNotifyMail($newOrder, $Customer->getPoint(), $addCustomerPoint);
                 }
                 $Customer->setPoint($newPoint);
@@ -128,28 +130,5 @@ class UpdatePointEventSubscriber implements EventSubscriber, ServiceSubscriberIn
         return [
             Events::preUpdate,
         ];
-    }
-
-    /**
-     * Returns an array of service types required by such instances, optionally keyed by the service names used internally.
-     *
-     * For mandatory dependencies:
-     *
-     *  * array('logger' => 'Psr\Log\LoggerInterface') means the objects use the "logger" name
-     *    internally to fetch a service which must implement Psr\Log\LoggerInterface.
-     *  * array('Psr\Log\LoggerInterface') is a shortcut for
-     *  * array('Psr\Log\LoggerInterface' => 'Psr\Log\LoggerInterface')
-     *
-     * otherwise:
-     *
-     *  * array('logger' => '?Psr\Log\LoggerInterface') denotes an optional dependency
-     *  * array('?Psr\Log\LoggerInterface') is a shortcut for
-     *  * array('Psr\Log\LoggerInterface' => '?Psr\Log\LoggerInterface')
-     *
-     * @return array The required service types, optionally keyed by service names
-     */
-    public static function getSubscribedServices()
-    {
-        return [MailService::class];
     }
 }

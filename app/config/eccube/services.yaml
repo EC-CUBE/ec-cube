@@ -62,29 +62,6 @@ services:
         resource: '../../../src/Eccube/Controller'
         tags: ['controller.service_arguments']
 
-    # Form Extensions
-    Eccube\Form\Extension\DoctrineOrmExtension:
-        tags:
-            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
-    Eccube\Form\Extension\FreezeTypeExtension:
-        tags:
-            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
-    Eccube\Form\Extension\HelpTypeExtension:
-        tags:
-            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
-
-    # DoctrineEventSubscribers
-    Eccube\Doctrine\EventSubscriber\InitSubscriber:
-        tags: ['doctrine.event_subscriber']
-    Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber:
-        tags: ['doctrine.event_subscriber']
-    Eccube\Doctrine\EventSubscriber\SaveEventSubscriber:
-        tags: ['doctrine.event_subscriber']
-    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
-        tags: ['doctrine.event_subscriber']
-    Eccube\Doctrine\EventSubscriber\UpdatePointEventSubscriber:
-        tags: ['doctrine.event_subscriber']
-
     Eccube\Twig\Extension\EccubeBlockExtension:
         tags: ['twig.extension']
         bind:

@@ -29,14 +29,16 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step3TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
 
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
+    /**
+     * @var array デフォルト値（正常系）を設定
+     */
+    protected $formData = [
         'shop_name' => '店舗名',
         'email' => 'eccube@example.com',
         'login_id' => 'administrator',
@@ -48,8 +50,11 @@ class Step3TypeTest extends AbstractTypeTestCase
         'smtp_port' => '',
         'smtp_username' => '',
         'smtp_password' => '',
-    );
+    ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

@@ -29,10 +29,10 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step5TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
 
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
     /**
@@ -45,28 +45,28 @@ class Step5TypeTest extends AbstractTypeTestCase
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => array(
+        return [
+            [
+                'data' => [
                     'no_update' => true,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'no_update' => false,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'no_update' => null,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'no_update' => '',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function setUp()
