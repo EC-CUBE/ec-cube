@@ -5,7 +5,6 @@ namespace Eccube\Doctrine\Common\CsvDataFixtures;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Table;
 
 /**
  * CSVファイルを扱うためのフィクスチャ.
@@ -14,9 +13,16 @@ use Doctrine\DBAL\Schema\Table;
  */
 class CsvFixture implements FixtureInterface
 {
-    /** @var \SplFileObject $file */
+    /**
+     * @var \SplFileObject
+     */
     protected $file;
 
+    /**
+     * CsvFixture constructor.
+     *
+     * @param \SplFileObject|null $file
+     */
     public function __construct(\SplFileObject $file = null)
     {
         $this->file = $file;
