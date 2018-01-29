@@ -212,7 +212,7 @@ class MypageController extends AbstractController
      */
     public function order(Request $request, $id)
     {
-//        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('再注文開始', array($id));
 
