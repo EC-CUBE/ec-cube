@@ -42,11 +42,6 @@ class Step4Type extends AbstractType
      */
     protected $requestStack;
 
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
-
     /**
      * Step4Type constructor.
      *

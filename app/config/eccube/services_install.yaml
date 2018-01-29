@@ -74,13 +74,7 @@ services:
         tags: ['doctrine.event_subscriber']
     Eccube\Doctrine\EventSubscriber\UpdatePointEventSubscriber: ~
 
-
     Eccube\Twig\Extension\EccubeBlockExtension: ~
-
-    Eccube\Log\Logger:
-        arguments:
-          - '@Eccube\Request\Context'
-          - '@monolog.logger'
 
     Plugin\:
       autowire: false
