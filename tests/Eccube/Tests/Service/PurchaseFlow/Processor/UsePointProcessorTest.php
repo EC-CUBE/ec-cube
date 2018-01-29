@@ -10,6 +10,10 @@ use Eccube\Tests\EccubeTestCase;
 class UsePointProcessorTest extends EccubeTestCase
 {
 
+    protected $BaseInfo;
+    protected $Customer;
+    protected $Order;
+
     public function setUp()
     {
         parent::setUp();

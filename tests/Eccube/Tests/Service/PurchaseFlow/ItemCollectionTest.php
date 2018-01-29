@@ -10,7 +10,7 @@ use Eccube\Tests\Fixture\Generator;
 
 class ItemCollectionTest extends EccubeTestCase
 {
-    protected $ItemsHolder;
+    protected $ItemHolder;
     protected $Items;
 
     public function setUp()
