@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Order;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -218,7 +219,8 @@ class ShoppingController extends AbstractController
             $em = $app['orm.em'];
             $em->getConnection()->beginTransaction();
             try {
-
+                // 支払方法を検証
+                $this->checkPaymentType($Order, $data);
                 // お問い合わせ、配送時間などのフォーム項目をセット
                 $app['eccube.service.shopping']->setFormData($Order, $data);
                 // 購入処理
@@ -299,6 +301,27 @@ class ShoppingController extends AbstractController
             'form' => $form->createView(),
             'Order' => $Order,
         ));
+    }
+
+
+    /**
+     * 支払方法がOrderに保持している支払方法と一致することを確認する
+     *
+     * @param $Order Order
+     * @param $data array
+     * @throws \Eccube\Exception\ShoppingException
+     */
+    private function checkPaymentType($Order, $data)
+    {
+        $orderPaymentId = $Order->getPayment()->getId();
+        $formPaymentId = $data['payment']->getId();
+
+        if (empty($orderPaymentId) || empty($formPaymentId)) {
+            throw new ShoppingException('front.shopping.system.error');
+        }
+        if ($orderPaymentId != $formPaymentId) {
+            throw new ShoppingException('front.shopping.system.error');
+        }
     }
 
 
