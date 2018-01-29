@@ -120,6 +120,11 @@ class InstallController extends AbstractController
         $this->encoder = $encoder;
         $this->environment = $environment;
         $this->eccubeConfig = $eccubeConfig;
+
+        $sessionData = $this->getSessionData($this->session);
+        if (isset($sessionData['authmagic'])) {
+            $this->encoder->auth_magic = $sessionData['authmagic'];
+        }
     }
 
     /**
@@ -795,17 +800,11 @@ class InstallController extends AbstractController
     {
         $conn->beginTransaction();
         try {
-            $config = array(
-                'auth_type' => '',
-                'auth_magic' => $data['auth_magic'],
-                'password_hash_algos' => 'sha256',
-            );
-            $encoder = new PasswordEncoder($config);
             $salt = StringUtil::random(32);
             $stmt = $conn->prepare("SELECT id FROM dtb_member WHERE login_id = :login_id;");
             $stmt->execute([':login_id' => $data['login_id']]);
             $row = $stmt->fetch();
-            $password = $encoder->encodePassword($data['login_pass'], $salt);
+            $password = $this->encoder->encodePassword($data['login_pass'], $salt);
             if ($row) {
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $conn->prepare("UPDATE dtb_member set password = :password, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
