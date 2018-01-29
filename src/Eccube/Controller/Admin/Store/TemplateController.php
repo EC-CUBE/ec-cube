@@ -23,9 +23,6 @@
 
 namespace Eccube\Controller\Admin\Store;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
@@ -35,14 +32,13 @@ use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * @Route(service=TemplateController::class)
@@ -50,54 +46,43 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class TemplateController extends AbstractController
 {
     /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("monolog")
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject(TemplateRepository::class)
      * @var TemplateRepository
      */
     protected $templateRepository;
 
     /**
-     * @Inject(DeviceTypeRepository::class)
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
 
     /**
+     * TemplateController constructor.
+     *
+     * @param TemplateRepository $templateRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
+     */
+    public function __construct(
+        TemplateRepository $templateRepository,
+        DeviceTypeRepository $deviceTypeRepository
+    ) {
+        $this->templateRepository = $templateRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
+    }
+
+    /**
      * テンプレート一覧画面
      *
      * @Route("/%admin_route%/store/template", name="admin_store_template")
-     * @Template("Store/template.twig")
+     * @Template("@admin/Store/template.twig")
+     *
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
-        $DeviceType = $this->deviceTypeRepository
-            ->find(DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Templates = $this->templateRepository
-            ->findBy(array('DeviceType' => $DeviceType));
+        $Templates = $this->templateRepository->findBy(['DeviceType' => $DeviceType]);
 
         $form = $this->formFactory->createBuilder()
             ->add('selected', HiddenType::class)
@@ -105,11 +90,11 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $Template = $this->templateRepository
-                ->find($form['selected']->getData());
+            //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
+            $Template = $this->templateRepository->find($form['selected']->getData());
 
             // path.(yml|php)の再構築
-            $file = $this->appConfig['root_dir'].'/app/config/eccube/path.php';
+            $file = $this->container->getParameter('kernel.project_dir') . '/app/config/eccube/path.php';
             $config = require $file;
 
             $templateCode = $Template->getCode();
@@ -121,9 +106,9 @@ class TemplateController extends AbstractController
 
             file_put_contents($file, sprintf('<?php return %s', var_export($config, true)).';');
 
-            $app->addSuccess('admin.content.template.save.complete', 'admin');
+            $this->addSuccess('admin.content.template.save.complete', 'admin');
 
-            return $app->redirect($app->url('admin_store_template'));
+            return $this->redirectToRoute('admin_store_template');
         }
 
         return [
@@ -136,14 +121,20 @@ class TemplateController extends AbstractController
      * テンプレート一覧からのダウンロード
      *
      * @Route("/%admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"})
+     *
+     * @param Request $request
+     * @param \Eccube\Entity\Template $Template
+     *
+     * @return mixed
      */
-    public function download(Application $app, Request $request, \Eccube\Entity\Template $Template)
+    public function download(Request $request, \Eccube\Entity\Template $Template)
     {
+        //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
         // 該当テンプレートのディレクトリ
-        $config = $this->appConfig;
+        $config = $this->eccubeConfig;
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
-        $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
+        $targetRealDir = $this->container->getParameter('kernel.project_dir') . '/app/template/' . $templateCode;
+        $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir') . '/html/template/' . $templateCode;
 
         // 一時ディレクトリ
         $uniqId = sha1(StringUtil::random(32));
@@ -174,54 +165,53 @@ class TemplateController extends AbstractController
 
         // ダウンロード完了後にファイルを削除する.
         // http://stackoverflow.com/questions/15238897/removing-file-after-delivering-response-with-silex-symfony
-        $app->finish(
-            function (Request $request, Response $response, \Silex\Application $app) use (
-                $tmpDir,
-                $tarFile,
-                $tarGzFile
-            ) {
-                $this->logger->addDebug('remove temp file: '.$tmpDir);
-                $this->logger->addDebug('remove temp file: '.$tarFile);
-                $this->logger->addDebug('remove temp file: '.$tarGzFile);
-                $fs = new Filesystem();
-                $fs->remove($tmpDir);
-                $fs->remove($tarFile);
-                $fs->remove($tarGzFile);
-            }
-        );
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function() use (
+            $tmpDir,
+            $tarFile,
+            $tarGzFile
+        ) {
+            log_debug('remove temp file: '.$tmpDir);
+            log_debug('remove temp file: '.$tarFile);
+            log_debug('remove temp file: '.$tarGzFile);
+            $fs = new Filesystem();
+            $fs->remove($tmpDir);
+            $fs->remove($tarFile);
+            $fs->remove($tarGzFile);
+        });
 
-        return $app
-            ->sendFile($tarGzFile)
-            ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $downloadFileName);
+        $response = new BinaryFileResponse($tarGzFile);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $downloadFileName);
+
+        return $response;
     }
 
     /**
      * @Route("/%admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"})
      * @Method("DELETE")
      */
-    public function delete(Application $app, Request $request, \Eccube\Entity\Template $Template)
+    public function delete(Request $request, \Eccube\Entity\Template $Template)
     {
-        $this->isTokenValid($app);
+        //TODO: Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
+        $this->isTokenValid();
 
         // デフォルトテンプレート
         if ($Template->isDefaultTemplate()) {
-            $app->addError('admin.content.template.delete.default.error', 'admin');
+            $this->addError('admin.content.template.delete.default.error', 'admin');
 
-            return $app->redirect($app->url('admin_store_template'));
+            return $this->redirectToRoute('admin_store_template');
         }
 
         // 設定中のテンプレート
-        if ($this->appConfig['template_code'] === $Template->getCode()) {
-            $app->addError('admin.content.template.delete.current.error', 'admin');
+        if ($this->eccubeConfig['template_code'] === $Template->getCode()) {
+            $this->addError('admin.content.template.delete.current.error', 'admin');
 
-            return $app->redirect($app->url('admin_store_template'));
+            return $this->redirectToRoute('admin_store_template');
         }
 
         // テンプレートディレクトリの削除
-        $config = $this->appConfig;
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
-        $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
+        $targetRealDir = $this->container->getParameter('kernel.project_dir') . '/app/template/' . $templateCode;
+        $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir') . '/html/template/' . $templateCode;
 
         $fs = new Filesystem();
         $fs->remove($targetRealDir);
@@ -231,18 +221,21 @@ class TemplateController extends AbstractController
         $this->entityManager->remove($Template);
         $this->entityManager->flush();
 
-        $app->addSuccess('admin.content.template.delete.complete', 'admin');
+        $this->addSuccess('admin.content.template.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_store_template'));
+        return $this->redirectToRoute('admin_store_template');
     }
 
     /**
      * テンプレートの追加画面.
      *
      * @Route("/%admin_route%/store/template/install", name="admin_store_template_install")
-     * @Template("Store/template_add.twig")
+     * @Template("@admin/Store/template_add.twig")
+     *
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function install(Application $app, Request $request)
+    public function install(Request $request)
     {
         $form = $this->formFactory
             ->createBuilder(TemplateType::class)
@@ -250,11 +243,11 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //TODO:FIXME Need unit test this case & implement how to store/get config which updated from application, should not store eccube.constants parameter
             /** @var $Template \Eccube\Entity\Template */
             $Template = $form->getData();
 
-            $TemplateExists = $this->templateRepository
-                ->findByCode($Template->getCode());
+            $TemplateExists = $this->templateRepository->findByCode($Template->getCode());
 
             // テンプレートコードの重複チェック.
             if ($TemplateExists) {
@@ -266,14 +259,13 @@ class TemplateController extends AbstractController
             }
 
             // 該当テンプレートのディレクトリ
-            $config = $this->appConfig;
             $templateCode = $Template->getCode();
-            $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
-            $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
+            $targetRealDir = $this->container->getParameter('kernel.project_dir') . '/app/template/' . $templateCode;
+            $targetHtmlRealDir = $this->container->getParameter('kernel.project_dir') . '/html/template/' . $templateCode;
 
             // 一時ディレクトリ
             $uniqId = sha1(StringUtil::random(32));
-            $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
+            $tmpDir = $this->eccubeConfig['template_temp_realdir'] . '/' . $uniqId;
             $appDir = $tmpDir.'/app';
             $htmlDir = $tmpDir.'/html';
 
@@ -322,17 +314,16 @@ class TemplateController extends AbstractController
             // 一時ディレクトリを削除.
             $fs->remove($tmpDir);
 
-            $DeviceType = $this->deviceTypeRepository
-                ->find(DeviceType::DEVICE_TYPE_PC);
+            $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
             $Template->setDeviceType($DeviceType);
 
             $this->entityManager->persist($Template);
             $this->entityManager->flush();
 
-            $app->addSuccess('admin.content.template.add.complete', 'admin');
+            $this->addSuccess('admin.content.template.add.complete', 'admin');
 
-            return $app->redirect($app->url('admin_store_template'));
+            return $this->redirectToRoute('admin_store_template');
         }
 
         return [
