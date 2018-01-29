@@ -32,6 +32,7 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -48,30 +49,30 @@ class CartController extends AbstractController
     protected $productClassRepository;
 
     /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
-    /**
      * @var CartService
      */
     protected $cartService;
 
     /**
+     * @var PurchaseFlow
+     */
+    protected $purchaseFlow;
+
+    /**
      * CartController constructor.
      * @param ProductClassRepository $productClassRepository
-     * @param PurchaseFlow $purchaseFlow
      * @param CartService $cartService
+     * @param PurchaseFlow $cartPurchaseFlow
      */
     public function __construct(
         ProductClassRepository $productClassRepository,
-        PurchaseFlow $purchaseFlow,
-        CartService $cartService
+        CartService $cartService,
+        PurchaseFlow $cartPurchaseFlow
     )
     {
         $this->productClassRepository = $productClassRepository;
-        $this->purchaseFlow = $purchaseFlow;
         $this->cartService = $cartService;
+        $this->purchaseFlow = $cartPurchaseFlow;
     }
 
 
@@ -119,6 +120,7 @@ class CartController extends AbstractController
      */
     protected function execPurchaseFlow($Carts)
     {
+        /** @var PurchaseFlowResult[] $flowResults */
         $flowResults = array_map(function($Cart) {
             $purchaseContext = new PurchaseContext($Cart, $this->getUser());
 

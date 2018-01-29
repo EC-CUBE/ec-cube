@@ -37,23 +37,6 @@ class AbstractShoppingController extends AbstractController
     protected $purchaseFlow;
 
     /**
-     * @return PurchaseFlow
-     */
-    public function getPurchaseFlow()
-    {
-        return $this->purchaseFlow;
-    }
-
-    /**
-     * @param PurchaseFlow $purchaseFlow
-     * @required
-     */
-    public function setPurchaseFlow(PurchaseFlow $purchaseFlow)
-    {
-        $this->purchaseFlow = $purchaseFlow;
-    }
-
-    /**
      * @var PurchaseContext
      */
     protected $purchaseContext;
@@ -79,6 +62,15 @@ class AbstractShoppingController extends AbstractController
     protected $sessionOrderKey = 'eccube.front.shopping.order.id';
 
     /**
+     * @param PurchaseFlow $shoppingPurchaseFlow
+     * @required
+     */
+    public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow)
+    {
+        $this->purchaseFlow = $shoppingPurchaseFlow;
+    }
+
+    /**
      * @param ItemHolderInterface $itemHolder
      * @return PurchaseFlowResult
      */
@@ -87,10 +79,10 @@ class AbstractShoppingController extends AbstractController
         /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $this->addRequestError($warning->getMessage());
+            $this->addRequestError($warning);
         }
         foreach ($flowResult->getErrors() as $error) {
-            $this->addRequestError($error->getMessage());
+            $this->addRequestError($error);
         }
         return $flowResult;
     }

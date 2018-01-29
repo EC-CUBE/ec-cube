@@ -41,6 +41,7 @@ use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -110,7 +111,6 @@ class ShoppingController extends AbstractShoppingController
         $this->customerAddressRepository = $customerAddressRepository;
         $this->parameterBag = $parameterBag;
     }
-
 
     /**
      * 購入画面表示

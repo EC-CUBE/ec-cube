@@ -80,7 +80,7 @@ class EditController extends AbstractController
     protected $customerRepository;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     protected $serializer;
 
@@ -106,9 +106,9 @@ class EditController extends AbstractController
      * @param ProductRepository $productRepository
      * @param CategoryRepository $categoryRepository
      * @param CustomerRepository $customerRepository
-     * @param Serializer $serializer
+     * @param SerializerInterface $serializer
      * @param DeliveryRepository $deliveryRepository
-     * @param PurchaseFlow $purchaseFlow
+     * @param PurchaseFlow $orderPurchaseFlow
      * @param OrderRepository $orderRepository
      */
     public function __construct(
@@ -119,7 +119,7 @@ class EditController extends AbstractController
         CustomerRepository $customerRepository,
         SerializerInterface $serializer,
         DeliveryRepository $deliveryRepository,
-        PurchaseFlow $purchaseFlow,
+        PurchaseFlow $orderPurchaseFlow,
         OrderRepository $orderRepository
     ) {
         $this->taxRuleService = $taxRuleService;
@@ -129,7 +129,7 @@ class EditController extends AbstractController
         $this->customerRepository = $customerRepository;
         $this->serializer = $serializer;
         $this->deliveryRepository = $deliveryRepository;
-        $this->purchaseFlow = $purchaseFlow;
+        $this->purchaseFlow = $orderPurchaseFlow;
         $this->orderRepository = $orderRepository;
     }
 
