@@ -23,46 +23,49 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @FormType
+ * Class MasterdataDataType
+ * @package Eccube\Form\Type\Admin
  */
 class MasterdataDataType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * @var TranslatorInterface
      */
-    protected $app;
+    protected $translator;
 
-    public function __construct()
+    /**
+     * MasterdataDataType constructor.
+     * @param array $eccubeConfig
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(array $eccubeConfig, TranslatorInterface $translator)
     {
+        $this->appConfig = $eccubeConfig;
+        $this->translator = $translator;
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
+        $trans = $this->translator;
         $builder
             ->add('id', TextType::class, array(
                 'required' => false,
@@ -72,22 +75,22 @@ class MasterdataDataType extends AbstractType
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^\d+$/u',
-                        'message' => $app->trans('form.type.numeric.invalid'),
+                        'message' => $trans->trans('form.type.numeric.invalid'),
                     )),
                 ),
             ))
             ->add('name', TextType::class, array(
                 'required' => false,
             ))
-        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
+        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($trans) {
             $form = $event->getForm();
             $data = $form->getData();
             if (strlen($data['id']) && strlen($data['name']) == 0) {
-                $form['name']->addError(new FormError('This value should not be blank.'));
+                $form['name']->addError(new FormError($trans->trans('This value should not be blank.')));
             }
 
             if (strlen($data['name']) && strlen($data['id']) == 0) {
-                $form['id']->addError(new FormError('This value should not be blank.'));
+                $form['id']->addError(new FormError($trans->trans('This value should not be blank.')));
             }
         });
     }

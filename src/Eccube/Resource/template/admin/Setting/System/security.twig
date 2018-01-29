@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'system', 'security'] %}
 
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}セキュリティ管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
 <div class="row" id="aside_wrap">
@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="site_security_box__force_ssl" class="form-group">
                         <label class="col-sm-3 col-lg-2 form-inline">SSL制限</label>
                         <div class="col-sm-9 col-lg-10">
-                            {% if app.request_stack.currentrequest.secure %}
+                            {% if app.request.secure %}
                                 {{ form_widget(form.force_ssl) }}
                                 {{ form_errors(form.force_ssl) }}
                             {% else %}

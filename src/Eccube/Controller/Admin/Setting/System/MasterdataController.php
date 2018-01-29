@@ -25,9 +25,6 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -35,8 +32,6 @@ use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,29 +40,11 @@ use Symfony\Component\HttpFoundation\Request;
 class MasterdataController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
      * @Route("/%admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata")
      * @Route("/%admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view")
-     * @Template("Setting/System/masterdata.twig")
+     * @Template("@admin/Setting/System/masterdata.twig")
      */
-    public function index(Application $app, Request $request, $entity = null)
+    public function index(Request $request, $entity = null)
     {
         $data = array();
 
@@ -98,8 +75,8 @@ class MasterdataController extends AbstractController
                     return $event->getResponse();
                 }
 
-                return $app->redirect(
-                    $app->url('admin_setting_system_masterdata_view', array('entity' => $form['masterdata']->getData()))
+                return $this->redirectToRoute(
+                    'admin_setting_system_masterdata_view', array('entity' => $form['masterdata']->getData())
                 );
             }
         } elseif (!is_null($entity)) {
@@ -146,9 +123,9 @@ class MasterdataController extends AbstractController
 
     /**
      * @Route("/%admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit")
-     * @Template("Setting/System/masterdata.twig")
+     * @Template("@admin/Setting/System/masterdata.twig")
      */
-    public function edit(Application $app, Request $request)
+    public function edit(Request $request)
     {
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);
 
@@ -206,14 +183,14 @@ class MasterdataController extends AbstractController
                         $event
                     );
 
-                    $app->addSuccess('admin.register.complete', 'admin');
+                    $this->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
-                    $app->addError('admin.register.failed', 'admin');
+                    $this->addError('admin.register.failed', 'admin');
                 }
 
-                return $app->redirect(
-                    $app->url('admin_setting_system_masterdata_view', array('entity' => $data['masterdata_name']))
+                return $this->redirectToRoute(
+                    'admin_setting_system_masterdata_view', array('entity' => $data['masterdata_name'])
                 );
             }
         }
