@@ -23,23 +23,30 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-/**
- * @Service
- */
 class SystemService
 {
     /**
-     * @var EntityManager
-     * @Inject("orm.em")
+     * @var EntityManagerInterface
      */
     protected $em;
 
+    /**
+     * SystemService constructor.
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
+    /**
+     * get DB version
+     * @return string
+     */
     public function getDbversion()
     {
 
