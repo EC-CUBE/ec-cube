@@ -32,7 +32,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SecurityType extends AbstractType
@@ -43,9 +42,9 @@ class SecurityType extends AbstractType
     protected $appConfig;
 
     /**
-     * @var RecursiveValidator
+     * @var ValidatorInterface
      */
-    protected $recursiveValidator;
+    protected $validator;
 
     /**
      * SecurityType constructor.
@@ -55,7 +54,7 @@ class SecurityType extends AbstractType
     public function __construct(array $eccubeConfig, ValidatorInterface $validator)
     {
         $this->appConfig = $eccubeConfig;
-        $this->recursiveValidator = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -92,7 +91,7 @@ class SecurityType extends AbstractType
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $this->recursiveValidator->validate($ip, array(
+                    $errors = $this->validator->validate($ip, array(
                             new Assert\Ip(),
                         )
                     );

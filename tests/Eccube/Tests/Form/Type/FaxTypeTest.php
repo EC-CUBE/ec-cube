@@ -29,9 +29,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class FaxTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -135,16 +132,9 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->app['config'];
-        // test*_LengthMin のために tel_len_min を変更する
-        $config['tel_len_min'] = 2;
-        $this->app->overwrite('config', $config);
-
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('tel', FaxType::class, array(
                 'required' => false,
@@ -193,14 +183,14 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testInvalidTel01_LengthMin()
     {
-        $this->formData['tel']['tel01'] = '1';
+        $this->formData['tel']['tel01'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidTel02_LengthMin()
     {
-        $this->formData['tel']['tel02'] = '1';
+        $this->formData['tel']['tel02'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -208,7 +198,7 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testInvalidTel03_LengthMin()
     {
-        $this->formData['tel']['tel03'] = '1';
+        $this->formData['tel']['tel03'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -268,7 +258,7 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel01()
     {
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, array('csrf_protection' => false))
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, array('csrf_protection' => false))
             ->add('tel', TelType::class, array(
                 'required' => true,
             ))
@@ -282,7 +272,7 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel02()
     {
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, array('csrf_protection' => false))
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, array('csrf_protection' => false))
             ->add('tel', TelType::class, array(
                 'required' => true,
             ))
@@ -296,7 +286,7 @@ class FaxTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Tel03()
     {
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, array('csrf_protection' => false))
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, array('csrf_protection' => false))
             ->add('tel', TelType::class, array(
                 'required' => true,
             ))
