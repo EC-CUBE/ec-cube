@@ -14,7 +14,6 @@ class OrderByCustomizerTest extends EccubeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
@@ -67,7 +66,7 @@ class OrderByCustomizerTest extends EccubeTestCase
      */
     private function createQueryBuilder()
     {
-        return $this->app['orm.em']->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from('Product', 'p');
     }
@@ -95,5 +94,15 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
     {
         $callback = $this->closure;
         return $callback($params);
+    }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return '';
     }
 }

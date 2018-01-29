@@ -13,7 +13,6 @@ class JoinClauseTest extends EccubeTestCase
 {
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
@@ -77,7 +76,7 @@ class JoinClauseTest extends EccubeTestCase
      */
     private function queryBuilder()
     {
-        return $this->app['orm.em']->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->select('p')->from('Product', 'p');
     }
 
