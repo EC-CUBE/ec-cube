@@ -31,23 +31,13 @@ use Eccube\Service\CsvImportService;
  */
 class CsvImportServiceTest extends AbstractServiceTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testReadCsvFileWithColumnHeaders()
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
 
-        $this->assertEquals(
-            array(
-                'id', 'number', 'description'
-            ),
-            $CsvImportService->getFields()
-        );
+        $this->assertEquals(['id', 'number', 'description'],  $CsvImportService->getFields());
 
         foreach ($CsvImportService as $row) {
             $this->assertNotNull($row['id']);
@@ -56,11 +46,11 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         }
 
         $this->assertEquals(
-            array(
+            [
                 'id'        => 6,
                 'number'    => '456',
                 'description' => 'Another description'
-            ),
+            ],
             $CsvImportService->getRow(2)
         );
     }
@@ -77,7 +67,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_no_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
-        $CsvImportService->setColumnHeaders(array('id', 'number', 'description'));
+        $CsvImportService->setColumnHeaders(['id', 'number', 'description']);
 
         foreach ($CsvImportService as $row) {
             $this->assertNotNull($row['id']);
@@ -90,7 +80,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_blank_lines.csv');
         $CsvImportService = new CsvImportService($file);
-        $CsvImportService->setColumnHeaders(array('id', 'number', 'description'));
+        $CsvImportService->setColumnHeaders(['id', 'number', 'description']);
 
         foreach ($CsvImportService as $row) {
             $this->assertNotNull($row['id']);
@@ -142,12 +132,12 @@ class CsvImportServiceTest extends AbstractServiceTestCase
 
         $this->assertCount(4, $reader->getColumnHeaders());
 
-        $expected = array(
+        $expected = [
             'id'          => '50',
-            'description' => array('First', 'Second', 'Third'),
-            'details'     => array('Details1', 'Details2'),
+            'description' => ['First', 'Second', 'Third'],
+            'details'     => ['Details1', 'Details2'],
             'last'        => 'Last one'
-        );
+        ];
         $this->assertEquals($expected, $current);
     }
 
