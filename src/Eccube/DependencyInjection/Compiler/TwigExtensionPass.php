@@ -3,6 +3,7 @@
 namespace Eccube\DependencyInjection\Compiler;
 
 
+use Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -16,7 +17,7 @@ class TwigExtensionPass implements CompilerPassInterface
             $definition = $container->getDefinition('twig');
             $definition->addMethodCall(
                 'addExtension',
-                [new Reference('Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension')]
+                [new Reference(IgnoreRoutingNotFoundExtension::class)]
             );
         }
     }
