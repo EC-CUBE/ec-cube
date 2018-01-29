@@ -135,7 +135,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createNonMember($email = null)
     {
-        return $this->container->get(Generator::class)>createNonMember($email);
+        return $this->container->get(Generator::class)->createNonMember($email);
     }
 
     /**

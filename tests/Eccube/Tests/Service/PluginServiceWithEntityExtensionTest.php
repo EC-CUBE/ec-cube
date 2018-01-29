@@ -35,9 +35,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 {
-
-    protected $app;
-
     /**
      * @var PluginService
      */

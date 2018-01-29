@@ -31,11 +31,6 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
         $this->entityManager = $this->container->get('doctrine')->getManager();
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     // インストーラが例外を上げた場合ロールバックできるか
     public function testInstallPluginWithBrokenManager()
     {

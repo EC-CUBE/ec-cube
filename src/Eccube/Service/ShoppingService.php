@@ -23,10 +23,7 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
@@ -54,132 +51,109 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\StringUtil;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * @Service
+ * Class ShoppingService
+ * @package Eccube\Service
  */
 class ShoppingService
 {
     /**
-     * @Inject(MailTemplateRepository::class)
      * @var MailTemplateRepository
      */
     protected $mailTemplateRepository;
 
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject(DeliveryFeeRepository::class)
      * @var DeliveryFeeRepository
      */
     protected $deliveryFeeRepository;
 
     /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(CustomerAddressRepository::class)
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
 
     /**
-     * @Inject(DeliveryRepository::class)
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
-     * @Inject(DeliveryTimeRepository::class)
      * @var DeliveryTimeRepository
      */
     protected $deliveryTimeRepository;
 
     /**
-     * @Inject(OrderStatusRepository::class)
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
 
     /**
-     * @Inject(PaymentRepository::class)
      * @var PaymentRepository
      */
     protected $paymentRepository;
 
     /**
-     * @Inject(DeviceTypeRepository::class)
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject("session")
      * @var Session
      */
     protected $session;
 
     /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject(Application::class)
-     * @var \Eccube\Application
-     */
-    public $app;
-
-    /**
-     * @Inject(CartService::class)
      * @var \Eccube\Service\CartService
      */
     protected $cartService;
@@ -190,6 +164,78 @@ class ShoppingService
      * @deprecated
      */
     protected $orderService;
+
+    /** @var  MobileDetector */
+    protected $mobileDetect;
+
+    /**
+     * ShoppingService constructor.
+     * @param MailTemplateRepository $mailTemplateRepository
+     * @param MailService $mailService
+     * @param EventDispatcher $eventDispatcher
+     * @param FormFactory $formFactory
+     * @param DeliveryFeeRepository $deliveryFeeRepository
+     * @param TaxRuleRepository $taxRuleRepository
+     * @param CustomerAddressRepository $customerAddressRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param DeliveryTimeRepository $deliveryTimeRepository
+     * @param OrderStatusRepository $orderStatusRepository
+     * @param PaymentRepository $paymentRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
+     * @param EntityManagerInterface $entityManager
+     * @param array $eccubeConfig
+     * @param PrefRepository $prefRepository
+     * @param Session $session
+     * @param OrderRepository $orderRepository
+     * @param BaseInfo $BaseInfo
+     * @param CartService $cartService
+     * @param OrderService $orderService
+     * @param MobileDetector $mobileDetector
+     */
+    public function __construct(MailTemplateRepository $mailTemplateRepository,
+                                MailService $mailService,
+                                EventDispatcher $eventDispatcher,
+                                FormFactory $formFactory,
+                                DeliveryFeeRepository $deliveryFeeRepository,
+                                TaxRuleRepository $taxRuleRepository,
+                                CustomerAddressRepository $customerAddressRepository,
+                                DeliveryRepository $deliveryRepository,
+                                DeliveryTimeRepository $deliveryTimeRepository,
+                                OrderStatusRepository $orderStatusRepository,
+                                PaymentRepository $paymentRepository,
+                                DeviceTypeRepository $deviceTypeRepository,
+                                EntityManagerInterface $entityManager,
+                                array $eccubeConfig,
+                                PrefRepository $prefRepository,
+                                Session $session,
+                                OrderRepository $orderRepository,
+                                BaseInfo $BaseInfo,
+                                CartService $cartService,
+                                OrderService $orderService,
+                                MobileDetector $mobileDetector)
+    {
+        $this->mailTemplateRepository = $mailTemplateRepository;
+        $this->mailService = $mailService;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->customerAddressRepository = $customerAddressRepository;
+        $this->deliveryRepository = $deliveryRepository;
+        $this->deliveryTimeRepository = $deliveryTimeRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
+        $this->entityManager = $entityManager;
+        $this->appConfig = $eccubeConfig;
+        $this->prefRepository = $prefRepository;
+        $this->session = $session;
+        $this->orderRepository = $orderRepository;
+        $this->BaseInfo = $BaseInfo;
+        $this->cartService = $cartService;
+        $this->orderService = $orderService;
+        $this->mobileDetect = $mobileDetector;
+    }
 
     /**
      * セッションにセットされた受注情報を取得
@@ -226,7 +272,7 @@ class ShoppingService
      * 非会員情報を取得
      *
      * @param $sesisonKey
-     * @return $Customer|null
+     * @return Customer|null
      */
     public function getNonMember($sesisonKey)
     {
@@ -300,7 +346,16 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $DeviceType = $this->deviceTypeRepository->find($this->app['mobile_detect.device_type']);
+        $deviceId = 10;
+        if ($this->mobileDetect->isMobile()) {
+            $deviceId = 1;
+        }
+
+        if ($this->mobileDetect->isTablet()) {
+            $deviceId = 2;
+        }
+
+        $DeviceType = $this->deviceTypeRepository->find($deviceId);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -437,10 +492,20 @@ class ShoppingService
     {
 
         // カートに保持されている販売種別を取得
-        $saleTypes = $this->cartService->getSaleTypes();
+//        $saleTypes = $this->cartService->getCarts()->getSaleTypes();
 
-        return $this->getDeliveries($saleTypes);
+        $saleTypes = array();
+        foreach ($this->cartService->getCarts() as $cart) {
+            foreach ($cart->getCartItems() as $cartItem) {
+                /* @var $ProductClass \Eccube\Entity\ProductClass */
+                $ProductClass = $cartItem->getProductClass();
+                if ($ProductClass) {
+                    $saleTypes[] = $ProductClass->getSaleType();
+                }
+            }
+        }
 
+        return $this->getDeliveries(array_unique($saleTypes));
     }
 
     /**
@@ -504,8 +569,7 @@ class ShoppingService
             if (!in_array($Delivery->getSaleType()->getId(), $saleTypes)) {
                 $Shipping = new Shipping();
 
-                $this->copyToShippingFromCustomer($Shipping, $Customer)
-                    ->setOrder($Order);
+                $this->copyToShippingFromCustomer($Shipping, $Customer)->getOrders()->add($Order);
 
                 // 配送料金の設定
                 $this->setShippingDeliveryFee($Shipping, $Delivery);
@@ -797,7 +861,7 @@ class ShoppingService
         $deliveryFreeQuantity = $this->BaseInfo->getDeliveryFreeQuantity();
         if (!is_null($deliveryFreeQuantity)) {
             // 合計数量が設定数量以上であれば送料無料
-            if ($this->orderService->getTotalQuantity($Order) >= $deliveryFreeQuantity) {
+            if ($this->cartService->getCart()->getTotalQuantity() >= $deliveryFreeQuantity) {
                 $Order->setDeliveryFeeTotal(0);
                 // お届け先情報の配送料も0にセット
                 $shippings = $Order->getShippings();

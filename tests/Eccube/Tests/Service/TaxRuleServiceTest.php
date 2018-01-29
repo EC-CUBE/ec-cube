@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\TaxRuleService;
@@ -10,6 +11,12 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
 {
     /** @var TaxRuleService */
     private $taxRuleService;
+
+    /** @var  TaxRuleRepository */
+    protected $TaxRule1;
+
+    /** @var  BaseInfo */
+    protected $BaseInfo;
 
     public function setUp()
     {
