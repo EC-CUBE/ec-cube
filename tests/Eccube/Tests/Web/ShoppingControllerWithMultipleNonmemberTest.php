@@ -1568,7 +1568,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                     'delivery' => 1,
                     'deliveryTime' => 1,
                 )
-            )
+            ),
+            3
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
@@ -1725,7 +1726,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                     'delivery' => 1,
                     'deliveryTime' => 1,
                 ),
-            )
+            ),
+            3
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
@@ -2056,7 +2058,8 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                     'delivery' => 1,
                     'deliveryTime' => 1,
                 ),
-            )
+            ),
+            3
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));

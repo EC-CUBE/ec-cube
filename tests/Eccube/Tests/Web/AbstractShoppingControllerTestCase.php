@@ -83,7 +83,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $crawler;
     }
 
-    protected function scenarioComplete($client, $confirm_url, array $shippings = array())
+    protected function scenarioComplete($client, $confirm_url, array $shippings = array(), $payment = 1)
     {
         $faker = $this->getFaker();
         if (count($shippings) < 1) {
@@ -101,7 +101,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             array('shopping' =>
                   array(
                       'shippings' => $shippings,
-                      'payment' => 3,
+                      'payment' => $payment,
                       'message' => $faker->text(),
                       '_token' => 'dummy'
                   )
