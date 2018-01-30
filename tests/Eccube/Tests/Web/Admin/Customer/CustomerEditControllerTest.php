@@ -2,6 +2,9 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Repository\CustomerRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -18,7 +21,6 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
      */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
     }
@@ -44,8 +46,13 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'address' => array('pref' => '5', 'addr01' => $faker->city, 'addr02' => $faker->streetAddress),
             'tel' => array('tel01' => $tel[0], 'tel02' => $tel[1], 'tel03' => $tel[2]),
             'fax' => array('fax01' => $tel[0], 'fax02' => $tel[1], 'fax03' => $tel[2]),
-            'email' => $email, 'password' => array('first' => $password, 'second' => $password),
-            'birth' => array('year' => $birth->format('Y'), 'month' => $birth->format('n'), 'day' => $birth->format('j')),
+            'email' => $email,
+            'password' => array('first' => $password, 'second' => $password),
+            'birth' => array(
+                'year' => $birth->format('Y'),
+                'month' => $birth->format('n'),
+                'day' => $birth->format('j')
+            ),
             'sex' => 1,
             'job' => 1,
             'status' => 1,
@@ -63,7 +70,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->path('admin_customer_edit', array('id' => $this->Customer->getId()))
+            $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId()))
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -76,7 +83,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->app->path('admin_customer_edit', array('id' => $this->Customer->getId()))
+            $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId()))
         );
 
         $this->expected = '検索画面に戻る';
@@ -92,16 +99,16 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $this->client->request(
             'POST',
-            $this->app->path('admin_customer_edit', array('id' => $this->Customer->getId())),
+            $this->generateUrl('admin_customer_edit', array('id' => $this->Customer->getId())),
             array('admin_customer' => $form)
         );
         $this->assertTrue($this->client->getResponse()->isRedirect(
-            $this->app->url(
+            $this->generateUrl(
                 'admin_customer_edit',
                 array('id' => $this->Customer->getId())
             )
         ));
-        $EditedCustomer = $this->app['eccube.repository.customer']->find($this->Customer->getId());
+        $EditedCustomer = $this->container->get(CustomerRepository::class)->find($this->Customer->getId());
 
         $this->expected = $form['email'];
         $this->actual = $EditedCustomer->getEmail();
@@ -115,7 +122,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app->path('admin_customer_new')
+            $this->generateUrl('admin_customer_new')
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -129,11 +136,11 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $this->client->request(
             'POST',
-            $this->app->path('admin_customer_new'),
+            $this->generateUrl('admin_customer_new'),
             array('admin_customer' => $form)
         );
 
-        $NewCustomer = $this->app['eccube.repository.customer']->findOneBy(array('email' => $form['email']));
+        $NewCustomer = $this->container->get(CustomerRepository::class)->findOneBy(array('email' => $form['email']));
         $this->assertNotNull($NewCustomer);
         $this->assertTrue($form['email'] == $NewCustomer->getEmail());
     }
@@ -147,19 +154,19 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         //add Order pendding status for this customer
         $Order = $this->createOrder($this->Customer);
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_pre_end']);
+        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PAID);
         $Order->setOrderStatus($OrderStatus);
         $this->Customer->addOrder($Order);
-        $this->app['orm.em']->persist($this->Customer);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($this->Customer);
+        $this->entityManager->flush();
 
         $crawler = $this->client->request(
             'GET',
-            $this->app->path('admin_customer_edit', array('id' => $id))
+            $this->generateUrl('admin_customer_edit', array('id' => $id))
         );
 
         $orderListing = $crawler->filter('#history_box__body')->text();
-        $this->assertRegexp('/'.$Order->getId().'/', $orderListing);
+        $this->assertRegexp('/' . $Order->getId() . '/', $orderListing);
     }
 
     public function testNotShowProcessingOrder()
@@ -167,19 +174,19 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->markTestSkipped('Problem with Doctrine');
         $id = $this->Customer->getId();
 
-        //add Order pendding status for this customer
+        //add Order pending status for this customer
         $Order = $this->createOrder($this->Customer);
-        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PROCESSING);
         $Order->setOrderStatus($OrderStatus);
         $this->Customer->addOrder($Order);
-        $this->app['orm.em']->persist($Order);
-        $this->app['orm.em']->persist($this->Customer);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Order);
+        $this->entityManager->persist($this->Customer);
+        $this->entityManager->flush();
         unset($this->Customer);
 
         $crawler = $this->client->request(
             'GET',
-            $this->app->path('admin_customer_edit', array('id' => $id))
+            $this->generateUrl('admin_customer_edit', array('id' => $id))
         );
 
         $orderListing = $crawler->filter('#history_box')->text();

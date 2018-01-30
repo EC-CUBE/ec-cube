@@ -26,9 +26,12 @@ namespace Eccube\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
+use Eccube\Common\Translatable;
+use Eccube\Common\TranslatableTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -62,7 +65,7 @@ class AbstractController extends Controller
     protected $eventDispatcher;
 
     /**
-     * @var SessionInterface
+     * @var Session
      */
     protected $session;
 

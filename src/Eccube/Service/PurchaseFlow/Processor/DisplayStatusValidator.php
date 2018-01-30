@@ -4,17 +4,15 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
-use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
 
 class DisplayStatusValidator extends ValidatableItemProcessor
 {
     /**
-     * validate
      * @param ItemInterface $item
      * @param PurchaseContext $context
-     * @throws InvalidItemException
+     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
@@ -23,7 +21,7 @@ class DisplayStatusValidator extends ValidatableItemProcessor
         }
         $ProductClass = $item->getProductClass();
         if (!$ProductClass->isEnable()) {
-            throw new InvalidItemException('cart.product.not.status');
+            $this->throwInvalidItemException('cart.product.not.status');
         }
     }
 

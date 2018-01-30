@@ -24,13 +24,11 @@
 namespace Eccube\Controller;
 
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
 use Eccube\Application;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\Master\OrderStatus;;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -42,86 +40,59 @@ use Eccube\Service\OrderHelper;
 use Eccube\Service\ShoppingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route(service=NonMemberShoppingController::class)
- */
 class NonMemberShoppingController extends AbstractShoppingController
 {
     /**
-     * @Inject("validator")
-     * @var RecursiveValidator
+     * @var ValidatorInterface
      */
-    protected $recursiveValidator;
+    protected $validator;
 
     /**
-     * @Inject("monolog")
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject("session")
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @Inject(OrderHelper::class)
      * @var OrderHelper
      */
     protected $orderHelper;
 
     /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject(ShoppingService::class)
      * @var ShoppingService
      */
     protected $shoppingService;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(CartService::class)
      * @var CartService
      */
     protected $cartService;
 
+    /**
+     * NonMemberShoppingController constructor.
+     * @param ValidatorInterface $validator
+     * @param PrefRepository $prefRepository
+     * @param OrderHelper $orderHelper
+     * @param ShoppingService $shoppingService
+     * @param CartService $cartService
+     */
+    public function __construct(
+        ValidatorInterface $validator,
+        PrefRepository $prefRepository,
+        OrderHelper $orderHelper,
+        ShoppingService $shoppingService,
+        CartService $cartService
+    ) {
+        $this->validator = $validator;
+        $this->prefRepository = $prefRepository;
+        $this->orderHelper = $orderHelper;
+        $this->shoppingService = $shoppingService;
+        $this->cartService = $cartService;
+    }
 
     /**
      * 非会員処理
@@ -129,19 +100,19 @@ class NonMemberShoppingController extends AbstractShoppingController
      * @Route("/shopping/nonmember", name="shopping_nonmember")
      * @Template("Shopping/nonmember.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $cartService = $this->cartService;
 
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_cart"));
+        $response = $this->forwardToRoute('shopping_check_to_cart');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
 
         // ログイン済みの場合は, 購入画面へリダイレクト.
-        if ($app->isGranted('ROLE_USER')) {
-            return $app->redirect($app->url('shopping'));
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('shopping');
         }
 
         $builder = $this->formFactory->createBuilder(NonMemberType::class);
@@ -219,15 +190,15 @@ class NonMemberShoppingController extends AbstractShoppingController
                     $cartService->setPreOrderId($Order->getPreOrderId());
                     $cartService->save();
                 } catch (CartException $e) {
-                    $app->addRequestError($e->getMessage());
+                    $this->addRequestError($e->getMessage());
 
-                    return $app->redirect($app->url('cart'));
+                    return $this->redirectToRoute('cart');
                 }
             }
 
-            $flowResult = $this->executePurchaseFlow($app, $Order);
+            $flowResult = $this->executePurchaseFlow($Order);
             if ($flowResult->hasWarning() || $flowResult->hasError()) {
-                return $app->redirect($app->url('cart'));
+                return $this->redirectToRoute('cart');
             }
 
             // 非会員用セッションを作成
@@ -255,7 +226,7 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             log_info('非会員お客様情報登録完了', array($Order->getId()));
 
-            return $app->redirect($app->url('shopping'));
+            return $this->redirectToRoute('shopping');
         }
 
         return [
@@ -267,10 +238,10 @@ class NonMemberShoppingController extends AbstractShoppingController
      * 非会員用複数配送設定時の新規お届け先の設定
      *
      */
-    public function shippingMultipleEdit(Application $app, Request $request)
+    public function shippingMultipleEdit(Request $request)
     {
         // カートチェック
-        $response = $app->forward($app->path("shopping_check_to_art"));
+        $response = $this->forwardToRoute('shopping_check_to_art');
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -333,7 +304,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @Route("/shopping/shipping_edit_change/{id}", name="shopping_shipping_edit_change", requirements={"id" = "\d+"})
      */
-    public function shippingEditChange(Application $app, Request $request, $id)
+    public function shippingEditChange(Request $request, $id)
     {
         $Order = $app['eccube.service.shopping']->getOrder(OrderStatus::PROCESSING);
         if (!$Order) {
@@ -382,7 +353,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      *
      * @Route("/shopping/customer", name="shopping_customer")
      */
-    public function customer(Application $app, Request $request)
+    public function customer(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             try {
@@ -473,112 +444,112 @@ class NonMemberShoppingController extends AbstractShoppingController
      * @param array $data リクエストパラメータ
      * @return array
      */
-    protected function customerValidation(Application $app, array $data)
+    protected function customerValidation(array $data)
     {
         // 入力チェック
         $errors = array();
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_name01'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->appConfig['name_len'],)),
+                new Assert\Length(array('max' => $this->eccubeConfig['name_len'],)),
                 new Assert\Regex(
                     array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_name02'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->appConfig['name_len'],)),
+                new Assert\Length(array('max' => $this->eccubeConfig['name_len'],)),
                 new Assert\Regex(
                     array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_company_name'],
             array(
-                new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_tel01'],
             array(
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])
+                    array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_tel02'],
             array(
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])
+                    array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_tel03'],
             array(
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])
+                    array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_zip01'],
             array(
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])
+                    array('min' => $this->eccubeConfig['zip01_len'], 'max' => $this->eccubeConfig['zip01_len'])
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_zip02'],
             array(
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])
+                    array('min' => $this->eccubeConfig['zip02_len'], 'max' => $this->eccubeConfig['zip02_len'])
                 ),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_addr01'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->appConfig['address1_len'])),
+                new Assert\Length(array('max' => $this->eccubeConfig['address1_len'])),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_addr02'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->appConfig['address2_len'])),
+                new Assert\Length(array('max' => $this->eccubeConfig['address2_len'])),
             )
         );
 
-        $errors[] = $this->recursiveValidator->validate(
+        $errors[] = $this->validator->validate(
             $data['customer_email'],
             array(
                 new Assert\NotBlank(),

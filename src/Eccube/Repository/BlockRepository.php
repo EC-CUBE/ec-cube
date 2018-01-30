@@ -24,8 +24,6 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Repository;
 use Eccube\Entity\Block;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -41,14 +39,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class BlockRepository extends AbstractRepository
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-    public function __construct(RegistryInterface $registry)
-    {
+    /**
+     * BlockRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     * @param array $eccubeConfig
+     */
+    public function __construct(
+        RegistryInterface $registry,
+        array $eccubeConfig
+    ) {
         parent::__construct($registry, Block::class);
+        $this->appConfig = $eccubeConfig;
     }
 
     /**

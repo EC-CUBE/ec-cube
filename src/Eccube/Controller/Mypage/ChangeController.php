@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Mypage;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -34,10 +31,9 @@ use Eccube\Form\Type\Front\EntryType;
 use Eccube\Repository\CustomerRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -46,46 +42,29 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class ChangeController extends AbstractController
 {
     /**
-     * @Inject("security.token_storage")
      * @var TokenStorage
      */
     protected $tokenStorage;
 
     /**
-     * @Inject(CustomerRepository::class)
      * @var CustomerRepository
      */
     protected $customerRepository;
 
     /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("security.encoder_factory")
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
+
+    public function __construct(
+        CustomerRepository $customerRepository,
+        EncoderFactoryInterface $encoderFactory,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->customerRepository = $customerRepository;
+        $this->encoderFactory = $encoderFactory;
+        $this->tokenStorage = $tokenStorage;
+    }
 
     /**
      * 会員情報編集画面.
@@ -93,14 +72,14 @@ class ChangeController extends AbstractController
      * @Route("/mypage/change", name="mypage_change")
      * @Template("Mypage/change.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
-        $Customer = $app->user();
+        $Customer = $this->getUser();
         $LoginCustomer = clone $Customer;
         $this->entityManager->detach($LoginCustomer);
 
         $previous_password = $Customer->getPassword();
-        $Customer->setPassword($this->appConfig['default_password']);
+        $Customer->setPassword($this->eccubeConfig['default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
@@ -122,7 +101,7 @@ class ChangeController extends AbstractController
 
             log_info('会員編集開始');
 
-            if ($Customer->getPassword() === $this->appConfig['default_password']) {
+            if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
                 $encoder = $this->encoderFactory->getEncoder($Customer);
@@ -146,7 +125,7 @@ class ChangeController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE, $event);
 
-            return $app->redirect($app->url('mypage_change_complete'));
+            return $this->redirect($this->generateUrl('mypage_change_complete'));
         }
 
         $this->tokenStorage->getToken()->setUser($LoginCustomer);
@@ -162,7 +141,7 @@ class ChangeController extends AbstractController
      * @Route("/mypage/change_complete", name="mypage_change_complete")
      * @Template("Mypage/change_complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete(Request $request)
     {
         return [];
     }

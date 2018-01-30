@@ -202,7 +202,7 @@ class CartService
     {
         if (!$ProductClass instanceof ProductClass) {
             $ProductClassId = $ProductClass;
-            $ProductClass = $this->entityManager
+            $ProductClass = $this->em
                 ->getRepository(ProductClass::class)
                 ->find($ProductClassId);
             if (is_null($ProductClass)) {

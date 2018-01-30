@@ -5,6 +5,14 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\MemberRepository;
+use Eccube\Entity\Member;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
+use Eccube\Repository\TaxRuleRepository;
+use Eccube\Repository\ShippingRepository;
 
 /**
  * ShippingRepository test cases.
@@ -13,18 +21,66 @@ use Eccube\Tests\EccubeTestCase;
  */
 class ShippingRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var Customer
+     */
     protected $Customer;
+
+    /**
+     * @var Order
+     */
     protected $Order;
+
+    /**
+     * @var Product
+     */
     protected $Product;
+
+    /**
+     * @var ProductClass
+     */
     protected $ProductClass;
+
+    /**
+     * @var Shipping[]
+     */
     protected $Shippings;
 
+    /**
+     * @var Member
+     */
+    protected $Member;
+
+    /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * @var TaxRuleRepository
+     */
+    protected $taxRuleRepository;
+
+    /**
+     * @var ShippingRepository
+     */
+    protected $shippingRepository;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->memberRepository = $this->container->get(MemberRepository::class);
+        $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
+        $this->shippingRepository = $this->container->get(ShippingRepository::class);
+
         $faker = $this->getFaker();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
+        $this->Member = $this->memberRepository->find(2);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
         $this->Product = $this->createProduct();
@@ -32,7 +88,7 @@ class ShippingRepositoryTest extends EccubeTestCase
         $ProductClasses = $this->Product->getProductClasses();
         $this->ProductClass = $ProductClasses[0];
         $quantity = 3;
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(); // デフォルト課税規則
+        $TaxRule = $this->taxRuleRepository->getByRule(); // デフォルト課税規則
 
         // 1個ずつ別のお届け先に届ける
         for ($i = 0; $i < $quantity; $i++) {
@@ -43,7 +99,7 @@ class ShippingRepositoryTest extends EccubeTestCase
                 ->setName02($faker->firstName)
                 ->setKana01('セイ');
 
-            $this->app['orm.em']->persist($Shipping);
+            $this->entityManager->persist($Shipping);
 
             $OrderItem = new OrderItem();
             $OrderItem->setShipping($Shipping)
@@ -55,7 +111,7 @@ class ShippingRepositoryTest extends EccubeTestCase
                 ->setPrice($this->ProductClass->getPrice02())
                 ->setQuantity(1);
             $Shipping->addOrderItem($OrderItem);
-            $this->app['orm.em']->persist($OrderItem);
+            $this->entityManager->persist($OrderItem);
             $this->Shippings[$i] = $Shipping;
         }
 
@@ -67,12 +123,12 @@ class ShippingRepositoryTest extends EccubeTestCase
         $this->Order->setSubTotal($subTotal);
         $this->Order->setTotal($subTotal);
         $this->Order->setPaymentTotal($subTotal);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testFindShippingsProduct()
     {
-        $Shippings = $this->app['eccube.repository.shipping']->findShippingsProduct($this->Order, $this->ProductClass);
+        $Shippings = $this->shippingRepository->findShippingsProduct($this->Order, $this->ProductClass);
 
         $this->expected = 3;
         $this->actual = count($Shippings);
@@ -87,7 +143,7 @@ class ShippingRepositoryTest extends EccubeTestCase
 
     public function testGetOrders()
     {
-        $Shipping = $this->app['eccube.repository.shipping']->find($this->Shippings[0]->getId());
+        $Shipping = $this->shippingRepository->find($this->Shippings[0]->getId());
 
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $Shipping->getOrders());
         $Order = $Shipping->getOrders()->first();

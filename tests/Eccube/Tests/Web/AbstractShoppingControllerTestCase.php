@@ -1,6 +1,8 @@
 <?php
 
 namespace Eccube\Tests\Web;
+use Eccube\Common\Constant;
+use Eccube\Entity\Customer;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.
@@ -14,12 +16,10 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->initializeMailCatcher();
     }
 
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -27,8 +27,6 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
-
-        $email = $faker->safeEmail;
 
         $form = array(
             'name' => array(
@@ -59,42 +57,72 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         return $form;
     }
 
-    protected function scenarioCartIn($client, $product_class_id = 1)
+    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
     {
-        $crawler = $client->request(
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+
+        $this->client->request(
             'PUT',
-            $this->app->path(
+            $this->generateUrl(
                 'cart_handle_item',
                 [
                     'operation' => 'up',
                     'productClassId' => $product_class_id,
                 ]
-            )
+            ),
+            [Constant::TOKEN_NAME => '_dummy']
         );
-        $this->app['eccube.service.cart']->lock();
 
-        return $crawler;
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+
+        return $this->client->request(
+            'GET',
+            $this->generateUrl('cart_buystep')
+        );
     }
 
-    protected function scenarioInput($client, $formData)
+    protected function scenarioInput($formData)
     {
-        $crawler = $client->request(
+        $formData[Constant::TOKEN_NAME] = '_dummy';
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('shopping_nonmember'),
-            array('nonmember' => $formData)
+            $this->generateUrl('shopping_nonmember'),
+            ['nonmember' => $formData]
         );
-        $this->app['eccube.service.cart']->lock();
         return $crawler;
     }
 
-    protected function scenarioConfirm($client)
+    protected function scenarioConfirm(Customer $Customer = null)
     {
-        $crawler = $client->request('GET', $this->app->path('shopping'));
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+        $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
         return $crawler;
     }
 
-    protected function scenarioComplete($client, $confirm_url, array $shippings = array())
+    protected function scenarioRedirectTo(Customer $Cusotmer, $parameters)
     {
+        if ($Cusotmer) {
+            $this->loginTo($Cusotmer);
+        }
+        return $this->client->request(
+            'POST',
+            $this->generateUrl('shopping_redirect_to'),
+            $parameters
+        );
+    }
+
+    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = array())
+    {
+        if ($Customer) {
+            $this->loginTo($Customer);
+        }
+
         $faker = $this->getFaker();
         if (count($shippings) < 1) {
             $shippings = array(
@@ -105,7 +133,9 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             );
         }
 
-        $crawler = $client->request(
+        $this->client->enableProfiler();
+
+        $crawler = $this->client->request(
             'POST',
             $confirm_url,
             array('_shopping_order' =>

@@ -33,6 +33,11 @@ class DeliverySettingValidator extends ValidatableItemProcessor
      * @param PurchaseContext $context
      * @throws InvalidItemException
      */
+    /**
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     * @throws InvalidItemException
+     */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
@@ -43,7 +48,7 @@ class DeliverySettingValidator extends ValidatableItemProcessor
         $Deliveries = $this->deliveryRepository->findBy(['SaleType' => $SaleType, 'visible' => true]);
 
         if (empty($Deliveries)) {
-            throw InvalidItemException::fromProductClass('cart.product.not.saletype', $item->getProductClass());
+            $this->throwInvalidItemException('cart.product.not.saletype', $item->getProductClass());
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Repository\HelpRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -11,16 +12,23 @@ use Eccube\Tests\EccubeTestCase;
  */
 class HelpRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var HelpRepository
+     */
+    protected $helpRepo;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->helpRepo = $this->container->get(HelpRepository::class);
     }
 
     public function testGet()
     {
-        $Help = $this->app['eccube.repository.help']->get();
+        $Help = $this->helpRepo->get();
 
         $this->expected = 1;
         $this->actual = $Help->getId();
@@ -29,17 +37,17 @@ class HelpRepositoryTest extends EccubeTestCase
 
     public function testGetWithId()
     {
-        $Help = $this->app['eccube.repository.help']->get(1);
+        $Help = $this->helpRepo->get(1);
 
         $this->expected = 1;
         $this->actual = $Help->getId();
         $this->verify();
 
         // MySQL では成功するが, PostgreSQL ではエラーになってしまう
-        // $Help = $this->app['eccube.repository.help']->get('a');
+        // $Help = $this->helpRepo->get('a');
         // $this->assertNull($Help);
 
-        $Help = $this->app['eccube.repository.help']->get(5);
+        $Help = $this->helpRepo->get(5);
         $this->assertNull($Help);
     }
 }

@@ -24,9 +24,7 @@
 
 namespace Eccube\Controller\Mypage;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\CustomerAddress;
@@ -37,8 +35,6 @@ use Eccube\Repository\CustomerAddressRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -49,40 +45,20 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DeliveryController extends AbstractController
 {
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(CustomerAddressRepository::class)
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
 
-    /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
+    public function __construct(BaseInfo $baseInfo, CustomerAddressRepository $customerAddressRepository)
+    {
+        $this->BaseInfo = $baseInfo;
+        $this->customerAddressRepository = $customerAddressRepository;
+    }
 
     /**
      * お届け先一覧画面.
@@ -90,9 +66,9 @@ class DeliveryController extends AbstractController
      * @Route("/mypage/delivery", name="mypage_delivery")
      * @Template("Mypage/delivery.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
-        $Customer = $app['user'];
+        $Customer = $this->getUser();
 
         return [
             'Customer' => $Customer,
@@ -106,15 +82,15 @@ class DeliveryController extends AbstractController
      * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"})
      * @Template("Mypage/delivery_edit.twig")
      */
-    public function edit(Application $app, Request $request, $id = null)
+    public function edit(Request $request, $id = null)
     {
-        $Customer = $app['user'];
+        $Customer = $this->getUser();
 
         // 配送先住所最大値判定
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
         if (is_null($id)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
-            $addressMax = $this->appConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }
@@ -126,14 +102,14 @@ class DeliveryController extends AbstractController
 
         // 正しい遷移かをチェック
         $allowdParents = array(
-            $app->url('mypage_delivery'),
-            $app->url('shopping_redirect_to'),
+            $this->generateUrl('mypage_delivery'),
+            $this->generateUrl('shopping_redirect_to'),
         );
 
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
         if (!in_array($parentPage, $allowdParents)) {
             // @deprecated 使用されていないコード
-            $parentPage = $app->url('mypage_delivery');
+            $parentPage = $this->generateUrl('mypage_delivery');
         }
 
         $builder = $this->formFactory
@@ -170,9 +146,9 @@ class DeliveryController extends AbstractController
             );
             $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
 
-            $app->addSuccess('mypage.delivery.add.complete');
+            $this->addSuccess('mypage.delivery.add.complete');
 
-            return $app->redirect($app->url('mypage_delivery'));
+            return $this->redirect($this->generateUrl('mypage_delivery'));
         }
 
         return [
@@ -188,13 +164,13 @@ class DeliveryController extends AbstractController
      * @Method("DELETE")
      * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete")
      */
-    public function delete(Application $app, Request $request, CustomerAddress $CustomerAddress)
+    public function delete(Request $request, CustomerAddress $CustomerAddress)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('お届け先削除開始', array($CustomerAddress->getId()));
 
-        $Customer = $app['user'];
+        $Customer = $this->getUser();
 
         if ($Customer->getId() != $CustomerAddress->getCustomer()->getId()) {
             throw new BadRequestHttpException();
@@ -210,10 +186,10 @@ class DeliveryController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
 
-        $app->addSuccess('mypage.address.delete.complete');
+        $this->addSuccess('mypage.address.delete.complete');
 
         log_info('お届け先削除完了', array($CustomerAddress->getId()));
 
-        return $app->redirect($app->url('mypage_delivery'));
+        return $this->redirect($this->generateUrl('mypage_delivery'));
     }
 }

@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="ec-grid3">
 
             <div class="ec-grid3__cell2">
-                <form method="post" action="{{ url('login_check') }}">
+                <form method="post" action="{{ url('mypage_login') }}">
                     <input type="hidden" name="_target_path" value="shopping" />
                     <input type="hidden" name="_failure_path" value="shopping_login" />
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
