@@ -25,8 +25,6 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -57,11 +55,6 @@ class CustomerController extends AbstractController
     protected $csvExportService;
 
     /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
      * @var MailService
      */
     protected $mailService;
@@ -77,11 +70,6 @@ class CustomerController extends AbstractController
     protected $sexRepository;
 
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var PageMaxRepository
      */
     protected $pageMaxRepository;
@@ -92,23 +80,19 @@ class CustomerController extends AbstractController
     protected $customerRepository;
 
     public function __construct(
-        $eccubeConfig,
         PageMaxRepository $pageMaxRepository,
         CustomerRepository $customerRepository,
         SexRepository $sexRepository,
         PrefRepository $prefRepository,
         MailService $mailService,
-        CsvExportService $csvExportService,
-        EntityManagerInterface $entityManager
+        CsvExportService $csvExportService
     ) {
-        $this->eccubeConfig = $eccubeConfig;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->customerRepository = $customerRepository;
         $this->sexRepository = $sexRepository;
         $this->prefRepository = $prefRepository;
         $this->mailService = $mailService;
         $this->csvExportService = $csvExportService;
-        $this->entityManager = $entityManager;
     }
 
     /**
