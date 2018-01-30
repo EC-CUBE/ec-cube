@@ -41,8 +41,6 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
         $this->baseInfoRepository = $this->container->get(BaseInfoRepository::class);
-
-        $this->client->disableReboot();
     }
 
 
