@@ -42,7 +42,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
         ),
-        'company_name' => 'ロックオン',
+        'company_name' => '株式会社テストショップ',
         'zip' => array(
             'zip01' => '530',
             'zip02' => '0001',
