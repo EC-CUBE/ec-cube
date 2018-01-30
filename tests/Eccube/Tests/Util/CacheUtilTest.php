@@ -14,8 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class CacheUtilTest extends TestCase
 {
-    private $actual;
-    private $expected;
     private $app;
     private $root;
     private $dirs;
