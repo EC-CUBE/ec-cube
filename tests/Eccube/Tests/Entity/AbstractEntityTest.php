@@ -223,9 +223,8 @@ class AbstractEntityTest extends TestCase
         $this->assertEquals($this->objEntity->getField4(), $Date);
         $this->assertEquals($this->objEntity->getTestField4(), 5);
 
-        $expected = '<?xml version="1.0"?>
-<TestChildEntity><field1>1</field1><field2>2</field2><field3>3</field3><testField4>5</testField4><field4>2017-09-25T00:00:00Z</field4><TestChildrens><childField>child1</childField></TestChildrens><TestChildrens><childField>child2</childField></TestChildrens><TestChildrens><childField>child3</childField></TestChildrens></TestChildEntity>
-';
+        $expected = '<?xml version="1.0"?>'. PHP_EOL;
+        $expected .= '<TestChildEntity><field1>1</field1><field2>2</field2><field3>3</field3><testField4>5</testField4><field4>2017-09-25T00:00:00Z</field4><TestChildrens><childField>child1</childField></TestChildrens><TestChildrens><childField>child2</childField></TestChildrens><TestChildrens><childField>child3</childField></TestChildrens></TestChildEntity>'. PHP_EOL;
         $actual = $this->objEntity->toXML();
 
         $this->assertEquals($expected, $actual);
