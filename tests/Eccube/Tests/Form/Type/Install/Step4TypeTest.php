@@ -29,28 +29,29 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step4TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
-    /** @var array デフォルト値を設定 */
-    protected $formData = array(
+    /**
+     * @var array デフォルト値を設定
+     */
+    protected $formData = [
         'database' => '',
         'database_host' => '',
         'database_port' => '',
         'database_name' => '',
         'database_user' => '',
         'database_password' => '',
-    );
+    ];
 
     public function setUp()
     {
         $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(Step4Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }

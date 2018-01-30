@@ -26,27 +26,22 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
+use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class PageControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function test_routing_AdminContentPage_index()
     {
-        $this->client->request('GET', $this->app->url('admin_content_page'));
+        $this->client->request('GET', $this->generateUrl('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routing_AdminContentPage_edit()
     {
         $this->client->request('GET',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_page_edit',
                 array('id' => 1)
             )
@@ -57,10 +52,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
     public function test_routing_AdminContentPage_delete()
     {
 
-        $redirectUrl = $this->app->url('admin_content_page');
+        $redirectUrl = $this->generateUrl('admin_content_page');
 
         $this->client->request('DELETE',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_page_delete',
                 array('id' => 1)
             )
@@ -74,20 +69,20 @@ class PageControllerTest extends AbstractAdminWebTestCase
     public function test_routing_AdminContentPage_delete_flg_user()
     {
 
-        $redirectUrl = $this->app->url('admin_content_page');
+        $redirectUrl = $this->generateUrl('admin_content_page');
 
-        $DeviceType = $this->app['eccube.repository.master.device_type']
+        $DeviceType = $this->container->get(DeviceTypeRepository::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Page = new Page();
         $Page->setDeviceType($DeviceType);
         $Page->setEditType(Page::EDIT_TYPE_USER);
         $Page->setUrl('hogehoge');
-        $this->app['orm.em']->persist($Page);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
 
         $this->client->request('DELETE',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_page_delete',
                 array('id' => $Page->getId())
             )
@@ -102,14 +97,17 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $editable = false;
 
-        $templatePath = $this->app['eccube.repository.page']->getWriteTemplatePath($editable);
-        $Page = $this->app['eccube.repository.page']->find(1);
+        $templatePath = $this->container->getParameter('eccube.theme.front_dir');
+        $Page = $this->container->get(PageRepository::class)->find(1);
 
-        $tplData = $this->app['eccube.repository.page']->getReadTemplateFile($Page->getFileName());
+        $source = $this->container->get('twig')
+            ->getLoader()
+            ->getSourceContext($Page->getFileName().'.twig')
+            ->getCode();
 
         $client->request(
             'POST',
-            $this->app->url(
+            $this->generateUrl(
                 'admin_content_page_edit',
                 array('id' => $Page->getId())
             ),
@@ -119,8 +117,8 @@ class PageControllerTest extends AbstractAdminWebTestCase
                     'name' => 'testtest',
                     'url' => $Page->getUrl(),
                     'file_name' => $Page->getFileName(),
-                    'tpl_data' => $tplData['tpl_data'],
-                    '_token' => 'dummy'
+                    'tpl_data' => $source,
+                    '_token' => 'dummy',
                 ),
                 'page_id' => $Page->getId(),
                 'editable' => $editable,
@@ -128,11 +126,15 @@ class PageControllerTest extends AbstractAdminWebTestCase
             )
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_content_page_edit', array('id' => $Page->getId()))));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_content_page_edit',
+            array('id' => $Page->getId()))));
 
         $this->expected = 'testtest';
         $this->actual = $Page->getName();
         $this->verify();
-    }
 
+        if (file_exists($templatePath.'/'.$Page->getFileName().'.twig')) {
+            unlink($templatePath.'/'.$Page->getFileName().'.twig');
+        }
+    }
 }

@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['store', 'template', 'template_list'] %}
 
 {% block title %}オーナーズストア{% endblock %}
 {% block sub_title %}テンプレート管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
     <div class="row" id="aside_wrap">
@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% for Template in Templates %}
                                 <tr>
                                     <td>
-                                        <input type="radio" name="template" value="{{ Template.id }}" {% if app.config.template_code == Template.code %}checked="checked"{% endif %}/>
+                                        <input type="radio" name="template" value="{{ Template.id }}" {% if eccube.config.template_code == Template.code %}checked="checked"{% endif %}/>
                                     </td>
                                     <td>{{ Template.name }}</td>
                                     <td>

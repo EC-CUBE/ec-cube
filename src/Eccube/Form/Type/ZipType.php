@@ -23,9 +23,6 @@
 
 namespace Eccube\Form\Type;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,29 +32,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @FormType
+ * Class ZipType
+ * @package Eccube\Form\Type
  */
 class ZipType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
-
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * ZipType constructor.
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct()
+    public function __construct(array $eccubeConfig)
     {
+        $this->appConfig = $eccubeConfig;
     }
+
 
     /**
      * {@inheritdoc}
@@ -114,15 +107,13 @@ class ZipType extends AbstractType
             'zip01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    // new Assert\Length(array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])),
-                     new Assert\Length(array('min' => 3, 'max' => 3)), // FIXME
+                    new Assert\Length(array('min' => $this->appConfig['zip01_len'], 'max' => $this->appConfig['zip01_len'])),
                 ),
             ),
             'zip02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    // new Assert\Length(array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])),
-                    new Assert\Length(array('min' => 4, 'max' => 4)), // FIXME
+                    new Assert\Length(array('min' => $this->appConfig['zip02_len'], 'max' => $this->appConfig['zip02_len'])),
                 ),
             ),
             'zip01_name' => '',

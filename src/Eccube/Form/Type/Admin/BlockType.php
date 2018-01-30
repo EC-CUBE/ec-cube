@@ -24,10 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Block;
 use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -39,40 +37,36 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class BlockType extends AbstractType
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * BlockType constructor.
+     *
+     * @param $entityManager
+     * @param $eccubeConfig
      */
-    protected $app;
-
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager, $eccubeConfig)
     {
+        $this->entityManager = $entityManager;
+        $this->eccubeConfig = $eccubeConfig;
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('name', TextType::class, array(
                 'label' => 'ブロック名',
@@ -80,9 +74,9 @@ class BlockType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    ))
-                )
+                        'max' => $this->eccubeConfig['stext_len'],
+                    )),
+                ),
             ))
             ->add('file_name', TextType::class, array(
                 'label' => 'ファイル名',
@@ -90,12 +84,12 @@ class BlockType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[0-9a-zA-Z\/_]+$/',
                     )),
-                )
+                ),
             ))
             ->add('block_html', HiddenType::class, array(
                 'label' => 'ブロックデータ',
@@ -104,14 +98,14 @@ class BlockType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new TwigLint(),
-                ]
+                ],
             ))
             ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
                 'choice_label' => 'id',
             ))
             ->add('id', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
@@ -144,9 +138,9 @@ class BlockType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Block',
-        ));
+        $resolver->setDefaults([
+            'data_class' => Block::class,
+        ]);
     }
 
     /**

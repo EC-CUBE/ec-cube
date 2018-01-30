@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\Master\SexType;
@@ -37,25 +34,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class SearchOrderType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    public function __construct()
+    public function __construct(array $eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -69,7 +57,7 @@ class SearchOrderType extends AbstractType
                 'label' => '受注ID・注文者名・注文者（フリガナ）・注文者会社名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                 ),
             ))
             ->add('status', OrderStatusType::class, array(
@@ -182,8 +170,7 @@ class SearchOrderType extends AbstractType
             ->add('buy_product_name', TextType::class, array(
                 'label' => '購入商品名',
                 'required' => false,
-            ))
-        ;
+            ));
 
         $builder->add(
             $builder

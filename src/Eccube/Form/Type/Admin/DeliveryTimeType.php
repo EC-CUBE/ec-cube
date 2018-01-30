@@ -25,22 +25,13 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
-use Eccube\Annotation\FormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @FormType
- */
 class DeliveryTimeType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

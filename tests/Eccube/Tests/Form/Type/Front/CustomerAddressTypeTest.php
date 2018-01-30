@@ -27,9 +27,6 @@ use Eccube\Form\Type\Front\CustomerAddressType;
 
 class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -67,11 +64,10 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(CustomerAddressType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -148,8 +144,5 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-
-        // エラーメッセージデバッグ用
-        //var_dump($this->form->getErrorsAsString());die;
     }
 }

@@ -24,13 +24,12 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route(service=SystemController::class)
@@ -38,16 +37,25 @@ use Symfony\Component\HttpFoundation\Request;
 class SystemController
 {
     /**
-     * @Inject(SystemService::class)
      * @var SystemService
      */
     protected $systemService;
 
     /**
-     * @Route("/%admin_route%/setting/system/system", name="admin_setting_system_system")
-     * @Template("Setting/System/system.twig")
+     * SystemController constructor.
+     * @param SystemService $systemService
      */
-    public function index(Application $app, Request $request)
+    public function __construct(SystemService $systemService)
+    {
+        $this->systemService = $systemService;
+    }
+
+
+    /**
+     * @Route("/%admin_route%/setting/system/system", name="admin_setting_system_system")
+     * @Template("@admin/Setting/System/system.twig")
+     */
+    public function index(Request $request)
     {
         $info = [];
         $info[] = ['title' => 'EC-CUBE', 'value' => Constant::VERSION];
@@ -67,13 +75,12 @@ class SystemController
     /**
      * @Route("/%admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo")
      */
-    public function phpinfo(Application $app, Request $request)
+    public function phpinfo(Request $request)
     {
         ob_start();
         phpinfo();
         $phpinfo = ob_get_contents();
         ob_end_clean();
-
-        return $phpinfo;
+        return new Response($phpinfo);
     }
 }

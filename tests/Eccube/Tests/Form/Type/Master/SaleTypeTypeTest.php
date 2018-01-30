@@ -25,24 +25,24 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\SaleTypeType;
+use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class SaleTypeTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    /** @var  SaleTypeRepository */
+    protected $saleTypeRepo;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->saleTypeRepo = $this->container->get(SaleTypeRepository::class);
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(SaleTypeType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -53,7 +53,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.sale_type']->find(1));
+        $this->assertEquals($this->form->getData(), $this->saleTypeRepo->find(1));
     }
 
     public function testViewData()
@@ -65,13 +65,14 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-        $query = $this->app['eccube.repository.master.sale_type']->createQueryBuilder('m')
+        $query = $this->saleTypeRepo->createQueryBuilder('m')
             ->orderBy('m.sort_no', 'ASC')
             ->getQuery();
         $res = $query->getResult();
         // order by されているか
         $this->assertEquals($data, $res);
     }
+
     /**
      * 範囲外の値のテスト
      */
@@ -80,6 +81,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
     }
+
     /**
      * 範囲外の値のテスト
      */

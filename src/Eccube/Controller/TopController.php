@@ -38,11 +38,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TopController extends AbstractController
 {
-    protected $eccubeConfig;
-    public function __construct($eccubeConfig)
-    {
-        $this->eccubeConfig = $eccubeConfig;
-    }
 
     /**
      * @Route("/", name="homepage")

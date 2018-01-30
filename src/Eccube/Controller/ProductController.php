@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
@@ -35,7 +34,6 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
@@ -76,11 +74,6 @@ class ProductController extends AbstractController
     protected $productRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -98,8 +91,7 @@ class ProductController extends AbstractController
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
      * @param ProductRepository $productRepository
-     * @param EntityManagerInterface $entityManager
-     * @param BaseInfoRepository $BaseInfo
+     * @param BaseInfo $BaseInfo
      * @param AuthenticationUtils $helper
      */
     public function __construct(
@@ -107,16 +99,14 @@ class ProductController extends AbstractController
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
         ProductRepository $productRepository,
-        EntityManagerInterface $entityManager,
-        BaseInfoRepository $BaseInfo,
+        BaseInfo $BaseInfo,
         AuthenticationUtils $helper
     ) {
         $this->purchaseFlow = $purchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
-        $this->entityManager = $entityManager;
-        $this->BaseInfo = $BaseInfo->get();
+        $this->BaseInfo = $BaseInfo;
         $this->helper = $helper;
     }
 

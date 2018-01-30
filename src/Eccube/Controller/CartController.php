@@ -35,7 +35,6 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -43,11 +42,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CartController extends AbstractController
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
     /**
      * @var ProductClassRepository
      */
@@ -65,19 +59,16 @@ class CartController extends AbstractController
 
     /**
      * CartController constructor.
-     * @param EventDispatcherInterface $eventDispatcher
      * @param ProductClassRepository $productClassRepository
      * @param PurchaseFlow $purchaseFlow
      * @param CartService $cartService
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         ProductClassRepository $productClassRepository,
         PurchaseFlow $purchaseFlow,
         CartService $cartService
     )
     {
-        $this->eventDispatcher = $eventDispatcher;
         $this->productClassRepository = $productClassRepository;
         $this->purchaseFlow = $purchaseFlow;
         $this->cartService = $cartService;

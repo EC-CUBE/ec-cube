@@ -28,9 +28,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class KanaTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -92,10 +89,9 @@ class KanaTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, ['csrf_protection' => false])
+        $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('kana', KanaType::class)
             ->getForm();
     }

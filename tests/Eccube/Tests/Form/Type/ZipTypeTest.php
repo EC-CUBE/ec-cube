@@ -28,13 +28,8 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class ZipTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
-
-    public $config = array('zip01_len' => 3, 'zip02_len' => 4);
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -46,9 +41,8 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class)
             ->getForm();
@@ -63,7 +57,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip01_LengthMin()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']-1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['zip01_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -71,7 +65,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip01_LengthMax()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']+1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->eccubeConfig['zip01_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -79,7 +73,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip02_LengthMin()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']-1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['zip02_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -87,7 +81,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip02_LengthMax()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']+1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->eccubeConfig['zip02_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -96,7 +90,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip01()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class, array(
                 'required' => true,
@@ -111,7 +105,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip02()
     {
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class, array(
                 'required' => true,

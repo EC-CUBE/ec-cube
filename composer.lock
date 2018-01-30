@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc5f9916f2a08f7a10214ea2db53cdd0",
+    "content-hash": "33b5d266516f85aa5a7d604394b3b68d",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1288,16 +1288,16 @@
         },
         {
             "name": "easycorp/easy-log-handler",
-            "version": "v1.0.4",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/easy-log-handler.git",
-                "reference": "1a617a37ab9389eac4e2e1d14cb70ee0087d724d"
+                "reference": "79104f113f562ab6c677d482457d4474204d34a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/1a617a37ab9389eac4e2e1d14cb70ee0087d724d",
-                "reference": "1a617a37ab9389eac4e2e1d14cb70ee0087d724d",
+                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/79104f113f562ab6c677d482457d4474204d34a5",
+                "reference": "79104f113f562ab6c677d482457d4474204d34a5",
                 "shasum": ""
             },
             "require": {
@@ -1334,7 +1334,7 @@
                 "monolog",
                 "productivity"
             ],
-            "time": "2018-01-10T08:34:20+00:00"
+            "time": "2017-10-20T08:47:57+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -3780,16 +3780,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.61",
+            "version": "v1.0.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "f872f8faccf5ff95678e1e428f460a333ba1e5d0"
+                "reference": "c409fe47e94c3c3c255e94356718ff15417afb0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/f872f8faccf5ff95678e1e428f460a333ba1e5d0",
-                "reference": "f872f8faccf5ff95678e1e428f460a333ba1e5d0",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/c409fe47e94c3c3c255e94356718ff15417afb0e",
+                "reference": "c409fe47e94c3c3c255e94356718ff15417afb0e",
                 "shasum": ""
             },
             "require": {
@@ -3822,7 +3822,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2018-01-12T13:09:44+00:00"
+            "time": "2018-01-17T19:45:47+00:00"
         },
         {
             "name": "symfony/form",

@@ -28,22 +28,18 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
  * Class ShopControllerTest
+ *
  * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
 class ShopControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
 
     /**
      * Routing
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop'));
+        $this->client->request('GET', $this->generateUrl('admin_setting_shop'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -60,7 +56,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         }
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop'),
+            $this->generateUrl('admin_setting_shop'),
             array('shop_master' => $formData)
         );
 
