@@ -1,0 +1,8 @@
+twig:
+    globals:
+      eccube:
+        config: '%eccube.constants%'
+    paths:
+      '%kernel.project_dir%/src/Eccube/Resource/template/install': ~
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'

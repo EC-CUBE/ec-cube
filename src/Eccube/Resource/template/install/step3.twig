@@ -28,7 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="form-group{% if not valid %} has-error{% endif %}">
         <label>{{ label }}
             {% if required %}<span class="required">*</span>{% endif %}
-            {% if help %}<br><span class="small">{{ help }}</span>{% endif %}
         </label>
         {{ form_widget(form) }}
         {{ form_errors(form) }}
@@ -61,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <h2>セキュリティの設定</h2>
                                 {{ form_row(form.admin_dir , {attr : {placeholder: 'セキュリティのため推測されにくいディレクトリ名を入力して下さい'}}) }}
-                                {% if app.request_stack.currentrequest.secure %}
+                                {% if request.secure %}
                                     {{ form_row(form.admin_force_ssl) }}
                                 {% else %}
                                     <span class="text-danger">httpsからの接続でなければSSL制限を設定できません。</span>
@@ -69,23 +68,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% endif %}
                                 {{ form_row(form.admin_allow_hosts , {attr : {rows: '5'}}) }}
 
-                                <div class="accordion">
-                                    <a href="#" class="toggle">&gt; オプションを表示</a>
-                                    <div class="accpanel">
-
-                                        <h2>メールの設定</h2>
-                                        {{ form_row(form.mail_backend) }}
-                                        {{ form_row(form.smtp_host) }}
-                                        {{ form_row(form.smtp_port) }}
-                                        {{ form_row(form.smtp_username) }}
-                                        {{ form_row(form.smtp_password) }}
-
-                                        <h2>ロードバランサー、プロキシサーバの設定</h2>
-                                        {{ form_row(form.trusted_proxies_connection_only) }}
-                                        {{ form_row(form.trusted_proxies, {attr: {placeholder: '例）192.168.10.0/24'}}) }}
-
-                                    </div>
-                                </div>
+                                <h2>メールの設定</h2>
+                                {{ form_row(form.smtp_host) }}
+                                {{ form_row(form.smtp_port) }}
+                                {{ form_row(form.smtp_username) }}
+                                {{ form_row(form.smtp_password) }}
 
                                 <ul class="btn_area">
                                     <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>

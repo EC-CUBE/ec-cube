@@ -12,17 +12,8 @@ parameters:
     user_data_route: 'user_data'
     eccube.scheme: 'http'
     eccube.theme: 'default'
-    eccube.theme.app_dir: '%kernel.project_dir%/app/template'
-    eccube.theme.src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
-    eccube.theme.user_data_dir: '%eccube.theme.app_dir%/user_data'
-    eccube.theme.front_dir: '%eccube.theme.app_dir%/%eccube.theme%'
-    eccube.theme.front_default_dir: '%eccube.theme.src_dir%/default'
-    eccube.theme.admin_dir: '%eccube.theme.app_dir%/admin'
-    eccube.theme.admin_default_dir: '%eccube.theme.src_dir%/admin'
     eccube.twig.block.templates:
       - render_block.twig
-    eccube.save_image_dir: '%kernel.project_dir%/html/upload/save_image'
-    eccube.temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
 
 services:
     # default configuration for services in *this* file
@@ -34,7 +25,6 @@ services:
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
         public: false
-
         bind:
           $admin_route: '%admin_route%'
           $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
@@ -43,10 +33,6 @@ services:
           $eccubeConfig: '%eccube.constants%'
           $projectRoot: '%kernel.project_dir%'
           $environment: '%kernel.environment%'
-          $cartPurchaseFlow: '@eccube.purchase.flow.cart'
-          $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
-          $orderPurchaseFlow: '@eccube.purchase.flow.order'
-
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -54,34 +40,47 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,DI,Entity,Exception,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
+        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,Entity,Exception,EventListener,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
 
     Eccube\Service\TaxRuleService:
-        lazy: true
-        public: true
-
-    Eccube\Service\PaymentService:
-        lazy: true
-        public: true
-
-    Eccube\Service\Payment\Method\Cash:
         lazy: true
         public: true
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     Eccube\Controller\:
-        resource: '../../../src/Eccube/Controller'
+        autowire: false
+        autoconfigure: false
+        resource: '../../../src/Eccube/Controller/*'
+
+    Eccube\Controller\Install\InstallController:
         tags: ['controller.service_arguments']
 
-    Eccube\Twig\Extension\EccubeBlockExtension:
-        tags: ['twig.extension']
-        bind:
-          $blockTemplates: '%eccube.twig.block.templates%'
+    # Form Extensions
+    Eccube\Form\Extension\DoctrineOrmExtension:
+        tags:
+            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
+    Eccube\Form\Extension\FreezeTypeExtension: ~
+    Eccube\Form\Extension\HelpTypeExtension: ~
+
+    # DoctrineEventSubscribers
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\SaveEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\UpdatePointEventSubscriber: ~
+
+    Eccube\Twig\Extension\EccubeBlockExtension: ~
 
     Plugin\:
-        resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+      autowire: false
+      autoconfigure: false
+      resource: '../../../app/Plugin/*'
+      exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
 
     twig.extension.stringloader:
         class: Twig_Extension_StringLoader
@@ -111,6 +110,7 @@ services:
 
     # needed for the 'localizeddate' Twig filter
     # Twig\Extensions\IntlExtension: ~
+
     eccube.logger:
         class: Eccube\Log\Logger
         arguments:
@@ -157,6 +157,15 @@ services:
             - { name: monolog.processor }
             - { name: kernel.event_listener, event: kernel.request, priority: 1024 }
 
-    Symfony\Component\HttpFoundation\ParameterBag:
-    Eccube\Entity\BaseInfo:
-        factory: ['@Eccube\Repository\BaseInfoRepository', 'get']
+    Symfony\Component\HttpFoundation\ParameterBag: ~
+    Eccube\Entity\BaseInfo: ~
+
+    Eccube\EventListener\:
+      autowire: false
+      autoconfigure: false
+      resource: '../../../src/Eccube/EventListener/*'
+
+    Eccube\Twig\Extension\:
+      autowire: false
+      autoconfigure: false
+      resource: '../../../src/Eccube/Twig/Extension/*'
