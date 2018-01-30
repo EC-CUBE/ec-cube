@@ -4,7 +4,6 @@ namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Annotation\FormType;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Repository\DeliveryRepository;
@@ -14,8 +13,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -30,30 +29,31 @@ use Symfony\Component\Validator\Constraints\Regex;
 class OrderType extends AbstractType
 {
     /**
-     * @var Application
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    /**
      * @var OrderRepository
-     * @Inject("eccube.repository.order")
      */
     protected $orderRepository;
 
     /**
      * @var DeliveryRepository
-     * @Inject("eccube.repository.delivery")
      */
     protected $deliveryRepository;
 
     /**
      * @var PaymentRepository
-     * @Inject("eccube.repository.payment")
      */
     protected $paymentRepository;
 
-    public function __construct() {
+    /**
+     * OrderType constructor.
+     * @param OrderRepository $orderRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param PaymentRepository $paymentRepository
+     */
+    public function __construct(OrderRepository $orderRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository)
+    {
+        $this->orderRepository = $orderRepository;
+        $this->deliveryRepository = $deliveryRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
     /**
