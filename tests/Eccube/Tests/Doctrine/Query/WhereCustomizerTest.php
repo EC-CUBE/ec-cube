@@ -9,13 +9,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class WhereCustomizerTest extends EccubeTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testCustomizeNOP()
     {
         $builder = $this->createQueryBuilder();
@@ -51,7 +44,7 @@ class WhereCustomizerTest extends EccubeTestCase
      */
     private function createQueryBuilder()
     {
-        return $this->app['orm.em']->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from('Product', 'p');
     }
@@ -78,5 +71,15 @@ class WhereCustomizerTest_Customizer extends WhereCustomizer
     {
         $callback = $this->callback;
         return $callback($params);
+    }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return '';
     }
 }
