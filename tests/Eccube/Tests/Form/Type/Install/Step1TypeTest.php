@@ -29,7 +29,9 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class Step1TypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /**
+     * @var \Symfony\Component\Form\FormInterface
+     */
     protected $form;
 
     /**
@@ -42,32 +44,33 @@ class Step1TypeTest extends AbstractTypeTestCase
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => array(
+        return [
+            [
+                'data' => [
                     'agree' => true,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'agree' => false,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'agree' => null,
-                ),
-            ),
-            array(
-                'data' => array(
+                ],
+            ],
+            [
+                'data' => [
                     'agree' => '',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function setUp()
     {
+        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         $this->form = $this->formFactory

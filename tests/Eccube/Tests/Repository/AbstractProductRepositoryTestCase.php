@@ -3,6 +3,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\ProductRepository;
 
 /**
  * ProductRepository test cases.
@@ -11,9 +12,20 @@ use Eccube\Tests\EccubeTestCase;
  */
 abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 {
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
+
+        $this->productRepository = $this->container->get(ProductRepository::class);
+
         $tables = array(
             'dtb_product_image',
             'dtb_product_stock',
@@ -27,15 +39,20 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
         }
     }
 
+    /**
+     * Create favorites products for testing
+     *
+     * @param $Customer
+     */
     protected function createFavorites($Customer)
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         foreach ($Products as $Product) {
             $Fav = new CustomerFavoriteProduct();
             $Fav->setProduct($Product)
                 ->setCustomer($Customer);
-            $this->app['orm.em']->persist($Fav);
+            $this->entityManager->persist($Fav);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 }

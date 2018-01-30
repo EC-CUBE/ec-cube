@@ -2,14 +2,10 @@
 
 namespace Plugin\QueryCustomize\Entity;
 
-use Eccube\Annotation\QueryExtension;
 use Eccube\Doctrine\Query\WhereClause;
 use Eccube\Doctrine\Query\WhereCustomizer;
 use Eccube\Repository\QueryKey;
 
-/**
- * @QueryExtension(QueryKey::CUSTOMER_SEARCH)
- */
 class AdminCustomerCustomizer extends WhereCustomizer
 {
     /**
@@ -26,5 +22,15 @@ class AdminCustomerCustomizer extends WhereCustomizer
         //return [WhereClause::gte('c.buy_times', ':buy_times', ['buy_times' => 1])];
 
         return [];
+    }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return QueryKey::CUSTOMER_SEARCH;
     }
 }

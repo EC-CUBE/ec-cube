@@ -19,12 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}配送方法管理{% endblock %}
+{% block title %}基本情報設定{% endblock %}
+{% block sub_title %}配送方法設定{% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/jquery.ui/jquery.ui.core.min.js', 'admin') }}"></script>
@@ -39,7 +39,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 oldSortNos.push(this.dataset.sortNo);
             });
             // rsort
-            oldSortNos.sort(function(a,b){return a - b;}).reverse();
+            oldSortNos.sort(function(a, b) {
+                return a - b;
+            }).reverse();
 
             $("div.tableish").sortable({
                 items: '> .item_box',
@@ -75,62 +77,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <form name="form1" method="post">
-    <div id="delivery_wrap" class="row">
-        <div id="delivery_list_box" class="col-md-12">
-            <div id="delivery_list__body" class="box">
-                <div id="delivery_list__header" class="box-header">
-                    <h3 class="box-title">配送方法一覧</h3>
-                </div>
-                {% if Deliveries|length > 0 %}
-                    <div id="delivery_list__body_inner" class="box-body no-padding no-border">
-                        <div id="delivery_list__sortable_area" class="sortable_list">
-                            <div class="tableish">
+        <div id="delivery_wrap" class="row">
+            <div id="delivery_list_box" class="col-md-12">
+                <div id="delivery_list__body" class="box">
+                    <div id="delivery_list__header" class="box-header">
+                        <h3 class="box-title">配送方法一覧</h3>
+                    </div>
+                    {% if Deliveries|length > 0 %}
+                        <div id="delivery_list__body_inner" class="box-body no-padding no-border">
+                            <div id="delivery_list__sortable_area" class="sortable_list">
+                                <div class="tableish">
 
-                                {% for Delivery in Deliveries%}
+                                    {% for Delivery in Deliveries %}
 
-                                    <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
-                                        <div class="icon_sortable td">
-                                            <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
-                                        </div>
-                                        <div id="delivery_list__name--{{ Delivery.id }}" class="item_pattern td">
-                                            <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
-                                                {{ Delivery.name }} / {{ Delivery.serviceNameForAdmin }}
-                                            </a>
-                                        </div>
-                                        <div id="delivery_list__menu_box--{{ Delivery.id }}" class="icon_edit td">
-                                            <div id="delivery_list__menu_toggle--{{ Delivery.id }}" class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul id="delivery_list__menu--{{ Delivery.id }}" class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">編集</a></li>
-                                                    {% if Delivery.isVisible %}
-                                                        <li><a href="{{ url('admin_setting_shop_delivery_visibility', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="非表示に変更してもよろしいですか？">非表示</a></li>
-                                                    {% else %}
-                                                        <li><a href="{{ url('admin_setting_shop_delivery_visibility', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="表示に変更してもよろしいですか？">表示</a></li>
-                                                    {% endif %}
-                                                    <li><a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
-                                                </ul>
+                                        <div id="delivery_list__item--{{ Delivery.id }}" class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-sort-no="{{ Delivery.sortNo }}">
+                                            <div class="icon_sortable td">
+                                                <svg class="cb cb-ellipsis-v">
+                                                    <use xlink:href="#cb-ellipsis-v"/>
+                                                </svg>
                                             </div>
-                                        </div>
-                                    </div><!-- /.item_box -->
-                                {% endfor %}
+                                            <div id="delivery_list__name--{{ Delivery.id }}" class="item_pattern td">
+                                                <a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">
+                                                    {{ Delivery.name }} / {{ Delivery.serviceNameForAdmin }}
+                                                </a>
+                                            </div>
+                                            <div id="delivery_list__menu_box--{{ Delivery.id }}" class="icon_edit td">
+                                                <div id="delivery_list__menu_toggle--{{ Delivery.id }}" class="dropdown">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown">
+                                                        <svg class="cb cb-ellipsis-h">
+                                                            <use xlink:href="#cb-ellipsis-h"/>
+                                                        </svg>
+                                                    </a>
+                                                    <ul id="delivery_list__menu--{{ Delivery.id }}" class="dropdown-menu dropdown-menu-right">
+                                                        <li><a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">編集</a></li>
+                                                        {% if Delivery.isVisible %}
+                                                            <li><a href="{{ url('admin_setting_shop_delivery_visibility', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="非表示に変更してもよろしいですか？">非表示</a></li>
+                                                        {% else %}
+                                                            <li><a href="{{ url('admin_setting_shop_delivery_visibility', {id: Delivery.id} ) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="表示に変更してもよろしいですか？">表示</a></li>
+                                                        {% endif %}
+                                                        <li><a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.item_box -->
+                                    {% endfor %}
 
+                                </div>
                             </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                {% else %}
-                    <div id="delivery_list__body_inner" class="box-body no-padding">
-                        <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
-                    </div><!-- /.box-body -->
-                {% endif %}
-                <!-- ▲ データがある時 ▲ -->
-            </div><!-- /.box -->
-        </div><!-- /.col -->
-    </div>
+                        </div><!-- /.box-body -->
+                    {% else %}
+                        <div id="delivery_list__body_inner" class="box-body no-padding">
+                            <div class="data-empty">
+                                <svg class="cb cb-inbox">
+                                    <use xlink:href="#cb-inbox"/>
+                                </svg>
+                                <p>データはありません</p></div>
+                        </div><!-- /.box-body -->
+                    {% endif %}
+                    <!-- ▲ データがある時 ▲ -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div>
     </form>
 
     <div id="delivery_list_footer" class="row">
         <div id="delivery_list_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-primary btn-block btn-lg">配送方法{% if app.config.input_deliv_fee %}・配送料{% endif %}を新規入力</a>
+            <a href="{{ url('admin_setting_shop_delivery_new') }}" class="btn btn-primary btn-block btn-lg">配送方法を新規入力</a>
         </div>
     </div>
 

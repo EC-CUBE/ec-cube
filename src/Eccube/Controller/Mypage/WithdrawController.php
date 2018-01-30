@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Mypage;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
@@ -35,9 +32,9 @@ use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @Route(service=WithdrawController::class)
@@ -45,34 +42,29 @@ use Symfony\Component\HttpFoundation\Request;
 class WithdrawController extends AbstractController
 {
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject(CustomerStatusRepository::class)
      * @var CustomerStatusRepository
      */
     protected $customerStatusRepository;
 
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var TokenStorage
      */
-    protected $entityManager;
+    protected $tokenStorage;
 
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
+    public function __construct(
+        MailService $mailService,
+        CustomerStatusRepository $customerStatusRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->mailService = $mailService;
+        $this->customerStatusRepository = $customerStatusRepository;
+        $this->tokenStorage = $tokenStorage;
+    }
 
     /**
      * 退会画面.
@@ -80,7 +72,7 @@ class WithdrawController extends AbstractController
      * @Route("/mypage/withdraw", name="mypage_withdraw")
      * @Template("Mypage/withdraw.twig")
      */
-    public function index(Application $app, Request $request)
+    public function index(Request $request)
     {
         $builder = $this->formFactory->createBuilder();
 
@@ -101,7 +93,7 @@ class WithdrawController extends AbstractController
                 case 'confirm':
                     log_info('退会確認画面表示');
 
-                    return $app->render(
+                    return $this->render(
                         'Mypage/withdraw_confirm.twig',
                         array(
                             'form' => $form->createView(),
@@ -112,7 +104,7 @@ class WithdrawController extends AbstractController
                     log_info('退会処理開始');
 
                     /* @var $Customer \Eccube\Entity\Customer */
-                    $Customer = $app->user();
+                    $Customer = $this->getUser();
                     $email = $Customer->getEmail();
 
                     // 退会ステータスに変更
@@ -135,11 +127,11 @@ class WithdrawController extends AbstractController
                     $this->mailService->sendCustomerWithdrawMail($Customer, $email);
 
                     // ログアウト
-                    $this->getSecurity($app)->setToken(null);
+                    $this->tokenStorage->setToken(null);
 
                     log_info('ログアウト完了');
 
-                    return $app->redirect($app->url('mypage_withdraw_complete'));
+                    return $this->redirect($this->generateUrl('mypage_withdraw_complete'));
             }
         }
 
@@ -154,7 +146,7 @@ class WithdrawController extends AbstractController
      * @Route("/mypage/withdraw_complete", name="mypage_withdraw_complete")
      * @Template("Mypage/withdraw_complete.twig")
      */
-    public function complete(Application $app, Request $request)
+    public function complete(Request $request)
     {
         return [];
     }

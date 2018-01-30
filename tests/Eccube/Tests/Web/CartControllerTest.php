@@ -37,7 +37,7 @@ class CartControllerTest extends AbstractWebTestCase
     public function testRoutingCartUp()
     {
         $this->client->request('PUT', '/cart/up/1',
-            [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()]
+            [Constant::TOKEN_NAME => 'dummy']
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
@@ -45,7 +45,7 @@ class CartControllerTest extends AbstractWebTestCase
     public function testRoutingCartDown()
     {
         $this->client->request('PUT', '/cart/down/1',
-            [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()]
+            [Constant::TOKEN_NAME => 'dummy']
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
@@ -53,7 +53,7 @@ class CartControllerTest extends AbstractWebTestCase
     public function testRoutingCartRemove()
     {
         $this->client->request('PUT', '/cart/remove/1',
-            [Constant::TOKEN_NAME => $this->getCsrfToken(Constant::TOKEN_NAME)->getValue()]
+            [Constant::TOKEN_NAME => 'dummy']
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }

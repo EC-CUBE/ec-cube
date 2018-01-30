@@ -3,6 +3,9 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Master\Pref;
+use Eccube\Repository\DeliveryFeeRepository;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\EccubeTestCase;
 
 
@@ -13,48 +16,69 @@ use Eccube\Tests\EccubeTestCase;
  */
 class DeliveryFeeRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepo;
+
+    /**
+     * @var PrefRepository
+     */
+    protected $masterPrefRepo;
+
+    /**
+     * @var DeliveryFeeRepository
+     */
+    protected $deliveryFeeRepo;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->deliveryRepo = $this->container->get(DeliveryRepository::class);
+        $this->masterPrefRepo = $this->container->get(PrefRepository::class);
+        $this->deliveryFeeRepo = $this->container->get(DeliveryFeeRepository::class);
     }
 
     public function testFindOrCreateWithFind()
     {
-        $Delivery = $this->app['eccube.repository.delivery']->find(1);
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Delivery = $this->deliveryRepo->find(1);
+        $Pref = $this->masterPrefRepo->find(1);
 
         $this->assertNotNull($Pref);
         $this->assertNotNull($Delivery);
 
-        $DeliveryFee = $this->app['eccube.repository.delivery_fee']->findOrCreate(
+        $DeliveryFee = $this->deliveryFeeRepo->findOrCreate(
             array('Delivery' => $Delivery, 'Pref' => $Pref)
         );
 
         $this->expected = 1000; // 配送料の初期設定
         $this->actual = $DeliveryFee->getFee();
-        $this->verify('配送料は'.$this->expected.'ではありません');
+        $this->verify('配送料は'. $this->expected. 'ではありません');
     }
 
     public function testFindOrCreateWithCreate()
     {
-        $Delivery = $this->app['eccube.repository.delivery']->find(1);
+        $Delivery = $this->deliveryRepo->find(1);
         $Pref = new Pref();
 
         $Pref
             ->setId(500)
             ->setName('その他')
             ->setSortNo(99);
-        $this->app['orm.em']->persist($Pref);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Pref);
+        $this->entityManager->flush();
 
-        $DeliveryFee = $this->app['eccube.repository.delivery_fee']->findOrCreate(
+        $DeliveryFee = $this->deliveryFeeRepo->findOrCreate(
             array('Delivery' => $Delivery, 'Pref' => $Pref)
         );
 
         $this->expected = 0;
         $this->actual = $DeliveryFee->getFee();
 
-        $this->verify('配送料は'.$this->expected.'ではありません');
+        $this->verify('配送料は'. $this->expected.'ではありません');
     }
 }

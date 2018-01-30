@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['content', 'cache'] %}
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}キャッシュ管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
 <form name="form1" method="post" action="{{ url('admin_content_cache') }}">
@@ -38,15 +38,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">キャッシュ管理</h3>
                     <div id="cache_box__message" style="margin-left: 10px;">
                         <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。</p>
-                        <p>キャッシュ削除するディレクトリを選択してください。</p>
                     </div>
-                    {{ form_widget(form.cache) }}
-                    {{ form_errors(form.cache) }}
                 </div>
                 <div id="cache_box__clear_button" class="box-body">
                     <button type="submit" class="btn btn-primary">キャッシュ削除</button>
                 </div>
             </div>
+            {% if result is not empty %}
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">実行結果</h3>
+                </div>
+                <div class="box-body">
+                    <pre>{{ result }}</pre>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </form>

@@ -24,9 +24,6 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\MailTemplate;
 use Eccube\Event\EccubeEvents;
@@ -35,45 +32,36 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route(service=MailController::class)
+ * Class MailController
+ *
+ * @package Eccube\Controller\Admin\Setting\Shop
  */
 class MailController extends AbstractController
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @Inject(MailTemplateRepository::class)
      * @var MailTemplateRepository
      */
     protected $mailTemplateRepository;
 
     /**
+     * MailController constructor.
+     *
+     * @param MailTemplateRepository $mailTemplateRepository
+     */
+    public function __construct(MailTemplateRepository $mailTemplateRepository)
+    {
+        $this->mailTemplateRepository = $mailTemplateRepository;
+    }
+
+    /**
      * @Route("/%admin_route%/setting/shop/mail", name="admin_setting_shop_mail")
      * @Route("/%admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit")
-     * @Template("Setting/Shop/mail.twig")
+     * @Template("@admin/Setting/Shop/mail.twig")
      */
-    public function index(Application $app, Request $request, MailTemplate $Mail = null)
+    public function index(Request $request, MailTemplate $Mail = null)
     {
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
@@ -95,9 +83,9 @@ class MailController extends AbstractController
 
             // 新規登録は現時点では未実装とする.
             if (is_null($Mail)) {
-                $app->addError('admin.shop.mail.save.error', 'admin');
+                $this->addError('admin.shop.mail.save.error', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop_mail'));
+                return $this->redirectToRoute('admin_setting_shop_mail');
             }
 
             if ($form->isValid()) {
@@ -113,9 +101,9 @@ class MailController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
-                $app->addSuccess('admin.shop.mail.save.complete', 'admin');
+                $this->addSuccess('admin.shop.mail.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_shop_mail_edit', array('id' => $Mail->getId())));
+                return $this->redirectToRoute('admin_setting_shop_mail_edit', array('id' => $Mail->getId()));
             }
         }
 

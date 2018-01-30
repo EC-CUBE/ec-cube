@@ -3,6 +3,11 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Category;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\Master\ProductListOrderByRepository;
+use Knp\Component\Pager\Paginator;
 
 /**
  * ProductRepository#getQueryBuilderBySearchData test cases.
@@ -11,31 +16,70 @@ use Eccube\Entity\Category;
  */
 class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRepositoryTestCase
 {
+    /**
+     * @var array
+     */
     protected $Results;
+
+    /**
+     * @var array
+     */
     protected $searchData;
+
+    /**
+     * @var ProductListMax
+     */
     protected $ProductListMax;
+
+    /**
+     * @var ProductListOrderBy
+     */
     protected $ProductListOrderBy;
 
-    public function setUp() {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+    /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * @var ProductListOrderByRepository
+     */
+    protected $productListOrderByRepository;
+
+    /**
+     * @var Paginator
+     */
+    protected $paginator;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
         parent::setUp();
-        $this->ProductListMax = new \Eccube\Entity\Master\ProductListMax();
-        $this->ProductListOrderBy = new \Eccube\Entity\Master\ProductListOrderBy();
+
+        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->productListOrderByRepository = $this->container->get(ProductListOrderByRepository::class);
+        $this->paginator = $this->container->get('knp_paginator');
+
+        $this->ProductListMax = new ProductListMax();
+        $this->ProductListOrderBy = new ProductListOrderBy();
+
     }
 
     public function scenario()
     {
-        $this->Results = $this->app['eccube.repository.product']->getQueryBuilderBySearchData($this->searchData)
+        $this->Results = $this->productRepository->getQueryBuilderBySearchData($this->searchData)
             ->getQuery()
             ->getResult();
     }
 
     public function testCategory()
     {
-        $Categories = $this->app['eccube.repository.category']->findAll();
-        $this->searchData = array(
+        $Categories = $this->categoryRepository->findAll();
+        $this->searchData = [
             'category_id' => $Categories[0]
-        );
+        ];
         $this->scenario();
 
         $this->expected = 3;
@@ -52,12 +96,12 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
             ->setHierarchy(1)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
-        $this->app['orm.em']->persist($Category);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Category);
+        $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'category_id' => $Category
-        );
+        ];
         $this->scenario();
 
         $this->expected = 0;
@@ -67,17 +111,17 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
     public function testName()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         $Products[1]->setName('アイス');
         $Products[1]->setSearchWord('抹茶');
         $Products[2]->setName('お鍋');
         $Products[2]->setSearchWord('立方体');
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'name' => 'お鍋　立方体'
-        );
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -87,7 +131,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
     public function testOrderByPrice()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
             $ProductClass->setPrice02(100);
@@ -100,12 +144,12 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
             $ProductClass->setPrice02(10000);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(1);
-        $this->searchData = array(
+        $ProductListOrderBy = $this->productListOrderByRepository->find(1);
+        $this->searchData = [
             'orderby' => $ProductListOrderBy
-        );
+        ];
 
         $this->scenario();
 
@@ -121,7 +165,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
      */
     public function testOrderByPriceHigher()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
             $ProductClass->setPrice02(100);
@@ -134,40 +178,41 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
             $ProductClass->setPrice02(10000);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $ProductListOrderBy = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\ProductListOrderBy')
-            ->find($this->app['config']['product_order_price_higher']);
-        $this->searchData = array(
+        $ProductListOrderBy = $this->productListOrderByRepository
+            ->find($this->eccubeConfig['product_order_price_higher']);
+        $this->searchData = [
             'orderby' => $ProductListOrderBy
-        );
+        ];
 
         $this->scenario();
 
-        $this->expected = array('お鍋', 'アイス', 'りんご');
-        $this->actual = array($this->Results[0]->getName(),
+        $this->expected = ['お鍋', 'アイス', 'りんご'];
+        $this->actual = [
+            $this->Results[0]->getName(),
             $this->Results[1]->getName(),
-            $this->Results[2]->getName());
+            $this->Results[2]->getName()
+        ];
         $this->verify();
     }
 
     public function testOrderByNewer()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         $Products[0]->setCreateDate(new \DateTime('-1 day'));
         $Products[1]->setName('アイス');
         $Products[1]->setCreateDate(new \DateTime('-2 day'));
         $Products[2]->setName('お鍋');
         $Products[2]->setCreateDate(new \DateTime('-3 day'));
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 新着順
-        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(2);
-        $this->searchData = array(
+        $ProductListOrderBy = $this->productListOrderByRepository->find(2);
+        $this->searchData = [
             'orderby' => $ProductListOrderBy
-        );
+        ];
 
         $this->scenario();
 
@@ -181,15 +226,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
     public function testProductImage()
     {
-        $this->searchData = array();
+        $this->searchData = [];
 
         $this->scenario();
 
         $Products = $this->Results;
 
         foreach ($Products as $Product) {
-            $this->expected = array(0, 1, 2);
-            $this->actual = array();
+            $this->expected = [0, 1, 2];
+            $this->actual = [];
 
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {
@@ -211,17 +256,18 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->ProductListOrderBy->setSortNo(0);
 
 
-        $this->searchData = array(
+        $this->searchData = [
             'mode' => NULL,
             'category_id' => NULL,
             'name' => NULL,
             'pageno' => '1',
             'disp_number' => $this->ProductListMax,
             'orderby' => $this->ProductListOrderBy
-        );
+        ];
         $this->scenario();
 
-        $pagination = $this->app['paginator']()->paginate(
+        /** @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination $pagination */
+        $pagination = $this->paginator->paginate(
             $this->Results,
             $this->searchData['pageno'],
             $this->searchData['disp_number']->getId()
@@ -243,17 +289,18 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $this->ProductListOrderBy->setSortNo(0);
 
 
-        $this->searchData = array(
+        $this->searchData = [
             'mode' => NULL,
             'category_id' => NULL,
             'name' => NULL,
             'pageno' => '1',
             'disp_number' => $this->ProductListMax,
             'orderby' => $this->ProductListOrderBy
-        );
+        ];
         $this->scenario();
 
-        $pagination = $this->app['paginator']()->paginate(
+        /** @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination $pagination */
+        $pagination = $this->paginator->paginate(
             $this->Results,
             $this->searchData['pageno'],
             $this->searchData['disp_number']->getId()

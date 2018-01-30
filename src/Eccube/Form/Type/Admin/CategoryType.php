@@ -24,17 +24,12 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class CategoryType extends AbstractType
 {
     /**
@@ -42,6 +37,10 @@ class CategoryType extends AbstractType
      */
     protected $eccubeConfig;
 
+    /**
+     * CategoryType constructor.
+     * @param $eccubeConfig
+     */
     public function __construct(array $eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;

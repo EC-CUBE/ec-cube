@@ -24,7 +24,7 @@
 namespace Eccube\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Log\Logger;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -39,14 +39,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class TransactionListener implements EventSubscriberInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
 
     /**
      * @var bool
@@ -57,13 +52,11 @@ class TransactionListener implements EventSubscriberInterface
      * TransactionListener constructor.
      *
      * @param EntityManager $em
-     * @param Logger $logger
      * @param bool $isEnabled
      */
-    public function __construct(EntityManager $em, Logger $logger, $isEnabled = true)
+    public function __construct(EntityManagerInterface $em, $isEnabled = true)
     {
         $this->em = $em;
-        $this->logger = $logger;
         $this->isEnabled = $isEnabled;
     }
 
@@ -83,7 +76,7 @@ class TransactionListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (!$this->isEnabled) {
-            $this->logger->debug('Transaction Listener is disabled.');
+            log_debug('Transaction Listener is disabled.');
 
             return;
         }
@@ -94,7 +87,7 @@ class TransactionListener implements EventSubscriberInterface
 
         $this->em->getConnection()->setAutoCommit(false);
         $this->em->beginTransaction();
-        $this->logger->debug('Begin Transaction.');
+        log_debug('Begin Transaction.');
     }
 
     /**
@@ -105,7 +98,7 @@ class TransactionListener implements EventSubscriberInterface
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         if (!$this->isEnabled) {
-            $this->logger->debug('Transaction Listener is disabled.');
+            log_debug('Transaction Listener is disabled.');
 
             return;
         }
@@ -116,9 +109,9 @@ class TransactionListener implements EventSubscriberInterface
 
         if ($this->em->getConnection()->isTransactionActive()) {
             $this->em->rollback();
-            $this->logger->debug('Rollback executed.');
+            log_debug('Rollback executed.');
         } else {
-            $this->logger->debug('Transaction is not active. Rollback skipped.');
+            log_debug('Transaction is not active. Rollback skipped.');
         }
     }
 
@@ -130,20 +123,20 @@ class TransactionListener implements EventSubscriberInterface
     public function onKernelTerminate(PostResponseEvent $event)
     {
         if (!$this->isEnabled) {
-            $this->logger->debug('Transaction Listener is disabled.');
+            log_debug('Transaction Listener is disabled.');
 
             return;
         }
         if ($this->em->getConnection()->isTransactionActive()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
                 $this->em->rollback();
-                $this->logger->debug('Rollback executed.');
+                log_debug('Rollback executed.');
             } else {
                 $this->em->commit();
-                $this->logger->debug('Commit executed.');
+                log_debug('Commit executed.');
             }
         } else {
-            $this->logger->debug('Transaction is not active. Rollback skipped.');
+            log_debug('Transaction is not active. Rollback skipped.');
         }
     }
 

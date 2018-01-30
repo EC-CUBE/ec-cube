@@ -25,8 +25,6 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemHolderInterface;
@@ -60,19 +58,16 @@ class CartService
 
     /**
      * @var ProductClassRepository
-     * @Inject(ProductClassRepository::class)
      */
     protected $productClassRepository;
 
     /**
      * @var CartItemComparator
-     * @Inject(CartItemComparator::class)
      */
     protected $cartItemComparator;
 
     /**
      * @var CartItemAllocator
-     * @Inject(CartItemAllocator::class)
      */
     protected $cartItemAllocator;
 

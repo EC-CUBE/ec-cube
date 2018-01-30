@@ -29,9 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -44,28 +41,26 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(OrderItemType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
+        $this->container->get('request_stack')->push(new Request());
     }
 
     public function testInValidData()
     {
-        $this->app['request_stack']->push(new Request());
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidPrice_Blank()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['price'] = '';
 
         $this->form->submit($this->formData);
@@ -74,8 +69,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPrice_OverMaxLength()
     {
-        $this->app['request_stack']->push(new Request());
-        $this->formData['price'] = $this->app['config']['price_max'] + 1;
+        $this->formData['price'] = $this->eccubeConfig['price_max'] + 1;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -83,7 +77,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPrice_NotNumeric()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['price'] = 'abc';
 
         $this->form->submit($this->formData);
@@ -92,7 +85,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPrice_HasMinus()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['price'] = '-123456';
 
         $this->form->submit($this->formData);
@@ -101,7 +93,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidQuantity_Blank()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['quantity'] = '';
 
         $this->form->submit($this->formData);
@@ -110,7 +101,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidQuantity_OverMaxLength()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['quantity'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
@@ -120,7 +110,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testInvalidQuantity_NotNumeric()
     {
         $this->markTestIncomplete('testInvalidQuantity_NotNumeric is not implemented.');
-        $this->app['request_stack']->push(new Request());
         $this->formData['quantity'] = 'abcde';
 
         $this->form->submit($this->formData);
@@ -130,7 +119,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testInvalidQuantity_HasMinus()
     {
         $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
-        $this->app['request_stack']->push(new Request());
         $this->formData['quantity'] = '-123456';
 
         $this->form->submit($this->formData);
@@ -139,7 +127,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTaxRate_Blank()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['tax_rate'] = '';
 
         $this->form->submit($this->formData);
@@ -148,8 +135,7 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTaxRate_OverMaxLength()
     {
-        $this->app['request_stack']->push(new Request());
-        $this->formData['tax_rate'] = '12345678910'; //Max 9
+        $this->formData['tax_rate'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -157,7 +143,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTaxRate_NotNumeric()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['tax_rate'] = 'abcde';
 
         $this->form->submit($this->formData);
@@ -166,7 +151,6 @@ class OrderItemTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTaxRate_HasMinus()
     {
-        $this->app['request_stack']->push(new Request());
         $this->formData['tax_rate'] = '-12345';
 
         $this->form->submit($this->formData);

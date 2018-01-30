@@ -2,6 +2,9 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Entity\Master\ProductStatus;
+
 /**
  * ProductRepository test cases.
  *
@@ -9,26 +12,36 @@ namespace Eccube\Tests\Repository;
  */
 class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
+    /**
+     * @var ProductStatusRepository
+     */
+    protected $productStatusRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
     }
 
     public function testGetFavoriteProductQueryBuilderByCustomer()
     {
+        $this->markTestSkipped(get_class($this).' getFavoriteProductQueryBuilderByCustomer is deprecated since 3.1');
         $Customer = $this->createCustomer();
-        $this->app['orm.em']->persist($Customer);
+        $this->entityManager->persist($Customer);
 
         $this->createFavorites($Customer);
 
         // 3件中, 1件は非表示にしておく
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $Products = $this->productRepository->findAll();
         $Products[0]->setStatus($ProductStatus);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $qb = $this->app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
+        $qb = $this->productRepository->getFavoriteProductQueryBuilderByCustomer($Customer);
         $Favorites = $qb
             ->getQuery()
             ->getResult();

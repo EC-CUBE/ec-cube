@@ -9,6 +9,7 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\ShippingStatus;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -809,7 +810,7 @@ class Generator
     public function createPage()
     {
         $faker = $this->getFaker();
-        $DeviceType = $this->find(\Eccube\Entity\Master\DeviceType::class, \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+        $DeviceType = $this->entityManager->find(DeviceType::class, DeviceType::DEVICE_TYPE_PC);
         /** @var Page $Page */
         $Page = $this->pageRepository->newPage($DeviceType);
         $Page

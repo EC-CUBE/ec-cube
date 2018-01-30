@@ -12,13 +12,16 @@
 namespace Eccube;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\LazyComponentPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
+use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
+use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Plugin\ConfigManager;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -134,6 +137,9 @@ class Kernel extends BaseKernel
 
         $container->registerExtension(new EccubeExtension());
 
+        // サービスタグの自動設定を行う
+        $container->addCompilerPass(new AutoConfigurationTagPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 11);
+
         // サービスタグの収集より先に実行し, 付与されているタグをクリアする.
         // FormPassは優先度0で実行されているので, それより速いタイミングで実行させる.
         // 自動登録されるタグやコンパイラパスの登録タイミングは, FrameworkExtension::load(), FrameworkBundle::build()を参考に.
@@ -153,14 +159,19 @@ class Kernel extends BaseKernel
         $container->register('app', Application::class)
             ->setSynthetic(true)
             ->setPublic(true);
+
+        // クエリカスタマイズの拡張.
+        $container->registerForAutoconfiguration(QueryCustomizer::class)
+            ->addTag(QueryCustomizerPass::QUERY_CUSTOMIZER_TAG);
+        $container->addCompilerPass(new QueryCustomizerPass());
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container)
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
-        $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
-        $namespaces = ['Eccube\\Entity'];
+        $paths = ['%kernel.project_dir%/src/Eccube/Entity', '%kernel.project_dir%/app/Acme/Entity'];
+        $namespaces = ['Eccube\\Entity', 'Acme\\Entity'];
 
         $pluginConfigs = ConfigManager::getPluginConfigAll(true);
         foreach ($pluginConfigs as $config) {

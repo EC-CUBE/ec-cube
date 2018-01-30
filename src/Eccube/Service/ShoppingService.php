@@ -26,22 +26,23 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\ShippingItemType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\DeliveryRepository;
@@ -58,6 +59,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Service
@@ -65,121 +67,96 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class ShoppingService
 {
     /**
-     * @Inject(MailTemplateRepository::class)
      * @var MailTemplateRepository
      */
     protected $mailTemplateRepository;
 
     /**
-     * @Inject(MailService::class)
      * @var MailService
      */
     protected $mailService;
 
     /**
-     * @Inject("eccube.event.dispatcher")
      * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @Inject("form.factory")
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * @Inject(DeliveryFeeRepository::class)
      * @var DeliveryFeeRepository
      */
     protected $deliveryFeeRepository;
 
     /**
-     * @Inject(TaxRuleRepository::class)
      * @var TaxRuleRepository
      */
     protected $taxRuleRepository;
 
     /**
-     * @Inject(CustomerAddressRepository::class)
      * @var CustomerAddressRepository
      */
     protected $customerAddressRepository;
 
     /**
-     * @Inject(DeliveryRepository::class)
      * @var DeliveryRepository
      */
     protected $deliveryRepository;
 
     /**
-     * @Inject(DeliveryTimeRepository::class)
      * @var DeliveryTimeRepository
      */
     protected $deliveryTimeRepository;
 
     /**
-     * @Inject(OrderStatusRepository::class)
      * @var OrderStatusRepository
      */
     protected $orderStatusRepository;
 
     /**
-     * @Inject(PaymentRepository::class)
      * @var PaymentRepository
      */
     protected $paymentRepository;
 
     /**
-     * @Inject(DeviceTypeRepository::class)
      * @var DeviceTypeRepository
      */
     protected $deviceTypeRepository;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject("config")
      * @var array
      */
     protected $appConfig;
 
     /**
-     * @Inject(PrefRepository::class)
      * @var PrefRepository
      */
     protected $prefRepository;
 
     /**
-     * @Inject("session")
      * @var Session
      */
     protected $session;
 
     /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject(Application::class)
-     * @var \Eccube\Application
-     */
-    public $app;
-
-    /**
-     * @Inject(CartService::class)
      * @var \Eccube\Service\CartService
      */
     protected $cartService;
@@ -190,6 +167,82 @@ class ShoppingService
      * @deprecated
      */
     protected $orderService;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
+     * ShoppingService constructor.
+     * @param MailTemplateRepository $mailTemplateRepository
+     * @param MailService $mailService
+     * @param EventDispatcher $eventDispatcher
+     * @param FormFactory $formFactory
+     * @param DeliveryFeeRepository $deliveryFeeRepository
+     * @param TaxRuleRepository $taxRuleRepository
+     * @param CustomerAddressRepository $customerAddressRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param DeliveryTimeRepository $deliveryTimeRepository
+     * @param OrderStatusRepository $orderStatusRepository
+     * @param PaymentRepository $paymentRepository
+     * @param DeviceTypeRepository $deviceTypeRepository
+     * @param EntityManager $entityManager
+     * @param array $eccubeConfig
+     * @param PrefRepository $prefRepository
+     * @param Session $session
+     * @param OrderRepository $orderRepository
+     * @param CartService $cartService
+     * @param OrderService $orderService
+     * @param BaseInfo $BaseInfo
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(
+        MailTemplateRepository $mailTemplateRepository,
+        MailService $mailService,
+        EventDispatcher $eventDispatcher,
+        FormFactory $formFactory,
+        DeliveryFeeRepository $deliveryFeeRepository,
+        TaxRuleRepository $taxRuleRepository,
+        CustomerAddressRepository $customerAddressRepository,
+        DeliveryRepository $deliveryRepository,
+        DeliveryTimeRepository $deliveryTimeRepository,
+        OrderStatusRepository $orderStatusRepository,
+        PaymentRepository $paymentRepository,
+        DeviceTypeRepository $deviceTypeRepository,
+        EntityManager $entityManager,
+        array $eccubeConfig,
+        PrefRepository $prefRepository,
+        Session $session,
+        OrderRepository $orderRepository,
+        CartService $cartService,
+        OrderService $orderService,
+        BaseInfo $BaseInfo,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->mailTemplateRepository = $mailTemplateRepository;
+        $this->mailService = $mailService;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->deliveryFeeRepository = $deliveryFeeRepository;
+        $this->taxRuleRepository = $taxRuleRepository;
+        $this->customerAddressRepository = $customerAddressRepository;
+        $this->deliveryRepository = $deliveryRepository;
+        $this->deliveryTimeRepository = $deliveryTimeRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->deviceTypeRepository = $deviceTypeRepository;
+        $this->entityManager = $entityManager;
+        $this->appConfig = $eccubeConfig;
+        $this->prefRepository = $prefRepository;
+        $this->session = $session;
+        $this->orderRepository = $orderRepository;
+        $this->cartService = $cartService;
+        $this->orderService = $orderService;
+        $this->BaseInfo = $BaseInfo;
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
 
     /**
      * セッションにセットされた受注情報を取得
@@ -300,7 +353,8 @@ class ShoppingService
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
 
-        $DeviceType = $this->deviceTypeRepository->find($this->app['mobile_detect.device_type']);
+        $mobileDetect = new \Mobile_Detect();
+        $DeviceType = $this->deviceTypeRepository->find($mobileDetect->isMobile() ? DeviceType::DEVICE_TYPE_SP : DeviceType::DEVICE_TYPE_PC);
         $Order->setDeviceType($DeviceType);
 
         $this->entityManager->persist($Order);
@@ -1127,21 +1181,16 @@ class ShoppingService
      * 購入処理を行う
      *
      * @param Order $Order
-     * @throws ShoppingException
      * @deprecated PurchaseFlow::purchase() を使用してください
      */
     public function processPurchase(Order $Order)
     {
-
-        $em = $this->entityManager;
-
         // 受注情報、配送情報を更新
         $Order = $this->calculateDeliveryFee($Order);
         $this->setOrderUpdateData($Order);
 
-        if ($this->app->isGranted('ROLE_USER')) {
-            // 会員の場合、購入金額を更新
-            $this->setCustomerUpdate($Order, $this->app->user());
+        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $this->setCustomerUpdate($Order, $Order->getCustomer());
         }
     }
 

@@ -51,7 +51,7 @@ class ForgotControllerTest extends AbstractWebTestCase
             $this->generateUrl('forgot'),
             array(
                 'login_email' => $Customer->getEmail(),
-                Constant::TOKEN_NAME => $this->getCsrfToken(ForgotType::class)
+                Constant::TOKEN_NAME => 'dummy'
             )
         );
 

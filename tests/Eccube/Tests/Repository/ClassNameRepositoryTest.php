@@ -4,6 +4,11 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Member;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ClassNameRepository;
+use Eccube\Repository\MemberRepository;
+use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\EccubeTestCase;
 
 
@@ -14,14 +19,38 @@ use Eccube\Tests\EccubeTestCase;
  */
 class ClassNameRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var  Member
+     */
     protected $Member;
 
+    /**
+     * @var  ProductClassRepository
+     */
+    protected  $productClassRepository;
+
+    /**
+     * @var  ClassCategoryRepository
+     */
+    protected  $classCategoryRepository;
+
+    /**
+     * @var  ClassNameRepository
+     */
+    protected  $classNameRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->productClassRepository = $this->container->get(ProductClassRepository::class);
+        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
+        $this->classNameRepository = $this->container->get(ClassNameRepository::class);
         $this->removeClass();
-        $this->Member = $this->app['eccube.repository.member']->find(2);
+        $this->Member = $this->container->get(MemberRepository::class)->find(2);
 
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
@@ -30,32 +59,32 @@ class ClassNameRepositoryTest extends EccubeTestCase
                 ->setCreator($this->Member)
                 ->setSortNo($i)
                 ;
-            $this->app['orm.em']->persist($ClassName);
+            $this->entityManager->persist($ClassName);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function removeClass()
     {
-        $ProductClasses = $this->app['eccube.repository.product_class']->findAll();
+        $ProductClasses = $this->productClassRepository->findAll();
         foreach ($ProductClasses as $ProductClass) {
-            $this->app['orm.em']->remove($ProductClass);
+            $this->entityManager->remove($ProductClass);
         }
-        $ClassCategories = $this->app['eccube.repository.class_category']->findAll();
+        $ClassCategories = $this->classCategoryRepository->findAll();
         foreach ($ClassCategories as $ClassCategory) {
-            $this->app['orm.em']->remove($ClassCategory);
+            $this->entityManager->remove($ClassCategory);
         }
-        $this->app['orm.em']->flush();
-        $All = $this->app['eccube.repository.class_name']->findAll();
+        $this->entityManager->flush();
+        $All = $this->classNameRepository->findAll();
         foreach ($All as $ClassName) {
-            $this->app['orm.em']->remove($ClassName);
+            $this->entityManager->remove($ClassName);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testGetList()
     {
-        $ClassNames = $this->app['eccube.repository.class_name']->getList();
+        $ClassNames = $this->classNameRepository->getList();
 
         $this->expected = 3;
         $this->actual = count($ClassNames);
@@ -77,7 +106,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
             ->setName($faker->name)
             ->setCreator($this->Member);
 
-        $this->app['eccube.repository.class_name']->save($ClassName);
+        $this->classNameRepository->save($ClassName);
 
         $this->expected = 3;
         $this->actual = $ClassName->getSortNo();
@@ -93,7 +122,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
             ->setName($faker->name)
             ->setCreator($this->Member);
 
-        $this->app['eccube.repository.class_name']->save($ClassName);
+        $this->classNameRepository->save($ClassName);
 
         $this->expected = 1;
         $this->actual = $ClassName->getSortNo();
@@ -102,13 +131,13 @@ class ClassNameRepositoryTest extends EccubeTestCase
 
     public function testDelete()
     {
-        $ClassName = $this->app['eccube.repository.class_name']->findOneBy(
+        $ClassName = $this->classNameRepository->findOneBy(
             array('name' => 'class-0')
         );
         $ClassNameId = $ClassName->getId();
-        $this->app['eccube.repository.class_name']->delete($ClassName);
+        $this->classNameRepository->delete($ClassName);
 
-        self::assertNull($this->app['orm.em']->find(ClassName::class, $ClassNameId));
+        self::assertNull($this->entityManager->find(ClassName::class, $ClassNameId));
     }
 
     public function testDeleteWithException()
@@ -122,16 +151,15 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $ClassCateogory->setSortNo(100);
         $ClassCateogory->setVisible(true);
 
-        $em = $this->app['orm.em'];
-        $em->persist($ClassName);
-        $em->persist($ClassCateogory);
-        $em->flush([$ClassName, $ClassCateogory]);
+        $this->entityManager->persist($ClassName);
+        $this->entityManager->persist($ClassCateogory);
+        $this->entityManager->flush([$ClassName, $ClassCateogory]);
 
         try {
-            $this->app['eccube.repository.class_name']->delete($ClassName);
+            $this->classNameRepository->delete($ClassName);
             $this->fail();
         } catch (\Exception $e) {
-            
+            $this->addToAssertionCount(1);
         }
     }
 }

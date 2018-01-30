@@ -4,13 +4,13 @@ twig:
       eccube:
         config: '%eccube.constants%'
     paths:
-      '%kernel.project_dir%/app/template/%eccube.theme%': ~
-      '%kernel.project_dir%/src/Eccube/Resource/template/default': ~
+      '%eccube.theme.front_dir%': ~
+      '%eccube.theme.front_default_dir%': ~
       '%kernel.project_dir%/app/Plugin': ~
-      '%kernel.project_dir%/app/template/admin': admin
-      '%kernel.project_dir%/src/Eccube/Resource/template/admin': admin
-      '%kernel.project_dir%/html/user_data': user_data
-      '%kernel.project_dir%/src/Eccube/Resource/template/toolbar': toolbar
+      '%eccube.theme.admin_dir%': admin
+      '%eccube.theme.admin_default_dir%': admin
+      '%eccube.theme.user_data_dir%': user_data
+      '%eccube.theme.src_dir%/toolbar': toolbar
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     # form_themes:

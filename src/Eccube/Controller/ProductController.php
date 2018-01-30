@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
@@ -35,7 +34,6 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Form\Type\SearchProductType;
-use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
@@ -76,11 +74,6 @@ class ProductController extends AbstractController
     protected $productRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var BaseInfo
      */
     protected $BaseInfo;
@@ -94,29 +87,26 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     * @param PurchaseFlow $purchaseFlow
+     * @param PurchaseFlow $cartPurchaseFlow
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
      * @param ProductRepository $productRepository
-     * @param EntityManagerInterface $entityManager
-     * @param BaseInfoRepository $BaseInfo
+     * @param BaseInfo $BaseInfo
      * @param AuthenticationUtils $helper
      */
     public function __construct(
-        PurchaseFlow $purchaseFlow,
+        PurchaseFlow $cartPurchaseFlow,
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
         ProductRepository $productRepository,
-        EntityManagerInterface $entityManager,
-        BaseInfoRepository $BaseInfo,
+        BaseInfo $BaseInfo,
         AuthenticationUtils $helper
     ) {
-        $this->purchaseFlow = $purchaseFlow;
+        $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
-        $this->entityManager = $entityManager;
-        $this->BaseInfo = $BaseInfo->get();
+        $this->BaseInfo = $BaseInfo;
         $this->helper = $helper;
     }
 
@@ -461,12 +451,12 @@ class ProductController extends AbstractController
         if ($result->hasError()) {
             $this->cartService->removeProduct($addCartData['product_class_id']);
             foreach ($result->getErrors() as $error) {
-                array_push($errorMessages, $error->getMessage());
+                $errorMessages[] = $error->getMessage();
             }
         }
 
         foreach ($result->getWarning() as $warning) {
-            array_push($errorMessages, $warning->getMessage());
+            $errorMessages[] = $warning->getMessage();
         }
 
         $this->cartService->save();

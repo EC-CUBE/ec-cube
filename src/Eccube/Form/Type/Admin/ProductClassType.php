@@ -21,10 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Form\DataTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
@@ -39,6 +37,8 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\ClassCategory;
 
 class ProductClassType extends AbstractType
 {
@@ -49,10 +49,12 @@ class ProductClassType extends AbstractType
 
     /**
      * ProductClassType constructor.
+     *
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager
+    ) {
         $this->entityManager = $entityManager;
     }
 
@@ -62,81 +64,81 @@ class ProductClassType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', TextType::class, array(
+            ->add('code', TextType::class, [
                 'label' => '商品コード',
                 'required' => false,
-            ))
-            ->add('stock', NumberType::class, array(
+            ])
+            ->add('stock', NumberType::class, [
                 'label' => '在庫数',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Regex([
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
-            ))
-            ->add('stock_unlimited', CheckboxType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('stock_unlimited', CheckboxType::class, [
                 'label' => '無制限',
                 'value' => '1',
                 'required' => false,
-            ))
-            ->add('sale_limit', NumberType::class, array(
+            ])
+            ->add('sale_limit', NumberType::class, [
                 'label' => '販売制限数',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
+                'constraints' => [
+                    new Assert\Length([
                         'max' => 10,
-                    )),
-                    new Assert\GreaterThanOrEqual(array(
+                    ]),
+                    new Assert\GreaterThanOrEqual([
                         'value' => 1,
-                    )),
-                    new Assert\Regex(array(
+                    ]),
+                    new Assert\Regex([
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
-            ))
-            ->add('price01', PriceType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('price01', PriceType::class, [
                 'label' => '通常価格',
                 'required' => false,
-            ))
-            ->add('price02', PriceType::class, array(
+            ])
+            ->add('price02', PriceType::class, [
                 'label' => '販売価格',
-            ))
-            ->add('tax_rate', TextType::class, array(
+            ])
+            ->add('tax_rate', TextType::class, [
                 'label' => '消費税率',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Range(array('min' => 0, 'max' => 100)),
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Range(['min' => 0, 'max' => 100]),
+                    new Assert\Regex([
                         'pattern' => "/^\d+(\.\d+)?$/",
                         'message' => 'form.type.float.invalid'
-                    )),
-                ),
-            ))
-            ->add('delivery_fee', PriceType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('delivery_fee', PriceType::class, [
                 'label' => '商品送料',
                 'required' => false,
-            ))
-            ->add('sale_type', SaleTypeType::class, array(
+            ])
+            ->add('sale_type', SaleTypeType::class, [
                 'label' => '販売種別',
                 'multiple' => false,
                 'expanded' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('delivery_duration', DeliveryDurationType::class, array(
+                ],
+            ])
+            ->add('delivery_duration', DeliveryDurationType::class, [
                 'label' => 'お届け可能日',
                 'required' => false,
                 'placeholder' => '指定なし',
-            ))
-            ->add('add', CheckboxType::class, array(
+            ])
+            ->add('add', CheckboxType::class, [
                 'label' => false,
                 'required' => false,
                 'value' => 1,
-            ))
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
@@ -146,10 +148,7 @@ class ProductClassType extends AbstractType
                 }
             });
 
-        $transformer = new DataTransformer\EntityToIdTransformer(
-            $this->entityManager,
-            '\Eccube\Entity\ClassCategory'
-        );
+        $transformer = new DataTransformer\EntityToIdTransformer($this->entityManager, ClassCategory::class);
         $builder
             ->add($builder->create('ClassCategory1', HiddenType::class)
                 ->addModelTransformer($transformer)
@@ -164,9 +163,9 @@ class ProductClassType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Eccube\Entity\ProductClass',
-        ));
+        ]);
     }
 
     /**

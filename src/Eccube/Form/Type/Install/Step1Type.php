@@ -24,14 +24,10 @@
 
 namespace Eccube\Form\Type\Install;
 
-use Eccube\Annotation\FormType;
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type\CheckboxType;;
 use \Symfony\Component\Form\FormBuilderInterface;
 
-/**
- * @FormType
- */
 class Step1Type extends AbstractType
 {
     /**

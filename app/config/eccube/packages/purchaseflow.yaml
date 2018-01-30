@@ -1,0 +1,95 @@
+services:
+
+    # Purchase Flow for Cart
+
+    eccube.purchase.flow.cart:
+        class: Eccube\Service\PurchaseFlow\PurchaseFlow
+        calls:
+            - [setItemProcessors, ['@eccube.purchase.flow.cart.item_processors']]
+            - [setItemHolderProcessors, ['@eccube.purchase.flow.cart.holder_processors']]
+
+    eccube.purchase.flow.cart.item_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
+
+    eccube.purchase.flow.cart.holder_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreeProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
+
+    # Purchase Flow for Shopping
+
+    eccube.purchase.flow.shopping:
+        class: Eccube\Service\PurchaseFlow\PurchaseFlow
+        calls:
+            - [setItemProcessors, ['@eccube.purchase.flow.shopping.item_processors']]
+            - [setItemHolderProcessors, ['@eccube.purchase.flow.shopping.holder_processors']]
+            - [setPurchaseProcessors, ['@eccube.purchase.flow.shopping.purchase']]
+
+    eccube.purchase.flow.shopping.item_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\DisplayStatusValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
+
+    eccube.purchase.flow.shopping.holder_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\DeliveryFeeProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\SubstractPointProcessor'
+
+    eccube.purchase.flow.shopping.purchase:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\UsePointToCustomerPurchaseProcessor'
+
+    # Purchase Flow for Order
+
+    eccube.purchase.flow.order:
+        class: Eccube\Service\PurchaseFlow\PurchaseFlow
+        calls:
+            - [setItemProcessors, ['@eccube.purchase.flow.order.item_processors']]
+            - [setItemHolderProcessors, ['@eccube.purchase.flow.order.holder_processors']]
+            - [setPurchaseProcessors, ['@eccube.purchase.flow.order.purchase']]
+
+    eccube.purchase.flow.order.item_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\StockValidator'
+
+    eccube.purchase.flow.order.holder_processors:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator'
+                - '@Eccube\Service\PurchaseFlow\Processor\UpdateDatePurchaseProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\UsePointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\AddPointProcessor'
+                - '@Eccube\Service\PurchaseFlow\Processor\SubstractPointProcessor'
+
+    eccube.purchase.flow.order.purchase:
+        class: Doctrine\Common\Collections\ArrayCollection
+        arguments:
+            - #
+                - '@Eccube\Service\PurchaseFlow\Processor\AdminOrderRegisterPurchaseProcessor'

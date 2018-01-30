@@ -37,17 +37,10 @@ class ClassCategoryType extends AbstractType
      */
     protected $appConfig;
 
-
-    /**
-     * ClassCategoryType constructor.
-     *
-     * @param $eccubeConfig
-     */
     public function __construct(array $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}

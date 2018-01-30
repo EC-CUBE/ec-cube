@@ -24,9 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
+use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\TelType;
@@ -43,24 +41,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @FormType
+ * Class ShopMasterType
+ *
+ * @package Eccube\Form\Type\Admin
  */
 class ShopMasterType extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
+     * ShopMasterType constructor.
+     * @param array $eccubeConfig
      */
-    protected $app;
-
-    public function __construct()
+    public function __construct(array $eccubeConfig)
     {
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -69,279 +67,263 @@ class ShopMasterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('company_name', TextType::class, array(
+            ->add('company_name', TextType::class, [
                 'label' => '会社名',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    )),
-                )
-            ))
-            ->add('shop_name', TextType::class, array(
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['stext_len'],
+                    ]),
+                ]
+            ])
+            ->add('shop_name', TextType::class, [
                 'label' => '店名',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    )),
-                )
-            ))
-            ->add('shop_name_eng', TextType::class, array(
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['stext_len'],
+                    ]),
+                ]
+            ])
+            ->add('shop_name_eng', TextType::class, [
                 'label' => '店名(英語表記)',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['mtext_len'],
-                    )),
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['mtext_len'],
+                    ]),
+                    new Assert\Regex([
                         'pattern' => '/^[[:graph:][:space:]]+$/i'
-                    )),
-                )
-            ))
-            ->add('zip', ZipType::class, array(
+                    ]),
+                ]
+            ])
+            ->add('zip', ZipType::class, [
                 'required' => false,
-            ))
-            ->add('address', AddressType::class, array(
+            ])
+            ->add('address', AddressType::class, [
                 'required' => false,
-            ))
-            ->add('tel', TelType::class, array(
+            ])
+            ->add('tel', TelType::class, [
                 'required' => false,
-            ))
-            ->add('fax', TelType::class, array(
+            ])
+            ->add('fax', TelType::class, [
                 'required' => false,
-            ))
-            ->add('business_hour', TextType::class, array(
+            ])
+            ->add('business_hour', TextType::class, [
                 'label' => '店舗営業時間',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
-                    ))
-                )
-            ))
-            ->add('email01', EmailType::class, array(
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['stext_len'],
+                    ])
+                ]
+            ])
+            ->add('email01', EmailType::class, [
                 'label' => '送信元メールアドレス(From)',
                 'required' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                ),
-            ))
-            ->add('email02', EmailType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('email02', EmailType::class, [
                 'label' => '問い合わせ受付メールアドレス(From, ReplyTo)',
                 'required' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                ),
-            ))
-            ->add('email03', EmailType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('email03', EmailType::class, [
                 'label' => '返信受付メールアドレス(ReplyTo)',
                 'required' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                ),
-            ))
-            ->add('email04', EmailType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('email04', EmailType::class, [
                 'label' => '送信エラー受付メールアドレス(ReturnPath)',
                 'required' => false,
-                'constraints' => array(
+                'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Email(array('strict' => true)),
-                ),
-            ))
-            ->add('good_traded', TextareaType::class, array(
+                    new Assert\Email(['strict' => true]),
+                ],
+            ])
+            ->add('good_traded', TextareaType::class, [
                 'label' => '取り扱い商品',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['lltext_len'],
-                    )),
-                ),
-            ))
-            ->add('message', TextareaType::class, array(
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['lltext_len'],
+                    ]),
+                ],
+            ])
+            ->add('message', TextareaType::class, [
                 'label' => 'メッセージ',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $this->appConfig['lltext_len'],
-                    )),
-                ),
-            ))
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['lltext_len'],
+                    ]),
+                ],
+            ])
 
             // 送料設定
-            ->add('delivery_free_amount', PriceType::class, array(
+            ->add('delivery_free_amount', PriceType::class, [
                 'label' => '送料無料条件(金額)',
                 'required' => false,
-            ))
-            ->add('delivery_free_quantity', IntegerType::class, array(
+            ])
+            ->add('delivery_free_quantity', IntegerType::class, [
                 'label' => '送料無料条件(数量)',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
+                'constraints' => [
+                    new Assert\Regex([
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
-            ))
-            ->add('option_product_delivery_fee', ChoiceType::class, array(
+                    ]),
+                ],
+            ])
+            ->add('option_product_delivery_fee', ChoiceType::class, [
                 'label' => '商品ごとの送料設定を有効にする',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
-            ->add('option_multiple_shipping', ChoiceType::class, array(
+            ])
+            ->add('option_multiple_shipping', ChoiceType::class, [
                 'label' => '複数配送を有効にする',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
+            ])
 
             // 会員設定
-            ->add('option_customer_activate', ChoiceType::class, array(
+            ->add('option_customer_activate', ChoiceType::class, [
                 'label' => '仮会員を有効にする',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
-            ->add('option_mypage_order_status_display', ChoiceType::class, array(
+            ])
+            ->add('option_mypage_order_status_display', ChoiceType::class, [
                 'label' => 'マイページに注文状況を表示する',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
-            ->add('option_remember_me', ChoiceType::class, array(
+            ])
+            ->add('option_remember_me', ChoiceType::class, [
                 'label' => '自動ログイン機能を有効にする',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
-            ->add('option_favorite_product', ChoiceType::class, array(
+            ])
+            ->add('option_favorite_product', ChoiceType::class, [
                 'label' => 'お気に入り商品機能を利用する',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
+            ])
 
             // 商品設定
-            ->add('option_nostock_hidden', ChoiceType::class, array(
+            ->add('option_nostock_hidden', ChoiceType::class, [
                 'label' => '在庫切れ商品を非表示にする',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
+            ])
             // ポイント設定
-            ->add('option_point', ChoiceType::class, array(
+            ->add('option_point', ChoiceType::class, [
                 'label' => 'ポイント機能を利用する',
-                'choices' => array_flip(array(
+                'choices' => array_flip([
                     '0' => '無効',
                     '1' => '有効',
-                )),
+                ]),
                 'expanded' => true,
                 'multiple' => false,
-            ))
-            ->add(
-                'basic_point_rate',
-                NumberType::class,
-                [
-                    'required' => false,
-                    'label' => 'ポイント付与率',
-                    'constraints' => array(
-                        new Assert\Regex(
-                            [
-                                'pattern' => "/^\d+$/u",
-                                'message' => 'form.type.numeric.invalid'
-                            ]
-                        ),
-                        new Assert\Range(
-                            [
-                                'min' => 1,
-                                'max' => 100,
-                            ]
-                        ),
-                    ),
-                ]
-            )
-            ->add(
-                'point_conversion_rate',
-                NumberType::class,
-                [
-                    'required' => false,
-                    'label' => 'ポイント換算レート',
-                    'constraints' => array(
-                        new Assert\Regex(
-                            [
-                                'pattern' => "/^\d+$/u",
-                                'message' => 'form.type.numeric.invalid'
-                            ]
-                        ),
-                        new Assert\Range(
-                            [
-                                'min' => 1,
-                                'max' => 100,
-                            ]
-                        ),
-                    ),
-                ]
-            )
+            ])
+            ->add('basic_point_rate', NumberType::class, [
+                'required' => false,
+                'label' => 'ポイント付与率',
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    ]),
+                    new Assert\Range([
+                        'min' => 1,
+                        'max' => 100,
+                    ]),
+                ],
+            ])
+            ->add('point_conversion_rate', NumberType::class, [
+                'required' => false,
+                'label' => 'ポイント換算レート',
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    ]),
+                    new Assert\Range([
+                        'min' => 1,
+                        'max' => 100,
+                    ]),
+                ],
+            ])
         ;
 
         $builder->add(
             $builder
-                ->create('company_kana', TextType::class, array(
+                ->create('company_kana', TextType::class, [
                     'label' => '会社名(フリガナ)',
                     'required' => false,
-                    'constraints' => array(
-                        new Assert\Regex(array(
+                    'constraints' => [
+                        new Assert\Regex([
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                        new Assert\Length(array(
-                            'max' => $this->appConfig['stext_len'],
-                        )),
-                    ),
-                ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
+                        ]),
+                        new Assert\Length([
+                            'max' => $this->eccubeConfig['stext_len'],
+                        ]),
+                    ],
+                ])
+                ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
 
         $builder->add(
             $builder
-                ->create('shop_kana', TextType::class, array(
+                ->create('shop_kana', TextType::class, [
                     'label' => '店名(フリガナ)',
                     'required' => false,
-                    'constraints' => array(
-                        new Assert\Length(array(
-                            'max' => $this->appConfig['stext_len'],
-                        )),
-                        new Assert\Regex(array(
+                    'constraints' => [
+                        new Assert\Length([
+                            'max' => $this->eccubeConfig['stext_len'],
+                        ]),
+                        new Assert\Regex([
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    )
-                ))
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'))
+                        ]),
+                    ]
+                ])
+                ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
     }
 
@@ -350,9 +332,9 @@ class ShopMasterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\BaseInfo',
-        ));
+        $resolver->setDefaults([
+            'data_class' => \Eccube\Entity\BaseInfo::class,
+        ]);
     }
 
     /**

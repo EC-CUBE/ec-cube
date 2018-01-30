@@ -12,6 +12,11 @@ use Eccube\Service\PurchaseFlow\ValidatableItemProcessor;
  */
 class SaleLimitValidator extends ValidatableItemProcessor
 {
+    /**
+     * @param ItemInterface $item
+     * @param PurchaseContext $context
+     * @throws InvalidItemException
+     */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
         if (!$item->isProduct()) {
@@ -25,7 +30,7 @@ class SaleLimitValidator extends ValidatableItemProcessor
 
         $quantity = $item->getQuantity();
         if ($limit < $quantity) {
-            throw InvalidItemException::fromProductClass('cart.over.sale_limit', $item->getProductClass());
+            $this->throwInvalidItemException('cart.over.sale_limit', $item->getProductClass());
         }
     }
 

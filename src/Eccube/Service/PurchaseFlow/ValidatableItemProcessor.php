@@ -28,6 +28,8 @@ use Eccube\Entity\ItemInterface;
 
 abstract class ValidatableItemProcessor implements ItemProcessor
 {
+    use ValidatorTrait;
+
     /**
      * @param ItemInterface   $item
      * @param PurchaseContext $context
@@ -45,7 +47,7 @@ abstract class ValidatableItemProcessor implements ItemProcessor
                 $this->handle($item, $context);
             }
 
-            return ProcessResult::warn($e->getMessage(), $e->getMessageArgs());
+            return ProcessResult::warn($e->getMessage());
         }
     }
 
