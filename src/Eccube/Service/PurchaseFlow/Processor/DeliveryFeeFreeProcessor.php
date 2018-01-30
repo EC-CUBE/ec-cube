@@ -23,8 +23,6 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;

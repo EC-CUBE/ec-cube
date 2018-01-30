@@ -32,15 +32,16 @@ class SystemService
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected $entityManager;
 
     /**
      * SystemService constructor.
-     * @param EntityManagerInterface $em
+     *
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -53,7 +54,7 @@ class SystemService
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
-        $platform = $this->em->getConnection()->getDatabasePlatform()->getName();
+        $platform = $this->entityManager->getConnection()->getDatabasePlatform()->getName();
         switch ($platform) {
             case 'sqlite':
                 $prefix = 'SQLite version ';
@@ -71,7 +72,7 @@ class SystemService
                 $func = 'version()';
         }
 
-        $version = $this->em
+        $version = $this->entityManager
             ->createNativeQuery('select '.$func.' as v', $rsm)
             ->getSingleScalarResult();
 

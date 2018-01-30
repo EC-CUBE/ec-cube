@@ -32,6 +32,9 @@ class DeliverySettingValidatorTest extends EccubeTestCase
      */
     protected $ProductClass;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

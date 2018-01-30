@@ -36,9 +36,11 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
      */
     private $comparator;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->comparator = new ProductClassComparator();
     }

@@ -60,6 +60,14 @@ services:
         lazy: true
         public: true
 
+    Eccube\Service\PaymentService:
+        lazy: true
+        public: true
+
+    Eccube\Service\Payment\Method\Cash:
+        lazy: true
+        public: true
+
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     Eccube\Controller\:
