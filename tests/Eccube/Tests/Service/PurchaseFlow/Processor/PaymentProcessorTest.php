@@ -52,6 +52,9 @@ class PaymentProcessorTest extends EccubeTestCase
      */
     protected $ProductClass3;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

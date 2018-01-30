@@ -6,14 +6,33 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Service\PurchaseFlow\Processor\UsePointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
 
 class UsePointProcessorTest extends EccubeTestCase
 {
+    /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
 
+    /**
+     * @var Customer
+     */
+    protected $Customer;
+
+    /**
+     * @var Order
+     */
+    protected $Order;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
-        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->BaseInfo = $this->container->get(BaseInfo::class);
         $this->BaseInfo->setPointConversionRate(10);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);

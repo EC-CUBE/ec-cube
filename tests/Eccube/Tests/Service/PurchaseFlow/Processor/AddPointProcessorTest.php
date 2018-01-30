@@ -5,6 +5,7 @@ namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
 use Eccube\Service\PurchaseFlow\Processor\AddPointProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
@@ -12,6 +13,29 @@ use Eccube\Tests\EccubeTestCase;
 class AddPointProcessorTest extends EccubeTestCase
 {
 
+    /**
+     * @var  Cart
+     */
+    private $Cart;
+
+    /**
+     * @var  BaseInfo
+     */
+    private $BaseInfo;
+
+    /**
+     * @var  Product
+     */
+    private $Product;
+
+    /**
+     * @var  int
+     */
+    private $total;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

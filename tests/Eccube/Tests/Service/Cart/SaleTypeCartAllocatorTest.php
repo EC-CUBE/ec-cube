@@ -29,12 +29,16 @@ use Eccube\Tests\EccubeTestCase;
 
 class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
-    /** @var SaleTypeCartAllocator */
+    /**
+     * @var SaleTypeCartAllocator
+     */
     private $allocator;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->allocator = new SaleTypeCartAllocator();
     }

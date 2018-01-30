@@ -23,8 +23,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
@@ -68,11 +66,27 @@ class MailService
      */
     protected $twig;
 
-    public function __construct(\Swift_Mailer $mailer, MailTemplateRepository $mailTemplateRepository, BaseInfoRepository $baseInfoRepository, EventDispatcher $eventDispatcher, \Twig_Environment $twig, $eccubeConfig)
-    {
+    /**
+     * MailService constructor.
+     *
+     * @param \Swift_Mailer $mailer
+     * @param MailTemplateRepository $mailTemplateRepository
+     * @param BaseInfo $baseInfo
+     * @param EventDispatcher $eventDispatcher
+     * @param \Twig_Environment $twig
+     * @param array $eccubeConfig
+     */
+    public function __construct(
+        \Swift_Mailer $mailer,
+        MailTemplateRepository $mailTemplateRepository,
+        BaseInfo $baseInfo,
+        EventDispatcher $eventDispatcher,
+        \Twig_Environment $twig,
+        array $eccubeConfig
+    ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;
-        $this->BaseInfo = $baseInfoRepository->get();
+        $this->BaseInfo = $baseInfo;
         $this->eventDispatcher = $eventDispatcher;
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
