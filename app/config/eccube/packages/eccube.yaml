@@ -71,3 +71,5 @@ parameters:
     auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
     password_hash_algos: SHA256
     force_ssl: 0
+    block_default_realdir: '%kernel.project_dir%/src/Eccube/Resource/template/default/Block'
+    block_realdir: '%kernel.project_dir%/app/template/default/Block'

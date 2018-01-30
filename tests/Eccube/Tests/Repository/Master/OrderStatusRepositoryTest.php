@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Repository\Master;
 
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 
 
@@ -13,18 +14,23 @@ use Eccube\Tests\EccubeTestCase;
 class OrderStatusRepositoryTest extends EccubeTestCase
 {
 
-    protected $OrderStatusRepository;
+    /**
+     * @var OrderStatusRepository
+     */
+    protected $orderStatusRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->OrderStatusRepository = $this->app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
+        $this->orderStatusRepository = $this->container->get(OrderStatusRepository::class);
     }
 
     public function testFindNotContainsBy()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array());
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array());
         $this->actual = count($OrderStatuses);
         $this->expected = 8;
         $this->verify();
@@ -32,7 +38,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy1()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array('name' => '決済処理中'));
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array('name' => '決済処理中'));
         $this->actual = count($OrderStatuses);
         $this->expected = 7;
         $this->verify();
@@ -40,7 +46,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy2()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array('name' => array('決済処理中', '新規受付')));
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array('name' => array('決済処理中', '新規受付')));
         $this->actual = count($OrderStatuses);
         $this->expected = 6;
         $this->verify();
@@ -48,7 +54,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy3()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array('id' => array(1, 2, 3, 4, 5, 6, 7)));
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array('id' => array(1, 2, 3, 4, 5, 6, 7)));
         $this->actual = count($OrderStatuses);
         $this->expected = 1;
         $this->verify();
@@ -56,7 +62,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy4()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array(), array('id' => 'DESC'));
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array(), array('id' => 'DESC'));
         $this->actual = implode(', ', array_map(
             function($OrderStatus) {
                 return $OrderStatus->getId();
@@ -67,7 +73,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy5()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array(), array('id'));
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array(), array('id'));
         $this->actual = implode(', ', array_map(
             function($OrderStatus) {
                 return $OrderStatus->getId();
@@ -78,7 +84,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy6()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array(), array('id'), 1);
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array(), array('id'), 1);
         $this->actual = implode(', ', array_map(
             function($OrderStatus) {
                 return $OrderStatus->getId();
@@ -89,7 +95,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
 
     public function testFindNotContainsBy7()
     {
-        $OrderStatuses = $this->OrderStatusRepository->findNotContainsBy(array(), array('id'), 2, 2);
+        $OrderStatuses = $this->orderStatusRepository->findNotContainsBy(array(), array('id'), 2, 2);
         $this->actual = implode(', ', array_map(
             function($OrderStatus) {
                 return $OrderStatus->getId();

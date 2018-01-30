@@ -5,6 +5,9 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ClassNameRepository;
+use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -14,10 +17,30 @@ use Eccube\Tests\EccubeTestCase;
  */
 class ClassCategoryRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var  ProductClassRepository
+     */
+    protected  $productClassRepository;
+
+    /**
+     * @var  ClassCategoryRepository
+     */
+    protected  $classCategoryRepository;
+
+    /**
+     * @var  ClassNameRepository
+     */
+    protected  $classNameRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->productClassRepository = $this->container->get(ProductClassRepository::class);
+        $this->classCategoryRepository = $this->container->get(ClassCategoryRepository::class);
+        $this->classNameRepository = $this->container->get(ClassNameRepository::class);
         $this->removeClass();
 
         for ($i = 0; $i < 3; $i++) {
@@ -33,34 +56,34 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
                     ->setSortNo($j)
                     ->setClassName($ClassName);
                 $ClassName->addClassCategory($ClassCategory);
-                $this->app['orm.em']->persist($ClassCategory);
+                $this->entityManager->persist($ClassCategory);
             }
-            $this->app['orm.em']->persist($ClassName);
+            $this->entityManager->persist($ClassName);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function removeClass()
     {
-        $ProductClasses = $this->app['eccube.repository.product_class']->findAll();
+        $ProductClasses = $this->productClassRepository->findAll();
         foreach ($ProductClasses as $ProductClass) {
-            $this->app['orm.em']->remove($ProductClass);
+            $this->entityManager->remove($ProductClass);
         }
-        $ClassCategories = $this->app['eccube.repository.class_category']->findAll();
+        $ClassCategories = $this->classCategoryRepository->findAll();
         foreach ($ClassCategories as $ClassCategory) {
-            $this->app['orm.em']->remove($ClassCategory);
+            $this->entityManager->remove($ClassCategory);
         }
-        $this->app['orm.em']->flush();
-        $All = $this->app['eccube.repository.class_name']->findAll();
+        $this->entityManager->flush();
+        $All = $this->classNameRepository->findAll();
         foreach ($All as $ClassName) {
-            $this->app['orm.em']->remove($ClassName);
+            $this->entityManager->remove($ClassName);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testGetList()
     {
-        $ClassCategories = $this->app['eccube.repository.class_category']->getList();
+        $ClassCategories = $this->classCategoryRepository->getList();
 
         $this->expected = 9;
         $this->actual = count($ClassCategories);
@@ -76,11 +99,11 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
 
     public function testGetListWithParams()
     {
-        $ClassName = $this->app['eccube.repository.class_name']->findOneBy(
+        $ClassName = $this->classNameRepository->findOneBy(
             array('name' => 'class-1')
         );
 
-        $ClassCategories = $this->app['eccube.repository.class_category']->getList($ClassName);
+        $ClassCategories = $this->classCategoryRepository->getList($ClassName);
 
         $this->expected = 3;
         $this->actual = count($ClassCategories);
@@ -97,7 +120,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
     public function testSave()
     {
         $faker = $this->getFaker();
-        $ClassName = $this->app['eccube.repository.class_name']->findOneBy(
+        $ClassName = $this->classNameRepository->findOneBy(
             array('name' => 'class-1')
         );
 
@@ -106,7 +129,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             ->setName($faker->name)
             ->setClassName($ClassName);
 
-        $this->app['eccube.repository.class_category']->save($ClassCategory);
+        $this->classCategoryRepository->save($ClassCategory);
 
         $this->expected = 3;
         $this->actual = $ClassCategory->getSortNo();
@@ -119,7 +142,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $ClassName = new ClassName();
         $ClassName
             ->setName('class-3');
-        $this->app['eccube.repository.class_name']->save($ClassName);
+        $this->classNameRepository->save($ClassName);
 
         $faker = $this->getFaker();
 
@@ -128,7 +151,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             ->setName($faker->name)
             ->setClassName($ClassName);
 
-        $this->app['eccube.repository.class_category']->save($ClassCategory);
+        $this->classCategoryRepository->save($ClassCategory);
 
         $this->expected = 1;
         $this->actual = $ClassCategory->getSortNo();
@@ -137,13 +160,13 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
 
     public function testDelete()
     {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
+        $ClassCategory = $this->classCategoryRepository->findOneBy(
             array('name' => 'classcategory-1-0')
         );
         $ClassCategoryId = $ClassCategory->getId();
-        $this->app['eccube.repository.class_category']->delete($ClassCategory);
+        $this->classCategoryRepository->delete($ClassCategory);
 
-        self::assertNull($this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId));
+        self::assertNull($this->entityManager->find(ClassCategory::class, $ClassCategoryId));
     }
 
     public function testDeleteWithException()
@@ -158,38 +181,38 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
             }
             try {
                 // 外部キー制約違反のため例外が発生するはず.
-                $this->app['eccube.repository.class_category']->delete($ClassCategory1);
+                $this->classCategoryRepository->delete($ClassCategory1);
                 $this->fail();
             } catch (\Exception $e) {
-
+                $this->addToAssertionCount(1);
             }
         }
     }
 
     public function testToggleVisibilityToHidden()
     {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
+        $ClassCategory = $this->classCategoryRepository->findOneBy(
             array('name' => 'classcategory-1-0')
         );
         $ClassCategoryId = $ClassCategory->getId();
-        $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
+        $this->classCategoryRepository->toggleVisibility($ClassCategory);
 
-        $actual = $this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId);
+        $actual = $this->entityManager->find(ClassCategory::class, $ClassCategoryId);
         self::assertFalse($actual->isVisible());
     }
 
     public function testToggleVisibilityToVisible()
     {
-        $ClassCategory = $this->app['eccube.repository.class_category']->findOneBy(
+        $ClassCategory = $this->classCategoryRepository->findOneBy(
             array('name' => 'classcategory-1-0')
         );
         $ClassCategory->setVisible(false);
-        $this->app['orm.em']->flush($ClassCategory);
+        $this->entityManager->flush($ClassCategory);
         $ClassCategoryId = $ClassCategory->getId();
 
-        $this->app['eccube.repository.class_category']->toggleVisibility($ClassCategory);
+        $this->classCategoryRepository->toggleVisibility($ClassCategory);
 
-        $actual = $this->app['orm.em']->find(ClassCategory::class, $ClassCategoryId);
+        $actual = $this->entityManager->find(ClassCategory::class, $ClassCategoryId);
         self::assertTrue($actual->isVisible());
     }
 }
