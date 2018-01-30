@@ -87,7 +87,7 @@ class ProductController extends AbstractController
 
     /**
      * ProductController constructor.
-     * @param PurchaseFlow $purchaseFlow
+     * @param PurchaseFlow $cartPurchaseFlow
      * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
      * @param CartService $cartService
      * @param ProductRepository $productRepository
@@ -95,14 +95,14 @@ class ProductController extends AbstractController
      * @param AuthenticationUtils $helper
      */
     public function __construct(
-        PurchaseFlow $purchaseFlow,
+        PurchaseFlow $cartPurchaseFlow,
         CustomerFavoriteProductRepository $customerFavoriteProductRepository,
         CartService $cartService,
         ProductRepository $productRepository,
         BaseInfo $BaseInfo,
         AuthenticationUtils $helper
     ) {
-        $this->purchaseFlow = $purchaseFlow;
+        $this->purchaseFlow = $cartPurchaseFlow;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
@@ -451,12 +451,12 @@ class ProductController extends AbstractController
         if ($result->hasError()) {
             $this->cartService->removeProduct($addCartData['product_class_id']);
             foreach ($result->getErrors() as $error) {
-                array_push($errorMessages, $error->getMessage());
+                $errorMessages[] = $error->getMessage();
             }
         }
 
         foreach ($result->getWarning() as $warning) {
-            array_push($errorMessages, $warning->getMessage());
+            $errorMessages[] = $warning->getMessage();
         }
 
         $this->cartService->save();

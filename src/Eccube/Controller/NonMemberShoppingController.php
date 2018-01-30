@@ -94,7 +94,6 @@ class NonMemberShoppingController extends AbstractShoppingController
         $this->cartService = $cartService;
     }
 
-
     /**
      * 非会員処理
      *

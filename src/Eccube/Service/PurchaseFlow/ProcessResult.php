@@ -4,32 +4,34 @@ namespace Eccube\Service\PurchaseFlow;
 
 class ProcessResult
 {
+
     const ERROR = 'ERROR';
     const WARNING = 'WARNING';
     const SUCCESS = 'SUCCESS';
 
     protected $type;
+
     protected $message;
 
-    private function __construct($type, $message = null, $messageArgs)
+    private function __construct($type, $message)
     {
         $this->type = $type;
-        $this->message = $message; // TODO translation
+        $this->message = $message;
     }
 
-    public static function warn($message, $messageArgs = [])
+    public static function warn($message)
     {
-        return new self(self::WARNING, $message, $messageArgs);
+        return new self(self::WARNING, $message);
     }
 
-    public static function error($message, $messageArgs = [])
+    public static function error($message)
     {
-        return new self(self::ERROR, $message, $messageArgs);
+        return new self(self::ERROR, $message);
     }
 
     public static function success()
     {
-        return new self(self::SUCCESS, null, []);
+        return new self(self::SUCCESS, null);
     }
 
     public function isError()
