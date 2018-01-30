@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
@@ -165,10 +166,10 @@ class MailService
     /**
      * Send withdraw mail.
      *
-     * @param $Customer 会員情報
-     * @param $email 会員email
+     * @param $Customer Customer
+     * @param $email string
      */
-    public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, $email)
+    public function sendCustomerWithdrawMail(Customer $Customer, string $email)
     {
         log_info('退会手続き完了メール送信開始');
 

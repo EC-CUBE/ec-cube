@@ -2,54 +2,53 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Eccube\Entity\Customer;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class WithdrawControllerTest extends AbstractWebTestCase
 {
-
+    /**
+     * @var Customer
+     */
     protected $Customer;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $this->initializeMailCatcher();
         $this->Customer = $this->createCustomer();
     }
 
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
     public function testIndex()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->logInTo($this->Customer);
 
-        $client->request(
+        $this->client->request(
             'GET',
-            $this->app->path('mypage_withdraw')
+            $this->generateUrl('mypage_withdraw')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndexWithPostConfirm()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->logInTo($this->Customer);
 
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('mypage_withdraw'),
+            $this->generateUrl('mypage_withdraw'),
             array(
                 'form' => array('_token' => 'dummy'),
                 'mode' => 'confirm'
             )
         );
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = '退会手続きを実行してもよろしいでしょうか？';
         $this->actual = $crawler->filter('p.ec-withdrawConfirmRole__title')->text();
@@ -58,37 +57,36 @@ class WithdrawControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostComplete()
     {
-        $this->logIn($this->Customer);
-        $client = $this->client;
+        $this->client->enableProfiler();
+        $this->logInTo($this->Customer);
 
-        $crawler = $client->request(
+        $crawler = $this->client->request(
             'POST',
-            $this->app->path('mypage_withdraw'),
+            $this->generateUrl('mypage_withdraw'),
             array(
                 'form' => array('_token' => 'dummy'),
                 'mode' => 'complete'
             )
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_withdraw_complete')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_withdraw_complete')));
 
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $Messages = $this->getMailCollector(false)->getMessages();
+        /** @var \Swift_Message $Message */
+        $Message = $Messages[0];
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo = $this->container->get(BaseInfoRepository::class)->get();
         $this->expected = '[' . $BaseInfo->getShopName() . '] 退会手続きのご完了';
-        $this->actual = $Message->subject;
+        $this->actual = $Message->getSubject();
         $this->verify();
     }
 
     public function testComplete()
     {
-        $client = $this->client;
-
-        $client->request(
+        $this->client->request(
             'GET',
-            $this->app->path('mypage_withdraw_complete')
+            $this->generateUrl('mypage_withdraw_complete')
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

@@ -37,6 +37,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @FormType
+ */
 class CustomerAddressType extends AbstractType
 {
     /**
@@ -45,14 +48,12 @@ class CustomerAddressType extends AbstractType
     protected $eccubeConfig;
 
     /**
-     * CustomerAddressType constructor.
-     * @param $eccubeConfig
+     * @param array $config
      */
     public function __construct($eccubeConfig)
     {
         $this->eccubeConfig = $eccubeConfig;
     }
-
 
     /**
      * {@inheritdoc}
