@@ -103,13 +103,8 @@ class TwigInitializeListener implements EventSubscriberInterface
             $Page = $this->pageRepository->newPage($DeviceType);
         }
 
-        try {
-            $this->twig->addGlobal('Page', $Page);
-            $this->twig->addGlobal('title', $Page->getName());
-        } catch (\Exception $e) {
-
-        }
-
+        $this->twig->addGlobal('Page', $Page);
+        $this->twig->addGlobal('title', $Page->getName());
     }
 
     /**

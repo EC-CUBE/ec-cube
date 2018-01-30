@@ -59,8 +59,6 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->BaseInfo = $this->container->get(BaseInfo::class);
         $this->productRepository = $this->container->get(ProductRepository::class);
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
-
-        $this->client->disableReboot();
     }
 
     /**
@@ -264,7 +262,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleInvalid()
     {
         // GIVE
-        $this->BaseInfo->setOptionProductTaxRule(true);
+        $this->enableProductTaxRule();
+
         $id = 1;
         // WHEN
         // select class name
@@ -296,7 +295,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE
-        $this->BaseInfo->setOptionProductTaxRule(true);
+        $this->enableProductTaxRule();
+
         $id = 1;
         // WHEN
         // select class name
@@ -372,7 +372,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsNotEmpty()
     {
         // GIVE
-        $this->BaseInfo->setOptionProductTaxRule(true);
+        $this->enableProductTaxRule();
+
         $id = 1;
 
         /* @var Crawler $crawler */
@@ -486,11 +487,17 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $crawler = $this->client->followRedirect();
         $htmlMessage = $crawler->filter('body .container-fluid')->html();
         $this->assertContains('商品規格を削除しました。', $htmlMessage);
-
         // check database
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findBy(array('Product' => $product));
         $this->assertCount(0, $taxRule);
+    }
+
+    protected function enableProductTaxRule()
+    {
+        $this->BaseInfo->setOptionProductTaxRule(true);
+        $this->entityManager->persist($this->BaseInfo);
+        $this->entityManager->flush();
     }
 }

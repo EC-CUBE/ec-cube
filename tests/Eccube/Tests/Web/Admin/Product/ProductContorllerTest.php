@@ -69,8 +69,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->taxRuleRepository = $this->container->get(TaxRuleRepository::class);
         $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
 
-        $this->client->disableReboot();
-
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
             $this->createProduct();
