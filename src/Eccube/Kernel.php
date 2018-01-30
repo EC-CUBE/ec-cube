@@ -170,8 +170,8 @@ class Kernel extends BaseKernel
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
-        $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
-        $namespaces = ['Eccube\\Entity'];
+        $paths = ['%kernel.project_dir%/src/Eccube/Entity', '%kernel.project_dir%/app/Acme/Entity'];
+        $namespaces = ['Eccube\\Entity', 'Acme\\Entity'];
 
         $pluginConfigs = ConfigManager::getPluginConfigAll(true);
         foreach ($pluginConfigs as $config) {
