@@ -2,12 +2,8 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
-use Eccube\Service\TaxRuleService;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Twig\Extension\EccubeExtension;
-use Eccube\Twig\Extension\RoutingExtension;
 use org\bovigo\vfs\vfsStream;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class FunctionsTest extends EccubeTestCase
 {

@@ -3,7 +3,7 @@
 namespace Eccube\Doctrine\Common\CsvDataFixtures\Executor;
 
 use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Doctrine Dbal を使用した Executor.
@@ -13,12 +13,19 @@ use Doctrine\ORM\EntityManager;
  */
 class DbalExecutor extends AbstractExecutor
 {
-    /** @var $em \Doctrine\ORM\EntityManager */
-    protected $em;
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
 
-    public function __construct(EntityManager $em)
+    /**
+     * DbalExecutor constructor.
+     *
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -30,7 +37,7 @@ class DbalExecutor extends AbstractExecutor
             trigger_error('$append parameter is not supported.', E_USER_WARNING);
         }
         foreach ($fixtures as $CsvFixture) {
-            $CsvFixture->load($this->em);
+            $CsvFixture->load($this->entityManager);
         }
     }
 }

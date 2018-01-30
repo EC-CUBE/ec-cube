@@ -17,8 +17,6 @@ class EntityUtilTest extends EccubeTestCase
 {
     private $Product;
     private $ProductClass;
-    private $memberId;
-    private $productClassId;
 
     public function setUp()
     {
@@ -28,7 +26,8 @@ class EntityUtilTest extends EccubeTestCase
 
         $Product = new Product();
         $ProductClass = new ProductClass();
-        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class,
+            \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
         $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
         $Product
             ->setName('test')

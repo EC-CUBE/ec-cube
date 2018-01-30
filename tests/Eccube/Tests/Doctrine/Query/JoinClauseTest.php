@@ -11,11 +11,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class JoinClauseTest extends EccubeTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testInnerJoin()
     {
         $clause = JoinClause::innerJoin('p.ProductCategories', 'pct');

@@ -4,13 +4,25 @@ namespace Eccube\Tests\Doctrine;
 
 use Eccube\Entity\Product;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\ProductRepository;
 
 class TimeZoneTest extends EccubeTestCase
 {
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->productRepository = $this->container->get(ProductRepository::class);
 
         // 2000-01-01 00:00:00 +09 (jst)
         // 1999-12-31 15:00:00 +00 (utc)
@@ -29,17 +41,12 @@ class TimeZoneTest extends EccubeTestCase
                 '1999-12-31 15:00:00',
                 'product');";
 
-        /** @var \Eccube\Application $app */
-        $app = $this->app;
-        $app['db']->exec($sql);
+        $this->entityManager->getConnection()->exec($sql);
     }
 
     public function testOrmFind()
     {
-        /** @var \Eccube\Application $app */
-        $app = $this->app;
-
-        $product = $app['eccube.repository.product']->find(999);
+        $product = $this->productRepository->find(999);
 
         // jstに変換されて取得されるはず.
         $expected = '2000-01-01 00:00:00';
@@ -56,36 +63,33 @@ class TimeZoneTest extends EccubeTestCase
      */
     public function testOrmPersist()
     {
-        /** @var \Eccube\Application $app */
-        $app = $this->app;
-
         $product = new Product();
         $product->setName('商品名');
 
-        $app['orm.em']->persist($product);
-        $app['orm.em']->flush($product);
+        $this->entityManager->persist($product);
+        $this->entityManager->flush($product);
 
         // jstでcreate dateを登録
-        $timezone = new \DateTimeZone($app['config']['timezone']);
+        $timezone = new \DateTimeZone($this->container->getParameter('timezone'));
         $createDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 
         $product->setCreateDate($createDate);
-        $app['orm.em']->flush($product);
+        $this->entityManager->flush($product);
 
         // emtity managerの管理対象からはずす
-        $app['orm.em']->detach($product);
+        $this->entityManager->detach($product);
 
         $id = $product->getId();
 
         // jstに変換されて取得できるはず
-        $product = $app['eccube.repository.product']->find($id);
+        $product = $this->productRepository->find($id);
         $expected = '2000-01-01 00:00:00';
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertEquals($expected, $actual);
 
         $sql = 'select id, create_date from dtb_product where id = ?';
-        $stmt = $app['db']->executeQuery($sql, [$id]);
+        $stmt = $this->entityManager->getConnection()->executeQuery($sql, [$id]);
         $product = $stmt->fetch();
 
         // utcで登録されているはず
@@ -97,11 +101,8 @@ class TimeZoneTest extends EccubeTestCase
 
     public function testDbalSelect()
     {
-        /** @var \Eccube\Application $app */
-        $app = $this->app;
-
         $sql = 'select create_date from dtb_product where id = 999';
-        $stmt = $app['db']->executeQuery($sql);
+        $stmt = $this->entityManager->getConnection()->executeQuery($sql);
         $product = $stmt->fetch();
 
         // dbalでselectした場合, utc時刻をそのまま取得
@@ -111,24 +112,21 @@ class TimeZoneTest extends EccubeTestCase
         $this->assertEquals($expected, $actual->format('Y-m-d H:i:s'));
 
         // convertToPHPValueでjst時刻に変換可能
-        $timezone = new \DateTimeZone($app['config']['timezone']);
+        $timezone = new \DateTimeZone($this->container->getParameter('timezone'));
         $expected = new \DateTime('2000-01-01 00:00:00', $timezone);
-        $actual = $app['db']->convertToPHPValue($product['create_date'], 'datetimetz');
+        $actual = $this->entityManager->getConnection()->convertToPHPValue($product['create_date'], 'datetimetz');
 
         $this->assertEquals($expected, $actual);
     }
 
     public function testDbalInsert()
     {
-        /** @var \Eccube\Application $app */
-        $app = $this->app;
-
         // jstで登録
-        $timezone = new \DateTimeZone($app['config']['timezone']);
+        $timezone = new \DateTimeZone($this->container->getParameter('timezone'));
         $createDate = new \DateTime('2000-01-01 00:00:00', $timezone);
         $updateDate = new \DateTime('2000-01-01 00:00:00', $timezone);
 
-        $app['db']->insert('dtb_product', [
+        $this->entityManager->getConnection()->insert('dtb_product', [
             'id' => 9999,
             'name' => '商品名',
             'create_date' => $createDate,
@@ -140,7 +138,7 @@ class TimeZoneTest extends EccubeTestCase
         ]);
 
         $sql = 'select id, create_date from dtb_product where id = 9999';
-        $stmt = $app['db']->executeQuery($sql);
+        $stmt = $this->entityManager->getConnection()->executeQuery($sql);
         $product = $stmt->fetch();
 
         // utcに変換されて登録されている
