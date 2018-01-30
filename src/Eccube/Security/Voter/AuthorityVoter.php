@@ -24,7 +24,6 @@
 
 namespace Eccube\Security\Voter;
 
-use Eccube\Application;
 use Eccube\Repository\AuthorityRoleRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
