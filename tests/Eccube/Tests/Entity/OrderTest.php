@@ -2,9 +2,14 @@
 
 namespace Eccube\Tests\Entity;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
+use Eccube\Repository\Master\OrderStatusRepository;
+use Eccube\Repository\Master\SaleTypeRepository;
+use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Fixture\Generator;
 
 /**
  * AbstractEntity test cases.
@@ -13,23 +18,24 @@ use Eccube\Tests\EccubeTestCase;
  */
 class OrderTest extends EccubeTestCase
 {
+    /** @var  Customer */
     protected $Customer;
+    /** @var  Order */
     protected $Order;
     protected $rate;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
+        $TaxRule = $this->container->get(TaxRuleRepository::class)->getByRule();
         $this->rate = $TaxRule->getTaxRate();
     }
 
     public function testConstructor()
     {
-        $OrderStatus = $this->app['eccube.repository.order_status']->find(OrderStatus::PROCESSING);
+        $OrderStatus = $this->container->get(OrderStatusRepository::class)->find(OrderStatus::PROCESSING);
         $Order = new Order($OrderStatus);
 
         $this->expected = 0;
@@ -90,24 +96,23 @@ class OrderTest extends EccubeTestCase
 
     public function testGetSaleTypes()
     {
-        $this->expected = array($this->app['eccube.repository.master.sale_type']->find(1));
+        $this->expected = array($this->container->get(SaleTypeRepository::class)->find(1));
         $this->actual = $this->Order->getSaleTypes();
         $this->verify();
     }
 
     public function testGetTotalPrice()
     {
-        $this->markTestSkipped('新しい配送管理の実装が完了するまでスキップ');
-
         $faker = $this->getFaker();
-        $Order = $this->app['eccube.fixture.generator']->createOrder(
+        /** @var Order $Order */
+        $Order = $this->container->get(Generator::class)->createOrder(
             $this->Customer,
             array(),
             null,
             $faker->randomNumber(5),
             $faker->randomNumber(5)
         );
-        $this->expected = $Order->getSubTotal() + $Order->getCharge() - $Order->getDiscount();
+        $this->expected = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
         $this->actual = $Order->getTotalPrice();
         $this->verify();
     }
