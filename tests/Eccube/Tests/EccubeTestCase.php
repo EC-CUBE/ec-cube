@@ -44,7 +44,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
