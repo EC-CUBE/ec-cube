@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -36,7 +37,7 @@ use Symfony\Component\Validator\Constraints\Range;
 class PriceType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -48,9 +49,9 @@ class PriceType extends AbstractType
     /**
      * PriceType constructor.
      *
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig, ContainerInterface $container)
+    public function __construct(EccubeConfig $eccubeConfig, ContainerInterface $container)
     {
         $this->eccubeConfig = $eccubeConfig;
         $this->container = $container;

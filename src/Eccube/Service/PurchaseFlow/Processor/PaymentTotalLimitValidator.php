@@ -23,6 +23,7 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\ValidatableItemHolderProcessor;
@@ -40,9 +41,9 @@ class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
     /**
      * PaymentTotalLimitValidator constructor.
      *
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->maxTotalFee = $eccubeConfig['max_total_fee'];
     }

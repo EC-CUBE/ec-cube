@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\Master\CustomerStatusType;
@@ -45,15 +46,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CustomerType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
     /**
      * CustomerType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;
     }

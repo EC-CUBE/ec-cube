@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
@@ -132,7 +133,7 @@ class ShoppingService
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
@@ -188,7 +189,7 @@ class ShoppingService
      * @param PaymentRepository $paymentRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param EntityManager $entityManager
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param PrefRepository $prefRepository
      * @param Session $session
      * @param OrderRepository $orderRepository
@@ -211,7 +212,7 @@ class ShoppingService
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
         EntityManager $entityManager,
-        array $eccubeConfig,
+        EccubeConfig $eccubeConfig,
         PrefRepository $prefRepository,
         Session $session,
         OrderRepository $orderRepository,

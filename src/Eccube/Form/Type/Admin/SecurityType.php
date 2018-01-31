@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -37,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SecurityType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
@@ -48,10 +49,10 @@ class SecurityType extends AbstractType
 
     /**
      * SecurityType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param ValidatorInterface $validator
      */
-    public function __construct(array $eccubeConfig, ValidatorInterface $validator)
+    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator)
     {
         $this->appConfig = $eccubeConfig;
         $this->validator = $validator;

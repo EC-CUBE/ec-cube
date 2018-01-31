@@ -25,6 +25,7 @@
 namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Security\Core\Encoder\PasswordEncoder;
@@ -58,7 +59,7 @@ class InstallControllerTest extends AbstractWebTestCase
         parent::setUp();
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
-        $config = $this->container->getParameter('eccube.constants');
+        $config = $this->container->get(EccubeConfig::class);
         $this->session = new Session(new MockArraySessionStorage());
         $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install', $config);
         $reflectionClass = new \ReflectionClass($this->controller);

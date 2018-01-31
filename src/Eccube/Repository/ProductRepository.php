@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
 use Eccube\Util\StringUtil;
@@ -45,7 +46,7 @@ class ProductRepository extends AbstractRepository
 
     /**
      * @Inject("config")
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
@@ -54,12 +55,12 @@ class ProductRepository extends AbstractRepository
      *
      * @param RegistryInterface $registry
      * @param Queries $queries
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         Queries $queries,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Product::class);
         $this->queries = $queries;

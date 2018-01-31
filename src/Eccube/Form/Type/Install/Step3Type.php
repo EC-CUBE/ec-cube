@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -41,7 +42,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class Step3Type extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -50,7 +51,7 @@ class Step3Type extends AbstractType
      */
     protected $validator;
 
-    public function __construct(ValidatorInterface $validator, $eccubeConfig)
+    public function __construct(ValidatorInterface $validator, EccubeConfig $eccubeConfig)
     {
         $this->validator = $validator;
         $this->eccubeConfig = $eccubeConfig;

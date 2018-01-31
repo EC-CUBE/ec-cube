@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,11 +34,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ClassCategoryType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;
     }

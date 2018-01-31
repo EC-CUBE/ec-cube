@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -36,7 +37,7 @@ class CustomerLoginType extends AbstractType
 {
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
@@ -45,7 +46,7 @@ class CustomerLoginType extends AbstractType
      */
     protected $authenticationUtils;
 
-    public function __construct(AuthenticationUtils $authenticationUtils, array $eccubeConfig)
+    public function __construct(AuthenticationUtils $authenticationUtils, EccubeConfig $eccubeConfig)
     {
         $this->authenticationUtils = $authenticationUtils;
         $this->appConfig = $eccubeConfig;

@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,15 +39,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ZipType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
     /**
      * ZipType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->appConfig = $eccubeConfig;
     }

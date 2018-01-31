@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
@@ -50,7 +51,7 @@ class OrderItemType extends AbstractType
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -72,14 +73,14 @@ class OrderItemType extends AbstractType
     /**
      * OrderItemType constructor.
      * @param EntityManagerInterface $entityManager
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param ProductClassRepository $productClassRepository
      * @param OrderItemRepository $orderItemRepository
      * @param RequestStack $requestStack
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        array $eccubeConfig,
+        EccubeConfig $eccubeConfig,
         ProductClassRepository $productClassRepository,
         OrderItemRepository $orderItemRepository,
         RequestStack $requestStack

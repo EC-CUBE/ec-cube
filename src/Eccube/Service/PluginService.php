@@ -59,11 +59,6 @@ class PluginService
     protected $pluginRepository;
 
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var Application
      */
     protected $app;

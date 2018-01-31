@@ -2,7 +2,7 @@ twig:
     globals:
       BaseInfo: null
       eccube:
-        config: '%eccube.constants%'
+        config: '@Eccube\Common\EccubeConfig'
     paths:
       '%eccube.theme.front_dir%': ~
       '%eccube.theme.front_default_dir%': ~

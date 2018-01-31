@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -40,7 +41,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class PageRepository extends AbstractRepository
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
@@ -65,10 +66,10 @@ class PageRepository extends AbstractRepository
     /**
      * PageRepository constructor.
      * @param RegistryInterface $registry
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param ContainerInterface $container
      */
-    public function __construct(RegistryInterface $registry, array $eccubeConfig, ContainerInterface $container)
+    public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig, ContainerInterface $container)
     {
         parent::__construct($registry, Page::class);
         $this->appConfig = $eccubeConfig;

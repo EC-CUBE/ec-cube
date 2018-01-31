@@ -26,6 +26,7 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
@@ -65,7 +66,7 @@ class CsvExportService
     protected $qb;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $config;
 
@@ -112,7 +113,7 @@ class CsvExportService
      * @param CsvTypeRepository $csvTypeRepository
      * @param OrderRepository $orderRepository
      * @param CustomerRepository $customerRepository
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -121,7 +122,7 @@ class CsvExportService
         OrderRepository $orderRepository,
         CustomerRepository $customerRepository,
         ProductRepository $productRepository,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->csvRepository = $csvRepository;
