@@ -1,7 +1,6 @@
 twig:
     globals:
-      eccube:
-        config: '@Eccube\Common\EccubeConfig'
+      eccube_config: '@Eccube\Common\EccubeConfig'
     paths:
       '%kernel.project_dir%/src/Eccube/Resource/template/install': ~
     debug: '%kernel.debug%'

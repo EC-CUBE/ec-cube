@@ -1,8 +1,7 @@
 twig:
     globals:
       BaseInfo: null
-      eccube:
-        config: '@Eccube\Common\EccubeConfig'
+      eccube_config: '@Eccube\Common\EccubeConfig'
     paths:
       '%eccube.theme.front_dir%': ~
       '%eccube.theme.front_default_dir%': ~
