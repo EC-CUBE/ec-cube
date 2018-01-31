@@ -17,6 +17,7 @@ use Eccube\DependencyInjection\Compiler\LazyComponentPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\TemplateListenerPass;
+use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
 use Eccube\DependencyInjection\Compiler\WebServerDocumentRootPass;
 use Eccube\DependencyInjection\EccubeExtension;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
@@ -159,6 +160,9 @@ class Kernel extends BaseKernel
             // テンプレートフックポイントを動作させるように.
             $container->addCompilerPass(new TemplateListenerPass());
         }
+
+        // twigのurl,path関数を差し替え
+        $container->addCompilerPass(new TwigExtensionPass());
 
         $container->register('app', Application::class)
             ->setSynthetic(true)

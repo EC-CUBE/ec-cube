@@ -24,31 +24,24 @@
 
 namespace Eccube\Twig\Extension;
 
-use Eccube\Common\Constant;
 use Eccube\Service\TaxRuleService;
 use Eccube\Util\StringUtil;
-use Silex\Application;
-use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class EccubeExtension extends AbstractExtension
 {
     /**
-     * @var \Twig_Environment
+     * @var TaxRuleService
      */
-    protected $twig;
+    protected $TaxRuleService;
 
-    public function __construct(TaxRuleService $TaxRuleService, \Twig_Environment $twig)
+    public function __construct(TaxRuleService $TaxRuleService)
     {
         $this->TaxRuleService = $TaxRuleService;
-        $this->twig = $twig;
     }
-
-    protected $TaxRuleService;
 
     /**
      * Returns a list of functions to add to the existing list.
@@ -57,20 +50,11 @@ class EccubeExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        $RoutingExtension = $this->twig->getExtension(RoutingExtension::class);
-
-        // $app = $this->app;
         return array(
             new TwigFunction('has_errors', array($this, 'hasErrors')),
             new TwigFunction('is_object', array($this, 'isObject')),
             new TwigFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new TwigFunction('active_menus', array($this, 'getActiveMenus')),
-
-            // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::url
-            // new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
-            // // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
-            // new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
-
             new TwigFunction('php_*', function() {
                     $arg_list = func_get_args();
                     $function = array_shift($arg_list);
@@ -195,52 +179,6 @@ class EccubeExtension extends AbstractExtension
     public function getTimeAgo($date)
     {
         return StringUtil::timeAgo($date);
-    }
-
-    /**
-     * bind から URL へ変換します。
-     * \Symfony\Bridge\Twig\Extension\RoutingExtension::getPath の処理を拡張し、
-     * RouteNotFoundException 発生時に E_USER_WARNING を発生させ、
-     * 文字列 "/404?bind={bind}" を返します。
-     *
-     * @param string $name
-     * @param array $parameters
-     * @param boolean $relative
-     * @return string URL
-     */
-    public function getPath($name, $parameters = array(), $relative = false)
-    {
-        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
-        try {
-            return $RoutingExtension->getPath($name, $parameters, $relative);
-        } catch (RouteNotFoundException $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-        }
-
-        return $RoutingExtension->getPath('homepage').'404?bind='.$name;
-    }
-
-    /**
-     * bind から URL へ変換します。
-     * \Symfony\Bridge\Twig\Extension\RoutingExtension::getUrl の処理を拡張し、
-     * RouteNotFoundException 発生時に E_USER_WARNING を発生させ、
-     * 文字列 "/404?bind={bind}" を返します。
-     *
-     * @param string $name
-     * @param array $parameters
-     * @param boolean $schemeRelative
-     * @return string URL
-     */
-    public function getUrl($name, $parameters = array(), $schemeRelative = false)
-    {
-        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
-        try {
-            return $RoutingExtension->getUrl($name, $parameters, $schemeRelative);
-        } catch (RouteNotFoundException $e) {
-            trigger_error($e->getMessage(), E_USER_WARNING);
-        }
-
-        return $RoutingExtension->getUrl('homepage').'404?bind='.$name;
     }
 
     /**
