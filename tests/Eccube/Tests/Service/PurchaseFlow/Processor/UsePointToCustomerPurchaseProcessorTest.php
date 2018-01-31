@@ -6,10 +6,35 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Service\PurchaseFlow\Processor\UsePointToCustomerPurchaseProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 
 class UsePointToCustomerPurchaseProcessorTest extends EccubeTestCase
 {
+    /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
 
+    /**
+     * @var Customer
+     */
+    protected $Customer;
+
+    /**
+     * @var Order
+     */
+    protected $Order;
+
+    /**
+     * @var Product
+     */
+    protected $Product;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();

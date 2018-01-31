@@ -32,10 +32,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class DeliveryFeeProcessorTest extends EccubeTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
 
     public function testProcess()
     {

@@ -17,7 +17,11 @@ if (!class_exists(Application::class)) {
 }
 
 if (!isset($_SERVER['APP_ENV'])) {
-    (new Dotenv())->load(__DIR__.'/../.env');
+    if (file_exists(__DIR__.'/../.env')) {
+        (new Dotenv())->load(__DIR__.'/../.env');
+    } else {
+        (new Dotenv())->load(__DIR__.'/../.env.install');
+    }
 }
 
 $input = new ArgvInput();

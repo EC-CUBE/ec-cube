@@ -14,6 +14,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Loader
 {
+    /**
+     * @var CsvFixture[]
+     */
     protected $fixtures;
 
     /**

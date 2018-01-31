@@ -2,8 +2,7 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -11,11 +10,9 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\ItemHolderProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Util\EntityUtil;
 
 /**
  * 使用ポイント値引明細追加.
@@ -23,8 +20,7 @@ use Eccube\Util\EntityUtil;
 class UsePointProcessor implements ItemHolderProcessor
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -34,11 +30,12 @@ class UsePointProcessor implements ItemHolderProcessor
     protected $BaseInfo;
 
     /**
-     * DeliveryFeeProcessor constructor.
+     * UsePointProcessor constructor.
      *
-     * @param $app
+     * @param EntityManagerInterface $entityManager
+     * @param BaseInfo $BaseInfo
      */
-    public function __construct(EntityManager $entityManager, BaseInfo $BaseInfo)
+    public function __construct(EntityManagerInterface $entityManager, BaseInfo $BaseInfo)
     {
         $this->entityManager = $entityManager;
         $this->BaseInfo = $BaseInfo;

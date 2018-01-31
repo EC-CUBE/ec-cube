@@ -1,0 +1,171 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'ja'
+    timezone: 'Asia/Tokyo'
+    # This parameter defines the codes of the locales (languages) enabled in the application
+    app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
+    base_currency_code: 'JPY'
+    currency_code: '%base_currency_code%'
+    app.notifications.email_sender: anonymous@example.com
+    admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
+    user_data_route: 'user_data'
+    eccube.scheme: 'http'
+    eccube.theme: 'default'
+    eccube.twig.block.templates:
+      - render_block.twig
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+        bind:
+          $admin_route: '%admin_route%'
+          $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
+          $auth_type: 'HMAC'
+          $password_hash_algos: 'sha256'
+          $eccubeConfig: '%eccube.constants%'
+          $projectRoot: '%kernel.project_dir%'
+          $environment: '%kernel.environment%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    Eccube\:
+        resource: '../../../src/Eccube/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,Entity,Exception,EventListener,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
+
+    Eccube\Service\TaxRuleService:
+        lazy: true
+        public: true
+
+    # controllers are imported separately to make sure they're public
+    # and have a tag that allows actions to type-hint services
+    Eccube\Controller\:
+        autowire: false
+        autoconfigure: false
+        resource: '../../../src/Eccube/Controller/*'
+
+    Eccube\Controller\Install\InstallController:
+        tags: ['controller.service_arguments']
+
+    # Form Extensions
+    Eccube\Form\Extension\DoctrineOrmExtension:
+        tags:
+            - { name: 'form.type_extension', extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
+    Eccube\Form\Extension\FreezeTypeExtension: ~
+    Eccube\Form\Extension\HelpTypeExtension: ~
+
+    # DoctrineEventSubscribers
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\SaveEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\LoadEventSubscriber:
+        tags: ['doctrine.event_subscriber']
+    Eccube\Doctrine\EventSubscriber\UpdatePointEventSubscriber: ~
+
+    Eccube\Twig\Extension\EccubeBlockExtension: ~
+
+    Plugin\:
+      autowire: false
+      autoconfigure: false
+      resource: '../../../app/Plugin/*'
+      exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests}'
+
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags: ['twig.extension']
+
+    eccube.collector.core:
+        class: Eccube\DataCollector\EccubeDataCollector
+        tags:
+          - { name: 'data_collector', template: '@toolbar/eccube.html.twig', id: 'eccube_core', priority: -512 }
+
+    # Autowiring can't guess the constructor arguments that are not type-hinted with
+    # classes (e.g. container parameters) so you must define those arguments explicitly
+    # Eccube\Command\ListUsersCommand:
+    #     $emailSender: '%app.notifications.email_sender%'
+
+    # when the service definition only contains arguments, you can omit the
+    # 'arguments' key and define the arguments just below the service class
+    # Eccube\Twig\AppExtension:
+    #     $locales: '%app_locales%'
+
+    # Eccube\EventSubscriber\CommentNotificationSubscriber:
+    #     $sender: '%app.notifications.email_sender%'
+
+    # Eccube\EventSubscriber\RedirectToPreferredLocaleSubscriber:
+    #     $locales: '%app_locales%'
+    #     $defaultLocale: '%locale%'
+
+    # needed for the 'localizeddate' Twig filter
+    # Twig\Extensions\IntlExtension: ~
+
+    eccube.logger:
+        class: Eccube\Log\Logger
+        arguments:
+          - '@Eccube\Request\Context'
+          - '@monolog.logger'
+          - '@monolog.logger.front'
+          - '@monolog.logger.admin'
+        lazy: true
+
+    eccube.log.formatter.line:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] %%channel%%.%%level_name%% [%%extra.session_id%%] [%%extra.uid%%] [%%extra.user_id%%] [%%extra.class%%:%%extra.function%%:%%extra.line%%] - %%message%% %%context%% [%%extra.http_method%%, %%extra.url%%, %%extra.ip%%, %%extra.referrer%%, %%extra.user_agent%%]\n"
+
+    Eccube\Log\Processor\SessionProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    Eccube\Log\Processor\TokenProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    Monolog\Processor\UidProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    Monolog\Processor\IntrospectionProcessor:
+        arguments:
+            - '!php/const:Monolog\Logger::DEBUG'
+            - ['Eccube\\Log', 'Psr\\Log']
+        tags:
+            - { name: monolog.processor }
+
+    Symfony\Bridge\Monolog\Processor\WebProcessor:
+        arguments:
+          - url: REQUEST_URI
+            ip: REMOTE_ADDR
+            http_method: REQUEST_METHOD
+            server: SERVER_NAME
+            referrer: HTTP_REFERER
+            # add user aegnt
+            user_agent: HTTP_USER_AGENT
+        tags:
+            - { name: monolog.processor }
+            - { name: kernel.event_listener, event: kernel.request, priority: 1024 }
+
+    Symfony\Component\HttpFoundation\ParameterBag: ~
+    Eccube\Entity\BaseInfo: ~
+
+    Eccube\EventListener\:
+      autowire: false
+      autoconfigure: false
+      resource: '../../../src/Eccube/EventListener/*'
+
+    Eccube\Twig\Extension\:
+      autowire: false
+      autoconfigure: false
+      resource: '../../../src/Eccube/Twig/Extension/*'

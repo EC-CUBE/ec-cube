@@ -31,11 +31,14 @@ class MailServiceTest extends AbstractServiceTestCase
      */
     protected $Message;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->BaseInfo = $this->container->get(BaseInfo::class);
         $this->mailService = $this->container->get(MailService::class);
     }
 

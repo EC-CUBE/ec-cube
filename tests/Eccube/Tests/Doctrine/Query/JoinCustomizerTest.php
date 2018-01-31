@@ -9,11 +9,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class JoinCustomizerTest extends EccubeTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCustomize()
     {
         $builder = $this->createQueryBuilder();

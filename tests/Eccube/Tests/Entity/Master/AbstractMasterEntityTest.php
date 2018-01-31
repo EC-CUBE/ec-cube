@@ -14,19 +14,18 @@ class AbstractMasterEntityTest extends EccubeTestCase
 {
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
     }
 
     public function testGetConstant()
     {
         self::assertEquals(1, TestSexDecorator::TEST_MALE, 'constant access');
-        self::assertEquals(1, TestSexDecorator::TEST_MALE(), 'enum like access');
+        self::assertEquals(1, TestSexDecorator::TEST_MALE, 'enum like access');
     }
 
     public function testGetConstantWithTrait()
     {
-        self::assertEquals(2, TestSexDecorator::TEST_FEMALE(), 'enum like access via trait');
+        self::assertEquals(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
     }
 
     public function testExplicitOverwriteConstant()
@@ -73,5 +72,5 @@ class TestSexDecorator extends Sex
 
 trait TestSexTrait
 {
-    private $TEST_FEMALE = 2;
+    static $TEST_FEMALE = 2;
 }

@@ -4,22 +4,40 @@ namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures\Executor;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\Master\JobRepository;
+use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
 
 class DbalExecutorTest extends EccubeTestCase
 {
-
+    /**
+     * @var \SplFileObject
+     */
     protected $file;
+
+    /**
+     * @var CsvFixture[]
+     */
     protected $fixtures;
 
+    /**
+     * @var JobRepository
+     */
+    protected $jobRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
+
+        $this->jobRepository = $this->container->get(JobRepository::class);
+
+        $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {
-            $this->app['orm.em']->remove($Job);
+            $this->entityManager->remove($Job);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $this->file = new \SplFileObject(
             __DIR__.'/../../../../../../Fixtures/import_csv/mtb_job.csv'
@@ -29,7 +47,7 @@ class DbalExecutorTest extends EccubeTestCase
 
     public function testExecute()
     {
-        $Executor = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($this->app['orm.em']);
+        $Executor = new DbalExecutor($this->entityManager);
         $Executor->execute($this->fixtures);
 
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
@@ -45,7 +63,7 @@ class DbalExecutorTest extends EccubeTestCase
         }
 
         $this->file->rewind();
-        $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
+        $Jobs = $this->jobRepository->findAll();
 
         $this->expected = count($rows);
         $this->actual = count($Jobs);

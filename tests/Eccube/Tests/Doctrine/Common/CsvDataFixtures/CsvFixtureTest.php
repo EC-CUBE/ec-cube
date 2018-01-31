@@ -4,21 +4,40 @@ namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\Master\JobRepository;
 
 class CsvFixtureTest extends EccubeTestCase
 {
 
+    /**
+     * @var CsvFixture
+     */
     protected $fixture;
+
+    /**
+     * @var \SplFileObject
+     */
     protected $file;
 
-    public function setUp() {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+    /**
+     * @var JobRepository
+     */
+    protected $jobRepository;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
         parent::setUp();
-        $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
+
+        $this->jobRepository = $this->container->get(JobRepository::class);
+
+        $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {
-            $this->app['orm.em']->remove($Job);
+            $this->entityManager->remove($Job);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $this->file = new \SplFileObject(
             __DIR__.'/../../../../../Fixtures/import_csv/mtb_job.csv'
@@ -56,8 +75,8 @@ class CsvFixtureTest extends EccubeTestCase
         }
 
         $this->file->rewind();
-        $this->fixture->load($this->app['orm.em']);
-        $Jobs = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->findAll();
+        $this->fixture->load($this->entityManager);
+        $Jobs = $this->jobRepository->findAll();
 
         $this->expected = count($rows);
         $this->actual = count($Jobs);

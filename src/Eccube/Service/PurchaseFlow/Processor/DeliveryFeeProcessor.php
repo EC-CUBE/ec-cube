@@ -23,8 +23,7 @@
 
 namespace Eccube\Service\PurchaseFlow\Processor;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -42,20 +41,19 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliveryFeeProcessor implements ItemHolderProcessor
 {
     /**
-     * @Inject("orm.em")
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
      * DeliveryFeeProcessor constructor.
-     *
-     * @param $app
+     * @param $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
+
 
     /**
      * @param ItemHolderInterface $itemHolder
