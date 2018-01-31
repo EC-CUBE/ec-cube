@@ -28,20 +28,58 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\ProductTag;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\ProductRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Eccube\Repository\TagRepository;
+use Eccube\Repository\MemberRepository;
 
 class PaginationTest extends EccubeTestCase
 {
-    protected $expectedIds = array();
+    /**
+     * @var array
+     */
+    protected $expectedIds = [];
 
+    /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var PaginatorInterface
+     */
+    protected $paginator;
+
+    /**
+     * @var TagRepository
+     */
+    protected $tagRepository;
+
+    /**
+     * @var MemberRepository
+     */
+    protected $memberRepository;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->productRepository = $this->container->get(ProductRepository::class);
+        $this->paginator = $this->container->get(PaginatorInterface::class);
+        $this->tagRepository = $this->container->get(TagRepository::class);
+        $this->memberRepository = $this->container->get(MemberRepository::class);
 
         // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
         // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている
         /** @var EntityManager $em */
-        $em = $this->app['orm.em'];
+        $em = $this->entityManager;
         $conn = $em->getConnection();
         $conn->rollback();
         $this->dropTable($conn->getWrappedConnection());
@@ -72,7 +110,7 @@ class PaginationTest extends EccubeTestCase
     public function tearDown()
     {
         /** @var EntityManager $em */
-        $em = $this->app['orm.em'];
+        $em = $this->entityManager;
         if ($em) {
             $conn = $em->getConnection();
             $conn->rollback();
@@ -104,21 +142,20 @@ class PaginationTest extends EccubeTestCase
      */
     public function testSortWithWrapQueriesTrue()
     {
-        $qb = $this->app['eccube.repository.product']
-            ->getQueryBuilderBySearchDataForAdmin(array());
+        $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin([]);
 
         // product_class.price02 でソートするようカスタマイズ
         $qb->orderBy('pc.price02', 'DESC');
 
         $pageMax = 10;
-        $pagination = $this->app['paginator']()->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             1,
             $pageMax,
-            array('wrap-queries' => true)
+            ['wrap-queries' => true]
         );
 
-        $actualIds = array();
+        $actualIds = [];
         foreach ($pagination as $Product) {
             $actualIds[] = $Product->getId();
         }
@@ -137,7 +174,7 @@ class PaginationTest extends EccubeTestCase
     public function testSortWithJoinPluginEntity()
     {
         // idの昇順になるようにcolを設定する
-        $em = $this->app['orm.em'];
+        $em = $this->entityManager;
         $count = count($this->expectedIds);
         foreach ($this->expectedIds as $id) {
             $TestEntity = new TestEntity();
@@ -147,8 +184,7 @@ class PaginationTest extends EccubeTestCase
             $em->flush($TestEntity);
         }
 
-        $qb = $this->app['eccube.repository.product']
-            ->getQueryBuilderBySearchData(array());
+        $qb = $this->productRepository->getQueryBuilderBySearchData(array());
 
         // テスト用のエンティティとjoinし,ソートする.
         $qb
@@ -160,26 +196,27 @@ class PaginationTest extends EccubeTestCase
             ->addOrderBy('p.id', 'DESC');
 
         $Products = $qb->getQuery()->getResult();
-        $expectedIds = array();
+        $expectedIds = [];
         foreach ($Products as $Product) {
             $expectedIds[] = $Product->getId();
         }
 
         $pageMax = 10;
         try {
-            $pagination = $this->app['paginator']()->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 1,
                 $pageMax,
-                array('wrap-queries' => true)
+                ['wrap-queries' => true]
             );
             $this->assertTrue(true);
         } catch (\RuntimeException $e) {
             // \RuntimeExceptionは解消されているはず
             $this->fail($e->getMessage());
+            return;
         }
 
-        $actualIds = array();
+        $actualIds = [];
         foreach ($pagination as $Product) {
             $actualIds[] = $Product->getId();
         }
@@ -196,12 +233,9 @@ class PaginationTest extends EccubeTestCase
     public function testWhereWithJoinEntity()
     {
         // `新商品`のTagが登録されたProductを生成
-        $Tag = $this->app['eccube.repository.tag']
-            ->find(1);
-        $Member = $this->app['eccube.repository.member']
-            ->find(2);
-        $Product = $this->app['eccube.repository.product']
-            ->find(reset($this->expectedIds));
+        $Tag = $this->tagRepository->find(1);
+        $Member = $this->memberRepository->find(2);
+        $Product = $this->productRepository->find(reset($this->expectedIds));
 
         $ProductTag = new ProductTag();
         $ProductTag->setCreator($Member);
@@ -209,11 +243,10 @@ class PaginationTest extends EccubeTestCase
         $ProductTag->setTag($Tag);
         $Product->addProductTag($ProductTag);
 
-        $this->app['orm.em']->persist($ProductTag);
-        $this->app['orm.em']->flush(array($Product, $ProductTag));
+        $this->entityManager->persist($ProductTag);
+        $this->entityManager->flush([$Product, $ProductTag]);
 
-        $qb = $this->app['eccube.repository.product']
-            ->getQueryBuilderBySearchData(array());
+        $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
         // 商品タグとjoinして検索
         $qb->innerJoin('p.ProductTag', 'ptag')
@@ -221,20 +254,20 @@ class PaginationTest extends EccubeTestCase
             ->andWhere($qb->expr()->in('ptag.Tag', ':Tag'))
             ->setParameter(':Tag', $Tag);
 
-        $expectedIds = array();
+        $expectedIds = [];
         $results = $qb->getQuery()->getResult();
         foreach ($results as $result) {
             $expectedIds[] = $result->getId();
         }
 
-        $pagination = $this->app['paginator']()->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             1,
             30,
-            array('wrap-queries' => true)
+            ['wrap-queries' => true]
         );
 
-        $actualIds = array();
+        $actualIds = [];
         foreach ($pagination as $result) {
             $actualIds[] = $result->getId();
         }
@@ -254,14 +287,13 @@ class PaginationTest extends EccubeTestCase
         $TestEntity = new TestEntity();
         $TestEntity->id = reset($this->expectedIds);
         $TestEntity->col = 123;
-        $this->app['orm.em']->persist($TestEntity);
-        $this->app['orm.em']->flush($TestEntity);
+        $this->entityManager->persist($TestEntity);
+        $this->entityManager->flush($TestEntity);
 
-        $qb = $this->app['eccube.repository.product']
-            ->getQueryBuilderBySearchData(array());
+        $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
         // テスト用のエンティティを検索するクエリ
-        $repository = $this->app['orm.em']->getRepository('Eccube\Tests\Doctrine\ORM\Tools\TestEntity');
+        $repository = $this->entityManager->getRepository('Eccube\Tests\Doctrine\ORM\Tools\TestEntity');
         $testQb = $repository->createQueryBuilder('test');
         $testQb->select('test.id');
         $testQb->where('test.col = :col');
@@ -280,14 +312,14 @@ class PaginationTest extends EccubeTestCase
             $expectedIds[] = $result->getId();
         }
 
-        $pagination = $this->app['paginator']()->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             1,
             30,
-            array('wrap-queries' => true)
+            ['wrap-queries' => true]
         );
 
-        $actualIds = array();
+        $actualIds = [];
         foreach ($pagination as $result) {
             $actualIds[] = $result->getId();
         }

@@ -162,6 +162,16 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
     {
         return $this->whereClauses;
     }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return '';
+    }
 }
 
 class JoinClauseOrderByCustomizer extends OrderByCustomizer
@@ -184,5 +194,15 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
     protected function createStatements($params, $queryKey)
     {
         return $this->orderByClauses;
+    }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return '';
     }
 }

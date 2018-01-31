@@ -29,9 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
@@ -75,28 +72,26 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(OrderType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
+        $this->container->get('request_stack')->push(new Request());
     }
 
     public function testInValidData()
     {
-        $this->app['request'] = new Request();
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidTel_Blank()
     {
-        $this->app['request'] = new Request();
         $this->formData['tel']['tel01'] = '';
         $this->formData['tel']['tel02'] = '';
         $this->formData['tel']['tel03'] = '';
@@ -107,7 +102,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDiscount_OverMaxLength()
     {
-        $this->app['request'] = new Request();
         $this->formData['discount'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
@@ -116,7 +110,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDiscount_NotNumeric()
     {
-        $this->app['request'] = new Request();
         $this->formData['discount'] = 'abcde';
 
         $this->form->submit($this->formData);
@@ -125,7 +118,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidDiscount_HasMinus()
     {
-        $this->app['request'] = new Request();
         $this->formData['discount'] = '-12345';
 
         $this->form->submit($this->formData);
@@ -134,7 +126,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDeliveryFeeTotal_OverMaxLength()
     {
-        $this->app['request'] = new Request();
         $this->formData['delivery_fee_total'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
@@ -143,7 +134,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDeliveryFeeTotal_NotNumeric()
     {
-        $this->app['request'] = new Request();
         $this->formData['delivery_fee_total'] = 'abcde';
 
         $this->form->submit($this->formData);
@@ -152,7 +142,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidDeliveryFeeTotal_HasMinus()
     {
-        $this->app['request'] = new Request();
         $this->formData['delivery_fee_total'] = '-12345';
 
         $this->form->submit($this->formData);
@@ -161,7 +150,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidCharge_OverMaxLength()
     {
-        $this->app['request'] = new Request();
         $this->formData['charge'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
@@ -170,7 +158,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidCharge_NotNumeric()
     {
-        $this->app['request'] = new Request();
         $this->formData['charge'] = 'abcde';
 
         $this->form->submit($this->formData);
@@ -179,7 +166,6 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidCharge_HasMinus()
     {
-        $this->app['request'] = new Request();
         $this->formData['charge'] = '-12345';
 
         $this->form->submit($this->formData);

@@ -27,7 +27,6 @@ namespace Eccube\Controller\Mypage;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -57,64 +56,38 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class MypageController extends AbstractController
 {
     /**
-     * @Inject(ProductRepository::class)
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @Inject(CustomerFavoriteProductRepository::class)
      * @var CustomerFavoriteProductRepository
      */
     protected $customerFavoriteProductRepository;
 
     /**
-     * @Inject(BaseInfo::class)
      * @var BaseInfo
      */
     protected $BaseInfo;
 
     /**
-     * @Inject(CartService::class)
      * @var CartService
      */
     protected $cartService;
 
     /**
-     * @Inject("config")
-     * @var array
-     */
-    protected $appConfig;
-
-    /**
-     * @Inject(OrderRepository::class)
      * @var OrderRepository
      */
     protected $orderRepository;
 
-    /**
-     * @Inject("orm.em")
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @Inject("eccube.event.dispatcher")
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @Inject("form.factory")
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    public function __construct(EntityManagerInterface $entityManager, OrderRepository $orderRepository, $eccubeConfig)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        OrderRepository $orderRepository,
+        CustomerFavoriteProductRepository $customerFavoriteProductRepository,
+        BaseInfo $baseInfo
+    ) {
         $this->orderRepository = $orderRepository;
-        $this->appConfig = $eccubeConfig;
+        $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
+        $this->BaseInfo = $baseInfo;
     }
 
     /**
@@ -164,7 +137,7 @@ class MypageController extends AbstractController
      * @Route("/mypage/", name="mypage")
      * @Template("Mypage/index.twig")
      */
-    public function index(Application $app, Request $request, Paginator $paginator)
+    public function index(Request $request, Paginator $paginator)
     {
         $Customer = $this->getUser();
 
@@ -188,7 +161,7 @@ class MypageController extends AbstractController
         $pagination = $paginator->paginate(
             $qb,
             $request->get('pageno', 1),
-            $this->appConfig['search_pmax']
+            $this->eccubeConfig['search_pmax']
         );
 
         return [
@@ -202,13 +175,13 @@ class MypageController extends AbstractController
      * @Route("/mypage/history/{id}", name="mypage_history", requirements={"id" = "\d+"})
      * @Template("Mypage/history.twig")
      */
-    public function history(Application $app, Request $request, $id)
+    public function history(Request $request, $id)
     {
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         $Order = $this->orderRepository->findOneBy(
             array(
                 'id' => $id,
-                'Customer' => $app->user(),
+                'Customer' => $this->getUser(),
             )
         );
 
@@ -237,13 +210,13 @@ class MypageController extends AbstractController
      * @Route("/mypage/order/{id}", name="mypage_order", requirements={"id" = "\d+"})
      * @Method("PUT")
      */
-    public function order(Application $app, Request $request, $id)
+    public function order(Request $request, $id)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
         log_info('再注文開始', array($id));
 
-        $Customer = $app->user();
+        $Customer = $this->getUser();
 
         /* @var $Order \Eccube\Entity\Order */
         $Order = $this->orderRepository->findOneBy(
@@ -277,12 +250,12 @@ class MypageController extends AbstractController
                         $OrderItem->getQuantity()
                     )->save();
                 } else {
-                    log_info($app->trans('cart.product.delete'), array($id));
-                    $app->addRequestError('cart.product.delete');
+                    log_info($this->translator->trans('cart.product.delete'), array($id));
+                    $this->addRequestError('cart.product.delete');
                 }
             } catch (CartException $e) {
                 log_info($e->getMessage(), array($id));
-                $app->addRequestError($e->getMessage());
+                $this->addRequestError($e->getMessage());
             }
         }
 
@@ -301,7 +274,7 @@ class MypageController extends AbstractController
 
         log_info('再注文完了', array($id));
 
-        return $app->redirect($app->url('cart'));
+        return $this->redirect($this->generateUrl('cart'));
     }
 
     /**
@@ -310,12 +283,12 @@ class MypageController extends AbstractController
      * @Route("/mypage/favorite", name="mypage_favorite")
      * @Template("Mypage/favorite.twig")
      */
-    public function favorite(Application $app, Request $request)
+    public function favorite(Request $request, Paginator $paginator)
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
         }
-        $Customer = $app->user();
+        $Customer = $this->getUser();
 
         // paginator
         $qb = $this->customerFavoriteProductRepository->getQueryBuilderByCustomer($Customer);
@@ -329,10 +302,10 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
 
-        $pagination = $app['paginator']()->paginate(
+        $pagination = $paginator->paginate(
             $qb,
             $request->get('pageno', 1),
-            $this->appConfig['search_pmax'],
+            $this->eccubeConfig['search_pmax'],
             array('wrap-queries' => true)
         );
 
@@ -347,11 +320,11 @@ class MypageController extends AbstractController
      * @Method("DELETE")
      * @Route("/mypage/favorite/{id}/delete", name="mypage_favorite_delete", requirements={"id" = "\d+"})
      */
-    public function delete(Application $app, Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
+    public function delete(Request $request, CustomerFavoriteProduct $CustomerFavoriteProduct)
     {
-        $this->isTokenValid($app);
+        $this->isTokenValid();
 
-        $Customer = $app->user();
+        $Customer = $this->getUser();
 
         log_info('お気に入り商品削除開始', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
@@ -371,6 +344,6 @@ class MypageController extends AbstractController
 
         log_info('お気に入り商品削除完了', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
-        return $app->redirect($app->url('mypage_favorite'));
+        return $this->redirect($this->generateUrl('mypage_favorite'));
     }
 }

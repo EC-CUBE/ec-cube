@@ -24,8 +24,6 @@
 
 namespace Eccube\Form\Type\Install;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -38,24 +36,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @FormType
- */
 class Step3Type extends AbstractType
 {
     /**
-     * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
-     * @Inject("validator")
-     * @var RecursiveValidator
+     * @var ValidatorInterface
      */
     protected $validator;
+
+    public function __construct(ValidatorInterface $validator, $eccubeConfig)
+    {
+        $this->validator = $validator;
+        $this->eccubeConfig = $eccubeConfig;
+    }
 
     /**
      * {@inheritdoc}
@@ -68,7 +67,7 @@ class Step3Type extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     )),
                 ),
             ))
@@ -80,12 +79,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_id', TextType::class, array(
-                'label' => '管理画面ログインID（半角英数字'.$this->appConfig['id_min_len'].'～'.$this->appConfig['id_max_len'].'文字）',
+                'label' => '管理画面ログインID（半角英数字'.$this->eccubeConfig['id_min_len'].'～'.$this->eccubeConfig['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->appConfig['id_min_len'],
-                        'max' => $this->appConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['id_min_len'],
+                        'max' => $this->eccubeConfig['id_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -94,12 +93,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_pass', PasswordType::class, array(
-                'label' => '管理画面パスワード（半角英数字'.$this->appConfig['password_min_len'].'～'.$this->appConfig['password_max_len'].'文字）',
+                'label' => '管理画面パスワード（半角英数字'.$this->eccubeConfig['password_min_len'].'～'.$this->eccubeConfig['password_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->appConfig['password_min_len'],
-                        'max' => $this->appConfig['password_max_len'],
+                        'min' => $this->eccubeConfig['password_min_len'],
+                        'max' => $this->eccubeConfig['password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',
@@ -108,12 +107,12 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_dir', TextType::class, array(
-                'label' => '管理画面のディレクトリ名（半角英数字'.$this->appConfig['id_min_len'].'～'.$this->appConfig['id_max_len'].'文字）',
+                'label' => '管理画面のディレクトリ名（半角英数字'.$this->eccubeConfig['id_min_len'].'～'.$this->eccubeConfig['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->appConfig['id_min_len'],
-                        'max' => $this->appConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['id_min_len'],
+                        'max' => $this->eccubeConfig['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/\A\w+\z/')),
                 ),
@@ -124,46 +123,22 @@ class Step3Type extends AbstractType
             ))
             ->add('admin_allow_hosts', TextareaType::class, array(
                 'label' => '管理画面へのアクセスを、以下のIPに制限します',
-                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
                 'required' => false,
-            ))
-            ->add('trusted_proxies_connection_only', CheckboxType::class, array(
-                'label' => 'サイトが信頼されたロードバランサー、プロキシサーバからのみアクセスされる',
-                'required' => false,
-            ))
-            ->add('trusted_proxies', TextareaType::class, array(
-                'label' => 'ロードバランサー、プロキシサーバのIP',
-                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください（X-Forwarded-Proto、X-Forwarded-Host、X-Forwarded-Portヘッダーに対応してる必要があります）',
-                'required' => false,
-            ))
-            ->add('mail_backend', ChoiceType::class, array(
-                'label' => 'メーラーバックエンド',
-                'choices' => array(
-                    'mail（PHPの組み込み関数 mail() を使用してメールを送信）' => 'mail',
-                    'SMTP（SMTPサーバに直接接続してメールを送信）' => 'smtp',
-                    'sendmail（sendmailプログラムによりメールを送信）' => 'sendmail',
-                ),
-                'expanded' => true,
-                'multiple' => false,
             ))
             ->add('smtp_host', TextType::class, array(
                 'label' => 'SMTPホスト',
-                'help' => 'メーラーバックエンドがSMTPの場合のみ指定',
                 'required' => false,
             ))
             ->add('smtp_port', TextType::class, array(
                 'label' => 'SMTPポート',
-                'help' => 'メーラーバックエンドがSMTPの場合のみ指定',
                 'required' => false,
             ))
             ->add('smtp_username', TextType::class, array(
                 'label' => 'SMTPユーザー',
-                'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
             ->add('smtp_password', PasswordType::class, array(
                 'label' => 'SMTPパスワード',
-                'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {

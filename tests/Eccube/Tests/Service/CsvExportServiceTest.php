@@ -10,7 +10,9 @@ use org\bovigo\vfs\vfsStream;
 
 class CsvExportServiceTest extends AbstractServiceTestCase
 {
-
+    /**
+     * @var string
+     */
     protected $url;
 
     /**
@@ -28,16 +30,19 @@ class CsvExportServiceTest extends AbstractServiceTestCase
      */
     protected $orderRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-        $root = vfsStream::setup('rootDir');
-        $this->url = vfsStream::url('rootDir/test.csv');
 
         $this->csvExportService = $this->container->get(CsvExportService::class);
         $this->csvRepository = $this->container->get(CsvRepository::class);
         $this->orderRepository = $this->container->get(OrderRepository::class);
+
+        $root = vfsStream::setup('rootDir');
+        $this->url = vfsStream::url('rootDir/test.csv');
 
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
         $objReflect = new \ReflectionClass($this->csvExportService);
@@ -56,11 +61,10 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
         $this->csvExportService->exportHeader();
 
-        $Csv = $this->csvRepository->findBy(
-            array('CsvType' => CsvType::CSV_TYPE_PRODUCT,
-                  'enabled' => true,
-            )
-        );
+        $Csv = $this->csvRepository->findBy([
+            'CsvType' => CsvType::CSV_TYPE_PRODUCT,
+            'enabled' => true,
+        ]);
         $arrHeader = explode(',', file_get_contents($this->url));
         // Vfs に出力すると日本語が化けてしまうようなので, カウントのみ比較
         $this->expected = count($Csv);

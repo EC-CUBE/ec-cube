@@ -3,7 +3,6 @@
 
 namespace Eccube\Tests\Doctrine\Query;
 
-
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\OrderByCustomizer;
@@ -11,13 +10,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class OrderByCustomizerTest extends EccubeTestCase
 {
-
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();
@@ -67,7 +59,7 @@ class OrderByCustomizerTest extends EccubeTestCase
      */
     private function createQueryBuilder()
     {
-        return $this->app['orm.em']->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from('Product', 'p');
     }
@@ -81,6 +73,11 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
      */
     private $closure;
 
+    /**
+     * OrderByCustomizerTest_Customizer constructor.
+     *
+     * @param $closure
+     */
     function __construct($closure)
     {
         $this->closure = $closure;
@@ -95,5 +92,15 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
     {
         $callback = $this->closure;
         return $callback($params);
+    }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return '';
     }
 }

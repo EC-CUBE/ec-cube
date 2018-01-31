@@ -23,9 +23,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Annotation\Service;
-use Eccube\Application;
-
 
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
@@ -48,7 +45,6 @@ use Eccube\Application;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * @Service
  */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {

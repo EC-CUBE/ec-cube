@@ -74,7 +74,7 @@ abstract class EccubeTestCase extends WebTestCase
      * Faker を生成する.
      *
      * @param string $locale ロケールを指定する. デフォルト ja_JP
-     * @return Faker\Generator
+     * @return \Faker\Generator
      * @link https://github.com/fzaninotto/Faker
      */
     public function getFaker($locale = 'ja_JP')
@@ -135,7 +135,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createNonMember($email = null)
     {
-        return $this->container->get(Generator::class)>createNonMember($email);
+        return $this->container->get(Generator::class)->createNonMember($email);
     }
 
     /**

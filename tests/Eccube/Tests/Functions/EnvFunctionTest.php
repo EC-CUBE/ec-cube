@@ -2,7 +2,9 @@
 
 namespace Eccube\Tests\Functions;
 
-class EnvFunctionTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class EnvFunctionTest extends TestCase
 {
     public function testEnv()
     {

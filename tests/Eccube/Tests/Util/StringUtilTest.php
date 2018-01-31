@@ -5,7 +5,6 @@ namespace Eccube\Tests\Util;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Error\Deprecated;
 
 /**
  * Str test cases.
@@ -45,7 +44,7 @@ class StringUtilTest extends TestCase
     {
         $this->expected = 'Unable to generate random string.';
         try {
-            $result = StringUtil::random(0);
+            StringUtil::random(0);
             $this->fail();
         } catch (\RuntimeException $e) {
             $this->actual = $e->getMessage();

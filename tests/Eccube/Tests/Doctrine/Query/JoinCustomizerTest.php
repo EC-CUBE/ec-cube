@@ -9,12 +9,6 @@ use Eccube\Tests\EccubeTestCase;
 
 class JoinCustomizerTest extends EccubeTestCase
 {
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testCustomize()
     {
         $builder = $this->createQueryBuilder();
@@ -49,7 +43,7 @@ class JoinCustomizerTest extends EccubeTestCase
      */
     private function createQueryBuilder()
     {
-        return $this->app['orm.em']->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from('Product', 'p');
     }
@@ -74,5 +68,15 @@ class JoinCustomizerTest_Customizer extends JoinCustomizer
     {
         $callback = $this->callback;
         return $callback($params);
+    }
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey()
+    {
+        return '';
     }
 }

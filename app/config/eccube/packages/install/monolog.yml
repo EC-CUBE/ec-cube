@@ -1,0 +1,30 @@
+monolog:
+    channels: ['install']
+    handlers:
+        main:
+            type: fingers_crossed
+            action_level: error
+            passthru_level: debug
+            handler: main_rotating_file
+        main_rotating_file:
+            type: rotating_file
+            max_files: 60
+            path: '%kernel.logs_dir%/%kernel.environment%/site.log'
+            formatter: eccube.log.formatter.line
+            level: debug
+        install:
+            type: fingers_crossed
+            action_level: error
+            passthru_level: info
+            handler: install_rotating_file
+            channels: ['install']
+        install_rotating_file:
+            type: rotating_file
+            max_files: 60
+            path: '%kernel.logs_dir%/%kernel.environment%/front.log'
+            formatter: eccube.log.formatter.line
+            level: debug
+        console:
+            type: console
+            process_psr_3_messages: false
+            channels: ['!event', '!doctrine']

@@ -25,24 +25,24 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\DeliveryDurationType;
+use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class DeliveryDurationTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    /** @var  DeliveryDurationRepository */
+    protected $deliveryDurationRepo;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->deliveryDurationRepo = $this->container->get(DeliveryDurationRepository::class);
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(DeliveryDurationType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -53,7 +53,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.delivery_duration']->find(1));
+        $this->assertEquals($this->form->getData(), $this->deliveryDurationRepo->find(1));
     }
 
     public function testViewData()
@@ -65,13 +65,14 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-        $query = $this->app['eccube.repository.delivery_duration']->createQueryBuilder('m')
+        $query = $this->deliveryDurationRepo->createQueryBuilder('m')
             ->orderBy('m.sort_no', 'ASC')
             ->getQuery();
         $res = $query->getResult();
         // order by されているか
         $this->assertEquals($data, $res);
     }
+
     /**
      * 範囲外の値のテスト
      */
@@ -80,6 +81,7 @@ class DeliveryDurationTypeTest extends AbstractTypeTestCase
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
     }
+
     /**
      * 範囲外の値のテスト
      */

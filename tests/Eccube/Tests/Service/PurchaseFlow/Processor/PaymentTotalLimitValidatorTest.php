@@ -31,14 +31,9 @@ use Eccube\Tests\EccubeTestCase;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCartValidate()
     {
-        $validator = new PaymentTotalLimitValidator(1000);
+        $validator = $this->newValidator(1000);
 
         $cart = new Cart();
         $cart->setTotal(100);
@@ -49,7 +44,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
 
     public function testCartValidateFail()
     {
-        $validator = new PaymentTotalLimitValidator(1000);
+        $validator = $this->newValidator(1000);
 
         $cart = new Cart();
         $cart->setTotal(1001);
@@ -60,7 +55,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
 
     public function testOrderValidate()
     {
-        $validator = new PaymentTotalLimitValidator(1000);
+        $validator = $this->newValidator(1000);
 
         $order = new Order();
         $order->setTotal(100);
@@ -71,12 +66,22 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
 
     public function testOrderValidateFail()
     {
-        $validator = new PaymentTotalLimitValidator(1000);
+        $validator = $this->newValidator(1000);
 
         $order = new Order();
         $order->setTotal(1001);
 
         $result = $validator->process($order, new PurchaseContext());
         self::assertTrue($result->isError());
+    }
+
+    private function newValidator($maxTotalFee)
+    {
+        $result = $this->container->get(PaymentTotalLimitValidator::class);
+        $rc = new \ReflectionClass(PaymentTotalLimitValidator::class);
+        $prop = $rc->getProperty('maxTotalFee');
+        $prop->setAccessible(true);
+        $prop->setValue($result, $maxTotalFee);
+        return $result;
     }
 }

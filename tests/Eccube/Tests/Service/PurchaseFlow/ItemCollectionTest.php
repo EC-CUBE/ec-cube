@@ -7,20 +7,31 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 
 class ItemCollectionTest extends EccubeTestCase
 {
-    protected $ItemsHolder;
+    /**
+     * @var Order
+     */
+    protected $ItemHolder;
+
+    /**
+     * @var OrderItem[]
+     */
     protected $Items;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses()->toArray();
         $Customer = $this->createCustomer();
-        $this->ItemHolder = $this->container->get(Generator::class)->createOrder(
-            $Customer, $ProductClasses);
+        $this->ItemHolder = $this->container->get(Generator::class)->createOrder($Customer, $ProductClasses);
         $this->Items = $this->ItemHolder->getItems()->toArray();
     }
 

@@ -26,8 +26,6 @@ namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
@@ -43,25 +41,19 @@ use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * @Service
- */
 class PluginService
 {
     /**
-     * @Inject(PluginEventHandlerRepository::class)
      * @var PluginEventHandlerRepository
      */
     protected $pluginEventHandlerRepository;
 
     /**
-     * @Inject("orm.em")
      * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @Inject(PluginRepository::class)
      * @var PluginRepository
      */
     protected $pluginRepository;
@@ -72,25 +64,21 @@ class PluginService
     protected $eccubeConfig;
 
     /**
-     * @Inject(Application::class)
      * @var Application
      */
     protected $app;
 
     /**
      * @var EntityProxyService
-     * @Inject(EntityProxyService::class)
      */
     protected $entityProxyService;
 
     /**
-     * @Inject(SchemaService::class)
      * @var SchemaService
      */
     protected $schemaService;
 
     /**
-     * @Inject("eccube.service.composer")
      * @var ComposerServiceInterface
      */
     protected $composerService;
@@ -127,8 +115,15 @@ class PluginService
      * @param EntityProxyService $entityProxyService
      * @param SchemaService $schemaService
      */
-    public function __construct(PluginEventHandlerRepository $pluginEventHandlerRepository, EntityManager $entityManager, PluginRepository $pluginRepository, EntityProxyService $entityProxyService, SchemaService $schemaService, $projectRoot, $environment)
-    {
+    public function __construct(
+        PluginEventHandlerRepository $pluginEventHandlerRepository,
+        EntityManager $entityManager,
+        PluginRepository $pluginRepository,
+        EntityProxyService $entityProxyService,
+        SchemaService $schemaService,
+        $projectRoot,
+        $environment
+    ) {
         $this->pluginEventHandlerRepository = $pluginEventHandlerRepository;
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;

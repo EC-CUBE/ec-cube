@@ -27,9 +27,6 @@ use Eccube\Form\Type\Front\ContactType;
 
 class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 

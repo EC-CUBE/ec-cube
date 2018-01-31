@@ -28,22 +28,15 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TemplateControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function setUp()
+    public function testRoutingAdminTemplateIndex()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
-    public function test_routing_AdminTemplate_index()
-    {
-        $this->client->request('GET', $this->app->url('admin_store_template'));
+        $this->client->request('GET', $this->generateUrl('admin_store_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminTemplate_new()
+    public function testRoutingAdminTemplateNew()
     {
-        $this->client->request('GET', $this->app->url('admin_store_template_install'));
+        $this->client->request('GET', $this->generateUrl('admin_store_template_install'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

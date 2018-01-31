@@ -24,9 +24,6 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Eccube\Annotation\FormType;
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -38,28 +35,13 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @FormType
- */
 class PaymentRegisterType extends AbstractType
 {
-    /**
-     * @var \Eccube\Application $app
-     * @Inject(Application::class)
-     */
-    protected $app;
-
-    public function __construct()
-    {
-    }
-
-    /**
+     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('method', TextType::class, array(
                 'label' => '支払方法',

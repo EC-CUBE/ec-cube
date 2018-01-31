@@ -46,7 +46,7 @@ class InvalidItemException extends \Exception
     /**
      * @return InvalidItemException
      */
-    public static function fromProductClass($errorCode, ProductClass $ProductClass)
+    public static function fromProductClass($errorMessage, ProductClass $ProductClass)
     {
         $productName = $ProductClass->getProduct()->getName();
         if ($ProductClass->hasClassCategory1()) {
@@ -56,6 +56,6 @@ class InvalidItemException extends \Exception
             $productName .= " - ".$ProductClass->getClassCategory2()->getName();
         }
 
-        return new self($errorCode, ['%product%' => $productName]);
+        return new self($errorMessage, ['%product%' => $productName]);
     }
 }

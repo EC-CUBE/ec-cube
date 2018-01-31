@@ -16,16 +16,16 @@ class UpdateDatePurchaseProcessor implements PurchaseProcessor
     /**
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * UpdateDatePurchaseProcessor constructor.
      *
-     * @param array $appConfig
+     * @param array $eccubeConfig
      */
-    public function __construct(array $appConfig)
+    public function __construct(array $eccubeConfig)
     {
-        $this->appConfig = $appConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

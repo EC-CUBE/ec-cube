@@ -5,6 +5,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * 例外系の PluginService テストケース.
@@ -16,24 +17,25 @@ use Symfony\Component\Yaml\Yaml;
  */
 class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 {
-    private function createTempDir(){
-        $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
-        if(!mkdir($t)){
-            throw new \Exception("$t ".$php_errormsg);
-        }
-        return $t;
-    }
+    /**
+     * @var PluginRepository
+     */
+    protected $pluginRepository;
 
+    /**
+     * @var PluginService
+     */
+    protected $pluginService;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->client = self::createClient();
-        $this->container = $this->client->getContainer();
-        $this->entityManager = $this->container->get('doctrine')->getManager();
-    }
+        parent::setUp();
 
-    public function tearDown()
-    {
-        parent::tearDown();
+        $this->pluginRepository = $this->container->get(PluginRepository::class);
+        $this->pluginService = $this->container->get(PluginService::class);
     }
 
     // インストーラが例外を上げた場合ロールバックできるか
@@ -68,17 +70,24 @@ class PluginManager extends AbstractPluginManager
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->container->get(PluginService::class);
-        $pluginRepository = $this->container->get(PluginRepository::class);
         try{
 
-            $this->assertTrue($service->install($tmpfile));
+            $this->assertTrue($this->pluginService->install($tmpfile));
             $this->fail("BrokenManager dont throw exception.");
         }catch(\Exception $e){ }
 
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
         // XXX PHPUnit によってロールバックが遅延してしまうので, 検証できないが, 消えているはず
-        $this->assertFalse((boolean)$plugin=$pluginRepository->findOneBy(array('name'=>$tmpname)));
+        $this->assertFalse((boolean)$plugin=$this->pluginRepository->findOneBy(array('name'=>$tmpname)));
+    }
+
+    private function createTempDir()
+    {
+        $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
+        if(!mkdir($t)){
+            throw new \Exception("$t ".$php_errormsg);
+        }
+        return $t;
     }
 }

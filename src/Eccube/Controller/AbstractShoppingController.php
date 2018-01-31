@@ -24,8 +24,6 @@
 namespace Eccube\Controller;
 
 
-use Eccube\Annotation\Inject;
-use Eccube\Application;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -34,13 +32,11 @@ use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 class AbstractShoppingController extends AbstractController
 {
     /**
-     * @Inject("eccube.purchase.flow.shopping")
      * @var PurchaseFlow
      */
     protected $purchaseFlow;
 
     /**
-     * @Inject("eccube.purchase.context")
      * @var PurchaseContext
      */
     protected $purchaseContext;
@@ -66,19 +62,27 @@ class AbstractShoppingController extends AbstractController
     protected $sessionOrderKey = 'eccube.front.shopping.order.id';
 
     /**
-     * @param Application $app
+     * @param PurchaseFlow $shoppingPurchaseFlow
+     * @required
+     */
+    public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow)
+    {
+        $this->purchaseFlow = $shoppingPurchaseFlow;
+    }
+
+    /**
      * @param ItemHolderInterface $itemHolder
      * @return PurchaseFlowResult
      */
-    protected function executePurchaseFlow(Application $app, ItemHolderInterface $itemHolder)
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder)
     {
         /** @var PurchaseFlowResult $flowResult */
-        $flowResult = $this->purchaseFlow->calculate($itemHolder, $app['eccube.purchase.context']($itemHolder, $itemHolder->getCustomer()));
+        $flowResult = $this->purchaseFlow->calculate($itemHolder, new PurchaseContext($itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
-            $app->addRequestError($warning->getMessage());
+            $this->addRequestError($warning);
         }
         foreach ($flowResult->getErrors() as $error) {
-            $app->addRequestError($error->getMessage());
+            $this->addRequestError($error);
         }
         return $flowResult;
     }

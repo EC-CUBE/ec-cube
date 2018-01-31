@@ -25,50 +25,52 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchCustomerType;
+use Symfony\Component\Form\FormInterface;
 
 class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
-    /** @var \symfony\component\form\forminterface */
+    /**
+     * @var FormInterface
+     */
     protected $form;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder(SearchCustomerType::class, null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $this->formFactory
+            ->createBuilder(SearchCustomerType::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 
     public function testTel_NotValidData()
     {
-        $formData = array(
+        $formData = [
             'tel' => str_repeat('A' , 55)
-        );
+        ];
 
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testBuyProductName_NotValiedData(){
-        $formData = array(
-            'buy_product_name' => str_repeat('A' , 55)
-        );
+    public function testBuyProductName_NotValiedData()
+    {
+        $formData = [
+            'buy_product_name' => str_repeat('A' , $this->eccubeConfig['stext_len'] + 1)
+        ];
 
         $this->form->submit($formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testBuyProductCode_NotValiedData(){
+    public function testBuyProductCode_NotValiedData()
+    {
         $formData = array(
-            'buy_product_code' => str_repeat('A' , 55)
+            'buy_product_code' => str_repeat('A' , $this->eccubeConfig['stext_len'] + 1)
         );
 
         $this->form->submit($formData);

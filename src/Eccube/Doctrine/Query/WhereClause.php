@@ -294,7 +294,8 @@ class WhereClause
         return new Expr();
     }
 
-    public function build(QueryBuilder $builder) {
+    public function build(QueryBuilder $builder)
+    {
         $builder->andWhere($this->expr);
         if ($this->params) {
             foreach ($this->params as $key=>$param) {

@@ -25,24 +25,24 @@
 namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Form\Type\Master\MailTemplateType;
+use Eccube\Repository\MailTemplateRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class MailTemplateTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Eccube\Application */
-    protected $app;
-
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    /** @var  MailTemplateRepository */
+    protected $mailTemplateRepo;
 
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->mailTemplateRepo = $this->container->get(MailTemplateRepository::class);
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
+        $this->form = $this->formFactory
             ->createBuilder(MailTemplateType::class, null, array(
                 'csrf_protection' => false,
             ))
@@ -53,7 +53,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.mail_template']->find(1));
+        $this->assertEquals($this->form->getData(), $this->mailTemplateRepo->find(1));
     }
 
     public function testViewData()
@@ -65,13 +65,14 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-        $query = $this->app['eccube.repository.mail_template']->createQueryBuilder('m')
+        $query = $this->mailTemplateRepo->createQueryBuilder('m')
             ->orderBy('m.id', 'ASC')
             ->getQuery();
         $res = $query->getResult();
         // order by されているか
         $this->assertEquals($data, $res);
     }
+
     /**
      * 範囲外の値のテスト
      */

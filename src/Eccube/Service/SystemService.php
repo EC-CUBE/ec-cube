@@ -23,30 +23,38 @@
 
 namespace Eccube\Service;
 
-use Doctrine\ORM\EntityManager;
-use Eccube\Annotation\Inject;
-use Eccube\Annotation\Service;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-/**
- * @Service
- */
 class SystemService
 {
     /**
-     * @var EntityManager
-     * @Inject("orm.em")
+     * @var EntityManagerInterface
      */
-    protected $em;
+    protected $entityManager;
 
+    /**
+     * SystemService constructor.
+     *
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * get DB version
+     * @return string
+     */
     public function getDbversion()
     {
 
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
-        $platform = $this->em->getConnection()->getDatabasePlatform()->getName();
+        $platform = $this->entityManager->getConnection()->getDatabasePlatform()->getName();
         switch ($platform) {
             case 'sqlite':
                 $prefix = 'SQLite version ';
@@ -64,7 +72,7 @@ class SystemService
                 $func = 'version()';
         }
 
-        $version = $this->em
+        $version = $this->entityManager
             ->createNativeQuery('select '.$func.' as v', $rsm)
             ->getSingleScalarResult();
 

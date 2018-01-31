@@ -24,46 +24,68 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\PaymentRepository;
+use Eccube\Repository\PaymentOptionRepository;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var DeliveryRepository
+     */
+    protected $deliveryRepository;
 
+    /**
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
+     * @var PaymentOptionRepository
+     */
+    protected $paymentOptionRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+
+        $this->deliveryRepository = $this->container->get(DeliveryRepository::class);
+        $this->paymentRepository = $this->container->get(PaymentRepository::class);
+        $this->paymentOptionRepository = $this->container->get(PaymentOptionRepository::class);
     }
 
-    public function test_findAllowedPayment()
+    public function test_findAllowedPaymentEmpty()
     {
         $saleTypes = array(7, 6);
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
-        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($saleTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         // 支払方法を取得
-        $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
         $this->expected = 0;
         $this->actual = count($payments);
         $this->verify('存在しない販売種別を指定しているため取得できない');
 
-        if (count($saleTypes) > 1) {
-            $deliveries = $this->app['eccube.repository.delivery']->findAllowedDeliveries($saleTypes, $payments);
-        }
+        $deliveries = $this->deliveryRepository->findAllowedDeliveries($saleTypes, $payments);
+        $this->assertEmpty($deliveries);
     }
 
     public function testFindAllowedPaymentWithDefault()
     {
-        $saleTypes = array(1);
+        $saleTypes = [1];
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
-        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($saleTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         // 支払方法を取得
-        $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
         $this->expected = 4;
         $this->actual = count($payments);
@@ -72,14 +94,14 @@ class PaymentRepositoryTest extends EccubeTestCase
 
     public function testFindAllowedPaymentWithDeliveryOnly()
     {
-        $saleTypes = array(1, 2);
+        $saleTypes = [1, 2];
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
-        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($saleTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         // 支払方法を取得
-        $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
         $this->expected = 1;
         $this->actual = count($payments);
@@ -93,27 +115,22 @@ class PaymentRepositoryTest extends EccubeTestCase
      */
     public function testFindAllowedPaymentWithExclusion()
     {
-        $saleTypes = array(1, 2);
+        $saleTypes = [1, 2];
         $saleTypes = array_unique($saleTypes);
 
         // SaleType 1 と 2 で, 共通する支払い方法を削除しておく
-        $PaymentOption = $this
-            ->app['orm.em']
-            ->getRepository('\Eccube\Entity\PaymentOption')
-            ->findOneBy(
-                array(
-                    'delivery_id' => 1,
-                    'payment_id' => 3
-                )
-            );
+        $PaymentOption = $this->paymentOptionRepository->findOneBy([
+            'delivery_id' => 1,
+            'payment_id' => 3
+        ]);
         $this->assertNotNull($PaymentOption);
-        $this->app['orm.em']->remove($PaymentOption);
-        $this->app['orm.em']->flush();
+        $this->entityManager->remove($PaymentOption);
+        $this->entityManager->flush();
 
-        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($saleTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         // 支払方法を取得
-        $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries);
 
         $this->expected = 0;
         $this->actual = count($payments);
@@ -122,7 +139,7 @@ class PaymentRepositoryTest extends EccubeTestCase
 
     public function testFindAllArray()
     {
-        $Results = $this->app['eccube.repository.payment']->findAllArray();
+        $Results = $this->paymentRepository->findAllArray();
 
         $this->assertTrue(is_array($Results));
 
@@ -133,14 +150,14 @@ class PaymentRepositoryTest extends EccubeTestCase
 
     public function testFindPayments()
     {
-        $saleTypes = array(1);
+        $saleTypes = [1];
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
-        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($saleTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         // 支払方法を取得
-        $payments = $this->app['eccube.repository.payment']->findPayments($deliveries[0]);
+        $payments = $this->paymentRepository->findPayments($deliveries[0]);
 
         $this->expected = 4;
         $this->actual = count($payments);
@@ -151,14 +168,14 @@ class PaymentRepositoryTest extends EccubeTestCase
 
     public function testFindPaymentsAsObjects()
     {
-        $saleTypes = array(1);
+        $saleTypes = [1];
         $saleTypes = array_unique($saleTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($saleTypes);
-        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($saleTypes);
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
 
         // 支払方法を取得
-        $payments = $this->app['eccube.repository.payment']->findPayments($deliveries[0], true);
+        $payments = $this->paymentRepository->findPayments($deliveries[0], true);
 
         $this->expected = 4;
         $this->actual = count($payments);

@@ -3,22 +3,18 @@
 namespace Eccube\Tests\EventListener;
 
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ForwardOnlyListenerTest extends AbstractWebTestCase
 {
 
-    public function setUp()
-    {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
-        parent::setUp();
-    }
-
     public function testForwardOnly()
     {
+        $this->markTestIncomplete("function shopping is not implement");
         try {
-            $this->client->request('GET', $this->app->url("shopping_check_to_cart"));
+            $this->client->request('GET', $this->generateUrl("shopping_check_to_cart"));
             self::fail();
-        } catch (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e) {
+        } catch (AccessDeniedHttpException$e) {
             self::assertEquals('Eccube\Controller\ShoppingController:checkToCart is Forward Only', $e->getMessage());
         }
     }

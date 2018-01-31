@@ -4,6 +4,9 @@ namespace Eccube\Tests\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\CategoryRepository;
 
 /**
  * ProductRepository#getQueryBuilderBySearchDataAdmin test cases.
@@ -12,30 +15,52 @@ use Eccube\Entity\Category;
  */
 class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
 {
+    /**
+     * @var array
+     */
+    protected $Results;
+
+    /**
+     * @var array
+     */
+    protected $searchData;
+
+    /**
+     * @var ProductStatusRepository
+     */
+    protected $productStatusRepository;
+
+    /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
-    }
 
-    protected $Results;
-    protected $searchData;
+        $this->productStatusRepository = $this->container->get(ProductStatusRepository::class);
+        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+    }
 
     public function scenario()
     {
-        $this->Results = $this->app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($this->searchData)
+        $this->Results = $this->productRepository->getQueryBuilderBySearchDataForAdmin($this->searchData)
             ->getQuery()
             ->getResult();
     }
 
     public function testId()
     {
-        $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-2'));
+        $Product = $this->productRepository->findOneBy(['name' => '商品-2']);
         $id = $Product->getId();
 
-        $this->searchData = array(
+        $this->searchData = [
             'id' => $id
-        );
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -45,7 +70,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testCode()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
             $ProductClass->setCode('dessert-1');
@@ -58,11 +83,11 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
             $ProductClass->setCode('onabe-1');
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'id' => 'dessert-'
-        );
+        ];
         $this->scenario();
 
         $this->expected = 2;
@@ -72,17 +97,17 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testName()
     {
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         $Products[1]->setName('アイス');
         $Products[1]->setSearchWord('抹茶');
         $Products[2]->setName('お鍋');
         $Products[2]->setSearchWord('立方体');
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'id' => 'お'
-        );
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -92,15 +117,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testStatus()
     {
-        $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+        $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
+        $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $Product->setStatus($ProductStatus);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
-        $Status = new ArrayCollection(array($ProductStatus));
-        $this->searchData = array(
+        $Status = new ArrayCollection([$ProductStatus]);
+        $this->searchData = [
             'status' => $Status
-        );
+        ];
         $this->scenario();
 
         $this->expected = 1;
@@ -110,13 +135,13 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testLinkStatus()
     {
-        $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
-        $ProductStatus = $this->app['eccube.repository.master.product_status']->find(\Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE);
+        $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
+        $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $Product->setStatus($ProductStatus);
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $this->searchData = array(
-            'link_status' => \Eccube\Entity\Master\ProductStatus::DISPLAY_HIDE
+            'link_status' => ProductStatus::DISPLAY_HIDE
         );
         $this->scenario();
 
@@ -129,7 +154,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         $faker = $this->getFaker();
         // 全商品の在庫を 1 以上にしておく
-        $Products = $this->app['eccube.repository.product']->findAll();
+        $Products = $this->productRepository->findAll();
         foreach ($Products as $Product) {
             foreach ($Product->getProductClasses() as $ProductClass) {
                 $ProductClass
@@ -137,16 +162,16 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
                     ->setStock($faker->numberBetween(1, 999));
             }
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         // 1商品だけ 0 に設定する
-        $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
+        $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         foreach ($Product->getProductClasses() as $ProductClass) {
             $ProductClass
                 ->setStockUnlimited(false)
                 ->setStock(0);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
 
         $this->searchData = array(
             'stock_status' => 0
@@ -160,9 +185,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testCreateDateStart()
     {
-        $this->searchData = array(
+        $this->searchData = [
             'create_date_start' => new \DateTime('- 1 days')
-        );
+        ];
 
         $this->scenario();
 
@@ -173,9 +198,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testCreateDateEnd()
     {
-        $this->searchData = array(
+        $this->searchData = [
             'create_date_end' => new \DateTime('+ 1 days')
-        );
+        ];
 
         $this->scenario();
 
@@ -186,9 +211,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testUpdateDateStart()
     {
-        $this->searchData = array(
+        $this->searchData = [
             'update_date_start' => new \DateTime('- 1 days')
-        );
+        ];
 
         $this->scenario();
 
@@ -199,9 +224,9 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testUpdateDateEnd()
     {
-        $this->searchData = array(
+        $this->searchData = [
             'update_date_end' => new \DateTime('+ 1 days')
-        );
+        ];
 
         $this->scenario();
 
@@ -212,10 +237,10 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testCategory()
     {
-        $Categories = $this->app['eccube.repository.category']->findAll();
-        $this->searchData = array(
+        $Categories = $this->categoryRepository->findAll();
+        $this->searchData = [
             'category_id' => $Categories[0]
-        );
+        ];
         $this->scenario();
 
         $this->expected = 3;
@@ -232,12 +257,12 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
             ->setHierarchy(1)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
-        $this->app['orm.em']->persist($Category);
-        $this->app['orm.em']->flush();
+        $this->entityManager->persist($Category);
+        $this->entityManager->flush();
 
-        $this->searchData = array(
+        $this->searchData = [
             'category_id' => $Category
-        );
+        ];
         $this->scenario();
 
         $this->expected = 0;
@@ -247,15 +272,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testProductImage()
     {
-        $this->searchData = array();
+        $this->searchData = [];
 
         $this->scenario();
 
         $Products = $this->Results;
 
         foreach ($Products as $Product) {
-            $this->expected = array(0, 1, 2);
-            $this->actual = array();
+            $this->expected = [0, 1, 2];
+            $this->actual = [];
 
             $ProductImages = $Product->getProductImage();
             foreach ($ProductImages as $ProductImage) {

@@ -4,6 +4,8 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Repository\BlockRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\ReflectionUtil;
 use org\bovigo\vfs\vfsStream;
@@ -15,15 +17,30 @@ use org\bovigo\vfs\vfsStream;
  */
 class BlockRepositoryTest extends EccubeTestCase
 {
+    /**
+     * @var  DeviceType
+     */
     protected $DeviceType;
+
+    /**
+     * @var  string
+     */
     private $block_id;
 
+    /**
+     * @var  BlockRepository
+     */
+    protected $blockRepository;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
         parent::setUp();
+        $this->blockRepository = $this->container->get(BlockRepository::class);
         $this->removeBlock();
-        $this->DeviceType = $this->app['eccube.repository.master.device_type']
+        $this->DeviceType = $this->container->get(DeviceTypeRepository::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         for ($i = 0; $i < 10; $i++) {
@@ -34,24 +51,24 @@ class BlockRepositoryTest extends EccubeTestCase
                 ->setUseController(true)
                 ->setDeletable(false)
                 ->setDeviceType($this->DeviceType);
-            $this->app['orm.em']->persist($Block);
-            $this->app['orm.em']->flush(); // ここで flush しないと, MySQL で ID が取得できない
+            $this->entityManager->persist($Block);
+            $this->entityManager->flush(); // ここで flush しないと, MySQL で ID が取得できない
             $this->block_id = $Block->getId();
         }
     }
 
     protected function removeBlock()
     {
-        $Blocks = $this->app['eccube.repository.block']->findAll();
+        $Blocks = $this->blockRepository->findAll();
         foreach ($Blocks as $Block) {
-            $this->app['orm.em']->remove($Block);
+            $this->entityManager->remove($Block);
         }
-        $this->app['orm.em']->flush();
+        $this->entityManager->flush();
     }
 
     public function testGetList()
     {
-        $Blocks = $this->app['eccube.repository.block']->getList($this->DeviceType);
+        $Blocks = $this->blockRepository->getList($this->DeviceType);
 
         $this->assertNotNull($Blocks);
         $this->expected = 10;
@@ -61,7 +78,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
     public function testGetBlock()
     {
-        $Block = $this->app['eccube.repository.block']->getBlock($this->block_id, $this->DeviceType);
+        $Block = $this->blockRepository->getBlock($this->block_id, $this->DeviceType);
         $this->assertNotNull($Block);
         $this->expected = $this->block_id;
         $this->actual = $Block->getId();
@@ -72,27 +89,27 @@ class BlockRepositoryTest extends EccubeTestCase
     {
         // TODO findOrCreate(array $condition) にするべき
         // https://github.com/EC-CUBE/ec-cube/issues/922
-        $Block = $this->app['eccube.repository.block']->findOrCreate($this->block_id, $this->DeviceType);
+        $Block = $this->blockRepository->findOrCreate($this->block_id, $this->DeviceType);
 
         $this->assertNotNull($Block);
         $this->expected = $this->block_id;
         $this->actual = $Block->getId();
         $this->verify('ブロックIDは'.$this->expected.'ではありません');
 
-        $Block = $this->app['eccube.repository.block']->findOrCreate(null, $this->DeviceType);
+        $Block = $this->blockRepository->findOrCreate(null, $this->DeviceType);
         $this->assertNotNull($Block);
-        $this->assertTrue($Block instanceof \Eccube\Entity\Block);
+        $this->assertTrue($Block instanceof Block);
         $this->assertNull($Block->getId());
 
-        $Block = $this->app['eccube.repository.block']->findOrCreate(999999, $this->DeviceType);
+        $Block = $this->blockRepository->findOrCreate(999999, $this->DeviceType);
         $this->assertNull($Block); // XXX block_id = 999999 の新たなインスタンスを返してほしいが不可能.
     }
 
     public function testGetWriteTemplatePath()
     {
-        $this->expected = $this->app['config']['block_realdir'];
+        $this->expected = $this->eccubeConfig['block_realdir'];
         // XXX 引数は使用していない. $app['config']['block_realdir'] のパスを返しているだけ
-        $this->actual = $this->app['eccube.repository.block']->getWriteTemplatePath();
+        $this->actual = $this->blockRepository->getWriteTemplatePath();
         $this->verify();
     }
 
@@ -104,14 +121,13 @@ class BlockRepositoryTest extends EccubeTestCase
 
         file_put_contents(vfsStream::url('rootDir').'/'.$fileName.'.twig', 'test');
 
-        $blockRepository = $this->app['eccube.repository.block'];
-        ReflectionUtil::setValue($blockRepository, 'appConfig', [
+        ReflectionUtil::setValue($this->blockRepository, 'appConfig', [
             'block_realdir' =>  vfsStream::url('rootDir'),
             'block_default_realdir' => vfsStream::url('rootDir/default'),
         ]);
 
         // XXX 引数 isUser は使用していない
-        $data = $blockRepository->getReadTemplateFile($fileName);
+        $data = $this->blockRepository->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';
@@ -126,14 +142,13 @@ class BlockRepositoryTest extends EccubeTestCase
 
         file_put_contents(vfsStream::url('rootDir/default').'/'.$fileName.'.twig', 'test');
 
-        $blockRepository = $this->app['eccube.repository.block'];
-        ReflectionUtil::setValue($blockRepository, 'appConfig', [
+        ReflectionUtil::setValue($this->blockRepository, 'appConfig', [
             'block_realdir' =>  vfsStream::url('rootDir'),
             'block_default_realdir' => vfsStream::url('rootDir/default'),
         ]);
 
         // XXX 引数 isUser は使用していない
-        $data = $blockRepository->getReadTemplateFile($fileName);
+        $data = $this->blockRepository->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
         $this->actual = $data['tpl_data'];
         $this->expected = 'test';

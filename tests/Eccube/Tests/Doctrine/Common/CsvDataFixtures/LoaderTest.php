@@ -6,16 +6,27 @@ use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
 
 class LoaderTest extends EccubeTestCase
 {
+    /**
+     * @var string
+     */
     protected $dir;
+
+    /**
+     * @var Loader
+     */
     protected $loader;
 
-    public function setUp() {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
         parent::setUp();
-        $this->loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+        $this->loader = new Loader();
         $this->dir = __DIR__.'/../../../../../Fixtures/import_csv';
     }
 

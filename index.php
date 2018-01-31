@@ -17,20 +17,17 @@ if (!file_exists($autoload) && !is_readable($autoload)) {
 }
 require $autoload;
 
-ini_set('display_errors', 'Off');
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
-
 // The check is to ensure we don't use .env in production
 if (!isset($_SERVER['APP_ENV'])) {
     if (!class_exists(Dotenv::class)) {
         throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
     }
 
-    $envFile = __DIR__.'/.env';
-    if (!file_exists($envFile) && !is_readable($envFile)) {
-        die('.env file does not exist.');
+    if (file_exists(__DIR__.'/.env')) {
+        (new Dotenv())->load(__DIR__.'/.env');
+    } else {
+        (new Dotenv())->load(__DIR__.'/.env.install');
     }
-    (new Dotenv())->load($envFile);
 }
 
 $env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';

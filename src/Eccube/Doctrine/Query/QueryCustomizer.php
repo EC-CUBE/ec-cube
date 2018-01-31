@@ -42,4 +42,11 @@ interface QueryCustomizer
      * @param string $queryKey
      */
     public function customize(QueryBuilder $builder, $params, $queryKey);
+
+    /**
+     * カスタマイズ対象のキーを返します。
+     *
+     * @return string
+     */
+    public function getQueryKey();
 }

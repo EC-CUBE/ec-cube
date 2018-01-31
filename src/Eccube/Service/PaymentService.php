@@ -12,6 +12,11 @@ class PaymentService
      */
     protected $requestStack;
 
+    /**
+     * PaymentService constructor.
+     *
+     * @param RequestStack $requestStack
+     */
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;

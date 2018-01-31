@@ -6,6 +6,8 @@ use Eccube\Entity\ItemHolderInterface;
 
 abstract class ValidatableItemHolderProcessor implements ItemHolderProcessor
 {
+    use ValidatorTrait;
+
     /**
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext     $context
