@@ -193,10 +193,10 @@ $(function() {
                                       </li>
                                     {% endfor %}
                                       <li>
-                                      {% if page_status == eccube.config.admin_product_stock_status %}
+                                      {% if page_status == eccube_config.admin_product_stock_status %}
                                           <a>{{ 'admin.product.search.stock'|trans }}</a>
                                       {% else %}
-                                          <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': eccube.config.admin_product_stock_status} ) }}">{{ 'admin.product.search.stock'|trans }}</a>
+                                          <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': eccube_config.admin_product_stock_status} ) }}">{{ 'admin.product.search.stock'|trans }}</a>
                                       {% endif %}
                                       </li>
                                     </ul>
@@ -290,10 +290,10 @@ $(function() {
                                             </li>
                                         {% endfor %}
                                         <li>
-                                            {% if page_status == eccube.config.admin_product_stock_status %}
+                                            {% if page_status == eccube_config.admin_product_stock_status %}
                                                 <a>{{ 'admin.product.search.stock'|trans }}</a>
                                             {% else %}
-                                                <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': eccube.config.admin_product_stock_status} ) }}">{{ 'admin.product.search.stock'|trans }}</a>
+                                                <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': eccube_config.admin_product_stock_status} ) }}">{{ 'admin.product.search.stock'|trans }}</a>
                                             {% endif %}
                                         </li>
                                     </ul>

@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
 use Eccube\Entity\Product;
@@ -124,7 +125,7 @@ class CsvImportController
     protected $eventDispatcher;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $appConfig;
 
@@ -151,9 +152,9 @@ class CsvImportController
      * @param FormFactoryInterface $formFactory
      * @param SessionInterface $session
      * @param EventDispatcherInterface $eventDispatcher
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfo $BaseInfo, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, SessionInterface $session, EventDispatcherInterface $eventDispatcher, array $eccubeConfig)
+    public function __construct(DeliveryDurationRepository $deliveryDurationRepository, SaleTypeRepository $saleTypeRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository, ClassCategoryRepository $classCategoryRepository, ProductStatusRepository $productStatusRepository, ProductRepository $productRepository, BaseInfo $BaseInfo, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, SessionInterface $session, EventDispatcherInterface $eventDispatcher, EccubeConfig $eccubeConfig)
     {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
