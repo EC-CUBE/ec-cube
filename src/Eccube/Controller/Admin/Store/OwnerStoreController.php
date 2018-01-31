@@ -355,19 +355,22 @@ class OwnerStoreController extends AbstractController
         $this->isTokenValid($app);
 
         if ($Plugin->isEnabled()) {
-            $this->pluginService->disable($Plugin);
+            $this->addError('admin.plugin.uninstall.error.not_disable', 'admin');
+
+            return $this->redirectToRoute('admin_store_plugin');
         }
+
         $pluginCode = $Plugin->getCode();
         $packageName = self::$vendorName.'/'.$pluginCode;
         try {
             $this->composerService->execRemove($packageName);
-            $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
+            $this->addSuccess('admin.plugin.uninstall.complete', 'admin');
         } catch (\Exception $exception) {
             log_info($exception);
-            $app->addError('admin.plugin.uninstall.error', 'admin');
+            $this->addError('admin.plugin.uninstall.error', 'admin');
         }
 
-        return $app->redirect($app->url('admin_store_plugin'));
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**

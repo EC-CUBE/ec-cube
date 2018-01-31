@@ -63,5 +63,12 @@
     'product_order_price_higher' => 3,
     'price_max' => 2147483647,
     'pageinrange' => false,
-    'composer_memory_limit' => 1536
+    'composer_memory_limit' => 1536,
+    'order_mail_template_id' => 1, //注文受付メール
+    'entry_confirm_mail_template_id' => 2, //会員仮登録メール
+    'entry_complete_mail_template_id' => 3, //会員本登録メール
+    'customer_withdraw_mail_template_id' => 4, //会員退会メール
+    'contact_mail_template_id' => 5, //問合受付メール
+    'forgot_mail_template_id' => 6, //パスワードリセット
+    'reset_complete_mail_template_id' => 7, //パスワードリマインダー
 ];

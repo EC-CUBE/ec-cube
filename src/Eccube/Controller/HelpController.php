@@ -57,11 +57,7 @@ class HelpController extends AbstractController
      */
     public function tradelaw()
     {
-        $Help = $this->helpRepository->get();
-
-        return [
-            'help' => $Help,
-        ];
+        return [];
     }
 
     /**
@@ -105,10 +101,6 @@ class HelpController extends AbstractController
      */
     public function agreement()
     {
-        $Help = $this->helpRepository->get();
-
-        return [
-            'help' => $Help,
-        ];
+        return [];
     }
 }

@@ -13,4 +13,5 @@
     'trusted_proxies_connection_only' => env('ECCUBE_TRUSTED_PROXIES_CONNECTION_ONLY', false),
     'trusted_proxies' => env('ECCUBE_TRUSTED_PROXIES', []),
     'vendor_name' => 'Acme',
+    'order_code' => '${dd}${yyyy}${number,5}${mm}',
 ];

@@ -185,6 +185,10 @@ class PageRepository extends AbstractRepository
             ))
             ->getSingleResult();
 
+        if ($ownResult->getMasterPage()) {
+            $ownResult = $ownResult->getMasterPage();
+        }
+
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
@@ -263,6 +267,7 @@ class PageRepository extends AbstractRepository
             ->where('l.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType)
             ->andWhere('l.id <> 0')
+            ->andWhere('l.MasterPage is null')
             ->orderBy('l.id', 'ASC');
         if (!is_null($where)) {
             $qb->andWhere($where);
