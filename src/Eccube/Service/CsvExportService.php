@@ -120,6 +120,7 @@ class CsvExportService
         CsvTypeRepository $csvTypeRepository,
         OrderRepository $orderRepository,
         CustomerRepository $customerRepository,
+        ProductRepository $productRepository,
         array $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
@@ -128,6 +129,7 @@ class CsvExportService
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
         $this->config = $eccubeConfig;
+        $this->productRepository = $productRepository;
     }
 
     /**
