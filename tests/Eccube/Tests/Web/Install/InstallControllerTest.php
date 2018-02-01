@@ -60,8 +60,9 @@ class InstallControllerTest extends AbstractWebTestCase
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
         $eccubeConfig = $this->container->get(EccubeConfig::class);
+        $environment = $this->container->getParameter('kernel.environment');
         $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install', $eccubeConfig);
+        $this->controller = new InstallController($this->session, $formFactory, $encoder, $environment, $eccubeConfig);
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);
@@ -108,7 +109,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->session->set('eccube.session.install',
                             [
                                 'authmagic' => 'secret',
-                                'admin_allow_hosts' => "'[\"127.0.0.1\",\"192.168.0.1\"]'"
+                                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1"
                             ]);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
