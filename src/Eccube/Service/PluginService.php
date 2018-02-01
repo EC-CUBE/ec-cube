@@ -28,6 +28,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
@@ -43,6 +44,11 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginService
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
     /**
      * @var PluginEventHandlerRepository
      */
@@ -116,6 +122,7 @@ class PluginService
         PluginRepository $pluginRepository,
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
+        EccubeConfig $eccubeConfig,
         $projectRoot,
         $environment
     ) {
@@ -124,6 +131,7 @@ class PluginService
         $this->pluginRepository = $pluginRepository;
         $this->entityProxyService = $entityProxyService;
         $this->schemaService = $schemaService;
+        $this->eccubeConfig = $eccubeConfig;
         $this->projectRoot = $projectRoot;
         $this->environment = $environment;
     }
@@ -211,7 +219,7 @@ class PluginService
             $plugin = $this->registerPlugin($config, $event, $source);
 
             // プラグインmetadata定義を追加
-            $entityDir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+            $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
             if (file_exists($entityDir)) {
                 $ormConfig = $this->entityManager->getConfiguration();
                 $chain = $ormConfig->getMetadataDriverImpl();

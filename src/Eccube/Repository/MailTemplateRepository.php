@@ -39,9 +39,15 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class MailTemplateRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var string
+     */
+    protected $projectRoot;
+
+    public function __construct(RegistryInterface $registry, $projectRoot)
     {
         parent::__construct($registry, MailTemplate::class);
+        $this->projectRoot = $projectRoot;
     }
 
     /**
@@ -68,7 +74,7 @@ class MailTemplateRepository extends AbstractRepository
      */
     public function getWriteTemplatePath()
     {
-        return $this->appConfig['template_realdir'];
+        return $this->projectRoot.'/app/template/default';
     }
 
     /**
@@ -87,8 +93,8 @@ class MailTemplateRepository extends AbstractRepository
     {
 
         $readPaths = array(
-            $this->appConfig['template_realdir'],
-            $this->appConfig['template_default_realdir'],
+            $this->projectRoot.'/app/template/default',
+            $this->projectRoot.'/src/Eccube/Resource/template/default',
         );
 
         foreach ($readPaths as $readPath) {
