@@ -4,7 +4,7 @@
 + PullRequestの目的、関連するIssue番号など
 
 ## 方針(Policy)
-+ このPullRequestを作るにあたって考慮したものや除外し内容
++ このPullRequestを作るにあたって考慮したものや除外した内容
   - 例）Symfony のXXにならって作成、2系で同様の仕様があったため など
 
 ## 実装に関する補足(Appendix)
