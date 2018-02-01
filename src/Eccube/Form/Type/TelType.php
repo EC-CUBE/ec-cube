@@ -22,6 +22,7 @@
  */
 namespace Eccube\Form\Type;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,17 +40,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TelType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * TelType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 
@@ -130,19 +131,19 @@ class TelType extends AbstractType
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])),
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])),
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])),
                 ),
             ),
             'tel01_name' => '',

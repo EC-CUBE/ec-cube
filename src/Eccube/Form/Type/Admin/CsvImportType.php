@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,15 +35,15 @@ class CsvImportType extends AbstractType
     /**
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * CsvImportType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 
@@ -59,8 +60,8 @@ class CsvImportType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
                     new Assert\File(array(
-                        'maxSize' => $this->appConfig['csv_size'] . 'M',
-                        'maxSizeMessage' => 'CSVファイルは' . $this->appConfig['csv_size'] . 'M以下でアップロードしてください。',
+                        'maxSize' => $this->eccubeConfig['csv_size'] . 'M',
+                        'maxSizeMessage' => 'CSVファイルは' . $this->eccubeConfig['csv_size'] . 'M以下でアップロードしてください。',
                     )),
                 ),
             ));

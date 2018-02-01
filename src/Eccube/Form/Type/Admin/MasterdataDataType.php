@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,9 +40,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MasterdataDataType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var TranslatorInterface
@@ -50,12 +51,12 @@ class MasterdataDataType extends AbstractType
 
     /**
      * MasterdataDataType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param TranslatorInterface $translator
      */
-    public function __construct(array $eccubeConfig, TranslatorInterface $translator)
+    public function __construct(EccubeConfig $eccubeConfig, TranslatorInterface $translator)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->translator = $translator;
     }
 
@@ -71,7 +72,7 @@ class MasterdataDataType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['int_len'],
+                        'max' => $this->eccubeConfig['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^\d+$/u',

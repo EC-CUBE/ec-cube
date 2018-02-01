@@ -1,5 +1,4 @@
 parameters:
-  eccube.constants:
     admin_route: '%admin_route%'
     nav: '%eccube.nav%'
     admin_allow_hosts: {}

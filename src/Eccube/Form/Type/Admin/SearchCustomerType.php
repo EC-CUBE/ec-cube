@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\CustomerStatusType;
@@ -42,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchCustomerType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -54,12 +55,12 @@ class SearchCustomerType extends AbstractType
     /**
      * SearchCustomerType constructor.
      *
-     * @param $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param CustomerStatusRepository $customerStatusRepository
      */
     public function __construct(
         CustomerStatusRepository $customerStatusRepository,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->customerStatusRepository = $customerStatusRepository;

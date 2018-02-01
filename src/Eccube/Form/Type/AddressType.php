@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\PrefType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,9 +47,9 @@ class AddressType extends AbstractType
      * {@inheritdoc}
      *
      * AddressType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
         $this->config = $eccubeConfig;
     }

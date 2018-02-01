@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,17 +32,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class KanaType extends AbstractType
 {
     /**
-     * @var array
+     * @var \Eccube\Common\EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * KanaType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -69,7 +70,7 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['kana_len'],
+                        'max' => $this->eccubeConfig['kana_len'],
                     )),
                 ),
             ),
@@ -82,7 +83,7 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['kana_len'],
+                        'max' => $this->eccubeConfig['kana_len'],
                     )),
                 ),
             ),

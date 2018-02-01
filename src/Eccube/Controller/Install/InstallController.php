@@ -33,6 +33,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -109,7 +110,7 @@ class InstallController extends AbstractController
         FormFactoryInterface $formFactory,
         PasswordEncoder $encoder,
         $environment,
-        $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->rootDir = realpath(__DIR__.'/../../../..');
         $this->configDir = realpath($this->rootDir.'/app/config/eccube');

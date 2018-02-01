@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Product;
 use Eccube\Util\StringUtil;
@@ -45,25 +46,25 @@ class ProductRepository extends AbstractRepository
 
     /**
      * @Inject("config")
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * ProductRepository constructor.
      *
      * @param RegistryInterface $registry
      * @param Queries $queries
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         Queries $queries,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Product::class);
         $this->queries = $queries;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
    /**
@@ -108,7 +109,7 @@ class ProductRepository extends AbstractRepository
 
         // Order By
         // 価格低い順
-        $config = $this->appConfig;
+        $config = $this->eccubeConfig;
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_lower']) {
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');

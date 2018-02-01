@@ -25,6 +25,7 @@
 namespace Eccube\ServiceProvider;
 
 use Eccube\Application;
+use Eccube\Common\EccubeConfig;
 
 class EccubeServiceProvider implements ServiceProviderInterface
 {
@@ -38,9 +39,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         $app['config'] = $app->share(function () use ($app) {
-            if ($app->getParentContainer()->hasParameter('eccube.app')) {
-                $EccubeApplication = $app->getParentContainer()->getParameter('eccube.app');
-                return $EccubeApplication['config'];
+            if ($app->getParentContainer()->has(EccubeConfig::class)) {
+                return $app->getParentContainer()->get(EccubeConfig::class);
             }
 
             return [];

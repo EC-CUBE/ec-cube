@@ -121,7 +121,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
         file_put_contents(vfsStream::url('rootDir').'/'.$fileName.'.twig', 'test');
 
-        ReflectionUtil::setValue($this->blockRepository, 'appConfig', [
+        ReflectionUtil::setValue($this->blockRepository, 'eccubeConfig', [
             'block_realdir' =>  vfsStream::url('rootDir'),
             'block_default_realdir' => vfsStream::url('rootDir/default'),
         ]);
@@ -142,7 +142,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
         file_put_contents(vfsStream::url('rootDir/default').'/'.$fileName.'.twig', 'test');
 
-        ReflectionUtil::setValue($this->blockRepository, 'appConfig', [
+        ReflectionUtil::setValue($this->blockRepository, 'eccubeConfig', [
             'block_realdir' =>  vfsStream::url('rootDir'),
             'block_default_realdir' => vfsStream::url('rootDir/default'),
         ]);

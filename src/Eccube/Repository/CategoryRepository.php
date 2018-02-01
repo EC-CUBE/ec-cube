@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -39,22 +40,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * CategoryRepository constructor.
      *
      * @param RegistryInterface $registry
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Category::class);
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -84,7 +85,7 @@ class CategoryRepository extends AbstractRepository
     public function getList(Category $Parent = null, $flat = false)
     {
         // TODO::doctrine_cache is not implement
-        // $options = $this->appConfig['doctrine_cache'];
+        // $options = $this->eccubeConfig['doctrine_cache'];
         // $lifetime = $options['result_cache']['lifetime'];
 
         $qb = $this->createQueryBuilder('c1')

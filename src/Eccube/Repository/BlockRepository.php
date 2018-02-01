@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -39,22 +40,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class BlockRepository extends AbstractRepository
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * BlockRepository constructor.
      *
      * @param RegistryInterface $registry
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Block::class);
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -186,7 +187,7 @@ class BlockRepository extends AbstractRepository
      */
     public function getWriteTemplatePath($isUser = false)
     {
-        return $this->appConfig['block_realdir'];
+        return $this->eccubeConfig['block_realdir'];
     }
 
     /**
@@ -205,8 +206,8 @@ class BlockRepository extends AbstractRepository
     public function getReadTemplateFile($fileName, $isUser = false)
     {
         $readPaths = array(
-            $this->appConfig['block_realdir'],
-            $this->appConfig['block_default_realdir'],
+            $this->eccubeConfig['block_realdir'],
+            $this->eccubeConfig['block_default_realdir'],
         );
         foreach ($readPaths as $readPath) {
             $filePath = $readPath . '/' . $fileName . '.twig';

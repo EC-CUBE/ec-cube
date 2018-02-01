@@ -87,7 +87,7 @@ class PluginController extends AbstractController
      * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @Inject(BaseInfo::class)
@@ -167,7 +167,7 @@ class PluginController extends AbstractController
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $authKey = $this->BaseInfo->getAuthenticationKey();
         // オーナーズストア通信
-        $url = $this->appConfig['package_repo_url'].'/search/packages.json';
+        $url = $this->eccubeConfig['package_repo_url'].'/search/packages.json';
         list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
         $officialPluginsDetail = [];
@@ -590,7 +590,7 @@ class PluginController extends AbstractController
             $pluginCodes[] = $plugin->getCode();
         }
         // DB登録済みプラグインコードPluginディレクトリから排他
-        $dirs = $finder->in($this->appConfig['plugin_realdir'])->depth(0)->directories();
+        $dirs = $finder->in($this->eccubeConfig['plugin_realdir'])->depth(0)->directories();
 
         // プラグイン基本チェック
         $unregisteredPlugins = array();

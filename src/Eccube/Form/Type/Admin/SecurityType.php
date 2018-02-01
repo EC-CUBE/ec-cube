@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -37,9 +38,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SecurityType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var ValidatorInterface
@@ -48,12 +49,12 @@ class SecurityType extends AbstractType
 
     /**
      * SecurityType constructor.
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param ValidatorInterface $validator
      */
-    public function __construct(array $eccubeConfig, ValidatorInterface $validator)
+    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->validator = $validator;
     }
 
@@ -67,7 +68,7 @@ class SecurityType extends AbstractType
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                     new Assert\Regex(array(
                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
@@ -77,7 +78,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(

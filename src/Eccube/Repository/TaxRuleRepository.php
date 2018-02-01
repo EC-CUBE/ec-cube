@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\NoResultException;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\TaxRule;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -65,20 +66,20 @@ class TaxRuleRepository extends AbstractRepository
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param BaseInfo $baseInfo
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         BaseInfo $baseInfo,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, TaxRule::class);
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->baseInfo = $baseInfo;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function newTaxRule()
@@ -211,7 +212,7 @@ class TaxRuleRepository extends AbstractRepository
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
         // 後に書いてあるほど優先される
         $priorityKeys = [];
-        foreach (explode(',', $this->appConfig['tax_rule_priority']) as $key) {
+        foreach (explode(',', $this->eccubeConfig['tax_rule_priority']) as $key) {
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }
 

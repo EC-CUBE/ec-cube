@@ -26,6 +26,7 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
@@ -132,9 +133,9 @@ class ShoppingService
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var PrefRepository
@@ -188,7 +189,7 @@ class ShoppingService
      * @param PaymentRepository $paymentRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      * @param EntityManager $entityManager
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param PrefRepository $prefRepository
      * @param Session $session
      * @param OrderRepository $orderRepository
@@ -211,7 +212,7 @@ class ShoppingService
         PaymentRepository $paymentRepository,
         DeviceTypeRepository $deviceTypeRepository,
         EntityManager $entityManager,
-        array $eccubeConfig,
+        EccubeConfig $eccubeConfig,
         PrefRepository $prefRepository,
         Session $session,
         OrderRepository $orderRepository,
@@ -233,7 +234,7 @@ class ShoppingService
         $this->paymentRepository = $paymentRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
         $this->entityManager = $entityManager;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->prefRepository = $prefRepository;
         $this->session = $session;
         $this->orderRepository = $orderRepository;
@@ -1010,7 +1011,7 @@ class ShoppingService
             $period = new \DatePeriod (
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->appConfig['deliv_date_end_max'].' day')
+                new \DateTime($minDate + $this->eccubeConfig['deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {

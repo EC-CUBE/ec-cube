@@ -79,7 +79,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @Inject(ShoppingService::class)

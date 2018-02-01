@@ -4,16 +4,13 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
-use org\bovigo\vfs\vfsStream;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserDataControllerTest extends AbstractWebTestCase
 {
-    protected $fileName = 'example_page';
+    protected $userDataDir;
 
-    /**
-     * @var \Twig_Environment
-     */
-    protected $twig;
+    protected $fileName = 'example_page';
 
     /**
      * @inheritdoc
@@ -22,24 +19,12 @@ class UserDataControllerTest extends AbstractWebTestCase
     {
         parent::setUp();
 
-        $this->twig = $this->container->get('twig');
-
-        $root = vfsStream::setup('rootDir');
-        vfsStream::newDirectory('user_data');
-        // 404ページ表示のためにerror.twigを用意します、内容はダミーです。
-        vfsStream::newFile('error.twig')->at($root)->setContent('Error 404');
-
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $this->eccubeConfig['template_default_realdir'] = vfsStream::url('rootDir');
-        $this->eccubeConfig['user_data_realdir'] = $this->eccubeConfig['template_default_realdir'].'/user_data';
-        mkdir($this->eccubeConfig['user_data_realdir']);
-
-        // add path to user_data alias of twig, make twig can find template file
-        $this->twig->getLoader()->addPath($this->eccubeConfig['user_data_realdir'], 'user_data');
+        $this->userDataDir = $this->eccubeConfig->get('eccube.theme.user_data_dir');
 
         $DeviceType = $this->entityManager
-            ->getRepository(\Eccube\Entity\Master\DeviceType::class)
+            ->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
+
         if ($DeviceType) {
             $page = new Page();
             $page->setUrl($this->fileName)
@@ -51,10 +36,19 @@ class UserDataControllerTest extends AbstractWebTestCase
         }
     }
 
+    public function tearDown()
+    {
+        if (file_exists($this->userDataDir.'/'.$this->fileName.'.twig')) {
+            unlink($this->userDataDir.'/'.$this->fileName.'.twig');
+        }
+
+        parent::tearDown();
+    }
+
     public function testIndex()
     {
         file_put_contents(
-            $this->eccubeConfig['user_data_realdir'] . '/' . $this->fileName . '.twig',
+            $this->userDataDir.'/'.$this->fileName.'.twig',
             '<h1>test</h1>'
         );
 

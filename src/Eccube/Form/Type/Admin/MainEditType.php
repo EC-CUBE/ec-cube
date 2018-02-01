@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -55,7 +56,7 @@ class MainEditType extends AbstractType
     protected $deviceTypeRepository;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -63,12 +64,12 @@ class MainEditType extends AbstractType
      * MainEditType constructor.
      * @param EntityManagerInterface $entityManager
      * @param DeviceTypeRepository $deviceTypeRepository
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         DeviceTypeRepository $deviceTypeRepository,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->entityManager = $entityManager;
         $this->deviceTypeRepository = $deviceTypeRepository;

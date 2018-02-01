@@ -59,11 +59,6 @@ class PluginService
     protected $pluginRepository;
 
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var Application
      */
     protected $app;
@@ -767,7 +762,7 @@ class PluginService
      */
     public function findRequirePluginNeedEnable($pluginCode)
     {
-        $dir = $this->appConfig['plugin_realdir'].'/'.$pluginCode;
+        $dir = $this->eccubeConfig['plugin_realdir'].'/'.$pluginCode;
         $composerFile = $dir.'/composer.json';
         if (!file_exists($composerFile)) {
             return [];
@@ -831,7 +826,7 @@ class PluginService
         $plugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
         foreach ($plugins as $plugin) {
-            $dir = $this->appConfig['plugin_realdir'].'/'.$plugin->getCode();
+            $dir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode();
             $fileName = $dir.'/composer.json';
             if (!file_exists($fileName)) {
                 continue;
@@ -929,7 +924,7 @@ class PluginService
         // プラグインにリソースファイルがあれば所定の位置へコピー
         if (file_exists($assetsDir)) {
             $file = new Filesystem();
-            $file->mirror($assetsDir, $this->appConfig['plugin_html_realdir'].$pluginCode.'/assets');
+            $file->mirror($assetsDir, $this->eccubeConfig['plugin_html_realdir'].$pluginCode.'/assets');
         }
     }
 
