@@ -55,7 +55,7 @@ class CustomerType extends AbstractType
      * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var \Eccube\Application $app
@@ -78,22 +78,22 @@ class CustomerType extends AbstractType
             ->add('name', NameType::class, array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->appConfig['stext_len'],
+                        'maxlength' => $this->eccubeConfig['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                        new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', NameType::class, array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->appConfig['stext_len'],
+                        'maxlength' => $this->eccubeConfig['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                        new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -104,7 +104,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     ))
                 ),
             ))
@@ -136,7 +136,7 @@ class CustomerType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->appConfig['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),

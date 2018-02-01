@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
+{% extends '@admin/default_frame.twig' %}
 
 {% set menus = ['product', 'product_master'] %}
 
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品マスター{% endblock %}
 
-{% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme searchForm '@admin/Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css', 'admin') }}">
@@ -193,10 +193,10 @@ $(function() {
                                       </li>
                                     {% endfor %}
                                       <li>
-                                      {% if page_status == app.config.admin_product_stock_status %}
-                                          <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                      {% if page_status == eccube_config.admin_product_stock_status %}
+                                          <a>{{ 'admin.product.search.stock'|trans }}</a>
                                       {% else %}
-                                          <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                          <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': eccube_config.admin_product_stock_status} ) }}">{{ 'admin.product.search.stock'|trans }}</a>
                                       {% endif %}
                                       </li>
                                     </ul>
@@ -290,10 +290,10 @@ $(function() {
                                             </li>
                                         {% endfor %}
                                         <li>
-                                            {% if page_status == app.config.admin_product_stock_status %}
-                                                <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                            {% if page_status == eccube_config.admin_product_stock_status %}
+                                                <a>{{ 'admin.product.search.stock'|trans }}</a>
                                             {% else %}
-                                                <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                                <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': eccube_config.admin_product_stock_status} ) }}">{{ 'admin.product.search.stock'|trans }}</a>
                                             {% endif %}
                                         </li>
                                     </ul>

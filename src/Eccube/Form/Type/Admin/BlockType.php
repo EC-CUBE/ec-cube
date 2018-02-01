@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -45,7 +46,7 @@ class BlockType extends AbstractType
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -53,9 +54,9 @@ class BlockType extends AbstractType
      * BlockType constructor.
      *
      * @param $entityManager
-     * @param $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EntityManagerInterface $entityManager, $eccubeConfig)
+    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
     {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;

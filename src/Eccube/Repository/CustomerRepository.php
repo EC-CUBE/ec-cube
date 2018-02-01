@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
@@ -57,9 +58,9 @@ class CustomerRepository extends AbstractRepository
     protected $orderRepository;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var EncoderFactoryInterface
@@ -73,7 +74,7 @@ class CustomerRepository extends AbstractRepository
      * @param EntityManagerInterface $entityManager
      * @param OrderRepository $orderRepository
      * @param EncoderFactoryInterface $encoderFactory
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
@@ -81,7 +82,7 @@ class CustomerRepository extends AbstractRepository
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
         EncoderFactoryInterface $encoderFactory,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Customer::class);
 
@@ -89,7 +90,7 @@ class CustomerRepository extends AbstractRepository
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
         $this->encoderFactory = $encoderFactory;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 

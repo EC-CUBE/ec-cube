@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Annotation\Inject;
 use Eccube\Annotation\Service;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
@@ -92,9 +93,9 @@ class OrderHelper
 
     /**
      * @Inject("config")
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * OrderHelper constructor.
@@ -107,9 +108,9 @@ class OrderHelper
      * @param OrderRepository $orderRepository
      * @param ShippingStatusRepository $shippingStatusRepository
      * @param EntityManager $entityManager
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(OrderItemTypeRepository $orderItemTypeRepository, OrderStatusRepository $orderStatusRepository, TaxRuleRepository $taxRuleRepository, DeliveryFeeRepository $deliveryFeeRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository, OrderRepository $orderRepository, ShippingStatusRepository $shippingStatusRepository, EntityManager $entityManager, array $eccubeConfig)
+    public function __construct(OrderItemTypeRepository $orderItemTypeRepository, OrderStatusRepository $orderStatusRepository, TaxRuleRepository $taxRuleRepository, DeliveryFeeRepository $deliveryFeeRepository, DeliveryRepository $deliveryRepository, PaymentRepository $paymentRepository, OrderRepository $orderRepository, ShippingStatusRepository $shippingStatusRepository, EntityManager $entityManager, EccubeConfig $eccubeConfig)
     {
         $this->orderItemTypeRepository = $orderItemTypeRepository;
         $this->orderStatusRepository = $orderStatusRepository;
@@ -120,7 +121,7 @@ class OrderHelper
         $this->orderRepository = $orderRepository;
         $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 

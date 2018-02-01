@@ -46,7 +46,7 @@ class ShippingMultipleItemType extends AbstractType
      * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @Inject("session")
@@ -74,7 +74,7 @@ class ShippingMultipleItemType extends AbstractType
             ->add('quantity', IntegerType::class, array(
                 'attr' => array(
                     'min' => 1,
-                    'maxlength' => $this->appConfig['int_len'],
+                    'maxlength' => $this->eccubeConfig['int_len'],
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),

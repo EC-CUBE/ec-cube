@@ -23,6 +23,7 @@
 
 namespace Eccube\Service;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
@@ -57,7 +58,7 @@ class MailService
     protected $BaseInfo;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -74,7 +75,7 @@ class MailService
      * @param BaseInfo $baseInfo
      * @param EventDispatcher $eventDispatcher
      * @param \Twig_Environment $twig
-     * @param array $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         \Swift_Mailer $mailer,
@@ -82,7 +83,7 @@ class MailService
         BaseInfo $baseInfo,
         EventDispatcher $eventDispatcher,
         \Twig_Environment $twig,
-        array $eccubeConfig
+        EccubeConfig $eccubeConfig
     ) {
         $this->mailer = $mailer;
         $this->mailTemplateRepository = $mailTemplateRepository;

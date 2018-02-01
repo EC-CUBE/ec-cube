@@ -23,6 +23,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -34,9 +35,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LogType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
 
     /**
@@ -46,12 +47,12 @@ class LogType extends AbstractType
 
     /**
      * LogType constructor.
-     * @param $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      * @param KernelInterface $kernel
      */
-    public function __construct($eccubeConfig, KernelInterface $kernel)
+    public function __construct(EccubeConfig $eccubeConfig, KernelInterface $kernel)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->kernel = $kernel;
     }
 

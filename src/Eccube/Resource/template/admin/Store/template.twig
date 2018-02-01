@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% for Template in Templates %}
                                 <tr>
                                     <td>
-                                        <input type="radio" name="template" value="{{ Template.id }}" {% if eccube.config.template_code == Template.code %}checked="checked"{% endif %}/>
+                                        <input type="radio" name="template" value="{{ Template.id }}" {% if eccube_config.template_code == Template.code %}checked="checked"{% endif %}/>
                                     </td>
                                     <td>{{ Template.name }}</td>
                                     <td>

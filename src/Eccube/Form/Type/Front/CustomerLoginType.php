@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -36,19 +37,19 @@ class CustomerLoginType extends AbstractType
 {
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var AuthenticationUtils
      */
     protected $authenticationUtils;
 
-    public function __construct(AuthenticationUtils $authenticationUtils, array $eccubeConfig)
+    public function __construct(AuthenticationUtils $authenticationUtils, EccubeConfig $eccubeConfig)
     {
         $this->authenticationUtils = $authenticationUtils;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -58,7 +59,7 @@ class CustomerLoginType extends AbstractType
     {
         $builder->add('login_email', EmailType::class, array(
             'attr' => array(
-                'max_length' => $this->appConfig['stext_len'],
+                'max_length' => $this->eccubeConfig['stext_len'],
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
@@ -71,7 +72,7 @@ class CustomerLoginType extends AbstractType
         ));
         $builder->add('login_pass', PasswordType::class, array(
             'attr' => array(
-                'max_length' => $this->appConfig['stext_len'],
+                'max_length' => $this->eccubeConfig['stext_len'],
             ),
             'constraints' => array(
                 new Assert\NotBlank(),

@@ -3,6 +3,7 @@
 namespace Eccube\Tests;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
@@ -43,7 +44,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $entityManager;
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
     protected $eccubeConfig;
 
@@ -56,7 +57,7 @@ abstract class EccubeTestCase extends WebTestCase
         $this->client = self::createClient();
         $this->container = $this->client->getContainer();
         $this->entityManager = $this->container->get('doctrine')->getManager();
-        $this->eccubeConfig = $this->container->getParameter('eccube.constants');
+        $this->eccubeConfig = $this->container->get(EccubeConfig::class);
     }
 
     /**

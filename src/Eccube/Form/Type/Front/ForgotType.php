@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,17 +37,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ForgotType extends AbstractType
 {
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * ForgotType constructor.
-     * @param $eccubeConfig
+     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(array $eccubeConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -56,7 +57,7 @@ class ForgotType extends AbstractType
     {
         $builder->add('login_email', TextType::class, array(
             'attr' => array(
-                'max_length' => $this->appConfig['stext_len']
+                'max_length' => $this->eccubeConfig['stext_len']
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
