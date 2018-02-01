@@ -301,7 +301,7 @@ class MailService
     {
         log_info('受注メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->app['config']['order_mail_template_id']);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['order_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -354,6 +354,7 @@ class MailService
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
             'footer' => $MailTemplate->getMailFooter(),
+            'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
@@ -439,7 +440,8 @@ class MailService
         log_info('パスワード再発行メール送信開始');
 
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['forgot_mail_template_id']);
-        $body = $this->app->renderView($MailTemplate->getFileName(), array(
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'BaseInfo' => $this->BaseInfo,
             'header' => $MailTemplate->getMailHeader(),
             'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
@@ -485,7 +487,8 @@ class MailService
 
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['reset_complete_mail_template_id']);
 
-        $body = $this->app->renderView($MailTemplate->getFileName(), array(
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'BaseInfo' => $this->BaseInfo,
             'header' => $MailTemplate->getMailHeader(),
             'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
