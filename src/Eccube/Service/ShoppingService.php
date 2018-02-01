@@ -135,7 +135,7 @@ class ShoppingService
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var PrefRepository
@@ -234,7 +234,7 @@ class ShoppingService
         $this->paymentRepository = $paymentRepository;
         $this->deviceTypeRepository = $deviceTypeRepository;
         $this->entityManager = $entityManager;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->prefRepository = $prefRepository;
         $this->session = $session;
         $this->orderRepository = $orderRepository;
@@ -1011,7 +1011,7 @@ class ShoppingService
             $period = new \DatePeriod (
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->appConfig['deliv_date_end_max'].' day')
+                new \DateTime($minDate + $this->eccubeConfig['deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {

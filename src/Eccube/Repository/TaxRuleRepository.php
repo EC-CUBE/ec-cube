@@ -79,7 +79,7 @@ class TaxRuleRepository extends AbstractRepository
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->baseInfo = $baseInfo;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function newTaxRule()
@@ -212,7 +212,7 @@ class TaxRuleRepository extends AbstractRepository
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
         // 後に書いてあるほど優先される
         $priorityKeys = [];
-        foreach (explode(',', $this->appConfig['tax_rule_priority']) as $key) {
+        foreach (explode(',', $this->eccubeConfig['tax_rule_priority']) as $key) {
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }
 

@@ -95,7 +95,7 @@ class OrderHelper
      * @Inject("config")
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * OrderHelper constructor.
@@ -121,7 +121,7 @@ class OrderHelper
         $this->orderRepository = $orderRepository;
         $this->shippingStatusRepository = $shippingStatusRepository;
         $this->entityManager = $entityManager;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 

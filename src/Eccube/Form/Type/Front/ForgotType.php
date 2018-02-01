@@ -39,7 +39,7 @@ class ForgotType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * ForgotType constructor.
@@ -47,7 +47,7 @@ class ForgotType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -57,7 +57,7 @@ class ForgotType extends AbstractType
     {
         $builder->add('login_email', TextType::class, array(
             'attr' => array(
-                'max_length' => $this->appConfig['stext_len']
+                'max_length' => $this->eccubeConfig['stext_len']
             ),
             'constraints' => array(
                 new Assert\NotBlank(),

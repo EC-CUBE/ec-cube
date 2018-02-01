@@ -38,7 +38,7 @@ class ChangePasswordType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * ChangePasswordType constructor.
@@ -46,7 +46,7 @@ class ChangePasswordType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -72,8 +72,8 @@ class ChangePasswordType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->appConfig['password_min_len'],
-                        'max' => $this->appConfig['password_max_len'],
+                        'min' => $this->eccubeConfig['password_min_len'],
+                        'max' => $this->eccubeConfig['password_max_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^[[:graph:][:space:]]+$/i',

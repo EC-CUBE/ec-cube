@@ -43,7 +43,7 @@ class PageRepository extends AbstractRepository
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var string
@@ -72,7 +72,7 @@ class PageRepository extends AbstractRepository
     public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig, ContainerInterface $container)
     {
         parent::__construct($registry, Page::class);
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->userDataRealDir = $container->getParameter('eccube.theme.user_data_dir');
         $this->templateRealDir = $container->getParameter('eccube.theme.app_dir');
         $this->templateDefaultRealDir = $container->getParameter('eccube.theme.src_dir');
@@ -165,7 +165,7 @@ class PageRepository extends AbstractRepository
     public function getByUrl(DeviceType $DeviceType, $url)
     {
         // Fixme
-//        $options = $this->appConfig['doctrine_cache'];
+//        $options = $this->eccubeConfig['doctrine_cache'];
 //        $lifetime = $options['result_cache']['lifetime'];
         $lifetime = $this->getCacheLifetime();
 

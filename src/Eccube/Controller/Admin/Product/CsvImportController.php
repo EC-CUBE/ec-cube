@@ -127,7 +127,7 @@ class CsvImportController
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     private $errors = array();
 
@@ -168,7 +168,7 @@ class CsvImportController
         $this->formFactory = $formFactory;
         $this->session = $session;
         $this->eventDispatcher = $eventDispatcher;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -580,7 +580,7 @@ class CsvImportController
                         } else {
                             $Category->setHierarchy(1);
                         }
-                        if ($this->appConfig['category_nest_level'] < $Category->getHierarchy()) {
+                        if ($this->eccubeConfig['category_nest_level'] < $Category->getHierarchy()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($form, $headers);
                         }
@@ -631,11 +631,11 @@ class CsvImportController
             // ヘッダ行の出力
             $row = array();
             foreach ($headers as $key => $value) {
-                $row[] = mb_convert_encoding($key, $this->appConfig['csv_export_encoding'], 'UTF-8');
+                $row[] = mb_convert_encoding($key, $this->eccubeConfig['csv_export_encoding'], 'UTF-8');
             }
 
             $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->appConfig['csv_export_separator']);
+            fputcsv($fp, $row, $this->eccubeConfig['csv_export_separator']);
             fclose($fp);
         });
 
@@ -666,7 +666,7 @@ class CsvImportController
         if (!empty($this->fileName)) {
             try {
                 $fs = new Filesystem();
-                $fs->remove($this->appConfig['csv_temp_realdir'] . '/' . $this->fileName);
+                $fs->remove($this->eccubeConfig['csv_temp_realdir'] . '/' . $this->fileName);
             } catch (\Exception $e) {
                 // エラーが発生しても無視する
             }
@@ -690,9 +690,9 @@ class CsvImportController
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->fileName = 'upload_' . StringUtil::random() . '.' . $formFile->getClientOriginalExtension();
-        $formFile->move($this->appConfig['csv_temp_realdir'], $this->fileName);
+        $formFile->move($this->eccubeConfig['csv_temp_realdir'], $this->fileName);
 
-        $file = file_get_contents($this->appConfig['csv_temp_realdir'] . '/' . $this->fileName);
+        $file = file_get_contents($this->eccubeConfig['csv_temp_realdir'] . '/' . $this->fileName);
 
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
@@ -719,7 +719,7 @@ class CsvImportController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->appConfig['csv_import_delimiter'], $this->appConfig['csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->eccubeConfig['csv_import_delimiter'], $this->eccubeConfig['csv_import_enclosure']);
 
         $ret = $data->setHeaderRowNumber(0);
 

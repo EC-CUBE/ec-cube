@@ -40,7 +40,7 @@ class SecurityType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var ValidatorInterface
@@ -54,7 +54,7 @@ class SecurityType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->validator = $validator;
     }
 
@@ -68,7 +68,7 @@ class SecurityType extends AbstractType
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                     new Assert\Regex(array(
                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
@@ -78,7 +78,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->appConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(

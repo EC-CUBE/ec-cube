@@ -42,7 +42,7 @@ class CategoryRepository extends AbstractRepository
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * CategoryRepository constructor.
@@ -55,7 +55,7 @@ class CategoryRepository extends AbstractRepository
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Category::class);
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -85,7 +85,7 @@ class CategoryRepository extends AbstractRepository
     public function getList(Category $Parent = null, $flat = false)
     {
         // TODO::doctrine_cache is not implement
-        // $options = $this->appConfig['doctrine_cache'];
+        // $options = $this->eccubeConfig['doctrine_cache'];
         // $lifetime = $options['result_cache']['lifetime'];
 
         $qb = $this->createQueryBuilder('c1')

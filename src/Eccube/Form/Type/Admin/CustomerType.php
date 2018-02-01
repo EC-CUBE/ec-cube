@@ -48,7 +48,7 @@ class CustomerType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * CustomerType constructor.
@@ -56,7 +56,7 @@ class CustomerType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -75,7 +75,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     ))
                 ),
             ))
@@ -112,7 +112,7 @@ class CustomerType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->appConfig['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
@@ -157,7 +157,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['ltext_len'],
                     )),
                 ),
             ));

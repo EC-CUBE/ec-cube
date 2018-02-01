@@ -60,7 +60,7 @@ class CustomerRepository extends AbstractRepository
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var EncoderFactoryInterface
@@ -90,7 +90,7 @@ class CustomerRepository extends AbstractRepository
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
         $this->encoderFactory = $encoderFactory;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 

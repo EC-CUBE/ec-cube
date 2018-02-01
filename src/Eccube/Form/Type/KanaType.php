@@ -34,7 +34,7 @@ class KanaType extends AbstractType
     /**
      * @var \Eccube\Common\EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * KanaType constructor.
@@ -42,7 +42,7 @@ class KanaType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -70,7 +70,7 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['kana_len'],
+                        'max' => $this->eccubeConfig['kana_len'],
                     )),
                 ),
             ),
@@ -83,7 +83,7 @@ class KanaType extends AbstractType
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
                     new Assert\Length(array(
-                        'max' => $this->appConfig['kana_len'],
+                        'max' => $this->eccubeConfig['kana_len'],
                     )),
                 ),
             ),

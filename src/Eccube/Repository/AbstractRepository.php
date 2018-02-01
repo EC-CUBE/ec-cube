@@ -14,7 +14,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * @Inject("config")
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * エンティティを削除します。
@@ -39,7 +39,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     protected function getCacheLifetime()
     {
-        // $options = $this->appConfig['doctrine_cache'];
+        // $options = $this->eccubeConfig['doctrine_cache'];
         // return $options['result_cache']['lifetime'];
         return 0;               // FIXME
     }

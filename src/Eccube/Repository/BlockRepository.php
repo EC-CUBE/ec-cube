@@ -42,7 +42,7 @@ class BlockRepository extends AbstractRepository
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * BlockRepository constructor.
@@ -55,7 +55,7 @@ class BlockRepository extends AbstractRepository
         EccubeConfig $eccubeConfig
     ) {
         parent::__construct($registry, Block::class);
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -187,7 +187,7 @@ class BlockRepository extends AbstractRepository
      */
     public function getWriteTemplatePath($isUser = false)
     {
-        return $this->appConfig['block_realdir'];
+        return $this->eccubeConfig['block_realdir'];
     }
 
     /**
@@ -206,8 +206,8 @@ class BlockRepository extends AbstractRepository
     public function getReadTemplateFile($fileName, $isUser = false)
     {
         $readPaths = array(
-            $this->appConfig['block_realdir'],
-            $this->appConfig['block_default_realdir'],
+            $this->eccubeConfig['block_realdir'],
+            $this->eccubeConfig['block_default_realdir'],
         );
         foreach ($readPaths as $readPath) {
             $filePath = $readPath . '/' . $fileName . '.twig';

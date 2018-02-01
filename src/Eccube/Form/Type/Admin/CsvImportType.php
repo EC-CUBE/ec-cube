@@ -35,7 +35,7 @@ class CsvImportType extends AbstractType
     /**
      * @var array
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * CsvImportType constructor.
@@ -43,7 +43,7 @@ class CsvImportType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 
@@ -60,8 +60,8 @@ class CsvImportType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
                     new Assert\File(array(
-                        'maxSize' => $this->appConfig['csv_size'] . 'M',
-                        'maxSizeMessage' => 'CSVファイルは' . $this->appConfig['csv_size'] . 'M以下でアップロードしてください。',
+                        'maxSize' => $this->eccubeConfig['csv_size'] . 'M',
+                        'maxSizeMessage' => 'CSVファイルは' . $this->eccubeConfig['csv_size'] . 'M以下でアップロードしてください。',
                     )),
                 ),
             ));

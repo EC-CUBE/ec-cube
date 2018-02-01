@@ -24,6 +24,7 @@ namespace Eccube\Service\Composer;
 
 use Composer\Console\Application;
 use Eccube\Annotation\Service;
+use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -37,9 +38,9 @@ class ComposerApiService implements ComposerServiceInterface
 {
 
     /**
-     * @var array
+     * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var Application $consoleApplication
@@ -48,9 +49,9 @@ class ComposerApiService implements ComposerServiceInterface
 
     private $workingDir;
 
-    public function __construct($appConfig)
+    public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $appConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -210,12 +211,12 @@ class ComposerApiService implements ComposerServiceInterface
         set_time_limit(0);
         @ini_set('memory_limit', '1536M');
         // Config for some environment
-        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
+        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $consoleApplication = new Application();
         $consoleApplication->resetComposer();
         $consoleApplication->setAutoExit(false);
         $this->consoleApplication = $consoleApplication;
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['root_dir'];
     }
 
     /**

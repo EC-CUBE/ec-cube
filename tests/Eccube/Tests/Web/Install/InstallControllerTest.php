@@ -59,9 +59,9 @@ class InstallControllerTest extends AbstractWebTestCase
         parent::setUp();
         $formFactory = $this->container->get('form.factory');
         $encoder = $this->container->get(PasswordEncoder::class);
-        $config = $this->container->get(EccubeConfig::class);
+        $eccubeConfig = $this->container->get(EccubeConfig::class);
         $this->session = new Session(new MockArraySessionStorage());
-        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install', $config);
+        $this->controller = new InstallController($this->session, $formFactory, $encoder, 'install', $eccubeConfig);
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setAccessible(true);

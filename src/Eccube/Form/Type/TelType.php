@@ -42,7 +42,7 @@ class TelType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * TelType constructor.
@@ -50,7 +50,7 @@ class TelType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 
@@ -131,19 +131,19 @@ class TelType extends AbstractType
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])),
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])),
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->appConfig['tel_len'], 'min' => $this->appConfig['tel_len_min'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])),
                 ),
             ),
             'tel01_name' => '',

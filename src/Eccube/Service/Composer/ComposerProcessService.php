@@ -24,6 +24,7 @@ namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Annotation\Service;
+use Eccube\Common\EccubeConfig;
 use Eccube\Exception\PluginException;
 
 /**
@@ -34,9 +35,9 @@ use Eccube\Exception\PluginException;
 class ComposerProcessService implements ComposerServiceInterface
 {
     /**
-     * @var array config parameter
+     * @var EccubeConfig config parameter
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var EntityManagerInterface
@@ -51,13 +52,13 @@ class ComposerProcessService implements ComposerServiceInterface
     /**
      * ComposerProcessService constructor.
      *
-     * @param array                  $appConfig
+     * @param EccubeConfig                  $eccubeConfig
      * @param EntityManagerInterface $entityManager
      * @param string                 $pathPHP
      */
-    public function __construct($appConfig, $entityManager, $pathPHP)
+    public function __construct(EccubeConfig $eccubeConfig, $entityManager, $pathPHP)
     {
-        $this->appConfig = $appConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
         $this->pathPHP = $pathPHP;
     }
@@ -145,7 +146,7 @@ class ComposerProcessService implements ComposerServiceInterface
             throw new PluginException("Php cli not found.");
         }
 
-        $composerMemory = $this->appConfig['composer_memory_limit'];
+        $composerMemory = $this->eccubeConfig['composer_memory_limit'];
         if (!$this->isSetCliMemoryLimit()) {
             $cliMemoryLimit = $this->getCliMemoryLimit();
             if ($cliMemoryLimit < $composerMemory && $cliMemoryLimit != -1) {
@@ -166,8 +167,8 @@ class ComposerProcessService implements ComposerServiceInterface
 
         @ini_set('memory_limit', $composerMemory.'M');
         // Config for some environment
-        putenv('COMPOSER_HOME='.$this->appConfig['plugin_realdir'].'/.composer');
-        $this->workingDir = $this->workingDir ? $this->workingDir : $this->appConfig['root_dir'];
+        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
+        $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['root_dir'];
         $this->setupComposer();
     }
 

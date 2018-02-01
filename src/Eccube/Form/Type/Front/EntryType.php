@@ -47,7 +47,7 @@ class EntryType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * EntryType constructor.
@@ -55,7 +55,7 @@ class EntryType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
 
@@ -75,7 +75,7 @@ class EntryType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['stext_len'],
+                        'max' => $this->eccubeConfig['stext_len'],
                     )),
                 ),
             ))
@@ -92,7 +92,7 @@ class EntryType extends AbstractType
             ->add('birth', BirthdayType::class, array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->appConfig['birth_max']),
+                'years' => range(date('Y'), date('Y') - $this->eccubeConfig['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
                 'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),

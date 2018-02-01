@@ -68,7 +68,7 @@ class CsvExportService
     /**
      * @var EccubeConfig
      */
-    protected $config;
+    protected $eccubeConfig;
 
     /**
      * @var CsvType
@@ -129,7 +129,7 @@ class CsvExportService
         $this->csvTypeRepository = $csvTypeRepository;
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
-        $this->config = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->productRepository = $productRepository;
     }
 
@@ -138,7 +138,7 @@ class CsvExportService
      */
     public function setConfig($config)
     {
-        $this->config = $config;
+        $this->eccubeConfig = $config;
     }
 
     /**
@@ -321,11 +321,11 @@ class CsvExportService
                     $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
                 }
             }
-            return implode($this->config['csv_export_multidata_separator'], $array);
+            return implode($this->eccubeConfig['csv_export_multidata_separator'], $array);
 
         } elseif ($data instanceof \DateTime) {
             // datetimeの場合は文字列に変換する.
-            return $data->format($this->config['csv_export_date_format']);
+            return $data->format($this->eccubeConfig['csv_export_date_format']);
 
         } else {
             // スカラ値の場合はそのまま.
@@ -342,7 +342,7 @@ class CsvExportService
      */
     public function getConvertEncodhingCallback()
     {
-        $config = $this->config;
+        $config = $this->eccubeConfig;
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
@@ -371,7 +371,7 @@ class CsvExportService
             $this->convertEncodingCallBack = $this->getConvertEncodhingCallback();
         }
 
-        fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->config['csv_export_separator']);
+        fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['csv_export_separator']);
     }
 
     /**

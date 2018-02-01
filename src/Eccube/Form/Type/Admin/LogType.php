@@ -37,7 +37,7 @@ class LogType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
 
     /**
@@ -52,7 +52,7 @@ class LogType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig, KernelInterface $kernel)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->kernel = $kernel;
     }
 

@@ -48,7 +48,7 @@ class ProductRepository extends AbstractRepository
      * @Inject("config")
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * ProductRepository constructor.
@@ -64,7 +64,7 @@ class ProductRepository extends AbstractRepository
     ) {
         parent::__construct($registry, Product::class);
         $this->queries = $queries;
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
    /**
@@ -109,7 +109,7 @@ class ProductRepository extends AbstractRepository
 
         // Order By
         // 価格低い順
-        $config = $this->appConfig;
+        $config = $this->eccubeConfig;
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_lower']) {
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');

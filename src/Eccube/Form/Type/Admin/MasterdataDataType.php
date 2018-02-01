@@ -42,7 +42,7 @@ class MasterdataDataType extends AbstractType
     /**
      * @var EccubeConfig
      */
-    protected $appConfig;
+    protected $eccubeConfig;
 
     /**
      * @var TranslatorInterface
@@ -56,7 +56,7 @@ class MasterdataDataType extends AbstractType
      */
     public function __construct(EccubeConfig $eccubeConfig, TranslatorInterface $translator)
     {
-        $this->appConfig = $eccubeConfig;
+        $this->eccubeConfig = $eccubeConfig;
         $this->translator = $translator;
     }
 
@@ -72,7 +72,7 @@ class MasterdataDataType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->appConfig['int_len'],
+                        'max' => $this->eccubeConfig['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^\d+$/u',
