@@ -21,7 +21,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         admin:
-            pattern: ^/%admin_route%/
+            pattern: '^/%eccube_admin_route%/'
             anonymous: true
             provider: member_provider
             form_login:
@@ -59,8 +59,8 @@ security:
     access_control:
         # this is a catch-all for the admin area
         # additional security lives in the controllers
-        - { path: ^/%admin_route%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%eccube.scheme%' }
-        - { path: ^/%admin_route%/, roles: ROLE_ADMIN, requires_channel: '%eccube.scheme%'  }
+        - { path: '^/%eccube_admin_route%/login', roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%eccube.scheme%' }
+        - { path: '^/%eccube_admin_route%/', roles: ROLE_ADMIN, requires_channel: '%eccube.scheme%'  }
         - { path: ^/mypage/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%eccube.scheme%' }
         - { path: ^/mypage/withdraw_complete, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: '%eccube.scheme%' }
         - { path: ^/mypage/change, roles: IS_AUTHENTICATED_FULLY, requires_channel: '%eccube.scheme%' }
