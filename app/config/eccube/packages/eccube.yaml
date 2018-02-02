@@ -11,7 +11,7 @@ parameters:
     eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
     #eccube_default_country_id: 392 # 使用していない
     eccube_default_password: '**********'
-    deliv_addr_max: 20
+    eccube_deliv_addr_max: 20
     deliv_date_end_max: 21
     eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
     id_max_len: 50

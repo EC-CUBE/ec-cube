@@ -425,7 +425,7 @@ class ShoppingController extends AbstractShoppingController
         $Customer = $this->getUser();
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $addressCurrNum = count($this->getUser()->getCustomerAddresses());
-            $addressMax = $this->eccubeConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('配送先住所最大数エラー');
             }

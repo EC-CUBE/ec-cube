@@ -64,10 +64,10 @@ class CustomerDeliveryEditController extends AbstractController
     {
         // 配送先住所最大値判定
         // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
-        $addressMax = $this->eccubeConfig['deliv_addr_max'];
+        $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
         if (is_null($did)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
-            $addressMax = $this->eccubeConfig['deliv_addr_max'];
+            $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
                 throw new NotFoundHttpException('お届け先の登録数の上限を超えています');
             }
