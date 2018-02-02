@@ -273,7 +273,7 @@ class EditController extends AbstractController
     {
         if ($request->isXmlHttpRequest()) {
             log_debug('search product start.');
-            $page_count = $this->eccubeConfig['default_page_count'];
+            $page_count = $this->eccubeConfig['eccube_default_page_count'];
             $session = $this->session;
 
             if ('POST' === $request->getMethod()) {

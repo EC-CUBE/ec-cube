@@ -77,7 +77,7 @@ class ShippingController extends AbstractController
 
         $ProductStatuses = $this->productStatusRepository->findAll();
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['eccube_default_page_count'];
         $page_status = null;
         $active = false;
 

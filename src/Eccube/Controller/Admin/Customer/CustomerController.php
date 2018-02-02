@@ -120,7 +120,7 @@ class CustomerController extends AbstractController
         $active = false;
 
         $pageMaxis = $this->pageMaxRepository->findAll();
-        $page_count = $this->eccubeConfig['default_page_count'];
+        $page_count = $this->eccubeConfig['eccube_default_page_count'];
 
         if ('POST' === $request->getMethod()) {
 

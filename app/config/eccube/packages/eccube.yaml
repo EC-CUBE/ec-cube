@@ -32,8 +32,8 @@ parameters:
     eccube_smtext_len: 100
     eccube_tax_rule_priority: ['product_id','product_class_id','pref_id','country_id']
     template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
-    url_len: 1024
-    default_page_count: 10
+    eccube_url_len: 1024
+    eccube_default_page_count: 10
     admin_product_stock_status: 3
     eccube_info_url: 'https://www.ec-cube.net/info/3/'
     customer_reset_expire: 10
