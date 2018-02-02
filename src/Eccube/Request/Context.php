@@ -2,6 +2,7 @@
 
 namespace Eccube\Request;
 
+use Eccube\Common\EccubeConfig;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class Context
@@ -12,14 +13,14 @@ class Context
     protected $requestStack;
 
     /**
-     * @var string
+     * @var EccubeConfig
      */
-    protected $adminRoute;
+    protected $eccubeConfig;
 
-    public function __construct(RequestStack $requestStack, $admin_route)  // TODO $eccubeConfigから取得/
+    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig)
     {
         $this->requestStack = $requestStack;
-        $this->adminRoute = $admin_route;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -36,7 +37,8 @@ class Context
         }
 
         $pathInfo = \rawurldecode($request->getPathInfo());
-        $adminPath = '/'.\trim($this->adminRoute, '/').'/';
+        $adminPath = $this->eccubeConfig->get('eccube_admin_route');
+        $adminPath = '/'.\trim($adminPath, '/').'/';
 
         return \strpos($pathInfo, $adminPath) === 0;
     }

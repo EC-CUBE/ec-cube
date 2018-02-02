@@ -1,5 +1,6 @@
 parameters:
-    admin_route: '%admin_route%'
+    env(ECCUBE_ADMIN_ROUTE): 'admin'
+    eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     nav: '%eccube.nav%'
     admin_allow_hosts: {}
     auth_type: HMAC
