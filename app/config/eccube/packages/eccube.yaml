@@ -12,7 +12,7 @@ parameters:
     #eccube_default_country_id: 392 # 使用していない
     eccube_default_password: '**********'
     eccube_deliv_addr_max: 20
-    deliv_date_end_max: 21
+    eccube_deliv_date_end_max: 21
     eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
     eccube_id_max_len: 50
     eccube_id_min_len: 4

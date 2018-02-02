@@ -1011,7 +1011,7 @@ class ShoppingService
             $period = new \DatePeriod (
                 new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->eccubeConfig['deliv_date_end_max'].' day')
+                new \DateTime($minDate + $this->eccubeConfig['eccube_deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {

@@ -328,13 +328,13 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         $DeliveryDurations = $this->app['eccube.service.shopping']->getFormDeliveryDurations($Order);
 
-        $this->expected = $this->app['config']['deliv_date_end_max'];
+        $this->expected = $this->app['config']['eccube_deliv_date_end_max'];
         $this->actual = count($DeliveryDurations);
         $this->verify();
 
         $dates = array();
         $today = new \DateTime();
-        for ($i = 0; $i < $this->app['config']['deliv_date_end_max']; $i++) {
+        for ($i = 0; $i < $this->app['config']['eccube_deliv_date_end_max']; $i++) {
             $dates[$today->format('Y/m/d')] = $today->format('Y/m/d');
             $today->add(new \DateInterval('P1D'));
         }
