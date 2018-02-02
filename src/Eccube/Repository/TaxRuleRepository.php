@@ -212,7 +212,7 @@ class TaxRuleRepository extends AbstractRepository
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
         // 後に書いてあるほど優先される
         $priorityKeys = [];
-        foreach ($this->eccubeConfig['tax_rule_priority'] as $priorityKey) {
+        foreach ($this->eccubeConfig['eccube_tax_rule_priority'] as $priorityKey) {
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $priorityKey));
         }
 
