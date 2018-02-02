@@ -484,7 +484,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])
+                    array('max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min'])
                 ),
             )
         );
@@ -495,7 +495,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])
+                    array('max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min'])
                 ),
             )
         );
@@ -506,7 +506,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('max' => $this->eccubeConfig['tel_len'], 'min' => $this->eccubeConfig['tel_len_min'])
+                    array('max' => $this->eccubeConfig['eccube_tel_len'], 'min' => $this->eccubeConfig['eccube_tel_len_min'])
                 ),
             )
         );
@@ -517,7 +517,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('min' => $this->eccubeConfig['zip01_len'], 'max' => $this->eccubeConfig['zip01_len'])
+                    array('min' => $this->eccubeConfig['eccube_zip01_len'], 'max' => $this->eccubeConfig['eccube_zip01_len'])
                 ),
             )
         );
@@ -528,7 +528,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
                 new Assert\Length(
-                    array('min' => $this->eccubeConfig['zip02_len'], 'max' => $this->eccubeConfig['zip02_len'])
+                    array('min' => $this->eccubeConfig['eccube_zip02_len'], 'max' => $this->eccubeConfig['eccube_zip02_len'])
                 ),
             )
         );
