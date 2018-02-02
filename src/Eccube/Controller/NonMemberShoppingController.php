@@ -453,7 +453,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_name01'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->eccubeConfig['name_len'],)),
+                new Assert\Length(array('max' => $this->eccubeConfig['eccube_name_len'],)),
                 new Assert\Regex(
                     array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
                 ),
@@ -464,7 +464,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_name02'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->eccubeConfig['name_len'],)),
+                new Assert\Length(array('max' => $this->eccubeConfig['eccube_name_len'],)),
                 new Assert\Regex(
                     array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
                 ),
@@ -537,7 +537,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_addr01'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->eccubeConfig['address1_len'])),
+                new Assert\Length(array('max' => $this->eccubeConfig['eccube_address1_len'])),
             )
         );
 
@@ -545,7 +545,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_addr02'],
             array(
                 new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->eccubeConfig['address2_len'])),
+                new Assert\Length(array('max' => $this->eccubeConfig['eccube_address2_len'])),
             )
         );
 

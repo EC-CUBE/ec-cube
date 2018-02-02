@@ -64,7 +64,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         $data = array(
             'address' => array(
                 'pref' => '1',
-                'addr01' => str_repeat('ア', $this->eccubeConfig['address1_len']+1),
+                'addr01' => str_repeat('ア', $this->eccubeConfig['eccube_address1_len']+1),
                 'addr02' => 'にゅうりょく',
             ));
 
@@ -78,7 +78,7 @@ class AddressTypeTest extends AbstractTypeTestCase
             'address' => array(
                 'pref' => '1',
                 'addr01' => 'にゅうりょく',
-                'addr02' => str_repeat('ア', $this->eccubeConfig['address2_len']+1),
+                'addr02' => str_repeat('ア', $this->eccubeConfig['eccube_address2_len']+1),
             ));
 
         $this->form->submit($data);

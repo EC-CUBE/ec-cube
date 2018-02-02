@@ -49,10 +49,10 @@ parameters:
     csv_import_enclosure: '"'
     csv_import_escape: \
     eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
-    name_len: 16
-    kana_len: 25
-    address1_len: 32
-    address2_len: 32
+    eccube_name_len: 16
+    eccube_kana_len: 25
+    eccube_address1_len: 32
+    eccube_address2_len: 32
     eccube_birth_max: 110
     eccube_product_order_price_lower: 1
     eccube_product_order_newer: 2
