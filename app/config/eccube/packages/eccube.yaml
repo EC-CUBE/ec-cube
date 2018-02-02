@@ -30,7 +30,7 @@ parameters:
     eccube_stext_len: 255
     eccube_sltext_len: 500
     eccube_smtext_len: 100
-    tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
+    eccube_tax_rule_priority: ['product_id','product_class_id','pref_id','country_id']
     template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
     url_len: 1024
     default_page_count: 10
