@@ -666,7 +666,7 @@ class CsvImportController
         if (!empty($this->fileName)) {
             try {
                 $fs = new Filesystem();
-                $fs->remove($this->eccubeConfig['csv_temp_realdir'] . '/' . $this->fileName);
+                $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
             } catch (\Exception $e) {
                 // エラーが発生しても無視する
             }
@@ -690,9 +690,9 @@ class CsvImportController
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->fileName = 'upload_' . StringUtil::random() . '.' . $formFile->getClientOriginalExtension();
-        $formFile->move($this->eccubeConfig['csv_temp_realdir'], $this->fileName);
+        $formFile->move($this->eccubeConfig['eccube_csv_temp_realdir'], $this->fileName);
 
-        $file = file_get_contents($this->eccubeConfig['csv_temp_realdir'] . '/' . $this->fileName);
+        $file = file_get_contents($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $this->fileName);
 
         if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
             // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる

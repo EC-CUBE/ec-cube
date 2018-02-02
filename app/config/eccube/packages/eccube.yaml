@@ -7,8 +7,8 @@ parameters:
     eccube_admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     eccube_admin_allow_hosts: '%env(json:ECCUBE_ADMIN_ALLOW_HOSTS)%'
     auth_type: HMAC
-    csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
-    csv_temp_realdir: %kernel.project_dir%/html/upload/csv/ # upload_tmp_dir に任せればよい？
+    eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
+    eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
     default_country_id: 392
     default_password: '**********'
     deliv_addr_max: 20
