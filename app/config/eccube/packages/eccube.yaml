@@ -14,8 +14,8 @@ parameters:
     eccube_deliv_addr_max: 20
     deliv_date_end_max: 21
     eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
-    id_max_len: 50
-    id_min_len: 4
+    eccube_id_max_len: 50
+    eccube_id_min_len: 4
     image_save_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/save_image/
     image_save_urlpath: /upload/save_image/ # asset 使う
     image_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_image/ # upload_tmp_dir に任せればよい？

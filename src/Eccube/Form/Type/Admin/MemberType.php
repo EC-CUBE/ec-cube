@@ -77,8 +77,8 @@ class MemberType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['id_min_len'],
-                        'max' => $this->eccubeConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['eccube_id_min_len'],
+                        'max' => $this->eccubeConfig['eccube_id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
@@ -94,8 +94,8 @@ class MemberType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->eccubeConfig['id_min_len'],
-                        'max' => $this->eccubeConfig['id_max_len'],
+                        'min' => $this->eccubeConfig['eccube_id_min_len'],
+                        'max' => $this->eccubeConfig['eccube_id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
