@@ -580,7 +580,7 @@ class CsvImportController
                         } else {
                             $Category->setHierarchy(1);
                         }
-                        if ($this->eccubeConfig['category_nest_level'] < $Category->getHierarchy()) {
+                        if ($this->eccubeConfig['eccube_category_nest_level'] < $Category->getHierarchy()) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
                             return $this->render($form, $headers);
                         }
