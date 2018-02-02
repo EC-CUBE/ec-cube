@@ -25,7 +25,7 @@ class IpAddrListener implements EventSubscriberInterface
             return;
         }
 
-        $allowHosts = $this->eccubeConfig['admin_allow_hosts'];
+        $allowHosts = $this->eccubeConfig['eccube_admin_allow_hosts'];
 
         if (empty($allowHosts)) {
             return;
