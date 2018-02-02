@@ -342,7 +342,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->markTestIncomplete('Impossible to call set("eccube.constants") on a frozen ParameterBag. => skip');
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->eccubeConfig;
-        $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
+        $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->container->setParameter('eccube.constants', $config);
 
         $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料'."\n");
@@ -397,7 +397,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->markTestIncomplete('Impossible to call set() on a frozen ParameterBag.');
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->eccubeConfig;
-        $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
+        $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->container->setParameter('eccube.constants', $config);
 
         $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID'."\n");

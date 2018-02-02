@@ -631,11 +631,11 @@ class CsvImportController
             // ヘッダ行の出力
             $row = array();
             foreach ($headers as $key => $value) {
-                $row[] = mb_convert_encoding($key, $this->eccubeConfig['csv_export_encoding'], 'UTF-8');
+                $row[] = mb_convert_encoding($key, $this->eccubeConfig['eccube_csv_export_encoding'], 'UTF-8');
             }
 
             $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->eccubeConfig['csv_export_separator']);
+            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
             fclose($fp);
         });
 
@@ -719,7 +719,7 @@ class CsvImportController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['csv_import_delimiter'], $this->eccubeConfig['csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
 
         $ret = $data->setHeaderRowNumber(0);
 

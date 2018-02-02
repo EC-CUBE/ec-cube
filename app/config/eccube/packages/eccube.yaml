@@ -38,16 +38,16 @@ parameters:
     eccube_info_url: 'https://www.ec-cube.net/info/3/'
     eccube_customer_reset_expire: 10
     # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
-    csv_export_separator: ,
+    eccube_csv_export_separator: ,
     # 出力エンコーディング
-    csv_export_encoding: SJIS-win
+    eccube_csv_export_encoding: SJIS-win
     # 日付のフォーマット
-    csv_export_date_format: 'Y-m-d H:i:s'
+    eccube_csv_export_date_format: 'Y-m-d H:i:s'
     # 複数データの区切り文字
-    csv_export_multidata_separator: ,
-    csv_import_delimiter: ,
-    csv_import_enclosure: '"'
-    csv_import_escape: \
+    eccube_csv_export_multidata_separator: ,
+    eccube_csv_import_delimiter: ,
+    eccube_csv_import_enclosure: '"'
+    eccube_csv_import_escape: \
     eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
     eccube_name_len: 16
     eccube_kana_len: 25
