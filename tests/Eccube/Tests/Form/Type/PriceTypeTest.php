@@ -70,7 +70,7 @@ class PriceTypeTest extends AbstractTypeTestCase
 
     public function testValidData_PriceLen()
     {
-        $this->form->submit(str_repeat('1', $this->eccubeConfig['price_len']));
+        $this->form->submit(str_repeat('1', $this->eccubeConfig['eccube_price_len']));
         $this->assertTrue($this->form->isValid());
     }
 

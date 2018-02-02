@@ -25,7 +25,7 @@ parameters:
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
-    price_len: 8                                                    # 最大値で制御したい
+    eccube_price_len: 8                                                    # 最大値で制御したい
     search_pmax: 10
     eccube_stext_len: 255
     eccube_sltext_len: 500

@@ -132,14 +132,14 @@ class SearchCustomerType extends AbstractType
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_total_end', IntegerType::class, [
                 'label' => '購入金額',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['price_len']]),
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
                 ],
             ])
             ->add('buy_times_start', IntegerType::class, [
