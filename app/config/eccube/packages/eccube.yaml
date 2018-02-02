@@ -18,20 +18,20 @@ parameters:
     eccube_id_min_len: 4
     eccube_int_len: 9                              # 最大値で制御したい
     eccube_category_nest_level: 5
-    lltext_len: 99999
-    ltext_len: 3000
+    eccube_lltext_len: 99999
+    eccube_ltext_len: 3000
     max_total_fee: 9999999999
-    mltext_len: 1000
-    mtext_len: 200
+    eccube_mltext_len: 1000
+    eccube_mtext_len: 200
     plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/
     plugin_html_urlpath: /plugin/ # asset 使う
     plugin_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/plugins/
     plugin_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_plugin/ # upload_tmp_dir に任せればよい？
     price_len: 8                                                    # 最大値で制御したい
     search_pmax: 10
-    stext_len: 255
-    sltext_len: 500
-    smtext_len: 100
+    eccube_stext_len: 255
+    eccube_sltext_len: 500
+    eccube_smtext_len: 100
     tax_rule_priority: 'product_id,product_class_id,pref_id,country_id' # 配列にする
     template_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_template/ #  upload_tmp_dir に任せればよい？
     url_len: 1024

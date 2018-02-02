@@ -75,7 +75,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['stext_len'],
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
                     ))
                 ),
             ))
@@ -157,7 +157,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->eccubeConfig['ltext_len'],
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
                     )),
                 ),
             ));

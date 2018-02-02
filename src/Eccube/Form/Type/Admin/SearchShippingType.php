@@ -57,7 +57,7 @@ class SearchShippingType extends AbstractType
                 'label' => '配送番号・お届け先名・お届け先（フリガナ）・お届け先会社名',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('order_status', OrderStatusType::class, array(

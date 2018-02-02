@@ -72,7 +72,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidName_MaxLength()
     {
-        $this->formData['name'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['name'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -121,7 +121,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidUrl_MaxLength()
     {
-        $this->formData['url'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['url'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -185,7 +185,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidFileName_MaxLength()
     {
-        $this->formData['file_name'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['file_name'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -206,7 +206,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidAuthor_MaxLength()
     {
-        $this->formData['author'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['author'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -220,7 +220,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidDescription_MaxLength()
     {
-        $this->formData['description'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['description'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -234,7 +234,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidKeyword_MaxLength()
     {
-        $this->formData['keyword'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['keyword'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -248,7 +248,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidMetaRobots_MaxLength()
     {
-        $this->formData['meta_robots'] = str_repeat('1', $this->eccubeConfig['stext_len'] + 1);
+        $this->formData['meta_robots'] = str_repeat('1', $this->eccubeConfig['eccube_stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

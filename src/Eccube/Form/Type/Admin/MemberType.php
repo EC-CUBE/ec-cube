@@ -61,7 +61,7 @@ class MemberType extends AbstractType
                 'label' => '名前',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('department', TextType::class, array(
@@ -69,7 +69,7 @@ class MemberType extends AbstractType
                 'label' => '所属',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('login_id', TextType::class, array(

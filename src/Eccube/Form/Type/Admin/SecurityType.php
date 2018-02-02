@@ -68,7 +68,7 @@ class SecurityType extends AbstractType
                 'label' => 'ディレクトリ名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                     new Assert\Regex(array(
                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
@@ -78,7 +78,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'label' => 'IP制限',
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
                 ),
             ))
             ->add('force_ssl', CheckboxType::class, array(

@@ -474,7 +474,7 @@ class NonMemberShoppingController extends AbstractShoppingController
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],
             array(
-                new Assert\Length(array('max' => $this->eccubeConfig['stext_len'])),
+                new Assert\Length(array('max' => $this->eccubeConfig['eccube_stext_len'])),
             )
         );
 

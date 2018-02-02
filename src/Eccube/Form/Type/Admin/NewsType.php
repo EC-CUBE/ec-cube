@@ -71,7 +71,7 @@ class NewsType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['mtext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_mtext_len'])),
                 ),
             ))
             ->add('url', TextType::class, array(
@@ -79,7 +79,7 @@ class NewsType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
-                    new Assert\Length(array('max' => $this->eccubeConfig['mtext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_mtext_len'])),
                 ),
             ))
             ->add('link_method', CheckboxType::class, array(
@@ -91,7 +91,7 @@ class NewsType extends AbstractType
                 'label' => '本文',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array('max' => $this->eccubeConfig['ltext_len'])),
+                    new Assert\Length(array('max' => $this->eccubeConfig['eccube_ltext_len'])),
                 ),
             ));
     }
