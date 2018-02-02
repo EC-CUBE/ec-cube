@@ -18,7 +18,7 @@ parameters:
     eccube_category_nest_level: 5
     eccube_lltext_len: 99999
     eccube_ltext_len: 3000
-    max_total_fee: 9999999999
+    eccube_max_total_fee: 9999999999
     eccube_mltext_len: 1000
     eccube_mtext_len: 200
     plugin_html_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/plugin/

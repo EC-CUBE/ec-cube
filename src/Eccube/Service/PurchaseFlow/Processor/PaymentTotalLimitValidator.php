@@ -45,7 +45,7 @@ class PaymentTotalLimitValidator extends ValidatableItemHolderProcessor
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
-        $this->maxTotalFee = $eccubeConfig['max_total_fee'];
+        $this->maxTotalFee = $eccubeConfig['eccube_max_total_fee'];
     }
 
     /**
