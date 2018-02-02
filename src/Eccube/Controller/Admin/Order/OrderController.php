@@ -195,7 +195,7 @@ class OrderController extends AbstractController
                     // 公開ステータス
                     $status = $request->get('status');
                     if (!empty($status)) {
-                        if ($status != $this->eccubeConfig['admin_product_stock_status']) {
+                        if ($status != $this->eccubeConfig['eccube_admin_product_stock_status']) {
                             $searchData['status']->clear();
                             $searchData['status']->add($status);
                         } else {

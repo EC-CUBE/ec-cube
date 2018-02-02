@@ -232,7 +232,7 @@ class ProductController extends AbstractController
                     } else {
                         $searchData['link_status'] = $this->productStatusRepository->find($status);
                         $searchData['stock_status'] = null;
-                        if ($status == $this->eccubeConfig['admin_product_stock_status']) {
+                        if ($status == $this->eccubeConfig['eccube_admin_product_stock_status']) {
                             // 在庫なし
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
