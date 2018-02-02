@@ -16,10 +16,6 @@ parameters:
     eccube_payment: EC-CUBE     # 決済プラグインで利用あり？
     eccube_id_max_len: 50
     eccube_id_min_len: 4
-    image_save_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/save_image/
-    image_save_urlpath: /upload/save_image/ # asset 使う
-    image_temp_realdir: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/upload/temp_image/ # upload_tmp_dir に任せればよい？
-    image_temp_urlpath: /upload/temp_image/ # asset つかう
     eccube_int_len: 9                              # 最大値で制御したい
     eccube_category_nest_level: 5
     lltext_len: 99999
