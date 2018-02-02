@@ -79,7 +79,7 @@ class ChangeController extends AbstractController
         $this->entityManager->detach($LoginCustomer);
 
         $previous_password = $Customer->getPassword();
-        $Customer->setPassword($this->eccubeConfig['default_password']);
+        $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
@@ -101,7 +101,7 @@ class ChangeController extends AbstractController
 
             log_info('会員編集開始');
 
-            if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
+            if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
                 $encoder = $this->encoderFactory->getEncoder($Customer);

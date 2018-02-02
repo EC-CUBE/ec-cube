@@ -165,7 +165,7 @@ class MemberController extends AbstractController
         $this->entityManager->detach($LoginMember);
 
         $previousPassword = $Member->getPassword();
-        $Member->setPassword($this->eccubeConfig['default_password']);
+        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
 
         $builder = $this->formFactory
             ->createBuilder(MemberType::class, $Member);
@@ -183,7 +183,7 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($Member->getpassword() === $this->eccubeConfig['default_password']) {
+            if ($Member->getpassword() === $this->eccubeConfig['eccube_default_password']) {
                 // 編集時にパスワードを変更していなければ
                 // 変更前のパスワード(暗号化済み)をセット
                 $Member->setPassword($previousPassword);

@@ -9,8 +9,8 @@ parameters:
     auth_type: HMAC
     eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
     eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
-    default_country_id: 392
-    default_password: '**********'
+    #eccube_default_country_id: 392 # 使用していない
+    eccube_default_password: '**********'
     deliv_addr_max: 20
     deliv_date_end_max: 21
     eccube_payment: EC-CUBE     # 決済プラグインで利用あり？

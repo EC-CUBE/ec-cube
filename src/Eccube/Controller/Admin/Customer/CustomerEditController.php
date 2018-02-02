@@ -81,7 +81,7 @@ class CustomerEditController extends AbstractController
             }
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
-            $Customer->setPassword($this->eccubeConfig['default_password']);
+            $Customer->setPassword($this->eccubeConfig['eccube_default_password']);
             // 新規登録
         } else {
             $Customer = $this->customerRepository->newCustomer();
@@ -138,7 +138,7 @@ class CustomerEditController extends AbstractController
                     $this->entityManager->persist($CustomerAddress);
                 }
 
-                if ($Customer->getPassword() === $this->eccubeConfig['default_password']) {
+                if ($Customer->getPassword() === $this->eccubeConfig['eccube_default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {
                     if ($Customer->getSalt() === null) {
