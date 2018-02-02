@@ -48,15 +48,15 @@ parameters:
     csv_import_delimiter: ,
     csv_import_enclosure: '"'
     csv_import_escape: \
-    owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+    eccube_owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
     name_len: 16
     kana_len: 25
     address1_len: 32
     address2_len: 32
-    birth_max: 110
-    product_order_price_lower: 1
-    product_order_newer: 2
-    product_order_price_higher: 3
+    eccube_birth_max: 110
+    eccube_product_order_price_lower: 1
+    eccube_product_order_newer: 2
+    eccube_product_order_price_higher: 3
     eccube_price_max: 2147483647
     eccube_tel_len: 5
     eccube_tel_len_min: 1
@@ -71,10 +71,10 @@ parameters:
     block_default_realdir: '%kernel.project_dir%/src/Eccube/Resource/template/default/Block'
     block_realdir: '%kernel.project_dir%/app/template/default/Block'
     eccube_composer_memory_limit: 1536
-    order_mail_template_id: 1 #注文受付メール
-    entry_confirm_mail_template_id: 2 #会員仮登録メール
-    entry_complete_mail_template_id: 3 #会員本登録メール
-    customer_withdraw_mail_template_id: 4 #会員退会メール
-    contact_mail_template_id: 5 #問合受付メール
-    forgot_mail_template_id: 6 #パスワードリセット
-    reset_complete_mail_template_id: 7 #パスワードリマインダー
+    eccube_order_mail_template_id: 1 #注文受付メール
+    eccube_entry_confirm_mail_template_id: 2 #会員仮登録メール
+    eccube_entry_complete_mail_template_id: 3 #会員本登録メール
+    eccube_customer_withdraw_mail_template_id: 4 #会員退会メール
+    eccube_contact_mail_template_id: 5 #問合受付メール
+    eccube_forgot_mail_template_id: 6 #パスワードリセット
+    eccube_reset_complete_mail_template_id: 7 #パスワードリマインダー
