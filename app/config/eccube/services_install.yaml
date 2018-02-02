@@ -30,7 +30,6 @@ services:
           $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
           $auth_type: 'HMAC'
           $password_hash_algos: 'sha256'
-          $eccubeConfig: '%eccube.constants%'
           $projectRoot: '%kernel.project_dir%'
           $environment: '%kernel.environment%'
 
@@ -41,6 +40,9 @@ services:
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
         exclude: '../../../src/Eccube/{Annotation,Application,Common,ControllerProvider,Entity,Exception,EventListener,Log,Plugin,Routing,ServiceProvider,Util,Resource,Doctrine/ORM/tools/}'
+
+    Eccube\Common\EccubeConfig:
+        public: true
 
     Eccube\Service\TaxRuleService:
         lazy: true

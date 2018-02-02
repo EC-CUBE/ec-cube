@@ -28,6 +28,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
 use Eccube\Exception\PluginException;
@@ -43,6 +44,11 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginService
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
     /**
      * @var PluginEventHandlerRepository
      */
@@ -116,6 +122,7 @@ class PluginService
         PluginRepository $pluginRepository,
         EntityProxyService $entityProxyService,
         SchemaService $schemaService,
+        EccubeConfig $eccubeConfig,
         $projectRoot,
         $environment
     ) {
@@ -124,6 +131,7 @@ class PluginService
         $this->pluginRepository = $pluginRepository;
         $this->entityProxyService = $entityProxyService;
         $this->schemaService = $schemaService;
+        $this->eccubeConfig = $eccubeConfig;
         $this->projectRoot = $projectRoot;
         $this->environment = $environment;
     }
@@ -209,6 +217,17 @@ class PluginService
         try {
             // dbにプラグイン登録
             $plugin = $this->registerPlugin($config, $event, $source);
+
+            // プラグインmetadata定義を追加
+            $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+            if (file_exists($entityDir)) {
+                $ormConfig = $this->entityManager->getConfiguration();
+                $chain = $ormConfig->getMetadataDriverImpl();
+                $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                $chain->addDriver($driver, $namespace);
+                $ormConfig->addEntityNamespace($plugin->getCode(), $namespace);
+            }
 
             // インストール時には一時的に利用するProxyを生成してからスキーマを更新する
             $generatedFiles = $this->regenerateProxy($plugin, true, $tmpProxyOutputDir);
@@ -429,6 +448,10 @@ class PluginService
 
         // スキーマを更新する
         $this->schemaService->updateSchema([], $this->projectRoot.'/app/proxy/entity');
+
+        // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+        $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+        $this->schemaService->dropTable($namespace);
 
         ConfigManager::writePluginConfigCache();
         return true;

@@ -162,7 +162,7 @@ class ProductRepository extends AbstractRepository
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
-            $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
+            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
                 ->setParameter('id', $id)

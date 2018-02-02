@@ -27,6 +27,7 @@ namespace Eccube\Repository;
 use Eccube\Annotation\Repository;
 use Eccube\Entity\MailTemplate;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * MailTemplateRepository
@@ -38,9 +39,15 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class MailTemplateRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var string
+     */
+    protected $projectRoot;
+
+    public function __construct(RegistryInterface $registry, $projectRoot)
     {
         parent::__construct($registry, MailTemplate::class);
+        $this->projectRoot = $projectRoot;
     }
 
     /**
@@ -54,9 +61,51 @@ class MailTemplateRepository extends AbstractRepository
             $MailTemplate = new MailTemplate();
         } else {
             $MailTemplate = $this->find($id);
-
         }
 
         return $MailTemplate;
+    }
+
+    /**
+     * 書き込みパスの取得
+     *
+     * @param  boolean $isUser
+     * @return string
+     */
+    public function getWriteTemplatePath()
+    {
+        return $this->projectRoot.'/app/template/default';
+    }
+
+    /**
+     * 読み込みファイルの取得
+     *
+     * 1. template_realdir
+     *      app/template/{template_code}
+     * 2. template_default_readldir
+     *      src/Eccube/Resource/template/default
+     *
+     * @param string $fileName
+     *
+     * @return array
+     */
+    public function getReadTemplateFile($fileName)
+    {
+
+        $readPaths = array(
+            $this->projectRoot.'/app/template/default',
+            $this->projectRoot.'/src/Eccube/Resource/template/default',
+        );
+
+        foreach ($readPaths as $readPath) {
+            $filePath = $readPath . '/' . $fileName;
+            $fs = new Filesystem();
+            if ($fs->exists($filePath)) {
+                return array(
+                    'file_name' => $fileName,
+                    'tpl_data' => file_get_contents($filePath),
+                );
+            }
+        }
     }
 }

@@ -117,7 +117,7 @@ class PageRepositoryTest extends EccubeTestCase
         $Pages = $this->pageRepo->getPageList($this->DeviceType);
         $All = $this->pageRepo->findAll();
 
-        $this->expected = count($All) - 1;
+        $this->expected = count($All) - 2;
         $this->actual = count($Pages);
         $this->verify();
     }

@@ -33,6 +33,8 @@ use Eccube\Repository\MailTemplateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
+use Eccube\Util\StringUtil;
 
 /**
  * Class MailController
@@ -77,7 +79,16 @@ class MailController extends AbstractController
 
         $form = $builder->getForm();
         $form['template']->setData($Mail);
-
+        
+        // 更新時
+        if (!is_null($Mail)) {
+            // テンプレートファイルの取得
+            $file = $this->mailTemplateRepository
+                ->getReadTemplateFile($Mail->getFileName());
+        
+            $form->get('tpl_data')->setData($file['tpl_data']);
+        }   
+        
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -91,11 +102,22 @@ class MailController extends AbstractController
             if ($form->isValid()) {
 
                 $this->entityManager->flush();
+                
+                // ファイル生成・更新
+                $templatePath = $this->mailTemplateRepository->getWriteTemplatePath();
+                $filePath = $templatePath.'/'.$Mail->getFileName();
+                
+                $fs = new Filesystem();
+                $mailData = $form->get('tpl_data')->getData();
+                $mailData = StringUtil::convertLineFeed($mailData);
+                $fs->dumpFile($filePath, $mailData);
 
                 $event = new EventArgs(
                     array(
                         'form' => $form,
                         'Mail' => $Mail,
+                        'templatePath' => $templatePath,
+                        'filePath' => $filePath,
                     ),
                     $request
                 );

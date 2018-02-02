@@ -104,14 +104,18 @@ class MailService
 
         log_info('仮会員登録メール送信開始');
 
-        $body = $this->twig->render('Mail/entry_confirm.twig', array(
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['entry_confirm_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -146,13 +150,17 @@ class MailService
     {
         log_info('会員登録完了メール送信開始');
 
-        $body = $this->twig->render('Mail/entry_complete.twig', array(
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['entry_complete_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -188,13 +196,17 @@ class MailService
     {
         log_info('退会手続き完了メール送信開始');
 
-        $body = $this->twig->render('Mail/customer_withdraw_mail.twig', array(
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['customer_withdraw_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($email))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -230,14 +242,18 @@ class MailService
     {
         log_info('お問い合わせ受付メール送信開始');
 
-        $body = $this->twig->render('Mail/contact_mail.twig', array(
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['contact_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
         ));
 
         // 問い合わせ者にメール送信
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
             ->setBcc($this->BaseInfo->getEmail02())
@@ -285,7 +301,7 @@ class MailService
     {
         log_info('受注メール送信開始');
 
-        $MailTemplate = $this->mailTemplateRepository->find(1);
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['order_mail_template_id']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), array(
             'header' => $MailTemplate->getMailHeader(),
@@ -294,7 +310,7 @@ class MailService
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getMailSubject())
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -332,14 +348,19 @@ class MailService
     {
         log_info('仮会員登録再送メール送信開始');
 
-        $body = $this->twig->render('Mail/entry_confirm.twig', array(
+        /* @var $MailTemplate \Eccube\Entity\MailTemplate */
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['entry_confirm_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'BaseInfo' => $this->BaseInfo,
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -383,7 +404,7 @@ class MailService
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['mail_subject'])
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$formData['mail_subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -418,15 +439,18 @@ class MailService
     {
         log_info('パスワード再発行メール送信開始');
 
-        $body = $this->twig->render('Mail/forgot_mail.twig', array(
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['forgot_mail_template_id']);
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
             'BaseInfo' => $this->BaseInfo,
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'expire' => $this->eccubeConfig['customer_reset_expire'],
             'reset_url' => $reset_url
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -461,14 +485,18 @@ class MailService
     {
         log_info('パスワード変更完了メール送信開始');
 
-        $body = $this->twig->render('Mail/reset_complete_mail.twig', array(
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['reset_complete_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), array(
             'BaseInfo' => $this->BaseInfo,
+            'header' => $MailTemplate->getMailHeader(),
+            'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
             'password' => $password,
         ));
 
         $message = (new \Swift_Message())
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
