@@ -136,8 +136,8 @@ class EditController extends AbstractController
     /**
      * 受注登録/編集画面.
      *
-     * @Route("/%admin_route%/order/new", name="admin_order_new")
-     * @Route("/%admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
+     * @Route("/%eccube_admin_route%/order/new", name="admin_order_new")
+     * @Route("/%eccube_admin_route%/order/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
      * @Template("@admin/Order/edit.twig")
      */
     public function index(Request $request, $id = null)
@@ -321,7 +321,7 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/%admin_route%/order/search/customer", name="admin_order_search_customer")
+     * @Route("/%eccube_admin_route%/order/search/customer", name="admin_order_search_customer")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -385,8 +385,8 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @Route("/%admin_route%/order/search/customer/html", name="admin_order_search_customer_html")
-     * @Route("/%admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
+     * @Route("/%eccube_admin_route%/order/search/customer/html", name="admin_order_search_customer_html")
+     * @Route("/%eccube_admin_route%/order/search/customer/html/page/{page_no}", requirements={"page_No" = "\d+"}, name="admin_order_search_customer_html_page")
      * @Template("@admin/Order/search_customer.twig")
      *
      * @param Request $request
@@ -484,7 +484,7 @@ class EditController extends AbstractController
      * 顧客情報を検索する.
      *
      * @Method("POST")
-     * @Route("/%admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id")
+     * @Route("/%eccube_admin_route%/order/search/customer/id", name="admin_order_search_customer_by_id")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -550,8 +550,8 @@ class EditController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/order/search/product", name="admin_order_search_product")
-     * @Route("/%admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
+     * @Route("/%eccube_admin_route%/order/search/product", name="admin_order_search_product")
+     * @Route("/%eccube_admin_route%/order/search/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_search_product_page")
      * @Template("@admin/Order/search_product.twig")
      */
     public function searchProduct(Request $request, $page_no = null, Paginator $paginator)

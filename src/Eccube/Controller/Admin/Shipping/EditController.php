@@ -84,8 +84,8 @@ class EditController extends AbstractController
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/%admin_route%/shipping/new", name="admin_shipping_new")
-     * @Route("/%admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
+     * @Route("/%eccube_admin_route%/shipping/new", name="admin_shipping_new")
+     * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit")
      * @Template("@admin/Shipping/edit.twig")
      *
      * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
@@ -266,7 +266,7 @@ class EditController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/shipping/search/product", name="admin_shipping_search_product")
+     * @Route("/%eccube_admin_route%/shipping/search/product", name="admin_shipping_search_product")
      * @Template("@admin/shipping/search_product.twig")
      */
     public function searchProduct(Request $request, $page_no = null, Paginator $paginator)

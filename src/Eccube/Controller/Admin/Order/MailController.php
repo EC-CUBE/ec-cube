@@ -74,7 +74,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
+     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail")
      * @Template("@admin/Order/mail.twig")
      */
     public function index(Request $request, Order $Order)
@@ -206,7 +206,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/order/mail_complete", name="admin_order_mail_complete")
+     * @Route("/%eccube_admin_route%/order/mail_complete", name="admin_order_mail_complete")
      * @Template("@admin/Order/mail_complete.twig")
      */
     public function complete()
@@ -215,7 +215,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/order/mail/view", name="admin_order_mail_view")
+     * @Route("/%eccube_admin_route%/order/mail/view", name="admin_order_mail_view")
      * @Template("@admin/Order/mail_view.twig")
      */
     public function view(Request $request)
@@ -246,7 +246,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/order/mail/mail_all", name="admin_order_mail_all")
+     * @Route("/%eccube_admin_route%/order/mail/mail_all", name="admin_order_mail_all")
      * @Template("@admin/Order/mail_all.twig")
      */
     public function mailAll(Request $request)

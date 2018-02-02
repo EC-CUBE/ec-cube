@@ -96,8 +96,8 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/customer", name="admin_customer")
-     * @Route("/%admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
+     * @Route("/%eccube_admin_route%/customer", name="admin_customer")
+     * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page")
      * @Template("@admin/Customer/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
@@ -214,7 +214,7 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
+     * @Route("/%eccube_admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend")
      */
     public function resend(Request $request, $id)
     {
@@ -248,7 +248,7 @@ class CustomerController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
+     * @Route("/%eccube_admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete")
      */
     public function delete(Request $request, $id, TranslatorInterface $translator)
     {
@@ -296,7 +296,7 @@ class CustomerController extends AbstractController
     /**
      * 会員CSVの出力.
      *
-     * @Route("/%admin_route%/customer/export", name="admin_customer_export")
+     * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export")
      *
      * @param Application $app
      * @param Request $request

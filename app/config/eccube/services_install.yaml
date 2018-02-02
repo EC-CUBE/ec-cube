@@ -8,7 +8,6 @@ parameters:
     base_currency_code: 'JPY'
     currency_code: '%base_currency_code%'
     app.notifications.email_sender: anonymous@example.com
-    admin_route: '%env(ECCUBE_ADMIN_ROUTE)%'
     user_data_route: 'user_data'
     eccube.scheme: 'http'
     eccube.theme: 'default'
@@ -26,7 +25,6 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
         bind:
-          $admin_route: '%admin_route%'
           $auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
           $auth_type: 'HMAC'
           $password_hash_algos: 'sha256'

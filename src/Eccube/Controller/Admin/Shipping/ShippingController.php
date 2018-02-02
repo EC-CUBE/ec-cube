@@ -52,8 +52,8 @@ class ShippingController extends AbstractController
 
 
     /**
-     * @Route("/%admin_route%/shipping", name="admin_shipping")
-     * @Route("/%admin_route%/shipping/page/{page_no}", name="admin_shipping_page")
+     * @Route("/%eccube_admin_route%/shipping", name="admin_shipping")
+     * @Route("/%eccube_admin_route%/shipping/page/{page_no}", name="admin_shipping_page")
      * @Template("@admin/Shipping/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)

@@ -119,8 +119,8 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/%admin_route%/order", name="admin_order")
-     * @Route("/%admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
+     * @Route("/%eccube_admin_route%/order", name="admin_order")
+     * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page")
      * @Template("@admin/Order/index.twig")
      */
     public function index(Request $request, $page_no = null, Paginator $paginator)
@@ -269,7 +269,7 @@ class OrderController extends AbstractController
 
     /**
      * @Method("DELETE")
-     * @Route("/%admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
+     * @Route("/%eccube_admin_route%/order/{id}/delete", requirements={"id" = "\d+"}, name="admin_order_delete")
      */
     public function delete(Request $request, $id)
     {
@@ -334,7 +334,7 @@ class OrderController extends AbstractController
     /**
      * 受注CSVの出力.
      *
-     * @Route("/%admin_route%/order/export/order", name="admin_order_export_order")
+     * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order")
      *
      * @param Request $request
      * @return StreamedResponse
@@ -418,7 +418,7 @@ class OrderController extends AbstractController
     /**
      * 配送CSVの出力.
      *
-     * @Route("/%admin_route%/order/export/shipping", name="admin_order_export_shipping")
+     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping")
      *
      * @param Request $request
      * @return StreamedResponse
