@@ -92,7 +92,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
     public function testGetRegularCustomerByResetKey()
     {
-        $expire = '+'.$this->eccubeConfig['customer_reset_expire'].' min';
+        $expire = '+'.$this->eccubeConfig['eccube_customer_reset_expire'].' min';
         $reset_key = $this->customerRepo->getResetPassword();
         $this->Customer
             ->setResetKey($reset_key)
@@ -106,7 +106,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
     public function testGetRegularCustomerByResetKeyWithException()
     {
-        $expire = '-'.$this->eccubeConfig['customer_reset_expire'].' min';
+        $expire = '-'.$this->eccubeConfig['eccube_customer_reset_expire'].' min';
         $reset_key = $this->customerRepo->getResetPassword();
         $this->Customer
             ->setResetKey($reset_key)

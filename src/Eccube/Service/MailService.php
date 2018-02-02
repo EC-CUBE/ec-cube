@@ -445,7 +445,7 @@ class MailService
             'header' => $MailTemplate->getMailHeader(),
             'footer' => $MailTemplate->getMailFooter(),
             'Customer' => $Customer,
-            'expire' => $this->eccubeConfig['customer_reset_expire'],
+            'expire' => $this->eccubeConfig['eccube_customer_reset_expire'],
             'reset_url' => $reset_url
         ));
 
